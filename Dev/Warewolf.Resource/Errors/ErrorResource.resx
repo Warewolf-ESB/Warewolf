@@ -1340,4 +1340,7 @@ Please contact your Windows System Administrator.</value>
   <data name="NotXmlResults" xml:space="preserve">
     <value>Invalid command sent to ExecuteXmlReader.  The command must return an Xml result.</value>
   </data>
+  <data name="ErrorCreatingDirectory" xml:space="preserve">
+    <value>failed creating directory '{0}' : {1}</value>
+  </data>
 </root>

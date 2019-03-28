@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿namespace Dev2.Common.State
 {
     public struct StateVariable

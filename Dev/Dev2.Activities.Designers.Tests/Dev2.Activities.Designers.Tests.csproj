@@ -172,6 +172,7 @@
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="Exchange\ExchangeNewEmailDesignerViewModelTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
     <Compile Include="MySql\TestMySqlViewModel.cs" />
     <Compile Include="Oracle\InputViewForTest.cs" />

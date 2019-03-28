@@ -13,6 +13,7 @@ using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Globalization;
 
 namespace Dev2.Common.Tests.DateAndTime
 {
@@ -38,7 +39,8 @@ namespace Dev2.Common.Tests.DateAndTime
             var formatResult = standardDateTimeFormatter.TryFormat(dateTimeOperationTO, out string result, out string errorMsg);
 
             Assert.IsTrue(formatResult);
-            Assert.AreEqual(DateTime.Now.AddYears(23).ToShortDateString(), result);
+            Assert.IsTrue(DateTime.TryParse(result, out DateTime datetimeResult), $"Failed to parse value: {result} as a DateTime");
+            Assert.AreEqual(datetimeResult.AddYears(-23).ToShortDateString(), DateTime.Now.ToShortDateString(), "Wrong date time returned from DateTime tool.");
             Assert.AreEqual("", errorMsg);
         }
 

@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.DynamicServices;
