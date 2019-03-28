@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -178,20 +179,20 @@ namespace Dev2.Data.PathOperations
         public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
             var result = false;
-            bool ok;
+            bool okayToCreate;
             if (args.Overwrite)
             {
                 if (_implementation.IsDirectoryAlreadyPresent(dst))
                 {
                     Delete(dst);
                 }
-                ok = true;
+                okayToCreate = true;
             }
             else
             {
-                ok = !_implementation.IsDirectoryAlreadyPresent(dst);
+                okayToCreate = !_implementation.IsDirectoryAlreadyPresent(dst);
             }
-            if (ok)
+            if (okayToCreate)
             {
                 result = _implementation.IsStandardFtp(dst) ? _implementation.CreateDirectoryStandardFtp(dst) : _implementation.CreateDirectorySftp(dst);
             }
@@ -596,6 +597,8 @@ namespace Dev2.Data.PathOperations
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
+                    // throw
+                    return false;
                 }
                 finally
                 {
@@ -890,7 +893,7 @@ namespace Dev2.Data.PathOperations
             bool IsFilePresentStandardFtp(IActivityIOPath path)
             {
                 FtpWebResponse response = null;
-                bool isAlive;
+                bool fileIsPresent;
                 try
                 {
                     var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
@@ -919,12 +922,12 @@ namespace Dev2.Data.PathOperations
                             }
                         }
                     }
-                    isAlive = true;
+                    fileIsPresent = true;
                 }
                 catch (WebException wex)
                 {
                     Dev2Logger.Error(this, wex, GlobalConstants.WarewolfError);
-                    isAlive = false;
+                    fileIsPresent = false;
                 }
                 catch (Exception ex)
                 {
@@ -935,7 +938,7 @@ namespace Dev2.Data.PathOperations
                 {
                     response?.Close();
                 }
-                return isAlive;
+                return fileIsPresent;
             }
 
             bool IsFilePresentSftp(IActivityIOPath path)

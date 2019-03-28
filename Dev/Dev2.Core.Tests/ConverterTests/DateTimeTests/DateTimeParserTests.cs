@@ -19,17 +19,13 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Tests.ConverterTests.DateTimeTests
 {
-    /// <summary>
-    /// Summary description for DateTimeParserTests
-    /// </summary>
     [TestClass]
     public class DateTimeParserTests
     {
         static IDateTimeParser _parser;
         
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
+        
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -39,27 +35,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             _parser = DateTimeConverterFactory.CreateParser();
         }
-
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
-        #region TryParseDateTime Tests
-            
-        #region Valid Parse Formats
-            
+           
         [TestMethod]
-        public void TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
+        public void DateTimeParser_TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
             const string inputString = "14101988";
             const string formatString = "ddmmyyyy";
@@ -78,7 +56,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithSimpleLiteral_Expected_InputStringParsedCorrectly()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithSimpleLiteral_Expected_InputStringParsedCorrectly()
         {
             const string inputString = "My birthday is : 14101988";
             const string formatString = "'My birthday is : 'ddmmyyyy";
@@ -97,7 +75,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithInferredLiteral_Expected_InputCorrectlyParsed()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithInferredLiteral_Expected_InputCorrectlyParsed()
         {
             const string inputString = "Please Give Cake On : 14101988";
             const string formatString = "Please Give Cake On : ddmmyyyy";
@@ -116,7 +94,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithInferredLiteralContainingEscapedLiteralCharacter_Expected_InputParsedWithEscapedCharactersIncluded()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithInferredLiteralContainingEscapedLiteralCharacter_Expected_InputParsedWithEscapedCharactersIncluded()
         {
             const string inputString = "Please Give ' Cake On : 14101988";
             const string formatString = "Please Give \\' Cake On : ddmmyyyy";
@@ -135,7 +113,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithMixedInferredAndDelimtedLiteralRegions_Expected_InputRegionCorrectlyParsedForDateTimeValues()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithMixedInferredAndDelimtedLiteralRegions_Expected_InputRegionCorrectlyParsedForDateTimeValues()
         {
             const string inputString = "Please Give Cake On : 14101988";
             const string formatString = "Please Give \'Cake On :\' ddmmyyyy";
@@ -154,7 +132,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInInferredLiteralRegion_Expected_InputParsedCorrectly()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInInferredLiteralRegion_Expected_InputParsedCorrectly()
         {
             const string inputString = "Please Give ' Cake On : 14101988";
             const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
@@ -173,7 +151,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInLiteralRegion_Expected_InputParsedOutCorrectly()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInLiteralRegion_Expected_InputParsedOutCorrectly()
         {
             const string inputString = "Please Give ' Cake On : 14101988";
             const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
@@ -192,7 +170,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacter_Expected_DateParsedCorrectly()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacter_Expected_DateParsedCorrectly()
         {
             const string inputString = "Brendon's birthday is : 14101988";
             const string formatString = "'Brendon\\'s birthday is : 'ddmmyyyy";
@@ -211,7 +189,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacterAndAnEscapeCharacter_Expected_EscapedCharacter()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacterAndAnEscapeCharacter_Expected_EscapedCharacter()
         {
             const string inputString = "Brendon\\'s birthday is : 14101988";
             const string formatString = "'Brendon\\\\\\'s birthday is : 'ddmmyyyy";
@@ -230,7 +208,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithComplexLiteral_Expected_InptParsedWithAllSpecifiedInputsInFormat()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithComplexLiteral_Expected_InptParsedWithAllSpecifiedInputsInFormat()
         {
             const string inputString = "I was born on the 14th day of October in the year of 1988";
             const string formatString = "'I was born on the 'dd'th day of 'MM' in the year of 'yyyy";
@@ -249,7 +227,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithSomeLiteralAndSomeNumeric_Expected_AllDataParsedThroughDateTimeParser()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithSomeLiteralAndSomeNumeric_Expected_AllDataParsedThroughDateTimeParser()
         {
             const string inputString = "Tuesday,27 February 2009";
             const string formatString = "DW','dd' 'MM' 'yyyy";
@@ -268,7 +246,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithSlashed_Expected_DateTimeParsedOut()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithSlashed_Expected_DateTimeParsedOut()
         {
             const string inputString = "14/10/1988";
             const string formatString = "dd'/'mm'/'yyyy";
@@ -287,7 +265,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithDotes_Expected_DateTimeParsedOUtCorrectlyWithDotExcluded()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithDotes_Expected_DateTimeParsedOUtCorrectlyWithDotExcluded()
         {
             const string inputString = "14.10.1988";
             const string formatString = "dd'.'mm'.'yyyy";
@@ -306,7 +284,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithDashesUsingNumeric_Expected_InputDataParsedOutAccordingToInputFormat()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithDashesUsingNumeric_Expected_InputDataParsedOutAccordingToInputFormat()
         {
             const string inputString = "14-10-1988";
             const string formatString = "dd'-'mm'-'yyyy";
@@ -325,7 +303,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithDashesUsingNumericAndLiteral_Expected_DatePartsParsedOutCorrectly()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithDashesUsingNumericAndLiteral_Expected_DatePartsParsedOutCorrectly()
         {
             const string inputString = "14-October-1988";
             const string formatString = "dd'-'MM'-'yyyy";
@@ -344,7 +322,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_WithDashesUsingNumericAndLiteralShorthand_Expected_DatePartsParsedOutCorrectly()
+        public void DateTimeParser_TryParseDateTime_DateTime_WithDashesUsingNumericAndLiteralShorthand_Expected_DatePartsParsedOutCorrectly()
         {
             const string inputString = "14-Oct-1988";
             const string formatString = "dd'-'M'-'yyyy";
@@ -363,7 +341,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_InputFormat_WithDashesUsingNumericAndLiteralShorthand_Expected_DatePartReturnedInInputString()
+        public void DateTimeParser_TryParseDateTime_InputFormat_WithDashesUsingNumericAndLiteralShorthand_Expected_DatePartReturnedInInputString()
         {
             const string inputString = "14-Oct-1988";
             const string formatString = "dd'-'M'-'yyyy";
@@ -382,7 +360,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTimeWithInputFormatNULLExpectedDefaultFormatUsed()
+        public void DateTimeParser_TryParseDateTimeWithInputFormatNULLExpectedDefaultFormatUsed()
         {
             var inputString = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
@@ -417,7 +395,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [TestCategory("DateTimeParserUnitTest")]
         [Description("Test for complex DateTimeParser input datetime without trailing spaces")]
         [Owner("Ashley Lewis")]
-        public void TryParseDateTime_ComplexArgsWithoutTrailingSpaces_Expected_ParserReturnsCorrectlyFormattedDateString()
+        public void DateTimeParser_TryParseDateTime_ComplexArgsWithoutTrailingSpaces_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
             const string InputString = "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D.";
             const string FormatString = "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era";
@@ -432,7 +410,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [TestCategory("DateTimeParserUnitTest")]
         [Description("Test for complex DateTimeParser input datetime with trailing spaces")]
         [Owner("Ashley Lewis")]
-        public void TryParseDateTime_ComplexArgsWithTrailingSpaces_Expected_ParserReturnsCorrectlyFormattedDateString()
+        public void DateTimeParser_TryParseDateTime_ComplexArgsWithTrailingSpaces_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
             const string InputString = "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. ";
             const string FormatString = "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era ";
@@ -443,13 +421,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(resultBool, "Cannot parse valid date time.");
             Assert.IsTrue(dateTimeResult.Days == 16 && dateTimeResult.Months == 10 && dateTimeResult.Years == 2044, "Incorrect object returned");
         }
-
-        #endregion Valid Parse Formats
-
-        #region Invalid Parse Formats
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_Invalid_Expected_FalseReturnedByParserIndicatingItIsUnableToParseTheInput()
+        public void DateTimeParser_TryParseDateTime_DateTime_Invalid_Expected_FalseReturnedByParserIndicatingItIsUnableToParseTheInput()
         {
             const string inputString = "baisd78qh378hd123bhd18n18378";
             const string formatString = "ddmmyyyy";
@@ -460,7 +434,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         
         [TestMethod]
-        public void TryParseDateTime_DateTime_NULL_Expected_FalseReturnedByParser()
+        public void DateTimeParser_TryParseDateTime_DateTime_NULL_Expected_FalseReturnedByParser()
         {
             const string formatString = "ddmmyyyy";
 
@@ -470,7 +444,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_DateTime_UnexpectedBackslash_BackSlashFormatErrorReturnedByParser()
+        public void DateTimeParser_TryParseDateTime_DateTime_UnexpectedBackslash_BackSlashFormatErrorReturnedByParser()
         {
             const string inputString = "\\\"30041988\\\\\"";
             const string formatString = "\\\"ddmmyyyy\\\\\"";
@@ -480,13 +454,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsFalse(IsParseable);
             Assert.AreEqual(@"A \'\\\' character must be followed by a \' or preceded by a \\.", result);
         }
-
-        #endregion Invalid Parse Formats
-
-        #region yy Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_yy_Expected_LastTwoDigitsOfYearAreParsed()
+        public void DateTimeParser_TryParseDateTime_Format_yy_Expected_LastTwoDigitsOfYearAreParsed()
         {
             const string inputString = "12";
             const string formatString = "yy";
@@ -503,13 +473,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion yy Tests
-
-        #region Timezone Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_Z_Expected_TimezoneCorrectlyParsed()
+        public void DateTimeParser_TryParseDateTime_Format_Z_Expected_TimezoneCorrectlyParsed()
         {
             const string inputString = "GMT";
             const string formatString = "Z";
@@ -520,7 +486,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_Format_ZZ_Expected_TimeZoneRelativeToGMTParsedOutCorrectly()
+        public void DateTimeParser_TryParseDateTime_Format_ZZ_Expected_TimeZoneRelativeToGMTParsedOutCorrectly()
         {
             const string inputString = "GMT+02:00";
             const string formatString = "ZZ";
@@ -531,7 +497,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_Format_ZZZ_Expected_FullTimezoneValueParsedCorrectly()
+        public void DateTimeParser_TryParseDateTime_Format_ZZZ_Expected_FullTimezoneValueParsedCorrectly()
         {
             const string inputString = "Greenwich Mean Time";
             const string formatString = "ZZZ";
@@ -540,13 +506,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.AreEqual(inputString, dateTimeResult.TimeZone.LongName);
         }
-
-        #endregion Timezone Tests
-
-        #region yyyy Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_yyyy_Expected_FullYearCorrectlyParsedOut()
+        public void DateTimeParser_TryParseDateTime_Format_yyyy_Expected_FullYearCorrectlyParsedOut()
         {
             const string inputString = "1988";
             const string formatString = "yyyy";
@@ -563,14 +525,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-
-        #endregion yyyy tests
-
-        #region mm Tetsts
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_mm_Expected_MonthParsedAsDoubleDigit()
+        public void DateTimeParser_TryParseDateTime_Format_mm_Expected_MonthParsedAsDoubleDigit()
         {
             const string inputString = "01";
             const string formatString = "mm";
@@ -587,13 +544,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion mm Tests
-
-        #region m Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_m_Expected_MonthParsedWithoutPadding()
+        public void DateTimeParser_TryParseDateTime_Format_m_Expected_MonthParsedWithoutPadding()
         {
             const string inputString = "01";
             const string formatString = "m";
@@ -610,13 +563,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion m Tests
-
-        #region M Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_M_Expected_MonthAsShorthanfTextReturned()
+        public void DateTimeParser_TryParseDateTime_Format_M_Expected_MonthAsShorthanfTextReturned()
         {
             const string inputString = "Feb";
             const string formatString = "M";
@@ -633,13 +582,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion M Tests
-
-        #region MM Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_MM_Expected_FullMonthNameReturnedFromParser()
+        public void DateTimeParser_TryParseDateTime_Format_MM_Expected_FullMonthNameReturnedFromParser()
         {
             const string inputString = "Febuary";
             const string formatString = "MM";
@@ -656,13 +601,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion MM Tests
-
-        #region d Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_d_Expected_DayOfTheMonthReturned()
+        public void DateTimeParser_TryParseDateTime_Format_d_Expected_DayOfTheMonthReturned()
         {
             const string inputString = "01";
             const string formatString = "d";
@@ -679,13 +620,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion d Tests
-
-        #region dd Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_dd_Expected_DayReturnedWithPadding()
+        public void DateTimeParser_TryParseDateTime_Format_dd_Expected_DayReturnedWithPadding()
         {
             const string inputString = "01";
             const string formatString = "dd";
@@ -702,13 +639,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dd Tests
-
-        #region DW Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_DW_Expected_DayOfTheWeekReturned()
+        public void DateTimeParser_TryParseDateTime_Format_DW_Expected_DayOfTheWeekReturned()
         {
             const string inputString = "Tuesday";
             const string formatString = "DW";
@@ -726,12 +659,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        #endregion DW Tests
-
-        #region dW Tests
-
         [TestMethod]
-        public void TryParseDateTime_Format_dW_Expected_DayOfTheShortHandParsed()
+        public void DateTimeParser_TryParseDateTime_Format_dW_Expected_DayOfTheShortHandParsed()
         {
             const string inputString = "Tue";
             const string formatString = "dW";
@@ -748,13 +677,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dW Tests
-
-        #region dw Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_dw_Expected_DayOfTheWeekParsedCorrectlyAsNumber()
+        public void DateTimeParser_TryParseDateTime_Format_dw_Expected_DayOfTheWeekParsedCorrectlyAsNumber()
         {
             const string inputString = "5";
             const string formatString = "dw";
@@ -771,13 +696,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dw Tests
-
-        #region dyyyyy Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_dy_Expected_MilleniumParsedOutOfDate()
+        public void DateTimeParser_TryParseDateTime_Format_dy_Expected_MilleniumParsedOutOfDate()
         {
             const string inputString = "502012";
             const string formatString = "dyyyyy";
@@ -794,13 +715,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dyyyyy Tests
-
-        #region wyyyy Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_w_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_w_Expected_Positive()
         {
             const string inputString = "202012";
             const string formatString = "wyyyy";
@@ -819,13 +736,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion wyyyy Tests
-
-        #region 24h Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_24h_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_24h_Expected_Positive()
         {
             const string inputString = "14101988 15:42";
             const string formatString = "'14101988 '24h':42'";
@@ -842,13 +755,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion 24h Tests
-
-        #region 12h Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_12h_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_12h_Expected_Positive()
         {
             const string inputString = "14101988 03:42";
             const string formatString = "'14101988 '12h':42'";
@@ -865,13 +774,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion 12h Tests
-
-        #region min Tests
-
+        
         [TestMethod]
-        public void TryParseDateTime_Format_min_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_min_Expected_Positive()
         {
             const string inputString = "14101988 15:42";
             const string formatString = "'14101988 15:'min";
@@ -889,13 +794,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-
-        #endregion min Tests
-
-        #region ss Tests
-
         [TestMethod]
-        public void TryParseDateTime_Format_ss_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_ss_Expected_Positive()
         {
             const string inputString = "14101988 15:42:32:673";
             const string formatString = "'14101988 15:42:'ss':673'";
@@ -913,12 +813,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        #endregion ss Tests
-
-        #region sp Tests
-
         [TestMethod]
-        public void TryParseDateTime_Format_sp_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_sp_Expected_Positive()
         {
             const string inputString = "14101988 15:42:32:673";
             const string formatString = "'14101988 15:42:32:'sp";
@@ -936,12 +832,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        #endregion sp Tests
-
-        #region am/pm Tests
-
         [TestMethod]
-        public void TryParseDateTime_Format_am_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_am_Expected_Positive()
         {
             const string inputString = "14101988 1:42:32:673 am";
             const string formatString = "'14101988 1:42:32:673 'am/pm";
@@ -960,7 +852,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_Format_pm_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_pm_Expected_Positive()
         {
             const string inputString = "14101988 1:42:32:673 pm";
             const string formatString = "'14101988 1:42:32:673 'am/pm";
@@ -979,7 +871,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_Format_pm_Where_Hours_Is_12_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_pm_Where_Hours_Is_12_Expected_Positive()
         {
             const string inputString = "14101988 12:42:32 PM";
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
@@ -998,7 +890,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_Format_am_Where_Hours_Is_12_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_am_Where_Hours_Is_12_Expected_Positive()
         {
             const string inputString = "14101988 12:42:32 am";
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
@@ -1018,7 +910,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
 
         [TestMethod]
-        public void TryParseDateTime_Format_pm_Where_Hours_Is_1_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_pm_Where_Hours_Is_1_Expected_Positive()
         {
             const string inputString = "14101988 1:42:32 PM";
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
@@ -1037,7 +929,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseDateTime_Format_am_Where_Hours_Is_1_Expected_Positive()
+        public void DateTimeParser_TryParseDateTime_Format_am_Where_Hours_Is_1_Expected_Positive()
         {
             const string inputString = "14101988 1:42:32 AM";
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
@@ -1055,17 +947,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        #endregion am/pm Tests
-
-        #endregion TryParseDateTime Tests
-
-        #region TryParseTime Tests
-
         /// <summary>
         /// Parse time All Arguments valid expected Parsed Correctly
         /// </summary>
         [TestMethod]
-        public void TryParseTime_AllArgs_Valid_Expected_ParsedOutCorrectly()
+        public void DateTimeParser_TryParseTime_AllArgs_Valid_Expected_ParsedOutCorrectly()
         {
             const string inputFormat = "yy':'mm':'dd";
             const string addTime = "01:02:03";
@@ -1084,7 +970,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time with input format as invalid expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_InputFormat_Invalid_Expected_ErrorReturned()
+        public void DateTimeParser_TryParseTime_InputFormat_Invalid_Expected_ErrorReturned()
         {
             const string inputFormat = "yy':'asdavvaad";
             const string addTime = "01:02:03";
@@ -1097,7 +983,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time with input format NULL expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_InputFormat_NULL_Expected_ErrorReturned()
+        public void DateTimeParser_TryParseTime_InputFormat_NULL_Expected_ErrorReturned()
         {
             const string addTime = "01:02:03";
             var isParseable = _parser.TryParseTime(addTime, null, out IDateTimeResultTO returnTO, out string result);
@@ -1108,7 +994,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time invalid time expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Time_Invalid_Expected_ErrorReturned()
+        public void DateTimeParser_TryParseTime_Time_Invalid_Expected_ErrorReturned()
         {
             const string inputFormat = "yy':'mm':'dd";
             const string addTime = "sdfsdfsdfddf";
@@ -1120,7 +1006,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time with input time NULL expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeTimeNullExpectedErrorReturned()
+        public void DateTimeParser_TryParseTimeTimeNullExpectedErrorReturned()
         {
             const string inputFormat = "yy':'mm':'dd";
             var isParseable = _parser.TryParseTime(null, inputFormat, out IDateTimeResultTO returnTO, out string result);
@@ -1131,7 +1017,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using yy input format expected error returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingYyExpectedErrorReturned()
+        public void DateTimeParser_TryParseTimeUsingYyExpectedErrorReturned()
         {
             const string inputFormat = "yy";
             const string addTime = "01";
@@ -1150,7 +1036,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// parse time using yyyy input format expected year returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingYyyyExpectedYearReturned()
+        public void DateTimeParser_TryParseTimeUsingYyyyExpectedYearReturned()
         {
             const string inputFormat = "yyyy";
             const string addTime = "1920";
@@ -1169,7 +1055,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using mm input format expected months returned correctly.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingMmExpectedMonthsReturnedCorrectly()
+        public void DateTimeParser_TryParseTimeUsingMmExpectedMonthsReturnedCorrectly()
         {
             const string inputFormat = "mm";
             const string addTime = "02";
@@ -1188,7 +1074,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using m input format expected month returned as single digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTime_Using_m_Expected_MonthReturnedAsSingleDigit()
+        public void DateTimeParser_TryParseTime_Using_m_Expected_MonthReturnedAsSingleDigit()
         {
             const string inputFormat = "m";
             const string addTime = "02";
@@ -1207,7 +1093,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using M as input format expected month returned as single digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingMExpectedMonthReturnedAsSingleDigit()
+        public void DateTimeParser_TryParseTimeUsingMExpectedMonthReturnedAsSingleDigit()
         {
             const string inputFormat = "M";
             const string addTime = "2";
@@ -1226,7 +1112,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using MM as input format expected month returned as padded digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingMmExpectedMonthReturnedAsPaddedDigit()
+        public void DateTimeParser_TryParseTimeUsingMmExpectedMonthReturnedAsPaddedDigit()
         {
             const string inputFormat = "MM";
             const string addTime = "02";
@@ -1245,7 +1131,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using d as input format expected day returned as single digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingDExpectedDayReturnedAsSingleDigit()
+        public void DateTimeParser_TryParseTimeUsingDExpectedDayReturnedAsSingleDigit()
         {
             const string inputFormat = "d";
             const string addTime = "1";
@@ -1264,7 +1150,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using dd as input format expected day returned as padded digit.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingDdExpectedDayReturnedAsPaddedDigit()
+        public void DateTimeParser_TryParseTimeUsingDdExpectedDayReturnedAsPaddedDigit()
         {
             const string inputFormat = "dd";
             const string addTime = "01";
@@ -1280,7 +1166,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseTime_Using_DW_Expected_Positive()
+        public void DateTimeParser_TryParseTime_Using_DW_Expected_Positive()
         {
             const string inputFormat = "DW";
             const string addTime = "4";
@@ -1296,7 +1182,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseTimeUsing_DWExpectedPositive()
+        public void DateTimeParser_TryParseTimeUsing_DWExpectedPositive()
         {
             const string inputFormat = "dW";
             const string addTime = "4";
@@ -1312,7 +1198,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseTimeUsingDwExpectedPositive()
+        public void DateTimeParser_TryParseTimeUsingDwExpectedPositive()
         {
             const string inputFormat = "dw";
             const string addTime = "4";
@@ -1328,7 +1214,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TryParseTimeUsingDyExpectedPositive()
+        public void DateTimeParser_TryParseTimeUsingDyExpectedPositive()
         {
             const string inputFormat = "dy";
             const string addTime = "123";
@@ -1347,7 +1233,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using w as input format expected week returned.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingWExpectedWeekReturned()
+        public void DateTimeParser_TryParseTimeUsingWExpectedWeekReturned()
         {
             const string inputFormat = "w";
             const string addTime = "32";
@@ -1367,7 +1253,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using 24h input format expected hours added and returned as 24h.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsing24HExpectedHoursAddedAndReturnedAs24H()
+        public void DateTimeParser_TryParseTimeUsing24HExpectedHoursAddedAndReturnedAs24H()
         {
             const string inputFormat = "24h";
             const string addTime = "21";
@@ -1386,7 +1272,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using 12h input format expected hours added according to 12h.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsing12HExpectedHoursAddedAccordingTo12H()
+        public void DateTimeParser_TryParseTimeUsing12HExpectedHoursAddedAccordingTo12H()
         {
             const string inputFormat = "12h";
             const string addTime = "3";
@@ -1405,7 +1291,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using min as input format expected minutes added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingMinExpectedMinutesAddedToBaseTime()
+        public void DateTimeParser_TryParseTimeUsingMinExpectedMinutesAddedToBaseTime()
         {
             const string InputFormat = "min";
             const string AddTime = "34";
@@ -1424,7 +1310,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using ss as input format expected seconds added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingSsExpectedSecondsAddedToBaseTime()
+        public void DateTimeParser_TryParseTimeUsingSsExpectedSecondsAddedToBaseTime()
         {
             const string InputFormat = "ss";
             const string AddTime = "3";
@@ -1443,7 +1329,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using sp as input format expected split seconds added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingSpExpectedSplitSecondsAddedToBaseTime()
+        public void DateTimeParser_TryParseTimeUsingSpExpectedSplitSecondsAddedToBaseTime()
         {
             const string InputFormat = "sp";
             const string AddTime = "3";
@@ -1462,7 +1348,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using simple literal expected date added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingSimpleLiteralExpectedDateAddedToBaseTime()
+        public void DateTimeParser_TryParseTimeUsingSimpleLiteralExpectedDateAddedToBaseTime()
         {
             const string InputFormat = "'The date is : 'ddmmyyyy";
             const string AddTime = "The date is : 02010021";
@@ -1481,7 +1367,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Parse time using complex literal expected date added to base time.
         /// </summary>
         [TestMethod]
-        public void TryParseTimeUsingComplexLiteralExpectedDateAddedToBaseTime()
+        public void DateTimeParser_TryParseTimeUsingComplexLiteralExpectedDateAddedToBaseTime()
         {
             const string InputFormat = "'I was born on the 'd'th of 'm' in the year 'yy";
             const string AddTime = "I was born on the 2th of 1 in the year 21";
@@ -1495,15 +1381,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorect object returned");
             }
         }
-
-        #endregion TryParseTime Tests
-
-        #region Dot Net Translator
-
-        #region Dates
-
+       
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatOfDayoftheMonthExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatOfDayoftheMonthExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1516,7 +1396,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatOfMonthExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatOfMonthExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1529,7 +1409,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForYearsExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForYearsExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1542,7 +1422,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForLongDateExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForLongDateExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1555,7 +1435,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForShortDateExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForShortDateExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1566,13 +1446,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "mm'/'dd'/'yyyy");
         }
-
-        #endregion
-
-        #region Times
-
+       
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForHoursExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForHoursExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1585,7 +1461,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForMinutesExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForMinutesExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1598,7 +1474,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForSecondsExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForSecondsExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1611,7 +1487,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForSplitSecondsExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForSplitSecondsExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1624,7 +1500,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForNonZeroSplitSecondsExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForNonZeroSplitSecondsExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1637,7 +1513,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForShortTimeExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForShortTimeExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1650,7 +1526,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForLongTimeExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForLongTimeExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1661,13 +1537,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "24h':'min':'ss'.'fffffff");
         }
-
-        #endregion
-
-        #region Time Zones
-
+        
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForTimeZoneExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForTimeZoneExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1680,7 +1552,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForTimeZonesExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForTimeZonesExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1693,7 +1565,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForRoundTripExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForRoundTripExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1704,13 +1576,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "yyyy'-'mm'-'dd'T'24h':'min':'ss'.'fffffffK");
         }
-
-        #endregion
-
-        #region Special
-
+        
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForAmpmDesignatorExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForAmpmDesignatorExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1723,7 +1591,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForEraExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForEraExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1736,7 +1604,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForFullDateShortTimeExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForFullDateShortTimeExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1749,7 +1617,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void TranslateFormatFromDotNetWhereFormatForFullLongTimeExpectedInDev2Format()
+        public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForFullLongTimeExpectedInDev2Format()
         {
             //initialize
             IDateTimeParser translatingParser = new Dev2DateTimeParser();
@@ -1761,16 +1629,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.AreEqual(inputFormat, "DW', 'dd' 'MM' 'yyyy' '24h':'min':'ss");
         }
 
-        #endregion
-
-        #endregion
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNumberWeekOfYear_GivenA_ShouldReturnFalse()
+        public void DateTimeParserHelper_IsNumberWeekOfYear_GivenA_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            //IsNumberWeekOfYear(string data, bool treatAsTime)
             var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1782,10 +1645,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNumberSeconds_GivenA_ShouldReturnFalse()
+        public void DateTimeParserHelper_IsNumberSeconds_GivenA_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            //IsNumberWeekOfYear(string data, bool treatAsTime)
             var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1797,10 +1659,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNumberMinutes_GivenA_ShouldReturnFalse()
+        public void DateTimeParserHelper_IsNumberMinutes_GivenA_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            //IsNumberWeekOfYear(string data, bool treatAsTime)
             var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1812,10 +1673,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNumberDayOfWeek_GivenA_ShouldReturnFalse()
+        public void DateTimeParserHelper_IsNumberDayOfWeek_GivenA_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            //IsNumberWeekOfYear(string data, bool treatAsTime)
             var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1826,10 +1686,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNumber24H_GivenA_ShouldReturnFalse()
+        public void DateTimeParserHelper_IsNumber24H_GivenA_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            //IsNumberWeekOfYear(string data, bool treatAsTime)
             var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1841,10 +1700,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNumberMilliseconds_GivenA_ShouldReturnFalse()
+        public void DateTimeParserHelper_IsNumberMilliseconds_GivenA_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            //IsNumberWeekOfYear(string data, bool treatAsTime)
             var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1856,7 +1714,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDayOfWeekInt_GivenSunday_ShouldReturn7()
+        public void DateTimeParserHelper_GetDayOfWeekInt_GivenSunday_ShouldReturn7()
         {
             //---------------Set up test pack-------------------
             var dateTimeParser = new DateTimeParserHelper();
@@ -1869,7 +1727,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void ProcessEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
+        public void DateTimeLiteralProcessor_ProcessEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
         {
             //---------------Set up test pack-------------------
             string error = "";
@@ -1882,7 +1740,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         }
 
         [TestMethod]
-        public void ProcessInferredEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
+        public void DateTimeLiteralProcessor_ProcessInferredEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
         {
             //---------------Set up test pack-------------------
             string error = "";

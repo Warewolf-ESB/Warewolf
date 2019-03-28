@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
