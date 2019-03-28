@@ -4,7 +4,7 @@
 
 @StudioLargeDeployUILoadTest
 Scenario: Studio Large Deploy UI Load Test
-	Given there are "20" duplicates of All Tools workflow in the explorer
+	Given there are "5" duplicates of All Tools workflow in the explorer
 	And I start the timer
 	When I Select Local Server Source From Explorer
 	And I Refresh Explorer
@@ -13,7 +13,8 @@ Scenario: Studio Large Deploy UI Load Test
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost checkbox from the source tab
 	Given I start the timer
-	When I Click Deploy Tab Deploy Button
+	Given I start the timer
+	When I Click Deploy Tab Deploy Button with no version conflict dialog
 	Then the timer duration is between "160" and "320" seconds
 
 @StudioLargeDebugOutUILoadTest

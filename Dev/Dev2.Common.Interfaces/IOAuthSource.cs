@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 
 namespace Dev2.Common.Interfaces

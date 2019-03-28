@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2.Communication;
 using Dev2.Runtime.Auditing;
 using Dev2.Web2.Models.Auditing;

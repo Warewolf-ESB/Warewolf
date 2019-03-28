@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.ActivityDesigners;
