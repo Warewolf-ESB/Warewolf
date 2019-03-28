@@ -120,9 +120,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
+        [TestCategory(nameof(DsfDateTimeActivity))]
+        [Owner("Rory McGuire")]
+        public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
         {
             var now = DateTime.Now;
 
@@ -132,23 +132,21 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ""
                          , ""
                          , ""
-                         , "Seconds"
-                         , 10
+                         , ""
+                         , 0
                          , "[[MyTestResult]]");
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             var actualdt = DateTime.Parse(actual);
-            var timeSpan = actualdt - now;
 
-            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000 || timeSpan.Add(new TimeSpan(12, 0, 0)).TotalMilliseconds >= 9000, $"{timeSpan.TotalMilliseconds} is not >= 9000 and {timeSpan.Add(new TimeSpan(12, 0, 0)).TotalMilliseconds} is not >= 9000");
+            Assert.IsTrue(DateTime.Now > actualdt && actualdt > now, "expected DateTime to default to DateTime.Now");
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndMonthsOutput_OutputNotZero()
-
+        [TestCategory(nameof(DsfDateTimeActivity))]
+        [Owner("Rory McGuire")]
+        public void DsfDateTimeActivity_ExecuteWithBlankInputAndMonthsOutput_OutputNotZero()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -162,9 +160,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            Assert.IsTrue(actual != "0", "Blank input returned invalid value from date time tool.");
+            Assert.AreEqual(DateTime.Now.ToString("MMMM"), actual, "Month mismatch");
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
