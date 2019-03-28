@@ -76,6 +76,7 @@
     <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Workflow Designer.cs" />
   </ItemGroup>
   <ItemGroup>

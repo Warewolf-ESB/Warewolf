@@ -95,10 +95,12 @@
     <Compile Include="Core\WcfServiceSourceDefinitionTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeResultTOTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="DirectoryEntryFactoryTest.cs" />
     <Compile Include="ExtMethods\StringExtensionTests.cs" />
     <Compile Include="Common\GetComputerNamesTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="ConfigTest.cs" />
     <Compile Include="ComputerNameTests.cs" />
