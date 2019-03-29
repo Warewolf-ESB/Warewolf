@@ -259,6 +259,7 @@
     <Compile Include="Exchange\IExchangeService.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
     <Compile Include="FileListing.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Help\IHelpDescriptorViewModel.cs" />
     <Compile Include="Help\IHelpWindowModel.cs" />

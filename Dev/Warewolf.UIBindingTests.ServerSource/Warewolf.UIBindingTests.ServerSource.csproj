@@ -99,6 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NewServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

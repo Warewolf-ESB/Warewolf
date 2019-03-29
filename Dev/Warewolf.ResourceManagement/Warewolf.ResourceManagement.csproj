@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IResourceActivityCache.cs" />
     <Compile Include="ResourceActivityCache.cs" />
   </ItemGroup>

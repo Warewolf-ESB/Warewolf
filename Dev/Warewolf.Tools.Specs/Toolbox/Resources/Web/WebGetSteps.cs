@@ -27,7 +27,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
     [Binding]
     public class WebGetSteps
     {
-        readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public WebGetSteps(ScenarioContext scenarioContext)
         {
@@ -35,7 +35,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
             {
                 throw new ArgumentNullException("scenarioContext");
             }
-            this.scenarioContext = scenarioContext;
+            this._scenarioContext = scenarioContext;
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
         }
         WebServiceSourceDefinition _weblocalhostsource;
@@ -124,9 +124,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
             mockServiceModel.Setup(model => model.TestService(It.IsAny<IWebService>())).Returns(testResult);
             var viewModel = new WebServiceGetViewModel(modelItem, mockServiceModel.Object);
 
-            scenarioContext.Add("viewModel", viewModel);
-            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            scenarioContext.Add("mockServiceModel", mockServiceModel);
+            _scenarioContext.Add("viewModel", viewModel);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockServiceModel", mockServiceModel);
         }
 
         [Given(@"New Source is Enabled")]
@@ -256,11 +256,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
 
         WebServiceGetViewModel GetViewModel()
         {
-            return scenarioContext.Get<WebServiceGetViewModel>("viewModel");
+            return _scenarioContext.Get<WebServiceGetViewModel>("viewModel");
         }
         Mock<IWebServiceModel> GetServiceModel()
         {
-            return scenarioContext.Get<Mock<IWebServiceModel>>("mockServiceModel");
+            return _scenarioContext.Get<Mock<IWebServiceModel>>("mockServiceModel");
         }
 
         [Given(@"I click Get Generate Outputs")]

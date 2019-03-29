@@ -104,6 +104,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="ConnectionBuilder.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IConnectionBuilder.cs" />
     <Compile Include="ISqlConnection.cs" />
     <Compile Include="MySqlDbFactory.cs" />

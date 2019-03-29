@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HubConnectionWrapper.cs" />
     <Compile Include="HubProxyWrapper.cs" />
   </ItemGroup>

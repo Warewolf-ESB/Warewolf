@@ -65,6 +65,7 @@
     <Compile Include="BuildJObjectArrayIndexMapHelper.cs" />
     <Compile Include="ExecutionEnvironment.cs" />
     <Compile Include="FSInteropFunctions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ScopedEnvironment.cs" />
     <Compile Include="WarewolfAtomIterator.cs" />
     <Compile Include="WarewolfListIterator.cs" />

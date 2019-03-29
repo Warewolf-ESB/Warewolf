@@ -214,6 +214,7 @@
     <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Utils\ObservableAwareNameValue.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>

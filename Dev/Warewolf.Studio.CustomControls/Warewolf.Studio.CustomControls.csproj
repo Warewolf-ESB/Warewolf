@@ -121,6 +121,7 @@
     <Compile Include="ActivityDesignerToggleButton.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="DragDropExtension.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="VariableTextBox.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">

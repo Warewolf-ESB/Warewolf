@@ -72,6 +72,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Factory\ApplicationTrackerFactory.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IApplicationTracker.cs" />
     <Compile Include="RevulyticsTracker.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">

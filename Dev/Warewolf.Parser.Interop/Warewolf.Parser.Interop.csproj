@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssignValue.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="WarewolfList.cs" />
   </ItemGroup>
   <ItemGroup>
