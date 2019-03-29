@@ -22,7 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
     <CodeAnalysisRuleSet>Warewolf.MergeParser.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
