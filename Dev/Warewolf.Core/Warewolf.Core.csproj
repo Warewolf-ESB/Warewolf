@@ -48,6 +48,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="SqliteService.cs" />
     <Compile Include="WebServiceDefinition.cs" />
     <None Include="packages.config" />

@@ -208,6 +208,7 @@
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="ESB\Management\Services\TestSqliteService.cs" />
     <Compile Include="ESB\Management\WorkflowManagementEndpointAbstract.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hosting\ResourceCatalogFactory.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />

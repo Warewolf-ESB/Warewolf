@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallData.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IDev2IpcClient.cs" />
     <Compile Include="INamedPipeClientStreamWrapper.cs" />
     <Compile Include="IpcClient.cs" />

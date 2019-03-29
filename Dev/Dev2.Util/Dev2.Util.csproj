@@ -78,6 +78,7 @@
     </AdditionalFiles>
     <Compile Include="AppUsageStats.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TSqlStatementExtensions.cs" />
     <Compile Include="TypeSwitch.cs" />
     <None Include="Dev2.Util.ruleset" />

@@ -87,6 +87,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Scripting\StringScriptSources.cs" />
     <Compile Include="Scripting\JavaScriptContext.cs" />
     <Compile Include="Scripting\Dev2PythonContext.cs" />

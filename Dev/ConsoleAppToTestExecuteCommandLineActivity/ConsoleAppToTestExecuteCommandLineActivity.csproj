@@ -55,9 +55,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
-	</AdditionalFiles>
+    </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Program.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />

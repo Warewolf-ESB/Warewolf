@@ -84,6 +84,7 @@
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="Enums\ReadTypes.cs" />
     <Compile Include="Enums\WriteType.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IActivityIOOperationsEndPoint.cs" />
     <Compile Include="IActivityIOPath.cs" />
     <Compile Include="IActivityOperationsBroker.cs" />

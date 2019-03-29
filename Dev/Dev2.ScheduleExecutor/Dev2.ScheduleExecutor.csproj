@@ -36,7 +36,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SonarQubeExclude>true</SonarQubeExclude>
     <TargetFrameworkProfile />
-	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -93,6 +93,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>

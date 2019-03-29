@@ -89,6 +89,7 @@
     <Compile Include="AuditFilter.cs" />
     <Compile Include="AuditLog.cs" />
     <Compile Include="Dev2StateAuditLogger.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="State\StateListener.cs" />
     <Compile Include="State\StateNotifier.cs" />
   </ItemGroup>
