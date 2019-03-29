@@ -177,7 +177,7 @@ namespace Dev2.Common.DateAndTime
                 }
                 if (nothingDied)
                 {
-                    TryCulture(parseAsTime, ref result, ref error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, getDateTimeFormatParts.FormatParts);
+                    TryCulture(parseAsTime, ref result, ref error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, getDateTimeFormatParts.Result);
                 }
                 else
                 {
