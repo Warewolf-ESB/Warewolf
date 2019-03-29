@@ -9,7 +9,9 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
@@ -179,6 +181,92 @@ namespace Dev2.Data.Tests.PathOperations
                 Assert.AreEqual(performAfterValidation.Invoke(), invoke.ToString());
             }
             Assert.IsTrue(hadException);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerValidatorDriver))]
+        public void ActivityIOBrokerValidatorDriver_ValidateCopySourceDestinationFileOperation_PathIs_NotDirectory_ExpectSuccess()
+        {
+            //---------------------------Arrange-----------------------------
+            var mockActivityIOOperationsEndPointSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var mockActivityIOOperationsEndPointDst = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPathSrc = new Mock<IActivityIOPath>();
+            var mockActivityIOPathDst = new Mock<IActivityIOPath>();
+            var mockActivityIOBrokerValidatorDriver = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+
+            var srcPath = Path.GetTempPath();
+            var dstPath = "C:\\Test_TempPath\\";
+
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
+            mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
+            
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
+            mockActivityIOOperationsEndPointDst.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), It.IsAny<IDev2CRUDOperationTO>())).Returns(true);
+
+            mockActivityIOPathSrc.Setup(o => o.Path).Returns(srcPath);
+            mockActivityIOPathDst.Setup(o => o.Path).Returns(dstPath);
+
+            mockCommon.Setup(o => o.ValidateSourceAndDestinationPaths(It.IsAny<IActivityIOOperationsEndPoint>(), It.IsAny<IActivityIOOperationsEndPoint>()));
+
+            var driver = new ActivityIOBrokerValidatorDriver(mockFile.Object, mockCommon.Object);
+            //---------------------------Act---------------------------------
+            var fileOperation = driver.ValidateCopySourceDestinationFileOperation(mockActivityIOOperationsEndPointSrc.Object, mockActivityIOOperationsEndPointDst.Object, mockDev2CRUDOperationTO.Object, ()=> "test func");
+            //---------------------------Assert------------------------------
+            Assert.AreEqual("test func", fileOperation);
+            mockActivityIOPathSrc.VerifyAll();
+            mockActivityIOPathDst.VerifyAll();
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerValidatorDriver))]
+        public void ActivityIOBrokerValidatorDriver_ValidateCopySourceDestinationFileOperation_PathIs_Directory_ExpectFail()
+        {
+            //---------------------------Arrange-----------------------------
+            var mockActivityIOOperationsEndPointSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var mockActivityIOOperationsEndPointDst = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPathSrc = new Mock<IActivityIOPath>();
+            var mockActivityIOPathDst = new Mock<IActivityIOPath>();
+            var mockActivityIOBrokerValidatorDriver = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+
+            var srcPath = Path.GetTempPath();
+            var dstPath = "C:\\Test_TempPath\\";
+
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
+            mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
+
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
+            mockActivityIOOperationsEndPointDst.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), It.IsAny<IDev2CRUDOperationTO>())).Returns(true);
+
+            mockActivityIOPathSrc.Setup(o => o.Path).Returns(srcPath);
+            mockActivityIOPathDst.Setup(o => o.Path).Returns(dstPath);
+            
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.ListFilesInDirectory(It.IsAny<IActivityIOPath>())).Returns(new List<IActivityIOPath>());
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.ListFoldersInDirectory(It.IsAny<IActivityIOPath>())).Returns(new List<IActivityIOPath>());
+
+            mockActivityIOOperationsEndPointDst.Setup(o => o.ListFilesInDirectory(It.IsAny<IActivityIOPath>())).Returns(new List<IActivityIOPath>());
+            mockActivityIOOperationsEndPointDst.Setup(o => o.ListFoldersInDirectory(It.IsAny<IActivityIOPath>())).Returns(new List<IActivityIOPath>());
+            mockCommon.Setup(o => o.ValidateSourceAndDestinationPaths(It.IsAny<IActivityIOOperationsEndPoint>(), It.IsAny<IActivityIOOperationsEndPoint>()));
+
+            var driver = new ActivityIOBrokerValidatorDriver(mockFile.Object, mockCommon.Object);
+            //---------------------------Act---------------------------------
+            var fileOperation = driver.ValidateCopySourceDestinationFileOperation(mockActivityIOOperationsEndPointSrc.Object, mockActivityIOOperationsEndPointDst.Object, mockDev2CRUDOperationTO.Object, () => "test func");
+            //---------------------------Assert------------------------------
+            Assert.AreEqual("Success", fileOperation);
+            mockActivityIOPathSrc.VerifyAll();
+            mockActivityIOPathDst.VerifyAll();
+
         }
     }
 }
