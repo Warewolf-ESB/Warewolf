@@ -126,6 +126,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var startTime = DateTime.Now;
 
+            Thread.Sleep(1200);
+
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
@@ -139,6 +141,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             var parsedResult = DateTime.Parse(actual);
+
+            Thread.Sleep(1100);
 
             var endTime = DateTime.Now;
 
