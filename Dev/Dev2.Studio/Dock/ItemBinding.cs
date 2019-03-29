@@ -1,3 +1,4 @@
+#pragma warning disable S2219
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>

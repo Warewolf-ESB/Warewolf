@@ -1,6 +1,7 @@
+#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -68,84 +69,96 @@ namespace Dev2.PathOperations
 
         public string CreateEndPoint(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, bool createToFile)
         {
-            var result = ResultOk;
             var activityIOPath = dst.IOPath;
             var dirParts = MakeDirectoryParts(activityIOPath, dst.PathSeperator());
 
-            var deepestIndex = -1;
-            var startDepth = dirParts.Count - 1;
-
-            var pos = startDepth;
-
-            while (pos >= 0 && deepestIndex == -1)
-            {
-                var tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username,
-                                                                                 activityIOPath.Password, true, activityIOPath.PrivateKeyFile);
-                try
-                {
-                    if (dst.ListDirectory(tmpPath) != null)
-                    {
-                        deepestIndex = pos;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Warn(e.Message, "Warewolf Warn");
-                }
-                finally
-                {
-                    pos--;
-                }
-            }
-
-            pos = deepestIndex + 1;
-            var ok = true;
-
-            var origPath = dst.IOPath;
-
-            while (pos <= startDepth && ok)
-            {
-                var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
-                                                                                  dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
-                dst.IOPath = toCreate;
-                ok = CreateDirectory(dst, args);
-                pos++;
-            }
-
-            dst.IOPath = origPath;
-
+            var ok = CreateDirectoriesForPath(dst, args, dirParts);
             if (!ok)
             {
-                result = ResultBad;
+                return ResultBad;
+            }
+
+
+
+            var shouldCreateFile = dst.PathIs(dst.IOPath) == enPathType.File && createToFile;
+            if (shouldCreateFile)
+            {
+                if (CreateFile(dst, args))
+                {
+                    return ResultOk;
+                }
             }
             else
             {
-                if (dst.PathIs(dst.IOPath) == enPathType.File && createToFile && !CreateFile(dst, args))
-                {
-                    result = ResultBad;
-                }
+                return ResultOk;
             }
 
-            return result;
+
+            return ResultBad;
         }
 
-        IList<string> MakeDirectoryParts(IActivityIOPath path, string splitter)
+        private bool CreateDirectoriesForPath(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, IList<string> dirParts)
+        {
+            var maxDepth = dirParts.Count - 1;
+            var pos = 0;
+            var origPath = dst.IOPath;
+            try
+            {
+                while (pos <= maxDepth)
+                {
+                    var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
+                                                                                      dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
+
+                    if (dst.PathExist(toCreate))
+                    {
+                        pos++;
+                        continue;
+                    }
+                    dst.IOPath = toCreate;
+                    if (!CreateDirectory(dst, args))
+                    {
+                        return false;
+                    }
+                    pos++;
+                }
+            }
+            finally
+            {
+                dst.IOPath = origPath;
+            }
+            return true;
+        }
+
+        static IList<string> MakeDirectoryParts(IActivityIOPath path, string splitter)
         {
             string[] tmp;
 
             IList<string> result = new List<string>();
+            var builderPath = new System.Text.StringBuilder();
 
             var splitOn = splitter.ToCharArray();
 
-            if (CommonDataUtils.IsNotFtpTypePath(path))
+            if (CommonDataUtils.IsUncFileTypePath(path.Path))
+            {
+                var uncPath = path.Path.Substring(2);
+                var splitValues = uncPath.Split(splitOn).ToList();
+                builderPath.Append(@"\\");
+                builderPath.Append(splitValues[0]);
+                builderPath.Append(@"\");
+                splitValues.RemoveAt(0);
+                tmp = splitValues.ToArray();
+            }
+            else if (CommonDataUtils.IsNotFtpTypePath(path))
             {
                 tmp = path.Path.Split(splitOn);
-
             }
             else
             {
                 var splitValues = path.Path.Split(new[] { @"://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                builderPath.Append(splitValues[0]);
+                builderPath.Append(@"://");
                 splitValues.RemoveAt(0);
+
                 var newPath = string.Join(@"/", splitValues);
                 tmp = newPath.Split(splitOn);
             }
@@ -157,18 +170,14 @@ namespace Dev2.PathOperations
                 len = tmp.Length - 1;
             }
 
-            var builderPath = string.Empty;
             for (var i = 0; i < len; i++)
             {
                 if (!string.IsNullOrWhiteSpace(tmp[i]))
                 {
-                    builderPath += tmp[i] + splitter;
-                    if (!CommonDataUtils.IsNotFtpTypePath(path) && !builderPath.Contains(@"://"))
-                    {
-                        var splitValues = path.Path.Split(new[] { @"://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        builderPath = splitValues[0] + @"://" + builderPath;
-                    }
-                    result.Add(CommonDataUtils.IsUncFileTypePath(path.Path) ? @"\\" + builderPath : builderPath);
+                    builderPath.Append(tmp[i]);
+                    builderPath.Append(splitter);
+
+                    result.Add(builderPath.ToString());
                 }
             }
             return result;

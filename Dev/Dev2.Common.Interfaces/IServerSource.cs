@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Windows.Input;
 using Dev2.Runtime.ServiceModel.Data;

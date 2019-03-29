@@ -87,6 +87,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="ExtensiosnTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OracleServerTests.cs" />
     <Compile Include="PostgreServerTests.cs" />
     <Compile Include="SQLiteServerTests.cs" />

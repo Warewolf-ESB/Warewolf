@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;

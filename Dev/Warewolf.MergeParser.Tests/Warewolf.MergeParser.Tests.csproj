@@ -83,6 +83,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ParserTestHelper.cs" />
     <Compile Include="ParseServiceForDifferencesTests.cs" />
     <Compile Include="XML Parser\XmlResource.cs" />

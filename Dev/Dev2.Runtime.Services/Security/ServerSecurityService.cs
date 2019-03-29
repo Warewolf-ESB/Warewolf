@@ -1,3 +1,4 @@
+#pragma warning disable
  
 /*
 *  Warewolf - Once bitten, there's no going back
