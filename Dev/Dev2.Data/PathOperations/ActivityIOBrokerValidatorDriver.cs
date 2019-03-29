@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
@@ -37,6 +38,15 @@ namespace Dev2.PathOperations
     }
     internal class ActivityIOBrokerValidatorDriver : ActivityIOBrokerMainDriver, IActivityIOBrokerValidatorDriver
     {
+        internal ActivityIOBrokerValidatorDriver()
+        {
+
+        }
+        internal ActivityIOBrokerValidatorDriver(IFile file, ICommon common)
+            :base(file, common)
+        {
+
+        }
         public string ValidateCopySourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
                                                                   IActivityIOOperationsEndPoint dst,
                                                                   IDev2CRUDOperationTO args,
