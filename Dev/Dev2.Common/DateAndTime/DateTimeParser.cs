@@ -129,9 +129,10 @@ namespace Dev2.Common.DateAndTime
             out string error)
         {
            var getDateTimeFormatParts = new GetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
+            var result = getDateTimeFormatParts.TryGetDateTimeFormatParts();
             formatParts = getDateTimeFormatParts.FormatParts;
             error = getDateTimeFormatParts.Error;
-            return getDateTimeFormatParts.TryGetDateTimeFormatParts();
+            return result;
         }
 
 
