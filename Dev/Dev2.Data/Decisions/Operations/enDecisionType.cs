@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -44,7 +45,9 @@ namespace Dev2.Data.Decisions.Operations
             return (from object value in values let mi = typeof(enDecisionType).GetField(Enum.GetName(typeof(enDecisionType), value)) let attr = (DecisionTypeDisplayValue)Attribute.GetCustomAttribute(mi, typeof(DecisionTypeDisplayValue)) where attr.DisplayValue.Equals(displayValue) select value as enDecisionType? ?? enDecisionType.Choose).FirstOrDefault();
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public static string GetFailureMessage(enDecisionType decisionType)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             switch (decisionType)
             {

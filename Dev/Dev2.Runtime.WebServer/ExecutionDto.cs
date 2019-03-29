@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Runtime;
 using Dev2.Common;

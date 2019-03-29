@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -1074,7 +1075,12 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+
         public void RunAllTests(string ResourcePath, Guid resourceId)
+        {
+            RunAllTests(ResourcePath, resourceId, new ExternalProcessExecutor());
+        }
+        public void RunAllTests(string ResourcePath, Guid resourceId, IExternalProcessExecutor ProcessExecutor)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
@@ -1088,7 +1094,7 @@ namespace Dev2.Studio.ViewModels
                 var resourcePath = environmentModel?.Connection.WebServerUri + "secure/" + ResourcePath;
                 if (resourcePath != null)
                 {
-                    _worksurfaceContextManager.RunAllTestsForFolder(resourcePath);
+                    _worksurfaceContextManager.RunAllTestsForFolder(resourcePath, ProcessExecutor);
                 }
             }
         }

@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -82,6 +83,7 @@ namespace Warewolf.Storage
         /// <param name="i">The index of the field to find. </param><exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount"/>. </exception>
         public Type GetFieldType(int i) => typeof(string);
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         /// <summary>
         /// Return the value of the specified field.
         /// </summary>
@@ -90,6 +92,7 @@ namespace Warewolf.Storage
         /// </returns>
         /// <param name="i">The index of the field to find. </param><exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount"/>. </exception>
         public object GetValue(int i)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var a =  FetchNextValue(i);
 

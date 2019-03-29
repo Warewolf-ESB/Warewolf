@@ -25,6 +25,7 @@
     </NuGetPackageImportStamp>
     <SonarQubeTestProject>True</SonarQubeTestProject>
     <SonarQubeExclude>True</SonarQubeExclude>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,6 +78,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowResume.feature</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>
@@ -102,6 +104,7 @@
       <DependentUpon>MergeExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Merge\MergeFeature.cs" />
+    <Compile Include="ServerServiceRegionalSettingsSteps.cs" />
     <Compile Include="Search\Search.cs" />
     <Compile Include="Search\Search.feature.cs">
       <AutoGen>True</AutoGen>

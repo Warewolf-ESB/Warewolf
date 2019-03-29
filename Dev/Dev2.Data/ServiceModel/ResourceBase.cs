@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -246,7 +247,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        string GetResourceTypeFromString(string actionTypeStr)
+        static string GetResourceTypeFromString(string actionTypeStr)
         {
             if (Enum.TryParse(actionTypeStr, out enActionType actionType))
             {
@@ -260,22 +261,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                         return "PluginService";
                     case enActionType.Workflow:
                         return "WorkflowService";
-                    case enActionType.BizRule:
-                        break;
-                    case enActionType.InvokeDynamicService:
-                        break;
-                    case enActionType.InvokeManagementDynamicService:
-                        break;
-                    case enActionType.InvokeServiceMethod:
-                        break;
-                    case enActionType.ComPlugin:
-                        break;
-                    case enActionType.Switch:
-                        break;
-                    case enActionType.Unknown:
-                        break;
-                    case enActionType.RemoteService:
-                        break;
                     default:
                         break;
                 }

@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Text;
 
 namespace Dev2.Common.Interfaces
