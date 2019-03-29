@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -337,6 +338,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             catch (Exception e)
             {
                 Dev2Logger.Debug("Create Source File for file op test error", e, "Warewolf Debug");
+                //throw
             }
         }
 

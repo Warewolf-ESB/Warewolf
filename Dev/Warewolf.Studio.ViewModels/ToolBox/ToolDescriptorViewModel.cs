@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Activities.Presentation;
 using System.Activities.Statements;

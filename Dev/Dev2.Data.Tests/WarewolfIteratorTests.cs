@@ -191,7 +191,7 @@ namespace Dev2.Data.Tests
             Assert.IsTrue(iterator.HasMoreData());
             var realNow = DateTime.Now;
             var nowString = iterator.GetNextValue();
-            var now = DateTime.Parse(nowString);
+            var now = DateTime.Parse(nowString, System.Globalization.CultureInfo.InvariantCulture);
             Assert.IsTrue(now > realNow);
         }
 

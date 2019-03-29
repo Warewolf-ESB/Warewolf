@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 using System.Globalization;
 using System.Windows;
@@ -22,8 +23,10 @@ namespace Warewolf.Studio.Core
             
             _brush = new SolidColorBrush(Color.FromArgb(255, 51, 51, 51));
         }
-        
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (value != null)
             {

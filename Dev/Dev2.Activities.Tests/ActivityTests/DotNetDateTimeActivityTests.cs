@@ -261,7 +261,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             var debugout = act.GetDebugOutputs(executionEnvironment, 0);
             var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
             Assert.AreEqual(1,value.Count);
-            Assert.IsTrue(DateTime.TryParse(value[0], out DateTime datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
+            bool canParseDateTime = DateTime.TryParse(value[0], new DateTimeFormatInfo() { ShortDatePattern = "dd/MM/yyyy", LongTimePattern = "hh:mm:ss.tt", }, DateTimeStyles.None, out DateTime datetimeResult);
+            if (!canParseDateTime)
+            {
+                canParseDateTime = DateTime.TryParse(value[0], new DateTimeFormatInfo() { ShortDatePattern = "MM/dd/yyyy", LongTimePattern = "hh:mm:ss.tt", }, DateTimeStyles.None, out datetimeResult);
+            }
+            Assert.IsTrue(canParseDateTime, $"Failed to parse value: {value[0]} as a DateTime");
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
             Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);

@@ -83,7 +83,6 @@ Scenario: Test with ForEach containing a Service
 	  | [[Message]] | Hello 1. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 	
 Scenario: Run a test expecting error 
 	Given the test builder is open with existing service "HelloWorldWithError"	
@@ -108,7 +107,6 @@ Scenario: Run a test expecting error
 	Then test result is Failed	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 
 Scenario: Run a test expecting no error as an unknown user
 	Given the test builder is open with existing service "Hello World"	
@@ -133,7 +131,6 @@ Scenario: Run a test expecting no error as an unknown user
 	Then test result is Failed	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 
 Scenario: Run a test expecting an error as an unknown user
 	Given the test builder is open with existing service "Hello World"	
@@ -159,7 +156,6 @@ Scenario: Run a test expecting an error as an unknown user
 	Then test result is Passed	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 	
 Scenario: Run a test expecting a wrong error as an unknown user
 	Given the test builder is open with existing service "Hello World"	
@@ -185,7 +181,6 @@ Scenario: Run a test expecting a wrong error as an unknown user
 	Then test result is Failed	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 
 Scenario: Run a test with invalid inputs and pending results
     Given the test builder is open with existing service "Hello World"	
@@ -258,7 +253,6 @@ Scenario: Run a test with single scalar inputs and outputs invalid no variable
 	Then test result is Failed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 
 Scenario: Run a test with single scalar inputs and outputs invalid no input variable
 	Given the test builder is open with existing service "Hello World"	
@@ -289,4 +283,3 @@ Scenario: Run a test with single scalar inputs and outputs invalid no input vari
 	Then test result is Failed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned

@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
 
 namespace Dev2.Common
 {
@@ -35,25 +37,13 @@ namespace Dev2.Common
 
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
-            if (userPrinciple == null)
+            if (userPrinciple == null || IsAlreadyImpersonated(userPrinciple))
             {
                 actionToBePerformed?.Invoke();
             }
             else
             {
-                var identity = userPrinciple.Identity as WindowsIdentity;
-                WindowsImpersonationContext impersonationContext = null;
-                if (identity != null)
-                {
-                    if (identity.IsAnonymous)
-                    {
-                        identity = ServerUser.Identity as WindowsIdentity;
-                    }
-                    if (identity != null)
-                    {
-                        impersonationContext = identity.Impersonate();
-                    }
-                }
+                var impersonationContext = Impersonate(userPrinciple);
                 try
                 {
                     actionToBePerformed?.Invoke();
@@ -61,8 +51,7 @@ namespace Dev2.Common
                 catch (Exception e)
                 {
                     impersonationContext?.Undo();
-                    identity = ServerUser.Identity as WindowsIdentity;
-                    if (identity != null)
+                    if (ServerUser.Identity is WindowsIdentity identity)
                     {
                         impersonationContext = identity.Impersonate();
                     }
@@ -73,6 +62,33 @@ namespace Dev2.Common
                     impersonationContext?.Undo();
                 }
             }
+        }
+
+        private static WindowsImpersonationContext Impersonate(IPrincipal userPrinciple)
+        {
+            WindowsImpersonationContext impersonationContext = null;
+            if (userPrinciple.Identity is WindowsIdentity identity)
+            {
+                if (identity.IsAnonymous)
+                {
+                    identity = ServerUser.Identity as WindowsIdentity;
+                }
+                if (identity != null)
+                {
+                    impersonationContext = identity.Impersonate();
+                }
+            }
+
+            return impersonationContext;
+        }
+
+        private static bool IsAlreadyImpersonated(IPrincipal userPrinciple)
+        {
+            if (userPrinciple.Identity is WindowsIdentity newIdentity && Thread.CurrentPrincipal.Identity is WindowsIdentity currentIdentity)
+            {
+                return newIdentity.User.Equals(currentIdentity.User);
+            }
+            return false;
         }
 
         public static IPrincipal OrginalExecutingUser { get; set; }

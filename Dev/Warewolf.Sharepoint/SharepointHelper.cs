@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -325,7 +326,9 @@ namespace Warewolf.Sharepoint
             return fullPath;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         static SharepointFieldTo CreateSharepointFieldToFromSharepointField(Field field)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var sharepointFieldTo = new SharepointFieldTo { Name = field.Title, InternalName = field.InternalName, IsRequired = field.Required, IsEditable = !field.ReadOnlyField };
             switch (field.FieldTypeKind)
