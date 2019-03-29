@@ -80,30 +80,31 @@ namespace Dev2.Common.DateAndTime
 
         public bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error) => TryParse(time, inputFormat, true, out parsedTime, out error);
 
+        // TODO: move logic into GetDateTimeFormatPartsProcess
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
-            var getDateTimeFormatParts = new GetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet);
-            getDateTimeFormatParts.TryGetDateTimeFormatParts();
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "m", "Minutes");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "mm", "Minutes");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "M", "Month in single digit");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "MM", "Month in 2 digits");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "MMM", "Month text abbreviated");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "MMMM", "Month text in full");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "h", "Hours in 12 hour format");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "hh", "Hours in 12 hour format");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "H", "Hours in 24 hour format");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "HH", "Hours in 24 hour format");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "tt", "am or pm");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "ddd", "Day of Week text abbreviated");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "dddd", "Day of Week in full");
-            getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "fff", "Split Seconds: 987");
+            var getDateTimeFormatParts = new GetDateTimeFormatPartsProcess(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet);
+            getDateTimeFormatParts.Execute();
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "m", "Minutes");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "mm", "Minutes");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "M", "Month in single digit");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "MM", "Month in 2 digits");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "MMM", "Month text abbreviated");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "MMMM", "Month text in full");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "h", "Hours in 12 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "hh", "Hours in 12 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "H", "Hours in 24 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "HH", "Hours in 24 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "tt", "am or pm");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "ddd", "Day of Week text abbreviated");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "dddd", "Day of Week in full");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "fff", "Split Seconds: 987");
             //
             // Get input format string for the dotnet parts
             //
             var dev2Format = new StringBuilder("");
              
-            foreach (IDateTimeFormatPartTO part in getDateTimeFormatParts.FormatParts)
+            foreach (IDateTimeFormatPartTO part in getDateTimeFormatParts.Result)
             {
                 dev2Format.Append(part.Isliteral ? "'" + part.Value + "'" : part.Value);
             }
@@ -128,9 +129,9 @@ namespace Dev2.Common.DateAndTime
         public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
             out string error)
         {
-           var getDateTimeFormatParts = new GetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
-            var result = getDateTimeFormatParts.TryGetDateTimeFormatParts();
-            formatParts = getDateTimeFormatParts.FormatParts;
+           var getDateTimeFormatParts = new GetDateTimeFormatPartsProcess(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
+            var result = getDateTimeFormatParts.Execute();
+            formatParts = getDateTimeFormatParts.Result;
             error = getDateTimeFormatParts.Error;
             return result;
         }
@@ -166,9 +167,9 @@ namespace Dev2.Common.DateAndTime
             {
                 var dateTimeArray = originalData.ToArray();
                 var position = 0;
-
-                var getDateTimeFormatParts = new GetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
-                nothingDied = getDateTimeFormatParts.TryGetDateTimeFormatParts();
+                // TODO: remove this allocation from the while loop
+                var getDateTimeFormatParts = new GetDateTimeFormatPartsProcess(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
+                nothingDied = getDateTimeFormatParts.Execute();
                 error = getDateTimeFormatParts.Error;
                 if (!string.IsNullOrEmpty(error))
                 {
@@ -488,7 +489,7 @@ namespace Dev2.Common.DateAndTime
 
     }
 
-    class GetDateTimeFormatParts
+    class GetDateTimeFormatPartsProcess
     {
         private bool _nothingDied = true;
         private readonly string _format;
@@ -496,7 +497,7 @@ namespace Dev2.Common.DateAndTime
         private readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions;
 
         private List<IDateTimeFormatPartTO> _formatParts;
-        public List<IDateTimeFormatPartTO> FormatParts
+        public List<IDateTimeFormatPartTO> Result
         {
             get => _formatParts;
             set => _formatParts = value;
@@ -509,14 +510,14 @@ namespace Dev2.Common.DateAndTime
             set => _error = value;
         }
 
-        public GetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions)
+        public GetDateTimeFormatPartsProcess(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions)
         {
             _format = format;
             _dateTimeFormatForwardLookups1 = dateTimeFormatForwardLookups;
             _dateTimeFormatPartOptions = dateTimeFormatPartOptions;
         }
 
-        public bool TryGetDateTimeFormatParts()
+        public bool Execute()
         {
             var formatArray = _format.ToArray();
 
