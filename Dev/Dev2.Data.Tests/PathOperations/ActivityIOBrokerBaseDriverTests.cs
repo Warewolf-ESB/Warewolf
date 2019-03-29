@@ -151,5 +151,135 @@ namespace Dev2.Data.Tests.PathOperations
             Assert.IsTrue(result);
             endPoint.Verify(o => o.CreateDirectory(ioPath, dev2CrudOperationTO));
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_CreateEndPoint_ExpectSuccess()
+        {
+            //--------------------------Arrange-------------------------
+            var mockActivityIOOperationsEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var driver = new ActivityIOBrokerBaseDriver();
+
+            mockActivityIOOperationsEndPoint.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns(@"\");
+
+            mockActivityIOPath.Setup(o => o.Path).Returns("\\filename.txt");
+            //--------------------------Act-----------------------------
+            var endPoint =  driver.CreateEndPoint(mockActivityIOOperationsEndPoint.Object, mockDev2CRUDOperationTO.Object, true);
+            //--------------------------Assert--------------------------
+            Assert.AreEqual("Success", endPoint);
+
+            mockActivityIOOperationsEndPoint.VerifyAll();
+            mockActivityIOPath.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_CreateEndPoint_IsUncFileTypePath_ExpectSuccess()
+        {
+            //--------------------------Arrange-------------------------
+            var mockActivityIOOperationsEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var driver = new ActivityIOBrokerBaseDriver();
+
+            mockActivityIOOperationsEndPoint.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"\\Home\a.txt");
+            //--------------------------Act-----------------------------
+            var endPoint = driver.CreateEndPoint(mockActivityIOOperationsEndPoint.Object, mockDev2CRUDOperationTO.Object, true);
+            //--------------------------Assert--------------------------
+            Assert.AreEqual("Success", endPoint);
+
+            mockActivityIOOperationsEndPoint.VerifyAll();
+            mockActivityIOPath.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_CreateEndPoint_IsNotFtpTypePathTest_ExpectSuccess()
+        {
+            //--------------------------Arrange-------------------------
+            var mockActivityIOOperationsEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var driver = new ActivityIOBrokerBaseDriver();
+
+            mockActivityIOOperationsEndPoint.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"sftp://Home//a.txt");
+            //--------------------------Act-----------------------------
+            var endPoint = driver.CreateEndPoint(mockActivityIOOperationsEndPoint.Object, mockDev2CRUDOperationTO.Object, true);
+            //--------------------------Assert--------------------------
+            Assert.AreEqual("Success", endPoint);
+
+            mockActivityIOOperationsEndPoint.VerifyAll();
+            mockActivityIOPath.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_CreateEndPoint_IsUncFileTypePath_ExpectFail()
+        {
+            //--------------------------Arrange-------------------------
+            var mockActivityIOOperationsEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var driver = new ActivityIOBrokerBaseDriver();
+
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"\\Home\folder1\folder2\a.txt");
+
+            mockActivityIOOperationsEndPoint.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns(@"\");
+            //--------------------------Act-----------------------------
+            var endPoint = driver.CreateEndPoint(mockActivityIOOperationsEndPoint.Object, mockDev2CRUDOperationTO.Object, true);
+            //--------------------------Assert--------------------------
+            Assert.AreEqual("Failure", endPoint);
+
+            mockActivityIOOperationsEndPoint.VerifyAll();
+            mockActivityIOPath.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_CreateEndPoint_CreateDirectoriesForPath_PathExist_ExpectSuccess()
+        {
+            //--------------------------Arrange-------------------------
+            var mockActivityIOOperationsEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var driver = new ActivityIOBrokerBaseDriver();
+
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"\\Home\folder1\folder2\a.txt");
+
+            mockActivityIOOperationsEndPoint.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathExist(It.IsAny<IActivityIOPath>())).Returns(true);
+            //--------------------------Act-----------------------------
+            var endPoint = driver.CreateEndPoint(mockActivityIOOperationsEndPoint.Object, mockDev2CRUDOperationTO.Object, true);
+            //--------------------------Assert--------------------------
+            Assert.AreEqual("Success", endPoint);
+
+            mockActivityIOOperationsEndPoint.VerifyAll();
+            mockActivityIOPath.VerifyAll();
+        }
+
     }
 }
