@@ -17,6 +17,7 @@ using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Ionic.Zip;
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -173,6 +174,76 @@ namespace Dev2.Data.Tests.PathOperations
             finally
             {
                 File.Delete(tempFileName);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_ZipFileToALocalTempFile_RequiresTmpStorage_ExpectSuccess()
+        {
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+            var driver = new ActivityIOBrokerMainDriver(mockFile.Object, mockCommon.Object);
+
+            var tmpFileName = driver.CreateTmpFile();
+
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            mockSrc.Setup(o => o.IOPath.Path).Returns(tmpFileName);
+            var mockArgs = new Mock<IDev2ZipOperationTO>();
+            mockArgs.Setup(o => o.CompressionRatio).Returns("compressionLevel");
+
+            var filename = driver.ZipFileToALocalTempFile(mockSrc.Object, mockArgs.Object);
+
+            Assert.IsTrue(ZipFile.IsZipFile(filename));
+            driver.RemoveAllTmpFiles();
+
+            mockSrc.Verify(o => o.RequiresLocalTmpStorage(), Times.Once);
+            mockSrc.Verify(o => o.IOPath.Path, Times.Once);
+
+            mockCommon.Verify(o => o.CreateTmpDirectory(), Times.Never);
+            mockCommon.Verify(o => o.ExtractZipCompressionLevel("compressionLevel"), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_ZipFileToALocalTempFile_RequiresTmpStorage_False_ExpectSuccess()
+        {
+            var mockFile = new Mock<IFile>();
+            mockFile.Setup(o => o.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>())).Callback<string, byte[]>((filename, bytes) => new Dev2.Common.Wrappers.FileWrapper().WriteAllBytes(filename, bytes));
+            var mockCommon = new Mock<ICommon>();
+            var tmpDirectory = new Data.Util.CommonDataUtils().CreateTmpDirectory();
+            mockCommon.Setup(o => o.CreateTmpDirectory()).Returns(tmpDirectory);
+            var driver = new ActivityIOBrokerMainDriver(mockFile.Object, mockCommon.Object);
+
+            var tmpFileName = driver.CreateTmpFile();
+
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            mockSrc.Setup(o => o.IOPath.Path).Returns(tmpFileName);
+            mockSrc.Setup(o => o.RequiresLocalTmpStorage()).Returns(true);
+            mockSrc.Setup(o => o.PathSeperator()).Returns(@"\");
+            using (var tmpStream = new MemoryStream(new byte[] { 0x11, 0x22 }))
+            {
+                mockSrc.Setup(o => o.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(tmpStream);
+                var mockArgs = new Mock<IDev2ZipOperationTO>();
+                mockArgs.Setup(o => o.CompressionRatio).Returns("compressionLevel");
+
+                var filename = driver.ZipFileToALocalTempFile(mockSrc.Object, mockArgs.Object);
+
+                Assert.IsTrue(ZipFile.IsZipFile(filename));
+                driver.RemoveAllTmpFiles();
+                Assert.IsFalse(File.Exists(tmpDirectory));
+
+                mockSrc.Verify(o => o.RequiresLocalTmpStorage(), Times.Once);
+                mockSrc.Verify(o => o.IOPath.Path, Times.Exactly(2));
+
+                mockCommon.Verify(o => o.CreateTmpDirectory(), Times.Once);
+                mockCommon.Verify(o => o.ExtractZipCompressionLevel("compressionLevel"), Times.Once);
+
+                mockFile.Verify(o => o.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once);
             }
         }
     }
