@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
@@ -106,6 +107,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestCategory("OutputsRegion_Ctor")]
         public void OutputsRegion_Clone()
         {
+            CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity { SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
@@ -127,6 +129,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestCategory("OutputsRegion_Ctor")]
         public void OutputsRegion_Restore()
         {
+            CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity { SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);

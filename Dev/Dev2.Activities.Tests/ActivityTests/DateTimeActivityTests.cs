@@ -39,8 +39,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region DateTime Tests
-
         //Added for BUG 9494
         [TestMethod]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
@@ -165,8 +163,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var endTime = DateTime.Now;
 
-            Assert.IsTrue(endTime >= parsedResult, $"expected a time less than ({endTime}) but got: '{parsedResult}' with Timezone {parsedResult.ToString("zzz")}");
-            Assert.IsTrue(parsedResult >= startTime, $"expected a time greater than ({startTime}) but got: '{parsedResult}' with Timezone {parsedResult.ToString("zzz")}");
+            Assert.IsTrue(endTime >= parsedResult, $"expected a time <= ({endTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
+            Assert.IsTrue(parsedResult >= startTime, $"expected a time >= ({startTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
             Assert.IsTrue(endTime >= parsedResult && parsedResult >= startTime, $"expected a time between starting this test ({startTime}) and ({endTime}) but got: '{parsedResult}' with Start Time Timezone {startTime.ToString("zzz")}, End Time Timezone {endTime.ToString("zzz")}, and Parsed Result Timezone {parsedResult.ToString("zzz")}");
         }
 
@@ -213,8 +211,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
 
-        #region Private Test Methods
-
         void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
         {
             TestStartNode = new FlowStep
@@ -240,9 +236,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = currentDL;
             TestData = testData;
         }
-
-
-        #endregion Private Test Methods
-
     }
 }

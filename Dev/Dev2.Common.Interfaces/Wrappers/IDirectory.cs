@@ -28,6 +28,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         bool Exists(string path);
         string[] GetFileSystemEntries(string path);
         string[] GetFileSystemEntries(string path, string searchPattern);
+        string[] GetFileSystemEntries(string path, string searchPattern, SearchOption searchOption);
         string[] GetDirectories(string workspacePath);
         string[] GetDirectories(string path, string pattern);
         void Move(string directoryStructureFromPath, string directoryStructureToPath);
@@ -38,6 +39,6 @@ namespace Dev2.Common.Interfaces.Wrappers
         IEnumerable<string> EnumerateDirectories(string path);
         IEnumerable<string> EnumerateDirectories(string path, string pattern);
         IEnumerable<string> EnumerateFiles(string path, string pattern);
-        IEnumerable<string> EnumerateFileSystemEntries(string path, string pattern);        
+        IEnumerable<string> EnumerateFileSystemEntries(string path, string pattern);
     }
 }

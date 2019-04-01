@@ -98,6 +98,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="New MySql Database Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
