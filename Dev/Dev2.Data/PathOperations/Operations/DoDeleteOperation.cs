@@ -11,6 +11,8 @@
 using System;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 
 namespace Dev2.Data.PathOperations.Operations
@@ -20,18 +22,27 @@ namespace Dev2.Data.PathOperations.Operations
         readonly IWindowsImpersonationContext _impersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
+        readonly IDeleteHelper _deleteHelper;
 
         public DoDeleteOperation(IActivityIOPath path)
-            : this(path, new LogonProvider(), ValidateAuthorization.RequiresAuth)
+            : this(new DeleteHelper(new FileWrapper(), new DirectoryWrapper()), path)
+        {
+        }
+        public DoDeleteOperation(IDeleteHelper deleteHelper, IActivityIOPath path)
+            : this(deleteHelper, path, new LogonProvider(), ValidateAuthorization.RequiresAuth)
         {
         }
         public DoDeleteOperation(IActivityIOPath path, IDev2LogonProvider logOnProvider)
-            :this(path, logOnProvider, null)
+            : this(new DeleteHelper(new FileWrapper(), new DirectoryWrapper()), path, logOnProvider)
+        { }
+        public DoDeleteOperation(IDeleteHelper deleteHelper, IActivityIOPath path, IDev2LogonProvider logOnProvider)
+            :this(deleteHelper, path, logOnProvider, null)
         {
         }
-        public DoDeleteOperation(IActivityIOPath path, IDev2LogonProvider logOnProvider, ImpersonationDelegate impersonationDelegate)
+        public DoDeleteOperation(IDeleteHelper deleteHelper,IActivityIOPath path, IDev2LogonProvider logOnProvider, ImpersonationDelegate impersonationDelegate)
             :base(impersonationDelegate)
         {
+            _deleteHelper = deleteHelper;
             _path = path;
             _logOnProvider = logOnProvider;
             _impersonatedUser = _impersonationDelegate?.Invoke(_path, _logOnProvider);
@@ -44,7 +55,7 @@ namespace Dev2.Data.PathOperations.Operations
                 {
                     return ExecuteOperationWithAuth();
                 }
-                return DeleteHelper.Delete(_path.Path);
+                return _deleteHelper.Delete(_path.Path);
             }
             catch (Exception exception)
             {
@@ -58,7 +69,7 @@ namespace Dev2.Data.PathOperations.Operations
             {
                 try
                 {
-                    return DeleteHelper.Delete(_path.Path);
+                    return _deleteHelper.Delete(_path.Path);
                 }
                 catch (Exception ex)
                 {

@@ -15,6 +15,7 @@ using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Warewolf.Resource.Errors;
+using SearchOption = System.IO.SearchOption;
 
 namespace Dev2.Common.Wrappers
 {
@@ -65,6 +66,7 @@ namespace Dev2.Common.Wrappers
         public string[] GetFileSystemEntries(string path) => Directory.GetFileSystemEntries(path);
 
         public string[] GetFileSystemEntries(string path, string searchPattern) => Directory.GetFileSystemEntries(path, searchPattern);
+        public string[] GetFileSystemEntries(string path, string searchPattern, SearchOption searchOption) => Directory.GetFileSystemEntries(path, searchPattern, searchOption);
 
         public string[] GetDirectories(string workspacePath) => Directory.GetDirectories(workspacePath);
 
