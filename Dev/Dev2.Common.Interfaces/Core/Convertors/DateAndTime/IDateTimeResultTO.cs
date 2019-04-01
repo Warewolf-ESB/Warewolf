@@ -35,7 +35,9 @@ namespace Dev2.Common.Interfaces.Core.Convertors.DateAndTime
         string Era { get; set; }
         ITimeZoneTO TimeZone { get; set; }
 
-        void NormalizeTime();
+        void NormalizeHours();
+        void NormalizeMonths();
+        void NormalizeDays();
 
         DateTime ToDateTime();
     }

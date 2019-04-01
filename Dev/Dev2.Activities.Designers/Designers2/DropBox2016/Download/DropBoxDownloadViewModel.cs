@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;

@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;

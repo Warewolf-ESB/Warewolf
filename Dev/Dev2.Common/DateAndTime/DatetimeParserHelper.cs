@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 using System.Globalization;
 using Dev2.Common.Interfaces;

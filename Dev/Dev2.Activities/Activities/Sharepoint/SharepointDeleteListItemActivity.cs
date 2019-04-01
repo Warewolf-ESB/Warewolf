@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 using System.Activities;
 using System.Collections.Generic;

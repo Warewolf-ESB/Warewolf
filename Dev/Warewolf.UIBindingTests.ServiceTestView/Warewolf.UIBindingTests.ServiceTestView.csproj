@@ -101,6 +101,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Service Test View.feature.cs">
       <DependentUpon>Service Test View.feature</DependentUpon>
       <AutoGen>True</AutoGen>

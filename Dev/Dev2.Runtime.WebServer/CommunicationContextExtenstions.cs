@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2.Common;
 
 namespace Dev2.Runtime.WebServer

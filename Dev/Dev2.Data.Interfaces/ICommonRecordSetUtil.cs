@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Collections.Generic;
 using Dev2.Data.Interfaces.Enums;
 

@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Data;
 using Dev2.Common;
