@@ -229,6 +229,22 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [Given(@"I have a localhost server")]
+        public void GivenIHaveAServerAt()
+        {
+            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            for (int count = 0;  !environmentModel.IsConnected; count++)
+            {
+                if (count > 20)
+                {
+                    throw new Exception("connection to localhost timeout");
+                }
+                Thread.Sleep(500);
+            }
+        }
+
+
         [Given(@"I have a server at ""(.*)"" with workflow ""(.*)""")]
         public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
         {
