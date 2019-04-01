@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Common.Common;
 using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations;
 using Dev2.Data.PathOperations.Operations;
@@ -56,8 +57,9 @@ namespace Dev2.Data.Tests.PathOperations
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            var mockDeleteHelper = new Mock<IDeleteHelper>();
             //---------------------------Act-------------------------------
-            var doDeleteOperation = new DoDeleteOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
+            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
             //---------------------------Assert----------------------------
             Assert.IsFalse(doDeleteOperation.ExecuteOperation());
         }
@@ -72,12 +74,46 @@ namespace Dev2.Data.Tests.PathOperations
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
 
             const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
-            
+
             mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
+
+            var mockDeleteHelper = new Mock<IDeleteHelper>();
+            mockDeleteHelper.Setup(o => o.Delete(serverLogFile)).Returns(true);
+
             //---------------------------Act-------------------------------
-            var doDeleteOperation = new DoDeleteOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => null);
+            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => null);
             //---------------------------Assert----------------------------
-            Assert.IsTrue(doDeleteOperation.ExecuteOperationWithAuth());
+            var result = doDeleteOperation.ExecuteOperationWithAuth();
+
+            mockDeleteHelper.Verify(o => o.Delete(serverLogFile), Times.Once);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(DoDeleteOperation))]
+        public void DoDeleteOperation_ExecuteOperationWithAuth_CTOR3Param_DeleteHelperThrows_ReturnFalse()
+        {
+            //---------------------------Arrange---------------------------
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
+
+            const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
+
+            mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
+
+            var mockDeleteHelper = new Mock<IDeleteHelper>();
+            mockDeleteHelper.Setup(o => o.Delete(serverLogFile)).Throws(new Exception());
+
+            //---------------------------Act-------------------------------
+            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => null);
+            //---------------------------Assert----------------------------
+            var result = doDeleteOperation.ExecuteOperationWithAuth();
+
+            mockDeleteHelper.Verify(o => o.Delete(serverLogFile), Times.Once);
+
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -94,8 +130,9 @@ namespace Dev2.Data.Tests.PathOperations
             
             mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
             mockWindowsImpersonationContext.Setup(o => o.Undo()).Throws<Exception>();
+            var mockDeleteHelper = new Mock<IDeleteHelper>();
             //---------------------------Act-------------------------------
-            var doDeleteOperation = new DoDeleteOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
+            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
             //---------------------------Assert----------------------------
             Assert.IsFalse(doDeleteOperation.ExecuteOperation());
         }

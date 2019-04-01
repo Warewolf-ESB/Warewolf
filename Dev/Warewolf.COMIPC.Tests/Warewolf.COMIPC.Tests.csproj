@@ -68,6 +68,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IpcClientTests.cs" />
     <Compile Include="WarewolfComIpcTests.cs" />
     <None Include="App.config" />

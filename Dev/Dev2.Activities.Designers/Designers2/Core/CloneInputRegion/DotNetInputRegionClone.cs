@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.DB;

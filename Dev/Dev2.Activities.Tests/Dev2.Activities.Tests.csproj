@@ -26,6 +26,7 @@
     </NuGetPackageImportStamp>
     <SonarQubeTestProject>True</SonarQubeTestProject>
     <SonarQubeExclude>True</SonarQubeExclude>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -418,6 +419,7 @@
     <Compile Include="FindRecsetOptionsTests\IsNotNullFindRecsetOptionTests.cs" />
     <Compile Include="FindRecsetOptionsTests\IsNullFindRecsetOptionTests.cs" />
     <Compile Include="ForEachBootstrapTOTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Mocks\ActivityOperationBrokerMock.cs" />
     <Compile Include="Mocks\MockAbstractMultipleFilesActivity.cs" />
     <Compile Include="ActivityStrings.Designer.cs">

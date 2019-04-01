@@ -1,3 +1,4 @@
+#pragma warning disable
 
 /*
 *  Warewolf - The Easy Service Bus

@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -171,7 +172,9 @@ namespace Dev2
             Application.Current.Shutdown();
         }
 
+#pragma warning disable CC0091 // Use static method
         bool IsLocal(Uri sysUri)
+#pragma warning restore CC0091 // Use static method
         {
             if (IsUnc(sysUri))
             {
