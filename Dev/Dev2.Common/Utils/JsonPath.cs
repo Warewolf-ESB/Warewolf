@@ -202,13 +202,13 @@ namespace Dev2.Common.Utils
             return sb.ToString();
         }
 
-        sealed class Interpreter
+        internal sealed class Interpreter
         {
             static readonly char[] Colon = { ':' };
             static readonly char[] Semicolon = { ';' };
-            readonly JsonPathScriptEvaluator _eval;
-            readonly JsonPathResultAccumulator _output;
-            readonly IJsonPathValueSystem _system;
+            internal readonly JsonPathScriptEvaluator _eval;
+            internal readonly JsonPathResultAccumulator _output;
+            internal readonly IJsonPathValueSystem _system;
 
             public Interpreter(JsonPathResultAccumulator output, IJsonPathValueSystem system,
                 JsonPathScriptEvaluator eval)
