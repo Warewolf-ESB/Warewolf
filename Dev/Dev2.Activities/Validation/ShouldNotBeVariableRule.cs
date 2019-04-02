@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Util;

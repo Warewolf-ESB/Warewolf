@@ -86,6 +86,7 @@
     </AdditionalFiles>
     <Compile Include="ClientSchedulerFactory.cs" />
     <Compile Include="EventInfoTest.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ResourceHistoryTest.cs" />
     <Compile Include="ScheduledResourceTest.cs" />
     <Compile Include="ScheduledResourceModelTest.cs" />

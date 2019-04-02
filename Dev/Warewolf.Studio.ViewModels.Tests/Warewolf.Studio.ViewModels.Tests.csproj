@@ -153,6 +153,7 @@
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="FileChooserModelTests.cs" />
     <Compile Include="FileChooserTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
     <Compile Include="Help\HelpModelTests.cs" />
     <Compile Include="Help\HelpWindowViewModelTests.cs" />

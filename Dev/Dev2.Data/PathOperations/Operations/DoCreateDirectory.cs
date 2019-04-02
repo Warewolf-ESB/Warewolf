@@ -19,7 +19,7 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoCreateDirectory : PerformBoolIOOperation
     {
-        readonly IWindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
@@ -39,14 +39,14 @@ namespace Dev2.Data.PathOperations.Operations
             _dirWrapper = directory;
             _path = path;
             _crudArguments = args;
-            ImpersonatedUser = _impersonationDelegate(_path, _logOnProvider);
+            _impersonatedUser = _impersonationDelegate(_path, _logOnProvider);
             _handleOverwrite = RequiresOverwrite(_crudArguments, _path, _logOnProvider);
 
         }
 
         public override bool ExecuteOperation()
         {
-            if (ImpersonatedUser != null)
+            if (_impersonatedUser != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -60,7 +60,7 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
@@ -84,7 +84,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser.Undo();
+                    _impersonatedUser.Undo();
                 }
             }
         }

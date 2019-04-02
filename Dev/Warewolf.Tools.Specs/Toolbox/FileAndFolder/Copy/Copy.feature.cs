@@ -125,10 +125,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
-    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
+                    "dev2\\IntegrationTester\" with password \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
+ testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 19
  testRunner.And(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -151,14 +154,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 19
+#line 20
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 22
+#line 23
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -949,29 +952,32 @@ this.CopyFileAtLocation("28", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile7.t
                     string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at location with overwrite disabled", exampleTags);
-#line 56
-this.ScenarioSetup(scenarioInfo);
 #line 57
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 58
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 59
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
-    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
- testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
+                    "dev2\\IntegrationTester\" with password \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
+    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
+ testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 69
  testRunner.And(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -994,14 +1000,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 68
+#line 70
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table4.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 71
+#line 73
  testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1029,7 +1035,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_1()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("1", "[[sourcePath]]", "c:\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied00.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1056,7 +1062,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("1", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_2()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied0.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1083,7 +1089,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("2", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_3()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("3", "[[sourcePath]]", "c:\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied0.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1110,7 +1116,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("3", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_4()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("4", "[[sourcePath]]", "c:\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied0.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1137,7 +1143,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("4", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_5()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("5", "[[sourcePath]]", "c:\\copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied0.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1164,7 +1170,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("5", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_6()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("6", "[[sourcePath]]", "c:\\copyfile5.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied61.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
@@ -1192,7 +1198,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("6", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_7()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("7", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile0.txt" +
                     "", "\"\"", "\"\"", "[[destPath]]", "C:\\copied10.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1221,7 +1227,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("7", "[[sourcePath]]", "\\\\RSAKLFS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_8()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("8", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile1.txt" +
                     "", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1250,7 +1256,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("8", "[[sourcePath]]", "\\\\RSAKLFS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_9()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("9", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile2.txt" +
                     "", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied1.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
 #line hidden
@@ -1279,7 +1285,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("9", "[[sourcePath]]", "\\\\RSAKLFS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_10()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("10", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile3.txt" +
                     "", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1308,7 +1314,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("10", "[[sourcePath]]", "\\\\RSAKLF
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_11()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("11", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile5.txt" +
                     "", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1336,7 +1342,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("11", "[[sourcePath]]", "\\\\RSAKLF
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_12()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("12", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied20.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1363,7 +1369,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("12", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_13()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("13", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1390,7 +1396,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("13", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_14()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("14", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied2.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1417,7 +1423,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("14", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_15()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("15", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1444,7 +1450,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("15", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_16()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("16", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1471,7 +1477,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("16", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_17()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("17", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile0.txt", "integrationtester", "I73573r0", "[[destPath]]", "C:\\copied30.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1498,7 +1504,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("17", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_18()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("18", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1525,7 +1531,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("18", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_19()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("19", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile2.txt", "integrationtester", "I73573r0", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1552,7 +1558,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("19", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_20()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("20", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile3.txt", "integrationtester", "I73573r0", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied3.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1579,7 +1585,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("20", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_21()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("21", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile4.txt", "integrationtester", "I73573r0", "[[destPath]]", "sftp://rsaklfsvrdev/copied3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1606,7 +1612,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("21", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_22()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("22", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied40.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1633,7 +1639,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("22", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_23()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("23", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied4.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1660,7 +1666,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("23", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_24()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("24", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied4.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1687,7 +1693,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("24", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_25()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("25", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied4.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1714,7 +1720,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("25", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_26()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("26", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile5.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrdev/copied4.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1741,7 +1747,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("26", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_27()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("27", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile6.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrdev/copied51.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
@@ -1768,7 +1774,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("27", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void CopyFileAtLocationWithOverwriteDisabled_28()
         {
-#line 56
+#line 57
 this.CopyFileAtLocationWithOverwriteDisabled("28", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile7.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrdev/copied71.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
@@ -1792,27 +1798,27 @@ this.CopyFileAtLocationWithOverwriteDisabled("28", "[[sourcePath]]", "sftp://rsa
                     string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at location Null", exampleTags);
-#line 105
-this.ScenarioSetup(scenarioInfo);
-#line 106
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 107
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 108
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 109
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
-    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 116
+    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 117
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1840,7 +1846,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationNull_1()
         {
-#line 105
+#line 107
 this.CopyFileAtLocationNull("1", "[[variable]]", "NULL", "\"\"", "\"\"", "[[destPath]]", "c:\\test.txt", "\"\"", "\"\"", "True", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1867,7 +1873,7 @@ this.CopyFileAtLocationNull("1", "[[variable]]", "NULL", "\"\"", "\"\"", "[[dest
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationNull_2()
         {
-#line 105
+#line 107
 this.CopyFileAtLocationNull("2", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "NULL", "\"\"", "\"\"", "True", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1894,7 +1900,7 @@ this.CopyFileAtLocationNull("2", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationNull_3()
         {
-#line 105
+#line 107
 this.CopyFileAtLocationNull("3", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "v:\\", "\"\"", "\"\"", "True", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1918,27 +1924,27 @@ this.CopyFileAtLocationNull("3", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\
                     string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at location Null with overwrite disabled", exampleTags);
-#line 122
-this.ScenarioSetup(scenarioInfo);
-#line 123
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 126
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 131
-    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 133
+    testRunner.When("the copy file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 134
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1966,7 +1972,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationNullWithOverwriteDisabled_1()
         {
-#line 122
+#line 124
 this.CopyFileAtLocationNullWithOverwriteDisabled("1", "[[variable]]", "NULL", "\"\"", "\"\"", "[[destPath]]", "c:\\test.txt", "\"\"", "\"\"", "False", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1993,7 +1999,7 @@ this.CopyFileAtLocationNullWithOverwriteDisabled("1", "[[variable]]", "NULL", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationNullWithOverwriteDisabled_2()
         {
-#line 122
+#line 124
 this.CopyFileAtLocationNullWithOverwriteDisabled("2", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "NULL", "\"\"", "\"\"", "False", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2020,7 +2026,7 @@ this.CopyFileAtLocationNullWithOverwriteDisabled("2", "[[variable]]", "c:\\copyf
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocationNullWithOverwriteDisabled_3()
         {
-#line 122
+#line 124
 this.CopyFileAtLocationNullWithOverwriteDisabled("3", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "v:\\", "\"\"", "\"\"", "False", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }

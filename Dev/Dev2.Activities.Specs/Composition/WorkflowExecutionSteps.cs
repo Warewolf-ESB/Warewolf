@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going bac
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>

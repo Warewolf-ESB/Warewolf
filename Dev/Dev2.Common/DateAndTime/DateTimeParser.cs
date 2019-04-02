@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -488,7 +489,7 @@ namespace Dev2.Common.DateAndTime
 
     class GetDateTimeFormatParts
     {
-        private bool nothingDied = true;
+        private bool _nothingDied = true;
         private readonly string _format;
         private readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookups1;
         private readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions;
@@ -525,7 +526,7 @@ namespace Dev2.Common.DateAndTime
             var count = 0;
 
             var currentValue = "";
-            while (count < formatArray.Length && nothingDied)
+            while (count < formatArray.Length && _nothingDied)
             {
                 var forwardLookupLength = 0;
 
@@ -545,7 +546,7 @@ namespace Dev2.Common.DateAndTime
             }
             else if (currentValue.Length > 0)
             {
-                nothingDied = false;
+                _nothingDied = false;
                 _error = "A \' character defines a start or end of a non date time region, there appears to be a extra \' character.";
             }
             else
@@ -553,7 +554,7 @@ namespace Dev2.Common.DateAndTime
                 //valid
             }
 
-            return nothingDied;
+            return _nothingDied;
         }
         
         private void GetLiteralRegionStateOrLength(List<IDateTimeFormatPartTO> formatParts, char[] formatArray, ref LiteralRegionStates literalRegionState, int count, ref string currentValue, ref int forwardLookupLength)
@@ -568,13 +569,13 @@ namespace Dev2.Common.DateAndTime
                     forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideInferredLiteral(_dateTimeFormatForwardLookups1, _dateTimeFormatPartOptions, formatParts, ref _error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
                     break;
                 case LiteralRegionStates.InsideInferredLiteralRegionWithEscape:
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref _error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
+                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref _error, currentChar, literalRegionState, ref currentValue, ref _nothingDied);
                     break;
                 case LiteralRegionStates.InsideLiteralRegion:
                     forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideLiteral(formatParts, ref _error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
                     break;
                 case LiteralRegionStates.InsideLiteralRegionWithEscape:
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref _error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
+                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref _error, currentChar, literalRegionState, ref currentValue, ref _nothingDied);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("Unrecognized literal region state: " + literalRegionState);

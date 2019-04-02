@@ -93,7 +93,7 @@ namespace Warewolf.UI.Load.Specs
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("there are \"20\" duplicates of All Tools workflow in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("there are \"5\" duplicates of All Tools workflow in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
  testRunner.And("I start the timer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
