@@ -193,6 +193,7 @@
     <Compile Include="ListOfIndexTests.cs" />
     <Compile Include="ReverseIndexIteratorTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
     <Compile Include="TO\DateTimeVerifyPartTests.cs" />
     <Compile Include="TO\SafeTokenHandleTests.cs" />
     <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
