@@ -22,11 +22,11 @@ namespace Dev2.Core.Tests.AppResources.Converters
         [TestInitialize]
         public void PreConditions()
         {
-            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
 
-            Assert.AreEqual("en-ZA", regionName);
-            Assert.AreEqual("en-ZA", regionNameUI);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
         }
 
         [TestMethod]
