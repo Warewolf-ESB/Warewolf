@@ -33,7 +33,7 @@ namespace Dev2.Utils.Tests
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object,  eval);
             var obj = new object();
             //--------------------------Act-------------------------------
-            interpreter.Trace(null, obj, "test_path");
+            interpreter.StoreExpressionTreeLeafNodes(null, obj, "test_path");
             //--------------------------Assert----------------------------
             Assert.AreEqual(output, interpreter._output);
         }
@@ -55,7 +55,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("test_expr", obj, "test_path");
+            interpreter.StoreExpressionTreeLeafNodes("test_expr", obj, "test_path");
             //--------------------------Assert----------------------------
             Assert.AreEqual(output, interpreter._output);
         }
@@ -76,7 +76,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("*;", obj, "test_path");
+            interpreter.StoreExpressionTreeLeafNodes("*;", obj, "test_path");
             //--------------------------Assert----------------------------
             mockJsonPathValueSystem.Verify(o => o.IsPrimitive(It.IsAny<object>()), Times.Once);
         }
@@ -98,7 +98,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("*;", obj, "test_path");
+            interpreter.StoreExpressionTreeLeafNodes("*;", obj, "test_path");
             //--------------------------Assert----------------------------
             mockJsonPathValueSystem.Verify(o => o.IsArray(It.IsAny<object>()), Times.Once);
         }
@@ -121,7 +121,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("*;", obj, "test_path");
+            interpreter.StoreExpressionTreeLeafNodes("*;", obj, "test_path");
             //--------------------------Assert----------------------------
             mockJsonPathValueSystem.Verify(o => o.IsObject(It.IsAny<object>()), Times.Once);
         }
@@ -144,7 +144,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("..,asdf;", obj, "test_path");
+            interpreter.StoreExpressionTreeLeafNodes("..,asdf;", obj, "test_path");
             //--------------------------Assert----------------------------
             mockJsonPathValueSystem.Verify(o => o.IsObject(It.IsAny<object>()), Times.Once);
         }
@@ -167,7 +167,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("(..,asdf.*);", obj, "test_path;");
+            interpreter.StoreExpressionTreeLeafNodes("(..,asdf.*);", obj, "test_path;");
             //--------------------------Assert----------------------------
             Assert.AreEqual(eval, interpreter._eval);
         }
@@ -190,7 +190,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("(..,asdf.*);", obj, "test_path;");
+            interpreter.StoreExpressionTreeLeafNodes("(..,asdf.*);", obj, "test_path;");
             //--------------------------Assert----------------------------
             Assert.AreEqual(eval, interpreter._eval);
             Assert.AreEqual(output, interpreter._output);
@@ -214,7 +214,7 @@ namespace Dev2.Utils.Tests
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
             //--------------------------Act-------------------------------
-            interpreter.Trace("09:01:00;", obj, "test_path;");
+            interpreter.StoreExpressionTreeLeafNodes("09:01:00;", obj, "test_path;");
             //--------------------------Assert----------------------------
             Assert.AreEqual(eval, interpreter._eval);
             Assert.AreEqual(output, interpreter._output);
