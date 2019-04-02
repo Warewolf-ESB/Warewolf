@@ -70,6 +70,212 @@ namespace Dev2.Data.Tests.PathOperations
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerMainDriver))]
+        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendBottom()
+        {
+
+            var somePath = Path.GetTempFileName();
+            var somePathExists = false;
+            var tmpfile = Path.GetTempFileName();
+            var tmpfileExists = false;
+            try
+            {
+                File.WriteAllText(somePath, "some text");
+
+                var mockIoPath = new Mock<IActivityIOPath>();
+                mockIoPath.Setup(o => o.Path).Returns(somePath);
+
+                var dst = new Dev2FileSystemProvider
+                {
+                    IOPath = mockIoPath.Object
+                };
+                using (var dstStream = new MemoryStream(new byte[] { 0x32, 0x33, 0x34 }))
+                {
+
+                    var mockCommon = new Mock<ICommon>();
+
+                    var driver = new ActivityIOBrokerMainDriver(null, mockCommon.Object);
+
+                    var args = new Mock<IDev2PutRawOperationTO>();
+                    args.Setup(o => o.WriteType).Returns(Interfaces.Enums.WriteType.AppendBottom);
+                    args.Setup(o => o.FileContents).Returns("some file content");
+                    var result = driver.WriteToRemoteTempStorage(dst, args.Object, tmpfile);
+
+                    Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+
+                    args.Verify(o => o.FileContents, Times.Once);
+                }
+                var contents = File.ReadAllText(somePath);
+
+                Assert.AreEqual("some textsome file content", contents);
+
+                somePathExists = File.Exists(somePath);
+                Assert.IsTrue(somePathExists);
+                tmpfileExists = File.Exists(tmpfile);
+                Assert.IsTrue(tmpfileExists);
+            }
+            finally
+            {
+                if (somePathExists) { File.Delete(somePath); }
+                if (tmpfileExists) { File.Delete(tmpfile); }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerMainDriver))]
+        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendTop()
+        {
+            var somePath = Path.GetTempFileName();
+            File.WriteAllText(somePath, "some text");
+            var tmpfile = Path.GetTempFileName();
+
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var mockIoPath = new Mock<IActivityIOPath>();
+            mockIoPath.Setup(o => o.Path).Returns(somePath);
+            mockDst.Setup(o => o.IOPath).Returns(mockIoPath.Object);
+            mockDst.Setup(o => o.PathExist(mockDst.Object.IOPath)).Returns(true);
+            var dstStream = new MemoryStream(new byte[] { 0x32, 0x33, 0x34 });
+            mockDst.Setup(o => o.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(dstStream);
+
+            var mockFile = new Mock<IFile>();
+            mockFile.Setup(o => o.WriteAllText(tmpfile, It.IsAny<string>())).Callback<string, string>((fn, data) => File.WriteAllText(fn, data));
+            var mockCommon = new Mock<ICommon>();
+
+            var driver = new ActivityIOBrokerMainDriver(mockFile.Object, mockCommon.Object);
+
+            var args = new Mock<IDev2PutRawOperationTO>();
+            args.Setup(o => o.FileContents).Returns("some file content");
+            var result = driver.WriteToRemoteTempStorage(mockDst.Object, args.Object, tmpfile);
+
+            Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+
+            var contents = File.ReadAllText(tmpfile);
+
+            Assert.AreEqual("some file content234", contents);
+
+            args.Verify(o => o.FileContents, Times.Once);
+            mockDst.VerifyAll();
+            mockFile.VerifyAll();
+
+            Assert.IsTrue(File.Exists(somePath));
+            Assert.IsTrue(File.Exists(tmpfile));
+            File.Delete(somePath);
+            File.Delete(tmpfile);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerMainDriver))]
+        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendDefault()
+        {
+
+            var somePath = Path.GetTempFileName();
+            var somePathExists = false;
+            var tmpfile = Path.GetTempFileName();
+            var tmpfileExists = false;
+            try
+            {
+                File.WriteAllText(somePath, "some text");
+
+                var mockIoPath = new Mock<IActivityIOPath>();
+                mockIoPath.Setup(o => o.Path).Returns(somePath);
+
+                var dst = new Dev2FileSystemProvider
+                {
+                    IOPath = mockIoPath.Object
+                };
+                using (var dstStream = new MemoryStream(new byte[] { 0x32, 0x33, 0x34 }))
+                {
+
+                    var mockFile = new Mock<IFile>();
+                    mockFile.Setup(o => o.WriteAllText(tmpfile, It.IsAny<string>())).Callback<string, string>((fn, data) => File.WriteAllText(fn, data));
+                    var mockCommon = new Mock<ICommon>();
+
+                    var driver = new ActivityIOBrokerMainDriver(mockFile.Object, mockCommon.Object);
+
+                    var args = new Mock<IDev2PutRawOperationTO>();
+                    args.Setup(o => o.WriteType).Returns(Interfaces.Enums.WriteType.Overwrite);
+                    args.Setup(o => o.FileContents).Returns("some file content");
+                    var result = driver.WriteToRemoteTempStorage(dst, args.Object, tmpfile);
+
+                    Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+
+                    args.Verify(o => o.FileContents, Times.Exactly(2));
+                }
+                var contents = File.ReadAllText(somePath);
+
+                Assert.AreEqual("some file content", contents);
+
+                somePathExists = File.Exists(somePath);
+                Assert.IsTrue(somePathExists);
+                tmpfileExists = File.Exists(tmpfile);
+                Assert.IsTrue(tmpfileExists);
+            }
+            finally
+            {
+                if (somePathExists) { File.Delete(somePath); }
+                if (tmpfileExists) { File.Delete(tmpfile); }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerMainDriver))]
+        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendDefault_Base64()
+        {
+
+            var somePath = Path.GetTempFileName();
+            var somePathExists = false;
+            var tmpfile = Path.GetTempFileName();
+            var tmpfileExists = false;
+            try
+            {
+                File.WriteAllText(somePath, "some text");
+
+                var mockIoPath = new Mock<IActivityIOPath>();
+                mockIoPath.Setup(o => o.Path).Returns(somePath);
+
+                var dst = new Dev2FileSystemProvider
+                {
+                    IOPath = mockIoPath.Object
+                };
+                using (var dstStream = new MemoryStream(new byte[] { 0x32, 0x33, 0x34 }))
+                {
+
+                    var mockFile = new Mock<IFile>();
+                    mockFile.Setup(o => o.WriteAllText(tmpfile, It.IsAny<string>())).Callback<string, string>((fn, data) => File.WriteAllText(fn, data));
+                    var mockCommon = new Mock<ICommon>();
+
+                    var driver = new ActivityIOBrokerMainDriver(mockFile.Object, mockCommon.Object);
+
+                    var args = new Mock<IDev2PutRawOperationTO>();
+                    args.Setup(o => o.WriteType).Returns(Interfaces.Enums.WriteType.Overwrite);
+                    args.Setup(o => o.FileContents).Returns(@"Content-Type:BASE64c29tZSBmaWxlIGNvbnRlbnQ=");
+                    var result = driver.WriteToRemoteTempStorage(dst, args.Object, tmpfile);
+
+                    Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+
+                    args.Verify(o => o.FileContents, Times.Exactly(2));
+                }
+                var contents = File.ReadAllText(somePath);
+
+                Assert.AreEqual("some file content", contents);
+
+                somePathExists = File.Exists(somePath);
+                Assert.IsTrue(somePathExists);
+                tmpfileExists = File.Exists(tmpfile);
+                Assert.IsTrue(tmpfileExists);
+            }
+            finally
+            {
+                if (somePathExists) { File.Delete(somePath); }
+                if (tmpfileExists) { File.Delete(tmpfile); }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GiventmpFile()
         {
