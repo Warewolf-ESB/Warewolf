@@ -605,6 +605,22 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mUIThereareduplicateserText;
             }
         }
+        
+        public WpfButton ServerBusyOKButton
+        {
+            get
+            {
+                if ((this.mServerBusyOKButton == null))
+                {
+                    this.mServerBusyOKButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mServerBusyOKButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnOkCommand";
+                    this.mServerBusyOKButton.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mServerBusyOKButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -653,6 +669,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private WpfText mUITosavearesourcepersmText;
         
         private WpfText mUIThereareduplicateserText;
+        
+        private WpfButton mServerBusyOKButton;
         #endregion
     }
     

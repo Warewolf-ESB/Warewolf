@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Parsers;

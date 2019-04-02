@@ -27,8 +27,6 @@ namespace Dev2.Data.SystemTemplates.Models
     {
         const int TotalCols = 3;
 
-        #region Properties
-
         public string Col1 { get; set; }
 
         public string Col2 { get; set; }
@@ -69,12 +67,12 @@ namespace Dev2.Data.SystemTemplates.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public enDecisionType EvaluationFn { get; set; }
 
-        #endregion Properties
-
-        public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
+#pragma warning disable S3776, S1541 // Complexity of methods should not be too high
+        public string GenerateToolLabel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
+#pragma warning restore S3776, S1541 // Complexity of methods should not be too high
         {
             errors = new ErrorResultTO();
-            var allErrors = new ErrorResultTO();
+            
             var fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
 
             if (PopulatedColumnCount == 0)
@@ -82,11 +80,17 @@ namespace Dev2.Data.SystemTemplates.Models
                 return "If " + fn + " ";
             }
 
+            var allErrors = new ErrorResultTO();
+
             if (PopulatedColumnCount == 1)
             {
                 if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star)
                 {
                     var allValues = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
+                    if (errors.FetchErrors().Count >= 1)
+                    {
+                        return "If ";
+                    }
                     allErrors.MergeErrors(errors);
                     var expandStarredIndex = new StringBuilder();
 
@@ -109,6 +113,10 @@ namespace Dev2.Data.SystemTemplates.Models
                 if (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
                 {
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
+                    if (errors.FetchErrors().Count >= 1)
+                    {
+                        return "If ";
+                    }
                     allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0]);
                     allCol2Values.RemoveAt(0);
@@ -122,6 +130,10 @@ namespace Dev2.Data.SystemTemplates.Models
                 if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star)
                 {
                     var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
+                    if (errors.FetchErrors().Count >= 1)
+                    {
+                        return "If ";
+                    }
                     allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2);
                     allCol1Values.RemoveAt(0);
@@ -135,6 +147,10 @@ namespace Dev2.Data.SystemTemplates.Models
                 if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star || DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star)
                 {
                     var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
+                    if (errors.FetchErrors().Count >= 1)
+                    {
+                        return "If ";
+                    }
                     allErrors.MergeErrors(errors);
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
                     allErrors.MergeErrors(errors);
@@ -154,7 +170,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             if (PopulatedColumnCount == 3)
             {
-                var expandStarredIndices = ResolveStarredIndices(env, mode.ToString(), out errors);
+                var expandStarredIndices = ResolveStarredIndicesForLabel(env, mode.ToString(), out errors);
                 allErrors.MergeErrors(errors);
                 if (!string.IsNullOrEmpty(expandStarredIndices))
                 {
@@ -183,8 +199,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 try
                 {
-                    expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " +
-                                                allCol2Values[i]);
+                    expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " + allCol2Values[i]);
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -194,7 +209,9 @@ namespace Dev2.Data.SystemTemplates.Models
             }
         }
 
-        string ResolveStarredIndices(IExecutionEnvironment env, string mode, out ErrorResultTO errors)
+#pragma warning disable S3776, S1541 // Complexity of methods should not be too high
+        string ResolveStarredIndicesForLabel(IExecutionEnvironment env, string mode, out ErrorResultTO errors)
+#pragma warning restore S3776, S1541 // Complexity of methods should not be too high
         {
             var fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
             var expandStarredIndices = new StringBuilder();
@@ -371,7 +388,7 @@ namespace Dev2.Data.SystemTemplates.Models
         }
         public bool Equals(Dev2Decision other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -384,18 +401,21 @@ namespace Dev2.Data.SystemTemplates.Models
             var cols1Equal = CommonEqualityOps.CollectionEquals(Cols1, other.Cols1, new WarewolfAtomComparer());
             var cols2Equal = CommonEqualityOps.CollectionEquals(Cols2, other.Cols2, new WarewolfAtomComparer());
             var cols3Equal = CommonEqualityOps.CollectionEquals(Cols3, other.Cols3, new WarewolfAtomComparer());
-            return string.Equals(Col1, other.Col1) 
-                && string.Equals(Col2, other.Col2) 
-                && string.Equals(Col3, other.Col3) 
-                && cols1Equal
-                && cols2Equal
-                && cols3Equal
-                && EvaluationFn == other.EvaluationFn;
+
+            var isEqual = string.Equals(Col1, other.Col1);
+            isEqual &= string.Equals(Col2, other.Col2);
+            isEqual &= string.Equals(Col3, other.Col3);
+            isEqual &= cols1Equal;
+            isEqual &= cols2Equal;
+            isEqual &= cols3Equal;
+            isEqual &= EvaluationFn == other.EvaluationFn;
+
+            return isEqual;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
