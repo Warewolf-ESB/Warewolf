@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,7 @@ namespace Dev2.PathOperations
 
     internal class ActivityIOBrokerMainDriver : ActivityIOBrokerBaseDriver, IActivityIOBrokerMainDriver
     {
+        [ExcludeFromCodeCoverage]
         internal ActivityIOBrokerMainDriver()
         {
         }
