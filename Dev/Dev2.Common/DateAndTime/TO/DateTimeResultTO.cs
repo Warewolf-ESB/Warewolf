@@ -17,18 +17,6 @@ namespace Dev2.Common.DateAndTime.TO
 {
     public class DateTimeResultTO : IDateTimeResultTO
     {
-        #region Constructors
-
-        public DateTimeResultTO()
-        {
-            TimeZone = new TimeZoneTO(TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.StandardName,
-                TimeZoneInfo.Local.DisplayName);
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
         public int Years { get; set; }
         public int Months { get; set; }
         public int Days { get; set; }
@@ -43,12 +31,88 @@ namespace Dev2.Common.DateAndTime.TO
         public DateTimeAmPm AmPm { get; set; }
         public string Era { get; set; }
         public ITimeZoneTO TimeZone { get; set; }
+        public DateTimeResultTO()
+        {
+            TimeZone = new TimeZoneTO(TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.DisplayName);
+        }
+        public DateTime ToDateTime()
+        {
+            NormalizeHours();
 
-        #endregion Properties
+            if (Years == 0)
+            {
+                Years = DateTime.MinValue.Year;
+            }
 
-        #region Methods
+            if (Months == 0)
+            {
+                NormalizeMonths();
+            }
 
-        public void NormalizeTime()
+            if (Days == 0)
+            {
+                NormalizeDays();
+            }
+
+            if (Hours == 0)
+            {
+                Hours = DateTime.MinValue.Hour;
+            }
+
+            if (Minutes == 0)
+            {
+                Minutes = DateTime.MinValue.Minute;
+            }
+
+            if (Seconds == 0)
+            {
+                Seconds = DateTime.MinValue.Second;
+            }
+
+            if (Milliseconds == 0)
+            {
+                Milliseconds = DateTime.MinValue.Millisecond;
+            }
+
+            return new DateTime(Years, Months, Days, Hours, Minutes, Seconds, Milliseconds);
+        }
+        public void NormalizeDays()
+        {
+            Days = DateTime.MinValue.Day;
+            if (DaysOfWeek != 0)
+            {
+                var tmpDate = new DateTime(Years, Months, Days);
+                Days = tmpDate.AddDays(DaysOfWeek - DateTimeParserHelper.GetDayOfWeekInt(tmpDate.DayOfWeek)).Day;
+            }
+        }
+        public void NormalizeMonths()
+        {
+            if (DaysOfYear != 0)
+            {
+                var tmpDate = new DateTime(Years, 1, 1).AddDays(DaysOfYear - 1);
+                Months = tmpDate.Month;
+
+                if (Days == 0)
+                {
+                    Days = tmpDate.Day;
+                }
+            }
+            else if (Weeks != 0)
+            {
+                var tmpDate = CultureInfo.CurrentCulture.Calendar.AddWeeks(new DateTime(Years, 1, 1), Weeks);
+                Months = tmpDate.Month;
+
+                if (Days == 0)
+                {
+                    Days = tmpDate.Day;
+                }
+            }
+            else
+            {
+                Months = DateTime.MinValue.Month;
+            }
+        }
+        public void NormalizeHours()
         {
             if (Is24H && Hours >= 12)
             {
@@ -79,78 +143,5 @@ namespace Dev2.Common.DateAndTime.TO
                 }
             }
         }
-
-        public DateTime ToDateTime()
-        {
-            NormalizeTime();
-
-            if (Years == 0)
-            {
-                Years = DateTime.MinValue.Year;
-            }
-
-            if (Months == 0)
-            {
-                if (DaysOfYear != 0)
-                {
-                    var tmpDate = new DateTime(Years, 1, 1).AddDays(DaysOfYear - 1);
-                    Months = tmpDate.Month;
-
-                    if (Days == 0)
-                    {
-                        Days = tmpDate.Day;
-                    }
-                }
-                else if (Weeks != 0)
-                {
-                    var tmpDate = CultureInfo.CurrentCulture.Calendar.AddWeeks(new DateTime(Years, 1, 1), Weeks);
-                    Months = tmpDate.Month;
-
-                    if (Days == 0)
-                    {
-                        Days = tmpDate.Day;
-                    }
-                }
-                else
-                {
-                    Months = DateTime.MinValue.Month;
-                }
-            }
-
-            if (Days == 0)
-            {
-                Days = DateTime.MinValue.Day;
-
-                if (DaysOfWeek != 0)
-                {
-                    var tmpDate = new DateTime(Years, Months, Days);
-                    Days = tmpDate.AddDays(DaysOfWeek - DateTimeParserHelper.GetDayOfWeekInt(tmpDate.DayOfWeek)).Day;
-                }
-            }
-
-            if (Hours == 0)
-            {
-                Hours = DateTime.MinValue.Hour;
-            }
-
-            if (Minutes == 0)
-            {
-                Minutes = DateTime.MinValue.Minute;
-            }
-
-            if (Seconds == 0)
-            {
-                Seconds = DateTime.MinValue.Second;
-            }
-
-            if (Milliseconds == 0)
-            {
-                Milliseconds = DateTime.MinValue.Millisecond;
-            }
-
-            return new DateTime(Years, Months, Days, Hours, Minutes, Seconds, Milliseconds);
-        }
-
-        #endregion Methods
     }
 }

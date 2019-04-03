@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="AssignTests.cs" />
     <Compile Include="EvalFunctionTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="SortTest.cs" />
     <Compile Include="TestAst.cs" />

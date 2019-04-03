@@ -154,6 +154,7 @@
     <Compile Include="Dev2ColumnTests.cs" />
     <Compile Include="Dev2DefinitionTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
     <Compile Include="MethodOutputTests.cs" />
     <Compile Include="Operations\NotBetweenTests.cs" />

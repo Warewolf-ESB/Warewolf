@@ -71,6 +71,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ServerForTesting.cs" />
   </ItemGroup>
   <ItemGroup>
