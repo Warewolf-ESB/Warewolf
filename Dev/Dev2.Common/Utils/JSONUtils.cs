@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,25 +8,24 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-
 using System;
-using System.Text;
+using System.Linq;
 
 namespace Dev2.Common.Utils
 {
-    public static class JSONUtils
+    public static class JsonUtils
     {
-        public static string ScrubJSON(string stringToScrub)
+        public static string ScrubJson(string initialStringToScrub)
         {
-            if (!String.IsNullOrEmpty(stringToScrub))
+            var stringToScrub = initialStringToScrub;
+            if (!string.IsNullOrEmpty(stringToScrub))
             {
-                if (stringToScrub.StartsWith("\""))
+                if (stringToScrub.StartsWith("\"", StringComparison.Ordinal))
                 {
                     stringToScrub = stringToScrub.Remove(0, 1);
                 }
 
-                if (stringToScrub.EndsWith("\""))
+                if (stringToScrub.EndsWith("\"", StringComparison.Ordinal))
                 {
                     var indexTORemoveFrom = stringToScrub.Length - 1;
                     stringToScrub = stringToScrub.Remove(indexTORemoveFrom, 1);
@@ -36,136 +34,54 @@ namespace Dev2.Common.Utils
             return stringToScrub;
         }
 
-        static void Tabs(int pos, ref StringBuilder sb)
-        {
-            for (var i = 0; i < pos; i++)
-            {
-                sb.Append("\t");
-            }
-        }
+        private const string Tab_String = "\t";
 
         public static string Format(string text)
         {
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
-                return String.Empty;
+                return string.Empty;
             }
 
-            var cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
+            var cleanText = text.Replace(Environment.NewLine, string.Empty).Replace("\t", string.Empty);
 
-            var offset = 0;
-            var output = new StringBuilder();
-            Func<string, int, char?> previousNotEmpty = (s, i) =>
-            {
-                return JSONUtils.previousNotEmpty(s, ref i);
-            };
-            Func<string, int, char?> nextNotEmpty = (s, i) =>
-            {
-                return JSONUtils.nextNotEmpty(s, ref i);
-            };
+            int indentation = 0;
+            int quoteCount = 0;
+            var result = from character in cleanText
+                         let quotes = character == '"' ? quoteCount++ : quoteCount
+                         let lineBreak = GetLineBreak(indentation, character, quotes)
+                         let openChar = GetOpenChar(ref indentation, character)
+                         let closeChar = GetCloseChar(ref indentation, character)
+                         select lineBreak ?? (openChar.Length > 1 ? openChar : closeChar);
 
-            for (var i = 0; i < cleanText.Length; i++)
-            {
-                var chr = cleanText[i];
-
-                if (chr.ToString() == "{")
-                {
-                    offset++;
-                    output.Append(chr);
-                    output.Append(Environment.NewLine);
-                    Tabs(offset, ref output);
-                }
-                else if (chr.ToString() == "}")
-                {
-                    offset--;
-                    output.Append(Environment.NewLine);
-                    Tabs(offset, ref output);
-                    output.Append(chr);
-                }
-                else if (chr.ToString() == ",")
-                {
-                    output.Append(chr);
-                    output.Append(Environment.NewLine);
-                    Tabs(offset, ref output);
-                }
-                else if (chr.ToString() == "[")
-                {
-                    output.Append(chr);
-
-                    var next = nextNotEmpty(cleanText, i);
-
-                    if (next != null && next.ToString() != "]")
-                    {
-                        offset++;
-                        output.Append(Environment.NewLine);
-                        Tabs(offset, ref output);
-                    }
-                }
-                else if (chr.ToString() == "]")
-                {
-                    var prev = previousNotEmpty(cleanText, i);
-
-                    if (prev != null && prev.ToString() != "[")
-                    {
-                        offset--;
-                        output.Append(Environment.NewLine);
-                        Tabs(offset, ref output);
-                    }
-
-                    output.Append(chr);
-                }
-                else
-                {
-                    output.Append(chr);
-                }
-            }
-
-            return output.ToString().Trim();
+            return string.Concat(result).Trim();
         }
 
-        private static char? previousNotEmpty(string s, ref int i)
+        private static string GetLineBreak(int indentation, char character, int quotes)
         {
-            if (string.IsNullOrEmpty(s) || i <= 0)
+            if (character == ',' && quotes % 2 == 0)
             {
-                return null;
+                return character + Environment.NewLine + string.Concat(Enumerable.Repeat(Tab_String, indentation));
             }
-
-            char? prev = null;
-
-            while (i > 0 && prev == null)
-            {
-                prev = s[i - 1];
-                if (prev.ToString() == " ")
-                {
-                    prev = null;
-                }
-
-                i--;
-            }
-
-            return prev;
+            return null;
         }
 
-        private static char? nextNotEmpty(string s, ref int i)
+        private static string GetOpenChar(ref int indentation, char character)
         {
-            if (String.IsNullOrEmpty(s) || i >= (s.Length - 1))
+            if (character == '{' || character == '[')
             {
-                return null;
+                return character + Environment.NewLine + string.Concat(Enumerable.Repeat(Tab_String, ++indentation));
             }
+            return character.ToString();
+        }
 
-            char? next = null;
-            i++;
-
-            while (i < (s.Length - 1) && next == null)
+        private static string GetCloseChar(ref int indentation, char character)
+        {
+            if (character == '}' || character == ']')
             {
-                next = s[i++];
-                if (next.ToString() == " ")
-                {
-                    next = null;
-                }
+                return Environment.NewLine + string.Concat(Enumerable.Repeat(Tab_String, --indentation)) + character;
             }
-
-            return next;
+            return character.ToString();
         }
     }
 }

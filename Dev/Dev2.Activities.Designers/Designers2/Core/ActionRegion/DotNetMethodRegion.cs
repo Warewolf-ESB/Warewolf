@@ -257,12 +257,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         void ViewJsonObjects()
         {
-            JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+            JsonObjectsView?.ShowJsonString(JsonUtils.Format(ObjectResult));
         }
 
         void ViewObjectsResultForParameterInput(IServiceInput input)
         {
-            JsonObjectsView?.ShowJsonString(JSONUtils.Format(input.Dev2ReturnType));
+            JsonObjectsView?.ShowJsonString(JsonUtils.Format(input.Dev2ReturnType));
         }
 
         public string ObjectName
@@ -330,7 +330,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 if (value != null)
                 {
-                    _selectedMethod.Dev2ReturnType = JSONUtils.Format(value);
+                    _selectedMethod.Dev2ReturnType = JsonUtils.Format(value);
                     OnPropertyChanged();
                 }
                 else

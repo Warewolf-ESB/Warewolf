@@ -233,7 +233,7 @@
     <Compile Include="TimeZoneBuilder\TimeFormatPartBuilder.cs" />
     <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="Utils\JSONUtils.cs" />
+    <Compile Include="Utils\JsonUtils.cs" />
     <Compile Include="Utils\StringTransform.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
