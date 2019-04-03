@@ -20,7 +20,7 @@ let fixture: ComponentFixture<AppComponent>;
 let component: AppComponent;
 const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
-describe('AppComponent', () => {
+describe('Component: AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule,RouterTestingModule],
@@ -65,23 +65,23 @@ function tests() {
     component.animationEvent(null);
     expect(component.overflowState).toEqual('auto');
   });
+  //Removed as these links are currently commented out on the HTML
+  //it('can get RouterLinks from template', () => {
+  //  expect(routerLinks.length).toBe(1, 'should have 1 routerLinks');
+  //  expect(routerLinks[0].linkParams).toBe('/executionlogging');
+  //});
 
-  it('can get RouterLinks from template', () => {
-    expect(routerLinks.length).toBe(1, 'should have 1 routerLinks');
-    expect(routerLinks[0].linkParams).toBe('/executionlogging');
-  });
+  //it('can click executionlogging link in template', () => {
+  //  const executionloggingLinkDe = linkDes[0];
+  //  const executionloggingLink = routerLinks[0];
 
-  it('can click executionlogging link in template', () => {
-    const executionloggingLinkDe = linkDes[0];
-    const executionloggingLink = routerLinks[0];
+  //  expect(executionloggingLink.navigatedTo).toBeNull('should not have navigated yet');
 
-    expect(executionloggingLink.navigatedTo).toBeNull('should not have navigated yet');
+  //  executionloggingLinkDe.triggerEventHandler('click', {button:1});
+  //  fixture.detectChanges();
 
-    executionloggingLinkDe.triggerEventHandler('click', {button:1});
-    fixture.detectChanges();
-
-    expect(executionloggingLink.navigatedTo).toBe('/executionlogging');
-  });
+  //  expect(executionloggingLink.navigatedTo).toBe('/executionlogging');
+  //});
 
   it('should set correct values on toggle side nav close', () => {
     component.sideNavState = 'close';
