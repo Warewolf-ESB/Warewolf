@@ -95,6 +95,7 @@
     <Compile Include="Core\WcfServiceSourceDefinitionTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeResultTOTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="DirectoryEntryFactoryTest.cs" />
     <Compile Include="ExtMethods\StringExtensionTests.cs" />

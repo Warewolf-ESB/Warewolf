@@ -22,7 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
     <CodeAnalysisRuleSet>Warewolf.MergeParser.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConflictNode.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ServiceDifferenceParser.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>

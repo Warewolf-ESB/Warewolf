@@ -105,6 +105,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Sharepoint.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

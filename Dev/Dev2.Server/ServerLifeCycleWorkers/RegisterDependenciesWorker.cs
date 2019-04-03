@@ -9,6 +9,7 @@
 */
 
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
 
@@ -21,6 +22,8 @@ namespace Dev2.ServerLifeCycleWorkers
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IExecutionManager>(new ExecutionManager());
             CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
+            CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
+
         }
     }
 }
