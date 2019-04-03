@@ -19,6 +19,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using IFieldAndPropertyMapper = Dev2.Common.IFieldAndPropertyMapper;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -27,15 +28,19 @@ namespace Dev2.Activities.Designers2.Core
         readonly ModelItem _modelItem;
         bool _isEnabled;
         ICollection<IServiceOutputMapping> _outputs;
+        readonly IFieldAndPropertyMapper _mapper;
 
         public OutputsRegion(ModelItem modelItem)
-            : this(modelItem, false)
+            : this(modelItem, false, CustomContainer.Get<IFieldAndPropertyMapper>())
         {
         }
 
         public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed)
+            : this(modelItem, isObjectOutputUsed, CustomContainer.Get<IFieldAndPropertyMapper>())
+        { }
+        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed, IFieldAndPropertyMapper mapper)
+            : this(mapper)
         {
-            ToolRegionName = "OutputsRegion";
             Dependants = new List<IToolRegion>();
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
@@ -66,13 +71,16 @@ namespace Dev2.Activities.Designers2.Core
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
             IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
-            _shellViewModel = CustomContainer.Get<IShellViewModel>();
-
         }
 
         //Needed for Deserialization
         public OutputsRegion()
+            :this(CustomContainer.Get<IFieldAndPropertyMapper>())
         {
+        }
+        public OutputsRegion(IFieldAndPropertyMapper mapper)
+        {
+            _mapper = mapper;
             ToolRegionName = "OutputsRegion";
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
@@ -176,9 +184,9 @@ namespace Dev2.Activities.Designers2.Core
 
         public IToolRegion CloneRegion()
         {
-            Mapper.AddMap<OutputsRegion, OutputsRegion>();
+            _mapper.AddMap<OutputsRegion, OutputsRegion>();
             var outputsRegion = new OutputsRegion();
-            Mapper.Map(this,outputsRegion);
+            _mapper.Map(this,outputsRegion);
             return outputsRegion;
         }
 

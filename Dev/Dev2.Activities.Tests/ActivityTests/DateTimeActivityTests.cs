@@ -146,8 +146,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var endTime = DateTime.Now;
 
-            Assert.IsTrue(endTime >= parsedResult, $"expected a time less than ({endTime}) but got: '{parsedResult}' with Timezone {parsedResult.ToString("zzz")}");
-            Assert.IsTrue(parsedResult >= startTime, $"expected a time greater than ({startTime}) but got: '{parsedResult}' with Timezone {parsedResult.ToString("zzz")}");
+            Assert.IsTrue(endTime >= parsedResult, $"expected a time <= ({endTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
+            Assert.IsTrue(parsedResult >= startTime, $"expected a time >= ({startTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
             Assert.IsTrue(endTime >= parsedResult && parsedResult >= startTime, $"expected a time between starting this test ({startTime}) and ({endTime}) but got: '{parsedResult}' with Start Time Timezone {startTime.ToString("zzz")}, End Time Timezone {endTime.ToString("zzz")}, and Parsed Result Timezone {parsedResult.ToString("zzz")}");
         }
 
