@@ -116,6 +116,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Web Source.feature.cs">
       <DependentUpon>Web Source.feature</DependentUpon>
       <AutoGen>True</AutoGen>

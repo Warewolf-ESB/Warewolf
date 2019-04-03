@@ -11,16 +11,30 @@
 using System;
 using System.IO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Common.Common
 {
-    public static class DeleteHelper
+    public interface IDeleteHelper
     {
-        public static IDirectoryHelper DirectoryHelperInstance()
+        bool Delete(string path);
+    }
+    public class DeleteHelper : IDeleteHelper
+    {
+        readonly IFile _file;
+        readonly IDirectory _directory;
+
+        public DeleteHelper()
+            : this(new FileWrapper(), new DirectoryWrapper())
+        { }
+        public DeleteHelper(IFile file, IDirectory dir)
         {
-            return new DirectoryHelper();
+            this._file = file;
+            this._directory = dir;
         }
-        public static bool Delete(string path)
+
+        public bool Delete(string path)
         {
             if (path == null)
             {
@@ -32,7 +46,7 @@ namespace Dev2.Common.Common
             // directory
             if (IsDirectory(path))
             {
-                DirectoryHelperInstance().CleanUp(path);
+                new DirectoryHelper().CleanUp(path);
                 return true;
             }
 
@@ -41,7 +55,7 @@ namespace Dev2.Common.Common
             {
                 if (dirRoot != null)
                 {
-                    var fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
+                    var fileList = _directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
                     foreach (string file in fileList)
                     {
                         DeletePath(file);
@@ -51,32 +65,32 @@ namespace Dev2.Common.Common
             else
             {
                 // single file delete
-                File.Delete(path);
+                _file.Delete(path);
             }
 
             return true;
         }
 
-        static void DeletePath(string path)
+        void DeletePath(string path)
         {
             if (IsDirectory(path))
             {
-                Directory.Delete(path, true);
+                _directory.Delete(path, true);
             }
             else
             {
-                File.Delete(path);
+                _file.Delete(path);
             }
         }
 
-        static bool IsDirectory(string path)
+        bool IsDirectory(string path)
         {
             if (path.IndexOf("*", StringComparison.Ordinal) >= 0)
             {
                 return false;
             }
 
-            var attr = File.GetAttributes(path);
+            var attr = _file.GetAttributes(path);
             if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
             {
                 return true;
