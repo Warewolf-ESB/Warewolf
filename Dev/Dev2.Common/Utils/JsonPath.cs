@@ -1,5 +1,4 @@
-#pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -118,7 +117,7 @@ namespace Dev2.Common.Utils
 
         public IJsonPathValueSystem ValueSystem { get; set; }
 
-        public void SelectTo(object obj, string expr, JsonPathResultAccumulator output)
+        public void SelectTo(object obj, string initialExpression, JsonPathResultAccumulator output)
         {
             if (obj == null)
             {
@@ -132,7 +131,7 @@ namespace Dev2.Common.Utils
 
             var i = new Interpreter(output, ValueSystem, ScriptEvaluator);
 
-            expr = Normalize(expr);
+            var expr = Normalize(initialExpression);
 
             if (expr.Length >= 1 && expr[0] == '$') // ^\$:?
             {
@@ -158,10 +157,10 @@ namespace Dev2.Common.Utils
 
         static Regex RegExp(string pattern) => new Regex(pattern, RegexOptions.ECMAScript);
 
-        static string Normalize(string expr)
+        static string Normalize(string initialExpression)
         {
             var swap = new NormalizationSwap();
-            expr = RegExp(@"[\['](\??\(.*?\))[\]']").Replace(expr, swap.Capture);
+            var expr = RegExp(@"[\['](\??\(.*?\))[\]']").Replace(initialExpression, swap.Capture);
             expr = RegExp(@"'?\.'?|\['?").Replace(expr, ";");
             expr = RegExp(@";;;|;;").Replace(expr, ";..;");
             expr = RegExp(@";$|'?\]|'$").Replace(expr, string.Empty);
