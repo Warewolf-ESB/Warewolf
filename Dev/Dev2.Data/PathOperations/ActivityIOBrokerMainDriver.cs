@@ -159,7 +159,10 @@ namespace Dev2.PathOperations
 
         protected bool TransferDirectoryContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
-            ValidateSourceAndDestinationContents(src, dst, args);
+            if (!args.Overwrite)
+            {
+                ValidateSourceAndDestinationContents(src, dst, args);
+            }
 
             if (args.DoRecursiveCopy)
             {
@@ -244,6 +247,7 @@ namespace Dev2.PathOperations
             try
             {
                 var srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
+                // TODO: should not do parallel io if the operations are on the same physical disk? check type of OperationsEndpoint first? delegate via polymorphism to the endpoints?
                 Task.WaitAll(srcContentsFolders.Select(sourcePath => Task.Run(() =>
                 {
                     var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
@@ -263,36 +267,33 @@ namespace Dev2.PathOperations
 
         void ValidateSourceAndDestinationContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
-            if (!args.Overwrite)
+            var srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
+            foreach (var sourcePath in srcContentsFolders)
             {
-                var srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
-                foreach (var sourcePath in srcContentsFolders)
+                var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
+                IList<string> dirParts = sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                var directory = dirParts.Last();
+                var destinationPath = ActivityIOFactory.CreatePathFromString(dst.Combine(directory), dst.IOPath.Username, dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
+                var destinationEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
+                if (destinationEndPoint.PathExist(destinationEndPoint.IOPath))
                 {
-                    var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
-                    IList<string> dirParts = sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    var directory = dirParts.Last();
-                    var destinationPath = ActivityIOFactory.CreatePathFromString(dst.Combine(directory), dst.IOPath.Username, dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
-                    var destinationEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
-                    if (destinationEndPoint.PathExist(destinationEndPoint.IOPath))
-                    {
-                        ValidateSourceAndDestinationContents(sourceEndPoint, destinationEndPoint, args);
-                    }
+                    ValidateSourceAndDestinationContents(sourceEndPoint, destinationEndPoint, args);
                 }
+            }
 
-                var srcContents = src.ListFilesInDirectory(src.IOPath);
-                var dstContents = dst.ListFilesInDirectory(dst.IOPath);
-                var sourceFileNames = srcContents.Select(srcFile => GetFileNameFromEndPoint(src, srcFile)).ToList();
-                var destinationFileNames = dstContents.Select(dstFile => GetFileNameFromEndPoint(dst, dstFile)).ToList();
-                if (destinationFileNames.Count > 0)
+            var srcContents = src.ListFilesInDirectory(src.IOPath);
+            var dstContents = dst.ListFilesInDirectory(dst.IOPath);
+            var sourceFileNames = srcContents.Select(srcFile => GetFileNameFromEndPoint(src, srcFile)).ToList();
+            var destinationFileNames = dstContents.Select(dstFile => GetFileNameFromEndPoint(dst, dstFile)).ToList();
+            if (destinationFileNames.Count > 0)
+            {
+                var commonFiles = sourceFileNames.Where(destinationFileNames.Contains).ToList();
+                if (commonFiles.Count > 0)
                 {
-                    var commonFiles = sourceFileNames.Where(destinationFileNames.Contains).ToList();
-                    if (commonFiles.Count > 0)
-                    {
-                        var fileNames = commonFiles.Aggregate("",
-                                                                 (current, commonFile) =>
-                                                                 current + "\r\n" + commonFile);
-                        throw new Exception(string.Format(ErrorResource.FileExistInDestinationFolder, fileNames));
-                    }
+                    var fileNames = commonFiles.Aggregate("",
+                                                                (current, commonFile) =>
+                                                                current + "\r\n" + commonFile);
+                    throw new Exception(string.Format(ErrorResource.FileExistInDestinationFolder, fileNames));
                 }
             }
         }
