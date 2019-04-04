@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using Newtonsoft.Json;
 using Dev2.Interfaces;

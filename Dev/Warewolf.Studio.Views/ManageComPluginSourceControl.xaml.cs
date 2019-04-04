@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;

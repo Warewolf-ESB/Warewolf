@@ -55,6 +55,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ServiceInputTests.cs" />
     <Compile Include="ServiceOutputMappingTests.cs" />
   </ItemGroup>

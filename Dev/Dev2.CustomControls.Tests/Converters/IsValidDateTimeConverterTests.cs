@@ -9,6 +9,16 @@ namespace Dev2.CustomControls.Tests.Converters
     [TestClass]
     public class IsValidDateTimeConverterTests
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Convert_GivenNotDateTime_ShouldReturnFalse()

@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
-using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 
 namespace Warewolf.UI.Tests.Workflow
 {
@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Workflow
     {
         private const string Folder = "Acceptance Tests";
         private const string HelloWorld = "Hello World";
-        
+
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
@@ -118,91 +118,76 @@ namespace Warewolf.UI.Tests.Workflow
         {
             get
             {
-                if (_UIMap == null)
+                if (_uIMap == null)
                 {
-                    _UIMap = new UIMap();
+                    _uIMap = new UIMap();
                 }
 
-                return _UIMap;
+                return _uIMap;
             }
         }
 
-        private UIMap _UIMap;
+        private UIMap _uIMap;
 
         WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_WorkflowTabUIMap == null)
+                if (_workflowTabUIMap == null)
                 {
-                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                    _workflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _WorkflowTabUIMap;
+                return _workflowTabUIMap;
             }
         }
 
-        private WorkflowTabUIMap _WorkflowTabUIMap;
+        private WorkflowTabUIMap _workflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ExplorerUIMap == null)
+                if (_explorerUIMap == null)
                 {
-                    _ExplorerUIMap = new ExplorerUIMap();
+                    _explorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ExplorerUIMap;
+                return _explorerUIMap;
             }
         }
 
-        private ExplorerUIMap _ExplorerUIMap;
+        private ExplorerUIMap _explorerUIMap;
 
         DialogsUIMap DialogsUIMap
         {
             get
             {
-                if (_DialogsUIMap == null)
+                if (_dialogsUIMap == null)
                 {
-                    _DialogsUIMap = new DialogsUIMap();
+                    _dialogsUIMap = new DialogsUIMap();
                 }
 
-                return _DialogsUIMap;
+                return _dialogsUIMap;
             }
         }
 
-        private DialogsUIMap _DialogsUIMap;
+        private DialogsUIMap _dialogsUIMap;
 
         DeployUIMap DeployUIMap
         {
             get
             {
-                if (_DeployUIMap == null)
+                if (_deployUIMap == null)
                 {
-                    _DeployUIMap = new DeployUIMap();
+                    _deployUIMap = new DeployUIMap();
                 }
 
-                return _DeployUIMap;
+                return _deployUIMap;
             }
         }
 
-        private DeployUIMap _DeployUIMap;
-
-        DataToolsUIMap DataToolsUIMap
-        {
-            get
-            {
-                if (_DataToolsUIMap == null)
-                {
-                    _DataToolsUIMap = new DataToolsUIMap();
-                }
-
-                return _DataToolsUIMap;
-            }
-        }
-
-        private DataToolsUIMap _DataToolsUIMap;
+        private DeployUIMap _deployUIMap;
 
         #endregion
     }

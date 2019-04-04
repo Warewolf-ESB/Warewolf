@@ -101,6 +101,7 @@
     <Compile Include="Converters\BoolToStringConvertTests.cs" />
     <Compile Include="Converters\FilterStringToBoolConverterTests.cs" />
     <Compile Include="Converters\IsValidDateTimeConverterTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Person.cs" />
   </ItemGroup>
   <Choose>

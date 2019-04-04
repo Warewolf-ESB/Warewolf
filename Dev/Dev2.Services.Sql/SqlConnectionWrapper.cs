@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Data;
 using System.Data.SqlClient;
 

@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,9 +17,8 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Common.TimeZoneBuilder;
 using Warewolf.Resource.Errors;
-
-
-
+using static Dev2.Common.DateAndTime.DateTimeParser;
+using System.Text;
 
 namespace Dev2.Common.DateAndTime
 {
@@ -35,7 +35,7 @@ namespace Dev2.Common.DateAndTime
 
         public static readonly char DateLiteralCharacter = '\'';
 
-        protected  static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
+        protected static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
         protected Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
         protected Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
@@ -80,40 +80,36 @@ namespace Dev2.Common.DateAndTime
 
         public bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error) => TryParse(time, inputFormat, true, out parsedTime, out error);
 
+        // TODO: move logic into GetDateTimeFormatPartsProcess
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
-            TryGetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet,
-                _dateTimeFormatPartOptionsForDotNet, out List<IDateTimeFormatPartTO> dotNetFormatParts, out error);
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "m", "Minutes");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "mm", "Minutes");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "M", "Month in single digit");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "MM", "Month in 2 digits");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "MMM", "Month text abbreviated");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "MMMM", "Month text in full");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "h", "Hours in 12 hour format");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "hh", "Hours in 12 hour format");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "H", "Hours in 24 hour format");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "HH", "Hours in 24 hour format");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "tt", "am or pm");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "ddd", "Day of Week text abbreviated");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "dddd", "Day of Week in full");
-            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "fff", "Split Seconds: 987");
+            var getDateTimeFormatParts = new GetDateTimeFormatPartsProcess(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet);
+            getDateTimeFormatParts.Execute();
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "m", "Minutes");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "mm", "Minutes");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "M", "Month in single digit");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "MM", "Month in 2 digits");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "MMM", "Month text abbreviated");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "MMMM", "Month text in full");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "h", "Hours in 12 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "hh", "Hours in 12 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "H", "Hours in 24 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "HH", "Hours in 24 hour format");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "tt", "am or pm");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "ddd", "Day of Week text abbreviated");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "dddd", "Day of Week in full");
+            getDateTimeFormatParts.Result = ReplaceToken(getDateTimeFormatParts.Result, "fff", "Split Seconds: 987");
             //
             // Get input format string for the dotnet parts
             //
-            var dev2Format = "";
-            foreach (IDateTimeFormatPartTO part in dotNetFormatParts)
+            var dev2Format = new StringBuilder("");
+             
+            foreach (IDateTimeFormatPartTO part in getDateTimeFormatParts.Result)
             {
-                if (part.Isliteral)
-                {
-                    dev2Format += "'" + part.Value + "'";
-                }
-                else
-                {
-                    dev2Format += part.Value;
-                }
+                dev2Format.Append(part.Isliteral ? "'" + part.Value + "'" : part.Value);
             }
-            return dev2Format;
+            error = getDateTimeFormatParts.Error;
+            return dev2Format.ToString();
         }
 
         List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList,
@@ -131,75 +127,15 @@ namespace Dev2.Common.DateAndTime
         }
 
         public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
-            out string error) => TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
-                out formatParts, out error);
-
-        bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
+            out string error)
         {
-            var nothingDied = true;
-
-            formatParts = new List<IDateTimeFormatPartTO>();
-            error = "";
-
-            var formatArray = format.ToArray();
-            var literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
-            var count = 0;
-
-            var currentValue = "";
-            while (count < formatArray.Length && nothingDied)
-            {
-                var forwardLookupLength = 0;
-                var currentChar = formatArray[count];
-
-                if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
-                {
-                    forwardLookupLength = DateTimeLiteralProcessor.ProcessOutsideLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref literalRegionState, ref currentValue);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegion)
-                {
-                    forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideInferredLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
-                {
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
-                {
-                    forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideLiteral(formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
-                {
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("Unrecognized literal region state: " + literalRegionState);
-                }
-
-                count++;
-                if (forwardLookupLength > 0)
-                {
-                    count += forwardLookupLength - 1;
-                }
-            }
-
-            if (currentValue.Length > 0 && literalRegionState != LiteralRegionStates.InsideLiteralRegion &&
-                literalRegionState != LiteralRegionStates.InsideLiteralRegionWithEscape)
-            {
-                formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
-            }
-            else if (currentValue.Length > 0)
-            {
-                nothingDied = false;
-                error = "A \' character defines a start or end of a non date time region, there appears to be a extra \' character.";
-            }
-            else
-            {
-                //valid
-            }
-
-            return nothingDied;
+           var getDateTimeFormatParts = new GetDateTimeFormatPartsProcess(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
+            var result = getDateTimeFormatParts.Execute();
+            formatParts = getDateTimeFormatParts.Result;
+            error = getDateTimeFormatParts.Error;
+            return result;
         }
+
 
         bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
@@ -231,16 +167,17 @@ namespace Dev2.Common.DateAndTime
             {
                 var dateTimeArray = originalData.ToArray();
                 var position = 0;
-
-
-                nothingDied = TryGetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
+                // TODO: remove this allocation from the while loop
+                var getDateTimeFormatParts = new GetDateTimeFormatPartsProcess(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
+                nothingDied = getDateTimeFormatParts.Execute();
+                error = getDateTimeFormatParts.Error;
                 if (!string.IsNullOrEmpty(error))
                 {
                     return false;
                 }
                 if (nothingDied)
                 {
-                    TryCulture(parseAsTime, ref result, ref error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, formatParts);
+                    TryCulture(parseAsTime, ref result, ref error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, getDateTimeFormatParts.Result);
                 }
                 else
                 {
@@ -371,19 +308,24 @@ namespace Dev2.Common.DateAndTime
             return inputFormat;
         }
 
-        static bool IsBlankResult(IDateTimeResultTO result) => result.AmPm == DateTimeAmPm.am &&
-                   result.Days == 0 &&
-                   result.DaysOfWeek == 0 || result.DaysOfWeek == 1 &&
-                   result.DaysOfYear == 0 &&
-                   result.Era == null &&
-                   result.Hours == 0 &&
-                   !result.Is24H &&
-                   result.Milliseconds == 0 &&
-                   result.Minutes == 0 &&
-                   result.Months == 0 &&
-                   result.Seconds == 0 &&
-                   result.Weeks == 0 &&
-                   result.Years == 0;
+        static bool IsBlankResult(IDateTimeResultTO result)
+        {
+            var equal = result.AmPm == DateTimeAmPm.am;
+            equal &= result.Days == 0;
+            equal &= result.DaysOfWeek == 0 || result.DaysOfWeek == 1;
+            equal &= result.DaysOfYear == 0;
+            equal &= result.Era == null;
+            equal &= result.Hours == 0;
+            equal &= !result.Is24H;
+            equal &= result.Milliseconds == 0;
+            equal &= result.Minutes == 0;
+            equal &= result.Months == 0;
+            equal &= result.Seconds == 0;
+            equal &= result.Weeks == 0;
+            equal &= result.Years == 0;
+
+            return equal;
+        }
 
         bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
@@ -461,26 +403,8 @@ namespace Dev2.Common.DateAndTime
             while (partOptionsCount < partOptions.Count)
             {
                 var partOption = partOptions[partOptionsCount];
-
-                string forwardLookupResult;
-                bool predicateRun;
-
-                if (partOption.Length != partOption.ResultLength)
-                {
-                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
-                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                    if (!predicateRun)
-                    {
-                        forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-                        predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                    }
-                }
-                else
-                {
-                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-
-                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                }
+                
+                var (predicateRun, forwardLookupResult) = GetPredicateRunForwardLookupResult(dateTimeArray, startPosition, partOption, passAsTime);
 
                 //
                 // Check length of forward lookup is correct
@@ -496,27 +420,53 @@ namespace Dev2.Common.DateAndTime
                     resultLength = forwardLookupResult.Length;
                     dataFound = true;
 
-                    //
-                    // Decide on the correct value to use
-                    //
-                    IConvertible value;
-                    if (partOption.ActualValue != null)
-                    {
-                        value = partOption.ActualValue;
-                    }
-                    else if (partOption.IsNumeric)
-                    {
-                        value = Convert.ToInt32(forwardLookupResult);
-                    }
-                    else
-                    {
-                        value = forwardLookupResult;
-                    }
-                    partOption.AssignAction?.Invoke(result, passAsTime, value);
+                    partOption.AssignAction?.Invoke(result, passAsTime, GetCorrectTypeValue(partOption, forwardLookupResult));
                 }
-
+                
                 partOptionsCount++;
             }
+        }
+
+        private static IConvertible GetCorrectTypeValue(IDateTimeFormatPartOptionTO partOption, string forwardLookupResult)
+        {
+            IConvertible value;
+            if (partOption.ActualValue != null)
+            {
+                value = partOption.ActualValue;
+            }
+            else if (partOption.IsNumeric)
+            {
+                value = Convert.ToInt32(forwardLookupResult);
+            }
+            else
+            {
+                value = forwardLookupResult;
+            }
+            return value;
+        }
+
+        private static (bool predicateRun, string forwardLookupResult) GetPredicateRunForwardLookupResult(char[] dateTimeArray, int startPosition, IDateTimeFormatPartOptionTO partOption, bool passAsTime)
+        {
+            var forwardLookupResult = string.Empty;
+            var predicateRun = false;
+
+            if (partOption.Length != partOption.ResultLength)
+            {
+                forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
+                predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                if (!predicateRun)
+                {
+                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                }
+            }
+            else
+            {
+                forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+
+                predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+            }
+            return (predicateRun, forwardLookupResult);
         }
 
         /// <summary>
@@ -537,6 +487,102 @@ namespace Dev2.Common.DateAndTime
 
         public List<IDateTimeFormatPartTO> DateTimeFormatParts => _dateTimeFormatsParts.Values.ToList();
 
+    }
+
+    class GetDateTimeFormatPartsProcess
+    {
+        private bool _nothingDied = true;
+        private readonly string _format;
+        private readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookups1;
+        private readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions;
+
+        private List<IDateTimeFormatPartTO> _formatParts;
+        public List<IDateTimeFormatPartTO> Result
+        {
+            get => _formatParts;
+            set => _formatParts = value;
+        }
+
+        private string _error;
+        public string Error
+        {
+            get => _error;
+            set => _error = value;
+        }
+
+        public GetDateTimeFormatPartsProcess(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions)
+        {
+            _format = format;
+            _dateTimeFormatForwardLookups1 = dateTimeFormatForwardLookups;
+            _dateTimeFormatPartOptions = dateTimeFormatPartOptions;
+        }
+
+        public bool Execute()
+        {
+            var formatArray = _format.ToArray();
+
+            _formatParts = new List<IDateTimeFormatPartTO>();
+            _error = "";
+
+            var literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
+            var count = 0;
+
+            var currentValue = "";
+            while (count < formatArray.Length && _nothingDied)
+            {
+                var forwardLookupLength = 0;
+
+                GetLiteralRegionStateOrLength(_formatParts, formatArray, ref literalRegionState, count, ref currentValue, ref forwardLookupLength);
+
+                count++;
+                if (forwardLookupLength > 0)
+                {
+                    count += forwardLookupLength - 1;
+                }
+            }
+
+            if (currentValue.Length > 0 && literalRegionState != LiteralRegionStates.InsideLiteralRegion &&
+                literalRegionState != LiteralRegionStates.InsideLiteralRegionWithEscape)
+            {
+                _formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
+            }
+            else if (currentValue.Length > 0)
+            {
+                _nothingDied = false;
+                _error = "A \' character defines a start or end of a non date time region, there appears to be a extra \' character.";
+            }
+            else
+            {
+                //valid
+            }
+
+            return _nothingDied;
+        }
+        
+        private void GetLiteralRegionStateOrLength(List<IDateTimeFormatPartTO> formatParts, char[] formatArray, ref LiteralRegionStates literalRegionState, int count, ref string currentValue, ref int forwardLookupLength)
+        {
+            var currentChar = formatArray[count];
+            switch (literalRegionState)
+            {
+                case LiteralRegionStates.OutsideLiteralRegion:
+                    forwardLookupLength = DateTimeLiteralProcessor.ProcessOutsideLiteral(_dateTimeFormatForwardLookups1, _dateTimeFormatPartOptions, formatParts, ref _error, currentChar, formatArray, count, forwardLookupLength, ref literalRegionState, ref currentValue);
+                    break;
+                case LiteralRegionStates.InsideInferredLiteralRegion:
+                    forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideInferredLiteral(_dateTimeFormatForwardLookups1, _dateTimeFormatPartOptions, formatParts, ref _error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
+                    break;
+                case LiteralRegionStates.InsideInferredLiteralRegionWithEscape:
+                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref _error, currentChar, literalRegionState, ref currentValue, ref _nothingDied);
+                    break;
+                case LiteralRegionStates.InsideLiteralRegion:
+                    forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideLiteral(formatParts, ref _error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
+                    break;
+                case LiteralRegionStates.InsideLiteralRegionWithEscape:
+                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref _error, currentChar, literalRegionState, ref currentValue, ref _nothingDied);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unrecognized literal region state: " + literalRegionState);
+            }
+        }
     }
 }
 

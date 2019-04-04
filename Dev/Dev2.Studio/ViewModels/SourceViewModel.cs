@@ -1,3 +1,4 @@
+#pragma warning disable
 using System;
 using System.Windows;
 using Caliburn.Micro;
