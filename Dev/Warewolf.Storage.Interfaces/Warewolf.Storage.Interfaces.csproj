@@ -10,6 +10,7 @@
     <RootNamespace>Warewolf.Storage.Interfaces</RootNamespace>
     <AssemblyName>Warewolf.Storage.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+	<TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
