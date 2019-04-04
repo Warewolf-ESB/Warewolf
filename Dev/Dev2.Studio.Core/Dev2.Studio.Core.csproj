@@ -449,6 +449,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />
+    <PackageReference Include="Caliburn.Micro">
+      <Version>1.4.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
