@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -17,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Diagnostics
 {
-    
     [TestClass]
     public class DebugItemTests
     {
@@ -26,10 +25,10 @@ namespace Dev2.Tests.Diagnostics
             + "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
             + "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
-        #region Constructor
-
         [TestMethod]
-        public void Constructor_With_Array_Expected_InitializesWithArray()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_Constructor_With_Array_Expected_InitializesWithArray()
         {
             var result = new DebugItemResult { GroupName = "Hello", Value = "world" };
             var item = new DebugItem();
@@ -38,13 +37,10 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreSame(result, item.FetchResultsList()[0]);
         }
 
-        #endregion
-
-        #region Contains
-
         [TestMethod]
-
-        public void Contains_With_NullFilter_Expected_ReturnsInstance()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_Contains_With_NullFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
             item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
@@ -53,7 +49,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        public void Contains_With_EmptyFilter_Expected_ReturnsInstance()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_Contains_With_EmptyFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
             item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
@@ -62,7 +60,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        public void Contains_With_ValidFilter_Expected_ReturnsInstance()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_Contains_With_ValidFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
             item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
@@ -71,7 +71,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        public void Contains_With_InvalidFilter_Expected_ReturnsInstance()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_Contains_With_InvalidFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
             item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
@@ -79,9 +81,10 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsFalse(result);
         }
 
-
         [TestMethod]
-        public void Contains_With_Filter_Expected_IsCaseInsensitive()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_Contains_With_Filter_Expected_IsCaseInsensitive()
         {
             var item = new DebugItem();
             item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
@@ -89,24 +92,20 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsTrue(result);
         }
 
-        #endregion
-
-        #region TryCache
-
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
         [ExpectedException(typeof(ArgumentNullException))]
-
-        public void TryCache_With_NullParameters_Expected_ThrowsArgumentNullException()
-
+        public void DebugItem_TryCache_With_NullParameters_Expected_ThrowsArgumentNullException()
         {
             var debugState = new DebugItem();
             debugState.TryCache(null);
         }
 
         [TestMethod]
-
-        public void TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_TruncatesValueToActCharDispatchCount()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_TruncatesValueToActCharDispatchCount()
         {
             var item = CreateDebugItemWithLongValue();
 
@@ -117,9 +116,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-
-        public void TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_InvokesSaveFileWithFullContent()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_InvokesSaveFileWithFullContent()
         {
             var item = CreateDebugItemWithLongValue();
 
@@ -133,9 +132,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-
-        public void TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
         {
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, DebugItem.MaxCharDispatchCount);
@@ -147,9 +146,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-
-        public void TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
         {
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, DebugItem.MaxCharDispatchCount);
@@ -161,9 +160,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-
-        public void TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
@@ -176,9 +175,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-
-        public void TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
@@ -189,15 +188,12 @@ namespace Dev2.Tests.Diagnostics
 
             Assert.AreEqual(0, debugState.SaveFileHitCount);
         }
-        #endregion
-
-        #region SaveFile
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
         [ExpectedException(typeof(ArgumentNullException))]
-
-        public void SaveFile_With_NullParameters_Expected_ThrowsArgumentNullException()
-
+        public void DebugItem_SaveFile_With_NullParameters_Expected_ThrowsArgumentNullException()
         {
             var debugState = new DebugItem();
 
@@ -205,9 +201,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-
-        public void SaveFile_With_Contents_Expected_SavesFileToDisk()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_SaveFile_With_Contents_Expected_SavesFileToDisk()
         {
             var debugState = new DebugItem();
 
@@ -223,11 +219,9 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("DebugIem_SaveFile")]
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
         public void DebugIem_SaveFile_WithContentsNewLineChars_ExpectedSavesFileToDiskWithCorrectChars()
-
         {
             var debugState = new DebugItem();
 
@@ -245,16 +239,118 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(expeced, contents);
         }
 
-        #endregion
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_GroupIndex_Greater_And_Equal_To_MaxItemDispatchCount()
+        {
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupIndex = 11, GroupName = "Hello", Value = "world" });
+            Assert.AreEqual(1, item.ResultsList.Count);
+            Assert.AreEqual(11, item.ResultsList[0].GroupIndex);
+            Assert.AreEqual("Hello", item.ResultsList[0].GroupName);
+            Assert.IsFalse(item.ResultsList[0].HasError);
+            Assert.IsNull(item.ResultsList[0].Value);
+            Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
+        }
 
-        #region CreateDebugItemWithLongValue
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_GroupIndex_Greater_Than_MaxItemDispatchCount()
+        {
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupIndex = 15, GroupName = "Hello", Value = "world", Type = DebugItemResultType.Value });
+            Assert.AreEqual(0, item.ResultsList.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_GroupIndex_Greater_Than_MaxItemDispatchCount_Type_Label()
+        {
+            var item = new DebugItem();
+            const string val = LongText + LongText + LongText + LongText + LongText + LongText + LongText + LongText +
+                               LongText + LongText + LongText + LongText + LongText + LongText + LongText + LongText +
+                               LongText + LongText + LongText + LongText + LongText + LongText + LongText + LongText;
+
+            item.Add(new DebugItemResult { GroupIndex = 15, GroupName = "Hello", Value = val, Type = DebugItemResultType.Label });
+            Assert.AreEqual(0, item.ResultsList.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_GroupIndex_Less_Than_MaxItemDispatchCount()
+        {
+            var item = new DebugItem();
+            item.Add(new DebugItemResult { GroupIndex = 5, GroupName = "Hello", Value = LongText, Type = DebugItemResultType.Value });
+            Assert.AreEqual(1, item.ResultsList.Count);
+            Assert.AreEqual(5, item.ResultsList[0].GroupIndex);
+            Assert.AreEqual("Hello", item.ResultsList[0].GroupName);
+            Assert.IsFalse(item.ResultsList[0].HasError);
+            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore", item.ResultsList[0].Value);
+            Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_With_Results_AddRange()
+        {
+            var results = new[] { new DebugItemResult(), new DebugItemResult { GroupName = "group1", GroupIndex = 1 } };
+            var item = new DebugItem(results);
+            Assert.AreEqual(2, item.ResultsList.Count);
+
+            Assert.AreEqual(0, item.ResultsList[0].GroupIndex);
+            Assert.IsNull(item.ResultsList[0].GroupName);
+            Assert.IsFalse(item.ResultsList[0].HasError);
+            Assert.IsNull(item.ResultsList[0].Value);
+            Assert.IsNull(item.ResultsList[0].MoreLink);
+
+            Assert.AreEqual(1, item.ResultsList[1].GroupIndex);
+            Assert.AreEqual("group1", item.ResultsList[1].GroupName);
+            Assert.IsFalse(item.ResultsList[1].HasError);
+            Assert.IsNull(item.ResultsList[1].Value);
+            Assert.IsNull(item.ResultsList[1].MoreLink);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_With_Results_AddRange_Matching_Label()
+        {
+            var results = new[]
+            {
+                new DebugItemResult(),
+                new DebugItemResult
+                {
+                    GroupName = "group1",
+                    GroupIndex = 1,
+                    Type = DebugItemResultType.Variable
+                }
+            };
+            var item = new DebugItem(results);
+
+            Assert.AreEqual(1, item.ResultsList.Count);
+
+            Assert.AreEqual(0, item.ResultsList[0].GroupIndex);
+            Assert.IsNull(item.ResultsList[0].GroupName);
+            Assert.IsFalse(item.ResultsList[0].HasError);
+            Assert.IsNull(item.ResultsList[0].Value);
+            Assert.IsNull(item.ResultsList[0].MoreLink);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            var item = new DebugItem();
+            item.FlushStringBuilder();
+        }
 
         static DebugItemResult CreateDebugItemWithLongValue()
         {
             return new DebugItemResult { Type = DebugItemResultType.Value, Value = LongText };
         }
-
-        #endregion
-
     }
 }
