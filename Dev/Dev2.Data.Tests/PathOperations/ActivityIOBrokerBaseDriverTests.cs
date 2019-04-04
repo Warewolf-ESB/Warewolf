@@ -19,7 +19,7 @@ using Dev2.Common.Interfaces.Wrappers;
 namespace Dev2.Data.Tests.PathOperations
 {
     [TestClass]
-    public class ActivityIOBrokerMainDriverTests
+    public class ActivityIOBrokerBaseDriverTests
     {
         [TestMethod]
         [Owner("Rory McGuire")]
