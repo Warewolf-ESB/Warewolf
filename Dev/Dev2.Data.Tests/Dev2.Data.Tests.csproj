@@ -216,6 +216,7 @@
     <Compile Include="DataListConversionUtilsTests.cs" />
     <Compile Include="SharepointHelperTests.cs" />
     <Compile Include="OptomizedObservableCollectionTests.cs" />
+    <Compile Include="DataListTOTests.cs" />
     <Compile Include="Util\OperationsHelperTests.cs" />
     <Compile Include="Util\CommonRecordSetUtilTests.cs" />
     <Compile Include="WarewolfAtomComparerTests.cs" />
