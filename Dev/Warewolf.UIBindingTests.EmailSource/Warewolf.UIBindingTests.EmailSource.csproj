@@ -122,9 +122,6 @@
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
-    <PackageReference Include="Caliburn.Micro.Core">
-      <Version>3.0.1</Version>
-    </PackageReference>
     <PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
     </PackageReference>
