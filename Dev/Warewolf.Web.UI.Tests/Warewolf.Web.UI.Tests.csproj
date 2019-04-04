@@ -84,11 +84,6 @@
     <None Include="App.config" />
     <None Include="Convert NUnit tests to MSTest.ps1" />
     <None Include="packages.config" />
-    <None Include="..\Run Tests.ps1">
-      <Visible>False</Visible>
-      <Link>Run Tests.ps1</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
       <Visible>False</Visible>
 	</AdditionalFiles>

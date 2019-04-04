@@ -135,11 +135,6 @@
     <Compile Include="Interfaces\IApplicationAdaptor.cs" />
     <Compile Include="IViewFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
-    <None Include="..\Run Tests.ps1">
-      <Visible>False</Visible>
-      <Link>Run Tests.ps1</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
@@ -189,7 +184,6 @@
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlEnvironment.cs" />
     <Compile Include="ConnectionHelpers\ConnectedServerChangedEvent.cs" />
     <Compile Include="ConnectionHelpers\ConnectionEnumerations.cs" />
@@ -448,10 +442,13 @@
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Caliburn.Micro.Core">
+      <Version>3.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
