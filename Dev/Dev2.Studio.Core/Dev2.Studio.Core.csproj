@@ -445,9 +445,6 @@
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
-    <PackageReference Include="Caliburn.Micro.Core">
-      <Version>3.0.1</Version>
-    </PackageReference>
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
