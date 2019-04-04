@@ -12,7 +12,7 @@
     <RootNamespace>Dev2.Tests</RootNamespace>
     <AssemblyName>Dev2.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-	<TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
+	  <TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -238,7 +238,9 @@
       <Link>App.config</Link>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>
