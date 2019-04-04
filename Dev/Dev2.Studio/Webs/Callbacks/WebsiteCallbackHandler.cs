@@ -71,7 +71,7 @@ namespace Dev2.Webs.Callbacks
             {
                 throw new ArgumentNullException(nameof(value));
             }
-            value = JSONUtils.ScrubJSON(value);
+            value = JsonUtils.ScrubJson(value);
 
             dynamic jsonObj = JObject.Parse(value);
             Save(server, jsonObj);

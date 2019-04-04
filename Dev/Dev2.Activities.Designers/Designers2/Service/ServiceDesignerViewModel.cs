@@ -201,7 +201,7 @@ namespace Dev2.Activities.Designers2.Service
                 if (contentPresenter != null)
                 {
                     var json = item.GetJson();
-                    contentPresenter.Text = JSONUtils.Format(json);
+                    contentPresenter.Text = JsonUtils.Format(json);
                 }
 
                 window.ShowDialog();
