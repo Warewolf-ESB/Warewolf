@@ -14,26 +14,30 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using ActivityUnitTests;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for DateTimeDifferenceTests
-    /// </summary>
     [TestClass]
     public class DateTimeActivityTests : BaseActivityUnitTest
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-
-        #region DateTime Tests
 
         //Added for BUG 9494
         [TestMethod]
@@ -133,13 +137,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
-
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
+        [TestCategory(nameof(DsfDateTimeActivity))]
+        [Owner("Rory McGuire")]
+        public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
         {
-            var now = DateTime.Now;
+            var startTime = DateTime.Now;
+
+            Thread.Sleep(1200);
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -147,51 +151,42 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ""
                          , ""
                          , ""
-                         , "Seconds"
-                         , 10
+                         , ""
+                         , 0
                          , "[[MyTestResult]]");
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            var actualdt = DateTime.Parse(actual);
-            var timeSpan = actualdt - now;
+            var parsedResult = DateTime.Parse(actual);
 
-            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
+            Thread.Sleep(1100);
+
+            var endTime = DateTime.Now;
+
+            Assert.IsTrue(endTime >= parsedResult, $"expected a time <= ({endTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
+            Assert.IsTrue(parsedResult >= startTime, $"expected a time >= ({startTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
+            Assert.IsTrue(endTime >= parsedResult && parsedResult >= startTime, $"expected a time between starting this test ({startTime}) and ({endTime}) but got: '{parsedResult}' with Start Time Timezone {startTime.ToString("zzz")}, End Time Timezone {endTime.ToString("zzz")}, and Parsed Result Timezone {parsedResult.ToString("zzz")}");
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
-
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
-
+        [TestCategory(nameof(DsfDateTimeActivity))]
+        [Owner("Rory McGuire")]
+        public void DsfDateTimeActivity_ExecuteWithBlankInputAndMonthsOutput_OutputNotZero()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
                          , ""
                          , ""
-                         , "sp"
-                         , "Seconds"
-                         , 10
+                         , "MM"
+                         , "Months"
+                         , 0
                          , "[[MyTestResult]]");
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            if (actual == "0")
-            {
-                Thread.Sleep(11);
-
-                result = ExecuteProcess();
-
-                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-
-                Assert.IsTrue(actual != "0");
-            }
-            Assert.IsTrue(actual != "0");
+            Assert.AreEqual(DateTime.Now.ToString("MMMM"), actual, "Month mismatch");
         }
-        #endregion DateTime Tests
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -215,8 +210,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
-
-        #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
         {
@@ -243,9 +236,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = currentDL;
             TestData = testData;
         }
-
-
-        #endregion Private Test Methods
-
     }
 }

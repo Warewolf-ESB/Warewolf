@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Monitoring

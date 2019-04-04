@@ -19,6 +19,16 @@ namespace Dev2.Core.Tests.AppResources.Converters
 	[TestCategory("Studio Resources Core")]
     public class DateTimeToStringConverterTests
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DateTimeToStringConverter_Convert")]
