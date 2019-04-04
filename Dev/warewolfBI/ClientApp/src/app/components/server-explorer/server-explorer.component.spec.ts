@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ServerExplorerComponent } from './server-explorer.component';
 
-describe('ServerExplorerComponent', () => {
+describe('Component: ServerExplorerComponent', () => {
   let component: ServerExplorerComponent;
   let fixture: ComponentFixture<ServerExplorerComponent>;
 

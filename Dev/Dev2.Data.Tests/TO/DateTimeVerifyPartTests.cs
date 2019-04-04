@@ -6,6 +6,16 @@ namespace Dev2.Data.Tests.TO
     [TestClass]
     public class DateTimeVerifyPartTests
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         [TestMethod]
         public void DateTimeVerifyPart_ShouldCreateDateTiimePart()
         {

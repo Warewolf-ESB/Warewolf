@@ -15,7 +15,7 @@ let fixture: ComponentFixture<LogEntryComponent>;
 let mockLogEntry: LogEntry;
 let spyOnAdd: jasmine.Spy;
 
-describe('LogEntryComponent', () => {
+describe('Component: LogEntryComponent', () => {
 
   // mock object with close method
   const dialogMock = {

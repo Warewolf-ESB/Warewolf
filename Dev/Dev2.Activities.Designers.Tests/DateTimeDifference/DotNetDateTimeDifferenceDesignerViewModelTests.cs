@@ -24,6 +24,16 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
     [TestClass]
     public class DotNetDateTimeDifferenceDesignerViewModelTests
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DateTimeDifferenceDesignerViewModel_Constructor")]
