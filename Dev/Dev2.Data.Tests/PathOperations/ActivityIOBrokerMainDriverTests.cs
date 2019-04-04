@@ -23,12 +23,12 @@ using Dev2.Common.Wrappers;
 namespace Dev2.Data.Tests.PathOperations
 {
     [TestClass]
-    public class ActivityIOBrokerDriverTests
+    public class ActivityIOBrokerMainDriverTests
     {
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_RemoveTmpFile()
+        public void ActivityIOBrokerMainDriver_RemoveTmpFile()
         {
             //---------------Set up test pack-------------------
             var file = new Mock<IFile>();
@@ -44,7 +44,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_RemoveTmpFile_GivenEmptyFile_ShouldThrowAndLogException()
+        public void ActivityIOBrokerMainDriver_RemoveTmpFile_GivenEmptyFile_ShouldThrowAndLogException()
         {
             var exception = new Exception("empty file name");
             var file = new Mock<IFile>();
@@ -72,7 +72,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendBottom_GivenPutFails_ExpectFailure()
+        public void ActivityIOBrokerMainDriver_WriteToRemoteTempStorage_AppendBottom_GivenPutFails_ExpectFailure()
         {
 
             var somePath = Path.GetTempFileName();
@@ -125,7 +125,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendBottom()
+        public void ActivityIOBrokerMainDriver_WriteToRemoteTempStorage_AppendBottom()
         {
 
             var somePath = Path.GetTempFileName();
@@ -178,7 +178,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendTop()
+        public void ActivityIOBrokerMainDriver_WriteToRemoteTempStorage_AppendTop()
         {
             var somePath = Path.GetTempFileName();
             File.WriteAllText(somePath, "some text");
@@ -221,7 +221,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendDefault()
+        public void ActivityIOBrokerMainDriver_WriteToRemoteTempStorage_AppendDefault()
         {
 
             var somePath = Path.GetTempFileName();
@@ -276,7 +276,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToRemoteTempStorage_AppendDefault_Base64()
+        public void ActivityIOBrokerMainDriver_WriteToRemoteTempStorage_AppendDefault_Base64()
         {
 
             var somePath = Path.GetTempFileName();
@@ -331,7 +331,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToLocalTempStorage_AppendBottom()
+        public void ActivityIOBrokerMainDriver_WriteToLocalTempStorage_AppendBottom()
         {
 
             var somePath = Path.GetTempFileName();
@@ -385,7 +385,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToLocalTempStorage_AppendTop()
+        public void ActivityIOBrokerMainDriver_WriteToLocalTempStorage_AppendTop()
         {
 
             var somePath = Path.GetTempFileName();
@@ -438,7 +438,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
-        public void Dev2ActivityIOBroker_WriteToLocalTempStorage_Overwrite()
+        public void ActivityIOBrokerMainDriver_WriteToLocalTempStorage_Overwrite()
         {
 
             var somePath = Path.GetTempFileName();
@@ -486,7 +486,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
-        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GiventmpFile()
+        public void ActivityIOBrokerMainDriver_MoveTmpFileToDestination_GiventmpFile()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
@@ -525,7 +525,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
-        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GivenDirectoryCreateFails_ShouldFail()
+        public void ActivityIOBrokerMainDriver_MoveTmpFileToDestination_GivenDirectoryCreateFails_ShouldFail()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
@@ -560,7 +560,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
-        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GivenPutFails_ShouldFail()
+        public void ActivityIOBrokerMainDriver_MoveTmpFileToDestination_GivenPutFails_ShouldFail()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
@@ -595,7 +595,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
-        public void Dev2ActivityIOBroker_ZipFileToALocalTempFile_RequiresTmpStorage_ExpectSuccess()
+        public void ActivityIOBrokerMainDriver_ZipFileToALocalTempFile_RequiresTmpStorage_ExpectSuccess()
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
@@ -624,7 +624,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
-        public void Dev2ActivityIOBroker_ZipFileToALocalTempFile_RequiresTmpStorage_False_ExpectSuccess()
+        public void ActivityIOBrokerMainDriver_ZipFileToALocalTempFile_RequiresTmpStorage_False_ExpectSuccess()
         {
             var mockFile = new Mock<IFile>();
             mockFile.Setup(o => o.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>())).Callback<string, byte[]>((filename, bytes) => new Dev2.Common.Wrappers.FileWrapper().WriteAllBytes(filename, bytes));
