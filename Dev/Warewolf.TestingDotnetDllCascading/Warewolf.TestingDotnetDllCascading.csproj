@@ -11,6 +11,7 @@
     <AssemblyName>Warewolf.TestingDotnetDllCascading</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
 	<TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SonarQubeExclude>True</SonarQubeExclude>
@@ -53,11 +54,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Human.cs" />
-    <None Include="..\Run Tests.ps1">
-      <Link>Run Tests.ps1</Link>
-      <Visible>False</Visible>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>

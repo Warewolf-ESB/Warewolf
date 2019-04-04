@@ -10,6 +10,7 @@
     <AssemblyName>Dev2.Activities</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
 	<TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -130,11 +131,6 @@
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
-    <None Include="..\Run Tests.ps1">
-      <Link>Run Tests.ps1</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>False</Visible>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
