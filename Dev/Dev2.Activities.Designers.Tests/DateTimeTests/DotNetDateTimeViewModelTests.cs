@@ -25,6 +25,16 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
     [TestClass]
     public class DotNetDateTimeViewModelTests
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         [TestMethod]
         public void DateTimeDesignerViewModel_ShouldSetInputFormat_WhenNoInputFormat()
         {

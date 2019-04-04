@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OutputsExplorerComponent } from './outputs-explorer.component';
 
-describe('OutputsExplorerComponent', () => {
+describe('Component: OutputsExplorerComponent', () => {
   let component: OutputsExplorerComponent;
   let fixture: ComponentFixture<OutputsExplorerComponent>;
 
