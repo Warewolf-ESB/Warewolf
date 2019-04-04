@@ -1,6 +1,6 @@
 import { CustomMaterialModule } from './custommaterial.module';
 
-describe('CustomMaterialModule', () => {
+describe('Module: CustomMaterialModule', () => {
   let custommaterialModule: CustomMaterialModule;
 
   beforeEach(() => {

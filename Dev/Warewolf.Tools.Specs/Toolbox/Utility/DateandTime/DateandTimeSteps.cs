@@ -36,6 +36,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
 
             this.scenarioContext = scenarioContext;
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
         }
 
         protected override void BuildDataList()
