@@ -229,7 +229,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
                 };
-                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName);
+                DebugDispatcher.Instance.Write(new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName });
             }
         }
 
@@ -337,8 +337,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (state != null)
             {
-                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-            }
+                _debugDispatcher.Write( new WriteArgs { debugState = state, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID, parentInstanceId = dataObject.ParentInstanceID, remoteDebugItems = dataObject.RemoteDebugItems });
+            } 
         }
 
         bool Dispatch(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, DateTime? endTime, Guid remoteID)
