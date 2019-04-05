@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -7,6 +17,7 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
@@ -29,8 +40,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("Runtime ESB")]
-        public void Constructor_GivenArgs_ShouldPassThrough()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_Constructor_GivenArgs_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
@@ -53,8 +64,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("Runtime ESB")]
-        public void Execute_GivenArgs_ShouldPassThrough_ReturnsExecutedResults()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_Execute_GivenArgs_ShouldPassThrough_ReturnsExecutedResults()
         {
             //---------------Set up test pack-------------------
             var resourceId = Guid.NewGuid();
@@ -122,7 +133,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenStopExecutionAndUnAuthorized_ShouldAddFailureMessage()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_Execute_GivenStopExecutionAndUnAuthorized_ShouldAddFailureMessage()
         {
             //---------------Set up test pack-------------------
             var resourceId = Guid.NewGuid();
@@ -211,8 +223,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("Runtime ESB")]
-        public void CanExecute_GivenArgs_ShouldPassThrough()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_CanExecute_GivenArgs_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
@@ -237,8 +249,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("Runtime ESB")]
-        public void UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
         {
             //------------Setup for test-------------------------
             var resourceId = Guid.NewGuid();
@@ -296,8 +308,8 @@ Test Failed because of some reasons
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("Runtime ESB")]
-        public void GetTestRunResults_Given_ThereIsNoError_And_EnvironmentHasNoErrorSetsTest_ToPass()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_GetTestRunResults_Given_ThereIsNoError_And_EnvironmentHasNoErrorSetsTest_ToPass()
         {
             //------------Setup for test-------------------------
             var resourceId = Guid.NewGuid();
@@ -346,8 +358,8 @@ Test Failed because of some reasons
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("Runtime ESB")]
-        public void GetTestRunResults_Given_ThereIsAnError_And_EnvironmentHasError_SetsTest_ToPass()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_GetTestRunResults_Given_ThereIsAnError_And_EnvironmentHasError_SetsTest_ToPass()
         {
             //------------Setup for test-------------------------
             var resourceId = Guid.NewGuid();
@@ -392,8 +404,8 @@ Test Failed because of some reasons
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("Runtime ESB")]
-        public void ExecuteWf_GivenRecordSetsInputs_Should_AssignAllRecordSetItems()
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_ExecuteWf_GivenRecordSetsInputs_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
             var resourceId = Guid.NewGuid();
@@ -439,6 +451,53 @@ Test Failed because of some reasons
             });
             //---------------Test Result -----------------------
             dsfObj.Verify(o => o.Environment.Assign("[[Person(1).Name]]", "Marry", 0), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_ExecuteWf_TestCatalog_Null_Should_AssignAllRecordSetItems()
+        {
+            //------------Setup for test-------------------------
+            var workSpace = new Mock<IWorkspace>();
+            var channel = new Mock<IEsbChannel>();
+            var dsfObj = new Mock<IDSFDataObject>();
+            var resourceCat = new Mock<IResourceCatalog>();
+            var activity = new Mock<IDev2Activity>();
+
+            const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
+            const string TestName = "test2";
+
+            var fetch = JsonResource.Fetch("AssignWithRecSet");
+            var s = new Dev2JsonSerializer();
+
+            var resourceId = Guid.NewGuid();
+            var serviceAction = new ServiceAction
+            {
+                DataListSpecification = new StringBuilder(Datalist),
+                Service = new DynamicService { ID = resourceId }
+            };
+
+            dsfObj.SetupProperty(o => o.ResourceID);
+            dsfObj.Setup(o => o.TestName).Returns(TestName);
+            dsfObj.Setup(o => o.ParentServiceName).Returns("test_ParentServiceName");
+            dsfObj.Setup(o => o.IsDebug).Returns(true);
+            
+            var esbExecuteRequest = new EsbExecuteRequest();
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, null, resourceCat.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
+            Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
+            Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
+            //---------------Execute Test ----------------------
+            Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+            Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
+            {
+                var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
+                Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
+            });
+
+            dsfObj.VerifyAll();
         }
 
         internal class ServiceTestExecutionContainerMock : ServiceTestExecutionContainer
