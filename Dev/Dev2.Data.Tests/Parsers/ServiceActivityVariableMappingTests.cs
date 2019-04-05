@@ -14,18 +14,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Parsers
 {
     [TestClass]
-    public class LanguageParserTests
+    public class ServiceActivityVariableMappingTests
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Empty_MappingDefinition()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Empty_MappingDefinition()
         {
             const string elementTag = "";
             const string mapsTo = "";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             var mappingDefinition = string.Empty;
 
@@ -35,14 +35,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_MappingDefinition()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_MappingDefinition()
         {
             const string elementTag = "";
             const string mapsTo = "";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<DataList></DataList>";
 
@@ -52,14 +52,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_MapsTo_False_ElementTag_MappingDefinition()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_MapsTo_False_ElementTag_MappingDefinition()
         {
             const string elementTag = "Input";
             const string mapsTo = "Source";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Inputs><Input Name=""Name"" Source="""" IsObject=""False"" /></Inputs>";
 
@@ -69,14 +69,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_MapsTo_True_ElementTag_MappingDefinition()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_MapsTo_True_ElementTag_MappingDefinition()
         {
             const string elementTag = "Output";
             const string mapsTo = "MapsTo";
             const bool defaultValueToMapsTo = true;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Outputs><Output Name=""Message"" MapsTo="""" Value="""" IsObject=""False"" /></Outputs>";
 
@@ -99,14 +99,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_MapsTo_Contains_Brackets()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_MapsTo_Contains_Brackets()
         {
             const string elementTag = "Output";
             const string mapsTo = "MapsTo";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Outputs><Output Name=""[[Message]]"" MapsTo="""" Value=""world"" IsObject=""False"" /></Outputs>";
 
@@ -129,14 +129,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Value_Contains_Brackets()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Value_Contains_Brackets()
         {
             const string elementTag = "Output";
             const string mapsTo = "MapsTo";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Outputs><Output Name=""[[Message]]"" MapsTo="""" Value=""[[world]]"" IsObject=""False"" /></Outputs>";
 
@@ -159,14 +159,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Value_Contains_Brackets_DefaultValueToMapsTo_True()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Value_Contains_Brackets_DefaultValueToMapsTo_True()
         {
             const string elementTag = "Output";
             const string mapsTo = "MapsTo";
             const bool defaultValueToMapsTo = true;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Outputs><Output Name=""[[Message]]"" MapsTo=""[[NewMessage]]"" Value=""[[world]]"" IsObject=""False"" /></Outputs>";
 
@@ -189,14 +189,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Recordset_DefaultValueMapsTo_True()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Recordset_DefaultValueMapsTo_True()
         {
             const string elementTag = "Input";
             const string mapsTo = "Source";
             const bool defaultValueToMapsTo = true;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Inputs><Input Name=""a"" Source="""" IsObject=""False"" Recordset=""rec"" /><Input Name=""b"" Source="""" IsObject=""False"" Recordset=""rec"" /></Inputs>";
 
@@ -234,14 +234,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Recordset_DefaultValueMapsTo_False()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Recordset_DefaultValueMapsTo_False()
         {
             const string elementTag = "Output";
             const string mapsTo = "MapsTo";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Outputs><Output Name=""a"" MapsTo="""" Value=""1"" IsObject=""False"" Recordset=""rec"" /><Output Name=""b"" MapsTo="""" Value=""2"" IsObject=""False"" Recordset=""rec"" /></Outputs>";
 
@@ -280,14 +280,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Input_ChildNodes_IsRequired_True()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Input_ChildNodes_IsRequired_True()
         {
             const string elementTag = "Input";
             const string mapsTo = "Source";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Inputs><Input Name=""a"" Source="""" IsObject=""False"" Recordset=""rec""><Validator Type=""Required"">True</Validator></Input><Input Name=""b"" Source="""" IsObject=""False"" Recordset=""rec"" /></Inputs>";
 
@@ -298,14 +298,14 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LanguageParser))]
-        public void LanguageParser_Parse_Output_ChildNodes_IsRequired_True()
+        [TestCategory(nameof(ServiceActivityVariableMapping))]
+        public void ServiceActivityVariableMapping_Parse_Output_ChildNodes_IsRequired_True()
         {
             const string elementTag = "Output";
             const string mapsTo = "MapsTo";
             const bool defaultValueToMapsTo = false;
 
-            var languageParser = new LanguageParserTesting(elementTag, mapsTo, defaultValueToMapsTo);
+            var languageParser = new ServiceActivityVariableMappingTesting(elementTag, mapsTo, defaultValueToMapsTo);
 
             const string mappingDefinition = @"<Outputs><Output Name=""a"" MapsTo="""" Value=""1"" Recordset=""rec""><Validator Type=""NotRequired"">False</Validator></Output><Output Name=""b"" MapsTo="""" Value=""2"" IsObject=""False"" Recordset=""rec""><Validator Type=""Required"">True</Validator></Output></Outputs>";
 
@@ -343,9 +343,9 @@ namespace Dev2.Data.Tests.Parsers
         }
     }
 
-    class LanguageParserTesting : LanguageParser
+    class ServiceActivityVariableMappingTesting : ServiceActivityVariableMapping
     {
-        public LanguageParserTesting(string elementTag, string mapsTo, bool defaultValueToMapsTo)
+        public ServiceActivityVariableMappingTesting(string elementTag, string mapsTo, bool defaultValueToMapsTo)
             : base(elementTag, mapsTo, defaultValueToMapsTo)
         {
         }
