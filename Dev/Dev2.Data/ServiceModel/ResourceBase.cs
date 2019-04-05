@@ -1,4 +1,3 @@
-#pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -336,7 +335,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public bool Equals(IResource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -349,7 +348,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -465,7 +464,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                             var resourceName = element.AttributeSafe("ServiceName");
                             Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
                             Guid.TryParse(resourceIdAsString, out Guid resId);
-                            Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, resourceType));
+                            Dependencies.Add(
+                                new ResourceForTree
+                                {
+                                    ResourceID = resId,
+                                    UniqueID = uniqueId,
+                                    ResourceName = resourceName,
+                                    ResourceType = resourceType
+                                });
                             AddRemoteServerDependencies(element);
                         });
                     }
@@ -484,7 +490,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        string GetResourceTypeFromName(string localName)
+        static string GetResourceTypeFromName(string localName)
         {
             switch (localName)
             {
@@ -525,7 +531,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = Guid.Empty,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
                 }
             }
         }
@@ -554,7 +567,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = Guid.Empty,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
                 }
             }
         }
@@ -584,7 +604,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = Guid.Empty,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
                 }
             }
         }
@@ -612,7 +639,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "RabbitMQSource"));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = "",
+                            ResourceType = "RabbitMQSource"
+                        });
                 }
             }
         }
@@ -646,7 +680,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "WebSource"));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = resourceName,
+                            ResourceType = "WebSource"
+                        });
                 }
             }
         }
@@ -686,7 +727,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "SharepointSource"));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = resourceName,
+                            ResourceType = "SharepointSource"
+                        });
                 }
             }
         }
@@ -702,17 +750,16 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
 
                 var resourceName = element.AttributeSafe("FriendlySourceName");
-                Dependencies.Add(CreateResourceForTree(environmentId, Guid.Empty, resourceName, "Server"));
+                Dependencies.Add(
+                    new ResourceForTree
+                    {
+                        ResourceID = environmentId,
+                        UniqueID = Guid.Empty,
+                        ResourceName = resourceName,
+                        ResourceType = "Server"
+                    });
             }
         }
-
-        static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, string resourceType) => new ResourceForTree
-        {
-            UniqueID = uniqueId,
-            ResourceID = resourceId,
-            ResourceName = resourceName,
-            ResourceType = resourceType
-        };
 
         public static void ParseProperties(string s, Dictionary<string, string> properties)
         {
