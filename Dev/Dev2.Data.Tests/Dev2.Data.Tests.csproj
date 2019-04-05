@@ -159,7 +159,7 @@
     <Compile Include="MethodOutputTests.cs" />
     <Compile Include="Operations\NotBetweenTests.cs" />
     <Compile Include="Parsers\DataLanguageParserImplementationTests.cs" />
-    <Compile Include="Parsers\LanguageParserTests.cs" />
+    <Compile Include="Parsers\ServiceActivityVariableMappingTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriverTests.cs" />
