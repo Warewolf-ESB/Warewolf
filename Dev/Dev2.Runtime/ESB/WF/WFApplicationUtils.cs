@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ESB.WF
                 var debugDispatcher = _getDebugDispatcher();
                 if (debugState.StateType == StateType.End)
                 {
-                    debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                    debugDispatcher.Write(new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID, parentInstanceId = dataObject.ParentInstanceID, remoteDebugItems = dataObject.RemoteDebugItems });
                     var dataObjectExecutionId = dataObject.ExecutionID.ToString();
                     try
                     {
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 else
                 {
-                    debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName);
+                    debugDispatcher.Write( new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName });
                 }
             }
         }

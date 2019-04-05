@@ -23,6 +23,23 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DateTimeActivityTests : BaseActivityUnitTest
     {
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext { get; set; }
+
+        //Added for BUG 9494
         [TestMethod]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
         {
@@ -194,8 +211,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
 
-        #region Private Test Methods
-
         void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
         {
             TestStartNode = new FlowStep
@@ -221,9 +236,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = currentDL;
             TestData = testData;
         }
-
-
-        #endregion Private Test Methods
-
     }
 }

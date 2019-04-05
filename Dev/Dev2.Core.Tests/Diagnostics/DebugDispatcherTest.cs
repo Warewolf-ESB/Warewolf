@@ -140,7 +140,7 @@ namespace Dev2.Tests.Diagnostics
         public void DebugDispatcher_WriteWithNull()
         {
             var debugDispatcher = new DebugDispatcherImplementation();
-            debugDispatcher.Write(null, false, false, "");
+            debugDispatcher.Write( new WriteArgs{ testName = "" } );
 
             // No exception thrown
             Assert.IsTrue(true);
@@ -172,9 +172,15 @@ namespace Dev2.Tests.Diagnostics
                 TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
 
-            debugDispatcher.Write(mockState.Object);
-            debugDispatcher.Write(mockState.Object);
-            debugDispatcher.Write(mockState.Object);
+            var writeArgs = new WriteArgs
+            {
+                debugState = mockState.Object,
+
+            };
+
+            debugDispatcher.Write(writeArgs);
+            debugDispatcher.Write(writeArgs);
+            debugDispatcher.Write(writeArgs);
 
             Thread.Sleep(50);
             writer.Verify(s => s.Write(expectedJson), Times.Exactly(3));
@@ -198,8 +204,15 @@ namespace Dev2.Tests.Diagnostics
 
             var remoteID = Guid.NewGuid();
 
+            var writeArgs = new WriteArgs
+            {
+                debugState = state.Object,
+                isRemoteInvoke = true,
+                remoteInvokerId = remoteID.ToString()
+            };
+
             //------------Execute Test---------------------------
-            debugDispatcher.Write(state.Object, false,false,"",true, remoteID.ToString());
+            debugDispatcher.Write(writeArgs);
 
             //------------Assert Results-------------------------
 
@@ -229,7 +242,7 @@ namespace Dev2.Tests.Diagnostics
             mockState.Setup(o => o.SessionID).Returns(sessionId);
             mockState.Setup(o => o.IsFinalStep()).Returns(true);
 
-            debugDispatcher.Write(mockState.Object, true, false, "testname1");
+            debugDispatcher.Write(new WriteArgs { debugState = mockState.Object, isTestExecution = true, testName = "testname1" });
 
             var items = TestDebugMessageRepo.Instance.FetchDebugItems(sourceResourceId, "testname1");
 
@@ -252,7 +265,7 @@ namespace Dev2.Tests.Diagnostics
             mockState.Setup(o => o.SessionID).Returns(sessionId);
             mockState.Setup(o => o.IsFinalStep()).Returns(true);
 
-            debugDispatcher.Write(mockState.Object, false, true, "testname");
+            debugDispatcher.Write( new WriteArgs{ debugState = mockState.Object, isDebugFromWeb = true, testName = "testname" });
 
             var items = WebDebugMessageRepo.Instance.FetchDebugItems(clientId, sessionId);
 
@@ -298,7 +311,7 @@ namespace Dev2.Tests.Diagnostics
 
             var remoteInvokerId = Guid.NewGuid();
             var parentInstanceId = Guid.NewGuid();
-            debugDispatcher.Write(mockState.Object, false, false, "testname2", false, remoteInvokerId.ToString(), parentInstanceId.ToString(), remoteDebugItems);
+            debugDispatcher.Write( new WriteArgs { debugState = mockState.Object, testName = "testname2", remoteInvokerId = remoteInvokerId.ToString(), parentInstanceId = parentInstanceId.ToString(), remoteDebugItems = remoteDebugItems });
 
             var items = DebugMessageRepo.Instance.FetchDebugItems(clientId, sessionId);
 

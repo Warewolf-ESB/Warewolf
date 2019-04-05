@@ -25,17 +25,23 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         static IDateTimeParser _parser;
         
         public TestContext TestContext { get; set; }
-        
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
+
+        [TestInitialize]
+        public void PreConditions()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+        }
+
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
             _parser = DateTimeConverterFactory.CreateParser();
         }
-           
+
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
