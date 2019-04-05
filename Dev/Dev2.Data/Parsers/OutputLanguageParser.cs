@@ -15,7 +15,7 @@ using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Parsers
 {
-    public class OutputLanguageParser : LanguageParser, IDev2LanguageParser
+    public class OutputLanguageParser : ServiceActivityVariableMapping, IDev2LanguageParser
     {
 
         #region Attributes
