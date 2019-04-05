@@ -204,9 +204,10 @@
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
-    <Reference Include="Dev2.Studio.Core">
-      <HintPath>..\Binaries\Dev2.Studio.Core.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
