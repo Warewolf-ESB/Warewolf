@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +36,7 @@ namespace Dev2.Tests.Runtime.WF
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_ShouldConstruct()
+        public void WfApplicationUtils_OnCreation_ShouldConstruct()
         {
             //---------------Set up test pack-------------------
 
@@ -40,7 +50,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugValues_GivenGiven2Values_ShouldReturnTwoDebugValueItems()
+        public void WfApplicationUtils_GetDebugValues_GivenGiven2Values_ShouldReturnTwoDebugValueItems()
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
@@ -60,7 +70,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugValues_GivenDuplicateDefs_ShouldReturnDistinctValues()
+        public void WfApplicationUtils_GetDebugValues_GivenDuplicateDefs_ShouldReturnDistinctValues()
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
@@ -80,7 +90,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugValues_GivenDefinations_ShouldAddBracketsToValues()
+        public void WfApplicationUtils_GetDebugValues_GivenDefinations_ShouldAddBracketsToValues()
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
@@ -101,7 +111,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugValues_GivenRecSetDefinations_ShouldAddRecNotationToValues()
+        public void WfApplicationUtils_GetDebugValues_GivenRecSetDefinations_ShouldAddRecNotationToValues()
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
@@ -122,7 +132,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FindServiceShape_GivenNoResource_ShouldEmptyShape()
+        public void WfApplicationUtils_FindServiceShape_GivenNoResource_ShouldEmptyShape()
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
@@ -140,7 +150,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FindServiceShape_GivenResource_ShouldReturnShape()
+        public void WfApplicationUtils_FindServiceShape_GivenResource_ShouldReturnShape()
         {
             //---------------Set up test pack-------------------
             var mock1 = new Mock<IResourceCatalog>();
@@ -163,7 +173,7 @@ namespace Dev2.Tests.Runtime.WF
         //DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible=true)
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DispatchDebugState_GivenValidParams_ShouldNotThrowException()
+        public void WfApplicationUtils_DispatchDebugState_GivenValidParams_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
             var mock1 = new Mock<IResourceCatalog>();
@@ -188,7 +198,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DispatchDebugState_GivenValidParamsAndIsDebugMode_ShouldWriteUsingDebugDispactcher()
+        public void WfApplicationUtils_DispatchDebugState_GivenValidParamsAndIsDebugMode_ShouldWriteUsingDebugDispactcher()
         {
             //---------------Set up test pack-------------------
             var mock1 = new Mock<IResourceCatalog>();
@@ -196,7 +206,7 @@ namespace Dev2.Tests.Runtime.WF
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();
             var debugState = new DebugState { StateType = StateType.Start };
-            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+            debugDispatcher.Setup(dispatcher => dispatcher.Write(new WriteArgs { debugState = debugState, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
             var mock = new Mock<Func<IDebugDispatcher>>();
             mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
@@ -211,12 +221,12 @@ namespace Dev2.Tests.Runtime.WF
 
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error);
                 var state = debugState;
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = state, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
 
                 debugState = new DebugState { StateType = StateType.End };
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.End, false, string.Empty, out error);
 
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = debugState, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
             }
             catch (Exception ex)
             {
@@ -228,14 +238,14 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DispatchDebugState_GivenValidParamsAndIntergoateInputs_ShouldWriteUsingDebugDispactcher()
+        public void WfApplicationUtils_DispatchDebugState_GivenValidParamsAndIntergoateInputs_ShouldWriteUsingDebugDispactcher()
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();
             var debugState = new DebugState { StateType = StateType.Start };
-            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+            debugDispatcher.Setup(dispatcher => dispatcher.Write(new WriteArgs { debugState = debugState, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
             var mock = new Mock<Func<IDebugDispatcher>>();
             mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
@@ -249,7 +259,7 @@ namespace Dev2.Tests.Runtime.WF
             {
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, true, true);
                 var state = debugState;
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = state, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
             }
             catch (Exception ex)
             {
@@ -260,7 +270,7 @@ namespace Dev2.Tests.Runtime.WF
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DispatchDebugState_GivenValidParamsAndIntergoateOutputs_ShouldWriteUsingDebugDispactcher_GetResourceForDatalist()
+        public void WfApplicationUtils_DispatchDebugState_GivenValidParamsAndIntergoateOutputs_ShouldWriteUsingDebugDispactcher_GetResourceForDatalist()
         {
             //---------------Set up test pack-------------------
             var catLog = new Mock<IResourceCatalog>();
@@ -277,7 +287,7 @@ namespace Dev2.Tests.Runtime.WF
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();
             var debugState = new DebugState { StateType = StateType.Start };
-            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+            debugDispatcher.Setup(dispatcher => dispatcher.Write(new WriteArgs { debugState = debugState, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
             var mock = new Mock<Func<IDebugDispatcher>>();
             mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
@@ -293,7 +303,7 @@ namespace Dev2.Tests.Runtime.WF
 
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, false, true);
                 var state = debugState;
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = state, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
                 catLog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>()));
             }
             catch (Exception ex)
