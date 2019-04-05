@@ -1,4 +1,3 @@
-//#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -91,13 +90,23 @@ namespace Dev2.Diagnostics.Debug
                 return;
             }
 
-
             if (writeArgs.isRemoteInvoke)
             {
                 RemoteDebugMessageRepo.Instance.AddDebugItem(writeArgs.remoteInvokerId, writeArgs.debugState);
                 return;
             }
 
+            SetRemoteDebugItems(writeArgs);
+
+            _dev2Logger.Debug($"EnvironmentID: {writeArgs.debugState.EnvironmentID} Debug:{writeArgs.debugState.DisplayName}", GlobalConstants.WarewolfDebug);
+
+            QueueWrite(writeArgs.debugState);
+
+            DebugStateFinalStep(writeArgs);
+        }
+
+        private static void SetRemoteDebugItems(WriteArgs writeArgs)
+        {
             if (writeArgs.remoteDebugItems != null)
             {
                 Guid.TryParse(writeArgs.parentInstanceId, out Guid parentId);
@@ -119,9 +128,10 @@ namespace Dev2.Diagnostics.Debug
 
                 writeArgs.remoteDebugItems.Clear();
             }
-            _dev2Logger.Debug($"EnvironmentID: {writeArgs.debugState.EnvironmentID} Debug:{writeArgs.debugState.DisplayName}", GlobalConstants.WarewolfDebug);
-            QueueWrite(writeArgs.debugState);
+        }
 
+        private void DebugStateFinalStep(WriteArgs writeArgs)
+        {
             if (writeArgs.debugState.IsFinalStep())
             {
                 IDebugWriter writer;
