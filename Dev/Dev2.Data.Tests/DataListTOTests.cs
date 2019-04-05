@@ -217,5 +217,23 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("[[Child2(*).Child3]]", dataListTo.Outputs[2]);
             Assert.AreEqual("[[Child2(*).Child5]]", dataListTo.Outputs[3]);
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(DataListTO))]
+        public void DataListTO_Load()
+        {
+            const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person></DataList>";
+            var dataList = new DataListTO(expectedResult, true);
+
+            Assert.AreEqual("Country", dataList.Inputs[0]);
+            Assert.AreEqual("[[Car(*).Make]]", dataList.Inputs[1]);
+            Assert.AreEqual("[[Car(*).Model]]", dataList.Inputs[2]);
+            Assert.AreEqual("[[Person(*).Age]]", dataList.Inputs[3]);
+            Assert.AreEqual("[[Person(*).Name]]", dataList.Inputs[4]);
+            Assert.AreEqual("[[Person(*).School]]", dataList.Inputs[5]);
+
+            Assert.AreEqual(6, dataList.Inputs.Count);
+        }
     }
 }

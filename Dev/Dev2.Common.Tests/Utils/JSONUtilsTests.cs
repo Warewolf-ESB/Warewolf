@@ -47,6 +47,14 @@ namespace Dev2.Common.Tests.Utils
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(JsonUtils))]
+        public void JSONUtils_Format_GivenMultibyteCharacter()
+        {
+            Assert.AreEqual("{\r\n\t\"field\":\"euro€value\"\r\n}", JsonUtils.Format(@"{""field"":""euro€value""}"));
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(JsonUtils))]
         public void JSONUtils_Format()
         {
             var fetch = JsonResource.Fetch("Test");
