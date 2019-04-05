@@ -80,10 +80,9 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
-      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
-      <Name>Dev2.Studio.Core</Name>
-    </ProjectReference>
+    <Reference Include="Dev2.Studio.Core">
+      <HintPath>..\Binaries\Dev2.Studio.Core.dll</HintPath>
+    </Reference>
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>

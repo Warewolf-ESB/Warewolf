@@ -334,10 +334,9 @@
       <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
       <Name>Dev2.Studio.Core.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
-      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
-      <Name>Dev2.Studio.Core</Name>
-    </ProjectReference>
+    <Reference Include="Dev2.Studio.Core">
+      <HintPath>..\Binaries\Dev2.Studio.Core.dll</HintPath>
+    </Reference>
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
