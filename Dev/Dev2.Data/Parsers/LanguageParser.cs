@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common.Interfaces.Data;
@@ -39,13 +37,11 @@ namespace Dev2.DataList.Contract
             _defaultValueToMapsTo = defaultValueToMapsTo;
         }
 
-        #region Methods
-
         internal IList<IDev2Definition> Parse(string mappingDefinition, bool ignoreBlanks = true)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            if(!string.IsNullOrEmpty(mappingDefinition))
+            if (!string.IsNullOrEmpty(mappingDefinition))
             {
                 ParseMappingDefinition(mappingDefinition, ignoreBlanks, result);
             }
@@ -59,14 +55,14 @@ namespace Dev2.DataList.Contract
 
             xDoc.LoadXml(mappingDefinition);
 
-            var tmpList = xDoc.GetElementsByTagName(_elementTag);
+            var nodeList = xDoc.GetElementsByTagName(_elementTag);
 
-            foreach (XmlNode tmp in tmpList)
+            foreach (XmlNode node in nodeList)
             {
                 var value = string.Empty;
                 var origValue = string.Empty;
 
-                XmlNode valueNode = tmp.Attributes[_valueTag];
+                XmlNode valueNode = node.Attributes[_valueTag];
                 if (valueNode != null)
                 {
                     value = valueNode.Value;
@@ -75,20 +71,20 @@ namespace Dev2.DataList.Contract
 
                 // is it evaluated?
                 var isEvaluated = false;
-                var mapsTo = tmp.Attributes[_mapsToAttribute].Value;
+                var mapsTo = node.Attributes[_mapsToAttribute].Value;
 
-                if (tmp.Attributes["IsObject"] == null || !bool.TryParse(tmp.Attributes["IsObject"].Value, out bool isObject))
+                if (node.Attributes["IsObject"] == null || !bool.TryParse(node.Attributes["IsObject"].Value, out bool isObject))
                 {
                     isObject = false;
                 }
 
                 if (!_defaultValueToMapsTo)
-                { // output
-
+                { 
+                    // output
                     // account for blank mapsto in generated output defs
                     if (mapsTo == string.Empty)
                     {
-                        mapsTo = GetMapsTo(tmp);
+                        mapsTo = GetMapsTo(node);
                     }
 
                     if (mapsTo.Contains(_magicEval))
@@ -118,46 +114,40 @@ namespace Dev2.DataList.Contract
                 // extract default value if present
                 var defaultValue = string.Empty;
 
-                XmlNode defaultValNode = tmp.Attributes[_defaultValueAttribute];
+                XmlNode defaultValNode = node.Attributes[_defaultValueAttribute];
                 if (defaultValNode != null)
                 {
                     defaultValue = defaultValNode.Value;
                 }
 
                 // extract isRequired
-                var isRequired = false;
-
-                var nl = tmp.ChildNodes;
-                if (nl.Count > 0)
-                {
-                    isRequired = GetChildNodes(isRequired, nl);
-                }
+                var isRequired = IsRequired(node.ChildNodes);
 
                 // extract EmptyToNull
                 var emptyToNull = false;
-                XmlNode emptyNode = tmp.Attributes[_emptyToNullAttribute];
+                XmlNode emptyNode = node.Attributes[_emptyToNullAttribute];
                 if (emptyNode != null)
                 {
-                    Boolean.TryParse(emptyNode.Value, out emptyToNull);
+                    bool.TryParse(emptyNode.Value, out emptyToNull);
                 }
 
                 // only create if mapsTo is not blank!!
                 if (!ignoreBlanks || mapsTo != string.Empty && value != string.Empty || _defaultValueToMapsTo)
                 {
-                    if (!_defaultValueToMapsTo && String.IsNullOrEmpty(mapsTo)) // Outputs only
+                    if (!_defaultValueToMapsTo && string.IsNullOrEmpty(mapsTo)) // Outputs only
                     {
                         continue;
                     }
 
-                    XmlNode recordSetNode = tmp.Attributes[_recordSetAttribute];
+                    XmlNode recordSetNode = node.Attributes[_recordSetAttribute];
 
                     if (recordSetNode != null)
                     {
-                        CheckForRecordsetsInInputMapping(result, tmp, value, origValue, isEvaluated, mapsTo, defaultValue, isRequired, emptyToNull, recordSetNode);
+                        result.Add(DataListFactory.CreateDefinition_Recordset(node.Attributes[_nameAttribute].Value, mapsTo, value, recordSetNode.Value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
                     }
                     else
                     {
-                        var dev2Definition = Dev2Definition.NewObject(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull);
+                        var dev2Definition = Dev2Definition.NewObject(node.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull);
                         dev2Definition.IsObject = isObject;
                         result.Add(dev2Definition);
                     }
@@ -165,45 +155,33 @@ namespace Dev2.DataList.Contract
             }
         }
 
-        private void CheckForRecordsetsInInputMapping(IList<IDev2Definition> result, XmlNode tmp, string value, string origValue, bool isEvaluated, string mapsTo, string defaultValue, bool isRequired, bool emptyToNull, XmlNode recordSetNode)
+        private static bool IsRequired(XmlNodeList childNodes)
         {
-            var theName = tmp.Attributes[_nameAttribute].Value;
-            if (_defaultValueToMapsTo)
+            if (childNodes is null || childNodes.Count <= 0)
             {
-                var recordSet = recordSetNode.Value;
-                // we have a recordset set it as such
-                result.Add(DataListFactory.CreateDefinition_Recordset(theName, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                return false;
             }
-            else
-            {
-                // if record set add as such
-                var recordSet = recordSetNode.Value;
-                result.Add(DataListFactory.CreateDefinition_Recordset(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
-            }
-        }
 
-        private static bool GetChildNodes(bool isRequired, XmlNodeList nl)
-        {
             var pos = 0;
-            while (pos < nl.Count && !isRequired)
+            while (pos < childNodes.Count)
             {
-                if (nl[pos].Name == _validateTag)
+                if (childNodes[pos].Name == _validateTag)
                 {
-                    XmlNode requiredValidationNode = nl[pos].Attributes[_validateTypeAttribute];
+                    XmlNode requiredValidationNode = childNodes[pos].Attributes[_validateTypeAttribute];
                     if (requiredValidationNode != null && requiredValidationNode.Value == _requiredValidationAttributeValue)
                     {
-                        isRequired = true;
+                        return true;
                     }
                 }
                 pos++;
             }
 
-            return isRequired;
+            return false;
         }
 
         static string GetMapsTo(XmlNode tmp)
         {
-            string mapsTo = "";
+            var mapsTo = "";
             XmlNode xn = tmp.Attributes[_outputMapsToAdjust];
             if (xn != null)
             {
@@ -212,7 +190,5 @@ namespace Dev2.DataList.Contract
 
             return mapsTo;
         }
-
-        #endregion
     }
 }
