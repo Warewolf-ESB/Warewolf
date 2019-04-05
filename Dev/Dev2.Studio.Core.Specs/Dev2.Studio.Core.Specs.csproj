@@ -81,6 +81,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="SpecFlow" Version="2.3.2" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
@@ -129,7 +132,6 @@
       <Name>Warewolf.Language.Parser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
