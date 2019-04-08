@@ -128,10 +128,13 @@
       <Version>1.0.0</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>3.0.191</Version>
+      <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.Assist.Dynamic">
       <Version>1.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.MsTest">
+      <Version>2.3.2</Version>
     </PackageReference>
   </ItemGroup>
   <Choose>

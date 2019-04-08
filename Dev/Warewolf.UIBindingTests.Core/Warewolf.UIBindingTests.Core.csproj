@@ -142,7 +142,10 @@
       <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>3.0.191</Version>
+      <Version>2.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.MsTest">
+      <Version>2.3.2</Version>
     </PackageReference>
   </ItemGroup>
   <Choose>
