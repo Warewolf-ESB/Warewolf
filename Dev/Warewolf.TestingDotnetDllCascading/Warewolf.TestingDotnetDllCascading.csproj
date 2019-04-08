@@ -63,7 +63,10 @@
       <Version>10.0.3</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>3.0.191</Version>
+      <Version>2.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.MsTest">
+      <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>

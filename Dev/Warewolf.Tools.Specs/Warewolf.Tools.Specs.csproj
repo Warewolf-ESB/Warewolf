@@ -956,10 +956,10 @@
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>3.0.191</Version>
+      <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>3.0.191</Version>
+      <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.109.2</Version>
