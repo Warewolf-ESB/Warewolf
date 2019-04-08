@@ -78,7 +78,10 @@
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
-    <PackageReference Include="SpecFlow" Version="2.3.2" />
+    <PackageReference Include="SpecFlow" Version="3.0.191" />
+    <PackageReference Include="SpecFlow.MsTest">
+      <Version>3.0.191</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
