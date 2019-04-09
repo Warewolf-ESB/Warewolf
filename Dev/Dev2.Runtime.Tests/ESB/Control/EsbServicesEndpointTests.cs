@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
@@ -35,23 +37,71 @@ namespace Dev2.Tests.Runtime.ESB.Control
             pCounter.Setup(locater => locater.GetCounter(It.IsAny<WarewolfPerfCounterType>())).Returns(new EmptyCounter());
             pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(new EmptyCounter());
             CustomContainer.Register(pCounter.Object);
+            CustomContainer.Register<IActivityParser>(new Dev2.Activities.ActivityParser());
         }
+
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnConstruction_ShouldNotThrowException()
+        [Owner("Rory McGuire")]
+        public void EsbServicesEndpoint_ExecuteWorkflow_GivenHelloWorldWorkflow_RunWorkflowAsyncFalse_ExpectSuccess()
         {
-            //---------------Set up test pack-------------------
+            var esbServicesEndpoint = new EsbServicesEndpoint();
 
-            //---------------Assert Precondition----------------
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
 
-            //---------------Execute Test ----------------------
-                var esbServicesEndpoint = new EsbServicesEndpoint();
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(esbServicesEndpoint, "Cannot create new EsbServicesEndpoint object.");
+            var dataObject = new DsfDataObject("", Guid.NewGuid())
+            {
+                ResourceID = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1"),
+                ExecutingUser = mockPrincipal.Object,
+                IsDebug = true,
+                RunWorkflowAsync = false,
+            };
+            dataObject.Environment.Assign("[[Name]]", "somename", 0);
+
+            var request = new EsbExecuteRequest();
+            var workspaceId = Guid.NewGuid();
+            var errors = new ErrorResultTO();
+
+            var result = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out errors);
+
+            var expectedJson = "{\"Environment\":{\"scalars\":{\"Message\":\"Hello somename.\",\"Name\":\"somename\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
+            Assert.AreEqual("Hello somename.", dataObject.Environment.EvalAsListOfStrings("[[Message]]", 0)[0]);
+            Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
         }
+        
+
         [TestMethod]
+        [Owner("Rory McGuire")]
+        public void EsbServicesEndpoint_ExecuteWorkflow_GivenHelloWorldWorkflow_RunWorkflowAsync_ExpectSuccess()
+        {
+            var esbServicesEndpoint = new EsbServicesEndpoint();
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid())
+            {
+                ResourceID = Guid.Parse("2311e5fb-3eaa-4986-b946-5a687f33fd51"),
+                ExecutingUser = mockPrincipal.Object,
+                IsDebug = true,
+                RunWorkflowAsync = true,
+            };
+            dataObject.Environment.Assign("[[Name]]", "somename", 0);
+
+            var request = new EsbExecuteRequest();
+            var workspaceId = Guid.NewGuid();
+            var errors = new ErrorResultTO();
+
+            var result = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out errors);
+
+            var expectedJson = "{\"Environment\":{\"scalars\":{\"Name\":\"somename\",\"output\":\"this is nested\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
+            Assert.AreEqual("this is nested", dataObject.Environment.EvalAsListOfStrings("[[output]]", 0)[0]);
+            Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
+        }
+
+       [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetRemoteExecutionDataList_GivenDataObject_ShouldSetValuesCorreclty()
+        public void EsbServicesEndpoint_SetRemoteExecutionDataList_GivenDataObject_ShouldSetValuesCorreclty()
         {
             //---------------Set up test pack-------------------
             var obj = new Mock<IDSFDataObject>();
@@ -86,7 +136,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
+        public void EsbServicesEndpoint_CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
         {
             //---------------Set up test pack-------------------
             var dataObj = new Mock<IDSFDataObject>();
@@ -105,7 +155,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenOutPuts_ShouldReturnCorrectly()
+        public void EsbServicesEndpoint_UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenOutPuts_ShouldReturnCorrectly()
         {
             //---------------Set up test pack-------------------
             const string outPuts = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" IsObject=\"False\" /></Outputs>";
@@ -126,7 +176,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow2()
+        public void EsbServicesEndpoint_ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow2()
         {
             //---------------Set up test pack-------------------
             var dataObj = new Mock<IDSFDataObject>();
@@ -165,7 +215,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
+        public void EsbServicesEndpoint_ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
         {
             //---------------Set up test pack-------------------
             var dataObj = new Mock<IDSFDataObject>();
@@ -191,7 +241,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow()
+        public void EsbServicesEndpoint_ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow()
         {
             //---------------Set up test pack-------------------
             var dataObj = new Mock<IDSFDataObject>();
@@ -224,7 +274,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExecuteLogErrorRequest_GivenCorrectUri_ShouldNoThrowException()
+        public void EsbServicesEndpoint_ExecuteLogErrorRequest_GivenCorrectUri_ShouldNoThrowException()
         {
             //---------------Set up test pack-------------------
             var dataObj = new Mock<IDSFDataObject>();
