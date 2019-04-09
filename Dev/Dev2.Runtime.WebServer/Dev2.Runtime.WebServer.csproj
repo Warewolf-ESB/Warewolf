@@ -180,6 +180,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Dev2.Runtime.WebServer.ruleset" />
   </ItemGroup>
   <ItemGroup>
