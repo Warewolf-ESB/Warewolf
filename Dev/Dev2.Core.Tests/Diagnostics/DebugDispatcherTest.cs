@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -140,7 +140,7 @@ namespace Dev2.Tests.Diagnostics
         public void DebugDispatcher_WriteWithNull()
         {
             var debugDispatcher = new DebugDispatcherImplementation();
-            debugDispatcher.Write( new WriteArgs{ testName = "" } );
+            debugDispatcher.Write(new WriteArgs { testName = "" });
 
             // No exception thrown
             Assert.IsTrue(true);
@@ -156,7 +156,6 @@ namespace Dev2.Tests.Diagnostics
             var writer = new Mock<IDebugWriter>();
             writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
             debugDispatcher.Add(workspaceID, writer.Object);
-
 
             var mockState = new Mock<IDebugState>();
             var clientId = Guid.NewGuid();
@@ -174,8 +173,7 @@ namespace Dev2.Tests.Diagnostics
 
             var writeArgs = new WriteArgs
             {
-                debugState = mockState.Object,
-
+                debugState = mockState.Object
             };
 
             debugDispatcher.Write(writeArgs);
@@ -265,7 +263,7 @@ namespace Dev2.Tests.Diagnostics
             mockState.Setup(o => o.SessionID).Returns(sessionId);
             mockState.Setup(o => o.IsFinalStep()).Returns(true);
 
-            debugDispatcher.Write( new WriteArgs{ debugState = mockState.Object, isDebugFromWeb = true, testName = "testname" });
+            debugDispatcher.Write(new WriteArgs { debugState = mockState.Object, isDebugFromWeb = true, testName = "testname" });
 
             var items = WebDebugMessageRepo.Instance.FetchDebugItems(clientId, sessionId);
 
@@ -280,7 +278,6 @@ namespace Dev2.Tests.Diagnostics
         {
             var mockLogger = new Mock<ILogger>();
             var debugDispatcher = new DebugDispatcherImplementation(mockLogger.Object);
-
 
             var workspaceID = Guid.NewGuid();
             var mockState = new Mock<IDebugState>();
@@ -311,7 +308,7 @@ namespace Dev2.Tests.Diagnostics
 
             var remoteInvokerId = Guid.NewGuid();
             var parentInstanceId = Guid.NewGuid();
-            debugDispatcher.Write( new WriteArgs { debugState = mockState.Object, testName = "testname2", remoteInvokerId = remoteInvokerId.ToString(), parentInstanceId = parentInstanceId.ToString(), remoteDebugItems = remoteDebugItems });
+            debugDispatcher.Write(new WriteArgs { debugState = mockState.Object, testName = "testname2", remoteInvokerId = remoteInvokerId.ToString(), parentInstanceId = parentInstanceId.ToString(), remoteDebugItems = remoteDebugItems });
 
             var items = DebugMessageRepo.Instance.FetchDebugItems(clientId, sessionId);
 
