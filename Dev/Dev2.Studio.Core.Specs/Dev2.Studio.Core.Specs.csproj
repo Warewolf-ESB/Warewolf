@@ -80,6 +80,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>1.3.2</Version>
+    </PackageReference>
     <PackageReference Include="SpecFlow" Version="2.3.2" />
     <PackageReference Include="SpecFlow.MsTest">
       <Version>2.3.2</Version>
