@@ -251,15 +251,13 @@ namespace Dev2.Runtime.ESB.Execution
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 to?.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
 
-                
                 test.TestFailing = false;
                 test.TestPassed = false;
                 test.TestPending = false;
                 test.TestInvalid = true;
                 test.LastRunDate = DateTime.Now;
-
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
 
@@ -280,15 +278,13 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 to.AddError(ex.Message);
-                var failureMessage = DataObject.Environment.FetchErrors();
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
-                
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
+
                 test.TestFailing = false;
                 test.TestPassed = false;
                 test.TestPending = false;
                 test.TestInvalid = true;
                 test.LastRunDate = DateTime.Now;
-
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
 
@@ -313,7 +309,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (DataObject.IsDebugMode())
             {
-                var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DateTime.Now, true, false, false);
+                var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, invokeErrors, interrogateInputs: true);
                 wfappUtils.TryWriteDebug(DataObject, debugState);
             }
 
@@ -323,7 +319,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if (!DataObject.StopExecution)
                 {
-                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
+                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, invokeErrors, interrogateOutputs: true, durationVisible: true);
                     var outputDebugItem = new DebugItem();
                     if (test != null)
                     {
@@ -338,12 +334,12 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     var existingErrors = DataObject.Environment.FetchErrors();
                     DataObject.Environment.AllErrors.Clear();
-                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, new ErrorResultTO());
                     SetTestFailureBasedOnExpectedError(test, existingErrors);
                 }
                 else
                 {
-                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, new ErrorResultTO());
                     AggregateTestResult(resourceId, test);
                 }
 

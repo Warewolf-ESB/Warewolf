@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionToken = exeToken;
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, out invokeErrors, true, false, false);
                 }
                 if (CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.Execute))
                 {
@@ -97,7 +97,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
                 }
                 result = DataObject.DataListID;
             }
@@ -109,13 +109,13 @@ namespace Dev2.Runtime.ESB.Execution
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
                 DataObject.Environment.AddError(errorMessage);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, DataObject.ExecutionID.ToString());
                 DataObject.Environment.AddError(ex.Message);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
             return result;
         }
