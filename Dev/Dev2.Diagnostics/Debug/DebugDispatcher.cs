@@ -96,38 +96,44 @@ namespace Dev2.Diagnostics.Debug
                 return;
             }
 
-            SetRemoteDebugItems(writeArgs);
+            if (writeArgs.remoteDebugItems != null)
+            {
+                SetRemoteDebugItems(writeArgs);
+            }
 
             _dev2Logger.Debug($"EnvironmentID: {writeArgs.debugState.EnvironmentID} Debug:{writeArgs.debugState.DisplayName}", GlobalConstants.WarewolfDebug);
 
-            QueueWrite(writeArgs.debugState);
+            if (writeArgs.debugState != null)
+            {
+                DebugMessageRepo.Instance.AddDebugItem(writeArgs.debugState.ClientID, writeArgs.debugState.SessionID, writeArgs.debugState);
+            }
 
             DebugStateFinalStep(writeArgs);
         }
 
         private static void SetRemoteDebugItems(WriteArgs writeArgs)
         {
-            if (writeArgs.remoteDebugItems != null)
+            Guid.TryParse(writeArgs.parentInstanceId, out var parentId);
+            foreach (var item in writeArgs.remoteDebugItems)
             {
-                Guid.TryParse(writeArgs.parentInstanceId, out Guid parentId);
-                foreach (var item in writeArgs.remoteDebugItems)
+                item.WorkspaceID = writeArgs.debugState.WorkspaceID;
+                item.OriginatingResourceID = writeArgs.debugState.OriginatingResourceID;
+                item.ClientID = writeArgs.debugState.ClientID;
+                if (Guid.TryParse(writeArgs.remoteInvokerId, out var remoteEnvironmentId))
                 {
-                    item.WorkspaceID = writeArgs.debugState.WorkspaceID;
-                    item.OriginatingResourceID = writeArgs.debugState.OriginatingResourceID;
-                    item.ClientID = writeArgs.debugState.ClientID;
-                    if (Guid.TryParse(writeArgs.remoteInvokerId, out Guid remoteEnvironmentId))
-                    {
-                        item.EnvironmentID = remoteEnvironmentId;
-                    }
-                    if (item.ParentID == Guid.Empty)
-                    {
-                        item.ParentID = parentId;
-                    }
-                    QueueWrite(item);
+                    item.EnvironmentID = remoteEnvironmentId;
                 }
-
-                writeArgs.remoteDebugItems.Clear();
+                if (item.ParentID == Guid.Empty)
+                {
+                    item.ParentID = parentId;
+                }
+                if (item != null)
+                {
+                    DebugMessageRepo.Instance.AddDebugItem(item.ClientID, item.SessionID, item);
+                }
             }
+
+            writeArgs.remoteDebugItems.Clear();
         }
 
         private void DebugStateFinalStep(WriteArgs writeArgs)
@@ -144,15 +150,6 @@ namespace Dev2.Diagnostics.Debug
                         writer.Write(serializeObject);
                     }
                 }
-            }
-        }
-
-        static void QueueWrite(IDebugState debugState)
-        {
-            if (debugState != null)
-            {
-                DebugMessageRepo.Instance.AddDebugItem(debugState.ClientID, debugState.SessionID, debugState);
-
             }
         }
     }
