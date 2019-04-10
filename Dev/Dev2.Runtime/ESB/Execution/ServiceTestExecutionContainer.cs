@@ -220,6 +220,84 @@ namespace Dev2.Runtime.ESB.Execution
             var wfappUtils = new WfApplicationUtils();
             var invokeErrors = new ErrorResultTO();
             var resourceId = DataObject.ResourceID;
+
+            AddTestInputsToJosonOrRecordset(test);
+
+            var serializer = new Dev2JsonSerializer();
+            try
+            {
+                result = ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
+            }
+            catch (InvalidWorkflowException iwe)
+            {
+                Dev2Logger.Error(iwe, DataObject.ExecutionID.ToString());
+                var msg = iwe.Message;
+
+                var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
+                to?.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                var failureMessage = DataObject.Environment.FetchErrors();
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
+
+                SetTestRunResult(test, resourceId, serializer, failureMessage);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                to.AddError(ex.Message);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
+
+                SetTestRunResult(test, resourceId, serializer, ex);
+            }
+            return result;
+        }
+
+        private void SetTestRunResult(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer, Exception ex)
+        {
+            test.TestFailing = false;
+            test.TestPassed = false;
+            test.TestPending = false;
+            test.TestInvalid = true;
+            test.LastRunDate = DateTime.Now;
+
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
+
+            var testRunResult = new TestRunResult { TestName = test.TestName };
+            if (test.TestInvalid)
+            {
+                testRunResult.RunTestResult = RunResult.TestInvalid;
+                testRunResult.Message = ex.Message;
+                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception", GlobalConstants.WarewolfError);
+            }
+            testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+            _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+        }
+
+        private void SetTestRunResult(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer, string failureMessage)
+        {
+            test.TestFailing = false;
+            test.TestPassed = false;
+            test.TestPending = false;
+            test.TestInvalid = true;
+            test.LastRunDate = DateTime.Now;
+
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
+
+            var testRunResult = new TestRunResult { TestName = test.TestName };
+            if (test.TestInvalid)
+            {
+                testRunResult.RunTestResult = RunResult.TestInvalid;
+                testRunResult.Message = failureMessage;
+                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node", DataObject.ExecutionID.ToString());
+            }
+            testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+            if (_request != null)
+            {
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+            }
+        }
+
+        private void AddTestInputsToJosonOrRecordset(IServiceTestModelTO test)
+        {
             if (test?.Inputs != null)
             {
                 AddRecordsetsInputs(test.Inputs.Where(input => DataListUtil.IsValueRecordset(input.Variable) && !input.Variable.Contains("@")), DataObject.Environment);
@@ -238,67 +316,6 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                 }
             }
-            var serializer = new Dev2JsonSerializer();
-            try
-            {
-                result = ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
-            }
-            catch (InvalidWorkflowException iwe)
-            {
-                Dev2Logger.Error(iwe, DataObject.ExecutionID.ToString());
-                var msg = iwe.Message;
-
-                var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                to?.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
-                var failureMessage = DataObject.Environment.FetchErrors();
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
-
-                test.TestFailing = false;
-                test.TestPassed = false;
-                test.TestPending = false;
-                test.TestInvalid = true;
-                test.LastRunDate = DateTime.Now;
-
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
-
-                var testRunResult = new TestRunResult { TestName = test.TestName };
-                if (test.TestInvalid)
-                {
-                    testRunResult.RunTestResult = RunResult.TestInvalid;
-                    testRunResult.Message = failureMessage;
-                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node", DataObject.ExecutionID.ToString());
-                }
-                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
-                if (_request != null)
-                {
-                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                to.AddError(ex.Message);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
-
-                test.TestFailing = false;
-                test.TestPassed = false;
-                test.TestPending = false;
-                test.TestInvalid = true;
-                test.LastRunDate = DateTime.Now;
-
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
-
-                var testRunResult = new TestRunResult { TestName = test.TestName };
-                if (test.TestInvalid)
-                {
-                    testRunResult.RunTestResult = RunResult.TestInvalid;
-                    testRunResult.Message = ex.Message;
-                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception", GlobalConstants.WarewolfError);
-                }
-                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
-                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
-            }
-            return result;
         }
 
         Guid ExecuteWf(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
