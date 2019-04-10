@@ -99,41 +99,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
         }
 
-       [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void EsbServicesEndpoint_SetRemoteExecutionDataList_GivenDataObject_ShouldSetValuesCorreclty()
-        {
-            //---------------Set up test pack-------------------
-            var obj = new Mock<IDSFDataObject>();
-            var sa = new ServiceAction();
-            var dataObj = new Mock<IDSFDataObject>();
-            dataObj.SetupAllProperties();
-            var workspace = new Mock<IWorkspace>();
-            var esbChannel = new Mock<IEsbChannel>();
-            var cat = new Mock<IResourceCatalog>();
-            var execContainer = new Mock<RemoteWorkflowExecutionContainer>(sa, dataObj.Object, workspace.Object, esbChannel.Object, cat.Object);
-            execContainer.Setup(container => container.FetchRemoteResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(new SerializableResource()
-            {
-                DataList = "<DataList></DataList>",
-                ResourceCategory = "Cat"
-            });
-            var methodInfo = typeof(EsbServicesEndpoint).GetMethod("SetRemoteExecutionDataList", BindingFlags.NonPublic | BindingFlags.Static);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(methodInfo);
-            //---------------Execute Test ----------------------
-            try
-            {
-                //---------------Test Result -----------------------
-                methodInfo.Invoke(null, new object[] { obj.Object, execContainer.Object, new ErrorResultTO() });
-                obj.VerifyAll();
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("", ex.Message);
-
-            }
-        }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void EsbServicesEndpoint_CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
@@ -153,66 +118,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.Verify(o => o.PushEnvironment(It.IsAny<IExecutionEnvironment>()), Times.Once);
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void EsbServicesEndpoint_UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenOutPuts_ShouldReturnCorrectly()
-        {
-            //---------------Set up test pack-------------------
-            const string outPuts = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" IsObject=\"False\" /></Outputs>";
-            var dataObj = new Mock<IDSFDataObject>();
-            dataObj.SetupAllProperties();
-            
-            var mapManager = new Mock<IEnvironmentOutputMappingManager>();
-            mapManager.Setup(manager => manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<ErrorResultTO>())).Returns(new ExecutionEnvironment());
-            var esbServicesEndpoint = new EsbServicesEndpoint(mapManager.Object);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var executionEnvironment = esbServicesEndpoint.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObj.Object, outPuts, 0, true, new ErrorResultTO());
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(executionEnvironment);
-            mapManager.VerifyAll();
-        }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void EsbServicesEndpoint_ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow2()
-        {
-            //---------------Set up test pack-------------------
-            var dataObj = new Mock<IDSFDataObject>();
-            var dataObjClon = new Mock<IDSFDataObject>();
-            dataObjClon.Setup(o => o.ServiceName).Returns("Service Name");
-            var rCat = new Mock<IResourceCatalog>();
-            var mock = new Mock<IResource>();
-            rCat.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(mock.Object);
-            var workRepo = new Mock<IWorkspaceRepository>();
-            workRepo.Setup(repository => repository.Get(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Workspace(Guid.NewGuid()));
-            dataObj.SetupAllProperties();
-            dataObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dataObj.Setup(o => o.IsRemoteWorkflow());
-            dataObj.Setup(o => o.RunWorkflowAsync).Returns(true);
-            dataObj.Setup(o => o.Clone()).Returns(dataObjClon.Object);
-            var mapManager = new Mock<IEnvironmentOutputMappingManager>();
-            var esbServicesEndpoint = new EsbServicesEndpoint();
-            var privateObject = new PrivateObject(esbServicesEndpoint);
-            var invokerMock = new Mock<IEsbServiceInvoker>();
-            var remoteWorkflowExecutionContainer = new RemoteWorkflowExecutionContainer(new ServiceAction(), dataObj.Object, new Mock<IWorkspace>().Object, new Mock<IEsbChannel>().Object);
-            invokerMock.Setup(invoker => invoker.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Returns(remoteWorkflowExecutionContainer);
-            var err = new ErrorResultTO();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            object[] args = { dataObj.Object, "inputs", invokerMock.Object, false, Guid.Empty, err, 0 };
-            privateObject.Invoke("ExecuteRequestAsync", args);
-            Assert.IsNotNull(esbServicesEndpoint);
-            var errorResultTO = args[5] as ErrorResultTO;
-            //---------------Test Result -----------------------
-            var errors = errorResultTO?.FetchErrors();
-            Assert.IsNotNull(errors);
-            Assert.IsTrue(errors.Count > 0);
-            Assert.IsTrue(errors.Any(p => p.Contains("Asynchronous execution failed: Remote server unreachable")));
-            Assert.IsTrue(errors.Any(p => p.Contains("Service not found")));
-        }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
