@@ -25,7 +25,6 @@ namespace Dev2.Session
     class Dev2StudioSessionBroker : IDev2StudioSessionBroker
     {
         const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
-        // the settings lock object
         static readonly object SettingsLock = new object();
         static readonly object InitLock = new object();
         string _debugPersistPath;
@@ -38,35 +37,50 @@ namespace Dev2.Session
 
         public DebugTO InitDebugSession(DebugTO to)
         {
-            to.Error = string.Empty;
-            if (to.BaseSaveDirectory != null)
+            lock (SettingsLock)
             {
-                BootstrapPersistence(to.BaseSaveDirectory);
-                InitPersistSettings();
-            }
-            else
-            {
-                if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
+                to.Error = string.Empty;
+                if (to.BaseSaveDirectory != null)
                 {
-                    BootstrapPersistence(_rootPath);
+                    BootstrapPersistence(to.BaseSaveDirectory);
                     InitPersistSettings();
                 }
-            }
-            if (to.BaseSaveDirectory == null)
-            {
-                to.BaseSaveDirectory = _rootPath;
-            }
-            to.DataListHash = to.DataList != null ? to.DataList.GetHashCode() : -1;
+                else
+                {
+                    if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
+                    {
+                        BootstrapPersistence(_rootPath);
+                        InitPersistSettings();
+                    }
+                }
+                if (to.BaseSaveDirectory == null)
+                {
+                    to.BaseSaveDirectory = _rootPath;
+                }
+                to.DataListHash = to.DataList != null ? to.DataList.GetHashCode() : -1;
 
-            PersistBinaryDataList(to);
-
+                PersistBinaryDataList(to);
+            }
             return to;
         }
 
-        private void PersistBinaryDataList(DebugTO to)
+        void InitPersistSettings()
         {
-            DebugTO tmp;
-            lock (SettingsLock)
+            if (!_debugOptsEndPoint.PathExist(_debugPath))
+            {
+                var args = new Dev2PutRawOperationTO(WriteType.Overwrite, "");
+                ActivityIOFactory.CreateOperationsBroker().PutRaw(_debugOptsEndPoint, args);
+            }
+            else
+            {
+                FetchFromDisk();
+            }
+        }
+
+        void PersistBinaryDataList(DebugTO to)
+        {
+            DebugTO tmp = null;
+            try
             {
                 if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                 {
@@ -80,8 +94,10 @@ namespace Dev2.Session
                 to.BinaryDataList = new DataListModel();
                 to.BinaryDataList.Create(to.XmlData, to.DataList);
             }
-
-            tmp?.CleanUp();
+            finally
+            {
+                tmp?.CleanUp();
+            }
         }
 
         public DebugTO PersistDebugSession(DebugTO to)
@@ -143,22 +159,6 @@ namespace Dev2.Session
 
                     _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath, "", "");
                     _debugOptsEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);
-                }
-            }
-        }
-
-        void InitPersistSettings()
-        {
-            lock (SettingsLock)
-            {
-                if (!_debugOptsEndPoint.PathExist(_debugPath))
-                {
-                    var args = new Dev2PutRawOperationTO(WriteType.Overwrite, "");
-                    ActivityIOFactory.CreateOperationsBroker().PutRaw(_debugOptsEndPoint, args);
-                }
-                else
-                {
-                    FetchFromDisk();
                 }
             }
         }
