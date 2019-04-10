@@ -222,13 +222,13 @@
       <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Cors">
-      <Version>3.1.0</Version>
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security">
-      <Version>3.1.0</Version>
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
-      <Version>3.1.0</Version>
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
