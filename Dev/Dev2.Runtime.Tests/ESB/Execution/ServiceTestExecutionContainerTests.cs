@@ -9,16 +9,16 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
@@ -32,6 +32,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -522,7 +523,6 @@ Test Failed because of some reasons
             var mockEsbChannel = new Mock<IEsbChannel>();
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockDev2Activity = new Mock<IDev2Activity>();
             var mockTestCatalog = new Mock<ITestCatalog>();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
@@ -1026,7 +1026,6 @@ Test Failed because of some reasons
                                 '500 gigabyte hard drive'
                               ]
                             }";
-            var failtureMsg = "test failure message111";
 
             mockDSFDataObject.SetupProperty(o => o.ResourceID);
             mockDSFDataObject.Setup(o => o.TestName).Returns(TestName);
@@ -1034,7 +1033,6 @@ Test Failed because of some reasons
             mockDSFDataObject.Setup(o => o.IsDebug).Returns(true);
             mockDSFDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
             mockDSFDataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            mockDSFDataObject.Setup(o => o.Environment.Errors).Returns(new HashSet<string>{ failtureMsg });
             mockDSFDataObject.Setup(o => o.IsDebug).Returns(true);
 
             mockServiceTestModelTO.Setup(o => o.Inputs).Returns(new List<IServiceTestInput> { new ServiceTestInputTO { Variable = "var", Value = "val" }, new ServiceTestInputTO { Variable = "[[@var]]", Value = json } });
@@ -1058,6 +1056,26 @@ Test Failed because of some reasons
             
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            mockDSFDataObject.VerifyAll();
+        }
+
+
+    
+        public class FakeWcfProxyService : IWcfProxyService
+        {
+            public IOutputDescription ExecuteWebService(WcfService src) => new OutputDescription();
+
+            public object ExcecuteMethod(IWcfAction action, string endpointUrl)
+            {
+                return new object();
+            }
+
+            public Dictionary<MethodInfo, ParameterInfo[]> GetMethods(string endpoint) => new Dictionary<MethodInfo, ParameterInfo[]>();
+            
+            Dictionary<MethodInfo, ParameterInfo[]> IWcfProxyService.GetMethods(string endpoint)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         internal class ServiceTestExecutionContainerMock : ServiceTestExecutionContainer
