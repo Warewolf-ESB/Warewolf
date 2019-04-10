@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -903,6 +904,73 @@ Test Failed because of some reasons
             mockServiceTestModelTO.Setup(o => o.Inputs).Returns(new List<IServiceTestInput> { new ServiceTestInputTO { Variable = "var", Value = "val" }, new ServiceTestInputTO { Variable = "[[@var]]", Value = json } });
             mockServiceTestModelTO.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Windows);
             mockServiceTestModelTO.Setup(o => o.FailureMessage).Returns(failtureMsg);
+            mockServiceTestModelTO.Setup(o => o.ErrorContainsText).Returns(failtureMsg);
+            mockServiceTestModelTO.Setup(o => o.ErrorExpected).Returns(true);
+            mockServiceTestModelTO.Setup(o => o.TestInvalid).Returns(true);
+
+            mockTestCatalog.Setup(o => o.FetchTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(mockServiceTestModelTO.Object);
+
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest, mockTestCatalog.Object, mockResourceCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
+            Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
+            Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
+            //---------------Execute Test ----------------------
+            Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+            Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
+            {
+                var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
+                Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
+                Assert.IsNotNull("{00000000-0000-0000-0000-000000000000}", execute.ToString());
+            });
+
+            mockDSFDataObject.VerifyAll();
+            mockServiceTestModelTO.VerifyAll();
+            mockTestCatalog.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_TryExecuteWf_DataObject_StopExecution_ThrowInvalidWorkflowException_Should_AssignAllRecordSetItems()
+        {
+            //------------Setup for test-------------------------
+            var mockWorkspace = new Mock<IWorkspace>();
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+
+            const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
+            const string TestName = "test2";
+
+            var esbExecuteRequest = new EsbExecuteRequest();
+            var resourceId = Guid.NewGuid();
+            var serviceAction = new ServiceAction
+            {
+                DataListSpecification = new StringBuilder(Datalist),
+                Service = new DynamicService { ID = resourceId }
+            };
+            var json = @"{
+                              CPU: 'Intel',
+                              Drives: [
+                                'DVD read/writer',
+                                '500 gigabyte hard drive'
+                              ]
+                            }";
+
+            var failtureMsg = "test failure message111";
+
+            mockDSFDataObject.SetupProperty(o => o.ResourceID);
+            mockDSFDataObject.Setup(o => o.TestName).Returns(TestName);
+            mockDSFDataObject.Setup(o => o.ParentServiceName).Returns("test_ParentServiceName");
+            mockDSFDataObject.Setup(o => o.IsDebug).Returns(true);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            mockDSFDataObject.Setup(o => o.StopExecution).Throws<InvalidWorkflowException>();
+
+            mockServiceTestModelTO.Setup(o => o.Inputs).Returns(new List<IServiceTestInput> { new ServiceTestInputTO { Variable = "var", Value = "val" }, new ServiceTestInputTO { Variable = "[[@var]]", Value = json } });
+            mockServiceTestModelTO.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Windows);
             mockServiceTestModelTO.Setup(o => o.ErrorContainsText).Returns(failtureMsg);
             mockServiceTestModelTO.Setup(o => o.ErrorExpected).Returns(true);
             mockServiceTestModelTO.Setup(o => o.TestInvalid).Returns(true);
