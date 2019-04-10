@@ -221,7 +221,10 @@ namespace Dev2.Runtime.ESB.Execution
             var invokeErrors = new ErrorResultTO();
             var resourceId = DataObject.ResourceID;
 
-            AddTestInputsToJosonOrRecordset(test);
+            if (test?.Inputs != null)
+            {
+                AddTestInputsToJsonOrRecordset(test);
+            }
 
             var serializer = new Dev2JsonSerializer();
             try
@@ -296,24 +299,21 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        private void AddTestInputsToJosonOrRecordset(IServiceTestModelTO test)
+        private void AddTestInputsToJsonOrRecordset(IServiceTestModelTO test)
         {
-            if (test?.Inputs != null)
+            AddRecordsetsInputs(test.Inputs.Where(input => DataListUtil.IsValueRecordset(input.Variable) && !input.Variable.Contains("@")), DataObject.Environment);
+            foreach (var input in test.Inputs)
             {
-                AddRecordsetsInputs(test.Inputs.Where(input => DataListUtil.IsValueRecordset(input.Variable) && !input.Variable.Contains("@")), DataObject.Environment);
-                foreach (var input in test.Inputs)
+                var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
+                var value = input.Value;
+                if (variable.StartsWith("[[@"))
                 {
-                    var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
-                    var value = input.Value;
-                    if (variable.StartsWith("[[@"))
-                    {
-                        var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                        DataObject.Environment.AddToJsonObjects(variable, jContainer);
-                    }
-                    else
-                    {
-                        AddToRecordsetObjects(input, variable, value);
-                    }
+                    var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                    DataObject.Environment.AddToJsonObjects(variable, jContainer);
+                }
+                else
+                {
+                    AddToRecordsetObjects(input, variable, value);
                 }
             }
         }
