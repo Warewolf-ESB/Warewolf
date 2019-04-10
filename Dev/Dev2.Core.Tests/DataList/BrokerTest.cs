@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -12,40 +12,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.DataList
 {
-    /// <summary>
-    /// Summary description for BrokerTest
-    /// </summary>
-    [TestClass]    
+    [TestClass]
     public class BrokerTest
     {
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attribute
-       
-        void DeleteDir(string rootFolder)
+        static void DeleteDir(string rootFolder)
         {
-
             if (Directory.Exists(rootFolder + @"\Dev2\"))
             {
                 var dir = new DirectoryHelper();
                 dir.CleanUp(rootFolder + @"\Dev2\");
             }
         }
-
-        #endregion
-
-        #region InitSession Tests
 
         [TestMethod]
         public void InitSessionWithNoDataBaseDirectoryIsNull()
@@ -118,11 +106,9 @@ namespace Dev2.Tests.DataList
         }
 
         [TestMethod]
-        
-        public void PersistSessionWithSavedData_ExpectSavedData()
 
+        public void PersistSessionWithSavedData_ExpectSavedData()
         {
-            //DeleteDir();
             // bootstrap
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
@@ -139,11 +125,10 @@ namespace Dev2.Tests.DataList
             Assert.AreEqual("<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>", to.XmlData);
 
             DeleteDir(rootFolder);
+
+            broker.Dispose();
         }
 
-        #endregion InitSession Tests
-
-        #region PersistSession Test
         [TestMethod]
         public void PersistSessionWithSavedData_ChangedDataList_ExpectPreviousXmlData()
         {
@@ -188,10 +173,5 @@ namespace Dev2.Tests.DataList
 
             DeleteDir(rootFolder);
         }
-
-        
-        #endregion PersistSession Tests
-
-
     }
 }
