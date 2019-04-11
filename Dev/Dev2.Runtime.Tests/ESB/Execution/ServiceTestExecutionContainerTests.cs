@@ -29,6 +29,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -38,6 +39,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using static Dev2.Runtime.ESB.Execution.ServiceTestExecutionContainer;
+using static Dev2.Runtime.ESB.Execution.ServiceTestExecutionContainer.Implementation;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -382,7 +384,8 @@ Test Failed because of some reasons
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockWorkspace = new Mock<IWorkspace>();
             var mockEsbChannel = new Mock<IEsbChannel>();
-            
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test1";
             var resourceId = Guid.NewGuid();
@@ -394,6 +397,9 @@ Test Failed because of some reasons
 
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
             var s = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
+            var wfappUtils = new WfApplicationUtils();
+            var invokeErrors = new ErrorResultTO();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
             var esbExecuteRequest = new EsbExecuteRequest();
             var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest);
@@ -416,9 +422,8 @@ Test Failed because of some reasons
 
             mockServiceTestOutput.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
             //------------Execute Test---------------------------    
-            var testImplementation = new TestImplementation(mockDSFDataObject.Object, mockWorkspace.Object, mockResourceCatalog.Object, mockTestCatalog.Object, serviceAction, esbExecuteRequest);
-            
-            var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory()) as IEnumerable<TestRunResult>;
+            var testImplementation = new TestExecuteWorkflowImplementation(mockDSFDataObject.Object, esbExecuteRequest, mockResourceCatalog.Object, mockWorkspace.Object, mockServiceTestModelTO.Object, wfappUtils, invokeErrors, resourceId, serializer);
+            var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
             //------------Assert Results-------------------------
             var firstOrDefault = testRunResults?.FirstOrDefault();
             Assert.IsTrue(firstOrDefault != null && firstOrDefault.RunTestResult == RunResult.TestPassed);
@@ -439,12 +444,16 @@ Test Failed because of some reasons
             var mockEsbChannel = new Mock<IEsbChannel>();
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockServiceTestOutput = new Mock<IServiceTestOutput>();
-
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test1";
             var errors = new HashSet<string> { "Error1" };
             var s = new Dev2JsonSerializer();
             var esbExecuteRequest = new EsbExecuteRequest();
+            var wfappUtils = new WfApplicationUtils();
+            var invokeErrors =new ErrorResultTO();
+            var serializer = new Dev2JsonSerializer();
 
             var resourceId = Guid.NewGuid();
             var serviceAction = new ServiceAction
@@ -470,7 +479,7 @@ Test Failed because of some reasons
 
             var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest);
             //------------Execute Test---------------------------            
-            var testImplementation = new TestImplementation(mockDSFDataObject.Object, mockWorkspace.Object, mockResourceCatalog.Object, mockTestCatalog.Object, serviceAction, esbExecuteRequest);
+            var testImplementation = new TestExecuteWorkflowImplementation(mockDSFDataObject.Object,esbExecuteRequest, mockResourceCatalog.Object, mockWorkspace.Object, mockServiceTestModelTO.Object, wfappUtils, invokeErrors, resourceId, serializer);
             var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
             //------------Assert Results-------------------------
             var firstOrDefault = testRunResults?.FirstOrDefault();
@@ -1227,10 +1236,10 @@ Test Failed because of some reasons
             return serviceTestModelTO;
         }
         
-        class TestImplementation : Implementation
+        class TestExecuteWorkflowImplementation : ExecuteWorkflowImplementation
         {
-            public TestImplementation(IDSFDataObject dataObject, IWorkspace theWorkspace, IResourceCatalog resourceCat, ITestCatalog testCatalog, ServiceAction serviceAction, EsbExecuteRequest esbExecuteRequest)
-                : base(dataObject, theWorkspace, resourceCat, testCatalog, serviceAction, esbExecuteRequest)
+            public TestExecuteWorkflowImplementation(IDSFDataObject dataObject, EsbExecuteRequest esbExecuteRequest, IResourceCatalog resourceCatalog, IWorkspace workspace, IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
+                : base(dataObject, esbExecuteRequest, resourceCatalog, workspace, test, wfappUtils, invokeErrors, resourceId, serializer)
             {
             }
 

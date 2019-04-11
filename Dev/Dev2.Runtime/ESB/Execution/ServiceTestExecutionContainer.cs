@@ -237,7 +237,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var serializer = new Dev2JsonSerializer();
                 try
                 {
-                    result = ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
+                    result = new ExecuteWorkflowImplementation(_dataObject, _request, _resourceCat, _theWorkspace, test, wfappUtils, invokeErrors, resourceId, serializer).ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
                 }
                 catch (InvalidWorkflowException iwe)
                 {
@@ -347,7 +347,34 @@ namespace Dev2.Runtime.ESB.Execution
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
 
-            Guid ExecuteWf(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
+        }
+        
+        internal class ExecuteWorkflowImplementation
+        {
+            readonly IServiceTestModelTO _test;
+            readonly WfApplicationUtils _wfappUtils;
+            readonly ErrorResultTO _invokeErrors;
+            readonly Guid _resourceId;
+            readonly Dev2JsonSerializer _serializer;
+            readonly IDSFDataObject _dataObject;
+            readonly EsbExecuteRequest _request;
+            readonly IResourceCatalog _resourceCat;
+            readonly IWorkspace _theWorkspace;
+
+            public ExecuteWorkflowImplementation(IDSFDataObject dSFDataObject, EsbExecuteRequest esbExecuteRequest, IResourceCatalog resourceCatalog, IWorkspace workspace, IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
+            {
+                _test = test;
+                _wfappUtils = wfappUtils;
+                _invokeErrors = invokeErrors;
+                _resourceId = resourceId;
+                _serializer = serializer;
+                _dataObject = dSFDataObject;
+                _request = esbExecuteRequest;
+                _resourceCat = resourceCatalog;
+                _theWorkspace = workspace;
+            }
+
+            internal Guid ExecuteWf(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
             {
                 Guid result;
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -481,6 +508,7 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceId}");
             }
 
+
             void UpdateToPending(IList<IServiceTestStep> testSteps)
             {
                 if (testSteps != null)
@@ -553,7 +581,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
 
-             internal IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
+            internal IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
             {
                 var expressionType = output.AssertOp ?? string.Empty;
                 var opt = FindRecsetOptions.FindMatch(expressionType);
@@ -662,8 +690,8 @@ namespace Dev2.Runtime.ESB.Execution
                 test.TestPassed = testPassed;
                 test.TestFailing = !testPassed;
             }
-
         }
+
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
 
