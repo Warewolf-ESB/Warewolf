@@ -65,6 +65,7 @@
     <Compile Include="ComDllSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="ComDll.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ComDll.feature.cs</LastGenOutput>
