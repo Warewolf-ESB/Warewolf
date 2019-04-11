@@ -103,39 +103,10 @@ namespace Dev2.Runtime.ESB.Execution
                 var result = GlobalConstants.NullDataListID;
 
                 Dev2Logger.Debug("Entered Wf Container", _dataObject.ExecutionID.ToString());
-
-                _dataObject.ServiceName = _serviceAction.ServiceName;
-
-                if (_dataObject.ServerID == Guid.Empty)
-                {
-                    _dataObject.ServerID = HostSecurityProvider.Instance.ServerID;
-                }
-
-                if (_dataObject.ResourceID == Guid.Empty && _serviceAction?.Service != null)
-                {
-                    _dataObject.ResourceID = _serviceAction.Service.ID;
-                }
-                _dataObject.DataList = _serviceAction.DataListSpecification;
-                if (_dataObject.OriginalInstanceID == Guid.Empty)
-                {
-                    _dataObject.OriginalInstanceID = _dataObject.DataListID;
-                }
+                SetDataObjectProperties();
 
                 Dev2Logger.Info($"Started Execution for Service Name:{_dataObject.ServiceName} Resource Id:{_dataObject.ResourceID} Mode:{(_dataObject.IsDebug ? "Debug" : "Execute")}", _dataObject.ExecutionID.ToString());
-                if (!string.IsNullOrWhiteSpace(_dataObject.ParentServiceName))
-                {
-                    _dataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
-                    _dataObject.ExecutionOriginDescription = _dataObject.ParentServiceName;
-                }
-                else if (_dataObject.IsDebug)
-                {
-                    _dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
-                }
-                else
-                {
-                    _dataObject.ExecutionOrigin = ExecutionOrigin.External;
-                }
-
+                SetExecutionOrigin();
 
                 var to = errors;
                 var serviceTestModelTo = testCatalog.FetchTest(_dataObject.ResourceID, _dataObject.TestName);
@@ -146,7 +117,6 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 if (serviceTestModelTo == null)
                 {
-
                     var serializer = new Dev2JsonSerializer();
                     var testRunResult = new ServiceTestModelTO
                     {
@@ -162,6 +132,68 @@ namespace Dev2.Runtime.ESB.Execution
                     return Guid.NewGuid();
                 }
 
+                SetExecutingUserForPublicAuthenticationType(serviceTestModelTo);
+
+                result = GetUserPrincipalGuid(result, to, serviceTestModelTo);
+
+                SetDataObjectEnvironmentErrors(errors);
+
+                Dev2Logger.Info($"Completed Execution for Service Name:{_dataObject.ServiceName} Resource Id: {_dataObject.ResourceID} Mode:{(_dataObject.IsDebug ? "Debug" : "Execute")}", _dataObject.ExecutionID.ToString());
+
+                return result;
+            }
+
+            private Guid GetUserPrincipalGuid(Guid result, ErrorResultTO to, IServiceTestModelTO serviceTestModelTo)
+            {
+                var userPrinciple = Thread.CurrentPrincipal;
+                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+                {
+                    result = TryExecuteWf(to, serviceTestModelTo);
+                });
+                return result;
+            }
+
+            private void SetDataObjectProperties()
+            {
+                _dataObject.ServiceName = _serviceAction.ServiceName;
+
+                if (_dataObject.ServerID == Guid.Empty)
+                {
+                    _dataObject.ServerID = HostSecurityProvider.Instance.ServerID;
+                }
+
+                if (_dataObject.ResourceID == Guid.Empty && _serviceAction?.Service != null)
+                {
+                    _dataObject.ResourceID = _serviceAction.Service.ID;
+                }
+
+                _dataObject.DataList = _serviceAction.DataListSpecification;
+
+                if (_dataObject.OriginalInstanceID == Guid.Empty)
+                {
+                    _dataObject.OriginalInstanceID = _dataObject.DataListID;
+                }
+            }
+
+            private void SetExecutionOrigin()
+            {
+                if (!string.IsNullOrWhiteSpace(_dataObject.ParentServiceName))
+                {
+                    _dataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
+                    _dataObject.ExecutionOriginDescription = _dataObject.ParentServiceName;
+                }
+                else if (_dataObject.IsDebug)
+                {
+                    _dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
+                }
+                else
+                {
+                    _dataObject.ExecutionOrigin = ExecutionOrigin.External;
+                }
+            }
+
+            private void SetExecutingUserForPublicAuthenticationType(IServiceTestModelTO serviceTestModelTo)
+            {
                 if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
                 {
                     var resource = _resourceCat.GetResource(GlobalConstants.ServerWorkspaceID, _dataObject.ResourceID);
@@ -177,11 +209,10 @@ namespace Dev2.Runtime.ESB.Execution
                         _dataObject.ExecutingUser = GlobalConstants.GenericPrincipal;
                     }
                 }
-                var userPrinciple = Thread.CurrentPrincipal;
-                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
-                {
-                    result = TryExecuteWf(to, serviceTestModelTo);
-                });
+            }
+
+            private void SetDataObjectEnvironmentErrors(ErrorResultTO errors)
+            {
                 if (_dataObject.Environment.Errors != null)
                 {
                     foreach (var err in _dataObject.Environment.Errors)
@@ -197,10 +228,6 @@ namespace Dev2.Runtime.ESB.Execution
                         errors.AddError(err, true);
                     }
                 }
-
-                Dev2Logger.Info($"Completed Execution for Service Name:{_dataObject.ServiceName} Resource Id: {_dataObject.ResourceID} Mode:{(_dataObject.IsDebug ? "Debug" : "Execute")}", _dataObject.ExecutionID.ToString());
-
-                return result;
             }
 
             Guid TryExecuteWf(ErrorResultTO to, IServiceTestModelTO test)
