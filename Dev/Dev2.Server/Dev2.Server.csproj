@@ -89,6 +89,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DEV2.MultiPartFormPasser, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
