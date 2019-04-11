@@ -68,12 +68,7 @@ namespace Dev2.Runtime.ESB.Execution
             var vvv = new Implementation(DataObject, TheWorkspace, ResourceCat, TstCatalog, ServiceAction, _request);
             return vvv.Execute(out errors, update);
         }
-
-        private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
-        {
-            var vvv = new Implementation(DataObject, TheWorkspace, ResourceCat, TstCatalog, ServiceAction, _request);
-            return vvv.GetTestRunResults(dataObject, output, factory);
-        }
+        
 
         internal class Implementation
         {
@@ -148,7 +143,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var userPrinciple = Thread.CurrentPrincipal;
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
                 {
-                    result = TryExecuteWf(to, serviceTestModelTo);
+                     result = TryExecuteWf(to, serviceTestModelTo);
                 });
                 return result;
             }
@@ -558,7 +553,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
 
-            internal IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
+             internal IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
             {
                 var expressionType = output.AssertOp ?? string.Empty;
                 var opt = FindRecsetOptions.FindMatch(expressionType);
