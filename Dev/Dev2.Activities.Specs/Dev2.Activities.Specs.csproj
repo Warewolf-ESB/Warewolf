@@ -264,6 +264,9 @@
     <PackageReference Include="SpecFlow.MsTest">
       <Version>2.3.2</Version>
     </PackageReference>
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
+      <Version>2.3.2</Version>
+    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.109.2</Version>
     </PackageReference>

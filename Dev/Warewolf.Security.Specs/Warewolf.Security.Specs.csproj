@@ -149,6 +149,9 @@
     <PackageReference Include="SpecFlow.MsTest">
       <Version>2.3.2</Version>
     </PackageReference>
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
+      <Version>2.3.2</Version>
+    </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>
     </PackageReference>
