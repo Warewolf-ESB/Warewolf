@@ -320,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppResources\XMLFile1.xml" />
+    <None Include="App.config" />
     <None Include="Dev2.Studio.Core.ruleset" />
     <None Include="runtests.bat" />
     <None Include="SignalR.txt" />
