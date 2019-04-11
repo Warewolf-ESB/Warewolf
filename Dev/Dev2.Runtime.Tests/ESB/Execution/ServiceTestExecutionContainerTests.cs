@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -36,6 +37,7 @@ using Moq;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using static Dev2.Runtime.ESB.Execution.ServiceTestExecutionContainer;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -368,96 +370,108 @@ Test Failed because of some reasons
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
         public void ServiceTestExecutionContainer_GetTestRunResults_Given_ThereIsNoError_And_EnvironmentHasNoErrorSetsTest_ToPass()
         {
             //------------Setup for test-------------------------
-            var resourceId = Guid.NewGuid();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockServiceTestOutput = new Mock<IServiceTestOutput>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            var mockWorkspace = new Mock<IWorkspace>();
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
+            const string TestName = "test1";
+            var resourceId = Guid.NewGuid();
             var serviceAction = new ServiceAction
             {
                 DataListSpecification = new StringBuilder(Datalist),
                 Service = new DynamicService { ID = resourceId }
             };
-            var dsfObj = new Mock<IDSFDataObject>();
-            dsfObj.SetupProperty(o => o.ResourceID);
-            const string TestName = "test1";
-            dsfObj.Setup(o => o.TestName).Returns(TestName);
-            dsfObj.Setup(o => o.StopExecution).Returns(true);
-            dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
-                  .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
-            dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
-            dsfObj.Setup(o => o.IsDebugMode()).Returns(true);
-            dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
-            dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
+
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
             var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
-
-            var cataLog = new Mock<ITestCatalog>();
-            cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
-            cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
-            var resourceCat = new Mock<IResourceCatalog>();
-            var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
-            var workSpace = new Mock<IWorkspace>();
-            var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
-            var testObj = new PrivateObject(serviceTestExecutionContainer);
-            var output = new Mock<IServiceTestOutput>();
-            output.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
-            //------------Execute Test---------------------------            
-            var invoke = testObj.Invoke("GetTestRunResults", dsfObj.Object, output.Object, null);
-            var testRunResults = invoke as IEnumerable<TestRunResult>;
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest);
+
+            mockDSFDataObject.SetupProperty(o => o.ResourceID);
+            mockDSFDataObject.Setup(o => o.TestName).Returns(TestName);
+            mockDSFDataObject.Setup(o => o.StopExecution).Returns(true);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            mockDSFDataObject.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+                  .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
+            mockDSFDataObject.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
+            mockDSFDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            mockDSFDataObject.Setup(o => o.Environment.HasErrors()).Returns(true);
+            mockDSFDataObject.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
+
+            mockTestCatalog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
+            mockTestCatalog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
+
+            mockResourceCatalog.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockDev2Activity.Object);
+
+            mockServiceTestOutput.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
+            //------------Execute Test---------------------------    
+            var testImplementation = new TestImplementation(mockDSFDataObject.Object, mockWorkspace.Object, mockResourceCatalog.Object, mockTestCatalog.Object, serviceAction, esbExecuteRequest);
+            
+            var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory()) as IEnumerable<TestRunResult>;
             //------------Assert Results-------------------------
             var firstOrDefault = testRunResults?.FirstOrDefault();
             Assert.IsTrue(firstOrDefault != null && firstOrDefault.RunTestResult == RunResult.TestPassed);
         }
 
+
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
         public void ServiceTestExecutionContainer_GetTestRunResults_Given_ThereIsAnError_And_EnvironmentHasError_SetsTest_ToPass()
         {
             //------------Setup for test-------------------------
-            var resourceId = Guid.NewGuid();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockWorkspace = new Mock<IWorkspace>();
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            var mockServiceTestOutput = new Mock<IServiceTestOutput>();
+
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
+            const string TestName = "test1";
+            var errors = new HashSet<string> { "Error1" };
+            var s = new Dev2JsonSerializer();
+            var esbExecuteRequest = new EsbExecuteRequest();
+
+            var resourceId = Guid.NewGuid();
             var serviceAction = new ServiceAction
             {
                 DataListSpecification = new StringBuilder(Datalist),
                 Service = new DynamicService { ID = resourceId }
             };
-            var dsfObj = new Mock<IDSFDataObject>();
-            dsfObj.SetupProperty(o => o.ResourceID);
-            const string TestName = "test1";
-            dsfObj.Setup(o => o.TestName).Returns(TestName);
-            dsfObj.Setup(o => o.StopExecution).Returns(true);
-            var envMock = new Mock<IExecutionEnvironment>();
-            var errors = new HashSet<string> { "Error1" };
-            envMock.Setup(environment => environment.AllErrors).Returns(errors);
-            dsfObj.Setup(o => o.Environment.AllErrors).Returns(errors);
-            dsfObj.Setup(o => o.Environment).Returns(envMock.Object);
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+
+            mockDSFDataObject.SetupProperty(o => o.ResourceID);
+            mockDSFDataObject.Setup(o => o.TestName).Returns(TestName);
+            mockDSFDataObject.Setup(o => o.StopExecution).Returns(true);
+            mockExecutionEnvironment.Setup(environment => environment.AllErrors).Returns(errors);
+            mockDSFDataObject.Setup(o => o.Environment.AllErrors).Returns(errors);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+            mockDSFDataObject.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
-            var s = new Dev2JsonSerializer();
-            var cataLog = new Mock<ITestCatalog>();
-            cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
-            var resourceCat = new Mock<IResourceCatalog>();
-            var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
-            var workSpace = new Mock<IWorkspace>();
-            var channel = new Mock<IEsbChannel>();
-            var esbExecuteRequest = new EsbExecuteRequest();
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
-            var testObj = new PrivateObject(serviceTestExecutionContainer);
-            var output = new Mock<IServiceTestOutput>();
-            output.Setup(testOutput => testOutput.AssertOp).Returns("There is An Error");
+
+            mockTestCatalog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
+
+            mockResourceCatalog.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockDev2Activity.Object);
+            
+            mockServiceTestOutput.Setup(testOutput => testOutput.AssertOp).Returns("There is An Error");
+
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest);
             //------------Execute Test---------------------------            
-            var invoke = testObj.Invoke("GetTestRunResults", dsfObj.Object, output.Object, null);
-            var testRunResults = invoke as IEnumerable<TestRunResult>;
+            var testImplementation = new TestImplementation(mockDSFDataObject.Object, mockWorkspace.Object, mockResourceCatalog.Object, mockTestCatalog.Object, serviceAction, esbExecuteRequest);
+            var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
             //------------Assert Results-------------------------
             var firstOrDefault = testRunResults?.FirstOrDefault();
             Assert.IsTrue(firstOrDefault != null && firstOrDefault.RunTestResult == RunResult.TestPassed);
@@ -1211,6 +1225,19 @@ Test Failed because of some reasons
             serviceTestModelTO.Setup(to => to.TestSteps).Returns(steps);
             serviceTestModelTO.Setup(to => to.Outputs).Returns(outputs);
             return serviceTestModelTO;
+        }
+        
+        class TestImplementation : Implementation
+        {
+            public TestImplementation(IDSFDataObject dataObject, IWorkspace theWorkspace, IResourceCatalog resourceCat, ITestCatalog testCatalog, ServiceAction serviceAction, EsbExecuteRequest esbExecuteRequest)
+                : base(dataObject, theWorkspace, resourceCat, testCatalog, serviceAction, esbExecuteRequest)
+            {
+            }
+
+            public IEnumerable<TestRunResult> TestGetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
+            {
+                return base.GetTestRunResults(dataObject, output, factory);
+            }
         }
     }
 }
