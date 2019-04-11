@@ -43,11 +43,11 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         /// <summary>
-        /// Executes the specified errors.
+        /// Execute using workflow and parameters as defined in DataObject
         /// </summary>
-        /// <param name="errors">The errors.</param>
+        /// <param name="errors"></param>
         /// <param name="update"></param>
-        /// <returns></returns>
+        /// <returns>Resulting DataListId</returns>
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
             SetDataObjectProperties();
