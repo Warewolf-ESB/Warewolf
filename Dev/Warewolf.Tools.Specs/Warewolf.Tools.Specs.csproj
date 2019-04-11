@@ -499,7 +499,9 @@
     <Compile Include="Toolbox\Resources\WcfService\WcfServiceConnectorSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <EmbeddedResource Include="key.opk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -959,6 +961,9 @@
       <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
+      <Version>2.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
       <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">

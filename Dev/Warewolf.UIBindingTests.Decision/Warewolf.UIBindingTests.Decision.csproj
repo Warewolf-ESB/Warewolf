@@ -153,6 +153,9 @@
     <PackageReference Include="SpecFlow.MsTest">
       <Version>2.3.2</Version>
     </PackageReference>
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
+      <Version>2.3.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
