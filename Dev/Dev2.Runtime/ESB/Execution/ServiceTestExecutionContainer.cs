@@ -999,15 +999,26 @@ namespace Dev2.Runtime.ESB.Execution
             var failingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestFailed);
             pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
             invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
+
+            return SetServiceTestOutputs(failingOutputs);
+        }
+
+        private static IEnumerable<IServiceTestOutput> SetServiceTestOutputs(IEnumerable<IServiceTestOutput> failingOutputs)
+        {
             var serviceTestOutputs = failingOutputs as IServiceTestOutput[] ?? failingOutputs?.ToArray();
             if (serviceTestOutputs?.Any() ?? false)
             {
-                foreach (var serviceTestOutput in serviceTestOutputs)
-                {
-                    serviceTestOutput.Result.Message = DataListUtil.StripBracketsFromValue(serviceTestOutput.Result.Message);
-                }
+                SetServiceTestOutputResultMessage(serviceTestOutputs);
             }
             return serviceTestOutputs;
+        }
+
+        private static void SetServiceTestOutputResultMessage(IServiceTestOutput[] serviceTestOutputs)
+        {
+            foreach (var serviceTestOutput in serviceTestOutputs)
+            {
+                serviceTestOutput.Result.Message = DataListUtil.StripBracketsFromValue(serviceTestOutput.Result.Message);
+            }
         }
 
         static List<IServiceTestStep> GetStepValues(IServiceTestModelTO test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps)
