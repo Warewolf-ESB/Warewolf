@@ -422,7 +422,19 @@ Test Failed because of some reasons
 
             mockServiceTestOutput.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
             //------------Execute Test---------------------------    
-            var testImplementation = new TestExecuteWorkflowImplementation(mockDSFDataObject.Object, esbExecuteRequest, mockResourceCatalog.Object, mockWorkspace.Object, mockServiceTestModelTO.Object, wfappUtils, invokeErrors, resourceId, serializer);
+            var executeWorkflowArgs = new ExecuteWorkflowArgs
+            {
+                dataObject = mockDSFDataObject.Object,
+                esbExecuteRequest = esbExecuteRequest,
+                resourceCatalog = mockResourceCatalog.Object,
+                workspace = mockWorkspace.Object,
+                test = mockServiceTestModelTO.Object,
+                wfappUtils = wfappUtils,
+                invokeErrors = invokeErrors,
+                resourceId = resourceId,
+                serializer = serializer
+            };
+            var testImplementation = new TestExecuteWorkflowImplementation(executeWorkflowArgs);
             var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
             //------------Assert Results-------------------------
             var firstOrDefault = testRunResults?.FirstOrDefault();
@@ -478,8 +490,20 @@ Test Failed because of some reasons
             mockServiceTestOutput.Setup(testOutput => testOutput.AssertOp).Returns("There is An Error");
 
             var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest);
-            //------------Execute Test---------------------------            
-            var testImplementation = new TestExecuteWorkflowImplementation(mockDSFDataObject.Object,esbExecuteRequest, mockResourceCatalog.Object, mockWorkspace.Object, mockServiceTestModelTO.Object, wfappUtils, invokeErrors, resourceId, serializer);
+            //------------Execute Test---------------------------
+            var executeWorkflowArgs = new ExecuteWorkflowArgs
+            {
+                dataObject = mockDSFDataObject.Object,
+                esbExecuteRequest = esbExecuteRequest,
+                resourceCatalog = mockResourceCatalog.Object,
+                workspace = mockWorkspace.Object,
+                test = mockServiceTestModelTO.Object,
+                wfappUtils = wfappUtils,
+                invokeErrors = invokeErrors,
+                resourceId = resourceId,
+                serializer = serializer
+            };
+            var testImplementation = new TestExecuteWorkflowImplementation(executeWorkflowArgs);
             var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
             //------------Assert Results-------------------------
             var firstOrDefault = testRunResults?.FirstOrDefault();
@@ -1238,8 +1262,8 @@ Test Failed because of some reasons
         
         class TestExecuteWorkflowImplementation : ExecuteWorkflowImplementation
         {
-            public TestExecuteWorkflowImplementation(IDSFDataObject dataObject, EsbExecuteRequest esbExecuteRequest, IResourceCatalog resourceCatalog, IWorkspace workspace, IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
-                : base(dataObject, esbExecuteRequest, resourceCatalog, workspace, test, wfappUtils, invokeErrors, resourceId, serializer)
+            public TestExecuteWorkflowImplementation(ExecuteWorkflowArgs executeWorkflowArgs)
+                : base(executeWorkflowArgs)
             {
             }
 
