@@ -28,7 +28,6 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
@@ -419,16 +418,9 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (!_dataObject.StopExecution)
                     {
-                        var debugState = wfappUtils.GetDebugState(_dataObject, StateType.End, invokeErrors, interrogateOutputs: true, durationVisible: true);
-                        var outputDebugItem = new DebugItem();
-                        if (test != null)
-                        {
-                            var msg = test.TestPassed ? Warewolf.Resource.Messages.Messages.Test_PassedResult : test.FailureMessage;
-                            outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
-                        }
-                        debugState.AssertResultList.Add(outputDebugItem);
-                        wfappUtils.TryWriteDebug(_dataObject, debugState);
+                        AddAssertResultList(test, wfappUtils, invokeErrors);
                     }
+
                     DebugState testAggregateDebugState;
                     if (_dataObject.StopExecution && _dataObject.Environment.HasErrors())
                     {
@@ -446,12 +438,7 @@ namespace Dev2.Runtime.ESB.Execution
                     var itemToAdd = new DebugItem();
                     if (test != null)
                     {
-                        var msg = test.FailureMessage;
-                        if (test.TestPassed)
-                        {
-                            msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
-                        }
-                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
+                        AddDebugItems(test, itemToAdd);
                     }
                     testAggregateDebugState.AssertResultList.Add(itemToAdd);
                     wfappUtils.TryWriteDebug(_dataObject, testAggregateDebugState);
@@ -468,26 +455,54 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    if (_dataObject.StopExecution && _dataObject.Environment.HasErrors())
-                    {
-                        var existingErrors = _dataObject.Environment.FetchErrors();
-                        _dataObject.Environment.AllErrors.Clear();
-                        SetTestFailureBasedOnExpectedError(test, existingErrors);
-                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
-
-                    }
-                    else
-                    {
-                        AggregateTestResult(resourceId, test);
-                        if (test != null)
-                        {
-                            _request.ExecuteResult = serializer.SerializeToBuilder(test);
-                        }
-                    }
-
+                    SetExecuteResult(test, resourceId, serializer);
                 }
+
                 result = _dataObject.DataListID;
                 return result;
+            }
+
+            private void SetExecuteResult(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer)
+            {
+                if (_dataObject.StopExecution && _dataObject.Environment.HasErrors())
+                {
+                    var existingErrors = _dataObject.Environment.FetchErrors();
+                    _dataObject.Environment.AllErrors.Clear();
+                    SetTestFailureBasedOnExpectedError(test, existingErrors);
+                    _request.ExecuteResult = serializer.SerializeToBuilder(test);
+
+                }
+                else
+                {
+                    AggregateTestResult(resourceId, test);
+                    if (test != null)
+                    {
+                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                    }
+                }
+            }
+
+            private static void AddDebugItems(IServiceTestModelTO test, DebugItem itemToAdd)
+            {
+                var msg = test.FailureMessage;
+                if (test.TestPassed)
+                {
+                    msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                }
+                itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
+            }
+
+            private void AddAssertResultList(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors)
+            {
+                var debugState = wfappUtils.GetDebugState(_dataObject, StateType.End, invokeErrors, interrogateOutputs: true, durationVisible: true);
+                var outputDebugItem = new DebugItem();
+                if (test != null)
+                {
+                    var msg = test.TestPassed ? Warewolf.Resource.Messages.Messages.Test_PassedResult : test.FailureMessage;
+                    outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
+                }
+                debugState.AssertResultList.Add(outputDebugItem);
+                wfappUtils.TryWriteDebug(_dataObject, debugState);
             }
 
             IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
