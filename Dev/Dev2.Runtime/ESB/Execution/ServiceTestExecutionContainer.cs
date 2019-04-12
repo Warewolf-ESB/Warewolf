@@ -844,7 +844,24 @@ namespace Dev2.Runtime.ESB.Execution
 
             testPassed = testPassed && testStepPassed;
 
-            var failureMessage = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
+            var messageArgs = new UpdateFailureMessageArgs
+            {
+               HasPendingSteps = hasPendingSteps,
+               PendingTestSteps = pendingTestSteps,
+               HasInvalidSteps = hasInvalidSteps,
+               InvalidTestSteps = invalidTestSteps,
+               HasFailingSteps = hasFailingSteps,
+               FailingTestSteps = failingTestSteps,
+               HasPendingOutputs = hasPendingOutputs,
+               PendingTestOutputs = pendingTestOutputs,
+               HasInvalidOutputs = hasInvalidOutputs,
+               InvalidTestOutputs = invalidTestOutputs,
+               HasFailingOutputs = hasFailingOutputs,
+               FailingTestOutputs = failingTestOutputs,
+               ServiceTestSteps = serviceTestSteps,
+            };
+            var failureMessage = UpdateFailureMessage(messageArgs);
+
             test.FailureMessage = failureMessage.ToString();
             test.TestFailing = !testPassed;
             test.TestPassed = testPassed;
@@ -852,63 +869,109 @@ namespace Dev2.Runtime.ESB.Execution
             test.TestInvalid = hasInvalidSteps;
         }
 
-        static StringBuilder UpdateFailureMessage(bool hasPendingSteps, IList<IServiceTestStep> pendingTestSteps, bool hasInvalidSteps, IList<IServiceTestStep> invalidTestSteps, bool hasFailingSteps, IList<IServiceTestStep> failingTestSteps, bool hasPendingOutputs, IList<IServiceTestOutput> pendingTestOutputs, bool hasInvalidOutputs, IList<IServiceTestOutput> invalidTestOutputs, bool hasFailingOutputs, IList<IServiceTestOutput> failingTestOutputs, List<IServiceTestStep> serviceTestSteps)
+        public struct UpdateFailureMessageArgs
+        {
+            public bool HasPendingSteps { get; set; }
+            public IList<IServiceTestStep> PendingTestSteps {get; set;}
+            public bool HasInvalidSteps {get; set;}
+            public IList<IServiceTestStep> InvalidTestSteps {get; set;}
+            public bool HasFailingSteps {get; set;}
+            public IList<IServiceTestStep> FailingTestSteps {get; set;}
+            public bool HasPendingOutputs {get; set;}
+            public IList<IServiceTestOutput> PendingTestOutputs {get; set;}
+            public bool HasInvalidOutputs {get; set;}
+            public IList<IServiceTestOutput> InvalidTestOutputs {get; set;}
+            public bool HasFailingOutputs {get; set;}
+            public IList<IServiceTestOutput> FailingTestOutputs {get; set;}
+            public List<IServiceTestStep> ServiceTestSteps {get; set;}
+        }
+
+        static StringBuilder UpdateFailureMessage(UpdateFailureMessageArgs messageArgs)
         {
             var failureMessage = new StringBuilder();
-            if (hasFailingSteps)
+            if (messageArgs.HasFailingSteps)
             {
-                foreach (var serviceTestStep in failingTestSteps)
-                {
-                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription + " ");
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
+                AppendServiceTestFailedSteps(messageArgs.FailingTestSteps, failureMessage);
             }
-            if (hasInvalidSteps)
+            if (messageArgs.HasInvalidSteps)
             {
-                foreach (var serviceTestStep in invalidTestSteps)
-                {
-                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription + " ");
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
+                AppendServiceTestInvalidStep(messageArgs.InvalidTestSteps, failureMessage);
             }
-            if (hasPendingSteps)
+            if (messageArgs.HasPendingSteps)
             {
-                foreach (var serviceTestStep in pendingTestSteps)
-                {
-                    failureMessage.AppendLine("Pending Step: " + serviceTestStep.StepDescription);
-                }
+                AppendServiceTestPendingSteps(messageArgs.PendingTestSteps, failureMessage);
             }
 
-            if (hasFailingOutputs)
+            if (messageArgs.HasFailingOutputs)
             {
-                foreach (var serviceTestStep in failingTestOutputs)
-                {
-                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable + " ");
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
+                AppendServiceTestFailedOutput(messageArgs.FailingTestOutputs, failureMessage);
             }
-            if (hasInvalidOutputs)
+            if (messageArgs.HasInvalidOutputs)
             {
-                foreach (var serviceTestStep in invalidTestOutputs)
-                {
-                    failureMessage.AppendLine("Invalid Output for Variable: " + serviceTestStep.Variable);
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
+                AppendServiceTestInvalidOutputVariables(messageArgs.InvalidTestOutputs, failureMessage);
             }
-            if (hasPendingOutputs)
+            if (messageArgs.HasPendingOutputs)
             {
-                foreach (var serviceTestStep in pendingTestOutputs)
-                {
-                    failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
-                }
+                AppendServiceTestPendingOutput(messageArgs.PendingTestOutputs, failureMessage);
             }
-
-
-            if (serviceTestSteps != null)
+            
+            if (messageArgs.ServiceTestSteps != null)
             {
-                failureMessage.AppendLine(string.Join("", serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
+                failureMessage.AppendLine(string.Join("", messageArgs.ServiceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
             }
             return failureMessage;
+        }
+
+        private static void AppendServiceTestPendingOutput(IList<IServiceTestOutput> pendingTestOutputs, StringBuilder failureMessage)
+        {
+            foreach (var serviceTestStep in pendingTestOutputs)
+            {
+                failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
+            }
+        }
+
+        private static void AppendServiceTestInvalidOutputVariables(IList<IServiceTestOutput> invalidTestOutputs, StringBuilder failureMessage)
+        {
+            foreach (var serviceTestStep in invalidTestOutputs)
+            {
+                failureMessage.AppendLine("Invalid Output for Variable: " + serviceTestStep.Variable);
+                failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+            }
+        }
+
+        private static void AppendServiceTestFailedOutput(IList<IServiceTestOutput> failingTestOutputs, StringBuilder failureMessage)
+        {
+            foreach (var serviceTestStep in failingTestOutputs)
+            {
+                failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable + " ");
+                failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+            }
+        }
+
+        private static void AppendServiceTestPendingSteps(IList<IServiceTestStep> pendingTestSteps, StringBuilder failureMessage)
+        {
+            foreach (var serviceTestStep in pendingTestSteps)
+            {
+                failureMessage.AppendLine("Pending Step: " + serviceTestStep.StepDescription);
+            }
+        }
+
+        private static void AppendServiceTestInvalidStep(IList<IServiceTestStep> invalidTestSteps, StringBuilder failureMessage)
+        {
+            foreach (var serviceTestStep in invalidTestSteps)
+            {
+                failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription + " ");
+                failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+            }
+        }
+
+        private static void AppendServiceTestFailedSteps(IList<IServiceTestStep> failingTestSteps, StringBuilder failureMessage)
+        {
+            foreach (var serviceTestStep in failingTestSteps)
+            {
+                failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription + " ");
+                failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+            }
         }
 
         static bool TestPassedBasedOnSteps(bool hasPendingSteps, bool hasInvalidSteps, bool hasFailingSteps) => !hasPendingSteps && !hasInvalidSteps && !hasFailingSteps;
