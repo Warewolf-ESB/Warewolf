@@ -821,32 +821,55 @@ namespace Dev2.Runtime.ESB.Execution
         
         static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
         {
-            UpdateTestWithStepValuesImplimentation.UpdateTestWithStepValues(test);
+            new UpdateTestWithStepValuesImplimentation(new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>()).UpdateTestWithStepValues(test);
             UpdateTestWithFinalResult(resourceId, test);
         }
 
         internal class UpdateTestWithStepValuesImplimentation
         {
-            protected UpdateTestWithStepValuesImplimentation()
+            IEnumerable<IServiceTestStep> _pendingSteps;
+            IEnumerable<IServiceTestStep> _invalidSteps;
+            IEnumerable<IServiceTestStep> _failingSteps;
+
+            IEnumerable<IServiceTestOutput> _pendingOutputs;
+            IEnumerable<IServiceTestOutput> _invalidOutputs;
+
+            IList<IServiceTestStep> _pendingTestSteps;
+            IList<IServiceTestStep> _failingTestSteps;
+
+            IList<IServiceTestOutput> _invalidTestOutputs;
+            IList<IServiceTestOutput> _failingTestOutputs;
+
+            public UpdateTestWithStepValuesImplimentation(IEnumerable<IServiceTestStep> pendingSteps, IEnumerable<IServiceTestStep> invalidSteps, IEnumerable<IServiceTestStep> failingSteps, IEnumerable<IServiceTestOutput> pendingOutputs, IEnumerable<IServiceTestOutput> invalidOutputs, IList<IServiceTestStep> pendingTestSteps, IList<IServiceTestStep> failingTestSteps, IList<IServiceTestOutput> invalidTestOutputs, IList<IServiceTestOutput> failingTestOutputs)
             {
+                _pendingSteps = pendingSteps;
+                _invalidSteps = invalidSteps;
+                _failingSteps = failingSteps;
+
+                _pendingOutputs = pendingOutputs;
+                _invalidOutputs = invalidOutputs;
+
+                _pendingTestSteps = pendingTestSteps;
+                _failingTestSteps = failingTestSteps;
+                _failingTestOutputs = failingTestOutputs;
 
             }
 
-            public static void UpdateTestWithStepValues(IServiceTestModelTO test)
+            public void UpdateTestWithStepValues(IServiceTestModelTO test)
             {
                 var testPassed = test.TestPassed;
 
-                var serviceTestSteps = GetStepValues(test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps);
-                var failingOutputs = GetOutputValues(test, out IEnumerable<IServiceTestOutput> pendingOutputs, out IEnumerable<IServiceTestOutput> invalidOutputs);
-                var invalidTestSteps = GetSteps(invalidSteps, pendingSteps, failingSteps, out IList<IServiceTestStep> pendingTestSteps, out IList<IServiceTestStep> failingTestSteps);
-                var pendingTestOutputs = GetOutputs(pendingOutputs, invalidOutputs, failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs);
+                var serviceTestSteps = GetStepValues(test);
+                var failingOutputs = GetOutputValues(test);
+                var invalidTestSteps = GetSteps(_invalidSteps, _pendingSteps, _failingSteps);
+                var pendingTestOutputs = GetOutputs(_pendingOutputs, _invalidOutputs, failingOutputs);
 
                 var hasInvalidSteps = invalidTestSteps?.Any() ?? false;
-                var hasPendingSteps = pendingTestSteps?.Any() ?? false;
-                var hasFailingSteps = failingTestSteps?.Any() ?? false;
-                var hasFailingOutputs = failingTestOutputs?.Any() ?? false;
+                var hasPendingSteps = _pendingTestSteps?.Any() ?? false;
+                var hasFailingSteps = _failingTestSteps?.Any() ?? false;
+                var hasFailingOutputs = _failingTestOutputs?.Any() ?? false;
                 var hasPendingOutputs = pendingTestOutputs?.Any() ?? false;
-                var hasInvalidOutputs = invalidTestOutputs?.Any() ?? false;
+                var hasInvalidOutputs = _invalidTestOutputs?.Any() ?? false;
                 var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs, hasInvalidOutputs, hasFailingOutputs);
 
                 testPassed = testPassed && testStepPassed;
@@ -854,17 +877,17 @@ namespace Dev2.Runtime.ESB.Execution
                 var messageArgs = new UpdateFailureMessageArgs
                 {
                     HasPendingSteps = hasPendingSteps,
-                    PendingTestSteps = pendingTestSteps,
+                    PendingTestSteps = _pendingTestSteps,
                     HasInvalidSteps = hasInvalidSteps,
                     InvalidTestSteps = invalidTestSteps,
                     HasFailingSteps = hasFailingSteps,
-                    FailingTestSteps = failingTestSteps,
+                    FailingTestSteps = _failingTestSteps,
                     HasPendingOutputs = hasPendingOutputs,
                     PendingTestOutputs = pendingTestOutputs,
                     HasInvalidOutputs = hasInvalidOutputs,
-                    InvalidTestOutputs = invalidTestOutputs,
+                    InvalidTestOutputs = _invalidTestOutputs,
                     HasFailingOutputs = hasFailingOutputs,
-                    FailingTestOutputs = failingTestOutputs,
+                    FailingTestOutputs = _failingTestOutputs,
                     ServiceTestSteps = serviceTestSteps,
                 };
                 var failureMessage = UpdateFailureMessage(messageArgs);
@@ -876,20 +899,20 @@ namespace Dev2.Runtime.ESB.Execution
                 test.TestInvalid = hasInvalidSteps;
             }
 
-            static List<IServiceTestStep> GetStepValues(IServiceTestModelTO test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps)
+            List<IServiceTestStep> GetStepValues(IServiceTestModelTO test)
             {
                 var serviceTestSteps = test.TestSteps;
-                pendingSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestPending);
-                invalidSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestInvalid);
-                failingSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestFailed);
+                _pendingSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestPending);
+                _invalidSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestInvalid);
+                _failingSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestFailed);
                 return serviceTestSteps;
             }
 
-            static IEnumerable<IServiceTestOutput> GetOutputValues(IServiceTestModelTO test, out IEnumerable<IServiceTestOutput> pendingOutputs, out IEnumerable<IServiceTestOutput> invalidOutputs)
+            IEnumerable<IServiceTestOutput> GetOutputValues(IServiceTestModelTO test)
             {
                 var failingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestFailed);
-                pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
-                invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
+                _pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
+                _invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
 
                 return SetServiceTestOutputs(failingOutputs);
             }
@@ -904,19 +927,21 @@ namespace Dev2.Runtime.ESB.Execution
                 return serviceTestOutputs;
             }
             
-            static IList<IServiceTestStep> GetSteps(IEnumerable<IServiceTestStep> invalidSteps, IEnumerable<IServiceTestStep> pendingSteps, IEnumerable<IServiceTestStep> failingSteps, out IList<IServiceTestStep> pendingTestSteps, out IList<IServiceTestStep> failingTestSteps)
+            IList<IServiceTestStep> GetSteps(IEnumerable<IServiceTestStep> invalidSteps, IEnumerable<IServiceTestStep> pendingSteps, IEnumerable<IServiceTestStep> failingSteps)
             {
                 var invalidTestSteps = invalidSteps as IList<IServiceTestStep> ?? invalidSteps?.ToList();
-                pendingTestSteps = pendingSteps as IList<IServiceTestStep> ?? pendingSteps?.ToList();
-                failingTestSteps = failingSteps as IList<IServiceTestStep> ?? failingSteps?.ToList();
+                _pendingTestSteps = pendingSteps as IList<IServiceTestStep> ?? pendingSteps?.ToList();
+                _failingTestSteps = failingSteps as IList<IServiceTestStep> ?? failingSteps?.ToList();
+
                 return invalidTestSteps;
             }
 
-            static IList<IServiceTestOutput> GetOutputs(IEnumerable<IServiceTestOutput> pendingOutputs, IEnumerable<IServiceTestOutput> invalidOutputs, IEnumerable<IServiceTestOutput> failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs)
+            IList<IServiceTestOutput> GetOutputs(IEnumerable<IServiceTestOutput> pendingOutputs, IEnumerable<IServiceTestOutput> invalidOutputs, IEnumerable<IServiceTestOutput> failingOutputs)
             {
                 var pendingTestOutputs = pendingOutputs as IList<IServiceTestOutput> ?? pendingOutputs?.ToList();
-                invalidTestOutputs = invalidOutputs as IList<IServiceTestOutput> ?? invalidOutputs?.ToList();
-                failingTestOutputs = failingOutputs as IList<IServiceTestOutput> ?? failingOutputs?.ToList();
+                _invalidTestOutputs = invalidOutputs as IList<IServiceTestOutput> ?? invalidOutputs?.ToList();
+                _failingTestOutputs = failingOutputs as IList<IServiceTestOutput> ?? failingOutputs?.ToList();
+
                 return pendingTestOutputs;
             }
             
@@ -928,7 +953,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void UpdateTestWithStepValues(IServiceTestModelTO test)
         {
-            UpdateTestWithStepValuesImplimentation.UpdateTestWithStepValues(test);
+            new UpdateTestWithStepValuesImplimentation(new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>()).UpdateTestWithStepValues(test);
         }
 
         public struct UpdateFailureMessageArgs
