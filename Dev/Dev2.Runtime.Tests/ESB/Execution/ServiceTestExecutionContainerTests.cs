@@ -424,15 +424,15 @@ Test Failed because of some reasons
             //------------Execute Test---------------------------    
             var executeWorkflowArgs = new ExecuteWorkflowArgs
             {
-                dataObject = mockDSFDataObject.Object,
-                esbExecuteRequest = esbExecuteRequest,
-                resourceCatalog = mockResourceCatalog.Object,
-                workspace = mockWorkspace.Object,
-                test = mockServiceTestModelTO.Object,
-                wfappUtils = wfappUtils,
-                invokeErrors = invokeErrors,
-                resourceId = resourceId,
-                serializer = serializer
+                DataObject = mockDSFDataObject.Object,
+                EsbExecuteRequest = esbExecuteRequest,
+                ResourceCatalog = mockResourceCatalog.Object,
+                Workspace = mockWorkspace.Object,
+                Test = mockServiceTestModelTO.Object,
+                WfappUtils = wfappUtils,
+                InvokeErrors = invokeErrors,
+                ResourceId = resourceId,
+                Serializer = serializer
             };
             var testImplementation = new TestExecuteWorkflowImplementation(executeWorkflowArgs);
             var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
@@ -493,15 +493,15 @@ Test Failed because of some reasons
             //------------Execute Test---------------------------
             var executeWorkflowArgs = new ExecuteWorkflowArgs
             {
-                dataObject = mockDSFDataObject.Object,
-                esbExecuteRequest = esbExecuteRequest,
-                resourceCatalog = mockResourceCatalog.Object,
-                workspace = mockWorkspace.Object,
-                test = mockServiceTestModelTO.Object,
-                wfappUtils = wfappUtils,
-                invokeErrors = invokeErrors,
-                resourceId = resourceId,
-                serializer = serializer
+                DataObject = mockDSFDataObject.Object,
+                EsbExecuteRequest = esbExecuteRequest,
+                ResourceCatalog = mockResourceCatalog.Object,
+                Workspace = mockWorkspace.Object,
+                Test = mockServiceTestModelTO.Object,
+                WfappUtils = wfappUtils,
+                InvokeErrors = invokeErrors,
+                ResourceId = resourceId,
+                Serializer = serializer
             };
             var testImplementation = new TestExecuteWorkflowImplementation(executeWorkflowArgs);
             var testRunResults = testImplementation.TestGetTestRunResults(mockDSFDataObject.Object, mockServiceTestOutput.Object, new Dev2DecisionFactory());
