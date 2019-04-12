@@ -237,7 +237,20 @@ namespace Dev2.Runtime.ESB.Execution
                 var serializer = new Dev2JsonSerializer();
                 try
                 {
-                    result = new ExecuteWorkflowImplementation(_dataObject, _request, _resourceCat, _theWorkspace, test, wfappUtils, invokeErrors, resourceId, serializer).ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
+                    var executeWorkflowArgs = new ExecuteWorkflowArgs
+                    {
+                        dataObject = _dataObject,
+                        esbExecuteRequest = _request,
+                        resourceCatalog = _resourceCat,
+                        workspace = _theWorkspace,
+                        test = test,
+                        wfappUtils = wfappUtils,
+                        invokeErrors = invokeErrors,
+                        resourceId = resourceId,
+                        serializer = serializer
+                    };
+
+                    result = new ExecuteWorkflowImplementation(executeWorkflowArgs).ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
                 }
                 catch (InvalidWorkflowException iwe)
                 {
@@ -348,6 +361,19 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
         }
+
+        public class ExecuteWorkflowArgs
+        {
+            public IServiceTestModelTO test;
+            public WfApplicationUtils wfappUtils;
+            public ErrorResultTO invokeErrors;
+            public Guid resourceId;
+            public Dev2JsonSerializer serializer;
+            public IDSFDataObject dataObject;
+            public EsbExecuteRequest esbExecuteRequest;
+            public IResourceCatalog resourceCatalog;
+            public IWorkspace workspace;
+        }
         
         internal class ExecuteWorkflowImplementation
         {
@@ -361,17 +387,17 @@ namespace Dev2.Runtime.ESB.Execution
             readonly IResourceCatalog _resourceCat;
             readonly IWorkspace _theWorkspace;
 
-            public ExecuteWorkflowImplementation(IDSFDataObject dSFDataObject, EsbExecuteRequest esbExecuteRequest, IResourceCatalog resourceCatalog, IWorkspace workspace, IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
+            public ExecuteWorkflowImplementation(ExecuteWorkflowArgs executeWorkflowArgs)
             {
-                _test = test;
-                _wfappUtils = wfappUtils;
-                _invokeErrors = invokeErrors;
-                _resourceId = resourceId;
-                _serializer = serializer;
-                _dataObject = dSFDataObject;
-                _request = esbExecuteRequest;
-                _resourceCat = resourceCatalog;
-                _theWorkspace = workspace;
+                _test = executeWorkflowArgs.test;
+                _wfappUtils = executeWorkflowArgs.wfappUtils;
+                _invokeErrors = executeWorkflowArgs.invokeErrors;
+                _resourceId = executeWorkflowArgs.resourceId;
+                _serializer = executeWorkflowArgs.serializer;
+                _dataObject = executeWorkflowArgs.dataObject;
+                _request = executeWorkflowArgs.esbExecuteRequest;
+                _resourceCat = executeWorkflowArgs.resourceCatalog;
+                _theWorkspace = executeWorkflowArgs.workspace;
             }
 
             internal Guid ExecuteWf(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
