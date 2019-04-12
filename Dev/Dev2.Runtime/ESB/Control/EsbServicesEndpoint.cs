@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -25,26 +25,25 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
 namespace Dev2.Runtime.ESB.Control
 {
-    public class EsbServicesEndpoint :  IEsbWorkspaceChannel
+    public class EsbServicesEndpoint : IEsbWorkspaceChannel
     {
+        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
+
         public EsbServicesEndpoint(IEnvironmentOutputMappingManager environmentOutputMappingManager)
         {
             _environmentOutputMappingManager = environmentOutputMappingManager;
         }
 
         public EsbServicesEndpoint()
-            :this(new EnvironmentOutputMappingManager())
+            : this(new EnvironmentOutputMappingManager())
         {
-            
+
         }
-        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
 
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
-
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = null;
@@ -64,7 +63,7 @@ namespace Dev2.Runtime.ESB.Control
                 Dev2Logger.Debug("Creating Invoker", dataObject.ExecutionID.ToString());
                 using (var invoker = new EsbServiceInvoker(this, theWorkspace, request))
                 {
-                    resultID = invoker.Invoke(dataObject, out ErrorResultTO invokeErrors);
+                    resultID = invoker.Invoke(dataObject, out var invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
             }
@@ -133,7 +132,7 @@ namespace Dev2.Runtime.ESB.Control
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
             executionContainer.PerformLogExecution(uri, update);
         }
-        
+
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
@@ -144,7 +143,8 @@ namespace Dev2.Runtime.ESB.Control
             if (dataObject.RunWorkflowAsync)
             {
                 helper = new SubExecutionHelperAsync(_environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs);
-            } else
+            }
+            else
             {
                 helper = new SubExecutionHelper(_environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs);
             }
@@ -224,7 +224,6 @@ namespace Dev2.Runtime.ESB.Control
                 : base(environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs)
             { }
 
-
             protected override IExecutionEnvironment ExecuteWorkflow(bool wasTestExecution, int update, bool handleErrors)
             {
                 if (_isLocal && GetResourceById(_workspaceId, _dataObject.ResourceID) == null && GetResourceByName(_workspaceId, _dataObject.ServiceName) == null)
@@ -281,6 +280,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
             }
         }
+
         class SubExecutionHelperAsync : SubExecutionHelperBase
         {
             public SubExecutionHelperAsync(IEnvironmentOutputMappingManager environmentOutputMappingManager, Guid workspaceId, EsbServiceInvoker invoker, IDSFDataObject dataObject, string inputDefs, string outputDefs)
@@ -323,7 +323,8 @@ namespace Dev2.Runtime.ESB.Control
 
             static void SetResultEnvironmentToNull(Task<IDSFDataObject> task)
             {
-                if (task?.Result != null) {
+                if (task?.Result != null)
+                {
                     task.Result.Environment = null;
                 }
             }
