@@ -821,8 +821,33 @@ namespace Dev2.Runtime.ESB.Execution
         
         static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
         {
-            new UpdateTestWithStepValuesImplimentation(new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>()).UpdateTestWithStepValues(test);
+            var uu = new UpdateTestWithStepValuesImplimentationArgs
+            {
+               PendingSteps = new List<IServiceTestStep>(),
+               InvalidSteps = new List<IServiceTestStep>(),
+               FailingSteps = new List<IServiceTestStep>(),
+               PendingOutputs = new List<IServiceTestOutput>(),
+               InvalidOutputs = new List<IServiceTestOutput>(),
+               PendingTestSteps = new List<IServiceTestStep>(),
+               FailingTestSteps = new List<IServiceTestStep>(),
+               InvalidTestOutputs = new List<IServiceTestOutput>(),
+               FailingTestOutputs = new List<IServiceTestOutput>(),
+            };
+            new UpdateTestWithStepValuesImplimentation(uu).UpdateTestWithStepValues(test);
             UpdateTestWithFinalResult(resourceId, test);
+        }
+
+        public struct UpdateTestWithStepValuesImplimentationArgs
+        {
+            public IEnumerable<IServiceTestStep> PendingSteps { get; set; }
+            public IEnumerable<IServiceTestStep> InvalidSteps { get; set; }
+            public IEnumerable<IServiceTestStep> FailingSteps {get; set;}
+            public IEnumerable<IServiceTestOutput> PendingOutputs {get; set;}
+            public IEnumerable<IServiceTestOutput> InvalidOutputs {get; set;}
+            public IList<IServiceTestStep> PendingTestSteps {get; set;}
+            public IList<IServiceTestStep> FailingTestSteps {get; set;}
+            public IList<IServiceTestOutput> InvalidTestOutputs {get; set;}
+            public IList<IServiceTestOutput> FailingTestOutputs {get; set;}
         }
 
         internal class UpdateTestWithStepValuesImplimentation
@@ -840,18 +865,18 @@ namespace Dev2.Runtime.ESB.Execution
             IList<IServiceTestOutput> _invalidTestOutputs;
             IList<IServiceTestOutput> _failingTestOutputs;
 
-            public UpdateTestWithStepValuesImplimentation(IEnumerable<IServiceTestStep> pendingSteps, IEnumerable<IServiceTestStep> invalidSteps, IEnumerable<IServiceTestStep> failingSteps, IEnumerable<IServiceTestOutput> pendingOutputs, IEnumerable<IServiceTestOutput> invalidOutputs, IList<IServiceTestStep> pendingTestSteps, IList<IServiceTestStep> failingTestSteps, IList<IServiceTestOutput> invalidTestOutputs, IList<IServiceTestOutput> failingTestOutputs)
+            public UpdateTestWithStepValuesImplimentation(UpdateTestWithStepValuesImplimentationArgs implimentationArgs)
             {
-                _pendingSteps = pendingSteps;
-                _invalidSteps = invalidSteps;
-                _failingSteps = failingSteps;
+                _pendingSteps = implimentationArgs.PendingSteps;
+                _invalidSteps = implimentationArgs.InvalidSteps;
+                _failingSteps = implimentationArgs.FailingSteps;
 
-                _pendingOutputs = pendingOutputs;
-                _invalidOutputs = invalidOutputs;
+                _pendingOutputs = implimentationArgs.PendingOutputs;
+                _invalidOutputs = implimentationArgs.InvalidOutputs;
 
-                _pendingTestSteps = pendingTestSteps;
-                _failingTestSteps = failingTestSteps;
-                _failingTestOutputs = failingTestOutputs;
+                _pendingTestSteps = implimentationArgs.PendingTestSteps;
+                _failingTestSteps = implimentationArgs.FailingTestSteps;
+                _failingTestOutputs = implimentationArgs.FailingTestOutputs;
 
             }
 
@@ -953,7 +978,19 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void UpdateTestWithStepValues(IServiceTestModelTO test)
         {
-            new UpdateTestWithStepValuesImplimentation(new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>(), new List<IServiceTestStep>(), new List<IServiceTestStep>(), new List<IServiceTestOutput>(), new List<IServiceTestOutput>()).UpdateTestWithStepValues(test);
+            var uu = new UpdateTestWithStepValuesImplimentationArgs
+            {
+                PendingSteps = new List<IServiceTestStep>(),
+                InvalidSteps = new List<IServiceTestStep>(),
+                FailingSteps = new List<IServiceTestStep>(),
+                PendingOutputs = new List<IServiceTestOutput>(),
+                InvalidOutputs = new List<IServiceTestOutput>(),
+                PendingTestSteps = new List<IServiceTestStep>(),
+                FailingTestSteps = new List<IServiceTestStep>(),
+                InvalidTestOutputs = new List<IServiceTestOutput>(),
+                FailingTestOutputs = new List<IServiceTestOutput>(),
+            };
+            new UpdateTestWithStepValuesImplimentation(uu).UpdateTestWithStepValues(test);
         }
 
         public struct UpdateFailureMessageArgs
