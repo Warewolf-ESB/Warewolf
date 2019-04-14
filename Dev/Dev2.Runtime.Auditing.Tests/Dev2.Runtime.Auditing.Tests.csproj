@@ -160,7 +160,7 @@
       <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
-      <Version>2.2.2</Version>
+      <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
       <Version>5.2.7</Version>
