@@ -657,3 +657,4 @@ this.EnsuringRecordsetsWorkAsAResult("[[text]]", "12", "[[var]]", "1", "[[senten
 }
 #pragma warning restore
 #endregion
+
