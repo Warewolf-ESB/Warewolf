@@ -78,7 +78,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR.Client">
-      <Version>2.4.0</Version>
+      <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
