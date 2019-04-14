@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core", "Dev2.Core\Dev2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Core.Tests", "Dev2.Core.Tests\Dev2.Core.Tests.csproj", "{6A65D99B-61C5-4376-B4F7-71A503F9351F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data", "Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
@@ -299,6 +297,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Warewolf.Language.Parser", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ServiceTestView", "Warewolf.UIBindingTests.ServiceTestView\Warewolf.UIBindingTests.ServiceTestView.csproj", "{B1009DCB-5D4E-4846-8739-6944D0E0C956}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -361,14 +361,6 @@ Global
 		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|x86.ActiveCfg = Debug|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|x86.Build.0 = Debug|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|x86.ActiveCfg = Release|Any CPU
-		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|x86.Build.0 = Release|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1223,6 +1215,14 @@ Global
 		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|x86.ActiveCfg = Release|Any CPU
 		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|x86.Build.0 = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|x86.Build.0 = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|x86.ActiveCfg = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
