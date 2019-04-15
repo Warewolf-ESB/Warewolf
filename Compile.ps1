@@ -72,6 +72,7 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 	$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
 	if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
 		$MSBuildPath = $env:MSBuildPath
+        [System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
 	} else {
 		Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
 		sleep 10
