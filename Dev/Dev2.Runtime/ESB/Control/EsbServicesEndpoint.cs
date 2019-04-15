@@ -42,8 +42,6 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
-
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
             var resultID = GlobalConstants.NullDataListID;
