@@ -833,7 +833,7 @@ namespace Dev2.Runtime.ESB.Execution
                InvalidTestOutputs = new List<IServiceTestOutput>(),
                FailingTestOutputs = new List<IServiceTestOutput>(),
             };
-            new UpdateTestWithStepValuesImplimentation(uu).UpdateTestWithStepValues(test);
+            new UpdateTestWithStepValuesImplimentation(uu).UpdateTestWithStepValue(test);
             UpdateTestWithFinalResult(resourceId, test);
         }
 
@@ -880,7 +880,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             }
 
-            public void UpdateTestWithStepValues(IServiceTestModelTO test)
+            public void UpdateTestWithStepValue(IServiceTestModelTO test)
             {
                 var testPassed = test.TestPassed;
 
@@ -889,12 +889,12 @@ namespace Dev2.Runtime.ESB.Execution
                 var invalidTestSteps = GetSteps(_invalidSteps, _pendingSteps, _failingSteps);
                 var pendingTestOutputs = GetOutputs(_pendingOutputs, _invalidOutputs, failingOutputs);
 
-                var hasInvalidSteps = invalidTestSteps?.Any() ?? false;
-                var hasPendingSteps = _pendingTestSteps?.Any() ?? false;
-                var hasFailingSteps = _failingTestSteps?.Any() ?? false;
-                var hasFailingOutputs = _failingTestOutputs?.Any() ?? false;
-                var hasPendingOutputs = pendingTestOutputs?.Any() ?? false;
-                var hasInvalidOutputs = _invalidTestOutputs?.Any() ?? false;
+                var hasInvalidSteps = invalidTestSteps.Count >= 1;
+                var hasPendingSteps = _pendingTestSteps.Count >= 1;
+                var hasFailingSteps = _failingTestSteps.Count >= 1;
+                var hasFailingOutputs = _failingTestOutputs.Count >= 1;
+                var hasPendingOutputs = pendingTestOutputs.Count >= 1;
+                var hasInvalidOutputs = _invalidTestOutputs.Count >= 1;
                 var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs, hasInvalidOutputs, hasFailingOutputs);
 
                 testPassed = testPassed && testStepPassed;
@@ -990,7 +990,7 @@ namespace Dev2.Runtime.ESB.Execution
                 InvalidTestOutputs = new List<IServiceTestOutput>(),
                 FailingTestOutputs = new List<IServiceTestOutput>(),
             };
-            new UpdateTestWithStepValuesImplimentation(uu).UpdateTestWithStepValues(test);
+            new UpdateTestWithStepValuesImplimentation(uu).UpdateTestWithStepValue(test);
         }
 
         public struct UpdateFailureMessageArgs
