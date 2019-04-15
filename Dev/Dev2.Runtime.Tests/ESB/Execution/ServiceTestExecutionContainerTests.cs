@@ -38,8 +38,6 @@ using Moq;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using static Dev2.Runtime.ESB.Execution.ServiceTestExecutionContainer;
-using static Dev2.Runtime.ESB.Execution.ServiceTestExecutionContainer.Implementation;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -313,7 +311,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
         public void ServiceTestExecutionContainer_UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
         {
@@ -325,18 +323,18 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 DataListSpecification = new StringBuilder(Datalist),
                 Service = new DynamicService { ID = resourceId }
             };
-            var dsfObj = new Mock<IDSFDataObject>();
-            dsfObj.SetupProperty(o => o.ResourceID);
+            var mockDataObj = new Mock<IDSFDataObject>();
+            mockDataObj.SetupProperty(o => o.ResourceID);
             const string TestName = "test1";
-            dsfObj.Setup(o => o.TestName).Returns(TestName);
-            dsfObj.Setup(o => o.StopExecution).Returns(true);
-            dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
+            mockDataObj.Setup(o => o.TestName).Returns(TestName);
+            mockDataObj.Setup(o => o.StopExecution).Returns(true);
+            mockDataObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            mockDataObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
-            dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
-            dsfObj.Setup(o => o.IsDebugMode()).Returns(true);
-            dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
-            dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
+            mockDataObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
+            mockDataObj.Setup(o => o.IsDebugMode()).Returns(true);
+            mockDataObj.Setup(o => o.Environment.HasErrors()).Returns(true);
+            mockDataObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
             var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
@@ -350,25 +348,38 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
-            var testObj = new PrivateType(serviceTestExecutionContainer.GetType());
-            var test = SetupServiceTestSteps();
-            testObj.InvokeStatic("UpdateTestWithStepValues", test.Object);
-            //------------Execute Test---------------------------            
-            var expectedMessage = @"Failed Step:  
-Message: Test Failed because of some reasons
-Failed Output For Variable:  
-Message: This test has failed
-Invalid Output for Variable: 
-Message: This test is invalid
-Pending Output for Variable: 
-Test Failed because of some reasons
-";
-            //------------Assert Results-------------------------
-            test.VerifySet(to =>
+
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDataObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+
+            var stepValuesImplimentation = new ServiceTestExecutionContainer.UpdateTestWithStepValuesImplimentation();
+            //------------Execute Test---------------------------
+            var mockTestStep = new Mock<IServiceTestStep>();
+            mockTestStep.Setup(o => o.Result).Returns(new TestRunResult { RunTestResult = RunResult.TestFailed, Message = "sdfasdfsadf" });
+            mockTestStep.Setup(o => o.Type).Returns(StepType.Assert);
+
+            var serviceTestModelTO = new ServiceTestModelTO
             {
-                to.FailureMessage = expectedMessage.ToString();
-            }, Times.AtLeastOnce);
+                TestSteps = new List<IServiceTestStep> {
+                mockTestStep.Object
+            },
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutputTO { Value = "test_value" } }
+            };
+
+            stepValuesImplimentation.UpdateTestWithStepValue(serviceTestModelTO);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serviceTestModelTO.TestFailing);
+            Assert.IsFalse(serviceTestModelTO.TestInvalid);
+            Assert.IsFalse(serviceTestModelTO.TestPassed);
+            Assert.IsFalse(serviceTestModelTO.TestPending);
+            Assert.AreEqual("Failed Step:  \r\nMessage: sdfasdfsadf\r\nsdfasdfsadf\r\n", serviceTestModelTO.FailureMessage);
+        }
+
+        class TestServiceTestExecutionContainer : ServiceTestExecutionContainer
+        {
+            public TestServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request) 
+                : base(sa, dataObj, theWorkspace, esbChannel, request)
+            {
+            }
         }
 
         [TestMethod]
@@ -422,7 +433,7 @@ Test Failed because of some reasons
 
             mockServiceTestOutput.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
             //------------Execute Test---------------------------    
-            var executeWorkflowArgs = new ExecuteWorkflowArgs
+            var executeWorkflowArgs = new ServiceTestExecutionContainer.ExecuteWorkflowArgs
             {
                 DataObject = mockDSFDataObject.Object,
                 EsbExecuteRequest = esbExecuteRequest,
@@ -491,7 +502,7 @@ Test Failed because of some reasons
 
             var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, mockDSFDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, esbExecuteRequest);
             //------------Execute Test---------------------------
-            var executeWorkflowArgs = new ExecuteWorkflowArgs
+            var executeWorkflowArgs = new ServiceTestExecutionContainer.ExecuteWorkflowArgs
             {
                 DataObject = mockDSFDataObject.Object,
                 EsbExecuteRequest = esbExecuteRequest,
@@ -1260,9 +1271,9 @@ Test Failed because of some reasons
             return serviceTestModelTO;
         }
         
-        class TestExecuteWorkflowImplementation : ExecuteWorkflowImplementation
+        class TestExecuteWorkflowImplementation : ServiceTestExecutionContainer.ExecuteWorkflowImplementation
         {
-            public TestExecuteWorkflowImplementation(ExecuteWorkflowArgs executeWorkflowArgs)
+            public TestExecuteWorkflowImplementation(ServiceTestExecutionContainer.ExecuteWorkflowArgs executeWorkflowArgs)
                 : base(executeWorkflowArgs)
             {
             }
