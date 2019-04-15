@@ -158,7 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net">
-      <Version>2.0.5</Version>
+      <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR.Core">
       <Version>2.4.1</Version>
