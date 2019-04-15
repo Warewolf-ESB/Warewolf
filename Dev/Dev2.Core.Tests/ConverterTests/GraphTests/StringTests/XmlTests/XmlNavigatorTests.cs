@@ -57,8 +57,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         string GivenSingleNode => @"<Message>Dummy Data</Message>";
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SelectScalarValue_WithNull_Expected_ArgumentNullException()
+        public void XmlNavigator_SelectScalarValue_WithNull_Expected_ArgumentNullException()
         {
             using (var xmlNavigator = new XmlNavigator(TestData))
             {
@@ -67,8 +68,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(Exception))]
-        public void SelectScalar_WithoutXmlPath_ExpectException()
+        public void XmlNavigator_SelectScalar_WithoutXmlPath_ExpectException()
         {
             using (var JsonNavigator = new XmlNavigator(TestData))
             {
@@ -77,7 +79,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithPathSeperator_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithPathSeperator_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath(".", ".");
 
@@ -122,7 +125,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithScalarPathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithScalarPathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company:Name", "Company:Name");
 
@@ -136,7 +140,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithScalarPathFromXml_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithScalarPathFromXml_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company.Motto", "Company.Motto");
 
@@ -150,7 +155,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithWrongPathSegment_Expected_NoValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithWrongPathSegment_Expected_NoValue()
         {
             IPath namePath = new XmlPath("Company.Nogo", "Company.Nogo");
 
@@ -162,7 +168,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             }
         }
 
-        public void SelectScalarValue_WithScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+        public void XmlNavigator_SelectScalarValue_WithScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
 
@@ -176,7 +182,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
 
@@ -190,7 +197,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
 
@@ -204,8 +212,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SelectEnumerableValueUsingNull_Expected_ArgumentNullException()
+        public void XmlNavigator_SelectEnumerableValueUsingNull_Expected_ArgumentNullException()
         {
             using (var xmlNavigator = new XmlNavigator(TestData))
             {
@@ -214,8 +223,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(Exception))]
-        public void SelectEnumerableValue_WithoutXmlPath_Expected_Exception()
+        public void XmlNavigator_SelectEnumerableValue_WithoutXmlPath_Expected_Exception()
         {
             using (var xmlNavigator = new XmlNavigator(TestData))
             {
@@ -224,7 +234,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValueUsingPathSeperator_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValueUsingPathSeperator_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath(".", ".");
 
@@ -269,7 +280,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValueUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValueUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
 
@@ -283,7 +295,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
 
@@ -297,7 +310,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
 
@@ -311,7 +325,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company.Motto", "Company.Motto");
 
@@ -325,7 +340,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company:Name", "Company:Name");
 
@@ -339,7 +355,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario1_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario1_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
 
@@ -353,7 +370,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario2_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario2_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue", "Company.OuterNestedRecordSet.InnerNestedRecordSet:ItemValue");
 
@@ -367,7 +385,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
             IList<IPath> paths = new List<IPath>
@@ -385,7 +404,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
         {
             IPath path = new XmlPath("Company:Name", "Company:Name");
             IPath path1 = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
@@ -403,7 +423,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
         {
             IPath path = new XmlPath("Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue", "Company.OuterNestedRecordSet.InnerNestedRecordSet:ItemValue");
             IPath path1 = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
@@ -421,7 +442,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
             IPath path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
             IPath path1 = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
@@ -439,7 +461,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
         {
             IPath path = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
             var paths = new List<IPath> { path };
@@ -456,7 +479,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
         {
             IPath path = new XmlPath("Company:Name", "Company:Name");
             var paths = new List<IPath> { path };
@@ -473,7 +497,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
         {
             var namePath = new List<IPath> { new XmlPath(".", ".") };
 
