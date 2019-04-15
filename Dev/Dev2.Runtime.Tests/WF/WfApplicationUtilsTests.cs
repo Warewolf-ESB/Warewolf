@@ -165,7 +165,6 @@ namespace Dev2.Tests.Runtime.WF
             Assert.AreEqual("SomeValue", shape);
         }
 
-        //DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible=true)
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void WfApplicationUtils_DispatchDebugState_GivenValidParams_ShouldNotThrowException()
@@ -180,7 +179,6 @@ namespace Dev2.Tests.Runtime.WF
             //---------------Execute Test ----------------------
             try
             {
-                //wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error)
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, out ErrorResultTO error, false, false);
             }
             catch (Exception ex)
@@ -211,13 +209,11 @@ namespace Dev2.Tests.Runtime.WF
             //---------------Execute Test ----------------------
             try
             {
-                //wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error)
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, out var error, false, false);
                 var state = debugState;
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = state, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
 
                 debugState = new DebugState { StateType = StateType.End };
-                //wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.End, false, string.Empty, out error)
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.End, out error, false, false);
 
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = debugState, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
@@ -250,7 +246,6 @@ namespace Dev2.Tests.Runtime.WF
             //---------------Execute Test ----------------------
             try
             {
-                //wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out ErrorResultTO error, DateTime.Now, true, true)
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, out var error, true);
                 var state = debugState;
                 debugDispatcher.Verify(dispatcher => dispatcher.Write(new WriteArgs { debugState = state, isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }));
