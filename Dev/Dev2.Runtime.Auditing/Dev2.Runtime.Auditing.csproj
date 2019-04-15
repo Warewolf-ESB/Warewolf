@@ -143,7 +143,7 @@
       <Version>1.1.15</Version>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.5</Version>
+      <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
