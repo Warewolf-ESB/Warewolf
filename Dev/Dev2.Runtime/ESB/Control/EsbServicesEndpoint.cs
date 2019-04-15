@@ -1,17 +1,13 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -21,30 +17,33 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
 namespace Dev2.Runtime.ESB.Control
 {
-    public class EsbServicesEndpoint :  IEsbWorkspaceChannel
+    public class EsbServicesEndpoint : IEsbWorkspaceChannel
     {
+        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
+
         public EsbServicesEndpoint(IEnvironmentOutputMappingManager environmentOutputMappingManager)
         {
             _environmentOutputMappingManager = environmentOutputMappingManager;
         }
 
         public EsbServicesEndpoint()
-            :this(new EnvironmentOutputMappingManager())
+            : this(new EnvironmentOutputMappingManager())
         {
-            
+
         }
-        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
 
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
-
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = null;
@@ -64,7 +63,7 @@ namespace Dev2.Runtime.ESB.Control
                 Dev2Logger.Debug("Creating Invoker", dataObject.ExecutionID.ToString());
                 using (var invoker = new EsbServiceInvoker(this, theWorkspace, request))
                 {
-                    resultID = invoker.Invoke(dataObject, out ErrorResultTO invokeErrors);
+                    resultID = invoker.Invoke(dataObject, out var invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
             }
@@ -75,7 +74,7 @@ namespace Dev2.Runtime.ESB.Control
             return resultID;
         }
 
-        static bool EnsureDataListIdIsSet(IDSFDataObject dataObject, Guid workspaceId, ErrorResultTO errors)
+        private static bool EnsureDataListIdIsSet(IDSFDataObject dataObject, Guid workspaceId, ErrorResultTO errors)
         {
             if (dataObject.DataListID == GlobalConstants.NullDataListID)
             {
@@ -100,7 +99,7 @@ namespace Dev2.Runtime.ESB.Control
             return true;
         }
 
-        static IResource GetResource(IDSFDataObject dataObject, Guid workspaceId, ErrorResultTO errors)
+        private static IResource GetResource(IDSFDataObject dataObject, Guid workspaceId, ErrorResultTO errors)
         {
             try
             {
@@ -117,14 +116,14 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        static IResource GetResourceById(Guid workspaceId, Guid resourceId)
+        private static IResource GetResourceById(Guid workspaceId, Guid resourceId)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             return resource;
         }
 
-        static IResource GetResourceByName(Guid workspaceId, string resourceName) => ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+        private static IResource GetResourceByName(Guid workspaceId, string resourceName) => ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
 
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
@@ -133,7 +132,7 @@ namespace Dev2.Runtime.ESB.Control
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
             executionContainer.PerformLogExecution(uri, update);
         }
-        
+
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
@@ -144,7 +143,8 @@ namespace Dev2.Runtime.ESB.Control
             if (dataObject.RunWorkflowAsync)
             {
                 helper = new SubExecutionHelperAsync(_environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs);
-            } else
+            }
+            else
             {
                 helper = new SubExecutionHelper(_environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs);
             }
@@ -154,12 +154,9 @@ namespace Dev2.Runtime.ESB.Control
             return result;
         }
 
-        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
-        {
-            dataObject.CreateNewEnvironmentFromInputMappings(inputDefs, update);
-        }
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update) => dataObject.CreateNewEnvironmentFromInputMappings(inputDefs, update);
 
-        abstract class SubExecutionHelperBase
+        private abstract class SubExecutionHelperBase
         {
             protected readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
             protected readonly Guid _workspaceId;
@@ -218,12 +215,12 @@ namespace Dev2.Runtime.ESB.Control
 
             protected abstract IExecutionEnvironment ExecuteWorkflow(bool wasTestExecution, int update, bool handleErrors);
         }
-        sealed class SubExecutionHelper : SubExecutionHelperBase
+
+        private sealed class SubExecutionHelper : SubExecutionHelperBase
         {
             public SubExecutionHelper(IEnvironmentOutputMappingManager environmentOutputMappingManager, Guid workspaceId, EsbServiceInvoker invoker, IDSFDataObject dataObject, string inputDefs, string outputDefs)
                 : base(environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs)
             { }
-
 
             protected override IExecutionEnvironment ExecuteWorkflow(bool wasTestExecution, int update, bool handleErrors)
             {
@@ -261,7 +258,7 @@ namespace Dev2.Runtime.ESB.Control
                 return null;
             }
 
-            void ConfigureDataListIfRemote(IEsbExecutionContainer executionContainer)
+            private void ConfigureDataListIfRemote(IEsbExecutionContainer executionContainer)
             {
                 if (!_isLocal && executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
                 {
@@ -281,7 +278,8 @@ namespace Dev2.Runtime.ESB.Control
                 }
             }
         }
-        class SubExecutionHelperAsync : SubExecutionHelperBase
+
+        private class SubExecutionHelperAsync : SubExecutionHelperBase
         {
             public SubExecutionHelperAsync(IEnvironmentOutputMappingManager environmentOutputMappingManager, Guid workspaceId, EsbServiceInvoker invoker, IDSFDataObject dataObject, string inputDefs, string outputDefs)
                 : base(environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs)
@@ -305,7 +303,7 @@ namespace Dev2.Runtime.ESB.Control
                             {
                                 Dev2Logger.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]", _dataObject.ExecutionID.ToString());
                                 clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                                executionContainer.Execute(out ErrorResultTO error, update);
+                                executionContainer.Execute(out var error, update);
                                 return clonedDataObject;
                             })
                             .ContinueWith(SetResultEnvironmentToNull);
@@ -321,9 +319,10 @@ namespace Dev2.Runtime.ESB.Control
                 return null;
             }
 
-            static void SetResultEnvironmentToNull(Task<IDSFDataObject> task)
+            private static void SetResultEnvironmentToNull(Task<IDSFDataObject> task)
             {
-                if (task?.Result != null) {
+                if (task?.Result != null)
+                {
                     task.Result.Environment = null;
                 }
             }
