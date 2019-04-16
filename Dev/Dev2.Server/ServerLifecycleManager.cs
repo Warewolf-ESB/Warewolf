@@ -131,7 +131,7 @@ namespace Dev2
             void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
             {
                 _writer.Write("Opening named pipe client stream for COM IPC... ");
-                _ipcClient = _ipcClient.GetIPCExecutor(clientStreamWrapper);
+                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
                 _writer.WriteLine("done.");
             }
 
