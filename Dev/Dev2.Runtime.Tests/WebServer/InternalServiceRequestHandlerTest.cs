@@ -203,35 +203,5 @@ namespace Dev2.Tests.Runtime.WebServer
             authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString()), Times.Once);
             Assert.IsNotNull(processRequest);
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(InternalServiceRequestHandler))]
-        public void InternalServiceRequestHandler_DataObject_HasErrors()
-        {
-            //------------Setup for test--------------------------
-            var args = new Dictionary<string, StringBuilder>
-            {
-                { "DebugPayload", new StringBuilder("<DataList>Value:SomeStringAsValue,IsDebug:true</DataList>") },
-                { "IsDebug", new StringBuilder("<DataList>true</DataList>") }
-            };
-            var eer = new EsbExecuteRequest
-            {
-                ServiceName = "Ping",
-                Args = args,
-                TestName = "Test1",
-                ExecuteResult = new StringBuilder("Results")
-            };
-
-            var executingUser = new Mock<IPrincipal>();
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(false);
-            var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
-            //------------Execute Test---------------------------
-            var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
-            authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString()), Times.Once);
-            Assert.IsNotNull(processRequest);
-        }
     }
 }
