@@ -46,7 +46,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var ipcExecutor = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var ipcExecutor = IpcClient.GetIpcExecutor(pipeMock.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(ipcExecutor);
             Assert.IsFalse(ReferenceEquals(client,ipcExecutor));
@@ -65,7 +65,7 @@ namespace WarewolfCOMIPC.Test
             var serializeObject = JsonConvert.SerializeObject(GetType());
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
             pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var client = IpcClient.GetIpcExecutor(pipeMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
@@ -84,7 +84,7 @@ namespace WarewolfCOMIPC.Test
             var serializeObject = JsonConvert.SerializeObject(GetType().GetMethods()[0]);
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
             pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var client = IpcClient.GetIpcExecutor(pipeMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
@@ -105,7 +105,7 @@ namespace WarewolfCOMIPC.Test
             var buffer = Encoding.ASCII.GetBytes(serializeObject);
             memoryStream.Write(buffer,0,buffer.Length);
             pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var client = IpcClient.GetIpcExecutor(pipeMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
@@ -124,7 +124,7 @@ namespace WarewolfCOMIPC.Test
             var serializeObject = JsonConvert.SerializeObject(GetType());
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
             pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var client = IpcClient.GetIpcExecutor(pipeMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
@@ -147,7 +147,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
          
             //---------------Execute Test ----------------------
-            using (var client = IpcClient.GetIPCExecutor(pipeMock.Object))
+            using (var client = IpcClient.GetIpcExecutor(pipeMock.Object))
             {
                 Assert.IsNotNull(client);
             }
