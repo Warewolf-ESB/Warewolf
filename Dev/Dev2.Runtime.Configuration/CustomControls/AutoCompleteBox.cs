@@ -1,4 +1,3 @@
-#pragma warning disable RECS009, S104, CC0091, S1226, S100, CC0044, CC0045, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, AD0001, S2328, S2696, S1643, CS0659, CS0067, S104, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, CC0013, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System.Collections;
 using System.Collections.Generic;
@@ -48,16 +46,12 @@ namespace System.Windows.Controls
     [ContentProperty("ItemsSource")]
     public class AutoCompleteBox : Control, IUpdateVisualState
     {
-        #region Template part and style names
-
         const string ElementSelectionAdapter = "SelectionAdapter";
         const string ElementSelector = "Selector";
         const string ElementPopup = "Popup";
         const string ElementTextBox = "Text";
         const string ElementTextBoxStyle = "TextBoxStyle";
         const string ElementItemContainerStyle = "ItemContainerStyle";
-
-        #endregion
 
         List<object> _items;
         ObservableCollection<object> _view;
@@ -73,12 +67,10 @@ namespace System.Windows.Controls
         internal InteractionHelper Interaction { get; set; }
         BindingEvaluator<string> _valueBindingEvaluator;
 
-        #region public int MinimumPrefixLength
-
         public int MinimumPrefixLength
         {
-            get { return (int)GetValue(MinimumPrefixLengthProperty); }
-            set { SetValue(MinimumPrefixLengthProperty, value); }
+            get => (int)GetValue(MinimumPrefixLengthProperty);
+            set => SetValue(MinimumPrefixLengthProperty, value);
         }
 
         public static readonly DependencyProperty MinimumPrefixLengthProperty =
@@ -95,19 +87,15 @@ namespace System.Windows.Controls
 
             if (newValue < 0 && newValue != -1)
             {
-
                 throw new ArgumentOutOfRangeException("MinimumPrefixLength");
             }
         }
-        #endregion public int MinimumPrefixLength
-
-        #region public int MinimumPopulateDelay
 
         [ExcludeFromCodeCoverage]
         public int MinimumPopulateDelay
         {
-            get { return (int)GetValue(MinimumPopulateDelayProperty); }
-            set { SetValue(MinimumPopulateDelayProperty, value); }
+            get => (int)GetValue(MinimumPopulateDelayProperty);
+            set => SetValue(MinimumPopulateDelayProperty, value);
         }
 
         public static readonly DependencyProperty MinimumPopulateDelayProperty =
@@ -164,56 +152,35 @@ namespace System.Windows.Controls
                 source._delayTimer.Interval = TimeSpan.FromMilliseconds(newValue);
             }
         }
-        #endregion public int MinimumPopulateDelay
 
         public static readonly DependencyProperty DefaultTextTemplateProperty = DependencyProperty.Register("DefaultTextTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
         [ExcludeFromCodeCoverage]
         public DataTemplate DefaultTextTemplate
         {
-            get
-            {
-                return (DataTemplate)GetValue(DefaultTextTemplateProperty);
-            }
-            set
-            {
-                SetValue(DefaultTextTemplateProperty, value);
-            }
+            get => (DataTemplate)GetValue(DefaultTextTemplateProperty);
+            set => SetValue(DefaultTextTemplateProperty, value);
         }
 
         public static readonly DependencyProperty DefaultTextProperty = DependencyProperty.Register("DefaultText", typeof(object), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
 
         public object DefaultText
         {
-            get
-            {
-                return GetValue(DefaultTextProperty);
-            }
-            set
-            {
-                SetValue(DefaultTextProperty, value);
-            }
+            get => GetValue(DefaultTextProperty);
+            set => SetValue(DefaultTextProperty, value);
         }
 
         public static readonly DependencyProperty AllowUserInsertLineProperty = DependencyProperty.Register("AllowUserInsertLine", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(true));
 
         public bool AllowUserInsertLine
         {
-            get
-            {
-                return (bool)GetValue(AllowUserInsertLineProperty);
-            }
-            set
-            {
-                SetValue(AllowUserInsertLineProperty, value);
-            }
+            get => (bool)GetValue(AllowUserInsertLineProperty);
+            set => SetValue(AllowUserInsertLineProperty, value);
         }
-
-        #region public bool IsTextCompletionEnabled
 
         public bool IsTextCompletionEnabled
         {
-            get { return (bool)GetValue(IsTextCompletionEnabledProperty); }
-            set { SetValue(IsTextCompletionEnabledProperty, value); }
+            get => (bool)GetValue(IsTextCompletionEnabledProperty);
+            set => SetValue(IsTextCompletionEnabledProperty, value);
         }
 
         public static readonly DependencyProperty IsTextCompletionEnabledProperty =
@@ -223,15 +190,11 @@ namespace System.Windows.Controls
                 typeof(AutoCompleteBox),
                 new PropertyMetadata(false, null));
 
-        #endregion public bool IsTextCompletionEnabled
-
-        #region public DataTemplate ItemTemplate
-
         [ExcludeFromCodeCoverage]
         public DataTemplate ItemTemplate
         {
-            get { return GetValue(ItemTemplateProperty) as DataTemplate; }
-            set { SetValue(ItemTemplateProperty, value); }
+            get => GetValue(ItemTemplateProperty) as DataTemplate;
+            set => SetValue(ItemTemplateProperty, value);
         }
 
         public static readonly DependencyProperty ItemTemplateProperty =
@@ -241,15 +204,11 @@ namespace System.Windows.Controls
                 typeof(AutoCompleteBox),
                 new PropertyMetadata(null));
 
-        #endregion public DataTemplate ItemTemplate
-
-        #region public Style ItemContainerStyle
-
         [ExcludeFromCodeCoverage]
         public Style ItemContainerStyle
         {
-            get { return GetValue(ItemContainerStyleProperty) as Style; }
-            set { SetValue(ItemContainerStyleProperty, value); }
+            get => GetValue(ItemContainerStyleProperty) as Style;
+            set => SetValue(ItemContainerStyleProperty, value);
         }
 
         public static readonly DependencyProperty ItemContainerStyleProperty =
@@ -259,15 +218,11 @@ namespace System.Windows.Controls
                 typeof(AutoCompleteBox),
                 new PropertyMetadata(null, null));
 
-        #endregion public Style ItemContainerStyle
-
-        #region public Style TextBoxStyle
-
         [ExcludeFromCodeCoverage]
         public Style TextBoxStyle
         {
-            get { return GetValue(TextBoxStyleProperty) as Style; }
-            set { SetValue(TextBoxStyleProperty, value); }
+            get => GetValue(TextBoxStyleProperty) as Style;
+            set => SetValue(TextBoxStyleProperty, value);
         }
 
         public static readonly DependencyProperty TextBoxStyleProperty =
@@ -277,15 +232,11 @@ namespace System.Windows.Controls
                 typeof(AutoCompleteBox),
                 new PropertyMetadata(null));
 
-        #endregion public Style TextBoxStyle
-
-        #region public double MaxDropDownHeight
-
         [ExcludeFromCodeCoverage]
         public double MaxDropDownHeight
         {
-            get { return (double)GetValue(MaxDropDownHeightProperty); }
-            set { SetValue(MaxDropDownHeightProperty, value); }
+            get => (double)GetValue(MaxDropDownHeightProperty);
+            set => SetValue(MaxDropDownHeightProperty, value);
         }
 
         public static readonly DependencyProperty MaxDropDownHeightProperty =
@@ -315,20 +266,16 @@ namespace System.Windows.Controls
                     source.SetValue(e.Property, e.OldValue);
                 }
 
-
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue, e.NewValue), "value");
             }
 
             source?.OnMaxDropDownHeightChanged(newValue);
         }
-        #endregion public double MaxDropDownHeight
-
-        #region public bool IsDropDownOpen
 
         public bool IsDropDownOpen
         {
-            get { return (bool)GetValue(IsDropDownOpenProperty); }
-            set { SetValue(IsDropDownOpenProperty, value); }
+            get => (bool)GetValue(IsDropDownOpenProperty);
+            set => SetValue(IsDropDownOpenProperty, value);
         }
 
         public static readonly DependencyProperty IsDropDownOpenProperty =
@@ -354,9 +301,7 @@ namespace System.Windows.Controls
             {
                 if (newValue)
                 {
-
                     source.TextUpdated(source.Text, true);
-
                 }
                 else
                 {
@@ -366,14 +311,11 @@ namespace System.Windows.Controls
                 source.UpdateVisualState(true);
             }
         }
-        #endregion public bool IsDropDownOpen
-
-        #region public IEnumerable ItemsSource
 
         public IEnumerable ItemsSource
         {
-            get { return GetValue(ItemsSourceProperty) as IEnumerable; }
-            set { SetValue(ItemsSourceProperty, value); }
+            get => GetValue(ItemsSourceProperty) as IEnumerable;
+            set => SetValue(ItemsSourceProperty, value);
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
@@ -389,14 +331,10 @@ namespace System.Windows.Controls
             autoComplete?.OnItemsSourceChanged((IEnumerable)e.OldValue, (IEnumerable)e.NewValue);
         }
 
-        #endregion public IEnumerable ItemsSource
-
-        #region public object SelectedItem
-
         public object SelectedItem
         {
-            get { return GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
+            get => GetValue(SelectedItemProperty);
+            set => SetValue(SelectedItemProperty, value);
         }
 
         public static readonly DependencyProperty SelectedItemProperty =
@@ -439,12 +377,7 @@ namespace System.Windows.Controls
                 added.Add(e.NewValue);
             }
 
-            source?.OnSelectionChanged(new SelectionChangedEventArgs(
-#if !SILVERLIGHT
-                SelectionChangedEvent,
-#endif
-                removed,
-                added));
+            source?.OnSelectionChanged(new SelectionChangedEventArgs(SelectionChangedEvent, removed, added));
         }
 
         void OnSelectedItemChanged(object newItem)
@@ -463,16 +396,12 @@ namespace System.Windows.Controls
             }
         }
 
-        #endregion public object SelectedItem
-
         public bool CustomSelection { get; set; }
-
-        #region public string Text
 
         public string Text
         {
-            get { return GetValue(TextProperty) as string; }
-            set { SetValue(TextProperty, value); }
+            get => GetValue(TextProperty) as string;
+            set => SetValue(TextProperty, value);
         }
 
         public static readonly DependencyProperty TextProperty =
@@ -488,14 +417,9 @@ namespace System.Windows.Controls
             source?.TextUpdated((string)e.NewValue, false);
         }
 
-        #endregion public string Text
-
-        #region public string SearchText
-
         public string SearchText
         {
-            get { return (string)GetValue(SearchTextProperty); }
-
+            get => (string)GetValue(SearchTextProperty);
             private set
             {
                 try
@@ -534,14 +458,11 @@ namespace System.Windows.Controls
                 throw new InvalidOperationException(Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnSearchTextPropertyChanged_InvalidWrite);
             }
         }
-        #endregion public string SearchText
-
-        #region public AutoCompleteFilterMode FilterMode
 
         public AutoCompleteFilterMode FilterMode
         {
-            get { return (AutoCompleteFilterMode)GetValue(FilterModeProperty); }
-            set { SetValue(FilterModeProperty, value); }
+            get => (AutoCompleteFilterMode)GetValue(FilterModeProperty);
+            set => SetValue(FilterModeProperty, value);
         }
 
         public static readonly DependencyProperty FilterModeProperty =
@@ -574,9 +495,6 @@ namespace System.Windows.Controls
                 source.TextFilter = AutoCompleteSearch.GetFilter(newValue);
             }
         }
-        #endregion public AutoCompleteFilterMode FilterMode
-
-        #region public AutoCompleteFilterPredicate ItemFilter
 
         public AutoCompleteFilterPredicate<object> ItemFilter
         {
@@ -612,14 +530,11 @@ namespace System.Windows.Controls
                 }
             }
         }
-        #endregion public AutoCompleteFilterPredicate ItemFilter
-
-        #region public AutoCompleteStringFilterPredicate TextFilter
 
         public AutoCompleteFilterPredicate<string> TextFilter
         {
-            get { return GetValue(TextFilterProperty) as AutoCompleteFilterPredicate<string>; }
-            set { SetValue(TextFilterProperty, value); }
+            get => GetValue(TextFilterProperty) as AutoCompleteFilterPredicate<string>;
+            set => SetValue(TextFilterProperty, value);
         }
 
         public static readonly DependencyProperty TextFilterProperty =
@@ -628,16 +543,14 @@ namespace System.Windows.Controls
                 typeof(AutoCompleteFilterPredicate<string>),
                 typeof(AutoCompleteBox),
                 new PropertyMetadata(AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith)));
-        #endregion public AutoCompleteStringFilterPredicate TextFilter
-
-        #region Template parts
 
         PopupHelper DropDownPopup { get; set; }
         TextBox _text;
         ISelectionAdapter _adapter;
+
         public TextBox TextBox
         {
-            get { return _text; }
+            get => _text;
             set
             {
                 if (_text != null)
@@ -661,7 +574,7 @@ namespace System.Windows.Controls
 
         protected internal ISelectionAdapter SelectionAdapter
         {
-            get { return _adapter; }
+            get => _adapter;
             set
             {
                 if (_adapter != null)
@@ -686,25 +599,14 @@ namespace System.Windows.Controls
             }
         }
 
-        #endregion
-
         public static readonly DependencyProperty HasErrorProperty = DependencyProperty.Register("HasError", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false));
 
         public bool HasError
         {
-            get
-            {
-                return (bool)GetValue(HasErrorProperty);
-            }
-            set
-            {
-                SetValue(HasErrorProperty, value);
-            }
+            get => (bool)GetValue(HasErrorProperty);
+            set => SetValue(HasErrorProperty, value);
         }
 
-#if SILVERLIGHT
-        public event RoutedEventHandler TextChanged;
-#else
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AutoCompleteBox));
 
         public event RoutedEventHandler TextChanged
@@ -712,11 +614,7 @@ namespace System.Windows.Controls
             add { AddHandler(TextChangedEvent, value); }
             remove { RemoveHandler(TextChangedEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event PopulatingEventHandler Populating;
-#else
         public static readonly RoutedEvent PopulatingEvent = EventManager.RegisterRoutedEvent("Populating", RoutingStrategy.Bubble, typeof(PopulatingEventHandler), typeof(AutoCompleteBox));
 
         public event PopulatingEventHandler Populating
@@ -724,11 +622,7 @@ namespace System.Windows.Controls
             add { AddHandler(PopulatingEvent, value); }
             remove { RemoveHandler(PopulatingEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event PopulatedEventHandler Populated;
-#else
         public static readonly RoutedEvent PopulatedEvent = EventManager.RegisterRoutedEvent("Populated", RoutingStrategy.Bubble, typeof(PopulatedEventHandler), typeof(AutoCompleteBox));
 
         public event PopulatedEventHandler Populated
@@ -736,11 +630,7 @@ namespace System.Windows.Controls
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event RoutedPropertyChangingEventHandler<bool> DropDownOpening;
-#else
         public static readonly RoutedEvent DropDownOpeningEvent = EventManager.RegisterRoutedEvent("DropDownOpening", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening
@@ -748,11 +638,7 @@ namespace System.Windows.Controls
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event RoutedPropertyChangedEventHandler<bool> DropDownOpened;
-#else
         public static readonly RoutedEvent DropDownOpenedEvent = EventManager.RegisterRoutedEvent("DropDownOpened", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened
@@ -760,11 +646,7 @@ namespace System.Windows.Controls
             add { AddHandler(DropDownOpenedEvent, value); }
             remove { RemoveHandler(DropDownOpenedEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event RoutedPropertyChangingEventHandler<bool> DropDownClosing;
-#else
         public static readonly RoutedEvent DropDownClosingEvent = EventManager.RegisterRoutedEvent("DropDownClosing", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing
@@ -772,11 +654,7 @@ namespace System.Windows.Controls
             add { AddHandler(DropDownClosingEvent, value); }
             remove { RemoveHandler(DropDownClosingEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event RoutedPropertyChangedEventHandler<bool> DropDownClosed;
-#else
         public static readonly RoutedEvent DropDownClosedEvent = EventManager.RegisterRoutedEvent("DropDownClosed", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed
@@ -784,11 +662,7 @@ namespace System.Windows.Controls
             add { AddHandler(DropDownClosedEvent, value); }
             remove { RemoveHandler(DropDownClosedEvent, value); }
         }
-#endif
 
-#if SILVERLIGHT
-        public event SelectionChangedEventHandler SelectionChanged;
-#else
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(AutoCompleteBox));
 
         public event SelectionChangedEventHandler SelectionChanged
@@ -796,51 +670,29 @@ namespace System.Windows.Controls
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
-#endif
 
         public Binding ValueMemberBinding
         {
-            get
-            {
-                return _valueBindingEvaluator?.ValueBinding;
-            }
-            set
-            {
-                _valueBindingEvaluator = new BindingEvaluator<string>(value);
-            }
+            get => _valueBindingEvaluator?.ValueBinding;
+            set => _valueBindingEvaluator = new BindingEvaluator<string>(value);
         }
 
         public string ValueMemberPath
         {
-            get
-            {
-                return ValueMemberBinding?.Path.Path;
-            }
-            set
-            {
-                ValueMemberBinding = value == null ? null : new Binding(value);
-            }
+            get => ValueMemberBinding?.Path.Path;
+            set => ValueMemberBinding = value == null ? null : new Binding(value);
         }
 
         public ObservableCollection<object> View => _view;
-
-#if !SILVERLIGHT
 
         static AutoCompleteBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(AutoCompleteBox), new FrameworkPropertyMetadata(typeof(AutoCompleteBox)));
         }
-#endif
 
         public AutoCompleteBox()
         {
-#if SILVERLIGHT  
-            DefaultStyleKey = typeof(AutoCompleteBox);
-
-            Loaded += (sender, e) => ApplyTemplate();
-#endif
             IsEnabledChanged += ControlIsEnabledChanged;
-
             Interaction = new InteractionHelper(this);
 
             ClearView();
@@ -859,12 +711,11 @@ namespace System.Windows.Controls
 
         public override void OnApplyTemplate()
         {
-#if !SILVERLIGHT
             if (TextBox != null)
             {
                 TextBox.PreviewKeyDown -= OnTextBoxPreviewKeyDown;
             }
-#endif
+
             if (DropDownPopup != null)
             {
                 DropDownPopup.Closed -= DropDownPopupClosed;
@@ -886,12 +737,12 @@ namespace System.Windows.Controls
             }
             SelectionAdapter = GetSelectionAdapterPart();
             TextBox = GetTemplateChild(ElementTextBox) as TextBox;
-#if !SILVERLIGHT
+
             if (TextBox != null)
             {
                 TextBox.PreviewKeyDown += OnTextBoxPreviewKeyDown;
             }
-#endif
+
             Interaction.OnApplyTemplateBase();
 
             if (IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
@@ -918,12 +769,7 @@ namespace System.Windows.Controls
                 delayedClosingVisual = DropDownPopup.UsesClosingVisualState;
             }
 
-#if SILVERLIGHT
-            RoutedPropertyChangingEventArgs<bool> args = new RoutedPropertyChangingEventArgs<bool>(IsDropDownOpenProperty, oldValue, false, true);
-#else
             var args = new RoutedPropertyChangingEventArgs<bool>(IsDropDownOpenProperty, oldValue, false, true, DropDownClosingEvent);
-#endif
-
             OnDropDownClosing(args);
 
             if (_view == null || _view.Count == 0)
@@ -950,11 +796,7 @@ namespace System.Windows.Controls
 
         void OpeningDropDown(bool oldValue)
         {
-#if SILVERLIGHT
-            RoutedPropertyChangingEventArgs<bool> args = new RoutedPropertyChangingEventArgs<bool>(IsDropDownOpenProperty, oldValue, true, true);
-#else
             var args = new RoutedPropertyChangingEventArgs<bool>(IsDropDownOpenProperty, oldValue, true, true, DropDownOpeningEvent);
-#endif
             OnDropDownOpening(args);
 
             if (args.Cancel)
@@ -977,14 +819,10 @@ namespace System.Windows.Controls
             peer?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
         }
 
-#if !SILVERLIGHT
-
         void OnTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
             OnKeyDown(e);
         }
-
-#endif
 
         void DropDownPopupClosed(object sender, EventArgs e)
         {
@@ -1000,8 +838,6 @@ namespace System.Windows.Controls
         }
 
         protected override AutomationPeer OnCreateAutomationPeer() => new AutoCompleteBoxAutomationPeer(this);
-
-        #region Focus
 
         void FocusChanged(bool hasFocus)
         {
@@ -1055,8 +891,6 @@ namespace System.Windows.Controls
             FocusChanged(HasFocus());
         }
 
-        #endregion
-
         void ControlIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var isEnabled = (bool)e.NewValue;
@@ -1067,7 +901,6 @@ namespace System.Windows.Controls
         }
 
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Following the GetTemplateChild pattern for the method.")]
-
         [ExcludeFromCodeCoverage]
         protected virtual ISelectionAdapter GetSelectionAdapterPart()
         {
@@ -1085,11 +918,8 @@ namespace System.Windows.Controls
         {
             _delayTimer?.Stop();
             SearchText = Text;
-#if SILVERLIGHT
-            PopulatingEventArgs populating = new PopulatingEventArgs(SearchText);
-#else
+
             var populating = new PopulatingEventArgs(SearchText, PopulatingEvent);
-#endif
 
             OnPopulating(populating);
             if (!populating.Cancel)
@@ -1100,43 +930,19 @@ namespace System.Windows.Controls
 
         protected virtual void OnPopulating(PopulatingEventArgs e)
         {
-#if SILVERLIGHT
-            PopulatingEventHandler handler = Populating;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         [ExcludeFromCodeCoverage]
         protected virtual void OnPopulated(PopulatedEventArgs e)
         {
-#if SILVERLIGHT
-            PopulatedEventHandler handler = Populated;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         [ExcludeFromCodeCoverage]
         protected virtual void OnSelectionChanged(SelectionChangedEventArgs e)
         {
-#if SILVERLIGHT
-            SelectionChangedEventHandler handler = SelectionChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
 
             var box = (AutoCompleteBox)e.Source;
             var innerListBox = (ListBox)box?.Template?.FindName("Selector", box);
@@ -1148,56 +954,24 @@ namespace System.Windows.Controls
         [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownOpening(RoutedPropertyChangingEventArgs<bool> e)
         {
-#if SILVERLIGHT
-            RoutedPropertyChangingEventHandler<bool> handler = DropDownOpening;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownOpened(RoutedPropertyChangedEventArgs<bool> e)
         {
-#if SILVERLIGHT
-            RoutedPropertyChangedEventHandler<bool> handler = DropDownOpened;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownClosing(RoutedPropertyChangingEventArgs<bool> e)
         {
-#if SILVERLIGHT
-            RoutedPropertyChangingEventHandler<bool> handler = DropDownClosing;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         protected virtual void OnDropDownClosed(RoutedPropertyChangedEventArgs<bool> e)
         {
-#if SILVERLIGHT
-            RoutedPropertyChangedEventHandler<bool> handler = DropDownClosed;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         string FormatValue(object value, bool clearDataContext)
@@ -1222,15 +996,7 @@ namespace System.Windows.Controls
 
         protected virtual void OnTextChanged(RoutedEventArgs e)
         {
-#if SILVERLIGHT
-            RoutedEventHandler handler = TextChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-#else
             RaiseEvent(e);
-#endif
         }
 
         void OnTextBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -1260,11 +1026,7 @@ namespace System.Windows.Controls
             {
                 _ignoreTextPropertyChange++;
                 Text = value;
-#if SILVERLIGHT
-                OnTextChanged(new RoutedEventArgs());
-#else
                 OnTextChanged(new RoutedEventArgs(TextChangedEvent));
-#endif
             }
 
             if (TextBox == null)
@@ -1280,11 +1042,7 @@ namespace System.Windows.Controls
 
                 if (Text == value || Text == null)
                 {
-#if SILVERLIGHT
-                    OnTextChanged(new RoutedEventArgs());
-#else
                     OnTextChanged(new RoutedEventArgs(TextChangedEvent));
-#endif
                 }
             }
         }
@@ -1344,13 +1102,8 @@ namespace System.Windows.Controls
         {
             RefreshView();
 
-#if SILVERLIGHT
-            PopulatedEventArgs populated = new PopulatedEventArgs(new ReadOnlyCollection<object>(_view));
-#else
             var populated = new PopulatedEventArgs(new ReadOnlyCollection<object>(_view), PopulatedEvent);
-#endif
             OnPopulated(populated);
-
 
             if (SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
@@ -1453,7 +1206,6 @@ namespace System.Windows.Controls
                 _view.Clear();
             }
         }
-
 
         void RefreshView()
         {
@@ -1578,8 +1330,6 @@ namespace System.Windows.Controls
             RefreshView();
         }
 
-        #region Selection Adapter
-
         [ExcludeFromCodeCoverage]
         void OnAdapterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1593,9 +1343,6 @@ namespace System.Windows.Controls
             UpdateTextCompletion(false);
             TextBox?.Select(TextBox.Text.Length, 0);
 
-#if SILVERLIGHT
-            Focus();
-#else
             if (TextBox != null)
             {
                 Keyboard.Focus(TextBox);
@@ -1604,7 +1351,6 @@ namespace System.Windows.Controls
             {
                 Focus();
             }
-#endif
         }
 
         [ExcludeFromCodeCoverage]
@@ -1613,10 +1359,6 @@ namespace System.Windows.Controls
             UpdateTextValue(SearchText);
             UpdateTextCompletion(false);
         }
-
-        #endregion
-
-        #region Popup
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "newValue", Justification = "This makes it easy to add validation or other changes in the future.")]
         [ExcludeFromCodeCoverage]
@@ -1637,11 +1379,7 @@ namespace System.Windows.Controls
                 DropDownPopup.IsOpen = true;
             }
             _popupHasOpened = true;
-#if SILVERLIGHT
-            OnDropDownOpened(new RoutedPropertyChangedEventArgs<bool>(oldValue, newValue));
-#else
             OnDropDownOpened(new RoutedPropertyChangedEventArgs<bool>(oldValue, newValue, DropDownOpenedEvent));
-#endif
         }
 
         protected void CloseDropDown(bool oldValue, bool newValue)
@@ -1656,15 +1394,9 @@ namespace System.Windows.Controls
                 {
                     DropDownPopup.IsOpen = false;
                 }
-#if SILVERLIGHT
-                OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(oldValue, newValue));
-#else
                 OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(oldValue, newValue, DropDownClosedEvent));
-#endif
             }
         }
-
-        #endregion
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
