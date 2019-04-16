@@ -24,7 +24,7 @@ namespace WarewolfCOMIPC.Test
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Constructo_GivenPipeStream_ShouldResult()
+        public void IpcClient_Constructor_GivenPipeStream_ShouldResult()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
@@ -38,7 +38,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetIPCExecutor_GivenPipeStream_ShouldResult()
+        public void IpcClient_GetIPCExecutor_GivenPipeStream_ShouldResult()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
@@ -57,7 +57,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Invoke_GivenGetType_ShouldReturnResult()
+        public void IpcClientHelper_Invoke_GivenGetType_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
@@ -76,7 +76,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Invoke_GivenGetMethods_ShouldReturnResult()
+        public void IpcClientHelper_Invoke_GivenGetMethods_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
@@ -96,7 +96,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Invoke_GivenExecuteSpecifiedMethod_ShouldReturnResult()
+        public void IpcClientHelper_Invoke_GivenExecuteSpecifiedMethod_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
@@ -116,7 +116,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Invoke_GivenGetNamespaces_ShouldReturnResult()
+        public void IpcClientHelper_Invoke_GivenGetNamespaces_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
@@ -137,7 +137,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Dispose_PassThrough()
+        public void IpcClient_Dispose_PassThrough()
         {
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
