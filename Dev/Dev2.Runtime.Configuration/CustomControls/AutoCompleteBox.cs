@@ -962,29 +962,42 @@ namespace System.Windows.Controls
 
         void UpdateTextValue(string value, bool? userInitiated)
         {
-            if ((userInitiated == null || userInitiated == true) && Text != value)
+            var textUpdated = false;
+
+            if ((userInitiated is null || userInitiated == true) && Text != value)
             {
                 _ignoreTextPropertyChange++;
                 Text = value;
-                OnTextChanged(new RoutedEventArgs(TextChangedEvent));
+                textUpdated = true;
             }
 
-            if (TextBox == null)
+            if (TextBox is null)
             {
                 Text = value;
-                OnTextChanged(new RoutedEventArgs(TextChangedEvent));
+                textUpdated = true;
             }
 
-            if ((userInitiated == null || userInitiated == false) && TextBox != null && TextBox.Text != value)
+            var textBoxUpdated = UpdateTextBoxValue(value, userInitiated);
+
+            if (textUpdated || textBoxUpdated)
+            {
+                OnTextChanged(new RoutedEventArgs(TextChangedEvent));
+            }
+        }
+
+        private bool UpdateTextBoxValue(string value, bool? userInitiated)
+        {
+            if ((userInitiated is null || userInitiated == false) && TextBox != null && TextBox.Text != value)
             {
                 _ignoreTextPropertyChange++;
                 TextBox.Text = value ?? string.Empty;
 
-                if (Text == value || Text == null)
+                if (Text == value || Text is null)
                 {
-                    OnTextChanged(new RoutedEventArgs(TextChangedEvent));
+                    return true;
                 }
             }
+            return false;
         }
 
         void TextUpdated(string newText, bool userInitiated)
@@ -1113,6 +1126,7 @@ namespace System.Windows.Controls
 
         private object UpdateSelection(object newSelectedItem, string text, int currentLength, int selectionStart)
         {
+            var selectedItem = newSelectedItem;
             if (selectionStart == text.Length && selectionStart > _textSelectionStart)
             {
                 var top = FilterMode == AutoCompleteFilterMode.StartsWith || FilterMode == AutoCompleteFilterMode.StartsWithCaseSensitive
@@ -1120,7 +1134,7 @@ namespace System.Windows.Controls
                     : TryGetMatch(text, _view, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
                 if (top != null)
                 {
-                    newSelectedItem = top;
+                    selectedItem = top;
                     var topString = FormatValue(top, true);
                     var minLength = Math.Min(topString.Length, Text.Length);
                     if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
@@ -1132,7 +1146,7 @@ namespace System.Windows.Controls
                 }
             }
 
-            return newSelectedItem;
+            return selectedItem;
         }
 
         object TryGetMatch(string searchText, ObservableCollection<object> view, AutoCompleteFilterPredicate<string> predicate)
@@ -1211,49 +1225,6 @@ namespace System.Windows.Controls
         }
 
         [ExcludeFromCodeCoverage]
-        void ItemsSourceCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
-            {
-                for (int index = 0; index < e.OldItems.Count; index++)
-                {
-                    _items.RemoveAt(e.OldStartingIndex);
-                }
-            }
-            if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null && _items.Count >= e.NewStartingIndex)
-            {
-                for (int index = 0; index < e.NewItems.Count; index++)
-                {
-                    _items.Insert(e.NewStartingIndex + index, e.NewItems[index]);
-                }
-            }
-            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewItems != null && e.OldItems != null)
-            {
-                foreach (object t in e.NewItems)
-                {
-                    _items[e.NewStartingIndex] = t;
-                }
-            }
-            if ((e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace) && e.OldItems != null)
-            {
-                foreach (object t in e.OldItems)
-                {
-                    _view.Remove(t);
-                }
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                ClearView();
-                if (ItemsSource != null)
-                {
-                    _items = new List<object>(ItemsSource.Cast<object>().ToList());
-                }
-            }
-            RefreshView();
-        }
-
-        [ExcludeFromCodeCoverage]
         void OnAdapterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedItem = _adapter.SelectedItem;
@@ -1325,7 +1296,7 @@ namespace System.Windows.Controls
         {
             if (e == null)
             {
-                throw new ArgumentNullException("e");
+                throw new ArgumentNullException();
             }
 
             base.OnKeyDown(e);
