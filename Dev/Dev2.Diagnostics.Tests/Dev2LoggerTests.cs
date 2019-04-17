@@ -63,19 +63,15 @@ namespace Dev2.Diagnostics.Test
         public void UpdateFileLoggerToProgramData_UpdateFromAsyncRollingFileAppender_ToParallelForwardingAppender()
         {
             //------------Setup for test-------------------------
-            Assert.IsTrue(File.ReadAllText("Settings.config").Contains("Log4Net.Async.AsyncRollingFileAppender"));
-            Assert.IsFalse(File.ReadAllText("Settings.config").Contains("Log4Net.Async.ParallelForwardingAppender"));
+            string readSettingsBefore = File.ReadAllText("Settings.config");
+            Assert.IsTrue(readSettingsBefore.Contains("Log4Net.Async.AsyncRollingFileAppender"));
+            Assert.IsFalse(readSettingsBefore.Contains("Log4Net.Async.ParallelForwardingAppender"));
             //------------Execute Test---------------------------
             Dev2Logger.UpdateFileLoggerToProgramData("Settings.config");
             //------------Assert Results-------------------------
-            Assert.IsFalse(File.ReadAllText("Settings.config").Contains("Log4Net.Async.AsyncRollingFileAppender"));
-            Assert.IsTrue(File.ReadAllText("Settings.config").Contains("Log4Net.Async.ParallelForwardingAppender"));
-            Assert.IsTrue(File.ReadAllText("Settings.config").Contains(@"
-  <appender name=""LogFileAppender"" type=""Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"">
-    <appender-ref ref=""rollingFile"" />
-    <bufferSize value=""200"" />
-  </appender>
-  "));
+            string readSettingsAfter = File.ReadAllText("Settings.config");
+            Assert.IsFalse(readSettingsAfter.Contains("Log4Net.Async.AsyncRollingFileAppender"));
+            Assert.IsTrue(readSettingsAfter.Contains("Log4Net.Async.ParallelForwardingAppender"));
         }
     };
 }

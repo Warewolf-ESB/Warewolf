@@ -167,16 +167,21 @@ namespace Dev2.Common
             settingsDocument.Save(settingsConfigFile);
         }
 
-        private static void UpdateOldAppenderToNewAppender(XElement log4netElement, XElement oldAppender)
+        static void UpdateOldAppenderToNewAppender(XElement log4netElement, XElement oldAppender)
         {
             XAttribute oldAppenderName = oldAppender.Attribute("name");
             oldAppenderName.SetValue("rollingFile");
             var oldAppenderType = oldAppender.Attribute("type");
             oldAppenderType.SetValue("log4net.Appender.RollingFileAppender");
-            var newAppenderElement = new XElement("appender", new XAttribute("name", "LogFileAppender"), new XAttribute("type", "Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"), new XElement("appender", new XAttribute("ref", "rollingFile")), new XElement("bufferSize", new XAttribute("value", "200")));
+            var newAppenderElement = 
+               new XElement("appender", new XAttribute("name", "LogFileAppender"), new XAttribute("type", "Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"), 
+                new XElement("appender-ref", new XAttribute("ref", "rollingFile")), 
+                new XElement("bufferSize", new XAttribute("value", "200"))
+               );
+            log4netElement.Add(newAppenderElement);
         }
 
-        private static void UpdateLogFilePath(string settingsConfigFile, XDocument settingsDocument, XElement oldAppender)
+        static void UpdateLogFilePath(string settingsConfigFile, XDocument settingsDocument, XElement oldAppender)
         {
             var fileElement = oldAppender.Element("file");
             if (fileElement != null)
