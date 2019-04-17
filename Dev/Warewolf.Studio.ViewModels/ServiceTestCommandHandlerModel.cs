@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels
                     }).ToObservableCollection();
                 }
             }
-            testModel.Item = (ServiceTestModel)testModel.Clone();
+            testModel.Item = testModel.Clone().As<ServiceTestModel>();
             return testModel;
         }
 
@@ -119,16 +119,16 @@ namespace Warewolf.Studio.ViewModels
 
         public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
-            selectedServiceTest = selectedServiceTest as ServiceTestModel;
-            if (selectedServiceTest == null || resourceModel == null || asyncWorker == null ||
-                selectedServiceTest.IsNewTest)
+            var model = selectedServiceTest.As<ServiceTestModel>();
+            if (model == null || resourceModel == null || asyncWorker == null ||
+                model.IsNewTest)
             {
                 return;
             }
-            selectedServiceTest.IsTestLoading = true;
-            selectedServiceTest.IsTestRunning = true;
+            model.IsTestLoading = true;
+            model.IsTestRunning = true;
 
-            asyncWorker.Start(() => BackgroundAction(selectedServiceTest, resourceModel), res => UiAction(selectedServiceTest, resourceModel, res));
+            asyncWorker.Start(() => BackgroundAction(model, resourceModel), res => UiAction(model, resourceModel, res));
         }
 
         private static IServiceTestModelTO BackgroundAction(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel)
@@ -205,7 +205,7 @@ namespace Warewolf.Studio.ViewModels
             var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
             foreach (var serviceTestStep in serviceTestSteps)
             {
-                var resServiceTestStep = serviceTestStep as ServiceTestStep;
+                var resServiceTestStep = serviceTestStep.As<ServiceTestStep>();
                 if (resServiceTestStep == null)
                 {
                     continue;
@@ -264,7 +264,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     childServiceTestStep.Result = child.Result;
 
-                    childServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(child.StepOutputs, childServiceTestStep as ServiceTestStep);
+                    childServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(child.StepOutputs, childServiceTestStep.As<ServiceTestStep>());
                     var children1 = child.Children;
                     if (children1.Count > 0)
                     {
