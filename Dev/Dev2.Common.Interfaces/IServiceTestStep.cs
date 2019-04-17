@@ -20,5 +20,6 @@ namespace Dev2.Common.Interfaces
         string StepDescription { get; set; }
         TestRunResult Result { get; set; }
         void AddNewOutput(string varName);
+        T As<T>() where T : class, IServiceTestStep;
     }
 }

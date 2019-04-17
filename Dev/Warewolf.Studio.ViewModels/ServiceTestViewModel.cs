@@ -775,13 +775,13 @@ namespace Warewolf.Studio.ViewModels
         void ProcessSequence(ModelItem modelItem)
         {
             var sequence = GetCurrentActivity<DsfSequenceActivity>(modelItem);
-            var buildParentsFromModelItem = BuildParentsFromModelItem(modelItem);
-            if (buildParentsFromModelItem != null)
+            var testStep = BuildParentsFromModelItem(modelItem);
+            if (testStep != null)
             {
-                AddSequence(sequence, buildParentsFromModelItem, buildParentsFromModelItem.Children);
-                if (FindExistingStep(buildParentsFromModelItem.UniqueId.ToString()) == null)
+                AddSequence(sequence, testStep, testStep.Children);
+                if (FindExistingStep(testStep.UniqueId.ToString()) == null)
                 {
-                    SelectedServiceTest.TestSteps.Add(buildParentsFromModelItem);
+                    SelectedServiceTest.TestSteps.Add(testStep);
                 }
             }
             else
@@ -943,7 +943,7 @@ namespace Warewolf.Studio.ViewModels
 
         void AddSequence(DsfSequenceActivity sequence, IServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
-            if (sequence == null)
+            if (sequence is null)
             {
                 return;
             }

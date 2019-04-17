@@ -1,4 +1,3 @@
-//#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,11 +15,12 @@ using System.IO.Pipes;
 using System.Reflection;
 using Warewolf.COMIPC.Client;
 
+#pragma warning disable CC0044 //allow four params for invoke method
 namespace WarewolfCOMIPC.Client
 {
     public interface IIpcClient : IDisposable
     {
-        IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper);
+        IIpcClient GetIpcExecutor(INamedPipeClientStreamWrapper clientStreamWrapper);
         object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args);
     }
 
@@ -29,8 +29,8 @@ namespace WarewolfCOMIPC.Client
         static IpcClientImpl _ipcClient;
         static readonly object _lock = new object();
 
-        public static IIpcClient GetIPCExecutor() => Instance;
-        public static IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper) => Instance.GetIPCExecutor(clientStreamWrapper);
+        public static IIpcClient GetIpcExecutor() => Instance;
+        public static IIpcClient GetIpcExecutor(INamedPipeClientStreamWrapper clientStreamWrapper) => Instance.GetIpcExecutor(clientStreamWrapper);
         
         public static IIpcClient Instance
         {
@@ -49,7 +49,6 @@ namespace WarewolfCOMIPC.Client
                 return _ipcClient;
             }
         }
-
     }
 
     public class IpcClientImpl : IIpcClient, IDev2IpcClient
@@ -57,8 +56,7 @@ namespace WarewolfCOMIPC.Client
         bool _disposed;
         readonly INamedPipeClientStreamWrapper _pipeWrapper;
         readonly Process _process;
-
-
+        
         internal IpcClientImpl()
         {
             var token = Guid.NewGuid().ToString();
@@ -80,7 +78,7 @@ namespace WarewolfCOMIPC.Client
 
         public IpcClientImpl(INamedPipeClientStreamWrapper clientStreamWrapper) => _pipeWrapper = clientStreamWrapper;
         
-        public  IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
+        public  IIpcClient GetIpcExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
             if (clientStreamWrapper != null)
             {
