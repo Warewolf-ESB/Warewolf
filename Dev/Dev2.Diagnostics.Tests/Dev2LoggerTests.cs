@@ -1,14 +1,11 @@
 ﻿using Dev2.Common;
-using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 
 namespace Dev2.Diagnostics.Test
 {
     [TestClass]
     public class Dev2LoggerTests
     {
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetLogMaxSize_Scenerio_Result()
