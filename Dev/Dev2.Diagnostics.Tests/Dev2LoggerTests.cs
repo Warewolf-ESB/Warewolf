@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Dev2.Diagnostics.Test
 {
@@ -54,6 +55,27 @@ namespace Dev2.Diagnostics.Test
   <level value=""Level0"" />
   <eventLogEntryType value=""ERROR"" />
 </mapping>");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [DeploymentItem("Settings.config")]
+        public void UpdateFileLoggerToProgramData_UpdateFromAsyncRollingFileAppender_ToParallelForwardingAppender()
+        {
+            //------------Setup for test-------------------------
+            Assert.IsTrue(File.ReadAllText("Settings.config").Contains("Log4Net.Async.AsyncRollingFileAppender"));
+            Assert.IsFalse(File.ReadAllText("Settings.config").Contains("Log4Net.Async.ParallelForwardingAppender"));
+            //------------Execute Test---------------------------
+            Dev2Logger.UpdateFileLoggerToProgramData("Settings.config");
+            //------------Assert Results-------------------------
+            Assert.IsFalse(File.ReadAllText("Settings.config").Contains("Log4Net.Async.AsyncRollingFileAppender"));
+            Assert.IsTrue(File.ReadAllText("Settings.config").Contains("Log4Net.Async.ParallelForwardingAppender"));
+            Assert.IsTrue(File.ReadAllText("Settings.config").Contains(@"
+  <appender name=""LogFileAppender"" type=""Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"">
+    <appender-ref ref=""rollingFile"" />
+    <bufferSize value=""200"" />
+  </appender>
+  "));
         }
     };
 }

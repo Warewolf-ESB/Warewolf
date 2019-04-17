@@ -73,7 +73,7 @@ namespace Dev2.Common
 "      <conversionPattern value=\"%date %-5level - %message%newline\" />" +
 "    </layout>" +
 "  </appender>" +
-"  <appender name=\"asyncForwarder\" type=\"Log4Net.Async.ParallelForwardingAppender,Log4Net.Async\">" +
+"  <appender name=\"LogFileAppender\" type=\"Log4Net.Async.ParallelForwardingAppender,Log4Net.Async\">" +
 "    <appender-ref ref=\"rollingFile\" />" +
 "	<bufferSize value=\"200\" />" +
 "  </appender>" +
@@ -104,7 +104,7 @@ namespace Dev2.Common
 "  <!-- Setup the root category, add the appenders and set the default level -->" +
 "  <root>" +
 "    <level value=\"DEBUG\" />" +
-"    <appender-ref ref=\"asyncForwarder\" />" +
+"    <appender-ref ref=\"LogFileAppender\" />" +
 "    <appender-ref ref=\"EventLogLogger\" />" +
 "  </root>" +
 "</log4net>";
@@ -125,7 +125,7 @@ namespace Dev2.Common
 "      <conversionPattern value=\"%date %-5level - %message%newline\" />" +
 "    </layout>" +
 "  </appender>" +
-"  <appender name=\"asyncForwarder\" type=\"Log4Net.Async.ParallelForwardingAppender,Log4Net.Async\">" +
+"  <appender name=\"LogFileAppender\" type=\"Log4Net.Async.ParallelForwardingAppender,Log4Net.Async\">" +
 "    <appender-ref ref=\"rollingFile\" />" +
 "	<bufferSize value=\"200\" />" +
 "  </appender>" +
@@ -156,7 +156,7 @@ namespace Dev2.Common
 "  <!-- Setup the root category, add the appenders and set the default level -->" +
 "  <root>" +
 "    <level value=\"DEBUG\" />" +
-"    <appender-ref ref=\"asyncForwarder\" />" +
+"    <appender-ref ref=\"LogFileAppender\" />" +
 "    <appender-ref ref=\"EventLogLogger\" />" +
 "  </root>" +
 "</log4net>";
