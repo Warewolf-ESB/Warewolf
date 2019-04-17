@@ -31,5 +31,7 @@ namespace Dev2.Data
         public bool MockSelected { get; set; }
         public bool AssertSelected { get; set; }
         public void AddNewOutput(string varName) { }
+
+        T IServiceTestStep.As<T>() => this as T;
     }
 }
