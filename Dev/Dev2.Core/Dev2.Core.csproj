@@ -245,6 +245,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dev2.Core.ruleset" />
     <None Include="Dynamic Services.cd" />
     <None Include="packages.config" />

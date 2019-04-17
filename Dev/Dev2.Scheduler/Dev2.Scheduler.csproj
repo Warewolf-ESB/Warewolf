@@ -136,6 +136,7 @@
     <Compile Include="Win32Sec.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dev2.Scheduler.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
