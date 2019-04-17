@@ -855,20 +855,21 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
-        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update, List<IServiceTestStep> testSteps)
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity activity, int update, List<IServiceTestStep> testSteps)
         {
-            if (resource == null)
+            if (activity == null)
             {
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-            resource = NextActivity(resource, testSteps);
-            var next = resource.Execute(dsfDataObject, update);
+
+            var activity1 = MockActivityIfNecessary(activity, testSteps);
+            var next = activity1.Execute(dsfDataObject, update);
             while (next != null)
             {
                 if (!dsfDataObject.StopExecution)
                 {
-                    next = NextActivity(next, testSteps);
+                    next = MockActivityIfNecessary(next, testSteps);
                     next = next.Execute(dsfDataObject, update);
                     foreach(var error in dsfDataObject.Environment.Errors)
                     {
@@ -882,72 +883,93 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        static IDev2Activity NextActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
+        /// <summary>
+        /// Depending on whether an activity should be run or mocked this method replaces the activity with a mock
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <param name="testSteps"></param>
+        /// <returns></returns>
+        static IDev2Activity MockActivityIfNecessary(IDev2Activity activity, List<IServiceTestStep> testSteps)
         {
-            var foundTestStep = testSteps?.FirstOrDefault(step => resource != null && step.UniqueId.ToString() == resource.UniqueID);
+            IDev2Activity overriddenActivity = null;
+            var foundTestStep = testSteps?.FirstOrDefault(step => activity != null && step.UniqueId.ToString() == activity.UniqueID);
             if (foundTestStep != null)
             {
-                if (foundTestStep.ActivityType == typeof(DsfDecision).Name && foundTestStep.Type == StepType.Mock)
-                {
-                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
-                    if (serviceTestOutput != null)
-                    {
-                        resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
-                    }
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name && foundTestStep.Type == StepType.Mock)
-                {
-                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
-                    if (serviceTestOutput != null)
-                    {
-                        resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
-                    }
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
-                {
-                    if (resource is DsfSequenceActivity sequenceActivity)
-                    {
-                        var acts = sequenceActivity.Activities;
-                        NextInSequence(foundTestStep, acts);
-                    }
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
-                {
-                    if (resource is DsfForEachActivity forEach && foundTestStep.Children != null)
-                    {
-                        var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                        forEach.DataFunc.Handler = replacement;
-                    }
+                var shouldMock = foundTestStep.Type == StepType.Mock;
+                var shouldRecursivelyMock = foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name
+                                            || foundTestStep.ActivityType == typeof(DsfForEachActivity).Name
+                                            || foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name;
 
-                }
-                else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name)
+                if (shouldMock && !shouldRecursivelyMock)
                 {
-                    if (resource is DsfSelectAndApplyActivity forEach && foundTestStep.Children != null)
-                    {
-                        var replacement = NextActivity(forEach.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                        forEach.ApplyActivityFunc.Handler = replacement;
-                    }
-
+                    overriddenActivity = ReplaceActivityWithMock(activity, foundTestStep);
                 }
                 else
                 {
-                    if (foundTestStep.Type == StepType.Mock)
-                    {
-                        resource = new TestMockStep(resource, foundTestStep.StepOutputs.ToList());
-                    }
+                    RecursivelyMockRecursiveActivities(activity, foundTestStep);
                 }
             }
-            return resource;
+            return overriddenActivity ?? activity;
         }
 
-        private static void NextInSequence(IServiceTestStep foundTestStep, System.Collections.ObjectModel.Collection<Activity> acts)
+        private static IDev2Activity ReplaceActivityWithMock(IDev2Activity resource, IServiceTestStep foundTestStep)
         {
+            IDev2Activity overriddenActivity = null;
+            if (foundTestStep.ActivityType == typeof(DsfDecision).Name)
+            {
+                var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
+                if (serviceTestOutput != null)
+                {
+                    overriddenActivity = new TestMockDecisionStep(resource.As<DsfDecision>()) { NameOfArmToReturn = serviceTestOutput.Value };
+                }
+            }
+            else if (foundTestStep.ActivityType == typeof(DsfSwitch).Name)
+            {
+                var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == GlobalConstants.ArmResultText);
+                if (serviceTestOutput != null)
+                {
+                    overriddenActivity = new TestMockSwitchStep(resource.As<DsfSwitch>()) { ConditionToUse = serviceTestOutput.Value };
+                }
+            }
+            else
+            {
+                overriddenActivity = new TestMockStep(resource, foundTestStep.StepOutputs.ToList());
+            }
+
+            return overriddenActivity;
+        }
+
+        private static void RecursivelyMockRecursiveActivities(IDev2Activity activity, IServiceTestStep foundTestStep)
+        {
+            if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
+            {
+                if (activity is DsfSequenceActivity sequenceActivity)
+                {
+                    RecursivelyMockChildrenOfASequence(foundTestStep, sequenceActivity);
+                }
+            }
+            else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name && activity is DsfForEachActivity forEach && foundTestStep.Children != null)
+            {
+                var replacement = MockActivityIfNecessary(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                forEach.DataFunc.Handler = replacement;
+            }
+            else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name && activity is DsfSelectAndApplyActivity selectAndApplyActivity && foundTestStep.Children != null)
+            {
+                var replacement = MockActivityIfNecessary(selectAndApplyActivity.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                selectAndApplyActivity.ApplyActivityFunc.Handler = replacement;
+            }
+        }
+
+        private static void RecursivelyMockChildrenOfASequence(IServiceTestStep foundTestStep, DsfSequenceActivity sequenceActivity)
+        {
+            var acts = sequenceActivity.Activities;
+
             for (int index = 0; index < acts.Count; index++)
             {
                 var activity = acts[index];
                 if (foundTestStep.Children != null)
                 {
-                    var replacement = NextActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                    var replacement = MockActivityIfNecessary(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
                     acts[index] = replacement;
                 }
             }
