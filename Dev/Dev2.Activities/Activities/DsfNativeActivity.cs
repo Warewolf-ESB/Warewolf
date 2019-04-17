@@ -1122,6 +1122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public abstract override bool Equals(object obj);
 
         public override int GetHashCode() => UniqueID?.GetHashCode() ?? 0;
+        T1 IDev2Activity.As<T1>() => this as T1;
 
         public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => Equals(left, right);
 
