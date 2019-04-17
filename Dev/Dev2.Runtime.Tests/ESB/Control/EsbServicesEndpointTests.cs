@@ -1,18 +1,22 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel;
-using Dev2.Data.TO;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.Runtime.ESB.Control;
-using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,8 +24,6 @@ using Moq;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
 
 namespace Dev2.Tests.Runtime.ESB.Control
 {
@@ -33,9 +35,18 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public static void Init(TestContext context)
         {
             var pCounter = new Mock<IWarewolfPerformanceCounterLocater>();
-            pCounter.Setup(locater => locater.GetCounter(It.IsAny<Guid>(), It.IsAny<WarewolfPerfCounterType>())).Returns(new EmptyCounter());
-            pCounter.Setup(locater => locater.GetCounter(It.IsAny<WarewolfPerfCounterType>())).Returns(new EmptyCounter());
-            pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(new EmptyCounter());
+            using (var emptyCounter = new EmptyCounter())
+            {
+                pCounter.Setup(locater => locater.GetCounter(It.IsAny<Guid>(), It.IsAny<WarewolfPerfCounterType>())).Returns(emptyCounter);
+            }
+            using (var emptyCounter = new EmptyCounter())
+            {
+                pCounter.Setup(locater => locater.GetCounter(It.IsAny<WarewolfPerfCounterType>())).Returns(emptyCounter);
+            }
+            using (var emptyCounter = new EmptyCounter())
+            {
+                pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(emptyCounter);
+            }
             CustomContainer.Register(pCounter.Object);
             CustomContainer.Register<IActivityParser>(new Dev2.Activities.ActivityParser());
         }
@@ -60,15 +71,13 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
             var request = new EsbExecuteRequest();
             var workspaceId = Guid.NewGuid();
-            var errors = new ErrorResultTO();
 
-            var result = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out errors);
+            esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
 
-            var expectedJson = "{\"Environment\":{\"scalars\":{\"Message\":\"Hello somename.\",\"Name\":\"somename\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
+            const string expectedJson = "{\"Environment\":{\"scalars\":{\"Message\":\"Hello somename.\",\"Name\":\"somename\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
             Assert.AreEqual("Hello somename.", dataObject.Environment.EvalAsListOfStrings("[[Message]]", 0)[0]);
             Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
         }
-        
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -90,11 +99,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
             var request = new EsbExecuteRequest();
             var workspaceId = Guid.NewGuid();
-            var errors = new ErrorResultTO();
 
-            var result = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out errors);
+            esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
 
-            var expectedJson = "{\"Environment\":{\"scalars\":{\"Name\":\"somename\",\"output\":\"this is nested\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
+            const string expectedJson = "{\"Environment\":{\"scalars\":{\"Name\":\"somename\",\"output\":\"this is nested\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
             Assert.AreEqual("this is nested", dataObject.Environment.EvalAsListOfStrings("[[output]]", 0)[0]);
             Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
         }
@@ -138,7 +146,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
-            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out ErrorResultTO err, 1, true);
+            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out var err, 1, true);
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
@@ -163,13 +171,12 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.Setup(o => o.IsRemoteWorkflow());
             dataObj.Setup(o => o.RunWorkflowAsync).Returns(true);
             dataObj.Setup(o => o.Clone()).Returns(dataObjClon.Object);
-            var mapManager = new Mock<IEnvironmentOutputMappingManager>();
             var esbServicesEndpoint = new EsbServicesEndpoint();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
 
-            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out ErrorResultTO err, 1, true);
+            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out var err, 1, true);
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
@@ -190,14 +197,13 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.SetupAllProperties();
             dataObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
 
-            var mapManager = new Mock<IEnvironmentOutputMappingManager>();
             var esbServicesEndpoint = new EsbServicesEndpoint();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
             try
             {
-                esbServicesEndpoint.ExecuteLogErrorRequest(dataObj.Object, It.IsAny<Guid>(), "http://example.com/", out ErrorResultTO err, 1);
+                esbServicesEndpoint.ExecuteLogErrorRequest(dataObj.Object, It.IsAny<Guid>(), "http://example.com/", out var err, 1);
             }
             catch (Exception ex)
             {
@@ -205,7 +211,5 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 Assert.Fail(ex.Message);
             }
         }
-
-
     }
 }

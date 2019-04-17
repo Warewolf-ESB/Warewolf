@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -25,11 +25,12 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
 namespace Dev2.Runtime.ESB.Control
 {
     public class EsbServicesEndpoint : IEsbWorkspaceChannel
     {
+        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
+
         public EsbServicesEndpoint(IEnvironmentOutputMappingManager environmentOutputMappingManager)
         {
             _environmentOutputMappingManager = environmentOutputMappingManager;
@@ -38,13 +39,11 @@ namespace Dev2.Runtime.ESB.Control
         public EsbServicesEndpoint()
             : this(new EnvironmentOutputMappingManager())
         {
-        }
 
-        private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
+        }
 
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
-
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = null;
@@ -222,7 +221,6 @@ namespace Dev2.Runtime.ESB.Control
             public SubExecutionHelper(IEnvironmentOutputMappingManager environmentOutputMappingManager, Guid workspaceId, EsbServiceInvoker invoker, IDSFDataObject dataObject, string inputDefs, string outputDefs)
                 : base(environmentOutputMappingManager, workspaceId, invoker, dataObject, inputDefs, outputDefs)
             { }
-
 
             protected override IExecutionEnvironment ExecuteWorkflow(bool wasTestExecution, int update, bool handleErrors)
             {
