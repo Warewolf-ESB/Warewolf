@@ -115,6 +115,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Warewolf.Sharepoint.ruleset" />
   </ItemGroup>

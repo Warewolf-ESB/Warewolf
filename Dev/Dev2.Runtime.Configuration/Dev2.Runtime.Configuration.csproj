@@ -141,6 +141,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Dev2.Runtime.Configuration.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
