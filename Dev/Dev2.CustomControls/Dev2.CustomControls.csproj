@@ -121,6 +121,7 @@
     <Compile Include="Utils\WatermarkSential.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WatermarkTextBox.cs" />
+    <None Include="app.config" />
     <None Include="Dev2.CustomControls.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

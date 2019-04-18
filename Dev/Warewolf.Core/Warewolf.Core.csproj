@@ -51,6 +51,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="SqliteService.cs" />
     <Compile Include="WebServiceDefinition.cs" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Warewolf.Core.ruleset" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

@@ -154,6 +154,7 @@
       <DependentUpon>JsonObjectsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WidthConvertForWrapPanel.cs" />
+    <None Include="app.config" />
     <None Include="Warewolf.Studio.Core.ruleset" />
   </ItemGroup>
   <ItemGroup>
