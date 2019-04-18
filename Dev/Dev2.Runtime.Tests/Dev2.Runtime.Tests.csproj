@@ -249,6 +249,7 @@
     <Compile Include="ESB\Control\ServiceLocatorTests.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\ServiceTestExecutionContainerTests.cs" />
+    <Compile Include="ESB\Execution\EvaluatorTests.cs" />
     <Compile Include="ESB\Execution\WebServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />

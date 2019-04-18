@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -18,6 +18,7 @@ using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.Decisions.Operations;
@@ -41,12 +42,22 @@ namespace Dev2.Runtime.ESB.Execution
         readonly IDSFDataObject _dataObject;
         readonly IResourceCatalog _resourceCatalog;
         readonly IWorkspace _workspace;
+        readonly IBuilderSerializer _serializer;
 
         internal Evaluator(IDSFDataObject dataObj, IResourceCatalog resourceCat, IWorkspace theWorkspace)
+            :this(dataObj, resourceCat, theWorkspace, new Dev2JsonSerializer())
         {
             _dataObject = dataObj;
             _resourceCatalog = resourceCat;
             _workspace = theWorkspace;
+        }
+
+        internal Evaluator(IDSFDataObject dataObj, IResourceCatalog resourceCat, IWorkspace theWorkspace, IBuilderSerializer serializer)
+        {
+            _dataObject = dataObj;
+            _resourceCatalog = resourceCat;
+            _workspace = theWorkspace;
+            _serializer = serializer;
         }
 
         void UpdateToPending(IList<IServiceTestStep> testSteps)
@@ -153,11 +164,10 @@ namespace Dev2.Runtime.ESB.Execution
             return startActivity;
         }
 
-        static IDev2Activity CloneResource(IDev2Activity resource)
+        IDev2Activity CloneResource(IDev2Activity resource)
         {
-            var serializer = new Dev2JsonSerializer();
-            var executionPlan = serializer.SerializeToBuilder(resource);
-            return serializer.Deserialize<IDev2Activity>(executionPlan);
+            var executionPlan = _serializer.SerializeToBuilder(resource);
+            return _serializer.Deserialize<IDev2Activity>(executionPlan);
         }
 
         void PrepareForEval(IDSFDataObject dataObject, IServiceTestModelTO serviceTest)
@@ -345,7 +355,7 @@ namespace Dev2.Runtime.ESB.Execution
             return overriddenActivity ?? activity;
         }
 
-        private static IDev2Activity ReplaceActivityWithMock(IDev2Activity resource, IServiceTestStep foundTestStep)
+        static IDev2Activity ReplaceActivityWithMock(IDev2Activity resource, IServiceTestStep foundTestStep)
         {
             IDev2Activity overriddenActivity = null;
             if (foundTestStep.ActivityType == typeof(DsfDecision).Name)
@@ -372,7 +382,7 @@ namespace Dev2.Runtime.ESB.Execution
             return overriddenActivity;
         }
 
-        private static void RecursivelyMockRecursiveActivities(IDev2Activity activity, IServiceTestStep foundTestStep)
+        static void RecursivelyMockRecursiveActivities(IDev2Activity activity, IServiceTestStep foundTestStep)
         {
             if (foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name)
             {
@@ -393,7 +403,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        private static void RecursivelyMockChildrenOfASequence(IServiceTestStep foundTestStep, DsfSequenceActivity sequenceActivity)
+        static void RecursivelyMockChildrenOfASequence(IServiceTestStep foundTestStep, DsfSequenceActivity sequenceActivity)
         {
             var acts = sequenceActivity.Activities;
 
