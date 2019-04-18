@@ -61,6 +61,7 @@
     <Compile Include="ExchangeServiceModel.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Toolbox\ToolBoxModel.cs" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Warewolf.Studio.Models.ruleset" />
   </ItemGroup>

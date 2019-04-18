@@ -454,5 +454,7 @@ namespace Warewolf.Studio.ViewModels
 
             return intIndex;
         }
+
+        T IServiceTestStep.As<T>() => this as T;
     }
 }

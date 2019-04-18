@@ -96,6 +96,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="Utils.cs" />
+    <None Include="app.config" />
     <None Include="Warewolf.Studio.AntiCorruptionLayer.ruleset" />
   </ItemGroup>
   <ItemGroup>
