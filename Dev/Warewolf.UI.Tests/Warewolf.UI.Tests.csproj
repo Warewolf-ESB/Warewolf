@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-	<DependsOnNETStandard>true</DependsOnNETStandard>
+    <DependsOnNETStandard>true</DependsOnNETStandard>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>
@@ -95,7 +95,6 @@
     <Compile Include="DBSource\OracleSource\OracleSourceTests.cs" />
     <Compile Include="DBSource\PostgreSQLSource\PostgreSQLSourceTests.cs" />
     <Compile Include="DBSource\SQLServerSource\SQLServerSourceTests.cs" />
-    <Compile Include="Debug Output\Debug Output.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
@@ -437,7 +436,7 @@
     </Compile>
     <Compile Include="WorkflowTab\Tools\Utility\Web Request.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Xpath.cs" />
-    <Compile Include="Debug Output\Recordset.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\Advanced Recordset.cs" />
     <Compile Include="WorkflowTab\Variables\Variables.cs" />
     <Compile Include="WorkflowTab\WorkflowTabUIMap.cs">
       <DependentUpon>WorkflowTabUIMap.uitest</DependentUpon>
@@ -496,6 +495,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' Or '$(VisualStudioVersion)' == '11.0') And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
