@@ -64,6 +64,10 @@
     <Compile Include="IHubProxyWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Dev2.SignalR.Wrappers.Interfaces.ruleset" />
   </ItemGroup>
   <ItemGroup>
