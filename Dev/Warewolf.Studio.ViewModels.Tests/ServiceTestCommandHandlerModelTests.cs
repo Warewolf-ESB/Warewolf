@@ -576,7 +576,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
-            var methodInfo = typeof(ServiceTestCommandHandlerModel).GetMethod("CreateServiceTestOutputFromResult", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestCommandHandlerModel).GetMethod("CreateServiceTestOutputFromResult", BindingFlags.NonPublic | BindingFlags.Static);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
@@ -595,7 +595,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
-            var methodInfo = typeof(ServiceTestCommandHandlerModel).GetMethod("CreateServiceTestOutputFromResult", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestCommandHandlerModel).GetMethod("CreateServiceTestOutputFromResult", BindingFlags.NonPublic | BindingFlags.Static);
             var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             var testOutput = new ServiceTestOutput("a", "Micky", "", "")
             {
