@@ -436,7 +436,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfForEachActivity>()).Returns(new DsfForEachActivity());
 
-            var sequency = new DsfForEachActivity
+            var forEach = new DsfForEachActivity
             {
                 ActivityId = helloWorldId,
                 UniqueID = helloWorldId.ToString(),
@@ -448,12 +448,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             };
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(sequency);
+            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(forEach);
             var mockWorkspace = new Mock<IWorkspace>();
 
             var mockBuilderSerializer = new Mock<IBuilderSerializer>();
-            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
-            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(forEach)).Returns(new System.Text.StringBuilder());
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(forEach);
 
             ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
@@ -492,6 +492,81 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Evaluator))]
+        public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfForEachActivity_WithChildren()
+        {
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
+
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
+
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
+            mockActivity.Setup(activity => activity.As<DsfForEachActivity>()).Returns(new DsfForEachActivity());
+
+            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.helloWorldId);
+
+            var forEach = new DsfForEachActivity
+            {
+                ActivityId = helloWorldId,
+                UniqueID = helloWorldId.ToString(),
+                DataFunc = new ActivityFunc<string, bool>
+                {
+                    Handler = commonAssign
+                }
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(forEach);
+            var mockWorkspace = new Mock<IWorkspace>();
+
+            var mockBuilderSerializer = new Mock<IBuilderSerializer>();
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(forEach)).Returns(new System.Text.StringBuilder());
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(forEach);
+
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
+
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, true);
+            testStepTwo.ActivityType = nameof(DsfForEachActivity);
+
+            var serviceTestModelTO = new ServiceTestModelTO
+            {
+                NoErrorExpected = true,
+                TestSteps = new List<IServiceTestStep> { testStepOne, testStepTwo }
+            };
+
+            var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
+            var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
+
+            Assert.AreEqual("The FROM field is Required\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual(2, serviceTest.TestSteps.Count);
+
+            Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
+            Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[0].Type);
+            Assert.IsNotNull(serviceTest.TestSteps[0].Result);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.DebugForTest);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.Message);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[0].Result.RunTestResult);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.TestName);
+
+            Assert.AreEqual(0, serviceTest.TestSteps[0].Children.Count);
+
+            Assert.AreEqual("StepTwo", serviceTest.TestSteps[1].StepDescription);
+            Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[1].Type);
+            Assert.IsNotNull(serviceTest.TestSteps[1].Result);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.DebugForTest);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.Message);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Result.RunTestResult);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
+
+            Assert.AreEqual(1, serviceTest.TestSteps[1].Children.Count);
+            Assert.AreEqual("ChildStep", serviceTest.TestSteps[1].Children[0].StepDescription);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Children[0].Result.RunTestResult);
+            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].UniqueId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSelectAndApplyActivity()
         {
             var helloWorldId = EvaluatorTestSetup.helloWorldId;
@@ -503,7 +578,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfSelectAndApplyActivity>()).Returns(new DsfSelectAndApplyActivity());
 
-            var sequency = new DsfSelectAndApplyActivity
+            var selectAndApply = new DsfSelectAndApplyActivity
             {
                 ActivityId = helloWorldId,
                 UniqueID = helloWorldId.ToString(),
@@ -515,12 +590,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             };
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(sequency);
+            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(selectAndApply);
             var mockWorkspace = new Mock<IWorkspace>();
 
             var mockBuilderSerializer = new Mock<IBuilderSerializer>();
-            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
-            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(selectAndApply)).Returns(new System.Text.StringBuilder());
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(selectAndApply);
 
             ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
@@ -554,6 +629,81 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTest.TestSteps[1].Result.Message);
             Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Result.RunTestResult);
             Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Evaluator))]
+        public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSelectAndApplyActivity_WithChildren()
+        {
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
+
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
+
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
+            mockActivity.Setup(activity => activity.As<DsfSelectAndApplyActivity>()).Returns(new DsfSelectAndApplyActivity());
+
+            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.helloWorldId);
+
+            var selectAndApply = new DsfSelectAndApplyActivity
+            {
+                ActivityId = helloWorldId,
+                UniqueID = helloWorldId.ToString(),
+                ApplyActivityFunc = new ActivityFunc<string, bool>
+                {
+                    Handler = commonAssign
+                }
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(selectAndApply);
+            var mockWorkspace = new Mock<IWorkspace>();
+
+            var mockBuilderSerializer = new Mock<IBuilderSerializer>();
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(selectAndApply)).Returns(new System.Text.StringBuilder());
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(selectAndApply);
+
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
+
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, true);
+            testStepTwo.ActivityType = nameof(DsfSelectAndApplyActivity);
+
+            var serviceTestModelTO = new ServiceTestModelTO
+            {
+                NoErrorExpected = true,
+                TestSteps = new List<IServiceTestStep> { testStepOne, testStepTwo }
+            };
+
+            var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
+            var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
+
+            Assert.AreEqual("DataSource cannot be empty\r\nAlias cannot be empty\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual(2, serviceTest.TestSteps.Count);
+
+            Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
+            Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[0].Type);
+            Assert.IsNotNull(serviceTest.TestSteps[0].Result);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.DebugForTest);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.Message);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[0].Result.RunTestResult);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.TestName);
+
+            Assert.AreEqual(0, serviceTest.TestSteps[0].Children.Count);
+
+            Assert.AreEqual("StepTwo", serviceTest.TestSteps[1].StepDescription);
+            Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[1].Type);
+            Assert.IsNotNull(serviceTest.TestSteps[1].Result);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.DebugForTest);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.Message);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Result.RunTestResult);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
+
+            Assert.AreEqual(1, serviceTest.TestSteps[1].Children.Count);
+            Assert.AreEqual("ChildStep", serviceTest.TestSteps[1].Children[0].StepDescription);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Children[0].Result.RunTestResult);
+            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].UniqueId);
         }
 
         internal class EvaluatorTestSetup
@@ -632,6 +782,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 }
 
                 return testStepTwo;
+            }
+
+            public static DsfMultiAssignActivity CommonAssign(Guid? uniqueId = null)
+            {
+                return uniqueId.HasValue ? new DsfMultiAssignActivity { UniqueID = uniqueId.Value.ToString() } : new DsfMultiAssignActivity();
             }
         }
     }
