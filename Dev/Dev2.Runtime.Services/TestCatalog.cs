@@ -389,9 +389,15 @@ namespace Dev2.Runtime
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
             foreach (var file in files)
             {
-                var reader = new StreamReader(file);
-                var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
-                serviceTestModelTos.Add(testModel);
+                try
+                {
+                    var reader = new StreamReader(file);
+                    var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
+                    serviceTestModelTos.Add(testModel);
+                } catch (Exception e)
+                {
+                    Dev2Logger.Warn($"failed loading test: {file} {e.GetType().Name}: " + e.Message, GlobalConstants.WarewolfWarn);
+                }
             }
             return serviceTestModelTos;
         }
