@@ -355,8 +355,94 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Evaluator))]
+        public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary()
+        {
+            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+
+            var mockPrinciple = new Mock<IPrincipal>();
+            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
+            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
+            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
+            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            mockActivity.Setup(activity => activity.As<DsfSequenceActivity>()).Returns(new DsfSequenceActivity());
+
+            var sequency = new DsfSequenceActivity
+            {
+                ActivityId = helloWorldId,
+                UniqueID = helloWorldId.ToString(),
+                Activities = new Collection<System.Activities.Activity> { new DsfRandomActivity() }
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(sequency);
+            var mockWorkspace = new Mock<IWorkspace>();
+
+            var mockBuilderSerializer = new Mock<IBuilderSerializer>();
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
+            mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
+
+            var stepOneUniqueId = Guid.NewGuid();
+
+            var testStepOne = new ServiceTestStepTO
+            {
+                UniqueId = stepOneUniqueId,
+                StepDescription = "StepOne"
+            };
+
+            var stepOutput = new ServiceTestOutputTO
+            {
+                Variable = GlobalConstants.ArmResultText,
+                Value = "Arm result"
+            };
+
+            var testStepTwo = new ServiceTestStepTO
+            {
+                ActivityType = nameof(DsfSequenceActivity),
+                UniqueId = helloWorldId,
+                StepDescription = "StepTwo",
+                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput }
+            };
+
+            var serviceTestModelTO = new ServiceTestModelTO
+            {
+                NoErrorExpected = true,
+                TestSteps = new List<IServiceTestStep> { testStepOne, testStepTwo }
+            };
+
+            var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
+            var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
+
+            Assert.AreEqual("Please ensure that you have entered an integer or decimal number for Start\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual(2, serviceTest.TestSteps.Count);
+
+            Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
+            Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[0].Type);
+            Assert.IsNotNull(serviceTest.TestSteps[0].Result);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.DebugForTest);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.Message);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[0].Result.RunTestResult);
+            Assert.IsNull(serviceTest.TestSteps[0].Result.TestName);
+
+            Assert.AreEqual("StepTwo", serviceTest.TestSteps[1].StepDescription);
+            Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[1].Type);
+            Assert.IsNotNull(serviceTest.TestSteps[1].Result);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.DebugForTest);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.Message);
+            Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Result.RunTestResult);
+            Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
+        }
+
         //TODO:
-        // foundTestStep.ActivityType == typeof(DsfSequenceActivity).Name
         // foundTestStep.ActivityType == typeof(DsfForEachActivity).Name
         // foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name
     }
