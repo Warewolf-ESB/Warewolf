@@ -1,4 +1,4 @@
-#pragma warning disable
+//#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -84,12 +84,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var executePayload = "";
 
             var workspaceRepository = _repository ?? WorkspaceRepository.Instance;
             var workspaceGuid = SetWorkspaceId(workspaceId, workspaceRepository);
 
-            var allErrors = new ErrorResultTO();
             var dataObject = CreateNewDsfDataObject(webRequest, serviceName, user, workspaceGuid);
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
@@ -104,67 +102,45 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out IResource resource);
             dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
             dataObject.WebUrl = webRequest.WebServerUrl;
-            var serializer = new Dev2JsonSerializer();
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
 
             var instance = _authorizationService ?? ServerAuthorizationService.Instance;
             var canExecute = dataObject.CanExecuteCurrentResource(resource, instance);
 
-            // Build EsbExecutionRequest - Internal Services Require This ;)
-            var esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
-            foreach (string key in webRequest.Variables)
-            {
-                esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
-            }
+            var esbExecuteRequest = BuildEsbExecutionRequest(webRequest, serviceName);
 
+            var executePayload = "";
+            var serializer = new Dev2JsonSerializer();
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-            if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
+            var executeWebRequest = new ExecuteWebRequest(_dataObject)
             {
-                ErrorResultTO errors = null;
-                Thread.CurrentPrincipal = user;
-                var userPrinciple = user;
-                if ((dataObject.ReturnType == EmitionTypes.TEST || dataObject.ReturnType == EmitionTypes.TRX) && dataObject.TestName == "*")
-                {
-                    formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
-                    return new StringResponseWriter(executePayload, formatter.ContentType);
-                }
-
-                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
-            }
-            else
-            {
-                if (!canExecute)
-                {
-                    dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, dataObject.ExecutingUser.Identity.Name, dataObject.ServiceName));
-                }
-            }
+                CanExecute = canExecute,
+                EsbEndpoint = esbEndpoint,
+                EsbExecuteRequest = esbExecuteRequest,
+                ExecutePayload = executePayload,
+                ExecutionDlid = executionDlid,
+                Formatter = formatter,
+                Serializer = serializer,
+                ServiceName = serviceName,
+                User = user,
+                WorkspaceGuid = workspaceGuid
+            };
+            executeWebRequest.Execute();
 
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             if (dataObject.IsServiceTestExecution)
             {
-                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
-                if (!canExecute)
-                {
-                    return new StringResponseWriter(dataObject.Environment.FetchErrors(), formatter.ContentType);
-                }
-                return new StringResponseWriter(executePayload, formatter.ContentType);
+                return GetResponseWriter(out executePayload, dataObject, serializer, canExecute, esbExecuteRequest, formatter);
             }
             if (dataObject.IsDebugFromWeb)
             {
-                var serialize = SetupForWebExecution(dataObject, serializer);
-                return new StringResponseWriter(serialize, formatter.ContentType);
+                return GetResponseWriter(dataObject, serializer, formatter);
             }
 
-            var unionedErrors = dataObject.Environment?.Errors?.Union(dataObject.Environment?.AllErrors) ?? new List<string>();
-            foreach (var error in unionedErrors)
-            {
-                if (error.Length > 0)
-                {
-                    allErrors.AddError(error, true);
-                }
-            }
+            var allErrors = new ErrorResultTO();
+            UnifyErrors(allErrors, dataObject);
 
             var executionDto = new ExecutionDto
             {
@@ -182,6 +158,92 @@ namespace Dev2.Runtime.WebServer.Handlers
             };
             return executionDto.CreateResponseWriter();
 
+        }
+
+        private static IResponseWriter GetResponseWriter(IDSFDataObject dataObject, Dev2JsonSerializer serializer, DataListFormat formatter)
+        {
+            var serialize = SetupForWebExecution(dataObject, serializer);
+            return new StringResponseWriter(serialize, formatter.ContentType);
+        }
+
+        private static EsbExecuteRequest BuildEsbExecutionRequest(WebRequestTO webRequest, string serviceName)
+        {
+            var esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
+            foreach (string key in webRequest.Variables)
+            {
+                esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
+            }
+
+            return esbExecuteRequest;
+        }
+
+        private static void UnifyErrors(ErrorResultTO allErrors, IDSFDataObject dataObject)
+        {
+            var unionedErrors = dataObject.Environment?.Errors?.Union(dataObject.Environment?.AllErrors) ?? new List<string>();
+            foreach (var error in unionedErrors)
+            {
+                if (error.Length > 0)
+                {
+                    allErrors.AddError(error, true);
+                }
+            }
+        }
+
+        private static IResponseWriter GetResponseWriter(out string executePayload, IDSFDataObject dataObject, Dev2JsonSerializer serializer, bool canExecute, EsbExecuteRequest esbExecuteRequest, DataListFormat formatter)
+        {
+            executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
+            if (!canExecute)
+            {
+                return new StringResponseWriter(dataObject.Environment.FetchErrors(), formatter.ContentType);
+            }
+            return new StringResponseWriter(executePayload, formatter.ContentType);
+        }
+
+        internal class ExecuteWebRequest
+        {
+            readonly IDSFDataObject _dataObj;
+
+            public bool CanExecute { get; set; }
+            public string ExecutePayload;
+            public Guid ExecutionDlid { get; set; }
+            public string ServiceName { get; set; }
+            public EsbServicesEndpoint EsbEndpoint { get; set; }
+            public EsbExecuteRequest EsbExecuteRequest { get; set; }
+            public IPrincipal User { get; set; }
+            public Guid WorkspaceGuid { get; set; }
+            public Dev2JsonSerializer Serializer { get; set; }
+            public DataListFormat Formatter { get; set; }
+
+            public ExecuteWebRequest(IDSFDataObject dataObject)
+            {
+                _dataObj = dataObject;
+            }
+
+            public IResponseWriter Execute()
+            {
+                if (CanExecute)
+                {
+                    if (_dataObj.ReturnType != EmitionTypes.SWAGGER)
+                    {
+                        ErrorResultTO errors = null;
+                        Thread.CurrentPrincipal = User;
+                        var userPrinciple = User;
+                        if ((_dataObj.ReturnType == EmitionTypes.TEST || _dataObj.ReturnType == EmitionTypes.TRX) && _dataObj.TestName == "*")
+                        {
+                            var serviceTestExecutor = ServiceTestExecutor.ExecuteTests(ServiceName, _dataObj, Formatter, userPrinciple, WorkspaceGuid, Serializer, _testCatalog, _resourceCatalog, ref ExecutePayload);
+                            return new StringResponseWriter(ExecutePayload, serviceTestExecutor.ContentType);
+                        }
+
+                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { ExecutionDlid = EsbEndpoint.ExecuteRequest(_dataObj, EsbExecuteRequest, WorkspaceGuid, out errors); });
+                    }
+                }
+                else
+                {
+                    _dataObj.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObj.ExecutingUser.Identity.Name, _dataObj.ServiceName));
+                }
+
+                return null;
+            }
         }
 
         static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid) =>
