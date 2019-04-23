@@ -38,13 +38,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanNotExecute()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
             var mockPrinciple = new Mock<IPrincipal>();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -55,7 +51,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             };
 
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object);
-            var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
+            var serviceTest = evaluator.TryEval(EvaluatorTestSetup.helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
             Assert.AreEqual("Unauthorized to execute this resource.\r\n", serviceTest.FailureMessage);
         }
@@ -66,11 +62,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [ExpectedException(typeof(InvalidOperationException))]
         public void Evaluator_TryEval_CanExecute_InvalidOperationException()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
-
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            Mock <IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
@@ -93,20 +86,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(mockActivity.Object);
@@ -132,20 +118,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockStep()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(mockActivity.Object);
@@ -155,13 +134,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(mockActivity.Object)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(mockActivity.Object);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
             var testStepTwo = new ServiceTestStepTO
             {
                 UniqueId = helloWorldId,
@@ -202,20 +176,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockDecisionStep()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfDecision>()).Returns(new DsfDecision());
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -226,27 +193,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(mockActivity.Object)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(mockActivity.Object);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
-
-            var stepOutput = new ServiceTestOutputTO
-            {
-                Variable = GlobalConstants.ArmResultText,
-                Value = "Arm result"
-            };
-
-            var testStepTwo = new ServiceTestStepTO
-            {
-                ActivityType = nameof(DsfDecision),
-                UniqueId = helloWorldId,
-                StepDescription = "StepTwo",
-                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput }
-            };
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, false);
+            testStepTwo.ActivityType = nameof(DsfDecision);
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -277,26 +227,18 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
         }
 
-
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockSwitchStep()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfSwitch>()).Returns(new DsfSwitch());
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -307,27 +249,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(mockActivity.Object)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(mockActivity.Object);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
-
-            var stepOutput = new ServiceTestOutputTO
-            {
-                Variable = GlobalConstants.ArmResultText,
-                Value = "Arm result"
-            };
-
-            var testStepTwo = new ServiceTestStepTO
-            {
-                ActivityType = nameof(DsfSwitch),
-                UniqueId = helloWorldId,
-                StepDescription = "StepTwo",
-                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput }
-            };
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, false);
+            testStepTwo.ActivityType = nameof(DsfSwitch);
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -363,27 +288,20 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSequenceActivity()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfSequenceActivity>()).Returns(new DsfSequenceActivity());
 
             var sequency = new DsfSequenceActivity
             {
                 ActivityId = helloWorldId,
                 UniqueID = helloWorldId.ToString(),
-                Activities = new Collection<System.Activities.Activity> { new DsfRandomActivity() }
+                Activities = new Collection<Activity> { new DsfRandomActivity() }
             };
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -394,27 +312,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
-
-            var stepOutput = new ServiceTestOutputTO
-            {
-                Variable = GlobalConstants.ArmResultText,
-                Value = "Arm result"
-            };
-
-            var testStepTwo = new ServiceTestStepTO
-            {
-                ActivityType = nameof(DsfSequenceActivity),
-                UniqueId = helloWorldId,
-                StepDescription = "StepTwo",
-                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput }
-            };
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, false);
+            testStepTwo.ActivityType = nameof(DsfSequenceActivity);
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -450,20 +351,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSequenceActivity_WithChildren()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfSequenceActivity>()).Returns(new DsfSequenceActivity());
 
             var random = new DsfRandomActivity
@@ -487,34 +381,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
-
-            var stepOutput = new ServiceTestOutputTO
-            {
-                Variable = GlobalConstants.ArmResultText,
-                Value = "Arm result"
-            };
-
-            var testStepChild = new ServiceTestStepTO
-            {
-                UniqueId = helloWorldId,
-                StepDescription = "ChildStep"
-            };
-
-            var testStepTwo = new ServiceTestStepTO
-            {
-                ActivityType = nameof(DsfSequenceActivity),
-                UniqueId = helloWorldId,
-                StepDescription = "StepTwo",
-                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput },
-                Children = new ObservableCollection<IServiceTestStep> { testStepChild }
-            };
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, true);
+            testStepTwo.ActivityType = nameof(DsfSequenceActivity);
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -557,20 +427,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfForEachActivity()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfForEachActivity>()).Returns(new DsfForEachActivity());
 
             var sequency = new DsfForEachActivity
@@ -592,27 +455,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
-
-            var stepOutput = new ServiceTestOutputTO
-            {
-                Variable = GlobalConstants.ArmResultText,
-                Value = "Arm result"
-            };
-
-            var testStepTwo = new ServiceTestStepTO
-            {
-                ActivityType = nameof(DsfForEachActivity),
-                UniqueId = helloWorldId,
-                StepDescription = "StepTwo",
-                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput }
-            };
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, false);
+            testStepTwo.ActivityType = nameof(DsfForEachActivity);
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -648,20 +494,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSelectAndApplyActivity()
         {
-            var helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWorldId = EvaluatorTestSetup.helloWorldId;
 
-            var mockPrinciple = new Mock<IPrincipal>();
-            mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
-            mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+            Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
-            mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
-            mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            Mock<IDSFDataObject> mockDataObject = EvaluatorTestSetup.MockDataObjectWithExecutionEnvironment(mockPrinciple);
 
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-            mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+            Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfSelectAndApplyActivity>()).Returns(new DsfSelectAndApplyActivity());
 
             var sequency = new DsfSelectAndApplyActivity
@@ -683,27 +522,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.SerializeToBuilder(sequency)).Returns(new System.Text.StringBuilder());
             mockBuilderSerializer.Setup(builderSerializer => builderSerializer.Deserialize<IDev2Activity>(It.IsAny<System.Text.StringBuilder>())).Returns(sequency);
 
-            var stepOneUniqueId = Guid.NewGuid();
+            ServiceTestStepTO testStepOne = EvaluatorTestSetup.ServiceTestStepOne();
 
-            var testStepOne = new ServiceTestStepTO
-            {
-                UniqueId = stepOneUniqueId,
-                StepDescription = "StepOne"
-            };
-
-            var stepOutput = new ServiceTestOutputTO
-            {
-                Variable = GlobalConstants.ArmResultText,
-                Value = "Arm result"
-            };
-
-            var testStepTwo = new ServiceTestStepTO
-            {
-                ActivityType = nameof(DsfSelectAndApplyActivity),
-                UniqueId = helloWorldId,
-                StepDescription = "StepTwo",
-                StepOutputs = new ObservableCollection<IServiceTestOutput> { stepOutput }
-            };
+            ServiceTestStepTO testStepTwo = EvaluatorTestSetup.ServiceTestStepTwoWithStepOutput(true, false);
+            testStepTwo.ActivityType = nameof(DsfSelectAndApplyActivity);
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -732,6 +554,85 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTest.TestSteps[1].Result.Message);
             Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Result.RunTestResult);
             Assert.IsNull(serviceTest.TestSteps[1].Result.TestName);
+        }
+
+        internal class EvaluatorTestSetup
+        {
+            public static Guid helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+
+            public static Mock<IPrincipal> MockPrincipleTestUserIsInRole()
+            {
+                var mockPrinciple = new Mock<IPrincipal>();
+                mockPrinciple.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+                mockPrinciple.Setup(u => u.Identity.Name).Returns("TestUser");
+                return mockPrinciple;
+            }
+
+            public static Mock<IDSFDataObject> MockDataObjectWithExecutionEnvironment(Mock<IPrincipal> mockPrinciple)
+            {
+                var mockDataObject = new Mock<IDSFDataObject>();
+                mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
+                mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
+                mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+                return mockDataObject;
+            }
+
+            public static Mock<IDev2Activity> MockActivity()
+            {
+                var mockActivity = new Mock<IDev2Activity>();
+                mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
+                mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+                return mockActivity;
+            }
+
+            public static ServiceTestStepTO ServiceTestStepOne()
+            {
+                var stepOneUniqueId = Guid.NewGuid();
+
+                var testStepOne = new ServiceTestStepTO
+                {
+                    UniqueId = stepOneUniqueId,
+                    StepDescription = "StepOne"
+                };
+                return testStepOne;
+            }
+
+            private static ServiceTestOutputTO StepOutput()
+            {
+                return new ServiceTestOutputTO
+                {
+                    Variable = GlobalConstants.ArmResultText,
+                    Value = "Arm result"
+                };
+            }
+
+            private static ServiceTestStepTO TestStepChild()
+            {
+                return new ServiceTestStepTO
+                {
+                    UniqueId = helloWorldId,
+                    StepDescription = "ChildStep"
+                };
+            }
+
+            public static ServiceTestStepTO ServiceTestStepTwoWithStepOutput(bool includeStepOutputs, bool includeChildren)
+            {
+                var testStepTwo = new ServiceTestStepTO
+                {
+                    UniqueId = helloWorldId,
+                    StepDescription = "StepTwo"
+                };
+                if (includeStepOutputs)
+                {
+                    testStepTwo.StepOutputs = new ObservableCollection<IServiceTestOutput> { StepOutput() };
+                }
+                if (includeChildren)
+                {
+                    testStepTwo.Children = new ObservableCollection<IServiceTestStep> { TestStepChild() };
+                }
+
+                return testStepTwo;
+            }
         }
     }
 }
