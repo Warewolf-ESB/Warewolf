@@ -124,7 +124,7 @@ namespace WarewolfCOMIPC.Client
 
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
-           return new IpcClientHelper(_disposed, _pipeWrapper, _process).Invoke(clsid, function, execute, args);
+           return new IpcClientHelper(_disposed, _pipeWrapper).Invoke(clsid, function, execute, args);
         }
     }
 }
