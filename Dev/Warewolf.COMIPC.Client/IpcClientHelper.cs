@@ -11,7 +11,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using WarewolfCOMIPC.Client;
 
@@ -19,17 +18,15 @@ namespace Warewolf.COMIPC.Client
 {
     public class IpcClientHelper
     {
-        bool _disposed;
+        readonly bool _disposed;
         readonly INamedPipeClientStreamWrapper _pipeWrapper;
-        readonly Process _process;
 
         object result;
 
-        public IpcClientHelper(bool disposed, INamedPipeClientStreamWrapper pipeWrapper, Process process)
+        public IpcClientHelper(bool disposed, INamedPipeClientStreamWrapper pipeWrapper)
         {
             _disposed = disposed;
             _pipeWrapper = pipeWrapper;
-            _process = process;
         }
 
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
