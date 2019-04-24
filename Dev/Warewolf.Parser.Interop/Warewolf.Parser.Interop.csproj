@@ -70,6 +70,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="WarewolfParserInterop.ruleset" />
   </ItemGroup>
   <ItemGroup>
