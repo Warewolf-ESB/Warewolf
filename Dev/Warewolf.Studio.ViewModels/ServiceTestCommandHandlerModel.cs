@@ -279,19 +279,12 @@ namespace Warewolf.Studio.ViewModels
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)
             {
-                var variable = serviceTestOutput?.Variable ?? "";
-                var value = serviceTestOutput?.Value ?? "";
-                var to = serviceTestOutput?.To ?? "";
-                var from = serviceTestOutput?.From ?? "";
+                var testOutput = new ServiceTestOutput();
 
-                var testOutput = new ServiceTestOutput(variable, value, from, to)
+                if (serviceTestOutput != null)
                 {
-                    AddStepOutputRow = testStep.AddNewOutput,
-                    AssertOp = serviceTestOutput?.AssertOp ?? "=",
-                    HasOptionsForValue = serviceTestOutput?.HasOptionsForValue ?? false,
-                    OptionsForValue = serviceTestOutput?.OptionsForValue ?? new List<string>(),
-                    Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending }
-                };
+                    testOutput = GetTestOutput(testStep, serviceTestOutput);
+                }
 
                 if (testStep.MockSelected)
                 {
@@ -311,6 +304,25 @@ namespace Warewolf.Studio.ViewModels
                 stepOutputs.Add(testOutput);
             }
             return stepOutputs;
+        }
+
+        private static ServiceTestOutput GetTestOutput(ServiceTestStep testStep, IServiceTestOutput serviceTestOutput)
+        {
+            ServiceTestOutput testOutput;
+            var variable = serviceTestOutput.Variable ?? "";
+            var value = serviceTestOutput.Value ?? "";
+            var to = serviceTestOutput.To ?? "";
+            var from = serviceTestOutput.From ?? "";
+
+            testOutput = new ServiceTestOutput(variable, value, from, to)
+            {
+                AddStepOutputRow = testStep.AddNewOutput,
+                AssertOp = serviceTestOutput.AssertOp ?? "=",
+                HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
+                OptionsForValue = serviceTestOutput.OptionsForValue ?? new List<string>(),
+                Result = serviceTestOutput.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending }
+            };
+            return testOutput;
         }
 
         public void RunSelectedTestInBrowser(string runSelectedTestUrl, IExternalProcessExecutor processExecutor)
