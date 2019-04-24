@@ -307,13 +307,12 @@ namespace Warewolf.Studio.ViewModels
 
         private static ServiceTestOutput GetTestOutput(ServiceTestStep testStep, IServiceTestOutput serviceTestOutput)
         {
-            ServiceTestOutput testOutput;
             var variable = serviceTestOutput.Variable ?? "";
             var value = serviceTestOutput.Value ?? "";
             var to = serviceTestOutput.To ?? "";
             var from = serviceTestOutput.From ?? "";
 
-            testOutput = new ServiceTestOutput(variable, value, from, to)
+            var testOutput = new ServiceTestOutput(variable, value, from, to)
             {
                 AddStepOutputRow = testStep.AddNewOutput,
                 AssertOp = serviceTestOutput.AssertOp ?? "=",
