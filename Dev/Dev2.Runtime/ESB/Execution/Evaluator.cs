@@ -29,6 +29,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -223,35 +224,30 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (decisionType == enDecisionType.IsError)
             {
-                var hasErrors = dataObject.Environment.AllErrors.Count > 0;
                 var testResult = new TestRunResult();
-                if (hasErrors)
+                if (dataObject.Environment.AllErrors.Any())
                 {
                     testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg);
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(Messages.Test_FailureResult).ToString();
                 }
                 return new[] { testResult };
             }
             if (decisionType == enDecisionType.IsNotError)
             {
-                var noErrors = dataObject.Environment.AllErrors.Count == 0;
                 var testResult = new TestRunResult();
-                if (noErrors)
+                var actMsg = dataObject.Environment.FetchErrors();
+                if (string.IsNullOrWhiteSpace(actMsg))
                 {
                     testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg);
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed: " + actMsg).ToString();
                 }
                 return new[] { testResult };
             }
@@ -308,7 +304,7 @@ namespace Dev2.Runtime.ESB.Execution
                 result = hasErrors && result && fetchErrors.ToLower(CultureInfo.InvariantCulture).Contains(testErrorContainsText.ToLower(CultureInfo.InvariantCulture));
                 if (!result)
                 {
-                    failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, testErrorContainsText, fetchErrors));
+                    failureMessage.Append(string.Format(Messages.Test_FailureMessage_Error, testErrorContainsText, fetchErrors));
                 }
             }
             else
