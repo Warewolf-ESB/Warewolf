@@ -431,22 +431,31 @@ namespace Dev2.Studio
 
         void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            try
+            if (e.Exception.Message != "Desktop applications setting AppContext switch 'Switch.UseLegacyToolTipDisplay' to false are required to opt in to all earlier accessibility improvements. To do this, ensure that the AppContext switch 'Switch.UseLegacyAccessibilityFeatures.3' is set to 'false', then 'Switch.UseLegacyAccessibilityFeatures' and all 'Switch.UseLegacyAccessibilityFeatures.M' switches, when M < 3, evaluate to false as well. Note that, if a switch for a particular set of accessibility improvements is not present, its value is determined by the target framework version. You can remedy this by adding these switches and setting their value to false." &&
+                e.Exception.Message != "Desktop applications setting AppContext switch 'Switch.System.Windows.Controls.ItemsControlDoesNotSupportAutomation' to false are required to opt in to all earlier accessibility improvements. To do this, ensure that the AppContext switch 'Switch.UseLegacyAccessibilityFeatures.3' is set to 'false', then 'Switch.UseLegacyAccessibilityFeatures' and all 'Switch.UseLegacyAccessibilityFeatures.M' switches, when M < 3, evaluate to false as well. Note that, if a switch for a particular set of accessibility improvements is not present, its value is determined by the target framework version. You can remedy this by adding these switches and setting their value to false.")
             {
-                Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
-                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
-                if (_appExceptionHandler != null)
+                try
                 {
-                    e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
+                    Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
+                    var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
+                    if (_appExceptionHandler != null)
+                    {
+                        e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fatal Error : " + e.Exception);
+                    }
                 }
-                else
+                catch (Exception e2)
                 {
-                    MessageBox.Show("Fatal Error : " + e.Exception);
+                    System.Console.WriteLine("== Error ==\nerror: " + e2 + "\n  while processing unhandled exception: " + e.Exception + "\n== Error ==");
                 }
-            } catch (Exception e2)
+            }
+            else
             {
-                System.Console.WriteLine("== Error ==\nerror: " + e2 + "\n  while processing unhandled exception: "+ e.Exception +"\n== Error ==");
+                e.Handled = true;
             }
         }
 
