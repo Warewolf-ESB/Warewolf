@@ -1,4 +1,4 @@
-//#pragma warning disable
+#pragma warning disable CC0044 //allow four params for invoke method
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -433,13 +433,13 @@ namespace Dev2.Runtime.WebServer.Handlers
         protected static string GetServiceName(ICommunicationContext ctx) => ctx.GetServiceName();
 
 
-        protected static string GetWorkspaceID(ICommunicationContext ctx) => ctx.GetWorkspaceID();
+        protected static string GetWorkspaceId(ICommunicationContext ctx) => ctx.GetWorkspaceID();
 
-        protected static string GetDataListID(ICommunicationContext ctx) => ctx.GetDataListID();
+        protected static string GetDataListId(ICommunicationContext ctx) => ctx.GetDataListID();
 
         protected static string GetBookmark(ICommunicationContext ctx) => ctx.GetBookmark();
 
-        protected static string GetInstanceID(ICommunicationContext ctx) => ctx.GetInstanceID();
+        protected static string GetInstanceId(ICommunicationContext ctx) => ctx.GetInstanceID();
 
         protected static string GetWebsite(ICommunicationContext ctx) => ctx.GetWebsite();
 
