@@ -239,14 +239,14 @@ namespace Dev2.Runtime.ESB.Execution
             if (decisionType == enDecisionType.IsNotError)
             {
                 var testResult = new TestRunResult();
-                if (!dataObject.Environment.AllErrors.Any())
+                var actMsg = dataObject.Environment.FetchErrors();
+                if (string.IsNullOrWhiteSpace(actMsg))
                 {
                     testResult.RunTestResult = RunResult.TestPassed;
                 }
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    var actMsg = dataObject.Environment.FetchErrors();
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed: " + actMsg).ToString();
                 }
                 return new[] { testResult };
