@@ -1,3 +1,4 @@
+#pragma warning disable CC0044 //allow four params for invoke method
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,7 +16,6 @@ using System.IO.Pipes;
 using System.Reflection;
 using Warewolf.COMIPC.Client;
 
-#pragma warning disable CC0044 //allow four params for invoke method
 namespace WarewolfCOMIPC.Client
 {
     public interface IIpcClient : IDisposable
