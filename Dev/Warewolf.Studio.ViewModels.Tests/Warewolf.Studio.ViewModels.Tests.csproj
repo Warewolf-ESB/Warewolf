@@ -144,6 +144,7 @@
     <Compile Include="ConnectControlViewModelTests.cs" />
     <Compile Include="DeployDestinationViewModelTests.cs" />
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />
+    <Compile Include="DeployStatsViewerViewModelTests.cs" />
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="DLLChooserTests.cs" />
     <Compile Include="DummyServiceTestTests.cs" />
