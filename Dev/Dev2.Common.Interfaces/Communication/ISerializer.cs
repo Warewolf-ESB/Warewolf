@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.IO;
 using System.Text;
 
 namespace Dev2.Common.Interfaces.Communication
@@ -49,6 +50,8 @@ namespace Dev2.Common.Interfaces.Communication
         /// <param name="message">The message.</param>
         /// <returns></returns>
         T Deserialize<T>(StringBuilder message) where T : class;
+        void Serialize(StreamWriter sw, object serviceTestModelTo);
+        T Deserialize<T>(StreamReader reader);
     }
 
     public interface IBuilderSerializer : ISerializer
