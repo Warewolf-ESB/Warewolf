@@ -50,10 +50,10 @@ namespace Dev2.Runtime.WebServer.Handlers
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var serviceName = GetServiceName(ctx);
-            var instanceId = GetInstanceID(ctx);
+            var instanceId = GetInstanceId(ctx);
             var bookmark = GetBookmark(ctx);
-            GetDataListID(ctx);
-            var workspaceId = GetWorkspaceID(ctx);
+            GetDataListId(ctx);
+            var workspaceId = GetWorkspaceId(ctx);
             var formData = new WebRequestTO();
 
             var xml = GetPostData(ctx);
