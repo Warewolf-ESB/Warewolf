@@ -267,8 +267,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts);
             //Second add trying to add the same items to the data list again            
             _dataListViewModel.AddMissingDataListItems(parts);
-            Assert.AreEqual(2, _dataListViewModel.RecsetCollection[0].Children.Count);
-            Assert.AreEqual("field1", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
+            Assert.AreEqual(2, _dataListViewModel.RecsetCollection[1].Children.Count);
+            Assert.AreEqual("field1", _dataListViewModel.RecsetCollection[1].Children[0].DisplayName);
         }
         [TestMethod]
         public void WriteDataListToResourceModel_ShouldContainAllVariables()
