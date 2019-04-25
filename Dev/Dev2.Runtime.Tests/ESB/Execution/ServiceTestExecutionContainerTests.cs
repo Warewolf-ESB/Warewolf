@@ -311,7 +311,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
-        public void ServiceTestExecutionContainer_UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
+        public void ServiceTestExecutionContainer_ExecutingEvaluator_UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
         {
             //------------Setup for test-------------------------
             var resourceId = Guid.NewGuid();
@@ -346,7 +346,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ExecutingEvaluator(dsfObj.Object, resourceCat.Object, workSpace.Object, esbExecuteRequest);
             var testObj = new PrivateType(serviceTestExecutionContainer.GetType());
             var test = SetupServiceTestSteps();
             testObj.InvokeStatic("UpdateTestWithStepValues", test.Object);
