@@ -11,7 +11,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -25,12 +24,12 @@ using System.Windows.Threading;
 
 namespace System.Windows.Controls
 {
-    [TemplatePart(Name = "SelectionAdapter", Type = typeof(ISelectionAdapter))]
+    [TemplatePart(Name = nameof(SelectionAdapter), Type = typeof(ISelectionAdapter))]
     [TemplatePart(Name = "Selector", Type = typeof(Selector))]
-    [TemplatePart(Name = "Text", Type = typeof(TextBox))]
+    [TemplatePart(Name = nameof(Text), Type = typeof(TextBox))]
     [TemplatePart(Name = "Popup", Type = typeof(Popup))]
-    [StyleTypedProperty(Property = "TextBoxStyle", StyleTargetType = typeof(TextBox))]
-    [StyleTypedProperty(Property = "ItemContainerStyle", StyleTargetType = typeof(ListBox))]
+    [StyleTypedProperty(Property = nameof(TextBoxStyle), StyleTargetType = typeof(TextBox))]
+    [StyleTypedProperty(Property = nameof(ItemContainerStyle), StyleTargetType = typeof(ListBox))]
     [TemplateVisualState(Name = VisualStates.StateNormal, GroupName = VisualStates.GroupCommon)]
     [TemplateVisualState(Name = VisualStates.StateMouseOver, GroupName = VisualStates.GroupCommon)]
     [TemplateVisualState(Name = VisualStates.StatePressed, GroupName = VisualStates.GroupCommon)]
@@ -459,8 +458,7 @@ namespace System.Windows.Controls
         static void OnItemFilterPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var autoCompleteBox = d as AutoCompleteBox;
-
-            if (e.NewValue is AutoCompleteFilterPredicate<object> value)
+            if (e.NewValue is AutoCompleteFilterPredicate<object>)
             {
                 if (autoCompleteBox != null)
                 {
