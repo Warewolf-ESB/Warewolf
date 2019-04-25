@@ -135,6 +135,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 });
                 Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
             }
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -192,6 +193,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
                 Assert.AreEqual("00000000-0000-0000-0000-000000000000", execute.ToString());
             });
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -570,6 +572,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             });
             //---------------Test Result -----------------------
             dsfObj.Verify(o => o.Environment.Assign("[[Person(1).Name]]", "Marry", 0), Times.AtLeastOnce);
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -645,7 +648,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.Setup(o => o.ParentServiceName).Returns("test_ParentServiceName");
             mockDSFDataObject.Setup(o => o.IsDebug).Returns(true);
             mockDSFDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            
+
             mockServiceTestModelTO.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Windows);
 
             mockTestCatalog.Setup(o => o.FetchTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(mockServiceTestModelTO.Object);
@@ -667,6 +670,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.VerifyAll();
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -728,6 +732,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.VerifyAll();
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -853,6 +858,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.VerifyAll();
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -917,6 +923,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.VerifyAll();
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -985,6 +992,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.VerifyAll();
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -1052,6 +1060,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDSFDataObject.VerifyAll();
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
+            TestCleanup(resourceId);
         }
 
         [TestMethod]
@@ -1183,6 +1192,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockServiceTestModelTO.VerifyAll();
             mockTestCatalog.VerifyAll();
             mockDSFDataObject.VerifyAll();
+            TestCleanup(resourceId);
+        }
+
+        private static void TestCleanup(Guid resourceId)
+        {
+            var testCatalog = Dev2.Runtime.TestCatalog.Instance;
+            if (testCatalog != null)
+            {
+                testCatalog.DeleteAllTests(resourceId);
+            }
         }
 
         public class FakeWcfProxyService : IWcfProxyService
