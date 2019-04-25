@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             };
 
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object);
-            var serviceTest = evaluator.TryEval(EvaluatorTestSetup.helloWorldId, mockDataObject.Object, serviceTestModelTO);
+            var serviceTest = evaluator.TryEval(EvaluatorTestSetup.HelloWorldId, mockDataObject.Object, serviceTestModelTO);
 
             Assert.AreEqual("Unauthorized to execute this resource.\r\n", serviceTest.FailureMessage);
         }
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [ExpectedException(typeof(InvalidOperationException))]
         public void Evaluator_TryEval_CanExecute_InvalidOperationException()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
             Mock <IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
             var mockDataObject = new Mock<IDSFDataObject>();
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockStep()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockDecisionStep()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -232,7 +232,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockSwitchStep()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -288,7 +288,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSequenceActivity()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -351,7 +351,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSequenceActivity_WithChildren()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -427,7 +427,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfForEachActivity()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -494,7 +494,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfForEachActivity_WithChildren()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -503,7 +503,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfForEachActivity>()).Returns(new DsfForEachActivity());
 
-            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.helloWorldId);
+            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.HelloWorldId);
 
             var forEach = new DsfForEachActivity
             {
@@ -569,7 +569,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSelectAndApplyActivity()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -636,7 +636,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_MockActivityIfNecessary_DsfSelectAndApplyActivity_WithChildren()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -645,7 +645,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Mock<IDev2Activity> mockActivity = EvaluatorTestSetup.MockActivity();
             mockActivity.Setup(activity => activity.As<DsfSelectAndApplyActivity>()).Returns(new DsfSelectAndApplyActivity());
 
-            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.helloWorldId);
+            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.HelloWorldId);
 
             var selectAndApply = new DsfSelectAndApplyActivity
             {
@@ -708,7 +708,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         internal class EvaluatorTestSetup
         {
-            public static Guid helloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            public static Guid HelloWorldId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
 
             public static Mock<IPrincipal> MockPrincipleTestUserIsInRole()
             {
@@ -721,7 +721,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             public static Mock<IDSFDataObject> MockDataObjectWithExecutionEnvironment(Mock<IPrincipal> mockPrinciple)
             {
                 var mockDataObject = new Mock<IDSFDataObject>();
-                mockDataObject.Setup(o => o.ResourceID).Returns(helloWorldId);
+                mockDataObject.Setup(o => o.ResourceID).Returns(HelloWorldId);
                 mockDataObject.Setup(o => o.ExecutingUser).Returns(mockPrinciple.Object);
                 mockDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
                 return mockDataObject;
@@ -730,8 +730,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             public static Mock<IDev2Activity> MockActivity()
             {
                 var mockActivity = new Mock<IDev2Activity>();
-                mockActivity.Setup(activity => activity.ActivityId).Returns(helloWorldId);
-                mockActivity.Setup(activity => activity.UniqueID).Returns(helloWorldId.ToString());
+                mockActivity.Setup(activity => activity.ActivityId).Returns(HelloWorldId);
+                mockActivity.Setup(activity => activity.UniqueID).Returns(HelloWorldId.ToString());
                 return mockActivity;
             }
 
@@ -760,7 +760,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 return new ServiceTestStepTO
                 {
-                    UniqueId = helloWorldId,
+                    UniqueId = HelloWorldId,
                     StepDescription = "ChildStep"
                 };
             }
@@ -769,7 +769,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 var testStepTwo = new ServiceTestStepTO
                 {
-                    UniqueId = helloWorldId,
+                    UniqueId = HelloWorldId,
                     StepDescription = "StepTwo"
                 };
                 if (includeStepOutputs)

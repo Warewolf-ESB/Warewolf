@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Execution
     public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
         readonly EsbExecuteRequest _request;
-        readonly IEvaluator _inner;
+        readonly IExecutingEvaluator _inner;
 
         public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Execution
             _request = request;
             TstCatalog = TestCatalog.Instance;
             ResourceCat = ResourceCatalog.Instance;
-            _inner = new Evaluator(dataObj, ResourceCat, theWorkspace);
+            _inner = new ExecutingEvaluator(dataObj, ResourceCat, theWorkspace, _request);
         }
 
         protected ITestCatalog TstCatalog { get; set; }
@@ -222,7 +222,7 @@ namespace Dev2.Runtime.ESB.Execution
             var serializer = new Dev2JsonSerializer();
             try
             {
-                result = ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
+                result = _inner.ExecuteWf(test, wfappUtils, invokeErrors, serializer);
             }
             catch (InvalidWorkflowException iwe)
             {
@@ -234,7 +234,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
 
-                SetTestRunResult(test, resourceId, serializer, failureMessage);
+                SetTestRunResultAfterInvalidWorkflowException(test, resourceId, serializer, failureMessage);
             }
             catch (Exception ex)
             {
@@ -242,12 +242,12 @@ namespace Dev2.Runtime.ESB.Execution
                 to.AddError(ex.Message);
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
 
-                SetTestRunResult(test, resourceId, serializer, ex);
+                SetTestRunResultAfterException(test, resourceId, serializer, ex);
             }
             return result;
         }
 
-        private void SetTestRunResult(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer, Exception ex)
+        private void SetTestRunResultAfterException(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer, Exception ex)
         {
             test.TestFailing = false;
             test.TestPassed = false;
@@ -268,7 +268,7 @@ namespace Dev2.Runtime.ESB.Execution
             _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
         }
 
-        private void SetTestRunResult(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer, string failureMessage)
+        private void SetTestRunResultAfterInvalidWorkflowException(IServiceTestModelTO test, Guid resourceId, Dev2JsonSerializer serializer, string failureMessage)
         {
             test.TestFailing = false;
             test.TestPassed = false;
@@ -311,97 +311,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        Guid ExecuteWf(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
-        {
-            Guid result;
-            IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
-            DataObject.ExecutionToken = exeToken;
-
-            if (DataObject.IsDebugMode())
-            {
-                var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, invokeErrors, interrogateInputs: true);
-                wfappUtils.TryWriteDebug(DataObject, debugState);
-            }
-
-            if (test is null)
-            {
-                throw new Exception($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {resourceId}");
-            }
-
-            var testRunResult = _inner.TryEval(resourceId, DataObject, test);
-
-            if (DataObject.IsDebugMode())
-            {
-                if (!DataObject.StopExecution)
-                {
-                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, invokeErrors, interrogateOutputs: true, durationVisible: true);
-                    var outputDebugItem = new DebugItem();
-                    if (test != null)
-                    {
-                        var msg = test.TestPassed ? Warewolf.Resource.Messages.Messages.Test_PassedResult : test.FailureMessage;
-                        outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
-                    }
-                    debugState.AssertResultList.Add(outputDebugItem);
-                    wfappUtils.TryWriteDebug(DataObject, debugState);
-                }
-                DebugState testAggregateDebugState;
-                if (DataObject.StopExecution && DataObject.Environment.HasErrors())
-                {
-                    var existingErrors = DataObject.Environment.FetchErrors();
-                    DataObject.Environment.AllErrors.Clear();
-                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, new ErrorResultTO());
-                    SetTestFailureBasedOnExpectedError(test, existingErrors);
-                }
-                else
-                {
-                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, new ErrorResultTO());
-                    AggregateTestResult(resourceId, test);
-                }
-
-                var itemToAdd = new DebugItem();
-                if (test != null)
-                {
-                    var msg = test.FailureMessage;
-                    if (test.TestPassed)
-                    {
-                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
-                    }
-                    itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
-                }
-                testAggregateDebugState.AssertResultList.Add(itemToAdd);
-                wfappUtils.TryWriteDebug(DataObject, testAggregateDebugState);
-
-                if (testRunResult != null)
-                {
-                    if (test?.Result != null)
-                    {
-                        test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
-                    }
-
-                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
-                }
-            }
-            else
-            {
-                if (DataObject.StopExecution && DataObject.Environment.HasErrors())
-                {
-                    var existingErrors = DataObject.Environment.FetchErrors();
-                    DataObject.Environment.AllErrors.Clear();
-                    SetTestFailureBasedOnExpectedError(test, existingErrors);
-                    _request.ExecuteResult = serializer.SerializeToBuilder(test);
-                }
-                else
-                {
-                    AggregateTestResult(resourceId, test);
-                    if (test != null)
-                    {
-                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
-                    }
-                }
-            }
-            result = DataObject.DataListID;
-            return result;
-        }
+        
 
         private void AddToRecordsetObjects(IServiceTestInput input, string variable, string value)
         {
@@ -419,208 +329,6 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                 }
             }
-        }
-
-        static void SetTestFailureBasedOnExpectedError(IServiceTestModelTO test, string existingErrors)
-        {
-            if (test is null)
-            {
-                return;
-            }
-            test.Result = new TestRunResult();
-            test.FailureMessage = existingErrors;
-            if (test.ErrorExpected)
-            {
-                if (test.FailureMessage.Contains(test.ErrorContainsText) && !string.IsNullOrEmpty(test.ErrorContainsText))
-                {
-                    test.TestPassed = true;
-                    test.TestFailing = false;
-                    test.Result.RunTestResult = RunResult.TestPassed;
-                }
-                else
-                {
-                    test.TestFailing = true;
-                    test.TestPassed = false;
-                    test.Result.RunTestResult = RunResult.TestFailed;
-                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error,
-                        test.ErrorContainsText, test.FailureMessage);
-                    test.FailureMessage = assertError;
-                }
-            }
-            if (test.NoErrorExpected)
-            {
-                if (string.IsNullOrEmpty(test.FailureMessage))
-                {
-                    test.TestPassed = true;
-                    test.TestFailing = false;
-                    test.Result.RunTestResult = RunResult.TestPassed;
-                }
-                else
-                {
-                    test.TestFailing = true;
-                    test.TestPassed = false;
-                    test.Result.RunTestResult = RunResult.TestFailed;
-                }
-            }
-        }
-
-        static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
-        {
-            UpdateTestWithStepValues(test);
-            UpdateTestWithFinalResult(resourceId, test);
-        }
-
-        static void UpdateTestWithStepValues(IServiceTestModelTO test)
-        {
-            var testPassed = test.TestPassed;
-
-            var serviceTestSteps = GetStepValues(test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps);
-            var failingOutputs = GetOutputValues(test, out IEnumerable<IServiceTestOutput> pendingOutputs, out IEnumerable<IServiceTestOutput> invalidOutputs);
-            var invalidTestSteps = GetSteps(invalidSteps, pendingSteps, failingSteps, out IList<IServiceTestStep> pendingTestSteps, out IList<IServiceTestStep> failingTestSteps);
-            var pendingTestOutputs = GetOutputs(pendingOutputs, invalidOutputs, failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs);
-
-            var hasInvalidSteps = invalidTestSteps?.Any() ?? false;
-            var hasPendingSteps = pendingTestSteps?.Any() ?? false;
-            var hasFailingSteps = failingTestSteps?.Any() ?? false;
-            var hasFailingOutputs = failingTestOutputs?.Any() ?? false;
-            var hasPendingOutputs = pendingTestOutputs?.Any() ?? false;
-            var hasInvalidOutputs = invalidTestOutputs?.Any() ?? false;
-            var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs, hasInvalidOutputs, hasFailingOutputs);
-
-            testPassed = testPassed && testStepPassed;
-
-            var failureMessage = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
-            test.FailureMessage = failureMessage.ToString();
-            test.TestFailing = !testPassed;
-            test.TestPassed = testPassed;
-            test.TestPending = false;
-            test.TestInvalid = hasInvalidSteps;
-        }
-
-        static StringBuilder UpdateFailureMessage(bool hasPendingSteps, IList<IServiceTestStep> pendingTestSteps, bool hasInvalidSteps, IList<IServiceTestStep> invalidTestSteps, bool hasFailingSteps, IList<IServiceTestStep> failingTestSteps, bool hasPendingOutputs, IList<IServiceTestOutput> pendingTestOutputs, bool hasInvalidOutputs, IList<IServiceTestOutput> invalidTestOutputs, bool hasFailingOutputs, IList<IServiceTestOutput> failingTestOutputs, List<IServiceTestStep> serviceTestSteps)
-        {
-            var failureMessage = new StringBuilder();
-            if (hasFailingSteps)
-            {
-                foreach (var serviceTestStep in failingTestSteps)
-                {
-                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription + " ");
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
-            }
-            if (hasInvalidSteps)
-            {
-                foreach (var serviceTestStep in invalidTestSteps)
-                {
-                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription + " ");
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
-            }
-            if (hasPendingSteps)
-            {
-                foreach (var serviceTestStep in pendingTestSteps)
-                {
-                    failureMessage.AppendLine("Pending Step: " + serviceTestStep.StepDescription);
-                }
-            }
-
-            if (hasFailingOutputs)
-            {
-                foreach (var serviceTestStep in failingTestOutputs)
-                {
-                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable + " ");
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
-            }
-            if (hasInvalidOutputs)
-            {
-                foreach (var serviceTestStep in invalidTestOutputs)
-                {
-                    failureMessage.AppendLine("Invalid Output for Variable: " + serviceTestStep.Variable);
-                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
-                }
-            }
-            if (hasPendingOutputs)
-            {
-                foreach (var serviceTestStep in pendingTestOutputs)
-                {
-                    failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
-                }
-            }
-
-
-            if (serviceTestSteps != null)
-            {
-                failureMessage.AppendLine(string.Join("", serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
-            }
-            return failureMessage;
-        }
-
-        static bool TestPassedBasedOnSteps(bool hasPendingSteps, bool hasInvalidSteps, bool hasFailingSteps) => !hasPendingSteps && !hasInvalidSteps && !hasFailingSteps;
-
-        static bool TestPassedBasedOnOutputs(bool pending, bool invalid, bool failing) => !pending && !invalid && !failing;
-
-        static IList<IServiceTestOutput> GetOutputs(IEnumerable<IServiceTestOutput> pendingOutputs, IEnumerable<IServiceTestOutput> invalidOutputs, IEnumerable<IServiceTestOutput> failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs)
-        {
-            var pendingTestOutputs = pendingOutputs as IList<IServiceTestOutput> ?? pendingOutputs?.ToList();
-            invalidTestOutputs = invalidOutputs as IList<IServiceTestOutput> ?? invalidOutputs?.ToList();
-            failingTestOutputs = failingOutputs as IList<IServiceTestOutput> ?? failingOutputs?.ToList();
-            return pendingTestOutputs;
-        }
-
-        static IList<IServiceTestStep> GetSteps(IEnumerable<IServiceTestStep> invalidSteps, IEnumerable<IServiceTestStep> pendingSteps, IEnumerable<IServiceTestStep> failingSteps, out IList<IServiceTestStep> pendingTestSteps, out IList<IServiceTestStep> failingTestSteps)
-        {
-            var invalidTestSteps = invalidSteps as IList<IServiceTestStep> ?? invalidSteps?.ToList();
-            pendingTestSteps = pendingSteps as IList<IServiceTestStep> ?? pendingSteps?.ToList();
-            failingTestSteps = failingSteps as IList<IServiceTestStep> ?? failingSteps?.ToList();
-            return invalidTestSteps;
-        }
-
-        static IEnumerable<IServiceTestOutput> GetOutputValues(IServiceTestModelTO test, out IEnumerable<IServiceTestOutput> pendingOutputs, out IEnumerable<IServiceTestOutput> invalidOutputs)
-        {
-            var failingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestFailed);
-            pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
-            invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
-            var serviceTestOutputs = failingOutputs as IServiceTestOutput[] ?? failingOutputs?.ToArray();
-            if (serviceTestOutputs?.Any() ?? false)
-            {
-                foreach (var serviceTestOutput in serviceTestOutputs)
-                {
-                    serviceTestOutput.Result.Message = DataListUtil.StripBracketsFromValue(serviceTestOutput.Result.Message);
-                }
-            }
-            return serviceTestOutputs;
-        }
-
-        static List<IServiceTestStep> GetStepValues(IServiceTestModelTO test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps)
-        {
-            var serviceTestSteps = test.TestSteps;
-            pendingSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestPending);
-            invalidSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestInvalid);
-            failingSteps = serviceTestSteps?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult == RunResult.TestFailed);
-            return serviceTestSteps;
-        }
-
-        static void UpdateTestWithFinalResult(Guid resourceId, IServiceTestModelTO test)
-        {
-            test.LastRunDate = DateTime.Now;
-
-            var testRunResult = new TestRunResult { TestName = test.TestName };
-            if (test.TestFailing)
-            {
-                testRunResult.RunTestResult = RunResult.TestFailed;
-                testRunResult.Message = test.FailureMessage;
-            }
-            if (test.TestPassed)
-            {
-                testRunResult.RunTestResult = RunResult.TestPassed;
-            }
-            if (test.TestInvalid)
-            {
-                testRunResult.RunTestResult = RunResult.TestInvalid;
-            }
-            test.Result = testRunResult;
-            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceId, test); });
         }
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
