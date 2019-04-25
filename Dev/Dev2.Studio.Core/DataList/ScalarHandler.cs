@@ -69,9 +69,16 @@ namespace Dev2.Studio.Core.DataList
         private void UpdateScalar(IScalarItemModel scalar)
         {
             scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
-            _vm.ScalarCollection.RemoveAt(_vm.ScalarCollectionCount - 1);
-            _vm.Add(scalar);
-            AddRowToScalars();
+            if (_vm.ScalarCollectionCount > 0 && _vm.ScalarCollection.Last().IsBlank)
+            {
+                _vm.ScalarCollection.RemoveAt(_vm.ScalarCollectionCount - 1);
+                _vm.Add(scalar);
+                AddRowToScalars();
+            }
+            else
+            {
+                _vm.Add(scalar);
+            }
         }
 
         public void SortScalars(bool ascending)
