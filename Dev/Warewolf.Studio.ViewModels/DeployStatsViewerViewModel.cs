@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using Dev2;
 using Dev2.Common;
 using Dev2.Studio.Interfaces;
@@ -188,7 +189,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
                     {
-                        currentItem.CanDeploy = !IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel) ? explorerItemViewModel.CanContribute : true;
+                        currentItem.CanDeploy = IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel) || explorerItemViewModel.CanContribute;
                     }
                 }
                 else
@@ -240,17 +241,17 @@ namespace Warewolf.Studio.ViewModels
 
             Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
-            NewMethod(items);
+            CalculateNewItems(items);
 
             Overrides = Conflicts.Count;
             NewResources = New.Count;
         }
 
-        private void NewMethod(IList<IExplorerTreeItem> items)
+        private void CalculateNewItems(IList<IExplorerTreeItem> items)
         {
             if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
             {
-                var explorerTreeItems = SetAllConflictsAndGetTreeTtems(items);
+                var explorerTreeItems = SetAllConflictsAndGetTreeItems(items);
 
                 _new = items.Where(p => p.IsResourceChecked == true && Conflicts.All(c => p.ResourceId != c.SourceId)).Except(explorerTreeItems);
 
@@ -263,7 +264,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IExplorerItemViewModel[] SetAllConflictsAndGetTreeTtems(IList<IExplorerTreeItem> items)
+        private IExplorerItemViewModel[] SetAllConflictsAndGetTreeItems(IList<IExplorerTreeItem> items)
         {
             var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
             var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
@@ -290,14 +291,15 @@ namespace Warewolf.Studio.ViewModels
                       where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
                       select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
             var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
+            var sb = new StringBuilder();
             if (errors.Any())
             {
                 RenameErrors = Resources.Languages.Core.DeployResourcesSamePathAndName;
                 foreach (var error in errors)
                 {
-                    RenameErrors += $"\n{error.SourceName}-->{error.DestinationName}";
+                    RenameErrors = sb.Append($"\n{error.SourceName}-->{error.DestinationName}").ToString();
                 }
-                RenameErrors += Environment.NewLine + Resources.Languages.Core.DeployRenameBeforeContinue;
+                RenameErrors = sb.Append(Environment.NewLine + Resources.Languages.Core.DeployRenameBeforeContinue).ToString();
             }
             else
             {
@@ -317,7 +319,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public Action CalculateAction { get; set; }
 
-        bool IsSource(string res) => res.Contains(@"Source") || res.Contains(@"Server");
+        static bool IsSource(string res) => res.Contains(@"Source") || res.Contains(@"Server");
     }
 
     public class ConflictEqualityComparer : IEqualityComparer<Conflict>
