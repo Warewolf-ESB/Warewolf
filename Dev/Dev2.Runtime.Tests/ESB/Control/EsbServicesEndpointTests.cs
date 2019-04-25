@@ -81,7 +81,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        public void EsbServicesEndpoint_ExecuteWorkflow_GivenHelloWorldWorkflow_RunWorkflowAsync_ExpectSuccess()
+        public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing()
         {
             var esbServicesEndpoint = new EsbServicesEndpoint();
 
@@ -100,11 +100,9 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var request = new EsbExecuteRequest();
             var workspaceId = Guid.NewGuid();
 
-            esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+            var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
 
-            const string expectedJson = "{\"Environment\":{\"scalars\":{\"Name\":\"somename\",\"output\":\"this is nested\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
-            Assert.AreEqual("this is nested", dataObject.Environment.EvalAsListOfStrings("[[output]]", 0)[0]);
-            Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
+            Assert.AreEqual(Guid.Empty, resultId);
         }
 
         [TestMethod]
