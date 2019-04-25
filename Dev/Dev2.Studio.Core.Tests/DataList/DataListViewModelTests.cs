@@ -246,8 +246,8 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(3, _dataListViewModel.RecsetCollectionCount);
             Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
             Assert.AreEqual(string.Empty, _dataListViewModel.ScalarCollection[1].DisplayName);
-            Assert.AreEqual("Province", _dataListViewModel.RecsetCollection[0].DisplayName);
-            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[1].DisplayName);
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Province", _dataListViewModel.RecsetCollection[1].DisplayName);
         }
 
         [TestMethod]
