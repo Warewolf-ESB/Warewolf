@@ -67,7 +67,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty MinimumPrefixLengthProperty =
-            DependencyProperty.Register("MinimumPrefixLength", typeof(int), typeof(AutoCompleteBox), new PropertyMetadata(1, OnMinimumPrefixLengthPropertyChanged));
+            DependencyProperty.Register(nameof(MinimumPrefixLength), typeof(int), typeof(AutoCompleteBox), new PropertyMetadata(1, OnMinimumPrefixLengthPropertyChanged));
 
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "MinimumPrefixLength is the name of the actual dependency property.")]
         static void OnMinimumPrefixLengthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -88,7 +88,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty MinimumPopulateDelayProperty =
-            DependencyProperty.Register("MinimumPopulateDelay", typeof(int), typeof(AutoCompleteBox), new PropertyMetadata(OnMinimumPopulateDelayPropertyChanged));
+            DependencyProperty.Register(nameof(MinimumPopulateDelay), typeof(int), typeof(AutoCompleteBox), new PropertyMetadata(OnMinimumPopulateDelayPropertyChanged));
 
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception is most likely to be called through the CLR property setter.")]
         [ExcludeFromCodeCoverage]
@@ -143,7 +143,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty DefaultTextTemplateProperty =
-            DependencyProperty.Register("DefaultTextTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
+            DependencyProperty.Register(nameof(DefaultTextTemplate), typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
 
         [ExcludeFromCodeCoverage]
         public DataTemplate DefaultTextTemplate
@@ -153,7 +153,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty DefaultTextProperty =
-            DependencyProperty.Register("DefaultText", typeof(object), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
+            DependencyProperty.Register(nameof(DefaultText), typeof(object), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
 
         public object DefaultText
         {
@@ -162,7 +162,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty AllowUserInsertLineProperty =
-            DependencyProperty.Register("AllowUserInsertLine", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(true));
+            DependencyProperty.Register(nameof(AllowUserInsertLine), typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(true));
 
         public bool AllowUserInsertLine
         {
@@ -177,7 +177,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty IsTextCompletionEnabledProperty =
-            DependencyProperty.Register("IsTextCompletionEnabled", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false, null));
+            DependencyProperty.Register(nameof(IsTextCompletionEnabled), typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false, null));
 
         [ExcludeFromCodeCoverage]
         public DataTemplate ItemTemplate
@@ -187,7 +187,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty ItemTemplateProperty =
-            DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(ItemTemplate), typeof(DataTemplate), typeof(AutoCompleteBox), new PropertyMetadata(null));
 
         [ExcludeFromCodeCoverage]
         public Style ItemContainerStyle
@@ -197,7 +197,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty ItemContainerStyleProperty =
-            DependencyProperty.Register("ItemContainerStyle", typeof(Style), typeof(AutoCompleteBox), new PropertyMetadata(null, null));
+            DependencyProperty.Register(nameof(ItemContainerStyle), typeof(Style), typeof(AutoCompleteBox), new PropertyMetadata(null, null));
 
         [ExcludeFromCodeCoverage]
         public Style TextBoxStyle
@@ -207,7 +207,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty TextBoxStyleProperty =
-            DependencyProperty.Register("TextBoxStyle", typeof(Style), typeof(AutoCompleteBox), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(TextBoxStyle), typeof(Style), typeof(AutoCompleteBox), new PropertyMetadata(null));
 
         [ExcludeFromCodeCoverage]
         public double MaxDropDownHeight
@@ -217,7 +217,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty MaxDropDownHeightProperty =
-            DependencyProperty.Register("MaxDropDownHeight", typeof(double), typeof(AutoCompleteBox), new PropertyMetadata(double.PositiveInfinity, OnMaxDropDownHeightPropertyChanged));
+            DependencyProperty.Register(nameof(MaxDropDownHeight), typeof(double), typeof(AutoCompleteBox), new PropertyMetadata(double.PositiveInfinity, OnMaxDropDownHeightPropertyChanged));
 
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception will be called through a CLR setter in most cases.")]
         static void OnMaxDropDownHeightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -246,7 +246,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty IsDropDownOpenProperty =
-            DependencyProperty.Register("IsDropDownOpen", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false, OnIsDropDownOpenPropertyChanged));
+            DependencyProperty.Register(nameof(IsDropDownOpen), typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false, OnIsDropDownOpenPropertyChanged));
 
         public bool IsDropDownOpen
         {
@@ -288,7 +288,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(AutoCompleteBox), new PropertyMetadata(OnItemsSourcePropertyChanged));
+            DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(AutoCompleteBox), new PropertyMetadata(OnItemsSourcePropertyChanged));
 
         static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -303,7 +303,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(object), typeof(AutoCompleteBox), new PropertyMetadata(OnSelectedItemPropertyChanged));
+            DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(AutoCompleteBox), new PropertyMetadata(OnSelectedItemPropertyChanged));
 
         static void OnSelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -366,7 +366,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteBox), new PropertyMetadata(string.Empty, OnTextPropertyChanged));
+            DependencyProperty.Register(nameof(Text), typeof(string), typeof(AutoCompleteBox), new PropertyMetadata(string.Empty, OnTextPropertyChanged));
 
         static void OnTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -392,7 +392,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty SearchTextProperty =
-            DependencyProperty.Register("SearchText", typeof(string), typeof(AutoCompleteBox), new PropertyMetadata(string.Empty, OnSearchTextPropertyChanged));
+            DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(AutoCompleteBox), new PropertyMetadata(string.Empty, OnSearchTextPropertyChanged));
 
         static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -419,7 +419,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty FilterModeProperty =
-            DependencyProperty.Register("FilterMode", typeof(AutoCompleteFilterMode), typeof(AutoCompleteBox), new PropertyMetadata(AutoCompleteFilterMode.StartsWith, OnFilterModePropertyChanged));
+            DependencyProperty.Register(nameof(FilterMode), typeof(AutoCompleteFilterMode), typeof(AutoCompleteBox), new PropertyMetadata(AutoCompleteFilterMode.StartsWith, OnFilterModePropertyChanged));
 
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception will be thrown when the CLR setter is used in most situations.")]
         [ExcludeFromCodeCoverage]
@@ -454,7 +454,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty ItemFilterProperty =
-            DependencyProperty.Register("ItemFilter", typeof(AutoCompleteFilterPredicate<object>), typeof(AutoCompleteBox), new PropertyMetadata(OnItemFilterPropertyChanged));
+            DependencyProperty.Register(nameof(ItemFilter), typeof(AutoCompleteFilterPredicate<object>), typeof(AutoCompleteBox), new PropertyMetadata(OnItemFilterPropertyChanged));
 
         static void OnItemFilterPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -482,7 +482,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty TextFilterProperty =
-            DependencyProperty.Register("TextFilter", typeof(AutoCompleteFilterPredicate<string>), typeof(AutoCompleteBox), new PropertyMetadata(AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith)));
+            DependencyProperty.Register(nameof(TextFilter), typeof(AutoCompleteFilterPredicate<string>), typeof(AutoCompleteBox), new PropertyMetadata(AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith)));
 
         PopupHelper DropDownPopup { get; set; }
         TextBox _text;
@@ -540,7 +540,7 @@ namespace System.Windows.Controls
         }
 
         public static readonly DependencyProperty HasErrorProperty =
-            DependencyProperty.Register("HasError", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(HasError), typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false));
 
         public bool HasError
         {
@@ -548,7 +548,7 @@ namespace System.Windows.Controls
             set => SetValue(HasErrorProperty, value);
         }
 
-        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(nameof(TextChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AutoCompleteBox));
 
         public event RoutedEventHandler TextChanged
         {
@@ -556,7 +556,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(TextChangedEvent, value); }
         }
 
-        public static readonly RoutedEvent PopulatingEvent = EventManager.RegisterRoutedEvent("Populating", RoutingStrategy.Bubble, typeof(PopulatingEventHandler), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent PopulatingEvent = EventManager.RegisterRoutedEvent(nameof(Populating), RoutingStrategy.Bubble, typeof(PopulatingEventHandler), typeof(AutoCompleteBox));
 
         public event PopulatingEventHandler Populating
         {
@@ -564,7 +564,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(PopulatingEvent, value); }
         }
 
-        public static readonly RoutedEvent PopulatedEvent = EventManager.RegisterRoutedEvent("Populated", RoutingStrategy.Bubble, typeof(PopulatedEventHandler), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent PopulatedEvent = EventManager.RegisterRoutedEvent(nameof(Populated), RoutingStrategy.Bubble, typeof(PopulatedEventHandler), typeof(AutoCompleteBox));
 
         public event PopulatedEventHandler Populated
         {
@@ -572,7 +572,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(PopulatedEvent, value); }
         }
 
-        public static readonly RoutedEvent DropDownOpeningEvent = EventManager.RegisterRoutedEvent("DropDownOpening", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent DropDownOpeningEvent = EventManager.RegisterRoutedEvent(nameof(DropDownOpening), RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening
         {
@@ -580,7 +580,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(PopulatedEvent, value); }
         }
 
-        public static readonly RoutedEvent DropDownOpenedEvent = EventManager.RegisterRoutedEvent("DropDownOpened", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent DropDownOpenedEvent = EventManager.RegisterRoutedEvent(nameof(DropDownOpened), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened
         {
@@ -588,7 +588,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(DropDownOpenedEvent, value); }
         }
 
-        public static readonly RoutedEvent DropDownClosingEvent = EventManager.RegisterRoutedEvent("DropDownClosing", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent DropDownClosingEvent = EventManager.RegisterRoutedEvent(nameof(DropDownClosing), RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing
         {
@@ -596,7 +596,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(DropDownClosingEvent, value); }
         }
 
-        public static readonly RoutedEvent DropDownClosedEvent = EventManager.RegisterRoutedEvent("DropDownClosed", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent DropDownClosedEvent = EventManager.RegisterRoutedEvent(nameof(DropDownClosed), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
 
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed
         {
@@ -604,7 +604,7 @@ namespace System.Windows.Controls
             remove { RemoveHandler(DropDownClosedEvent, value); }
         }
 
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(nameof(SelectionChanged), RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(AutoCompleteBox));
 
         public event SelectionChangedEventHandler SelectionChanged
         {
