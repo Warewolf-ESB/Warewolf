@@ -67,6 +67,61 @@ namespace Dev2.Runtime.ESB.Execution
 
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
 
+            PrepareDataObjectForExecution();
+
+            var to = errors;
+            var serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            if (serviceTestModelTo == null)
+            {
+                testCatalog.Load();
+                serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            }
+            if (serviceTestModelTo == null)
+            {
+                var serializer = new Dev2JsonSerializer();
+                var testRunResult = new ServiceTestModelTO
+                {
+                    Result = new TestRunResult
+                    {
+                        TestName = DataObject.TestName,
+                        RunTestResult = RunResult.TestInvalid,
+                        Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted."
+                    }
+                };
+                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.", DataObject.ExecutionID.ToString());
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                return Guid.NewGuid();
+            }
+
+            CheckAuthentication(serviceTestModelTo);
+            var userPrinciple = Thread.CurrentPrincipal;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                result = TryExecuteWf(to, serviceTestModelTo);
+            });
+            if (DataObject.Environment.Errors != null)
+            {
+                foreach (var err in DataObject.Environment.Errors)
+                {
+                    errors.AddError(err, true);
+                }
+            }
+
+            if (DataObject.Environment.AllErrors != null)
+            {
+                foreach (var err in DataObject.Environment.AllErrors)
+                {
+                    errors.AddError(err, true);
+                }
+            }
+
+            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+
+            return result;
+        }
+
+        private void PrepareDataObjectForExecution()
+        {
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             if (DataObject.ServerID == Guid.Empty)
@@ -98,31 +153,10 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
+        }
 
-            var to = errors;
-            var serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            if (serviceTestModelTo == null)
-            {
-                testCatalog.Load();
-                serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
-            }
-            if (serviceTestModelTo == null)
-            {
-                var serializer = new Dev2JsonSerializer();
-                var testRunResult = new ServiceTestModelTO
-                {
-                    Result = new TestRunResult
-                    {
-                        TestName = DataObject.TestName,
-                        RunTestResult = RunResult.TestInvalid,
-                        Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted."
-                    }
-                };
-                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.", DataObject.ExecutionID.ToString());
-                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
-                return Guid.NewGuid();
-            }
-
+        private void CheckAuthentication(IServiceTestModelTO serviceTestModelTo)
+        {
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
                 var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
@@ -138,30 +172,6 @@ namespace Dev2.Runtime.ESB.Execution
                     DataObject.ExecutingUser = GlobalConstants.GenericPrincipal;
                 }
             }
-            var userPrinciple = Thread.CurrentPrincipal;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
-            {
-                result = TryExecuteWf(to, serviceTestModelTo);
-            });
-            if (DataObject.Environment.Errors != null)
-            {
-                foreach (var err in DataObject.Environment.Errors)
-                {
-                    errors.AddError(err, true);
-                }
-            }
-
-            if (DataObject.Environment.AllErrors != null)
-            {
-                foreach (var err in DataObject.Environment.AllErrors)
-                {
-                    errors.AddError(err, true);
-                }
-            }
-
-            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-
-            return result;
         }
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
@@ -222,7 +232,12 @@ namespace Dev2.Runtime.ESB.Execution
             var serializer = new Dev2JsonSerializer();
             try
             {
-                result = _inner.ExecuteWf(test, wfappUtils, invokeErrors, serializer);
+                result = _inner.ExecuteWf(new TestExecutionContext {
+                    _test = test,
+                    _wfappUtils = wfappUtils,
+                    _invokeErrors = invokeErrors,
+                    _serializer = serializer,
+                });
             }
             catch (InvalidWorkflowException iwe)
             {

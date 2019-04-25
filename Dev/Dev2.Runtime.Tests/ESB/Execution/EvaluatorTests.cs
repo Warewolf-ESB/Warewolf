@@ -288,7 +288,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockSwitchStep_WithOutputs()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -360,7 +360,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockSwitchStep_WithOutputs_IsError()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -430,7 +430,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_ReplaceActivityWithMock_TestMockSwitchStep_WithOutputs_IsNotError()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -923,7 +923,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCategory(nameof(Evaluator))]
         public void Evaluator_TryEval_CanExecute_MockExecute()
         {
-            var helloWorldId = EvaluatorTestSetup.helloWorldId;
+            var helloWorldId = EvaluatorTestSetup.HelloWorldId;
 
             Mock<IPrincipal> mockPrinciple = EvaluatorTestSetup.MockPrincipleTestUserIsInRole();
 
@@ -935,7 +935,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockActivity.Setup(activity => activity.As<DsfSelectAndApplyActivity>()).Returns(new DsfSelectAndApplyActivity());
             mockActivity.Setup(activity => activity.Execute(It.IsAny<IDSFDataObject>(), It.IsAny<int>())).Returns(mockNextActivity.Object);
 
-            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.helloWorldId);
+            var commonAssign = EvaluatorTestSetup.CommonAssign(EvaluatorTestSetup.HelloWorldId);
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(resourceCatalog => resourceCatalog.Parse(Guid.Empty, helloWorldId)).Returns(mockActivity.Object);
