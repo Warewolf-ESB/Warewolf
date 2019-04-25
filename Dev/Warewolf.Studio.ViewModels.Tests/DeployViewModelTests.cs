@@ -1,4 +1,12 @@
-﻿
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 
 using System;
 using System.Collections.Generic;
@@ -166,129 +174,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             deployViewModel.Setup(model => model.DeployCommand.Execute(null));
             deployViewModel.Object.DeployCommand.Execute(null);
             deployViewModel.Verify(model => model.DeployCommand.Execute(null), Times.AtLeast(1));
-        }
-        
-        [TestMethod,Timeout(60000)]
-        [Owner("Sanele Mthembu")]
-        public void Given_SameItem_OnSourceAndDestination_DeployStatsViewerViewModel_CheckDestinationPersmisions_ShouldBeFalse()
-        {
-            var explorerTooltips = new Mock<IExplorerTooltips>();
-            CustomContainer.Register(explorerTooltips.Object);
-            //------------Setup for test--------------------------
-            var shellViewModel = new Mock<IShellViewModel>();
-            shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
-            shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
-            var envMock = new Mock<IEnvironmentViewModel>();
-            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
-            {
-                envMock.Object
-            });
-            var eventAggregator = new Mock<IEventAggregator>();
-            var destPermissions = new List<IWindowsGroupPermission>();
-            destPermissions.Add(new WindowsGroupPermission
-            {
-                Administrator = true
-            });
-            var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.DisplayName).Returns("Localhost");
-            localhost.SetupGet(server => server.Permissions).Returns(destPermissions);
-            localhost.SetupGet(server => server.CanDeployTo).Returns(true);
-            var mockEnvironmentConnection = SetupMockConnection();
-            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
-            shellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
-            var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
-            
-            IList<IExplorerTreeItem> items = new List<IExplorerTreeItem>();            
-            var parentMock = new Mock<IExplorerTreeItem>();
-            var itemViewModel = new ExplorerItemViewModel(localhost.Object, parentMock.Object, null, shellViewModel.Object, null);
-            var explorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, itemViewModel, null);
-            var destinationViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
-            destinationViewModel.Add(explorerItemViewModel);
-            parentMock.SetupGet(it => it.Children).Returns(destinationViewModel);
-            var sourcePermissions = new List<IWindowsGroupPermission>();
-            var otherServer = new Mock<IServer>();
-            otherServer.SetupGet(server => server.Permissions).Returns(sourcePermissions);
-            otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
-            parentMock.SetupGet(item => item.Server).Returns(otherServer.Object);
-            items.Add(parentMock.Object);
-            deployDestinationViewModel.Environments.First().Children = destinationViewModel;
-            deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
-            
-            var stat = new DeployStatsViewerViewModel(items, deployDestinationViewModel);
-            Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
-            //------------Execute Test---------------------------
-            Assert.IsNotNull(stat);
-            stat.TryCalculate(items);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(items.First().CanDeploy);
-        }
-
-        [TestMethod,Timeout(60000)]
-        [Owner("Sanele Mthembu")]
-        public void Given_NewItem_OnSourceAndDestination_DeployStatsViewerViewModel_CheckDestinationPersmisions_ShouldBeTrue()
-        {
-            var explorerTooltips = new Mock<IExplorerTooltips>();
-            CustomContainer.Register(explorerTooltips.Object);
-            //------------Setup for test--------------------------
-            var shellViewModel = new Mock<IShellViewModel>();
-            shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
-            shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
-            var envMock = new Mock<IEnvironmentViewModel>();
-            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
-            {
-                envMock.Object
-            });
-            var eventAggregator = new Mock<IEventAggregator>();
-            var mockEnvironmentConnection = SetupMockConnection();
-
-            var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.DisplayName).Returns("Localhost");
-            localhost.SetupGet(server => server.CanDeployTo).Returns(true);
-            localhost.SetupGet(server => server.IsConnected).Returns(true);
-            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-
-            var otherServer = new Mock<IServer>();
-            otherServer.Setup(server => server.IsConnected).Returns(true);
-            otherServer.Setup(a => a.DisplayName).Returns("OtherServer");
-            otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
-            otherServer.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-
-            shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
-
-            var connectControlSingleton = new Mock<IConnectControlSingleton>();
-            CustomContainer.Register(connectControlSingleton.Object);
-            var environmentRepository = new Mock<IServerRepository>();
-            CustomContainer.Register(environmentRepository.Object);
-
-            var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
-            
-            var sourceItemViewModel = new ExplorerItemViewModel(localhost.Object, null, null, shellViewModel.Object, null);
-
-            var sourceViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
-            var sourceExplorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, sourceItemViewModel, null);
-            sourceViewModel.Add(sourceExplorerItemViewModel);
-
-            var destinationViewModel = SetDestinationExplorerItemViewModels(Guid.NewGuid(), otherServer, shellViewModel, localhost);
-            
-            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
-
-            sourceExplorerItem.Add(sourceExplorerItemViewModel);
-            
-            deployDestinationViewModel.Environments.First().Children = destinationViewModel;
-            deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
-            deployDestinationViewModel.SelectedEnvironment.Connect();
-            sourceExplorerItem.First().CanDeploy = true;
-            sourceExplorerItem.First().IsResourceChecked = true;
-
-            var stat = new DeployStatsViewerViewModel(sourceExplorerItem, deployDestinationViewModel);
-            Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
-            //------------Execute Test---------------------------
-            Assert.IsNotNull(stat);
-            stat.TryCalculate(sourceExplorerItem);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
-            Assert.AreEqual(stat.NewResources, 1);
         }
 
         [TestMethod,Timeout(60000)]

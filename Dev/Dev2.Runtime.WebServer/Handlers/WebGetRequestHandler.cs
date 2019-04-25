@@ -34,7 +34,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var postDataListID = GetDataListID(ctx);
+            var postDataListID = GetDataListId(ctx);
             if (postDataListID != null)
             {
                 _catalog = _catalog ?? ResourceCatalog.Instance;
@@ -44,7 +44,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             var serviceName = GetServiceName(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
+            var workspaceID = GetWorkspaceId(ctx);
 
             var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
             var data = GetPostData(ctx);

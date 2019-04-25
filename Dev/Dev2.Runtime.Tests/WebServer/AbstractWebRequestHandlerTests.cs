@@ -751,6 +751,64 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests1()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            GetExecutingUser(principal);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(principal.Object, It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            dataObject.SetupGet(o => o.ReturnType).Returns(EmitionTypes.TEST);
+            dataObject.SetupGet(o => o.TestName).Returns("");
+            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
+            dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+                .Returns(new List<IResource>()
+                {
+                   resource.Object
+                });
+            var testCatalog = new Mock<ITestCatalog>();
+            var serviceTestModelTO = new Mock<IServiceTestModelTO>();
+            serviceTestModelTO.Setup(to => to.Enabled).Returns(true);
+            serviceTestModelTO.Setup(to => to.TestName).Returns("Test1");
+            var tests = new List<IServiceTestModelTO>
+            {
+                serviceTestModelTO.Object
+            };
+            testCatalog.Setup(catalog => catalog.Fetch(Guid.Empty)).Returns(tests);
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                    {"IsDebug","true"}
+                },
+                WebServerUrl = ""
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World", null, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            testCatalog.Verify(o => o.Fetch(Guid.Empty), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
         public void AbstractWebRequestHandler_BindRequestVariablesToDataObjectGivenHasBookMarkShouldSetDataObjectBookmark()
         {
             //---------------Set up test pack-------------------
@@ -2033,12 +2091,12 @@ namespace Dev2.Tests.Runtime.WebServer
 
         public string GetWorkspaceIDMock(ICommunicationContext ctx)
         {
-            return GetWorkspaceID(ctx);
+            return GetWorkspaceId(ctx);
         }
 
         public string GetDataListIDMock(ICommunicationContext ctx)
         {
-            return GetDataListID(ctx);
+            return GetDataListId(ctx);
         }
 
         public string GetBookmarkMock(ICommunicationContext ctx)
@@ -2048,7 +2106,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         public string GetInstanceIDMock(ICommunicationContext ctx)
         {
-            return GetInstanceID(ctx);
+            return GetInstanceId(ctx);
         }
 
         public string GetWebsiteMock(ICommunicationContext ctx)
