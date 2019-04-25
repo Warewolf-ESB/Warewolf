@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
+using Dev2.Studio.Interfaces.Deploy;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
