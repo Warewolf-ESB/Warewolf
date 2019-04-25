@@ -1,4 +1,4 @@
-#pragma warning disable CC0044 //allow four params for invoke method
+#pragma warning disable CC0044 //allow four params for Invoke method
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
