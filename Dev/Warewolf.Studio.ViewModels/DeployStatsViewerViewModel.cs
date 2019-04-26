@@ -65,10 +65,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Connectors
         {
-            get
-            {
-                return _connectors;
-            }
+            get => _connectors;
             set
             {
                 _connectors = value;
@@ -78,10 +75,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Services
         {
-            get
-            {
-                return _services;
-            }
+            get => _services;
             set
             {
                 _services = value;
@@ -91,10 +85,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Sources
         {
-            get
-            {
-                return _sources;
-            }
+            get => _sources;
             set
             {
                 _sources = value;
@@ -104,10 +95,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Unknown
         {
-            get
-            {
-                return _unknown;
-            }
+            get => _unknown;
             set
             {
                 _unknown = value;
@@ -117,10 +105,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int NewResources
         {
-            get
-            {
-                return _newResources;
-            }
+            get => _newResources;
             set
             {
                 _newResources = value;
@@ -130,10 +115,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Overrides
         {
-            get
-            {
-                return _overrides;
-            }
+            get => _overrides;
             set
             {
                 _overrides = value;
