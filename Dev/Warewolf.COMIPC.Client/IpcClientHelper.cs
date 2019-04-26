@@ -21,8 +21,6 @@ namespace Warewolf.COMIPC.Client
         readonly bool _disposed;
         readonly INamedPipeClientStreamWrapper _pipeWrapper;
 
-        object result;
-
         public IpcClientHelper(bool disposed, INamedPipeClientStreamWrapper pipeWrapper)
         {
             _disposed = disposed;
@@ -81,17 +79,18 @@ namespace Warewolf.COMIPC.Client
 
         }
 
-        private object ExecuteSpecifiedMethod(JsonSerializer serializer, JsonTextReader jsonTextReader)
+        static object ExecuteSpecifiedMethod(JsonSerializer serializer, JsonTextReader jsonTextReader)
         {
             try
             {
                 var obj = serializer.Deserialize(jsonTextReader);
-                result = obj.ToString();
-                var exception = JsonConvert.DeserializeObject<Exception>(result.ToString());
+                var result = obj.ToString();
+                var exception = JsonConvert.DeserializeObject<Exception>(result);
                 if (exception != null)
                 {
                     throw exception;
                 }
+                return result;
             }
             catch (Exception ex)
             {
@@ -99,12 +98,11 @@ namespace Warewolf.COMIPC.Client
                 var baseException = ex.GetBaseException();
                 return new KeyValuePair<bool, string>(true, baseException.Message);
             }
-            return result;
         }
 
-        private object GetNamespaces(JsonSerializer serializer, JsonTextReader jsonTextReader)
+        static object GetNamespaces(JsonSerializer serializer, JsonTextReader jsonTextReader)
         {
-            result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
+            var result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
             if (result is Exception exception)
             {
                 throw exception;
@@ -112,9 +110,9 @@ namespace Warewolf.COMIPC.Client
             return result;
         }
 
-        private object GetMethodInfo(JsonSerializer serializer, JsonTextReader jsonTextReader)
+        static object GetMethodInfo(JsonSerializer serializer, JsonTextReader jsonTextReader)
         {
-            result = serializer.Deserialize(jsonTextReader, typeof(string));
+            var result = serializer.Deserialize(jsonTextReader, typeof(string));
             if (result is Exception exception)
             {
                 throw exception;
@@ -124,9 +122,9 @@ namespace Warewolf.COMIPC.Client
             return value == null ? new List<MethodInfoTO>() : JsonConvert.DeserializeObject<List<MethodInfoTO>>(value);
         }
 
-        private object GetType(JsonSerializer serializer, JsonTextReader jsonTextReader)
+        static object GetType(JsonSerializer serializer, JsonTextReader jsonTextReader)
         {
-            result = serializer.Deserialize(jsonTextReader, typeof(string));
+            var result = serializer.Deserialize(jsonTextReader, typeof(string));
             if (result is Exception exception)
             {
                 throw exception;
