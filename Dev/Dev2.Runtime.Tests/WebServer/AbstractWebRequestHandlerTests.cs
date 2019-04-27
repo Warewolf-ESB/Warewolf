@@ -2081,7 +2081,7 @@ namespace Dev2.Tests.Runtime.WebServer
         //BindRequestVariablesToDataObject(WebRequestTO request, ref IDSFDataObject dataObject)
         public void BindRequestVariablesToDataObjectMock(WebRequestTO request, ref IDSFDataObject dataObject)
         {
-            BindRequestVariablesToDataObject(request, ref dataObject);
+            request.BindRequestVariablesToDataObject(ref dataObject);
         }
 
         public override void ProcessRequest(ICommunicationContext ctx)
@@ -2091,7 +2091,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         public void RemoteInvokeMock(NameValueCollection headers, IDSFDataObject dataObject)
         {
-            RemoteInvoke(headers, dataObject);
+            dataObject.SetupForRemoteInvoke(headers);
         }
 
         public string GetServiceNameMock(ICommunicationContext ctx)
