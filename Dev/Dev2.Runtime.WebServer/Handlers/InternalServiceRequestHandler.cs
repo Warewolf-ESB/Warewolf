@@ -49,14 +49,14 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var serviceName = GetServiceName(ctx);
-            var instanceId = GetInstanceId(ctx);
-            var bookmark = GetBookmark(ctx);
-            GetDataListId(ctx);
-            var workspaceId = GetWorkspaceId(ctx);
+            var serviceName = ctx.GetServiceName();
+            var instanceId = ctx.GetInstanceID();
+            var bookmark = ctx.GetBookmark();
+            ctx.GetDataListID();
+            var workspaceId = ctx.GetWorkspaceID();
             var formData = new WebRequestTO();
 
-            var xml = GetPostData(ctx);
+            var xml = SubmittedData.GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(xml))
             {
