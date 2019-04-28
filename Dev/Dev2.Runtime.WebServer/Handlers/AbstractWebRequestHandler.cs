@@ -288,172 +288,154 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        protected static string GetPostData(ICommunicationContext ctx)
+        protected static class SubmittedData
         {
-            var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
-            baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
-            string payload = null;
-            if (baseStr != null)
+            internal static string GetPostData(ICommunicationContext ctx)
             {
-                var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
-                if (startIdx > 0)
+                var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
+                baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
+                string payload = null;
+                if (baseStr != null)
                 {
-                    payload = baseStr.Substring(startIdx + 1);
-                    if (payload.IsXml() || payload.IsJSON())
+                    var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
+                    if (startIdx > 0)
                     {
-                        return payload;
+                        payload = baseStr.Substring(startIdx + 1);
+                        if (payload.IsXml() || payload.IsJSON())
+                        {
+                            return payload;
+                        }
                     }
                 }
-            }
 
-            if (ctx.Request.Method == "GET")
-            {
-                return ExtractKeyValuePairForGetMethod(ctx, payload);
-            }
-
-            if (ctx.Request.Method == "POST")
-            {
-                using (var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
+                if (ctx.Request.Method == "GET")
                 {
-                    try
-                    {
-                        return ExtractKeyValuePairForPostMethod(ctx, reader);
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error("AbstractWebRequestHandler", ex, GlobalConstants.WarewolfError);
-                    }
+                    return ExtractKeyValuePairForGetMethod(ctx, payload);
                 }
-            }
 
-            return string.Empty;
-        }
-
-        static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
-        {
-            var data = reader.ReadToEnd();
-            if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
-            {
-                return data;
-            }
-
-            var pairs = ExtractArgumentsFromDataListOrQueryString(ctx, data);
-
-            return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
-        }
-
-        private static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
-        {
-            var pairs = new NameValueCollection(5);
-            var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            foreach (var keyValuePair in keyValuePairs)
-            {
-                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-                if (keyValue.Length > 1)
+                if (ctx.Request.Method == "POST")
                 {
-                    pairs.Add(keyValue[0], keyValue[1]);
-                }
-                else
-                {
-                    if (keyValue.Length == 1 && (keyValue[0].IsXml() || keyValue[0].IsJSON()))
+                    using (var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
                     {
-                        pairs.Add(keyValue[0], keyValue[0]);
+                        try
+                        {
+                            return ExtractKeyValuePairForPostMethod(ctx, reader);
+                        }
+                        catch (Exception ex)
+                        {
+                            Dev2Logger.Error("AbstractWebRequestHandler", ex, GlobalConstants.WarewolfError);
+                        }
                     }
                 }
+
+                return string.Empty;
             }
 
-            if (pairs.Count == 0)
+            static string CleanupXml(string baseStr)
             {
-                pairs = ctx.Request.QueryString;
+                if (baseStr.Contains("?"))
+                {
+                    var startQueryString = baseStr.IndexOf("?", StringComparison.Ordinal);
+                    var query = baseStr.Substring(startQueryString + 1);
+                    if (query.IsJSON())
+                    {
+                        return baseStr;
+                    }
+                    var args = HttpUtility.ParseQueryString(query);
+                    var url = baseStr.Substring(0, startQueryString + 1);
+                    var results = new List<string>();
+                    foreach (var arg in args.AllKeys)
+                    {
+                        var txt = args[arg];
+                        results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
+                    }
+
+                    return url + string.Join("&", results);
+                }
+                return baseStr;
             }
 
-            return pairs;
-        }
-
-        static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
-        {
-            if (payload != null)
+            static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
             {
-                var keyValuePairs = payload.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (payload != null)
+                {
+                    var keyValuePairs = payload.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    foreach (var keyValuePair in keyValuePairs)
+                    {
+                        if (keyValuePair.StartsWith("wid="))
+                        {
+                            continue;
+                        }
+                        if (keyValuePair.IsXml() || keyValuePair.IsJSON() || (keyValuePair.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && keyValuePair.ToLowerInvariant().Contains("</DataList>".ToLowerInvariant())))
+                        {
+                            return keyValuePair;
+                        }
+                    }
+                }
+                var pairs = ctx.Request.QueryString;
+                return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
+            }
+            static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
+            {
+                var data = reader.ReadToEnd();
+                if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
+                {
+                    return data;
+                }
+
+                var pairs = ExtractArgumentsFromDataListOrQueryString(ctx, data);
+
+                return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
+            }
+
+            private static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
+            {
+                var pairs = new NameValueCollection(5);
+                var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 foreach (var keyValuePair in keyValuePairs)
                 {
-                    if (keyValuePair.StartsWith("wid="))
+                    var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (keyValue.Length > 1)
+                    {
+                        pairs.Add(keyValue[0], keyValue[1]);
+                    }
+                    else
+                    {
+                        if (keyValue.Length == 1 && (keyValue[0].IsXml() || keyValue[0].IsJSON()))
+                        {
+                            pairs.Add(keyValue[0], keyValue[0]);
+                        }
+                    }
+                }
+
+                if (pairs.Count == 0)
+                {
+                    pairs = ctx.Request.QueryString;
+                }
+
+                return pairs;
+            }
+
+            static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
+            {
+                // Extract request keys
+                foreach (var key in pairs.AllKeys)
+                {
+                    if (key == "wid") //Don't add the Workspace ID to DataList
                     {
                         continue;
                     }
-                    if (keyValuePair.IsXml() || keyValuePair.IsJSON() || (keyValuePair.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && keyValuePair.ToLowerInvariant().Contains("</DataList>".ToLowerInvariant())))
+                    if (key.IsXml() || key.IsJSON() || (key.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && key.ToLowerInvariant().Contains("<\\DataList>".ToLowerInvariant())))
                     {
-                        return keyValuePair;
+                        return key; //We have a workspace id and XML DataList
                     }
+                    boundVariables.Add(key, pairs[key]);
+
                 }
+
+                return string.Empty;
             }
-            var pairs = ctx.Request.QueryString;
-            return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
-
-        static string CleanupXml(string baseStr)
-        {
-            if (baseStr.Contains("?"))
-            {
-                var startQueryString = baseStr.IndexOf("?", StringComparison.Ordinal);
-                var query = baseStr.Substring(startQueryString + 1);
-                if (query.IsJSON())
-                {
-                    return baseStr;
-                }
-                var args = HttpUtility.ParseQueryString(query);
-                var url = baseStr.Substring(0, startQueryString + 1);
-                var results = new List<string>();
-                foreach (var arg in args.AllKeys)
-                {
-                    var txt = args[arg];
-                    results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
-                }
-
-                return url + string.Join("&", results);
-            }
-            return baseStr;
-        }
-
-        static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
-        {
-            // Extract request keys
-            foreach (var key in pairs.AllKeys)
-            {
-                if (key == "wid") //Don't add the Workspace ID to DataList
-                {
-                    continue;
-                }
-                if (key.IsXml() || key.IsJSON() || (key.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && key.ToLowerInvariant().Contains("<\\DataList>".ToLowerInvariant())))
-                {
-                    return key; //We have a workspace id and XML DataList
-                }
-                boundVariables.Add(key, pairs[key]);
-
-            }
-
-            return string.Empty;
-        }
-
-        protected static string GetServiceName(ICommunicationContext ctx) => ctx.GetServiceName();
-
-
-        protected static string GetWorkspaceId(ICommunicationContext ctx) => ctx.GetWorkspaceID();
-
-        protected static string GetDataListId(ICommunicationContext ctx) => ctx.GetDataListID();
-
-        protected static string GetBookmark(ICommunicationContext ctx) => ctx.GetBookmark();
-
-        protected static string GetInstanceId(ICommunicationContext ctx) => ctx.GetInstanceID();
-
-        protected static string GetWebsite(ICommunicationContext ctx) => ctx.GetWebsite();
-
-        protected static string GetPath(ICommunicationContext ctx) => ctx.GetPath();
-
-        protected static string GetClassName(ICommunicationContext ctx) => ctx.GetClassName();
-
-        protected static string GetMethodName(ICommunicationContext ctx) => ctx.GetMethodName();
-
 
         public interface IDataObjectFactory
         {

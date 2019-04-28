@@ -2075,7 +2075,7 @@ namespace Dev2.Tests.Runtime.WebServer
         //protected static string GetPostData(ICommunicationContext ctx)
         public string GetPostDataMock(ICommunicationContext ctx)
         {
-            return GetPostData(ctx);
+            return SubmittedData.GetPostData(ctx);
         }
 
         //BindRequestVariablesToDataObject(WebRequestTO request, ref IDSFDataObject dataObject)
@@ -2096,47 +2096,47 @@ namespace Dev2.Tests.Runtime.WebServer
 
         public string GetServiceNameMock(ICommunicationContext ctx)
         {
-            return GetServiceName(ctx);
+            return ctx.GetServiceName();
         }
 
         public string GetWorkspaceIDMock(ICommunicationContext ctx)
         {
-            return GetWorkspaceId(ctx);
+            return ctx.GetWorkspaceID();
         }
 
         public string GetDataListIDMock(ICommunicationContext ctx)
         {
-            return GetDataListId(ctx);
+            return ctx.GetDataListID();
         }
 
         public string GetBookmarkMock(ICommunicationContext ctx)
         {
-            return GetBookmark(ctx);
+            return ctx.GetBookmark();
         }
 
         public string GetInstanceIDMock(ICommunicationContext ctx)
         {
-            return GetInstanceId(ctx);
+            return ctx.GetInstanceID();
         }
 
         public string GetWebsiteMock(ICommunicationContext ctx)
         {
-            return GetWebsite(ctx);
+            return ctx.GetWebsite();
         }
 
         public string GetPathMock(ICommunicationContext ctx)
         {
-            return GetPath(ctx);
+            return ctx.GetPath();
         }
 
         public string GetClassNameMock(ICommunicationContext ctx)
         {
-            return GetClassName(ctx);
+            return ctx.GetClassName();
         }
 
         public string GetMethodNameMock(ICommunicationContext ctx)
         {
-            return GetMethodName(ctx);
+            return ctx.GetMethodName();
         }
     }
 }

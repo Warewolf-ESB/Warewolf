@@ -34,7 +34,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var postDataListID = GetDataListId(ctx);
+            var postDataListID = ctx.GetDataListID();
             if (postDataListID != null)
             {
                 _catalog = _catalog ?? ResourceCatalog.Instance;
@@ -43,11 +43,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return;
             }
 
-            var serviceName = GetServiceName(ctx);
-            var workspaceID = GetWorkspaceId(ctx);
+            var serviceName = ctx.GetServiceName();
+            var workspaceID = ctx.GetWorkspaceID();
 
             var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
-            var data = GetPostData(ctx);
+            var data = SubmittedData.GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(data))
             {

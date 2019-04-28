@@ -666,7 +666,7 @@ namespace Dev2.Runtime.ESB.Execution
             public IList<IServiceTestOutput> _pendingTestOutputs;
             public IList<IServiceTestOutput> _invalidTestOutputs;
             public IList<IServiceTestOutput> _failingTestOutputs;
-            public List<IServiceTestStep> _serviceTestSteps;
+            public readonly List<IServiceTestStep> _serviceTestSteps;
 
             public bool TestPassedBasedOnSteps => !HasPendingSteps && !HasInvalidSteps && !HasFailingSteps;
             public bool TestPassedBasedOnOutputs => !HasPendingOutputs && !HasInvalidOutputs && !HasFailingOutputs;
