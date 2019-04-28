@@ -1676,12 +1676,10 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestCategory(nameof(AbstractWebRequestHandler))]
         public void AbstractWebRequestHandler_ExtractKeyValuePairs_GivenKeyvaluePairs_ShouldCloneKeyValuePair()
         {
-            //------------Setup for test-------------------------
             var boundVariables = new NameValueCollection();
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
-            //------------Execute Test---------------------------            
-            privateObject.InvokeStatic("ExtractKeyValuePairs", LocalBoundVariables, boundVariables);
-            //------------Assert Results-------------------------
+
+            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairs(LocalBoundVariables, boundVariables);
+            
             //The WID is skipped
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
         }
@@ -1695,9 +1693,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
             const string BaseStr = "www.examlple.com?home=<Datalist>DatalistPayload</Datalist>";
             //------------Execute Test---------------------------            
-            var invokeStatic = privateObject.InvokeStatic("CleanupXml", BaseStr);
+            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(BaseStr);
             //------------Assert Results-------------------------\
-            var value = invokeStatic.ToString();
             var isNullOrEmpty = string.IsNullOrEmpty(value);
             Assert.IsFalse(isNullOrEmpty);
             var startsWith = value.StartsWith("www.examlple.com?home=~XML~");
@@ -1715,8 +1712,10 @@ namespace Dev2.Tests.Runtime.WebServer
             mock.Setup(communicationContext => communicationContext.Request.QueryString)
                 .Returns(new NameValueCollection());
             var context = mock.Object;
+
             //------------Execute Test---------------------------            
-            privateObject.InvokeStatic("ExtractKeyValuePairForGetMethod", context, "");
+            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairForGetMethod(context, "");
+
             //------------Assert Results-------------------------
             mock.VerifyGet(communicationContext => communicationContext.Request.QueryString, Times.Once);
 
