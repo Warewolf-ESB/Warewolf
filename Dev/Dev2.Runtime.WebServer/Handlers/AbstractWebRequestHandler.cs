@@ -288,7 +288,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        protected static class SubmittedData
+        internal static class SubmittedData
         {
             internal static string GetPostData(ICommunicationContext ctx)
             {
@@ -331,7 +331,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return string.Empty;
             }
 
-            static string CleanupXml(string baseStr)
+            internal static string CleanupXml(string baseStr)
             {
                 if (baseStr.Contains("?"))
                 {
@@ -355,7 +355,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return baseStr;
             }
 
-            static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
+            internal static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
             {
                 if (payload != null)
                 {
@@ -416,7 +416,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return pairs;
             }
 
-            static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
+            internal static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
             {
                 // Extract request keys
                 foreach (var key in pairs.AllKeys)
