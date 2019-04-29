@@ -169,7 +169,7 @@ namespace Dev2.Common
 
         static void UpdateOldAppenderToNewAppender(XElement log4netElement, XElement oldAppender)
         {
-            XAttribute oldAppenderName = oldAppender.Attribute("name");
+            var oldAppenderName = oldAppender.Attribute("name");
             oldAppenderName.SetValue("rollingFile");
             var oldAppenderType = oldAppender.Attribute("type");
             oldAppenderType.SetValue("log4net.Appender.RollingFileAppender");
