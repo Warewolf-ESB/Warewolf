@@ -76,7 +76,9 @@ namespace Dev2.Diagnostics
                 {
                     ClearFile(_fileName);
                     _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
-                    ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(_stringBuilder.ToString(), _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
+                    var clonedItem = itemToAdd.Clone();
+                    clonedItem.MoreLink = SaveFile(_stringBuilder.ToString(), _fileName);
+                    ResultsList.Add(clonedItem);
                     _stringBuilder.Clear();
                     _isMoreLinkCreated = true;
                     return;
