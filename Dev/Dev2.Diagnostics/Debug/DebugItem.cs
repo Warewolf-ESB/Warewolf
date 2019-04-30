@@ -20,13 +20,22 @@ using Dev2.Common.Utils;
 
 namespace Dev2.Diagnostics
 {
-    //TODO: Refactor this class. SaveFile could cause performance issues and tests are diffcult to validate certain properties
+    //TODO: Issues with the way large results are stored in SaveFile.
     [Serializable]
     public class DebugItem : IDebugItem
     {
-        static readonly string InvalidFileNameChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+        static readonly string _invalidFileNameChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
 
-        readonly string _tempPath;
+        static string GetTempFolder()
+        {
+            var _tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
+            if (!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
+            return _tempPath;
+        }
+
         readonly Guid _itemId;
         readonly StringBuilder _stringBuilder;
         string _fileName;
@@ -47,11 +56,6 @@ namespace Dev2.Diagnostics
         public DebugItem(IEnumerable<IDebugItemResult> results)
         {
             ResultsList = new List<IDebugItemResult>();
-            _tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
-            if (!Directory.Exists(_tempPath))
-            {
-                Directory.CreateDirectory(_tempPath);
-            }
             _itemId = Guid.NewGuid();
             _isMoreLinkCreated = false;
             _stringBuilder = new StringBuilder();
@@ -65,41 +69,44 @@ namespace Dev2.Diagnostics
         public bool Contains(string filterText) => ResultsList.Any(r => r.Value.ContainsSafe(filterText) || r.GroupName.ContainsSafe(filterText));
 
         public void Add(IDebugItemResult itemToAdd) => Add(itemToAdd, false);
-        //This method needs to be broken down as it looks to be doing too many different checks.
-        //The method name means it's adding to the ResultsList, but it's also deleting a file and then saving a new file
+
         public void Add(IDebugItemResult itemToAdd, bool isDeserialize)
+        {
+            AddResultItemOrAddToItemResultListLog(itemToAdd, isDeserialize);
+        }
+
+        private void AddResultItemOrAddToItemResultListLog(IDebugItemResult itemToAdd, bool isDeserialize)
         {
             if (!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount && !isDeserialize)
             {
                 _fileName = string.Format("{0}.txt", _itemId);
-                if (itemToAdd.GroupIndex == MaxItemDispatchCount + 1 && !_isMoreLinkCreated)
+                var shouldCreateMoreLink = itemToAdd.GroupIndex == MaxItemDispatchCount + 1 && !_isMoreLinkCreated;
+                if (shouldCreateMoreLink)
                 {
                     ClearFile(_fileName);
                     _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
                     var clonedItem = itemToAdd.Clone();
-                    clonedItem.MoreLink = SaveFile(_stringBuilder.ToString(), _fileName);
-                    ResultsList.Add(clonedItem);
+                    var moreLink = SaveFile(_stringBuilder.ToString(), _fileName);
                     _stringBuilder.Clear();
+                    clonedItem.MoreLink = moreLink;
+                    ResultsList.Add(clonedItem);
                     _isMoreLinkCreated = true;
                     return;
                 }
 
-                IfNotLabelTypeOrStringTooLong(itemToAdd);
+                _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
+
+                FlushResultListLogIfNeeded(itemToAdd);
                 return;
             }
 
-            if (itemToAdd.Type == DebugItemResultType.Value || itemToAdd.Type == DebugItemResultType.Variable)
-            {
-                TryCache(itemToAdd);
-            }
+            TruncateItemResultIfNeeded(itemToAdd);
 
             ResultsList.Add(itemToAdd);
         }
 
-        private void IfNotLabelTypeOrStringTooLong(IDebugItemResult itemToAdd)
+        private void FlushResultListLogIfNeeded(IDebugItemResult itemToAdd)
         {
-            _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
-
             if (itemToAdd.Type == DebugItemResultType.Value || itemToAdd.Type == DebugItemResultType.Variable || _stringBuilder.Length > 10000)
             {
                 SaveFile(_stringBuilder.ToString(), _fileName);
@@ -107,11 +114,23 @@ namespace Dev2.Diagnostics
             }
         }
 
+        internal void TruncateItemResultIfNeeded(IDebugItemResult itemToAdd)
+        {
+            var valueOrVariable = itemToAdd.Type == DebugItemResultType.Value || itemToAdd.Type == DebugItemResultType.Variable;
+            var valueLengthTooLong = !string.IsNullOrEmpty(itemToAdd.Value) && itemToAdd.Value.Length > MaxCharDispatchCount;
+            if (valueOrVariable && valueLengthTooLong)
+            {
+                itemToAdd.MoreLink = SaveFile(itemToAdd.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
+                itemToAdd.Value = itemToAdd.Value.Substring(0, ActCharDispatchCount);
+            }
+        }
+
         public void AddRange(List<IDebugItemResult> itemsToAdd)
         {
             foreach (var debugItemResult in itemsToAdd)
             {
-                if (string.IsNullOrEmpty(debugItemResult.Label) && string.IsNullOrEmpty(debugItemResult.Value) && string.IsNullOrEmpty(debugItemResult.Variable) && debugItemResult.Type == DebugItemResultType.Variable)
+                var invalidVariableResult = string.IsNullOrEmpty(debugItemResult.Label) && string.IsNullOrEmpty(debugItemResult.Value) && string.IsNullOrEmpty(debugItemResult.Variable) && debugItemResult.Type == DebugItemResultType.Variable;
+                if (invalidVariableResult)
                 {
                     continue;
                 }
@@ -120,20 +139,6 @@ namespace Dev2.Diagnostics
         }
 
         public IList<IDebugItemResult> FetchResultsList() => ResultsList;
-
-        public void TryCache(IDebugItemResult item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            if (!string.IsNullOrEmpty(item.Value) && item.Value.Length > MaxCharDispatchCount)
-            {
-                item.MoreLink = SaveFile(item.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
-                item.Value = item.Value.Substring(0, ActCharDispatchCount);
-            }
-        }
 
         //This method saves a file to C:\ProgramData\Warewolf\Temp\Warewolf\Debug
         public virtual string SaveFile(string contents, string fileName)
@@ -146,9 +151,9 @@ namespace Dev2.Diagnostics
                 throw new ArgumentNullException(nameof(updateContents));
             }
             updateContents = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(updateContents);
-            updateFileName = InvalidFileNameChars.Aggregate(updateFileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
+            updateFileName = _invalidFileNameChars.Aggregate(updateFileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
 
-            var path = Path.Combine(_tempPath, updateFileName);
+            var path = Path.Combine(GetTempFolder(), updateFileName);
             File.AppendAllText(path, updateContents);
             var linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
 
@@ -157,7 +162,7 @@ namespace Dev2.Diagnostics
 
         public void ClearFile(string fileName)
         {
-            var path = Path.Combine(_tempPath, fileName);
+            var path = Path.Combine(GetTempFolder(), fileName);
             if (File.Exists(path))
             {
                 File.Delete(path);
