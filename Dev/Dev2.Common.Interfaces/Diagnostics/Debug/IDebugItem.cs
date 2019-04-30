@@ -23,7 +23,6 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         void AddRange(List<IDebugItemResult> itemsToAdd);
         IList<IDebugItemResult> FetchResultsList();
         void FlushStringBuilder();
-        void TryCache(IDebugItemResult item);
         string SaveFile(string contents, string fileName);
     }
 }

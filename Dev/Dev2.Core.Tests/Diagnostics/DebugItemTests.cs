@@ -25,6 +25,28 @@ namespace Dev2.Tests.Diagnostics
             + "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
             + "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
+
+        string _oldWebServerUri;
+        [TestInitialize]
+        public void TestInit()
+        {
+            _oldWebServerUri = EnvironmentVariables.WebServerUri;
+            EnvironmentVariables.WebServerUri = "http://localhost:3142";
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            EnvironmentVariables.WebServerUri = _oldWebServerUri;
+        }
+
+        [TestMethod]
+        public void DebugItem_Flush()
+        {
+            var item = new DebugItem();
+            item.FlushStringBuilder();
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
@@ -95,22 +117,12 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DebugItem_TryCache_With_NullParameters_Expected_ThrowsArgumentNullException()
-        {
-            var debugState = new DebugItem();
-            debugState.TryCache(null);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(DebugItem))]
-        public void DebugItem_TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_TruncatesValueToActCharDispatchCount()
+        public void DebugItem_TruncateItemResultIfNeeded_With_ValueGreaterThanMaxCharDispatchCount_Expected_TruncatesValueToActCharDispatchCount()
         {
             var item = CreateDebugItemWithLongValue();
 
             var debugState = new DebugItem();
-            debugState.TryCache(item);
+            debugState.TruncateItemResultIfNeeded(item);
 
             Assert.AreEqual(DebugItem.ActCharDispatchCount, item.Value.Length);
         }
@@ -118,14 +130,14 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
-        public void DebugItem_TryCache_With_ValueGreaterThanMaxCharDispatchCount_Expected_InvokesSaveFileWithFullContent()
+        public void DebugItem_TruncateItemResultIfNeeded_With_ValueGreaterThanMaxCharDispatchCount_Expected_InvokesSaveFileWithFullContent()
         {
             var item = CreateDebugItemWithLongValue();
 
             var expectedContents = item.Value;
 
             var debugItem = new DebugItemMock();
-            debugItem.TryCache(item);
+            debugItem.TruncateItemResultIfNeeded(item);
 
             Assert.AreEqual(1, debugItem.SaveFileHitCount);
             Assert.AreEqual(expectedContents, debugItem.SaveFileContents);
@@ -134,13 +146,13 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
-        public void DebugItem_TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
+        public void DebugItem_TruncateItemResultIfNeeded_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
         {
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, DebugItem.MaxCharDispatchCount);
 
             var debugItem = new DebugItemMock();
-            debugItem.TryCache(item);
+            debugItem.TruncateItemResultIfNeeded(item);
 
             Assert.AreEqual(DebugItem.MaxCharDispatchCount, item.Value.Length);
         }
@@ -148,13 +160,13 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
-        public void DebugItem_TryCache_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
+        public void DebugItem_TruncateItemResultIfNeeded_With_ValueEqualToMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
         {
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, DebugItem.MaxCharDispatchCount);
 
             var debugState = new DebugItemMock();
-            debugState.TryCache(item);
+            debugState.TruncateItemResultIfNeeded(item);
 
             Assert.AreEqual(0, debugState.SaveFileHitCount);
         }
@@ -162,14 +174,14 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
-        public void DebugItem_TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
+        public void DebugItem_TruncateItemResultIfNeeded_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotTruncateValueToActCharDispatchCount()
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, ExpectedLength);
 
             var debugState = new DebugItemMock();
-            debugState.TryCache(item);
+            debugState.TruncateItemResultIfNeeded(item);
 
             Assert.AreEqual(ExpectedLength, item.Value.Length);
         }
@@ -177,14 +189,14 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
-        public void DebugItem_TryCache_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
+        public void DebugItem_TruncateItemResultIfNeeded_With_ValueLessThanMaxCharDispatchCount_Expected_DoesNotInvokeSaveFile()
         {
             const int ExpectedLength = 100;
             var item = CreateDebugItemWithLongValue();
             item.Value = item.Value.Substring(0, ExpectedLength);
 
             var debugState = new DebugItemMock();
-            debugState.TryCache(item);
+            debugState.TruncateItemResultIfNeeded(item);
 
             Assert.AreEqual(0, debugState.SaveFileHitCount);
         }
@@ -244,14 +256,22 @@ namespace Dev2.Tests.Diagnostics
         [TestCategory(nameof(DebugItem))]
         public void DebugItem_GroupIndex_Greater_And_Equal_To_MaxItemDispatchCount()
         {
-            var item = new DebugItem();
-            item.Add(new DebugItemResult { GroupIndex = 11, GroupName = "Hello", Value = "world" });
-            Assert.AreEqual(1, item.ResultsList.Count);
-            Assert.AreEqual(11, item.ResultsList[0].GroupIndex);
-            Assert.AreEqual("Hello", item.ResultsList[0].GroupName);
-            Assert.IsFalse(item.ResultsList[0].HasError);
-            Assert.IsNull(item.ResultsList[0].Value);
-            Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
+            var oldWebServerUri = EnvironmentVariables.WebServerUri;
+            try
+            {
+                EnvironmentVariables.WebServerUri = "http://localhost:3142";
+                var item = new DebugItem();
+                item.Add(new DebugItemResult { GroupIndex = 11, GroupName = "Hello", Value = "world" });
+                Assert.AreEqual(1, item.ResultsList.Count);
+                Assert.AreEqual(11, item.ResultsList[0].GroupIndex);
+                Assert.AreEqual("Hello", item.ResultsList[0].GroupName);
+                Assert.IsFalse(item.ResultsList[0].HasError);
+                Assert.AreEqual("world", item.ResultsList[0].Value);
+                Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
+            } finally
+            {
+                EnvironmentVariables.WebServerUri = oldWebServerUri;
+            }
         }
 
         [TestMethod]
@@ -376,13 +396,6 @@ namespace Dev2.Tests.Diagnostics
                 Assert.IsNotNull(res.Variable, "GroupIndex " + res.GroupIndex.ToString() + " failed.");
                 Assert.IsNotNull(res.Value, "GroupIndex " + res.GroupIndex.ToString() + " failed.");
             }
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            var item = new DebugItem();
-            item.FlushStringBuilder();
         }
 
         static DebugItemResult CreateDebugItemWithLongValue()
