@@ -187,6 +187,19 @@ namespace Dev2.Common
             }
         }
 
+        public static string DebugItemTempPath
+        {
+            get
+            {
+                var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
+                if (!Directory.Exists(tempPath))
+                {
+                    Directory.CreateDirectory(tempPath);
+                }
+                return tempPath;
+            }
+        }
+
         public static string GetWorkspacePath(Guid workspaceID) => workspaceID == Guid.Empty
                        ? Path.Combine(AppDataPath, "Resources")
                        : Path.Combine(Path.Combine(WorkspacePath, workspaceID.ToString()), "Resources");

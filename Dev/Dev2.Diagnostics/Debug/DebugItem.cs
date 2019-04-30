@@ -26,15 +26,7 @@ namespace Dev2.Diagnostics
     {
         static readonly string _invalidFileNameChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
 
-        static string GetTempFolder()
-        {
-            var _tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
-            if (!Directory.Exists(_tempPath))
-            {
-                Directory.CreateDirectory(_tempPath);
-            }
-            return _tempPath;
-        }
+        readonly string _tempFolder;
 
         readonly Guid _itemId;
         readonly StringBuilder _stringBuilder;
@@ -56,6 +48,7 @@ namespace Dev2.Diagnostics
         public DebugItem(IEnumerable<IDebugItemResult> results)
         {
             ResultsList = new List<IDebugItemResult>();
+            _tempFolder = EnvironmentVariables.DebugItemTempPath;
             _itemId = Guid.NewGuid();
             _isMoreLinkCreated = false;
             _stringBuilder = new StringBuilder();
@@ -153,7 +146,7 @@ namespace Dev2.Diagnostics
             updateContents = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(updateContents);
             updateFileName = _invalidFileNameChars.Aggregate(updateFileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
 
-            var path = Path.Combine(GetTempFolder(), updateFileName);
+            var path = Path.Combine(_tempFolder , updateFileName);
             File.AppendAllText(path, updateContents);
             var linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
 
@@ -162,7 +155,7 @@ namespace Dev2.Diagnostics
 
         public void ClearFile(string fileName)
         {
-            var path = Path.Combine(GetTempFolder(), fileName);
+            var path = Path.Combine(_tempFolder , fileName);
             if (File.Exists(path))
             {
                 File.Delete(path);
