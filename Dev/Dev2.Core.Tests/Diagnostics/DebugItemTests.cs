@@ -341,6 +341,43 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsNull(item.ResultsList[0].MoreLink);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DebugItem))]
+        public void DebugItem_ResultList_AddMoreThanTenItems_ShouldKeepValues()
+        {
+            var item = new DebugItem();
+
+            const int max = 12;
+            for (int i = 1; i <= max; i++)
+            {
+                var item1 = new DebugItemResult
+                {
+                    GroupIndex = i,
+                    GroupName = "[[CoinMarketCap(*)]]",
+                    HasError = false,
+                    Label = "",
+                    MockSelected = false,
+                    MoreLink = null,
+                    Operator = "=",
+                    TestStepHasError = false,
+                    Type = DebugItemResultType.Variable,
+                    Value = "2019/04/11 06:00:03 AM",
+                    Variable = "[[CoinMarketCap(" + i + ").date_updated]]"
+                };
+
+                item.Add(item1);
+            }
+
+            Assert.AreEqual(11, item.ResultsList.Count);
+
+            foreach (var res in item.ResultsList)
+            {
+                Assert.IsNotNull(res.Variable, "GroupIndex " + res.GroupIndex.ToString() + " failed.");
+                Assert.IsNotNull(res.Value, "GroupIndex " + res.GroupIndex.ToString() + " failed.");
+            }
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
