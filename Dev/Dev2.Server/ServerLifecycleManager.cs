@@ -36,6 +36,7 @@ using Dev2.Instrumentation.Factory;
 using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
+using System.Reflection;
 
 namespace Dev2
 {
@@ -109,6 +110,7 @@ namespace Dev2
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
+            SetApplicationDirectory();
             LoadPerformanceCounters();
 
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
@@ -124,6 +126,21 @@ namespace Dev2
             _pauseHelper = startupConfiguration.PauseHelper;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
+        }
+
+        private static void SetApplicationDirectory()
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+                EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
+                EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
+            }
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)

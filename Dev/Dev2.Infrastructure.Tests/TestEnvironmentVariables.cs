@@ -335,16 +335,22 @@ namespace Dev2.Infrastructure.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(EnvironmentVariables))]
-        public void EnvironmentVariables_ApplicationPath()
+        public void EnvironmentVariables_ApplicationPath_OnlySetsOnce()
         {
             //------------Setup for test--------------------------
             var assembly = Assembly.GetExecutingAssembly();
             var loc = assembly.Location;
            var appPath = Path.GetDirectoryName(loc);
+
             //------------Execute Test---------------------------
+            EnvironmentVariables.ApplicationPath = appPath;
             var path = EnvironmentVariables.ApplicationPath;
-            //------------Assert Results-------------------------
-            Assert.AreEqual(path, appPath);
+
+            Assert.AreEqual(appPath, path);
+
+            EnvironmentVariables.ApplicationPath = "some other path";
+
+            Assert.AreEqual(appPath, path);
         }
     }
 }
