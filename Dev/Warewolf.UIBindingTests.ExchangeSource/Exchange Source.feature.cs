@@ -163,7 +163,6 @@ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.Sp
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("Warewolf Studio.exe")]
         public virtual void FailSendShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Shows correct error message", new string[] {

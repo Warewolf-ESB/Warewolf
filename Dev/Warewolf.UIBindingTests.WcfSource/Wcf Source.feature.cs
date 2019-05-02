@@ -122,7 +122,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Wcf Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WcfSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WcfSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("Warewolf Studio.exe")]
         public virtual void FailSendShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Shows correct error message", new string[] {
