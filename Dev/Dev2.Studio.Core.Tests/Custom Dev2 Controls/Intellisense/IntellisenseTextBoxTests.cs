@@ -10,13 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
@@ -63,7 +61,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                                 .Throws(new Exception());
 
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.IntellisenseProvider = intellisenseProvider.Object;
             textBox.Text = "[[City([[Scalar]]).Na";
 
@@ -86,7 +83,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, "City", "cake");
 
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.InsertItem(intellisenseProviderResult, true);
             // When exepctions are thrown, no results are to be displayed
             Assert.AreEqual(0, textBox.View.Count, "Expected [ 0 ] But got [ " + textBox.View.Count + " ]");
@@ -108,7 +104,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             System.Windows.Clipboard.SetText("Cake\t");
 
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
 
             textBox.Paste();
 
@@ -135,7 +130,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 System.Windows.Clipboard.SetText("Cake");
 
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
                 textBox.Paste();
 
                 Assert.IsFalse(eventRaised,
@@ -166,7 +160,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.InsertItem(intellisenseProviderResult, true);
 
             Thread.Sleep(250);
@@ -329,7 +322,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.InsertItem(intellisenseProviderResult, true);
 
             Thread.Sleep(250);
@@ -358,7 +350,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.InsertItem(intellisenseProviderResult, true);
 
             Thread.Sleep(250);
@@ -414,7 +405,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
             //------------Execute Test---------------------------
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.IsDropDownOpen = true;
             textBox.Text = "ddyy";
             textBox.CaretIndex = 4;
@@ -437,7 +427,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
             //------------Execute Test---------------------------
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.IsDropDownOpen = true;
             textBox.Text = "dd yy";
             textBox.CaretIndex = 5;
@@ -460,7 +449,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
             //------------Execute Test---------------------------
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.IsDropDownOpen = true;
             textBox.Text = "dd YY";
             textBox.CaretIndex = 5;
@@ -483,7 +471,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
             //------------Execute Test---------------------------
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             var checkHasUnicodeInText = textBox.CheckHasUnicodeInText("أَبْجَدِي");
             //------------Assert Results-------------------------
             Assert.IsTrue(checkHasUnicodeInText);
@@ -505,7 +492,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 new IntellisenseProviderResult(intellisenseProvider.Object, "DW", "DW");
             //------------Execute Test---------------------------
             var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
             textBox.IsDropDownOpen = true;
             textBox.Text = "d YY mm";
             textBox.CaretIndex = 1;
@@ -610,7 +596,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseBox_GivenMultipleValidVariables_HasNoError()
         {
             var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
-            textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[Var]]\", \"[[Var()]]\"";
             textBoxTest.EnsureErrorStatus();
             Assert.IsFalse(textBoxTest.HasError);
@@ -627,7 +612,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             const string expectTooltipError = "Variable name \"[[Var!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
             var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
-            textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[Var!]]\"";
 
             var privateObj = new PrivateObject(textBoxTest);
@@ -648,7 +632,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             const string expectTooltipError = "Variable name \"[[Var()!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
             var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
-            textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[Var()!]]\"";
 
             var privateObj = new PrivateObject(textBoxTest);
@@ -669,7 +652,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             const string expectTooltipError = "Variable name \"[[obj!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
             var textBoxTest = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
-            textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[obj!]]\"";
 
             var privateObj = new PrivateObject(textBoxTest);
@@ -722,7 +704,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsJson_ToolTipHasNoErrorMessage()
         {
             var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
-            textBox.CreateVisualTree();
             textBox.Text = "[[@City]]";
             Assert.IsFalse(textBox.HasError);
         }
