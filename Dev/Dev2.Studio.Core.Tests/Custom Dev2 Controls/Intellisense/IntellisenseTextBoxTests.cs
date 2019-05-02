@@ -92,7 +92,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         }
 
         [TestMethod]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
         {
             var eventRaised = false;
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         #endregion Test Initialization
 
         [TestMethod]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void InsertItemExpectedTextboxTextChangedAndErrorStatusUpdated()
         {
             var mockDataListViewModel = new Mock<IDataListViewModel>();
@@ -310,7 +310,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
 
         [TestMethod]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void InsertItemExpectedTextboxTextChanged_InvalidSyntax_ErrorStatusUpdated()
         {
             const string ExpectedText = "[[City(1.Name]]";
@@ -340,7 +340,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         }
 
         [TestMethod]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void InsertItemExpectedTextboxTextChanged_SpaceInFieldName_ErrorStatusUpdated()
         {
             const string ExpectedText = "[[City(). Name]]";
@@ -404,7 +404,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_InsertDateTimeParts_InsertsCorrectly()
         {
             //------------Setup for test--------------------------            
@@ -428,7 +428,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_AppendDateTimePartsWithSpace_InsertsCorrectly()
         {
             //------------Setup for test--------------------------            
@@ -452,7 +452,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_AppendDateTimePartsWithDifferentCase_InsertsCorrectly()
         {
             //------------Setup for test--------------------------            
@@ -497,7 +497,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
-        [Ignore]
+        [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_InsertDateTimePartsIn_InsertsCorrectly()
         {
             //------------Setup for test--------------------------            
