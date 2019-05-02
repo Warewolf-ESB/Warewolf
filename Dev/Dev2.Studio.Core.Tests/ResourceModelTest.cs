@@ -39,12 +39,6 @@ namespace Dev2.Core.Tests
     {
         #region Test Initialization
 
-        [TestInitialize]
-        public void Init()
-        {
-            //Setup();
-        }
-
         void Setup()
         {
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);

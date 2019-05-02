@@ -9,7 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.CustomControls</RootNamespace>
     <AssemblyName>Dev2.CustomControls</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -47,13 +48,6 @@
     <CodeAnalysisRuleSet>Dev2.CustomControls.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -62,10 +56,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xml" />
@@ -90,11 +80,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <None Include="..\Run Tests.ps1">
-      <Link>Run Tests.ps1</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>False</Visible>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
@@ -122,7 +107,6 @@
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WatermarkTextBox.cs" />
     <None Include="Dev2.CustomControls.ruleset" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -144,11 +128,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />
-    <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.CSharp.dll" />
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\Google.Protobuf.dll" />
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.CSharp.dll" />
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

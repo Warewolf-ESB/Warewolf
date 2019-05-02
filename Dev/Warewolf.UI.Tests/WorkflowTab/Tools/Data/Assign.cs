@@ -92,6 +92,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void AssignTool_DebugOutput_UITest()
         {
             DataToolsUIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();

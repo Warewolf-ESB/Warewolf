@@ -607,9 +607,9 @@ this.ScenarioSetup(scenarioInfo);
                     "s tt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
  testRunner.When("the aggregate calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
- testRunner.Then(string.Format("the calculate result should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 212
+ testRunner.Then(string.Format("the calculate result should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 213
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3312,3 +3312,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+
