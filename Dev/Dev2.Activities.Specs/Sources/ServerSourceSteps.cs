@@ -176,7 +176,7 @@ namespace Dev2.Activities.Specs.Sources
             Assert.AreEqual(p0, result);
         }
 
-        [Given(@"User as")]
+        [Given(@"User as ""(.*)""")]
         public void GivenUserAs(string username)
         {
             var password = string.Empty;
