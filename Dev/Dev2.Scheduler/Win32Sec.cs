@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -13,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -24,7 +24,7 @@ using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using LSA_HANDLE = System.IntPtr;
 
-
+#pragma warning disable IDE0040, IDE1006, S101
 [StructLayout(LayoutKind.Sequential)]
 struct LSA_OBJECT_ATTRIBUTES
 {
@@ -50,7 +50,7 @@ struct LSA_ENUMERATION_INFORMATION
 {
     internal LSA_HANDLE PSid;
 }
-
+#pragma warning restore IDE0040, IDE1006, S101
 
 static class Win32Sec
 {
@@ -95,7 +95,7 @@ public class SecurityWrapper : ISecurityWrapper
     const uint STATUS_NO_MEMORY = 0xc0000017;
     const uint ERROR_NO_MORE_ITEMS = 2147483674;
     const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
-    LSA_HANDLE lsaHandle;
+    LSA_HANDLE _lsaHandle;
 
     public SecurityWrapper(IAuthorizationService authorizationService)
         : this(Environment.MachineName)
@@ -112,53 +112,62 @@ public class SecurityWrapper : ISecurityWrapper
         lsaAttr.SecurityDescriptor = IntPtr.Zero;
         lsaAttr.SecurityQualityOfService = IntPtr.Zero;
         lsaAttr.Length = Marshal.SizeOf(typeof(LSA_OBJECT_ATTRIBUTES));
-        lsaHandle = IntPtr.Zero;
+        _lsaHandle = IntPtr.Zero;
         LSA_UNICODE_STRING[] system = null;
         if (MachineName != null)
         {
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
+        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out _lsaHandle);
         TestReturnValue(ret);
     }
 
-    public bool IsWindowsAuthorised(string privilege, string submittedUserName)
+    public bool IsWindowsAuthorised(string privilege, string userName)
     {
-        var sanitizedUserName = submittedUserName.Trim();
+        var sanitizedUserName = userName.Trim();
 
         var isFullyQualifiedUser = sanitizedUserName.Contains(@"\");
         var unQualifiedUserName = GetUnqualifiedName(sanitizedUserName);
-        List<string> Accounts = GetAccountsWithPrivilege(privilege);
+        var accounts = GetAccountsWithPrivilege(privilege);
 
         try
         {
             // when this throws every group is checked for a user that matches the userName stripping the host, if this happens we might as well just check Accounts for userName by stripping the host, it is the same thing.
             // Perhaps we 
-            var principal = TryGetPrincipal(unQualifiedUserName);
-            if (principal != null)
+            var isInRole = PrincipalIsInRole(accounts, unQualifiedUserName);
+            if (isInRole)
             {
-                foreach (string account in Accounts)
-                {
-                    if (principal.IsInRole(account))
-                    {
-                        return true;
-                    }
-                }
+                return isInRole;
             }
+
             var qualifiedUser = isFullyQualifiedUser ? sanitizedUserName : Environment.MachineName + "\\" + unQualifiedUserName;
-            var userIsAccount = Accounts.Any(o => o.Equals(qualifiedUser, StringComparison.InvariantCultureIgnoreCase));
+            var userIsAccount = accounts.Any(o => o.Equals(qualifiedUser, StringComparison.InvariantCultureIgnoreCase));
             if (userIsAccount)
             {
                 return userIsAccount;
             }
-            return IsUserAMemberOfAccount(unQualifiedUserName, Accounts);
+            return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
         }
         catch (Exception)
         {
-            return IsUserAMemberOfAccount(unQualifiedUserName, Accounts);
+            return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
         }
+    }
 
+    private static bool PrincipalIsInRole(List<string> accounts, string unQualifiedUserName)
+    {
+        var principal = TryGetPrincipal(unQualifiedUserName);
+        if (principal != null)
+        {
+            foreach (string account in accounts)
+            {
+                if (principal.IsInRole(account))
+                {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -178,7 +187,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
-        var gotAccounts = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count) == 0;
+        var gotAccounts = Win32Sec.LsaEnumerateAccountsWithUserRight(_lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count) == 0;
         var accountNames = new List<string>();
         if (gotAccounts)
         {
@@ -195,10 +204,8 @@ public class SecurityWrapper : ISecurityWrapper
         return accountNames;
     }
 
-    IList<string> SchedulerAccounts => GetAccountsWithPrivilege("SeBatchLogonRight");
-
-    bool IsUserAMemberOfAccount(string userName, IList<string> AccountsToCheck) => GetGroupsUserBelongsTo(userName, AccountsToCheck).Any();
-    IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
+    static bool IsUserAMemberOfAccount(string userName, IList<string> AccountsToCheck) => GetGroupsUserBelongsTo(userName, AccountsToCheck).Any();
+    static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
@@ -208,7 +215,7 @@ public class SecurityWrapper : ISecurityWrapper
                 try
                 {
                     var members = GetGroupMembers(pcLocal, account);
-                    if (members.Any(member => member.SamAccountName.ToLower() == userName.ToLower()))
+                    if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
                     {
                         groups.Add(account);
                     }
@@ -236,13 +243,13 @@ public class SecurityWrapper : ISecurityWrapper
     {
         if (userName.Contains("\\"))
         {
-            userName = userName.Split('\\').Last();
+            return userName.Split('\\').Last().Trim();
         }
 
-        return userName.Trim();
+        return userName;
     }
 
-    string ResolveAccountName(SecurityIdentifier SID)
+    static string ResolveAccountName(SecurityIdentifier SID)
     {
         try
         {
@@ -254,7 +261,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
     }
 
-    void TestReturnValue(uint ReturnValue)
+    static void TestReturnValue(uint ReturnValue)
     {
         if (ReturnValue == 0)
         {
@@ -282,10 +289,10 @@ public class SecurityWrapper : ISecurityWrapper
 
     public void Dispose()
     {
-        if (lsaHandle != IntPtr.Zero)
+        if (_lsaHandle != IntPtr.Zero)
         {
-            Win32Sec.LsaClose(lsaHandle);
-            lsaHandle = IntPtr.Zero;
+            Win32Sec.LsaClose(_lsaHandle);
+            _lsaHandle = IntPtr.Zero;
         }
         GC.SuppressFinalize(this);
     }
@@ -307,9 +314,9 @@ public class SecurityWrapper : ISecurityWrapper
         return lus;
     }
 
-    public bool IsWarewolfAuthorised(string privilege, string username, string resourceGuid)
+    public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
     {
-        var unqualifiedUserName = GetUnqualifiedName(username);
+        var unqualifiedUserName = GetUnqualifiedName(userName).Trim();
 
         IPrincipal identity;
         try
@@ -319,7 +326,7 @@ public class SecurityWrapper : ISecurityWrapper
         catch (Exception e)
         {
             Dev2Logger.Warn("Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity. " + e.Message, GlobalConstants.WarewolfWarn);
-            var groups = GetGroupsUserBelongsTo(unqualifiedUserName, SchedulerAccounts);
+            var groups = GetGroupsUserBelongsTo(unqualifiedUserName, GetAccountsWithPrivilege(privilege));
             var tmp = new GenericIdentity(unqualifiedUserName);
             identity = new GenericPrincipal(tmp, groups.ToArray());
         }
