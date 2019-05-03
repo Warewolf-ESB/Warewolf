@@ -106,39 +106,39 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.Then("the debug inputs count equals \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1424 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table1.AddRow(new string[] {
+            table1424.AddRow(new string[] {
                         "1",
                         "[[person().name]] =",
                         "Kim"});
-            table1.AddRow(new string[] {
+            table1424.AddRow(new string[] {
                         "2",
                         "[[person().name]] =",
                         "bob"});
-            table1.AddRow(new string[] {
+            table1424.AddRow(new string[] {
                         "3",
                         "[[person().name]] =",
                         "jack"});
 #line 14
- testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1424, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1425 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2.AddRow(new string[] {
+            table1425.AddRow(new string[] {
                         "1",
                         "[[person(1).name]] = Kim"});
-            table2.AddRow(new string[] {
+            table1425.AddRow(new string[] {
                         "2",
                         "[[person(2).name]] = bob"});
-            table2.AddRow(new string[] {
+            table1425.AddRow(new string[] {
                         "3",
                         "[[person(3).name]] = jack"});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1425, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
