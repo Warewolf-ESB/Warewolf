@@ -25,9 +25,7 @@ Scenario: Create Bad User Server Source
 	Given I create a server source as
 	| Address               | AuthenticationType |
 	| http://localhost:3142 | User               |
-	And User details as 
-	| username | Password      |
-	| BadUser  | W@rEw0lf@dm1n |
+	And User as "BadUser"
 	When I Test the connection
 	Then The result is "Connection Error :Unauthorized"	
 
