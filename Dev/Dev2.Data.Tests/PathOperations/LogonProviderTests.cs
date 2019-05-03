@@ -58,15 +58,16 @@ namespace Dev2.Data.Tests.PathOperations
                     }
                 }
             }
+
             var v = It.IsAny<SafeTokenHandle>();
-            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 2, 0, out v))
+            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "dev2", password, 2, 0, out v))
                 .Returns(loginReturnStatus);
 
 
             var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", username, password, false, null);
             provider.DoLogon(ioPath);
 
-            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", password, 2, 0, out v), Times.Once);
+            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "dev2", password, 2, 0, out v), Times.Once);
         }
 
         [TestMethod]
@@ -97,14 +98,14 @@ namespace Dev2.Data.Tests.PathOperations
             }
 
             var v = It.IsAny<SafeTokenHandle>();
-            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v))
+            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "dev2", password, 3, 3, out v))
                 .Returns(loginReturnStatus);
 
 
             var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", username, password, false, null);
             provider.DoLogon(ioPath);
 
-            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v), Times.Once);
+            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "dev2", password, 3, 3, out v), Times.Once);
         }
 
         [TestMethod]
