@@ -176,8 +176,8 @@ namespace Dev2.Activities.Specs.Sources
             Assert.AreEqual(p0, result);
         }
 
-        [Given(@"User details as")]
-        public void GivenUserDetailsAs(string username)
+        [Given(@"User as")]
+        public void GivenUserAs(string username)
         {
             var password = string.Empty;
             const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
