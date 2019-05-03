@@ -33,8 +33,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
-
-
+using System.IO;
 
 namespace Dev2.Activities.Specs.Scheduler
 {
@@ -75,11 +74,24 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("Password", password);
         }
 
-        [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
-        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
+        [Given(@"""(.*)"" has a username of ""(.*)"" and a saved password")]
+        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName)
         {
             _scenarioContext.Add("UserName", userName);
-            _scenarioContext.Add("Password", password);
+            
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var password = usernameAndPassword.Split('=');
+                    if (password.Length > 1 && password[0] == "dev2\\IntegrationTester")
+                    {
+                        _scenarioContext.Add("Password", password);
+                    }
+                }
+            }
         }
 
 

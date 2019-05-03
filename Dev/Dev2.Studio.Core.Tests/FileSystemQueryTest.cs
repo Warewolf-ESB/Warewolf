@@ -620,11 +620,26 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            //------------Execute Test---------------------------
             var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             if (shareCollection.Count <= 0)
             {
-                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", @"dev2\IntegrationTester", "I73573r0");
+                var username = @"dev2\IntegrationTester";
+                var password = string.Empty;
+                const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+                if (File.Exists(passwordsPath))
+                {
+                    var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                    foreach (var usernameAndPassword in usernamesAndPasswords)
+                    {
+                        var usernamePasswordSplit = usernameAndPassword.Split('=');
+                        if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                        {
+                            password = usernamePasswordSplit[1];
+                        }
+                    }
+                }
+            //------------Execute Test---------------------------
+                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", username, password);
                 Thread.Sleep(1000);
                 shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             }

@@ -2823,7 +2823,21 @@ namespace Dev2.Activities.Specs.Composition
             var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
             if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
             {
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", "I73573r0", false);
+                var password = string.Empty;
+                const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+                if (File.Exists(passwordsPath))
+                {
+                    var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                    foreach (var usernameAndPassword in usernamesAndPasswords)
+                    {
+                        var passwordUsername = usernameAndPassword.Split('=');
+                        if (passwordUsername.Length > 1 && passwordUsername[0] == "dev2\\IntegrationTester")
+                        {
+                            password = passwordUsername[1];
+                        }
+                    }
+                }
+                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", password, false);
                 sharepointHelper.Delete(serverPath);
             }
         }

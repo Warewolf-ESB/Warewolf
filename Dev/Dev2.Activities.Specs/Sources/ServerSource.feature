@@ -17,9 +17,7 @@ Scenario: Create User Server Source
 	Given I create a server source as
 	| Address                   | AuthenticationType |
 	| http://tst-ci-remote:3142 | User               |
-	And User details as 
-	| username               | Password |
-	| dev2\integrationtester | I73573r0 |
+	And User as "dev2\integrationtester"
 	When I Test the connection
 	Then The result is "success"
 

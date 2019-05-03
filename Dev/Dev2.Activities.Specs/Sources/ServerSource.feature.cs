@@ -132,18 +132,11 @@ this.ScenarioSetup(scenarioInfo);
                         "User"});
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table2, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "username",
-                        "Password"});
-            table3.AddRow(new string[] {
-                        "dev2\\integrationtester",
-                        "I73573r0"});
 #line 20
- testRunner.And("User details as", ((string)(null)), table3, "And ");
-#line 23
+ testRunner.And("User as \"dev2\\integrationtester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 22
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -156,29 +149,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateBadUserServerSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Bad User Server Source", ((string[])(null)));
-#line 26
+#line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Address",
                         "AuthenticationType"});
-            table4.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "http://localhost:3142",
                         "User"});
-#line 27
- testRunner.Given("I create a server source as", ((string)(null)), table4, "Given ");
+#line 25
+ testRunner.Given("I create a server source as", ((string)(null)), table3, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "username",
                         "Password"});
-            table5.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "BadUser",
                         "W@rEw0lf@dm1n"});
-#line 30
- testRunner.And("User details as", ((string)(null)), table5, "And ");
-#line 33
+#line 28
+ testRunner.And("User details as", ((string)(null)), table4, "And ");
+#line 31
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
+#line 32
  testRunner.Then("The result is \"Connection Error :Unauthorized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -191,20 +184,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatePublicServerSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Public Server Source", ((string[])(null)));
-#line 36
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Address",
                         "AuthenticationType"});
-            table6.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "http://wolfs-den:3142",
                         "Public"});
-#line 37
- testRunner.Given("I create a server source as", ((string)(null)), table6, "Given ");
-#line 40
+#line 35
+ testRunner.Given("I create a server source as", ((string)(null)), table5, "Given ");
+#line 38
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 41
+#line 39
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -213,3 +206,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+

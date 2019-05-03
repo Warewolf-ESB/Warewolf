@@ -9,7 +9,7 @@ Scenario: Schedule with history
 	  And "ScheduleWithHistory" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "Diceroll00" has a username of "DEV2\IntegrationTester" and a Password of "I73573r0"
+	  And "Diceroll00" has a username of "DEV2\IntegrationTester" and a saved password
 	  And "ScheduleWithHistory" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
 	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |	            |
@@ -23,7 +23,7 @@ Scenario: Creating task with schedule status is disabled
 	  And "Diceroll00" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Disabled"
-	  And "Diceroll00" has a username of "Warewolf Administrators\IntegrationTester" and a Password of "I73573r0"
+	  And "Diceroll00" has a username of "Warewolf Administrators\IntegrationTester" and a saved password
 	  And "Diceroll00" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
 	  | On a schedule | "Daily"  | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |           |
@@ -35,7 +35,7 @@ Scenario: Setting schedule task "At log on"
 	  And "Diceroll1" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "Diceroll1" has a username of "DEV2\IntegrationTester" and a Password of "I73573r0"
+	  And "Diceroll1" has a username of "DEV2\IntegrationTester" and a saved password
 	  And "Diceroll1" has a Schedule of
 	  | ScheduleType | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
 	  | At log on    | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |           |
@@ -49,7 +49,7 @@ Scenario: Schedule the task with Incorrect username or password
 	  And "Diceroll1" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "Diceroll1" has a username of "bobthebuilder" and a Password of "I73573r0" 
+	  And "Diceroll1" has a username of "bobthebuilder" and a saved password 
 	  And "Diceroll1" has a Schedule of
 	  | ScheduleType | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
 	  | At log on    | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |           |
@@ -74,7 +74,7 @@ Scenario: Schedule with ErrorInDebug
 	  And "ScheduleWithError" executes an Workflow "moocowimpi" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "ScheduleWithError" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
+	  And "ScheduleWithError" has a username of "dev2\IntegrationTester" and a saved password
 	  And "ScheduleWithError" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime | ResourceId |
 	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |            |
@@ -87,7 +87,7 @@ Scenario: Schedule Workflow with success
 	  And "ScheduleAssignOutput" executes an Workflow "AssignOutput" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "ScheduleAssignOutput" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"	
+	  And "ScheduleAssignOutput" has a username of "dev2\IntegrationTester" and a saved password	
 	  And "ScheduleAssignOutput" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime | ResourceId                           |
 	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   | e7ea5196-33f7-4e0e-9d66-44bd67528a96 |
