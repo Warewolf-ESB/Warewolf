@@ -49,7 +49,7 @@ Scenario: Creating New Web Source under auth type as user
    And Username field is "Visible"
    And Password field is "Visible"
    And I type Username as "IntegrationTester"
-   And I type Password as "I73573r0"
+   And I type Password
    When Test Connecton is "Successful"
    And "Save" is "Enabled"
    When I save the source
@@ -104,7 +104,7 @@ Scenario: Incorrect address user auth type is not allowing to save
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
    And I type Username as "test"
-   And I type Password as "I73573r0"
+   And I type Password
    When Test Connecton is "UnSuccessful"
    And Validation message is thrown
    And "Save" is "Enabled"
@@ -124,7 +124,7 @@ Scenario: Testing Auth type as Anonymous and swaping it resets the test connecti
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
    And I type Username as "test"
-   And I type Password as "I73573r0"
+   And I type Password
    When Test Connecton is "Successful"
    And Validation message is Not thrown
    And "Save" is "Enabled"
@@ -188,7 +188,7 @@ Scenario: Editing saved Web Source
    And Username field is "Visible"
    And Password field is "Visible"
    And Username field as "IntegrationTester"
-   And Password field as "I73573r0"
+   And Password field
    And "Save" is "Enabled"
    When Test Connecton is "Successfull"
    Then "Save" is "Enabled" 

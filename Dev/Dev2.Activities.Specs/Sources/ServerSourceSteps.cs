@@ -177,10 +177,22 @@ namespace Dev2.Activities.Specs.Sources
         }
 
         [Given(@"User details as")]
-        public void GivenUserDetailsAs(Table table)
+        public void GivenUserDetailsAs(string username)
         {
-            var username = table.Rows[0]["username"];
-            var password = table.Rows[0]["Password"];
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;

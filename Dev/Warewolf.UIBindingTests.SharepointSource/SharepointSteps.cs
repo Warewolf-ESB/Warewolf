@@ -16,7 +16,7 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-
+using System.IO;
 
 namespace Warewolf.UIBindingTests.SharepointSource
 {
@@ -245,9 +245,24 @@ namespace Warewolf.UIBindingTests.SharepointSource
             Assert.AreEqual(userName, viewModel.UserName);
         }
 
-        [Given(@"I type Password as ""(.*)""")]
-        public void GivenITypePasswordAs(string password)
+        [Given(@"I type Password")]
+        public void GivenITypePassword()
         {
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterPassword(password);
             var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
@@ -291,13 +306,28 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IServer>();
 
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
             {
                 Name = "Test",
                 Server = "http://rsaklfsvrdev",
                 AuthenticationType = AuthenticationType.Windows,
                 UserName = "IntegrationTester",
-                Password = "I73573r0"
+                Password = password
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(sharePointServiceSourceDefinition);

@@ -17,7 +17,7 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-
+using System.IO;
 
 namespace Warewolf.UIBindingTests.WebSource
 {
@@ -124,13 +124,28 @@ namespace Warewolf.UIBindingTests.WebSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             var webServiceSourceDefinition = new WebServiceSourceDefinition
             {
                 Name = "Test",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 DefaultQuery = "/GetCountries.ashx?extension=json&prefix=a",
                 UserName = "IntegrationTester",
-                Password = "I73573r0"
+                Password = password
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(webServiceSourceDefinition);
@@ -300,22 +315,52 @@ namespace Warewolf.UIBindingTests.WebSource
             Assert.AreEqual(userName, manageWebserviceSourceControl.GetUsername());
         }
 
-        [When(@"Password field as ""(.*)""")]
-        public void WhenPasswordFieldAs(string password)
+        [When(@"Password field")]
+        public void WhenPasswordField()
         {
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             Assert.AreEqual(password, viewModel.Password);
             Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
         }
 
 
-        [Given(@"I type Password as ""(.*)""")]
-        [When(@"I type Password as ""(.*)""")]
-        [Then(@"I type Password as ""(.*)""")]
-        public void WhenITypePasswordAs(string password)
+        [Given(@"I type Password")]
+        [When(@"I type Password")]
+        [Then(@"I type Password")]
+        public void WhenITypePassword()
         {
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             manageWebserviceSourceControl.EnterPassword(password);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -197,6 +198,22 @@ namespace Warewolf.UIBindingTests.ServerSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
+
             var serverSourceDefinition = new Dev2.Common.ServerSource
             {
                 Name = "ServerSource",
@@ -204,7 +221,7 @@ namespace Warewolf.UIBindingTests.ServerSource
                 ServerName = "SANDBOX-1",
                 AuthenticationType = AuthenticationType.User,
                 UserName = "Integrationtester",
-                Password = "I73573r0"
+                Password = password
             };
             var externalServerSourceDefinition = new Dev2.Common.ServerSource
             {

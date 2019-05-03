@@ -13,6 +13,7 @@ using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.IO;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Tests.PathOperations
@@ -42,15 +43,30 @@ namespace Dev2.Data.Tests.PathOperations
 
             var provider = new LogonProvider(mockLoginImpl.Object);
 
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
             var v = It.IsAny<SafeTokenHandle>();
-            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", "I73573r0", 2, 0, out v))
+            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 2, 0, out v))
                 .Returns(loginReturnStatus);
 
 
-            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @"DEV2\IntegrationTester", "I73573r0", false, null);
+            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", username, password, false, null);
             provider.DoLogon(ioPath);
 
-            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", "I73573r0", 2, 0, out v), Times.Once);
+            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", password, 2, 0, out v), Times.Once);
         }
 
         [TestMethod]
@@ -64,15 +80,31 @@ namespace Dev2.Data.Tests.PathOperations
 
             var provider = new LogonProvider(mockLoginImpl.Object);
 
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
+
             var v = It.IsAny<SafeTokenHandle>();
-            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", "I73573r0", 3, 3, out v))
+            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v))
                 .Returns(loginReturnStatus);
 
 
-            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @"DEV2\IntegrationTester", "I73573r0", false, null);
+            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", username, password, false, null);
             provider.DoLogon(ioPath);
 
-            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", "I73573r0", 3, 3, out v), Times.Once);
+            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v), Times.Once);
         }
 
         [TestMethod]
@@ -80,17 +112,32 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("LogonProvider")]
         public void LogonProvider_DoLogon_ErrorThrowsMessage()
         {
-
             var mockLoginImpl = new Mock<ILoginApi>();
 
             var provider = new LogonProvider(mockLoginImpl.Object);
 
+            var username = @"dev2\IntegrationTester";
+            var password = string.Empty;
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = usernameAndPassword.Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
+                    {
+                        password = usernamePasswordSplit[1];
+                    }
+                }
+            }
+
             var v = It.IsAny<SafeTokenHandle>();
-            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", "I73573r0", 3, 3, out v))
+            mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v))
                 .Throws(new Exception("some exception"));
 
 
-            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @"DEV2\IntegrationTester", "I73573r0", false, null);
+            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @"DEV2\IntegrationTester", password, false, null);
             var expectedMessage = string.Format(ErrorResource.FailedToAuthenticateUser, "IntegrationTester", ioPath.Path);
 
             var hadException = false;
@@ -105,7 +152,7 @@ namespace Dev2.Data.Tests.PathOperations
             }
             Assert.IsTrue(hadException, "expected exception");
 
-            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", "I73573r0", 3, 3, out v), Times.Once);
+            mockLoginImpl.Verify(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v), Times.Once);
         }
     }
 }

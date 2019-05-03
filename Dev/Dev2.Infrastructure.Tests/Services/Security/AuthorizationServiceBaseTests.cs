@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -714,7 +715,27 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         class TestDirectoryEntries : IDirectoryEntries
         {
 
-            public SchemaNameCollection SchemaFilter => new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
+            public SchemaNameCollection SchemaFilter
+            {
+                get
+                {
+                    var password = string.Empty;
+                    const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+                    if (File.Exists(passwordsPath))
+                    {
+                        var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                        foreach (var usernameAndPassword in usernamesAndPasswords)
+                        {
+                            var usernamePasswordSplit = usernameAndPassword.Split('=');
+                            if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == "dev2\\IntegrationTester")
+                            {
+                                password = usernamePasswordSplit[1];
+                            }
+                        }
+                    }
+                    return new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", password).Children.SchemaFilter;
+                }
+            }
 
             public DirectoryEntries Instance => throw new NotImplementedException();
 
