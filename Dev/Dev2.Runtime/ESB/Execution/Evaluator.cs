@@ -1,5 +1,5 @@
 ﻿#pragma warning disable S3215 // "interface" instances should not be cast to concrete types
-
+#pragma warning disable S1541 // Ignore switching Methods and properties should not be too complex
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -445,7 +445,7 @@ namespace Dev2.Runtime.ESB.Execution
             _request = request;
         }
 
-        public Guid ExecuteWf(TestExecutionContext testExecutionContext)//IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Dev2JsonSerializer serializer)
+        public Guid ExecuteWf(TestExecutionContext testExecutionContext)
         {
             var resourceId = _dataObject.ResourceID;
             var wfappUtils = testExecutionContext._wfappUtils;
@@ -504,7 +504,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var outputDebugItem = new DebugItem();
                 if (test != null)
                 {
-                    var msg = test.TestPassed ? Warewolf.Resource.Messages.Messages.Test_PassedResult : test.FailureMessage;
+                    var msg = test.TestPassed ? Messages.Test_PassedResult : test.FailureMessage;
                     outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
                 }
                 debugState.AssertResultList.Add(outputDebugItem);
@@ -546,7 +546,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var msg = test.FailureMessage;
                 if (test.TestPassed)
                 {
-                    msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                    msg = Messages.Test_PassedResult;
                 }
                 itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
             }
@@ -574,7 +574,7 @@ namespace Dev2.Runtime.ESB.Execution
                     test.TestFailing = true;
                     test.TestPassed = false;
                     test.Result.RunTestResult = RunResult.TestFailed;
-                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error,
+                    var assertError = string.Format(Messages.Test_FailureMessage_Error,
                         test.ErrorContainsText, test.FailureMessage);
                     test.FailureMessage = assertError;
                 }
@@ -672,9 +672,8 @@ namespace Dev2.Runtime.ESB.Execution
             public bool TestPassedBasedOnOutputs => !HasPendingOutputs && !HasInvalidOutputs && !HasFailingOutputs;
             public bool TestStepPassed => TestPassedBasedOnSteps && TestPassedBasedOnOutputs;
         }
-#pragma warning disable S1541 // Ignore switching method complexity
+
         static StringBuilder UpdateFailureMessage(UpdateFailureMessageArgs args)
-#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var failureMessage = new StringBuilder();
             if (args.HasFailingSteps)
@@ -700,7 +699,6 @@ namespace Dev2.Runtime.ESB.Execution
                     failureMessage.AppendLine("Pending Step: " + serviceTestStep.StepDescription);
                 }
             }
-
             if (args.HasFailingOutputs)
             {
                 foreach (var serviceTestStep in args._failingTestOutputs)
@@ -724,8 +722,6 @@ namespace Dev2.Runtime.ESB.Execution
                     failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
                 }
             }
-
-
             if (args._serviceTestSteps != null)
             {
                 failureMessage.AppendLine(string.Join("", args._serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
