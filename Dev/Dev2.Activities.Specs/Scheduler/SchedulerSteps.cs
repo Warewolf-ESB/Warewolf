@@ -79,7 +79,7 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             _scenarioContext.Add("UserName", userName);
             
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
             if (File.Exists(passwordsPath))
             {
                 var usernamesAndPasswords = File.ReadAllLines(passwordsPath);

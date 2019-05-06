@@ -180,7 +180,7 @@ namespace Dev2.Activities.Specs.Sources
         public void GivenUserAs(string username)
         {
             var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
             if (File.Exists(passwordsPath))
             {
                 var usernamesAndPasswords = File.ReadAllLines(passwordsPath);

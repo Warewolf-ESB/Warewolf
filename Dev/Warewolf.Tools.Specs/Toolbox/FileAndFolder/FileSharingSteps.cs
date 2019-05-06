@@ -10,7 +10,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder
         [Given(@"I authenticate for share at ""(.*)"" as user ""(.*)"" with saved password")]
         public void GivenIAuthenticateForShareAtAsUserWithPassword(string p0, string p1)
         {
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
             if (File.Exists(passwordsPath))
             {
                 var usernamesAndPasswords = File.ReadAllLines(passwordsPath);

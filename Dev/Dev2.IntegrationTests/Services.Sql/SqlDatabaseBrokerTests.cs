@@ -312,7 +312,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 var token = IntPtr.Zero;
                 var tokenDuplicate = IntPtr.Zero;
                 var password = string.Empty;
-                const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+                const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
                 if (File.Exists(passwordsPath))
                 {
                     var usernamesAndPasswords = File.ReadAllLines(passwordsPath);

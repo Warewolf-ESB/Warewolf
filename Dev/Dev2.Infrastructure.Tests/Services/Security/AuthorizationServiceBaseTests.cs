@@ -720,7 +720,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 get
                 {
                     var password = string.Empty;
-                    const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.passwords";
+                    const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
                     if (File.Exists(passwordsPath))
                     {
                         var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
