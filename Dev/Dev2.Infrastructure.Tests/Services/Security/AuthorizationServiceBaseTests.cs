@@ -712,6 +712,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 return null;
             }
         }
+
         class TestDirectoryEntries : IDirectoryEntries
         {
 
@@ -719,20 +720,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             {
                 get
                 {
-                    var password = string.Empty;
-                    const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-                    if (File.Exists(passwordsPath))
-                    {
-                        var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                        foreach (var usernameAndPassword in usernamesAndPasswords)
-                        {
-                            var usernamePasswordSplit = usernameAndPassword.Split('=');
-                            if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == "dev2\\IntegrationTester")
-                            {
-                                password = usernamePasswordSplit[1];
-                            }
-                        }
-                    }
+                    var password = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
                     return new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", password).Children.SchemaFilter;
                 }
             }

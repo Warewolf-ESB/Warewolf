@@ -9,6 +9,7 @@
 */
 
 using Dev2.Data.PathOperations;
+using Dev2.Infrastructure.Tests;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -44,20 +45,7 @@ namespace Dev2.Data.Tests.PathOperations
             var provider = new LogonProvider(mockLoginImpl.Object);
 
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
 
             var v = It.IsAny<SafeTokenHandle>();
             mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "dev2", password, 2, 0, out v))
@@ -82,20 +70,7 @@ namespace Dev2.Data.Tests.PathOperations
             var provider = new LogonProvider(mockLoginImpl.Object);
 
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
 
             var v = It.IsAny<SafeTokenHandle>();
             mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "dev2", password, 3, 3, out v))
@@ -118,20 +93,7 @@ namespace Dev2.Data.Tests.PathOperations
             var provider = new LogonProvider(mockLoginImpl.Object);
 
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
 
             var v = It.IsAny<SafeTokenHandle>();
             mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v))

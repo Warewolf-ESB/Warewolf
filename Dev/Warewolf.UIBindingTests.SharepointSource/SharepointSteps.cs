@@ -17,6 +17,7 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using System.IO;
+using Dev2.Infrastructure.Tests;
 
 namespace Warewolf.UIBindingTests.SharepointSource
 {
@@ -249,20 +250,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         public void GivenITypePassword()
         {
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterPassword(password);
             var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
@@ -307,20 +295,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var mockExecutor = new Mock<IServer>();
 
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
             var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
             {
                 Name = "Test",
