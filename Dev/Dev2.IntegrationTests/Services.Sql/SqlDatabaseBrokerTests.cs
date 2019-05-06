@@ -26,6 +26,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Security;
 using Warewolf.Test.Agent;
 using System.IO;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
@@ -311,20 +312,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 var token = IntPtr.Zero;
                 var tokenDuplicate = IntPtr.Zero;
-                var password = string.Empty;
-                const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-                if (File.Exists(passwordsPath))
-                {
-                    var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                    foreach (var usernameAndPassword in usernamesAndPasswords)
-                    {
-                        var usernamePasswordSplit = usernameAndPassword.Split('=');
-                        if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == domain + "\\" + username)
-                        {
-                            password = usernamePasswordSplit[1];
-                        }
-                    }
-                }
+                var password = TestEnvironmentVariables.GetVar(domain + "\\" + username);
                 if (RevertToSelf() && LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out token) && DuplicateToken(token, 2, out tokenDuplicate) != 0)
                 {
                     var tempWindowsIdentity = new WindowsIdentity(tokenDuplicate);

@@ -34,6 +34,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using System.IO;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Activities.Specs.Scheduler
 {
@@ -78,23 +79,9 @@ namespace Dev2.Activities.Specs.Scheduler
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName)
         {
             _scenarioContext.Add("UserName", userName);
-            
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var password = usernameAndPassword.Split('=');
-                    if (password.Length > 1 && password[0] == "dev2\\IntegrationTester")
-                    {
-                        _scenarioContext.Add("Password", password);
-                    }
-                }
-            }
+            _scenarioContext.Add("Password", TestEnvironmentVariables.GetVar(userName));
         }
-
-
+        
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {

@@ -18,6 +18,7 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using System.IO;
+using Dev2.Infrastructure.Tests;
 
 namespace Warewolf.UIBindingTests.WebSource
 {
@@ -125,20 +126,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
             var webServiceSourceDefinition = new WebServiceSourceDefinition
             {
                 Name = "Test",
@@ -321,20 +309,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
             Assert.AreEqual(password, viewModel.Password);
             Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
         }
@@ -347,20 +322,7 @@ namespace Warewolf.UIBindingTests.WebSource
         {
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
             manageWebserviceSourceControl.EnterPassword(password);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);

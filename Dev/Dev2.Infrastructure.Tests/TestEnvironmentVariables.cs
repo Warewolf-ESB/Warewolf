@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Dev2.Infrastructure.Tests
@@ -345,6 +346,36 @@ namespace Dev2.Infrastructure.Tests
             var path = EnvironmentVariables.ApplicationPath;
             //------------Assert Results-------------------------
             Assert.AreEqual(path, appPath);
+        }
+
+        public static string GetVar(string name)
+        {
+            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    var usernamePasswordSplit = Decrypt(usernameAndPassword).Split('=');
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == name)
+                    {
+                        return usernamePasswordSplit[1];
+                    }
+                }
+            }
+            return string.Empty;
+        }
+
+        static byte[] key = new byte[8] { 1, 2, 3, 4, 5, 6, 7, 8 };
+        static byte[] iv = new byte[8] { 1, 1, 2, 3, 5, 8, 13, 21 };
+
+        static string Decrypt(string text)
+        {
+            SymmetricAlgorithm algorithm = DES.Create();
+            ICryptoTransform transform = algorithm.CreateDecryptor(key, iv);
+            byte[] inputbuffer = Convert.FromBase64String(text);
+            byte[] outputBuffer = transform.TransformFinalBlock(inputbuffer, 0, inputbuffer.Length);
+            return Encoding.Unicode.GetString(outputBuffer);
         }
     }
 }

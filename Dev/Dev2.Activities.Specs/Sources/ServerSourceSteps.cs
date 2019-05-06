@@ -21,6 +21,7 @@ using TechTalk.SpecFlow;
 using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Activities.Specs.Sources
 {
@@ -179,20 +180,7 @@ namespace Dev2.Activities.Specs.Sources
         [Given(@"User as ""(.*)""")]
         public void GivenUserAs(string username)
         {
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;

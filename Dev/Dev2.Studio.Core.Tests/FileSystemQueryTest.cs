@@ -18,6 +18,7 @@ using System.Management;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Infrastructure.Tests;
 using Dev2.Intellisense.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -624,20 +625,7 @@ namespace Dev2.Core.Tests
             if (shareCollection.Count <= 0)
             {
                 var username = @"dev2\IntegrationTester";
-                var password = string.Empty;
-                const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-                if (File.Exists(passwordsPath))
-                {
-                    var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                    foreach (var usernameAndPassword in usernamesAndPasswords)
-                    {
-                        var usernamePasswordSplit = usernameAndPassword.Split('=');
-                        if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                        {
-                            password = usernamePasswordSplit[1];
-                        }
-                    }
-                }
+                var password = TestEnvironmentVariables.GetVar(username);
             //------------Execute Test---------------------------
                 AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", username, password);
                 Thread.Sleep(1000);

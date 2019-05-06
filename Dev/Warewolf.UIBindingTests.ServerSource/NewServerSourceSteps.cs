@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Controller;
+using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
@@ -199,20 +200,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
             var username = @"dev2\IntegrationTester";
-            var password = string.Empty;
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = usernameAndPassword.Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == username)
-                    {
-                        password = usernamePasswordSplit[1];
-                    }
-                }
-            }
+            var password = TestEnvironmentVariables.GetVar(username);
 
             var serverSourceDefinition = new Dev2.Common.ServerSource
             {
