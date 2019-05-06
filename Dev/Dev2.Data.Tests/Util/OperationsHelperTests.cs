@@ -57,7 +57,6 @@ namespace Dev2.Data.Tests.Util
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(OperationsHelper))]
-        [Ignore] //TODO: This test should pass but the code returns '\\testUser' instead of 'testUser'
         public void OperationsHelper_ExtractUserName_With_Domain1()
         {
             const string userName = "\\testUser";
