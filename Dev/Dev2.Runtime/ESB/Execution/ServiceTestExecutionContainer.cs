@@ -12,9 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -23,12 +21,10 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
-using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.WF;
-using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
@@ -325,8 +321,6 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
         }
-
-        
 
         private void AddToRecordsetObjects(IServiceTestInput input, string variable, string value)
         {
