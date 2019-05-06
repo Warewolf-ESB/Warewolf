@@ -101,7 +101,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
    testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-   testRunner.And("\"Diceroll00\" has a username of \"DEV2\\IntegrationTester\" and a saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll00\" has a username of \"dev2\\IntegrationTester\" and a saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",

@@ -9,7 +9,7 @@ Scenario: Schedule with history
 	  And "ScheduleWithHistory" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "Diceroll00" has a username of "DEV2\IntegrationTester" and a saved password
+	  And "Diceroll00" has a username of "dev2\IntegrationTester" and a saved password
 	  And "ScheduleWithHistory" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
 	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |	            |
