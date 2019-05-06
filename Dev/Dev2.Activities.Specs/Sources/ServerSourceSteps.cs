@@ -21,6 +21,7 @@ using TechTalk.SpecFlow;
 using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Activities.Specs.Sources
 {
@@ -156,7 +157,7 @@ namespace Dev2.Activities.Specs.Sources
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
             var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
             var manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
-
+            
             var tuple = Tuple.Create(manageNewServerSourceModel, instanceSource, queryManagerProxy);
             return tuple;
         }
@@ -176,11 +177,10 @@ namespace Dev2.Activities.Specs.Sources
             Assert.AreEqual(p0, result);
         }
 
-        [Given(@"User details as")]
-        public void GivenUserDetailsAs(Table table)
+        [Given(@"User as ""(.*)""")]
+        public void GivenUserAs(string username)
         {
-            var username = table.Rows[0]["username"];
-            var password = table.Rows[0]["Password"];
+            var password = TestEnvironmentVariables.GetVar(username);
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;
