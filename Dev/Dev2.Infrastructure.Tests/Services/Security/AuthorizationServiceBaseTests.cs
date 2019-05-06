@@ -771,7 +771,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
-            SchemaNameCollection filterList = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
+            SchemaNameCollection filterList = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", TestEnvironmentVariables.GetVar("dev2\\IntegrationTester")).Children.SchemaFilter;
             children.Setup(a => a.SchemaFilter).Returns(filterList);
             var ss = "WinNT://" + Environment.MachineName + ",computer";
             dir.Setup(a => a.Create(ss)).Returns(new TestDirectoryEntry(ss));
