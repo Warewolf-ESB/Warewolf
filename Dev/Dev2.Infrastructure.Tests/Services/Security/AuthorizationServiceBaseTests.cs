@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -40,9 +39,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            
+
             new TestAuthorizationServiceBase(null);
-            
+
 
             //------------Assert Results-------------------------
         }
@@ -487,7 +486,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
             var authorizationService = new TestAuthorizationServiceBase( securityService.Object, true, false, true) { User = user.Object };
-            
+
             authorizationService.MemberOfAdminOverride = false;
 
             var isMemberTestAgain = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
@@ -700,30 +699,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             public void Dispose()
             {
-                
+
             }
 
             public object Invoke(string methodName, params object[] args)
             {
-                if(methodName == "Members" && Name == "Warewolf Administrators")
+                if (methodName == "Members" && Name == "Warewolf Administrators")
                 {
                     return new List<string> { "Administrators".ToString() };
                 }
                 return null;
             }
         }
-
         class TestDirectoryEntries : IDirectoryEntries
         {
 
-            public SchemaNameCollection SchemaFilter
-            {
-                get
-                {
-                    var password = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
-                    return new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", password).Children.SchemaFilter;
-                }
-            }
+            public SchemaNameCollection SchemaFilter => new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
 
             public DirectoryEntries Instance => throw new NotImplementedException();
 
@@ -741,6 +732,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenMemberOfAdministrator_ExpectTrue()
         {
             //------------Setup for test--------------------------
+            var getPassword = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
             // permissions setup
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
@@ -771,7 +763,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
-            SchemaNameCollection filterList = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", TestEnvironmentVariables.GetVar("dev2\\IntegrationTester")).Children.SchemaFilter;
+            SchemaNameCollection filterList = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", getPassword).Children.SchemaFilter;
             children.Setup(a => a.SchemaFilter).Returns(filterList);
             var ss = "WinNT://" + Environment.MachineName + ",computer";
             dir.Setup(a => a.Create(ss)).Returns(new TestDirectoryEntry(ss));
