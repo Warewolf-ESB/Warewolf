@@ -29,7 +29,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Data Tools")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void BaseConvertTool_EnterData_Then_Debug_UITest()
         {
             DataToolsUIMap.Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox();
