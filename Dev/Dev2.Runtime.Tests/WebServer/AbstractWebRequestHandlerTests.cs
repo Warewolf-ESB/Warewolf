@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -51,25 +61,26 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateFormGivenValidArgsShouldreturnWriter()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateFormGivenValidArgsShouldreturnWriter()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
             authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
-            var mock = new Mock<IDSFDataObject>();
-            mock.SetupAllProperties();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
             env.SetupAllProperties();
-            mock.SetupGet(o => o.Environment).Returns(env.Object);
-            mock.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
-            mock.Setup(p => p.ExecutingUser).Returns(principal.Object);
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(mock.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             var webRequestTO = new WebRequestTO
             {
                 WebServerUrl = "http://localhost:3142/secure/Hello%20World.tests/Blank%20Input"
@@ -83,7 +94,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsDebug_ShouldSetDataObjectAsDebug()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsDebug_ShouldSetDataObjectAsDebug()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -102,7 +114,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -130,7 +142,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsServiceTes_ShouldSetDataObjectAsTest()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceTes_ShouldSetDataObjectAsTest()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -150,7 +163,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -170,7 +183,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsServiceSwagger_ShouldSetDataObjectAsSwagger()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceSwagger_ShouldSetDataObjectAsSwagger()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -193,7 +207,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -213,7 +227,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsServiceJson_ShouldSetDataObjectAsJson()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceJson_ShouldSetDataObjectAsJson()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -237,7 +252,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTo = new WebRequestTO()
@@ -257,7 +272,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsServiceXMl_ShouldSetDataObjectAsXml()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceXMl_ShouldSetDataObjectAsXml()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -280,7 +296,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -299,7 +315,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsServiceXMlWithErrors_ShouldCheckReturnTypeOfError()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceXMlWithErrors_ShouldCheckReturnTypeOfError()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -324,7 +341,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -343,7 +360,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsServiceJsonWithErrors_ShouldCheckReturnTypeOfError()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceJsonWithErrors_ShouldCheckReturnTypeOfError()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -367,7 +385,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -386,7 +404,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTests_ShouldSetDataobjectsTestsOptions()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTests_ShouldSetDataobjectsTestsOptions()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -405,7 +424,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -425,7 +444,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTestsTRX_ShouldSetDataobjectsTRXOptions()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTestsTRX_ShouldSetDataobjectsTRXOptions()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -442,7 +462,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -463,7 +483,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenServiceNameIsGuid_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenServiceNameIsGuid_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -488,7 +509,7 @@ namespace Dev2.Tests.Runtime.WebServer
             resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -509,7 +530,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenServiceNameIsText_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenServiceNameIsText_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -534,7 +556,7 @@ namespace Dev2.Tests.Runtime.WebServer
             resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), "a")).Returns(resource.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -554,7 +576,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenHasTestResourcesIds_ShouldRunAllTests()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenHasTestResourcesIds_ShouldRunAllTests()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -600,7 +623,7 @@ namespace Dev2.Tests.Runtime.WebServer
             resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -620,7 +643,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenEmitionTypeTEST_ShouldFetchTest()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenEmitionTypeTEST_ShouldFetchTest()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -649,7 +673,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Setup(catalog => catalog.Fetch(Guid.Empty)).Returns(tests);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -668,7 +692,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -706,7 +731,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Setup(catalog => catalog.Fetch(Guid.Empty)).Returns(tests);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -725,7 +750,66 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BindRequestVariablesToDataObjectGivenHasBookMarkShouldSetDataObjectBookmark()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests1()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            GetExecutingUser(principal);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(principal.Object, It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            dataObject.SetupGet(o => o.ReturnType).Returns(EmitionTypes.TEST);
+            dataObject.SetupGet(o => o.TestName).Returns("");
+            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
+            dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+                .Returns(new List<IResource>()
+                {
+                   resource.Object
+                });
+            var testCatalog = new Mock<ITestCatalog>();
+            var serviceTestModelTO = new Mock<IServiceTestModelTO>();
+            serviceTestModelTO.Setup(to => to.Enabled).Returns(true);
+            serviceTestModelTO.Setup(to => to.TestName).Returns("Test1");
+            var tests = new List<IServiceTestModelTO>
+            {
+                serviceTestModelTO.Object
+            };
+            testCatalog.Setup(catalog => catalog.Fetch(Guid.Empty)).Returns(tests);
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                    {"IsDebug","true"}
+                },
+                WebServerUrl = ""
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World", null, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            testCatalog.Verify(o => o.Fetch(Guid.Empty), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BindRequestVariablesToDataObjectGivenHasBookMarkShouldSetDataObjectBookmark()
         {
             //---------------Set up test pack-------------------
             var authorizationService = new Mock<IAuthorizationService>();
@@ -740,7 +824,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var instanceID = Guid.NewGuid();
@@ -759,7 +843,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostDataGivenUrlWithGetJsonDataShouldReturnPostData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostDataGivenUrlWithGetJsonDataShouldReturnPostData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -789,7 +874,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -800,7 +885,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostDataGivenUrlWithJsonPostDataShouldReturnPostData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostDataGivenUrlWithJsonPostDataShouldReturnPostData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -821,7 +907,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -832,7 +918,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenPostDataInContext_ShouldReturnEmpty()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenPostDataInContext_ShouldReturnEmpty()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -850,7 +937,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -861,7 +948,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenPostJsonDataInContextThrowsException_ShouldSwallowException()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenPostJsonDataInContextThrowsException_ShouldSwallowException()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -880,7 +968,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -891,7 +979,8 @@ namespace Dev2.Tests.Runtime.WebServer
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenPostJsonDataInContext_ShouldReturnJsonData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenPostJsonDataInContext_ShouldReturnJsonData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -910,7 +999,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -923,7 +1012,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenJsonDataInContextAndUnknownWebMethod_ShouldReturnEmpty()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenJsonDataInContextAndUnknownWebMethod_ShouldReturnEmpty()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -942,7 +1032,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -953,7 +1043,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenPostXmlDataInContext_ShouldReturnXmlData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenPostXmlDataInContext_ShouldReturnXmlData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -973,7 +1064,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -995,7 +1086,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenGetJsonDataInContext_ShouldReturnJsonData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenGetJsonDataInContext_ShouldReturnJsonData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1013,7 +1105,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -1026,7 +1118,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenGetXmlDataInContext_ShouldReturnXmlData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenGetXmlDataInContext_ShouldReturnXmlData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1045,7 +1138,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -1058,7 +1151,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenGetDataListXmlDataInContext_ShouldReturnXmlData()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenGetDataListXmlDataInContext_ShouldReturnXmlData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1078,7 +1172,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -1091,7 +1185,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void LocationGivenReturnsCorrectly()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_LocationGivenReturnsCorrectly()
         {
             //---------------Set up test pack-------------------
             var authorizationService = new Mock<IAuthorizationService>();
@@ -1105,7 +1200,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -1118,7 +1213,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void RemoteInove_GivenServerInvoke_ShouldSetRemoteIdOnTheDataObjectAndRemoteInvokeTo_True()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_RemoteInove_GivenServerInvoke_ShouldSetRemoteIdOnTheDataObjectAndRemoteInvokeTo_True()
         {
             const string Someremoteid = "SomeRemoteServerId";
             var authorizationService = new Mock<IAuthorizationService>();
@@ -1134,7 +1230,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test-------------------------
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //------------Execute Test---------------------------
             var mock = new Mock<NameValueCollection>();
             mock.Setup(collection => collection.Get(HttpRequestHeader.Cookie.ToString())).Returns(GlobalConstants.RemoteServerInvoke);
@@ -1147,7 +1243,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void RemoteInvoke_GivenRemoteDebugInvoke_ShouldSetRemoteIdOnTheDataObjectAndRemoteInvokeTo_True()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_RemoteInvoke_GivenRemoteDebugInvoke_ShouldSetRemoteIdOnTheDataObjectAndRemoteInvokeTo_True()
         {
             const string Someremoteid = "SomeRemoteDebugServerId";
             var authorizationService = new Mock<IAuthorizationService>();
@@ -1163,7 +1260,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test-------------------------
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //------------Execute Test---------------------------
             var mock = new Mock<NameValueCollection>();
             mock.Setup(collection => collection.Get(HttpRequestHeader.Cookie.ToString())).Returns(GlobalConstants.RemoteDebugServerInvoke);
@@ -1177,7 +1274,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetBookmark_GivenBoundVariables_ShouldReturnBookmark()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetBookmark_GivenBoundVariables_ShouldReturnBookmark()
         {
             const string ExpectedResult = "the_bookmark";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1194,7 +1292,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetClassName_GivenBoundVariables_ShouldReturnName()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetClassName_GivenBoundVariables_ShouldReturnName()
         {
             const string ExpectedResult = "the_name";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1211,7 +1310,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetMethodName_GivenBoundVariables_ShouldReturnMethodName()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetMethodName_GivenBoundVariables_ShouldReturnMethodName()
         {
             const string ExpectedResult = "the_action";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1228,7 +1328,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetPath_GivenBoundVariables_ShouldReturnPath()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPath_GivenBoundVariables_ShouldReturnPath()
         {
             const string ExpectedResult = "the_path";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1245,7 +1346,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetWebsite_GivenBoundVariables_ShouldReturnWebsite()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetWebsite_GivenBoundVariables_ShouldReturnWebsite()
         {
             const string ExpectedResult = "the_website";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1262,7 +1364,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetInstanceID_GivenBoundVariables_ShouldReturnInstanceId()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetInstanceID_GivenBoundVariables_ShouldReturnInstanceId()
         {
             const string ExpectedResult = "the_instanceid";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1279,7 +1382,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetServiceName_GivenBoundVariables_ShouldReturnServiceName()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetServiceName_GivenBoundVariables_ShouldReturnServiceName()
         {
             const string ExpectedResult = "the_servicename";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1295,7 +1399,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetWorkspaceID_GivenQueryString_ShouldReturnId()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetWorkspaceID_GivenQueryString_ShouldReturnId()
         {
             const string ExpectedResult = "the_wid";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1310,7 +1415,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetDataListID_GivenQueryString_ShouldReturnDatalsi()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetDataListID_GivenQueryString_ShouldReturnDatalsi()
         {
             const string ExpectedResult = "the_datalist";
             var communicationContext = new Mock<ICommunicationContext>();
@@ -1324,11 +1430,10 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(ExpectedResult, dataListID);
         }
 
-        #region ServiceTestModelJObjectResultBuilder
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultJSONForWebRequest_GivenTestResultPassed_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultJSONForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1345,7 +1450,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultJSONForWebRequest_GivenTestResultFailed_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultJSONForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1362,7 +1468,8 @@ namespace Dev2.Tests.Runtime.WebServer
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultJSONForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultJSONForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1379,7 +1486,8 @@ namespace Dev2.Tests.Runtime.WebServer
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultJSONForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultJSONForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1396,7 +1504,8 @@ namespace Dev2.Tests.Runtime.WebServer
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultJSONForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultJSONForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1413,7 +1522,8 @@ namespace Dev2.Tests.Runtime.WebServer
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultJSONForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultJSONForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1429,13 +1539,11 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Pending\""));
         }
 
-        #endregion
-
-        #region ServiceTestModelTRXResultBuilder
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void BuildTestResultTRXForWebRequest_GivenTestResultPassed_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultTRXForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             var toList = new List<IServiceTestModelTO>();
@@ -1455,7 +1563,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void BuildTestResultTRXForWebRequest_GivenTestResultFailed_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultTRXForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             var toList = new List<IServiceTestModelTO>();
@@ -1476,7 +1585,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void BuildTestResultTRXForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultTRXForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             var toList = new List<IServiceTestModelTO>();
@@ -1497,7 +1607,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultTRXForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             var toList = new List<IServiceTestModelTO>();
@@ -1518,7 +1629,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultTRXForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             var toList = new List<IServiceTestModelTO>();
@@ -1539,7 +1651,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void BuildTestResultTRXForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_BuildTestResultTRXForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             var toList = new List<IServiceTestModelTO>();
@@ -1558,33 +1671,30 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("outcome=\"Pending\""));
         }
 
-        #endregion
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ExtractKeyValuePairs_GivenKeyvaluePairs_ShouldCloneKeyValuePair()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_ExtractKeyValuePairs_GivenKeyvaluePairs_ShouldCloneKeyValuePair()
         {
-            //------------Setup for test-------------------------
             var boundVariables = new NameValueCollection();
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
-            //------------Execute Test---------------------------            
-            privateObject.InvokeStatic("ExtractKeyValuePairs", LocalBoundVariables, boundVariables);
-            //------------Assert Results-------------------------
+
+            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairs(LocalBoundVariables, boundVariables);
+            
             //The WID is skipped
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void CleanupXml_GivenXml_ShouldAppendXmlCorrectly()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CleanupXml_GivenXml_ShouldAppendXmlCorrectly()
         {
             //------------Setup for test-------------------------
             var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
             const string BaseStr = "www.examlple.com?home=<Datalist>DatalistPayload</Datalist>";
             //------------Execute Test---------------------------            
-            var invokeStatic = privateObject.InvokeStatic("CleanupXml", BaseStr);
+            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(BaseStr);
             //------------Assert Results-------------------------\
-            var value = invokeStatic.ToString();
             var isNullOrEmpty = string.IsNullOrEmpty(value);
             Assert.IsFalse(isNullOrEmpty);
             var startsWith = value.StartsWith("www.examlple.com?home=~XML~");
@@ -1593,7 +1703,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExtractKeyValuePairForGetMethod_GivenEmptyPayload_ShouldUseContextQueryString()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_ExtractKeyValuePairForGetMethod_GivenEmptyPayload_ShouldUseContextQueryString()
         {
             //------------Setup for test-------------------------
             var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
@@ -1601,8 +1712,10 @@ namespace Dev2.Tests.Runtime.WebServer
             mock.Setup(communicationContext => communicationContext.Request.QueryString)
                 .Returns(new NameValueCollection());
             var context = mock.Object;
+
             //------------Execute Test---------------------------            
-            privateObject.InvokeStatic("ExtractKeyValuePairForGetMethod", context, "");
+            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairForGetMethod(context, "");
+
             //------------Assert Results-------------------------
             mock.VerifyGet(communicationContext => communicationContext.Request.QueryString, Times.Once);
 
@@ -1612,7 +1725,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void SetContentType_GivenJsonType_ShouldSetDataObjectReturnType()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetContentType_GivenJsonType_ShouldSetDataObjectReturnType()
         {
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
@@ -1629,7 +1743,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/json");
@@ -1642,7 +1756,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void SetContentType_GivenXMLType_ShouldSetDataObjectReturnType()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetContentType_GivenXMLType_ShouldSetDataObjectReturnType()
         {
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
@@ -1659,7 +1774,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/xml");
@@ -1672,7 +1787,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenHeaderContentTypeJson_ShouldSetDataObjectContentTypeJson()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenHeaderContentTypeJson_ShouldSetDataObjectContentTypeJson()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
@@ -1692,7 +1808,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenHeaderContentTypeXml_ShouldSetDataObjectContentTypeXml()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenHeaderContentTypeXml_ShouldSetDataObjectContentTypeXml()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
@@ -1712,7 +1829,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenNoHeaders_ShouldSetDataObjectContentTypeXml()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenNoHeaders_ShouldSetDataObjectContentTypeXml()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
@@ -1728,7 +1846,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeSwagger()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeSwagger()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.api";
@@ -1749,7 +1868,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectContentTypeTests()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectContentTypeTests()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
@@ -1770,7 +1890,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        public void SetEmitionType_GivenServiceNameEndsWithteststrx_ShouldSetDataObjectContentTypeTRX()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithteststrx_ShouldSetDataObjectContentTypeTRX()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
@@ -1790,7 +1911,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.JSON";
@@ -1811,7 +1933,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenTestsInFolder_ShouldSetDataObjectContentTypeTests()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenTestsInFolder_ShouldSetDataObjectContentTypeTests()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests/";
@@ -1834,7 +1957,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectIsTestExecution()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectIsTestExecution()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
@@ -1857,7 +1981,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetTestResourceIds_GivenRequestForAllTestsInAFolder_ShouldSetDataObjectTestResourceIds()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetTestResourceIds_GivenRequestForAllTestsInAFolder_ShouldSetDataObjectTestResourceIds()
         {
             //---------------Set up test pack-------------------
             //http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2
@@ -1893,7 +2018,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetTestResourceIds_GivenRequestForAllTests_ShouldSetDataObjectTestResourceIds()
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetTestResourceIds_GivenRequestForAllTests_ShouldSetDataObjectTestResourceIds()
         {
             //---------------Set up test pack-------------------
             var webRequestTO = new WebRequestTO()
@@ -1918,20 +2044,26 @@ namespace Dev2.Tests.Runtime.WebServer
         }
     }
 
-    #region AbstractWebRequestHandlerMock
+    class TestAbstractWebRequestDataObjectFactory : AbstractWebRequestHandler.IDataObjectFactory
+    {
+        readonly IDSFDataObject _dataObject;
+        public TestAbstractWebRequestDataObjectFactory(IDSFDataObject dataObject)
+        {
+            _dataObject = dataObject;
+        }
+        public IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest) => _dataObject;
+    }
 
     class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
-        public AbstractWebRequestHandlerMock(IDSFDataObject dataObject, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, IWorkspaceRepository repository)
-            : base(catalog, testCatalog, dataObject, service, repository)
+        public AbstractWebRequestHandlerMock(AbstractWebRequestHandler.IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, IWorkspaceRepository repository)
+            : base(catalog, testCatalog, repository, service, dataObjectFactory)
         {
         }
 
         public AbstractWebRequestHandlerMock()
         {
         }
-
-        #region Overrides of AbstractWebRequestHandler
 
         // protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
         public IResponseWriter CreateFromMock(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
@@ -1942,13 +2074,13 @@ namespace Dev2.Tests.Runtime.WebServer
         //protected static string GetPostData(ICommunicationContext ctx)
         public string GetPostDataMock(ICommunicationContext ctx)
         {
-            return GetPostData(ctx);
+            return SubmittedData.GetPostData(ctx);
         }
 
         //BindRequestVariablesToDataObject(WebRequestTO request, ref IDSFDataObject dataObject)
         public void BindRequestVariablesToDataObjectMock(WebRequestTO request, ref IDSFDataObject dataObject)
         {
-            BindRequestVariablesToDataObject(request, ref dataObject);
+            request.BindRequestVariablesToDataObject(ref dataObject);
         }
 
         public override void ProcessRequest(ICommunicationContext ctx)
@@ -1958,56 +2090,52 @@ namespace Dev2.Tests.Runtime.WebServer
 
         public void RemoteInvokeMock(NameValueCollection headers, IDSFDataObject dataObject)
         {
-            RemoteInvoke(headers, dataObject);
+            dataObject.SetupForRemoteInvoke(headers);
         }
 
         public string GetServiceNameMock(ICommunicationContext ctx)
         {
-            return GetServiceName(ctx);
+            return ctx.GetServiceName();
         }
 
         public string GetWorkspaceIDMock(ICommunicationContext ctx)
         {
-            return GetWorkspaceID(ctx);
+            return ctx.GetWorkspaceID();
         }
 
         public string GetDataListIDMock(ICommunicationContext ctx)
         {
-            return GetDataListID(ctx);
+            return ctx.GetDataListID();
         }
 
         public string GetBookmarkMock(ICommunicationContext ctx)
         {
-            return GetBookmark(ctx);
+            return ctx.GetBookmark();
         }
 
         public string GetInstanceIDMock(ICommunicationContext ctx)
         {
-            return GetInstanceID(ctx);
+            return ctx.GetInstanceID();
         }
 
         public string GetWebsiteMock(ICommunicationContext ctx)
         {
-            return GetWebsite(ctx);
+            return ctx.GetWebsite();
         }
 
         public string GetPathMock(ICommunicationContext ctx)
         {
-            return GetPath(ctx);
+            return ctx.GetPath();
         }
 
         public string GetClassNameMock(ICommunicationContext ctx)
         {
-            return GetClassName(ctx);
+            return ctx.GetClassName();
         }
 
         public string GetMethodNameMock(ICommunicationContext ctx)
         {
-            return GetMethodName(ctx);
+            return ctx.GetMethodName();
         }
-
-        #endregion
     }
-
-    #endregion
 }

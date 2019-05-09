@@ -14,21 +14,25 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
+    public struct WriteArgs
+    {
+        public IDebugState debugState;
+        public bool isTestExecution;
+        public bool isDebugFromWeb;
+        public string testName;
+        public bool isRemoteInvoke;
+        public string remoteInvokerId;
+        public string parentInstanceId;
+        public IList<IDebugState> remoteDebugItems;
+    }
+
     public interface IDebugDispatcher
     {
         int Count { get; }
-
-
-
         void Remove(Guid workspaceId);
-
         IDebugWriter Get(Guid workspaceId);
-        void Write(IDebugState debugState);
-        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName);
-        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId,
-            string parentInstanceId, IList<IDebugState> remoteDebugItems);
         void Add(Guid workspaceId, IDebugWriter writer);
         void Shutdown();
-        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId);
+        void Write(WriteArgs writeArgs);
     }
 }

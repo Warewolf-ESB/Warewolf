@@ -26,5 +26,6 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool TestStepHasError { get; set; }
         bool MockSelected { get; set; }
         string GetMoreLinkItem();
+        IDebugItemResult Clone();
     }
 }

@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,9 +19,8 @@ using System.Text;
 
 namespace Dev2.Communication
 {
-    public class Dev2JsonSerializer : ISerializer
+    public class Dev2JsonSerializer : IBuilderSerializer
     {
-
         const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
 
         readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
@@ -69,13 +68,11 @@ namespace Dev2.Communication
                 };
                 using (var jsonTextWriter = new JsonTextWriter(sw))
                 {
-
                     jsonSerializer.Serialize(jsonTextWriter, obj);
                     jsonTextWriter.Flush();
                     jsonTextWriter.Close();
                 }
             }
-
             return result;
         }
 
@@ -97,7 +94,6 @@ namespace Dev2.Communication
                     var length = message.Length;
                     var startIdx = 0;
                     var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
 
                     for (int i = 0; i < rounds; i++)
                     {
@@ -125,16 +121,12 @@ namespace Dev2.Communication
                             }
                         }
                     }
-
                     catch
-
                     {
                         // Do nothing default(T) returned below
                     }
                 }
-
             }
-
             return default(T);
         }
 

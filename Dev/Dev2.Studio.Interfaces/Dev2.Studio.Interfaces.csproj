@@ -193,6 +193,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dev2.Studio.Interfaces.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

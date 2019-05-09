@@ -87,6 +87,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="Dev2.SignalR.Wrappers.New.ruleset" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
