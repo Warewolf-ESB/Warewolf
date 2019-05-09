@@ -294,7 +294,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (item != null && JsonObjectsView != null)
             {
                 var json = item.GetJson();
-                JsonObjectsView.ShowJsonString(JSONUtils.Format(json));
+                JsonObjectsView.ShowJsonString(JsonUtils.Format(json));
             }
 
         }

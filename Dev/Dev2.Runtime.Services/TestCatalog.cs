@@ -8,8 +8,10 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data;
@@ -20,9 +22,9 @@ namespace Dev2.Runtime
 {
     public class TestCatalog : ITestCatalog
     {
-        readonly DirectoryWrapper _directoryWrapper;
-        readonly Dev2JsonSerializer _serializer;
-        readonly FileWrapper _fileWrapper;
+        readonly IDirectory _directoryWrapper;
+        readonly ISerializer _serializer;
+        readonly IFile _fileWrapper;
 
         static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
         {
@@ -374,7 +376,7 @@ namespace Dev2.Runtime
             var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
             foreach (var resourceTestDirectory in resourceTestDirectories)
             {
-                var resIdString = DirectoryWrapper.GetDirectoryName(resourceTestDirectory);
+                var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
                 if (Guid.TryParse(resIdString, out Guid resId))
                 {
                     Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
@@ -389,9 +391,15 @@ namespace Dev2.Runtime
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
             foreach (var file in files)
             {
-                var reader = new StreamReader(file);
-                var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
-                serviceTestModelTos.Add(testModel);
+                try
+                {
+                    var reader = new StreamReader(file);
+                    var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
+                    serviceTestModelTos.Add(testModel);
+                } catch (Exception e)
+                {
+                    Dev2Logger.Warn($"failed loading test: {file} {e.GetType().Name}: " + e.Message, GlobalConstants.WarewolfWarn);
+                }
             }
             return serviceTestModelTos;
         }

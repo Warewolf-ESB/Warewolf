@@ -72,7 +72,7 @@ namespace Dev2.Common.Wrappers
 
         public string[] GetDirectories(string path, string pattern) => Directory.GetDirectories(path, pattern, System.IO.SearchOption.AllDirectories);
 
-        public static string GetDirectoryName(string path)
+        public string GetDirectoryName(string path)
         {
             var validPath = path.TrimEnd('\\');
             var index = validPath.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);

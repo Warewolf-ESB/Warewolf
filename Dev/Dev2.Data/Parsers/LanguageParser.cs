@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,14 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.DataList.Contract
 {
-    public abstract class LanguageParser
+    public class ServiceActivityVariableMapping
     {
         readonly string _elementTag;
         const string _nameAttribute = "Name";
@@ -32,178 +30,175 @@ namespace Dev2.DataList.Contract
         const string _magicEval = "[[";
         const string _outputMapsToAdjust = "Name";
 
-        protected LanguageParser(string elementTag, string mapsTo, bool defaultValueToMapsTo)
+        protected ServiceActivityVariableMapping(string elementTag, string mapsTo, bool defaultValueToMapsTo)
         {
             _elementTag = elementTag;
             _mapsToAttribute = mapsTo;
             _defaultValueToMapsTo = defaultValueToMapsTo;
         }
 
-        #region Methods
-
         internal IList<IDev2Definition> Parse(string mappingDefinition, bool ignoreBlanks = true)
         {
+            if (string.IsNullOrEmpty(mappingDefinition))
+            {
+                return new List<IDev2Definition>();
+            }
+
+            var result = ParseMappingDefinition(mappingDefinition, ignoreBlanks);
+            return result;
+        }
+
+        string _nodeValue;
+        string _originalNodeValue;
+        bool _isNodeEvaluated;
+        string _nodeMapsTo;
+
+        IList<IDev2Definition> ParseMappingDefinition(string mappingDefinition, bool ignoreBlanks)
+        {
+            var xDoc = new XmlDocument();
+            xDoc.LoadXml(mappingDefinition);
+            var nodeList = xDoc.GetElementsByTagName(_elementTag);
+
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            if(!string.IsNullOrEmpty(mappingDefinition))
+            foreach (XmlNode node in nodeList)
             {
-                ParseMappingDefinition(mappingDefinition, ignoreBlanks, result);
+                _nodeValue = string.Empty;
+                _originalNodeValue = string.Empty;
+                _isNodeEvaluated = false;
+
+                XmlNode valueNode = node.Attributes[_valueTag];
+                if (valueNode != null)
+                {
+                    _nodeValue = valueNode.Value;
+                    _originalNodeValue = _nodeValue;
+                }
+                
+                _nodeMapsTo = node.Attributes[_mapsToAttribute].Value;
+
+                if (!_defaultValueToMapsTo)
+                {
+                    ReplaceOutputBrackets(node);
+                }
+                else
+                {
+                    ReplaceInputBrackets();
+                }
+
+                // only create if mapsTo is not blank!!
+                if (!ignoreBlanks || _nodeMapsTo != string.Empty && _nodeValue != string.Empty || _defaultValueToMapsTo)
+                {
+                    if (!_defaultValueToMapsTo && string.IsNullOrEmpty(_nodeMapsTo)) // Outputs only
+                    {
+                        continue;
+                    }
+
+                    EvaluateOutputMapsTo(result, node);
+                }
             }
 
             return result;
         }
 
-        void ParseMappingDefinition(string mappingDefinition, bool ignoreBlanks, IList<IDev2Definition> result)
+        private void ReplaceOutputBrackets(XmlNode node)
         {
-            var xDoc = new XmlDocument();
-
-            xDoc.LoadXml(mappingDefinition);
-
-            var tmpList = xDoc.GetElementsByTagName(_elementTag);
-
-            foreach (XmlNode tmp in tmpList)
+            // account for blank mapsto in generated output defs
+            if (_nodeMapsTo == string.Empty)
             {
-                var value = string.Empty;
-                var origValue = string.Empty;
-
-                XmlNode valueNode = tmp.Attributes[_valueTag];
-                if (valueNode != null)
-                {
-                    value = valueNode.Value;
-                    origValue = value;
-                }
-
-                // is it evaluated?
-                var isEvaluated = false;
-                var mapsTo = tmp.Attributes[_mapsToAttribute].Value;
-
-                if (tmp.Attributes["IsObject"] == null || !bool.TryParse(tmp.Attributes["IsObject"].Value, out bool isObject))
-                {
-                    isObject = false;
-                }
-
-                if (!_defaultValueToMapsTo)
-                { // output
-
-                    // account for blank mapsto in generated output defs
-                    if (mapsTo == string.Empty)
-                    {
-                        mapsTo = GetMapsTo(tmp);
-                    }
-
-                    if (mapsTo.Contains(_magicEval))
-                    {
-                        isEvaluated = true;
-                        mapsTo = mapsTo.Replace(_magicEval, "").Replace("]]", "");
-                    }
-                    if (value.Contains(_magicEval))
-                    {
-                        value = value.Replace(_magicEval, "").Replace("]]", "");
-                        isEvaluated = true;
-                    }
-                }
-                else
-                {
-                    // input
-                    origValue = mapsTo;
-                    value = mapsTo;
-                    if (value.Contains(_magicEval))
-                    {
-                        isEvaluated = true;
-                        value = value.Replace(_magicEval, "").Replace("]]", "");
-                        mapsTo = value;
-                    }
-                }
-
-                // extract default value if present
-                var defaultValue = string.Empty;
-
-                XmlNode defaultValNode = tmp.Attributes[_defaultValueAttribute];
-                if (defaultValNode != null)
-                {
-                    defaultValue = defaultValNode.Value;
-                }
-
-                // extract isRequired
-                var isRequired = false;
-
-                var nl = tmp.ChildNodes;
-                if (nl.Count > 0)
-                {
-                    isRequired = GetChildNodes(isRequired, nl);
-                }
-
-                // extract EmptyToNull
-                var emptyToNull = false;
-                XmlNode emptyNode = tmp.Attributes[_emptyToNullAttribute];
-                if (emptyNode != null)
-                {
-                    Boolean.TryParse(emptyNode.Value, out emptyToNull);
-                }
-
-                // only create if mapsTo is not blank!!
-                if (!ignoreBlanks || mapsTo != string.Empty && value != string.Empty || _defaultValueToMapsTo)
-                {
-                    if (!_defaultValueToMapsTo && String.IsNullOrEmpty(mapsTo)) // Outputs only
-                    {
-                        continue;
-                    }
-
-                    XmlNode recordSetNode = tmp.Attributes[_recordSetAttribute];
-
-                    if (recordSetNode != null)
-                    {
-                        CheckForRecordsetsInInputMapping(result, tmp, value, origValue, isEvaluated, mapsTo, defaultValue, isRequired, emptyToNull, recordSetNode);
-                    }
-                    else
-                    {
-                        var dev2Definition = Dev2Definition.NewObject(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull);
-                        dev2Definition.IsObject = isObject;
-                        result.Add(dev2Definition);
-                    }
-                }
+                _nodeMapsTo = GetMapsTo(node);
+            }
+            if (_nodeMapsTo.Contains(_magicEval))
+            {
+                _isNodeEvaluated = true;
+                _nodeMapsTo = _nodeMapsTo.Replace(_magicEval, "").Replace("]]", "");
+            }
+            if (_nodeValue.Contains(_magicEval))
+            {
+                _nodeValue = _nodeValue.Replace(_magicEval, "").Replace("]]", "");
+                _isNodeEvaluated = true;
             }
         }
 
-        private void CheckForRecordsetsInInputMapping(IList<IDev2Definition> result, XmlNode tmp, string value, string origValue, bool isEvaluated, string mapsTo, string defaultValue, bool isRequired, bool emptyToNull, XmlNode recordSetNode)
+        private void ReplaceInputBrackets()
         {
-            var theName = tmp.Attributes[_nameAttribute].Value;
-            if (_defaultValueToMapsTo)
+            _originalNodeValue = _nodeMapsTo;
+            _nodeValue = _nodeMapsTo;
+            if (_nodeValue.Contains(_magicEval))
             {
-                var recordSet = recordSetNode.Value;
-                // we have a recordset set it as such
-                result.Add(DataListFactory.CreateDefinition_Recordset(theName, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                _isNodeEvaluated = true;
+                _nodeValue = _nodeValue.Replace(_magicEval, "").Replace("]]", "");
+                _nodeMapsTo = _nodeValue;
+            }
+        }
+
+        private void EvaluateOutputMapsTo(IList<IDev2Definition> result, XmlNode node)
+        {
+            // extract default value if present
+            var defaultValue = string.Empty;
+
+            XmlNode defaultValNode = node.Attributes[_defaultValueAttribute];
+            if (defaultValNode != null)
+            {
+                defaultValue = defaultValNode.Value;
+            }
+
+            // extract EmptyToNull
+            var emptyToNull = false;
+            XmlNode emptyNode = node.Attributes[_emptyToNullAttribute];
+            if (emptyNode != null)
+            {
+                bool.TryParse(emptyNode.Value, out emptyToNull);
+            }
+
+            // extract isRequired
+            var isRequired = IsRequired(node.ChildNodes);
+
+            XmlNode recordSetNode = node.Attributes[_recordSetAttribute];
+
+            if (recordSetNode != null)
+            {
+                result.Add(DataListFactory.CreateDefinition_Recordset(node.Attributes[_nameAttribute].Value, _nodeMapsTo, _nodeValue, recordSetNode.Value, _isNodeEvaluated, defaultValue, isRequired, _originalNodeValue, emptyToNull));
             }
             else
             {
-                // if record set add as such
-                var recordSet = recordSetNode.Value;
-                result.Add(DataListFactory.CreateDefinition_Recordset(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                var dev2Definition = Dev2Definition.NewObject(node.Attributes[_nameAttribute].Value, _nodeMapsTo, _nodeValue, _isNodeEvaluated, defaultValue, isRequired, _originalNodeValue, emptyToNull);
+
+                if (node.Attributes["IsObject"] == null || !bool.TryParse(node.Attributes["IsObject"].Value, out bool isObject))
+                {
+                    isObject = false;
+                }
+                dev2Definition.IsObject = isObject;
+                result.Add(dev2Definition);
             }
         }
 
-        private static bool GetChildNodes(bool isRequired, XmlNodeList nl)
+        private static bool IsRequired(XmlNodeList childNodes)
         {
-            var pos = 0;
-            while (pos < nl.Count && !isRequired)
+            if (childNodes is null || childNodes.Count <= 0)
             {
-                if (nl[pos].Name == _validateTag)
+                return false;
+            }
+
+            var pos = 0;
+            while (pos < childNodes.Count)
+            {
+                if (childNodes[pos].Name == _validateTag)
                 {
-                    XmlNode requiredValidationNode = nl[pos].Attributes[_validateTypeAttribute];
+                    XmlNode requiredValidationNode = childNodes[pos].Attributes[_validateTypeAttribute];
                     if (requiredValidationNode != null && requiredValidationNode.Value == _requiredValidationAttributeValue)
                     {
-                        isRequired = true;
+                        return true;
                     }
                 }
                 pos++;
             }
 
-            return isRequired;
+            return false;
         }
 
         static string GetMapsTo(XmlNode tmp)
         {
-            string mapsTo = "";
+            var mapsTo = "";
             XmlNode xn = tmp.Attributes[_outputMapsToAdjust];
             if (xn != null)
             {
@@ -212,7 +207,5 @@ namespace Dev2.DataList.Contract
 
             return mapsTo;
         }
-
-        #endregion
     }
 }

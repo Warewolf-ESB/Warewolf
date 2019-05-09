@@ -99,10 +99,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         //TODO: Add SmtpClientFactory so that we can test it without failing
         public void Send(MailMessage mailMessage)
         {
-            var userParts = UserName.Split('@');
             using (var smtp = new SmtpClient(Host, Port)
             {
-                Credentials = new NetworkCredential(userParts[0], Password),
+                Credentials = new NetworkCredential(UserName, Password),
                 EnableSsl = EnableSsl,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 Timeout = Timeout

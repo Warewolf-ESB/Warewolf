@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 namespace Dev2.Common.Interfaces.Core.Graph
 {
     public interface IPathSegment
@@ -16,7 +15,7 @@ namespace Dev2.Common.Interfaces.Core.Graph
         string ActualSegment { get; set; }
         string DisplaySegment { get; set; }
         bool IsEnumarable { get; set; }
-
         string ToString(bool considerEnumerable);
+        T As<T>() where T : class, IPathSegment;
     }
 }

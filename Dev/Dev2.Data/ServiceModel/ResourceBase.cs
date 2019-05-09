@@ -1,4 +1,3 @@
-#pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -247,27 +246,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        static string GetResourceTypeFromString(string actionTypeStr)
-        {
-            if (Enum.TryParse(actionTypeStr, out enActionType actionType))
-            {
-                switch (actionType)
-                {
-                    case enActionType.InvokeWebService:
-                        return "WebService";
-                    case enActionType.InvokeStoredProc:
-                        return "DbService";
-                    case enActionType.Plugin:
-                        return "PluginService";
-                    case enActionType.Workflow:
-                        return "WorkflowService";
-                    default:
-                        break;
-                }
-            }
-            return "Unknown";
-        }
-
         public virtual XElement ToXml()
         {
             var rootElement = GetRootElement();
@@ -284,59 +262,17 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
         }
 
-        string GetRootElement()
-        {
-            if (IsSource)
-            {
-                return "Source";
-            }
-            if (IsService)
-            {
-                return "Service";
-            }
-            if (IsResourceVersion)
-            {
-                return "Service";
-            }
-            if (IsServer)
-            {
-                return "Source";
-            }
-            throw new Exception(ErrorResource.BadResource);
-        }
-
         public StringBuilder ToStringBuilder()
         {
             var xe = ToXml();
             return xe.ToStringBuilder();
         }
 
-        XElement WriteErrors()
-        {
-            if (Errors == null || Errors.Count == 0)
-            {
-                return null;
-            }
-
-            XElement xElement = null;
-            foreach (var errorInfo in Errors)
-            {
-                xElement = new XElement("ErrorMessage");
-                xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
-                xElement.Add(new XAttribute("Message", errorInfo.Message ?? string.Empty));
-                xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
-                xElement.Add(new XAttribute("FixType", errorInfo.FixType));
-                xElement.Add(new XAttribute("StackTrace", errorInfo.StackTrace ?? string.Empty));
-                xElement.Add(new XCData(errorInfo.FixData ?? string.Empty));
-            }
-            return xElement;
-        }
-
         public override string ToString() => JsonConvert.SerializeObject(this);
 
         public bool Equals(IResource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -349,7 +285,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -419,11 +355,74 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             if (ResourceType == "WorkflowService")
             {
-                GetDependenciesForWorkflowService(xml);
+                TryGetDependenciesForWorkflowService(xml);
             }
         }
 
-        void GetDependenciesForWorkflowService(XElement xml)
+        string GetRootElement()
+        {
+            if (IsSource)
+            {
+                return "Source";
+            }
+            if (IsService)
+            {
+                return "Service";
+            }
+            if (IsResourceVersion)
+            {
+                return "Service";
+            }
+            if (IsServer)
+            {
+                return "Source";
+            }
+            throw new Exception(ErrorResource.BadResource);
+        }
+
+        XElement WriteErrors()
+        {
+            if (Errors == null || Errors.Count == 0)
+            {
+                return null;
+            }
+
+            XElement xElement = null;
+            foreach (var errorInfo in Errors)
+            {
+                xElement = new XElement("ErrorMessage");
+                xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
+                xElement.Add(new XAttribute("Message", errorInfo.Message ?? string.Empty));
+                xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
+                xElement.Add(new XAttribute("FixType", errorInfo.FixType));
+                xElement.Add(new XAttribute("StackTrace", errorInfo.StackTrace ?? string.Empty));
+                xElement.Add(new XCData(errorInfo.FixData ?? string.Empty));
+            }
+            return xElement;
+        }
+
+        static string GetResourceTypeFromString(string actionTypeStr)
+        {
+            if (Enum.TryParse(actionTypeStr, out enActionType actionType))
+            {
+                switch (actionType)
+                {
+                    case enActionType.InvokeWebService:
+                        return "WebService";
+                    case enActionType.InvokeStoredProc:
+                        return "DbService";
+                    case enActionType.Plugin:
+                        return "PluginService";
+                    case enActionType.Workflow:
+                        return "WorkflowService";
+                    default:
+                        break;
+                }
+            }
+            return "Unknown";
+        }
+
+        void TryGetDependenciesForWorkflowService(XElement xml)
         {
             var loadXml = xml.Descendants("XamlDefinition").ToList();
             if (loadXml.Count != 1)
@@ -436,45 +435,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var errors = new StringBuilder();
                 try
                 {
-                    var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
-                    var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                              where
-                                                  (desc.Name.LocalName.Contains("DsfMySqlDatabaseActivity") ||
-                                                   desc.Name.LocalName.Contains("DsfSqlServerDatabaseActivity") ||
-                                                   desc.Name.LocalName.Contains("DsfDotNetDllActivity") ||
-                                                   desc.Name.LocalName.Contains("DsfWebGetActivity") ||
-                                                   desc.Name.LocalName.Contains("DsfActivity")) &&
-                                                  desc.Attribute("UniqueID") != null
-                                              select desc;
-                    var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-                    var count = xElements.Count;
-
-                    if (count > 0)
-                    {
-                        Dependencies = new List<IResourceForTree>();
-                        xElements.ForEach(element =>
-                        {
-                            var uniqueIdAsString = element.AttributeSafe("UniqueID");
-                            var actionTypeStr = element.AttributeSafe("Type");
-                            var resourceType = GetResourceTypeFromString(actionTypeStr);
-                            if (resourceType == "Unknown")
-                            {
-                                resourceType = GetResourceTypeFromName(element.Name.LocalName);
-                            }
-                            var resourceIdAsString = element.AttributeSafe(resourceType == "WorkflowService" ? "ResourceID" : "SourceId");
-                            var resourceName = element.AttributeSafe("ServiceName");
-                            Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
-                            Guid.TryParse(resourceIdAsString, out Guid resId);
-                            Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, resourceType));
-                            AddRemoteServerDependencies(element);
-                        });
-                    }
-                    AddEmailSources(elementToUse);
-                    AddWebSources(elementToUse);
-                    AddSharepointSources(elementToUse);
-                    AddDotnetSources(elementToUse);
-                    AddRabbitMqSources(elementToUse);
-                    AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
+                    GetDependenciesForWorkflowService(loadXml, textReader);
                 }
                 catch (Exception e)
                 {
@@ -484,7 +445,62 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        string GetResourceTypeFromName(string localName)
+        // TODO: this method should not hard code the loaders for various Sources.
+        private void GetDependenciesForWorkflowService(List<XElement> loadXml, StringReader textReader)
+        {
+            var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+            var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                      where
+                                          IsDependency(desc.Name.LocalName) &&
+                                          desc.Attribute("UniqueID") != null
+                                      select desc;
+            var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+            var count = xElements.Count;
+
+            if (count > 0)
+            {
+                Dependencies = new List<IResourceForTree>();
+                xElements.ForEach(element =>
+                {
+                    var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                    var actionTypeStr = element.AttributeSafe("Type");
+                    var resourceType = GetResourceTypeFromString(actionTypeStr);
+                    if (resourceType == "Unknown")
+                    {
+                        resourceType = GetResourceTypeFromName(element.Name.LocalName);
+                    }
+                    var resourceIdAsString = element.AttributeSafe(resourceType == "WorkflowService" ? "ResourceID" : "SourceId");
+                    var resourceName = element.AttributeSafe("ServiceName");
+                    Guid.TryParse(uniqueIdAsString, out Guid uniqueId);
+                    Guid.TryParse(resourceIdAsString, out Guid resId);
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
+                    AddRemoteServerDependencies(element);
+                });
+            }
+            AddEmailSources(elementToUse);
+            AddWebSources(elementToUse);
+            AddSharepointSources(elementToUse);
+            AddDotnetSources(elementToUse);
+            AddRabbitMqSources(elementToUse);
+            AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
+        }
+
+#pragma warning disable S1067 // Expressions should not be too complex
+        private static bool IsDependency(string localName) => localName.Contains("DsfMySqlDatabaseActivity") ||
+                                                   localName.Contains("DsfSqlServerDatabaseActivity") ||
+                                                   localName.Contains("DsfDotNetDllActivity") ||
+                                                   localName.Contains("DsfWebGetActivity") ||
+                                                   localName.Contains("DsfActivity");
+#pragma warning restore S1067 // Expressions should not be too complex
+
+        static string GetResourceTypeFromName(string localName)
         {
             switch (localName)
             {
@@ -525,7 +541,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = Guid.Empty,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
                 }
             }
         }
@@ -554,7 +577,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = Guid.Empty,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
                 }
             }
         }
@@ -584,7 +614,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = Guid.Empty,
+                            ResourceName = resourceName,
+                            ResourceType = resourceType
+                        });
                 }
             }
         }
@@ -612,7 +649,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "RabbitMQSource"));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = "",
+                            ResourceType = "RabbitMQSource"
+                        });
                 }
             }
         }
@@ -628,12 +672,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                      where (desc.Name.LocalName.Contains("DsfWebDeleteActivity")
-                                            || desc.Name.LocalName.Contains("DsfWebGetActivity")
-                                            || desc.Name.LocalName.Contains("DsfWebPostActivity")
-                                            || desc.Name.LocalName.Contains("DsfWebPutActivity")
-
-                                            ) && desc.HasAttributes
+                                      where IsWebSourceName(desc.Name.LocalName) && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
             foreach (var element in xElements)
@@ -646,10 +685,22 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "WebSource"));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = resourceName,
+                            ResourceType = "WebSource"
+                        });
                 }
             }
         }
+
+        private static bool IsWebSourceName(string localName) => localName.Contains("DsfWebDeleteActivity")
+                                                    || localName.Contains("DsfWebGetActivity")
+                                                    || localName.Contains("DsfWebPostActivity")
+                                                    || localName.Contains("DsfWebPutActivity");
 
         void AddSharepointSources(XElement elementToUse)
         {
@@ -662,18 +713,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                      where (desc.Name.LocalName.Contains("SharepointCopyFileActivity")
-                                            || desc.Name.LocalName.Contains("SharepointCreateListItemActivity")
-                                            || desc.Name.LocalName.Contains("SharepointDeleteFileActivity")
-                                            || desc.Name.LocalName.Contains("SharepointDeleteListItemActivity")
-                                            || desc.Name.LocalName.Contains("SharepointFileDownLoadActivity")
-                                            || desc.Name.LocalName.Contains("SharepointFileUploadActivity")
-                                            || desc.Name.LocalName.Contains("SharepointMoveFileActivity")
-                                            || desc.Name.LocalName.Contains("SharepointReadFolderItemActivity")
-                                            || desc.Name.LocalName.Contains("SharepointReadListActivity")
-                                            || desc.Name.LocalName.Contains("SharepointUpdateListItemActivity")
-
-                                            ) && desc.HasAttributes
+                                      where IsSharepointName(desc.Name.LocalName) && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
             foreach (var element in xElements)
@@ -686,10 +726,30 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                 {
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "SharepointSource"));
+                    Dependencies.Add(
+                        new ResourceForTree
+                        {
+                            ResourceID = resId,
+                            UniqueID = uniqueId,
+                            ResourceName = resourceName,
+                            ResourceType = "SharepointSource"
+                        });
                 }
             }
         }
+
+#pragma warning disable S1067 // Expressions should not be too complex
+        private static bool IsSharepointName(string localName) => localName.Contains("SharepointCopyFileActivity")
+                                                    || localName.Contains("SharepointCreateListItemActivity")
+                                                    || localName.Contains("SharepointDeleteFileActivity")
+                                                    || localName.Contains("SharepointDeleteListItemActivity")
+                                                    || localName.Contains("SharepointFileDownLoadActivity")
+                                                    || localName.Contains("SharepointFileUploadActivity")
+                                                    || localName.Contains("SharepointMoveFileActivity")
+                                                    || localName.Contains("SharepointReadFolderItemActivity")
+                                                    || localName.Contains("SharepointReadListActivity")
+                                                    || localName.Contains("SharepointUpdateListItemActivity");
+#pragma warning restore S1067 // Expressions should not be too complex
 
         void AddRemoteServerDependencies(XElement element)
         {
@@ -702,17 +762,16 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
 
                 var resourceName = element.AttributeSafe("FriendlySourceName");
-                Dependencies.Add(CreateResourceForTree(environmentId, Guid.Empty, resourceName, "Server"));
+                Dependencies.Add(
+                    new ResourceForTree
+                    {
+                        ResourceID = environmentId,
+                        UniqueID = Guid.Empty,
+                        ResourceName = resourceName,
+                        ResourceType = "Server"
+                    });
             }
         }
-
-        static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, string resourceType) => new ResourceForTree
-        {
-            UniqueID = uniqueId,
-            ResourceID = resourceId,
-            ResourceName = resourceName,
-            ResourceType = resourceType
-        };
 
         public static void ParseProperties(string s, Dictionary<string, string> properties)
         {
