@@ -69,7 +69,7 @@ namespace Dev2.Server.Tests
             }
             //----------------------Assert-------------------
             mockLogManager.Verify(a => a.FlushLogs(), Times.Once);
-            mockWriter.Verify(o => o.Write("Detailed Logging Enabled"), Times.Once);
+            mockWriter.Verify(o => o.Write("Detailed Logging Enabled\n"), Times.Once);
         }
 
         [TestMethod]

@@ -270,3 +270,4 @@ testRunner.Given("I drag RabbitMQConsume tool onto the design surface", ((string
 }
 #pragma warning restore
 #endregion
+

@@ -43,7 +43,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void NewScalarItemModel_GivenDisplayName_ShouldSetDiplayName()
+        public void ScalarItemModel_GivenDisplayName_ShouldSetDiplayName()
         {
             //---------------Set up test pack-------------------
             var testitem = "TestItem";
@@ -59,7 +59,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Validatename_GivenValidName_ShouldHaveNoErrorMessage()
+        public void ScalarItemModel_Validatename_GivenValidName_ShouldHaveNoErrorMessage()
         {
             //---------------Set up test pack-------------------
             IScalarItemModel scalarItemModel = new ScalarItemModel("DisplayName");
@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateScalarName_GivenInvalidName_ShouldHaveErrorMessage()
+        public void ScalarItemModel_ValidateScalarName_GivenInvalidName_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
             IScalarItemModel scalarItemModel = new ScalarItemModel("DisplayName");
@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateName_GivenNameHasXmlEscapeCharacters_ShouldHaveErrorMessage()
+        public void ScalarItemModel_ValidateName_GivenNameHasXmlEscapeCharacters_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
             IScalarItemModel scalarItemModel = new ScalarItemModel("DisplayName");
