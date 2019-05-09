@@ -1,0 +1,1719 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Activities</RootNamespace>
+    <AssemblyName>Dev2.Activities.Designers</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>Dev2.Activities.Designers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>Dev2.Activities.Designers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="Designers2\AdvancedRecordset\AdvancedRecordsetDesignerViewModel.cs" />
+    <Compile Include="Designers2\AdvancedRecordset\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AdvancedRecordset\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AdvancedRecordset\AdvancedRecordsetDesigner.xaml.cs">
+      <DependentUpon>AdvancedRecordsetDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActionRegion\WcfActionMemento.cs" />
+    <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
+    <Compile Include="Designers2\Core\ManageSqliteServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ViewPropertyBuilder.cs" />
+    <Compile Include="Designers2\ExchangeNewEmail\ExchangeEmailDesigner.xaml.cs">
+      <DependentUpon>ExchangeEmailDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeNewEmail\ExchangeNewEmailDesignerViewModel.cs" />
+    <Compile Include="Designers2\ExchangeNewEmail\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeNewEmail\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
+      <DependentUpon>SmallErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolderNew\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolderNew\ReadFolderDesigner.xaml.cs">
+      <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolderNew\ReadFolderNewDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFolderNew\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SmallErrorView.xaml.cs">
+      <DependentUpon>SmallErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
+      <DependentUpon>SmallErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Utils\ObservableAwareNameValue.cs" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
+      <Visible>False</Visible>
+    </AdditionalFiles>
+    <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
+    <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml.cs">
+      <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllEnhancedViewModel.cs" />
+    <Compile Include="Designers2\.Net Dll Enhanced\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net Dll Enhanced\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\ComDllDesigner.xaml.cs">
+      <DependentUpon>ComDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\ComDllViewModel.cs" />
+    <Compile Include="Designers2\ComDLL\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\AggregateCalculate.xaml.cs">
+      <DependentUpon>AggregateCalculate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\AggregateCalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\AggregateCalculate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\BaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
+      <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\CalculateDesigner.xaml.cs">
+      <DependentUpon>CalculateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\CalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\CaseConvertDesigner.xaml.cs">
+      <DependentUpon>CaseConvertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CaseConvert\CaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CaseConvert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\CommandLineDesigner.xaml.cs">
+      <DependentUpon>CommandLineDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\CommandLineDesignerViewModel.cs" />
+    <Compile Include="Designers2\CommandLine\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Comment\CommentDesigner.xaml.cs">
+      <DependentUpon>CommentDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Comment\CommentDesignerViewModel.cs" />
+    <Compile Include="Designers2\Comment\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActionInputDatatalistMapper.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\ComActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionMemento.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DotNetMethodRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\WcfActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DotNetConstructorInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\ConstructorRegion\DotNetConstructorRegion.cs" />
+    <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
+    <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
+    <Compile Include="Designers2\Core\ErrorRegion.cs" />
+    <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
+    <Compile Include="Designers2\Core\FindDependencyParent.cs" />
+    <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
+    <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
+    <Compile Include="Designers2\Core\IActionInputDatatalistMapper.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetConstructorInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
+    <Compile Include="Designers2\Core\IScriptChooser.cs" />
+    <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
+    <Compile Include="Designers2\Core\OutputVisibilitySetter.cs" />
+    <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\ScriptChooser.cs" />
+    <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ComSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ExchangeSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
+    <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
+    <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecords\Large.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\Small.xaml.cs" />
+    <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CreateJSON\CreateJsonDesigner.xaml.cs">
+      <DependentUpon>CreateJsonDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CreateJSON\CreateJsonDesignerViewModel.cs" />
+    <Compile Include="Designers2\CreateJSON\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesigner.xaml.cs">
+      <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\DateTimeDifferenceStandard\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifferenceStandard\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\DateTimeDesignerViewModel.cs" />
+    <Compile Include="Designers2\DateTimStandard\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Decision\DecisionDesignerViewModel.cs" />
+    <Compile Include="Designers2\Decision\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml.cs">
+      <DependentUpon>DropBoxDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Download\DropBoxDownloadDesigner.xaml.cs">
+      <DependentUpon>DropBoxDownloadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Download\DropBoxDownloadViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Download\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Download\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml.cs">
+      <DependentUpon>DropBoxFileListDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesignerViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\DropboxFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Upload\DropBoxUploadDesigner.xaml.cs">
+      <DependentUpon>DropBoxUploadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Upload\DropBoxUploadViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Upload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Upload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml.cs">
+      <DependentUpon>RabbitMQConsumeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Consume\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml.cs">
+      <DependentUpon>RabbitMQPublishDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesignerViewModel.cs" />
+    <Compile Include="Designers2\ExchangeEmail\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesigner.xaml.cs">
+      <DependentUpon>ExchangeEmailDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Foreach\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesignerViewModel.cs" />
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\MultiAssignObjectDesigner.xaml.cs">
+      <DependentUpon>MultiAssignObjectDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\MultiAssignObjectDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssignObject\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Random\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\ODBCDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\ODBC\ODBCDatabaseDesigner.xaml.cs">
+      <DependentUpon>ODBCDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\OracleDatabaseDesigner.xaml.cs">
+      <DependentUpon>OracleDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\OracleDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\Oracle\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\PostgreSqlDatabaseDesigner.xaml.cs">
+      <DependentUpon>PostgreSqlDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\PostgreSqlDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\PostgreSql\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml.cs">
+      <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLengthNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLengthNullHandler\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\CopyDesigner.xaml.cs">
+      <DependentUpon>CopyDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\CopyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Copy\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActivityCollectionDesigner.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
+    <Compile Include="Designers2\Core\Controls\Dev2DataGrid.xaml.cs">
+      <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
+      <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\Errors\OnError.xaml.cs">
+      <DependentUpon>OnError.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\FileActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\Adorners\AdornerControl.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerButton.cs" />
+    <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
+    <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
+    <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
+    <Compile Include="Designers2\Core\IClosable.cs" />
+    <Compile Include="Designers2\Core\IsItemDragged.cs" />
+    <Compile Include="Designers2\Core\ZIndexPosition.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml.cs">
+      <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Create\CreateDesigner.xaml.cs">
+      <DependentUpon>CreateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Create\CreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\Create\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Create\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\DataMergeDesigner.xaml.cs">
+      <DependentUpon>DataMergeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\DataMergeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\DataSplitDesigner.xaml.cs">
+      <DependentUpon>DataSplitDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\DataSplitDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
+      <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsNullHandlerDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Delete\DeleteDesigner.xaml.cs">
+      <DependentUpon>DeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Delete\DeleteDesignerViewModel.cs" />
+    <Compile Include="Designers2\Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Email\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Email\EmailDesigner.xaml.cs">
+      <DependentUpon>EmailDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Email\EmailDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Email\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\FindIndexDesigner.xaml.cs">
+      <DependentUpon>FindIndexDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\FindIndexDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml.cs">
+      <DependentUpon>FindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Foreach\ForeachDesigner.xaml.cs">
+      <DependentUpon>ForeachDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Foreach\ForeachDesignerViewModel.cs" />
+    <Compile Include="Designers2\Foreach\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\FormatNumberDesigner.xaml.cs">
+      <DependentUpon>FormatNumberDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\FormatNumberDesignerViewModel.cs" />
+    <Compile Include="Designers2\FormatNumber\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\GatherSystemInformationDesigner.xaml.cs">
+      <DependentUpon>GatherSystemInformationDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Move\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Move\MoveDesigner.xaml.cs">
+      <DependentUpon>MoveDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Move\MoveDesignerViewModel.cs" />
+    <Compile Include="Designers2\Move\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssign\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssign\MultiAssignDesigner.xaml.cs">
+      <DependentUpon>MultiAssignDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActivityDesigner.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssign\MultiAssignDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssign\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttachedProperties\FocusSetter.cs" />
+    <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\Random\RandomDesigner.xaml.cs">
+      <DependentUpon>RandomDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Random\RandomDesignerViewModel.cs" />
+    <Compile Include="Designers2\Random\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\CredentialsActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFile\ReadFileDesigner.xaml.cs">
+      <DependentUpon>ReadFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFile\ReadFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\ReadFolderDesigner.xaml.cs">
+      <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\ReadFolderDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFolder\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
+      <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\RenameDesigner.xaml.cs">
+      <DependentUpon>RenameDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\RenameDesignerViewModel.cs" />
+    <Compile Include="Designers2\Rename\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Replace\ReplaceDesigner.xaml.cs">
+      <DependentUpon>ReplaceDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Replace\ReplaceDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Replace\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Replace\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\PythonDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Python\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\RubyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Ruby\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\JavaScriptDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Javascript\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script\ScriptDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SelectAndApplyDesigner.xaml.cs">
+      <DependentUpon>SelectAndApplyDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SelectAndApplyDesignerViewModel.cs" />
+    <Compile Include="Designers2\SelectAndApply\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SequenceDesigner.xaml.cs">
+      <DependentUpon>SequenceDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SequenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\Sequence\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\VerticalConnector.xaml.cs">
+      <DependentUpon>VerticalConnector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\MappingManager.cs" />
+    <Compile Include="Designers2\Service\ServiceDesigner.xaml.cs">
+      <DependentUpon>ServiceDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\ServiceDesignerViewModel.cs" />
+    <Compile Include="Designers2\Service\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\ValidationMemoManager.cs" />
+    <Compile Include="Designers2\SharePointCopyFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\SharePointCopyFileDesigner.xaml.cs">
+      <DependentUpon>SharePointCopyFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\SharePointCopyFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointCopyFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesigner.xaml.cs">
+      <DependentUpon>SharePointDeleteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointDeleteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesigner.xaml.cs">
+      <DependentUpon>SharePointFileDownLoadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointFileDownload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\SharePointFileUploadDesigner.xaml.cs">
+      <DependentUpon>SharePointFileUploadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\SharePointFileUploadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointFileUpload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\SharePointReadFolderDesigner.xaml.cs">
+      <DependentUpon>SharePointReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\SharePointReadFolderDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointFolderRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\SharepointListCreateDesigner.xaml.cs">
+      <DependentUpon>SharepointListCreateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\SharepointListCreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListCreate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\SharepointListDeleteDesigner.xaml.cs">
+      <DependentUpon>SharepointListDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\SharepointListDeleteDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListDelete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\SharepointListDesignerViewModelBase.cs" />
+    <Compile Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml.cs">
+      <DependentUpon>SharepointListReadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\SharepointListReadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListRead\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesigner.xaml.cs">
+      <DependentUpon>SharepointListUpdateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListUpdate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\SharePointMoveFileDesigner.xaml.cs">
+      <DependentUpon>SharePointMoveFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\SharePointMoveFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointMoveFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\SortRecordsDesigner.xaml.cs">
+      <DependentUpon>SortRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\SortRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\SqlBulkInsert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesigner.xaml.cs">
+      <DependentUpon>SqlBulkInsertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesignerViewModel.cs" />
+    <Compile Include="Designers2\GatherSystemInformation\GatherSystemInformationDesignerViewModel.cs" />
+    <Compile Include="Designers2\MySqlDatabase\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MySqlDatabase\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MySqlDatabase\MySqlDatabaseDesigner.xaml.cs">
+      <DependentUpon>MySqlDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MySqlDatabase\MySqlDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\SqlServerDatabase\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesigner.xaml.cs">
+      <DependentUpon>SqlServerDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\Switch\ConfigureSwitch.xaml.cs">
+      <DependentUpon>ConfigureSwitch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Switch\ConfigureSwitchArm.xaml.cs">
+      <DependentUpon>ConfigureSwitchArm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Switch\SwitchDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml.cs">
+      <DependentUpon>UniqueRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Unzip\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Unzip\UnzipDesigner.xaml.cs">
+      <DependentUpon>UnzipDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Unzip\UnzipDesignerViewModel.cs" />
+    <Compile Include="Designers2\Unzip\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml.cs">
+      <DependentUpon>WcfEndPointDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointViewModel.cs" />
+    <Compile Include="Designers2\Core\IServiceInputBuilder.cs" />
+    <Compile Include="Designers2\Web Service Put\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ServiceInputBuilder.cs" />
+    <Compile Include="Designers2\Web Service Put\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebPutDesigner.xaml.cs">
+      <DependentUpon>WebPutDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebServicePutViewModel.cs" />
+    <Compile Include="Designers2\Web Service Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\WebServiceDeleteViewModel.cs" />
+    <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
+      <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
+      <DependentUpon>WebGetDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Post\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\WebPostDesigner.xaml.cs">
+      <DependentUpon>WebPostDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\WebServicePostViewModel.cs" />
+    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
+      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\XPath\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\XPath\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\XPath\XPathDesigner.xaml.cs">
+      <DependentUpon>XPathDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\XPath\XPathDesignerViewModel.cs" />
+    <Compile Include="Designers2\Zip\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Zip\ZipDesigner.xaml.cs">
+      <DependentUpon>ZipDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Zip\ZipDesignerViewModel.cs" />
+    <Compile Include="Designers2\Zip\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
+    <Compile Include="Preview\PreviewView.xaml.cs">
+      <DependentUpon>PreviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Preview\PreviewViewModel.cs" />
+    <Compile Include="Properties\ActivityResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ActivityResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputView.xaml.cs">
+      <DependentUpon>QuickVariableInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
+    <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
+    <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
+    <EmbeddedResource Include="Properties\ActivityResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Dev2.Activities.Designers.ruleset" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>Warewolf.Parser.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
+      <Project>{1BD5CC42-66C7-4A1B-AF1F-E6F2D4372B44}</Project>
+      <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{A62DA168-5BF3-4C14-B880-4AD83478E3A7}</Project>
+      <Name>Warewolf.Studio.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="1.4.1" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\aerowizard\2.1.7\lib\net452\AeroWizard.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\caliburn.micro\1.4.1\lib\net45\Caliburn.Micro.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\castle.core\4.2.0\lib\net45\Castle.Core.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\txfilemanager\1.3.0\lib\net20\ChinhDo.Transactions.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\taskschedulereditor\2.5.20\lib\net452\CubicOrange.Windows.Forms.ActiveDirectory.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Activities.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Common.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Common.Interfaces.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Core.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.CustomControls.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Data.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Data.Interfaces.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Diagnostics.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Infrastructure.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Intellisense.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Runtime.Configuration.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Runtime.Services.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Studio.Core.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Studio.Interfaces.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Dev2.Util.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\dropbox.api\4.2.4\lib\net45\Dropbox.Api.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\entityframework\6.2.0\lib\net45\EntityFramework.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\entityframework\6.2.0\lib\net45\EntityFramework.SqlServer.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\fontawesome.wpf\4.5.0.8\lib\net40\FontAwesome.WPF.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\fsharp.core.3\0.0.2\lib\net40\FSharp.Core.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\gac.api\1.0.1\lib\net45\GACManagerApi.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\groupcontrols\1.5.3\lib\net452\GroupControls.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.DataManager.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.Editors.v15.1.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\InfragisticsWPF4.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\linqkit\1.1.15\lib\net45\LinqKit.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\log4net\2.0.5\lib\net45-full\log4net.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\messagepack\1.7.3.4\lib\net47\MessagePack.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.aspnet.signalr.client\2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.aspnet.signalr.core\2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.compilerservices.asynctargetingpack\1.0.0\lib\net45\Microsoft.CompilerServices.AsyncTargetingPack.Net45.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.exchange.webservices\2.2.0\lib\40\Microsoft.Exchange.WebServices.Auth.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.exchange.webservices\2.2.0\lib\40\Microsoft.Exchange.WebServices.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Dev\Binaries\Microsoft.Expression.Interactions.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.Office.Client.Policy.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.Office.Client.TranslationServices.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.Office.SharePoint.Tools.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.owin.diagnostics\3.1.0\lib\net45\Microsoft.Owin.Diagnostics.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.owin\3.1.0\lib\net45\Microsoft.Owin.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.owin.host.httplistener\3.1.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.owin.hosting\3.1.0\lib\net45\Microsoft.Owin.Hosting.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.owin.security\3.1.0\lib\net45\Microsoft.Owin.Security.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.composition\5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.interactivity\5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.mvvm\1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.mvvm\1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.pubsubevents\1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.mvvm\1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\prism.unityextensions\5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\commonservicelocator\1.2.0\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\unity\3.5.1404\lib\net45\Microsoft.Practices.Unity.Configuration.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\unity\3.5.1404\lib\net45\Microsoft.Practices.Unity.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\unity\3.5.1404\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.DocumentManagement.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Publishing.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Runtime.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Search.Applications.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Search.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Taxonomy.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.sharepointonline.csom\16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\taskscheduler\2.5.20\lib\net452\Microsoft.Win32.TaskScheduler.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\taskschedulereditor\2.5.20\lib\net452\Microsoft.Win32.TaskSchedulerEditor.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\mscorlib.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\mysql.data\6.9.9\lib\net45\MySql.Data.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\newtonsoft.json\10.0.3\lib\net45\Newtonsoft.Json.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\npgsql\3.0.5\lib\net45\Npgsql.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\oracle.manageddataaccess\12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\owin\1.0.0\lib\net40\Owin.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\fsharp.core.3\0.0.2\lib\net40\policy.2.3.FSharp.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\rabbitmq.client\3.6.1\lib\net45\RabbitMQ.Client.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Activities.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Activities.Presentation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.ComponentModel.Composition.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.ComponentModel.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.Entity.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\system.data.sqlite.core\1.0.109.2\lib\net46\System.Data.SQLite.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\system.data.sqlite.ef6\1.0.109\lib\net46\System.Data.SQLite.EF6.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\system.data.sqlite.linq\1.0.109\lib\net46\System.Data.SQLite.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\microsoft.aspnet.webapi.client\5.2.3\lib\net45\System.Net.Http.Formatting.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\system.threading.tasks.extensions\4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\system.valuetuple\4.4.0\ref\net47\System.ValueTuple.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Windows.Forms.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\expression.blend.sdk\1.0.2\lib\net45\System.Windows.Interactivity.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\timespan2\2.1.4\lib\net452\TimeSpan2.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\trienet\1.0.3.26316\lib\net461\TrieNet.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\tsql.parser\1.1.1\lib\net40\TSQL_Parser.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Core.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Language.Parser.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Resource.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Storage.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Studio.Core.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Studio.CustomControls.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Studio.Models.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Studio.Resources.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\Warewolf.Studio.Themes.Luna.dll" />
+    <ReferencePath Include="D:\repos\gendev\warewolf\Bin\AcceptanceTesting\WarewolfParserInterop.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\WindowsBase.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\extended.wpf.toolkit\2.3.0\lib\net40\Xceed.Wpf.AvalonDock.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\extended.wpf.toolkit\2.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\extended.wpf.toolkit\2.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\extended.wpf.toolkit\2.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\extended.wpf.toolkit\2.3.0\lib\net40\Xceed.Wpf.DataGrid.dll" />
+    <ReferencePath Include="C:\Users\ashley.lewis\.nuget\packages\extended.wpf.toolkit\2.3.0\lib\net40\Xceed.Wpf.Toolkit.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\Microsoft.Win32.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\netstandard.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.AppContext.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Collections.Concurrent.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Collections.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Collections.NonGeneric.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Collections.Specialized.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ComponentModel.Annotations.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ComponentModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ComponentModel.EventBasedAsync.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ComponentModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ComponentModel.TypeConverter.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Console.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Data.Common.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.Contracts.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.FileVersionInfo.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.Process.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.StackTrace.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.TextWriterTraceListener.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.Tools.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Diagnostics.TraceSource.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Drawing.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Dynamic.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Globalization.Calendars.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Globalization.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Globalization.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.Compression.ZipFile.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.FileSystem.DriveInfo.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.FileSystem.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.FileSystem.Watcher.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.IsolatedStorage.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.MemoryMappedFiles.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.Pipes.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.IO.UnmanagedMemoryStream.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Linq.Expressions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Linq.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Linq.Queryable.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.Http.Rtc.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.NameResolution.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.NetworkInformation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.Ping.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.Requests.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.Security.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.Sockets.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.WebHeaderCollection.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.WebSockets.Client.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Net.WebSockets.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ObjectModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Reflection.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Reflection.Emit.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Reflection.Emit.ILGeneration.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Reflection.Emit.Lightweight.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Reflection.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Reflection.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Resources.Reader.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Resources.ResourceManager.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Resources.Writer.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.CompilerServices.VisualC.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Handles.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.InteropServices.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Serialization.Formatters.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Serialization.Json.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Serialization.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Runtime.Serialization.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Claims.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Cryptography.Algorithms.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Cryptography.Csp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Cryptography.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Cryptography.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Cryptography.X509Certificates.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.Principal.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Security.SecureString.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ServiceModel.Duplex.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ServiceModel.Http.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ServiceModel.NetTcp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ServiceModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.ServiceModel.Security.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Text.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Text.Encoding.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Text.RegularExpressions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.Overlapped.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.Tasks.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.Tasks.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.Thread.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.ThreadPool.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Threading.Timer.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Xml.ReaderWriter.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Xml.XDocument.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Xml.XmlDocument.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Xml.XmlSerializer.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Xml.XPath.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Facades\System.Xml.XPath.XDocument.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\.Net Dll Enhanced\DotNetDllDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\.Net Dll Enhanced\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\.Net Dll Enhanced\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\AdvancedRecordset\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\AdvancedRecordset\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\AdvancedRecordset\AdvancedRecordsetDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ComDLL\ComDllDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ComDLL\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ComDLL\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\AggregateCalculate\AggregateCalculate.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\AggregateCalculate\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\AggregateCalculate\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\BaseConvert\BaseConvertDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\BaseConvert\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\BaseConvert\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Calculate\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Calculate\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Calculate\CalculateDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CaseConvert\CaseConvertDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CaseConvert\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CaseConvert\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CommandLine\CommandLineDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CommandLine\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CommandLine\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Comment\CommentDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Comment\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Core\CustomToolDesignerRegions.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CountRecordsNullHandler\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CountRecords\CountRecordsDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CountRecords\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CountRecords\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CreateJSON\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CreateJSON\CreateJsonDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CreateJSON\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimeDifferenceStandard\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimeDifferenceStandard\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimeDifference\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTime\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimStandard\DateTimeDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimStandard\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimStandard\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Decision\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DeleteRecordsNullHandler\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DeleteRecords\DeleteRecordsDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DeleteRecords\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DeleteRecords\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Delete\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Delete\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Download\DropBoxDownloadDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Download\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Download\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\DropboxFile\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\DropboxFile\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Upload\DropBoxUploadDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Upload\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DropBox2016\Upload\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ExchangeEmail\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ExchangeEmail\ExchangeEmailDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ExchangeEmail\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ExchangeNewEmail\ExchangeEmailDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ExchangeNewEmail\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ExchangeNewEmail\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FindIndex\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Foreach\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Foreach\SmallErrorView.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FormatNumber\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GatherSystemInformation\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GetWebRequest\GetWebRequest\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GetWebRequest\GetWebRequest\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RabbitMQ\Consume\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RabbitMQ\Consume\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RabbitMQ\Publish\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RabbitMQ\Publish\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MultiAssignObject\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MultiAssignObject\MultiAssignObjectDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MultiAssignObject\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Random\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ODBC\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ODBC\ODBCDatabaseDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ODBC\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Oracle\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Oracle\OracleDatabaseDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Oracle\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\PostgreSql\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\PostgreSql\PostgreSqlDatabaseDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\PostgreSql\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFolderNew\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFolderNew\ReadFolderDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFolderNew\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RecordsLengthNullHandler\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RecordsLengthNullHandler\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Copy\CopyDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Copy\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Copy\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Core\Controls\Dev2DataGrid.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Core\Errors\ErrorsAdorner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Core\Errors\OnError.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CountRecordsNullHandler\CountRecordsDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\CountRecordsNullHandler\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Create\CreateDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Create\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Create\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DataMerge\DataMergeDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DataMerge\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DataMerge\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DataSplit\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DataSplit\DataSplitDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DataSplit\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimeDifference\DateTimeDifferenceDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTimeDifference\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTime\DateTimeDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DateTime\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\DeleteRecordsNullHandler\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Delete\DeleteDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Delete\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Delete\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Email\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Email\EmailDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Email\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FindIndex\FindIndexDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FindIndex\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FindRecordsMultipleCriteria\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FindRecordsMultipleCriteria\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Foreach\ForeachDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Foreach\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FormatNumber\FormatNumberDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\FormatNumber\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GatherSystemInformation\GatherSystemInformationDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GatherSystemInformation\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Move\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Move\MoveDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Move\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MultiAssign\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MultiAssign\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Random\RandomDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Random\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFile\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFile\ReadFileDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFile\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFolder\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFolder\ReadFolderDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\ReadFolder\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RecordsLength\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RecordsLength\RecordsLengthDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\RecordsLength\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Rename\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Rename\RenameDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Rename\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Replace\ReplaceDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Replace\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Replace\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Python\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Python\ScriptDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Python\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Ruby\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Ruby\ScriptDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Ruby\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Javascript\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Javascript\ScriptDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script_Javascript\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script\ScriptDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Script\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SelectAndApply\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SelectAndApply\SelectAndApplyDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SelectAndApply\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SelectAndApply\SmallErrorView.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Sequence\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Sequence\SequenceDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Sequence\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Sequence\SmallErrorView.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Sequence\VerticalConnector.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Service\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Service\ServiceDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Service\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointCopyFile\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointCopyFile\SharePointCopyFileDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointCopyFile\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointDeleteFile\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointDeleteFile\SharePointDeleteFileDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointDeleteFile\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointFileDownload\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointFileDownload\SharePointFileDownLoadDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointFileDownload\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointFileUpload\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointFileUpload\SharePointFileUploadDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointFileUpload\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointFolderRead\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointFolderRead\SharePointReadFolderDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointFolderRead\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListCreate\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListCreate\SharepointListCreateDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListCreate\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListDelete\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListDelete\SharepointListDeleteDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListDelete\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListRead\SharepointListReadDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListRead\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListRead\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListUpdate\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListUpdate\SharepointListUpdateDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharepointListUpdate\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointMoveFile\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointMoveFile\SharePointMoveFileDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SharePointMoveFile\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SortRecords\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SortRecords\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SortRecords\SortRecordsDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SqlBulkInsert\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SqlBulkInsert\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SqlBulkInsert\SqlBulkInsertDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MySqlDatabase\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MySqlDatabase\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MySqlDatabase\MySqlDatabaseDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SqlServerDatabase\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SqlServerDatabase\SqlServerDatabaseDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\SqlServerDatabase\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Switch\ConfigureSwitch.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Switch\ConfigureSwitchArm.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\UniqueRecords\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\UniqueRecords\UniqueRecordsDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\UniqueRecords\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Unzip\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Unzip\UnzipDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Unzip\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\WCFEndPoint\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\WCFEndPoint\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\WCFEndPoint\WcfEndPointDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Put\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Put\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Put\WebPutDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Delete\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Delete\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Delete\WebDeleteDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Get\WebGetDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Get\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Get\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Post\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Post\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Web Service Post\WebPostDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\WriteFile\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\WriteFile\WriteFileDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\WriteFile\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\XPath\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\XPath\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\XPath\XPathDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Zip\Large.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Zip\Small.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Zip\ZipDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\MultiAssign\MultiAssignDesigner.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Preview\PreviewView.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\Designers2\Core\QuickVariableInput\QuickVariableInputView.g.cs" />
+    <Compile Include="D:\repos\gendev\warewolf\Dev\Dev2.Activities.Designers\obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>

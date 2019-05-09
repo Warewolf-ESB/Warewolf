@@ -768,3 +768,4 @@ this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[rs([[var]])]]", "0"
 }
 #pragma warning restore
 #endregion
+

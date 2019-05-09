@@ -689,13 +689,13 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL to download html with timeout specified too short: http://tst-ci-remo" +
-            "te-obsolete:3142/Public/Wait?WaitSeconds=150")]
+            "te:3142/Public/Wait?WaitSeconds=150")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
-        public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort_HttpTst_Ci_Remote_Obsolete3142PublicWaitWaitSeconds150()
+        public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort_HttpTst_Ci_Remote3142PublicWaitWaitSeconds150()
         {
 #line 167
 this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150", "10", ((string[])(null)));
@@ -704,13 +704,13 @@ this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL to download html with timeout specified too short: http://tst-ci-remo" +
-            "te-obsolete:3142/Public/Wait?WaitSeconds=15")]
+            "te:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
-        public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort_HttpTst_Ci_Remote_Obsolete3142PublicWaitWaitSeconds15()
+        public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort_HttpTst_Ci_Remote3142PublicWaitWaitSeconds15()
         {
 #line 167
 this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", ((string[])(null)));
@@ -730,8 +730,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://rsaklfsvrtfsbld/I" +
                     "ntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 184
- testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote-obs" +
-                    "olete:3142/secure/Wait?WaitSeconds=15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote:314" +
+                    "2/secure/Wait?WaitSeconds=15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
  testRunner.And("I have a web request variable \"[[results().res]]\" equal to \"res1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 186
@@ -761,3 +761,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+

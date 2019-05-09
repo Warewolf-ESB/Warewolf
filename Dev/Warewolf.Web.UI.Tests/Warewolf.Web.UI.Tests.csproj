@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -8,7 +8,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Web.UI.Tests</RootNamespace>
     <AssemblyName>Warewolf.Web.UI.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -82,11 +83,6 @@
     <None Include="App.config" />
     <None Include="Convert NUnit tests to MSTest.ps1" />
     <None Include="packages.config" />
-    <None Include="..\Run Tests.ps1">
-      <Visible>False</Visible>
-      <Link>Run Tests.ps1</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
       <Visible>False</Visible>
 	</AdditionalFiles>
