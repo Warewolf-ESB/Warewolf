@@ -334,14 +334,14 @@
   <ItemGroup>
     <None Include="Decrypt Server Resources.ps1" />
     <None Include="app.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
     <None Include="userServerSettings.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Warewolf Server.exe.secureconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Unlimited.Applications.DynamicServicesHost_TemporaryKey.pfx" />

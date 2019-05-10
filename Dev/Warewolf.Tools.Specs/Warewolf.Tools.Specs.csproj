@@ -792,41 +792,41 @@
   <ItemGroup>
     <EmbeddedResource Include="Toolbox\Database\SqlBulkInsert\Import_data_into_Table_Batch_size_is_1.sql" />
     <EmbeddedResource Include="Toolbox\Data\DataMerge\NewLineExample.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Data\DataSplit\CSVExample.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\filewithvariables.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\infile1WithCarriageReturn.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\outfile1WithCarriageReturn.txt" />
     <Content Include="Toolbox\Database\SqlBulkInsert\databasesetup.txt" />
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_badly_formatted.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_one_variable.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_two_variables.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_badly_formatted.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_one_variable.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_two_variables.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_badly_formatted.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_one_variable.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_two_variables.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

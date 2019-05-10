@@ -447,7 +447,7 @@
   <ItemGroup>
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

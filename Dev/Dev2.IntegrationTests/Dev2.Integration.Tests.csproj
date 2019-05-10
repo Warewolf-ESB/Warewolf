@@ -249,7 +249,7 @@
     <None Include="app.config" />
     <None Include="Server Refresh\Resources\DeleteWorkflowTest.xml" />
     <EmbeddedResource Include="TestData\Test.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

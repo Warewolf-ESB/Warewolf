@@ -213,7 +213,7 @@
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="DynamicServicesHostTests.cs" />
     <Compile Include="Services\HostSecureConfigTests.cs" />
@@ -670,7 +670,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="TextFiles\SubFolderB\SubFolderBTextFile1.txt" />
     <Content Include="TextFiles\SubFolderA\SubFolderATextFile1.txt" />
@@ -684,7 +684,7 @@
     <EmbeddedResource Include="XML\WarewolfResourceFile.xml" />
     <EmbeddedResource Include="XML\QLINKHUB.xml" />
     <Content Include="XML\GenDev.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>

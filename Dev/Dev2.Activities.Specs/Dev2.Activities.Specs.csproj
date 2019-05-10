@@ -549,7 +549,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Hello World.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup />
