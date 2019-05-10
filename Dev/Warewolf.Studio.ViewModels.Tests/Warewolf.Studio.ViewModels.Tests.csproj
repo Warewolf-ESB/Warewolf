@@ -137,13 +137,13 @@
       <Link>App.config</Link>
     </None>
     <None Include="JsonResources\DotnetllDebugStates.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="JsonResources\DebugStatesWithMockAssign.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="JsonResources\DebugStates.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="JsonResources\dotnetDllState.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

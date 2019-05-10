@@ -73,7 +73,6 @@
     <Compile Include="State\StateNotifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Runtime.Auditing.ruleset" />
   </ItemGroup>
   <ItemGroup>
