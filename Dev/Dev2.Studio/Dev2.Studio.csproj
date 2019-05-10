@@ -843,7 +843,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.5.20</Version>
