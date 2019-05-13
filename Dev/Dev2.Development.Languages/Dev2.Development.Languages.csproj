@@ -86,6 +86,7 @@
     <Compile Include="Scripting\Dev2PythonContext.cs" />
     <Compile Include="Scripting\RubyContext.cs" />
     <Compile Include="Scripting\ScriptingEngineRepo.cs" />
+    <None Include="app.config" />
     <None Include="Dev2.Development.Languages.ruleset" />
   </ItemGroup>
   <ItemGroup>

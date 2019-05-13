@@ -165,7 +165,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         void ViewJsonObjects(IServiceInput input)
         {
-            JsonObjectsView?.ShowJsonString(JSONUtils.Format(JSONUtils.Format(input.Dev2ReturnType)));
+            JsonObjectsView?.ShowJsonString(JsonUtils.Format(JsonUtils.Format(input.Dev2ReturnType)));
         }
         public bool IsInputsEmptyRows
         {

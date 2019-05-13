@@ -165,10 +165,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="TSQL.Parser">
       <Version>1.1.1</Version>

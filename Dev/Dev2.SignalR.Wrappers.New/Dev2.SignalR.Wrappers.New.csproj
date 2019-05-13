@@ -74,7 +74,7 @@
     </AdditionalFiles>
     <None Include="app.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Dev2.SignalR.Wrappers.New.ruleset" />
   </ItemGroup>

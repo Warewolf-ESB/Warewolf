@@ -98,6 +98,7 @@ namespace Warewolf.Studio.ViewModels
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => throw new NotImplementedException();
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType) => throw new NotImplementedException();
 
+        T IServiceTestModel.As<T>() => this as T;
         #endregion
     }
 

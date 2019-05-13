@@ -60,15 +60,6 @@ namespace Dev2.Diagnostics.Debug
             set => _disconnectedID = value;
         }
 
-        static DebugState()
-        {
-            var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
-            if (!Directory.Exists(tempPath))
-            {
-                Directory.CreateDirectory(tempPath);
-            }
-        }
-
         #endregion
 
         #region IDebugState - Properties

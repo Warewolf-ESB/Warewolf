@@ -106,6 +106,7 @@
     <Compile Include="Utils\WatermarkSential.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WatermarkTextBox.cs" />
+    <None Include="app.config" />
     <None Include="Dev2.CustomControls.ruleset" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -469,12 +469,12 @@
   <ItemGroup>
     <None Include="Dev2.Runtime.Services.ruleset" />
     <None Include="SSL Generation\CreateCertificate.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="SSL Generation\makecert.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -551,10 +551,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>

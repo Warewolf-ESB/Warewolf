@@ -36,6 +36,7 @@ using Dev2.Instrumentation.Factory;
 using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
+using System.Reflection;
 
 namespace Dev2
 {
@@ -109,6 +110,7 @@ namespace Dev2
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
+            SetApplicationDirectory();
             LoadPerformanceCounters();
 
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
@@ -126,12 +128,27 @@ namespace Dev2
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
 
+        private static void SetApplicationDirectory()
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+                EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
+                EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
+            }
+        }
+
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
             void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
             {
                 _writer.Write("Opening named pipe client stream for COM IPC... ");
-                _ipcClient = _ipcClient.GetIPCExecutor(clientStreamWrapper);
+                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
                 _writer.WriteLine("done.");
             }
 

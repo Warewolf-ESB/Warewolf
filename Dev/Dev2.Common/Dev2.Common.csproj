@@ -194,7 +194,7 @@
     <Compile Include="TimeZoneBuilder\TimeFormatPartBuilder.cs" />
     <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="Utils\JSONUtils.cs" />
+    <Compile Include="Utils\JsonUtils.cs" />
     <Compile Include="Utils\StringTransform.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
@@ -266,7 +266,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>

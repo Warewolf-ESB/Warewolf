@@ -26,5 +26,6 @@ namespace Dev2
         IEnumerable<StateVariable> GetState();
         IEnumerable<IDev2Activity> GetNextNodes();
         List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors();
+        T As<T>() where T : class, IDev2Activity;
     }
 }

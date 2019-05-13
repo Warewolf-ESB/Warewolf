@@ -4,14 +4,9 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class ExecutionManager : IExecutionManager
     {       
-        bool _isRefreshing;
-        int _currentExecutions;        
+        volatile bool _isRefreshing;
+        volatile int _currentExecutions;
         static ManualResetEvent _eventPulse = new ManualResetEvent(false);
-        public ExecutionManager()
-        {
-            _isRefreshing = false;
-            _currentExecutions = 0;          
-        }
 
         public void StartRefresh()
         {

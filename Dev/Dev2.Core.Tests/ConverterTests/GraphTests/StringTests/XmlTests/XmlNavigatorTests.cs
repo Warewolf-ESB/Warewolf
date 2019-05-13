@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -12,21 +11,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
-using System.Xml;
-using System.Xml.Linq;
-using Dev2.Data.Util;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
     [TestClass]
     public class XmlNavigatorTests
     {
-        string testData => @"<Company Name='Dev2'>
+        string TestData => @"<Company Name='Dev2'>
     <Motto>Eat lots of cake</Motto>
     <PreviousMotto/>
 	<Departments TestAttrib='testing'>
@@ -60,34 +55,39 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 </Company>";
 
         string GivenSingleNode => @"<Message>Dummy Data</Message>";
-        
-        #region SelectScalar Tests
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SelectScalarValue_WithNull_Expected_ArgumentNullException()
+        public void XmlNavigator_SelectScalarValue_WithNull_Expected_ArgumentNullException()
         {
-            var xmlNavigator = new XmlNavigator(testData);
-            xmlNavigator.SelectScalar(null);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                xmlNavigator.SelectScalar(null);
+            }
         }
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(Exception))]
-        public void SelectScalar_WithoutXmlPath_ExpectException()
+        public void XmlNavigator_SelectScalar_WithoutXmlPath_ExpectException()
         {
-            var JsonNavigator = new XmlNavigator(testData);
-            JsonNavigator.SelectScalar(new JsonPath());
+            using (var JsonNavigator = new XmlNavigator(TestData))
+            {
+                JsonNavigator.SelectScalar(new JsonPath());
+            }
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithPathSeperator_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithPathSeperator_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath(".", ".");
 
-            var xmlNavigator = new XmlNavigator(testData);
-
-            var actual = xmlNavigator.SelectScalar(namePath).ToString();
-            const string expected = @"<Company Name=""Dev2"">
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString();
+                const string expected = @"<Company Name=""Dev2"">
   <Motto>Eat lots of cake</Motto>
   <PreviousMotto />
   <Departments TestAttrib=""testing"">
@@ -120,114 +120,129 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
   </OuterNestedRecordSet>
 </Company>";
 
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithScalarPathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithScalarPathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company:Name", "Company:Name");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString();
+                const string expected = nameof(Dev2);
 
-            var actual = xmlNavigator.SelectScalar(namePath).ToString();
-            const string expected = "Dev2";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectScalarValue_WithScalarPathFromXml_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithScalarPathFromXml_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company.Motto", "Company.Motto");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString();
+                const string expected = "Eat lots of cake";
 
-            var actual = xmlNavigator.SelectScalar(namePath).ToString();
-            const string expected = "Eat lots of cake";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
         [TestMethod]
-        public void SelectScalarValue_WithWrongPathSegment_Expected_NoValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithWrongPathSegment_Expected_NoValue()
         {
             IPath namePath = new XmlPath("Company.Nogo", "Company.Nogo");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString();
 
-            var actual = xmlNavigator.SelectScalar(namePath).ToString();
-
-            Assert.AreEqual(string.Empty, actual);
+                Assert.AreEqual(string.Empty, actual);
+            }
         }
 
-        public void SelectScalarValue_WithScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+        public void XmlNavigator_SelectScalarValue_WithScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString();
+                const string expected = "Dummy Data";
 
-            var actual = xmlNavigator.SelectScalar(namePath).ToString();
-            const string expected = "Dummy Data";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString();
+                const string expected = "Joe";
 
-            var actual = xmlNavigator.SelectScalar(namePath).ToString();
-            const string expected = "Joe";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectScalar(namePath).ToString().Trim();
+                const string expected = "RandomData1";
 
-            var actual = xmlNavigator.SelectScalar(namePath).ToString().Trim();
-            const string expected = "RandomData1";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
-        #endregion SelectScalar Tests
-
-        #region SelectEnumerable Tests
-
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SelectEnumerableValueUsingNull_Expected_ArgumentNullException()
+        public void XmlNavigator_SelectEnumerableValueUsingNull_Expected_ArgumentNullException()
         {
-            var xmlNavigator = new XmlNavigator(testData);
-            xmlNavigator.SelectEnumerable(null);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                xmlNavigator.SelectEnumerable(null);
+            }
         }
 
         [TestMethod]
+        [TestCategory(nameof(XmlNavigator))]
         [ExpectedException(typeof(Exception))]
-        public void SelectEnumerableValue_WithoutXmlPath_Expected_Exception()
+        public void XmlNavigator_SelectEnumerableValue_WithoutXmlPath_Expected_Exception()
         {
-            var xmlNavigator = new XmlNavigator(testData);
-            xmlNavigator.SelectEnumerable(new JsonPath());
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                xmlNavigator.SelectEnumerable(new JsonPath());
+            }
         }
 
         [TestMethod]
-        public void SelectEnumerableValueUsingPathSeperator_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValueUsingPathSeperator_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath(".", ".");
 
-            var xmlNavigator = new XmlNavigator(testData);
-
-            var actual = xmlNavigator.SelectEnumerable(namePath);
-            var expected = new List<object> { @"<Company Name=""Dev2"">
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = xmlNavigator.SelectEnumerable(namePath);
+                var expected = new List<object> { @"<Company Name=""Dev2"">
   <Motto>Eat lots of cake</Motto>
   <PreviousMotto />
   <Departments TestAttrib=""testing"">
@@ -260,212 +275,238 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
   </OuterNestedRecordSet>
 </Company>" };
 
-            Assert.AreEqual(expected.FirstOrDefault().ToString(), actual.FirstOrDefault().ToString());
+                Assert.AreEqual(expected.FirstOrDefault().ToString(), actual.FirstOrDefault().ToString());
+            }
         }
 
         [TestMethod]
-        public void SelectEnumerableValueUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValueUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
 
-            var xmlNavigator = new XmlNavigator(GivenSingleNode);
+            using (var xmlNavigator = new XmlNavigator(GivenSingleNode))
+            {
+                var actual = xmlNavigator.SelectEnumerable(namePath);
+                const string expected = "Dummy Data";
 
-            var actual = xmlNavigator.SelectEnumerable(namePath);
-            const string expected = "Dummy Data";
-
-            Assert.IsTrue(actual.Contains(expected));
+                Assert.IsTrue(actual.Contains(expected));
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
+                const string expected = "RandomData|RandomData1";
 
-            var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            const string expected = "RandomData|RandomData1";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
+                const string expected = "Dev|Accounts";
 
-            var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            const string expected = "Dev|Accounts";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToANode_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company.Motto", "Company.Motto");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
+                const string expected = "Eat lots of cake";
 
-            var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            const string expected = "Eat lots of cake";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingScalarPathFromXml_WherePathMapsToAnAttribute_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company:Name", "Company:Name");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
+                const string expected = nameof(Dev2);
 
-            var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            const string expected = "Dev2";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario1_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario1_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
+                const string expected = "Brendon|Jayd|Bob|Joe";
 
-            var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            const string expected = "Brendon|Jayd|Bob|Joe";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario2_Expected_EnumerableValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesUsingEnumerablePathFromXml_WherePathMapsThroughNestedEnumerablesScenario2_Expected_EnumerableValue()
         {
             IPath path = new XmlPath("Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue", "Company.OuterNestedRecordSet.InnerNestedRecordSet:ItemValue");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
+                const string expected = "val1|val2|val3|val4";
 
-            var actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            const string expected = "val1|val2|val3|val4";
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
-            IList<IPath> paths = new List<IPath>();
-            paths.Add(namePath);
+            IList<IPath> paths = new List<IPath>
+            {
+                namePath
+            };
 
+            using (var xmlNavigator = new XmlNavigator(GivenSingleNode))
+            {
+                var actual = xmlNavigator.SelectEnumerablesAsRelated(paths);
+                const string expected = "Dummy Data";
 
-            var xmlNavigator = new XmlNavigator(GivenSingleNode);
-            var actual = xmlNavigator.SelectEnumerablesAsRelated(paths);
-            const string expected = "Dummy Data";
-
-            Assert.IsTrue(actual[namePath].Contains(expected));
+                Assert.IsTrue(actual[namePath].Contains(expected));
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
         {
             IPath path = new XmlPath("Company:Name", "Company:Name");
             IPath path1 = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
             var paths = new List<IPath> { path, path1 };
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
+                const string expected = "Dev2|Dev2^RandomData|RandomData1";
+                var actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
-            const string expected = "Dev2|Dev2^RandomData|RandomData1";
-            var actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
         {
             IPath path = new XmlPath("Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue", "Company.OuterNestedRecordSet.InnerNestedRecordSet:ItemValue");
             IPath path1 = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
             var paths = new List<IPath> { path, path1 };
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
+                const string expected = "val1|val2|val3|val4^RandomData|RandomData1||";
+                var actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
-            const string expected = "val1|val2|val3|val4^RandomData|RandomData1||";
-            var actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
             IPath path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
             IPath path1 = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
             var paths = new List<IPath> { path, path1 };
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
+                const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
+                var actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
-            const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
-            var actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
         {
             IPath path = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
             var paths = new List<IPath> { path };
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
+                const string expected = "Brendon|Jayd|Bob|Joe";
+                var actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
-            const string expected = "Brendon|Jayd|Bob|Joe";
-            var actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-        
+
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
         {
             IPath path = new XmlPath("Company:Name", "Company:Name");
             var paths = new List<IPath> { path };
 
-            var xmlNavigator = new XmlNavigator(testData);
+            using (var xmlNavigator = new XmlNavigator(TestData))
+            {
+                var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            var data = xmlNavigator.SelectEnumerablesAsRelated(paths);
+                const string expected = nameof(Dev2);
+                var actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
-            const string expected = "Dev2";
-            var actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
-
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
-        #endregion SelectEnumerable Tests
-
-        #region Select Enumerable As Related Tests
-
         [TestMethod]
-        public void SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
         {
-            List<IPath> namePath = new List<IPath>() { new XmlPath(".", ".") };
+            var namePath = new List<IPath> { new XmlPath(".", ".") };
 
-            var XmlNavigator = new XmlNavigator(testData);
+            using (var XmlNavigator = new XmlNavigator(TestData))
+            {
+                var actual = string.Join("|", XmlNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
 
-            var actual = string.Join("|", XmlNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
-
-            var expected = @"<Company Name=""Dev2"">
+                const string expected = @"<Company Name=""Dev2"">
   <Motto>Eat lots of cake</Motto>
   <PreviousMotto />
   <Departments TestAttrib=""testing"">
@@ -498,9 +539,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
   </OuterNestedRecordSet>
 </Company>";
 
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
-
-        #endregion
     }
 }

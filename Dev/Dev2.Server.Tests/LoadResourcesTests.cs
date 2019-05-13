@@ -22,6 +22,17 @@ namespace Dev2.Server.Tests
     [TestClass]
     public class LoadResourcesTests
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            if (EnvironmentVariables.ApplicationPath == null)
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+                EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
+            }
+        }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]        
