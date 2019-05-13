@@ -129,6 +129,7 @@
     <Compile Include="MethodOutputTests.cs" />
     <Compile Include="Operations\NotBetweenTests.cs" />
     <Compile Include="Parsers\DataLanguageParserImplementationTests.cs" />
+    <Compile Include="Parsers\ServiceActivityVariableMappingTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriverTests.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="ListOfIndexTests.cs" />
     <Compile Include="ReverseIndexIteratorTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
     <Compile Include="TO\DateTimeVerifyPartTests.cs" />
     <Compile Include="TO\SafeTokenHandleTests.cs" />
     <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
@@ -185,6 +187,7 @@
     <Compile Include="DataListConversionUtilsTests.cs" />
     <Compile Include="SharepointHelperTests.cs" />
     <Compile Include="OptomizedObservableCollectionTests.cs" />
+    <Compile Include="DataListTOTests.cs" />
     <Compile Include="Util\OperationsHelperTests.cs" />
     <Compile Include="Util\CommonRecordSetUtilTests.cs" />
     <Compile Include="WarewolfAtomComparerTests.cs" />

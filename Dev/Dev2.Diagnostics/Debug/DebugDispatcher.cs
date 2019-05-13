@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,7 +10,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Logging;
@@ -74,64 +72,78 @@ namespace Dev2.Diagnostics.Debug
             _shutdownRequested = true;
         }
 
-        public void Write(IDebugState debugState) => Write(debugState, false, false, "", false, null, null, null);
-        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName) => Write(debugState, isTestExecution, isDebugFromWeb, testName, false, null, null, null);
-        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId) => Write(debugState, isTestExecution, isDebugFromWeb, testName, isRemoteInvoke, remoteInvokerId, null, null);
-        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId, string parentInstanceId, IList<IDebugState> remoteDebugItems)
+        public void Write(WriteArgs writeArgs)
         {
-            if (debugState == null)
+            if (writeArgs.debugState == null)
             {
                 return;
             }
 
-            if (isTestExecution)
+            if (writeArgs.isTestExecution)
             {
-                TestDebugMessageRepo.Instance.AddDebugItem(debugState.SourceResourceID, testName, debugState);
+                TestDebugMessageRepo.Instance.AddDebugItem(writeArgs.debugState.SourceResourceID, writeArgs.testName, writeArgs.debugState);
                 return;
             }
-            if (isDebugFromWeb)
+            if (writeArgs.isDebugFromWeb)
             {
-                WebDebugMessageRepo.Instance.AddDebugItem(debugState.ClientID, debugState.SessionID, debugState);
-                return;
-            }
-
-
-            if (isRemoteInvoke)
-            {
-                RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerId, debugState);
+                WebDebugMessageRepo.Instance.AddDebugItem(writeArgs.debugState.ClientID, writeArgs.debugState.SessionID, writeArgs.debugState);
                 return;
             }
 
-            if (remoteDebugItems != null)
+            if (writeArgs.isRemoteInvoke)
             {
-                Guid.TryParse(parentInstanceId, out Guid parentId);
-                foreach (var item in remoteDebugItems)
+                RemoteDebugMessageRepo.Instance.AddDebugItem(writeArgs.remoteInvokerId, writeArgs.debugState);
+                return;
+            }
+
+            if (writeArgs.remoteDebugItems != null)
+            {
+                SetRemoteDebugItems(writeArgs);
+            }
+
+            _dev2Logger.Debug($"EnvironmentID: {writeArgs.debugState.EnvironmentID} Debug:{writeArgs.debugState.DisplayName}", GlobalConstants.WarewolfDebug);
+
+            if (writeArgs.debugState != null)
+            {
+                DebugMessageRepo.Instance.AddDebugItem(writeArgs.debugState.ClientID, writeArgs.debugState.SessionID, writeArgs.debugState);
+            }
+
+            DebugStateFinalStep(writeArgs);
+        }
+
+        private static void SetRemoteDebugItems(WriteArgs writeArgs)
+        {
+            Guid.TryParse(writeArgs.parentInstanceId, out var parentId);
+            foreach (var item in writeArgs.remoteDebugItems)
+            {
+                item.WorkspaceID = writeArgs.debugState.WorkspaceID;
+                item.OriginatingResourceID = writeArgs.debugState.OriginatingResourceID;
+                item.ClientID = writeArgs.debugState.ClientID;
+                if (Guid.TryParse(writeArgs.remoteInvokerId, out var remoteEnvironmentId))
                 {
-                    item.WorkspaceID = debugState.WorkspaceID;
-                    item.OriginatingResourceID = debugState.OriginatingResourceID;
-                    item.ClientID = debugState.ClientID;
-                    if (Guid.TryParse(remoteInvokerId, out Guid remoteEnvironmentId))
-                    {
-                        item.EnvironmentID = remoteEnvironmentId;
-                    }
-                    if (item.ParentID == Guid.Empty)
-                    {
-                        item.ParentID = parentId;
-                    }
-                    QueueWrite(item);
+                    item.EnvironmentID = remoteEnvironmentId;
                 }
-
-                remoteDebugItems.Clear();
+                if (item.ParentID == Guid.Empty)
+                {
+                    item.ParentID = parentId;
+                }
+                if (item != null)
+                {
+                    DebugMessageRepo.Instance.AddDebugItem(item.ClientID, item.SessionID, item);
+                }
             }
-            _dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}", GlobalConstants.WarewolfDebug);
-            QueueWrite(debugState);
 
-            if (debugState.IsFinalStep())
+            writeArgs.remoteDebugItems.Clear();
+        }
+
+        private void DebugStateFinalStep(WriteArgs writeArgs)
+        {
+            if (writeArgs.debugState.IsFinalStep())
             {
                 IDebugWriter writer;
-                if ((writer = Get(debugState.WorkspaceID)) != null)
+                if ((writer = Get(writeArgs.debugState.WorkspaceID)) != null)
                 {
-                    var allDebugStates = DebugMessageRepo.Instance.FetchDebugItems(debugState.ClientID, debugState.SessionID);
+                    var allDebugStates = DebugMessageRepo.Instance.FetchDebugItems(writeArgs.debugState.ClientID, writeArgs.debugState.SessionID);
                     foreach (var state in allDebugStates)
                     {
                         var serializeObject = JsonConvert.SerializeObject(state, SerializerSettings);
@@ -140,16 +152,8 @@ namespace Dev2.Diagnostics.Debug
                 }
             }
         }
-
-        static void QueueWrite(IDebugState debugState)
-        {
-            if (debugState != null)
-            {
-                DebugMessageRepo.Instance.AddDebugItem(debugState.ClientID, debugState.SessionID, debugState);
-
-            }
-        }
     }
+   
 
     public static class DebugDispatcher
     {

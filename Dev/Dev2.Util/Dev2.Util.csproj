@@ -71,6 +71,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TSqlStatementExtensions.cs" />
     <Compile Include="TypeSwitch.cs" />
+    <None Include="app.config" />
     <None Include="Dev2.Util.ruleset" />
   </ItemGroup>
   <ItemGroup>

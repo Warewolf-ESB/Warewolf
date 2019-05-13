@@ -120,7 +120,7 @@
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlNavigatorTests.cs" />
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathSegmentTests.cs" />
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathTests.cs" />
-    <Compile Include="DataList\BrokerTest.cs" />
+    <Compile Include="DataList\Dev2StudioSessionBrokerTests.cs" />
     <Compile Include="DataList\DebugToTests.cs" />
     <Compile Include="Dev2RandomTests.cs" />
     <Compile Include="Diagnostics\DebugDispatcherTest.cs" />

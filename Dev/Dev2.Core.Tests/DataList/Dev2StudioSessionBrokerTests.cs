@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -12,30 +12,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.DataList
 {
-    /// <summary>
-    /// Summary description for BrokerTest
-    /// </summary>
-    [TestClass]    
-    public class BrokerTest
+    [TestClass]
+    public class Dev2StudioSessionBrokerTests
     {
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attribute
-       
-        void DeleteDir(string rootFolder)
+        static void DeleteDir(string rootFolder)
         {
-
             if (Directory.Exists(rootFolder + @"\Dev2\"))
             {
                 var dir = new DirectoryHelper();
@@ -43,12 +35,10 @@ namespace Dev2.Tests.DataList
             }
         }
 
-        #endregion
-
-        #region InitSession Tests
-
         [TestMethod]
-        public void InitSessionWithNoDataBaseDirectoryIsNull()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNull()
         {
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
@@ -67,7 +57,9 @@ namespace Dev2.Tests.DataList
         }
 
         [TestMethod]
-        public void InitSessionWithNoDataBaseDirectoryIsNullStillInitialises()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNullStillInitialises()
         {
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
@@ -88,13 +80,15 @@ namespace Dev2.Tests.DataList
             to = broker.PersistDebugSession(to);
 
             Assert.AreEqual(string.Empty, to.Error);
-            Assert.IsNotNull(to.BinaryDataList); // assert not null hence we created it ;)
+            Assert.IsNotNull(to.BinaryDataList);
 
             DeleteDir(rootFolder);
         }
 
         [TestMethod]
-        public void InitSessionWithSingleScalar()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBroker_InitSessionWithSingleScalar()
         {
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
@@ -110,7 +104,6 @@ namespace Dev2.Tests.DataList
 
             const string expected = "<DataList><scalar1>s1</scalar1></DataList>";
 
-            // just ensure the operation worked successfully with no errors
             Assert.AreEqual(string.Empty, to.Error);
             Assert.AreEqual(expected, to.XmlData, "Got  [ " + to.XmlData + "] , but expected [ " + expected + " ]");
 
@@ -118,12 +111,10 @@ namespace Dev2.Tests.DataList
         }
 
         [TestMethod]
-        
-        public void PersistSessionWithSavedData_ExpectSavedData()
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBroker_PersistSessionWithSavedData_ExpectSavedData()
         {
-            //DeleteDir();
-            // bootstrap
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -139,15 +130,15 @@ namespace Dev2.Tests.DataList
             Assert.AreEqual("<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>", to.XmlData);
 
             DeleteDir(rootFolder);
+
+            broker.Dispose();
         }
 
-        #endregion InitSession Tests
-
-        #region PersistSession Test
         [TestMethod]
-        public void PersistSessionWithSavedData_ChangedDataList_ExpectPreviousXmlData()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBroker_PersistSessionWithSavedData_ChangedDataList_ExpectPreviousXmlData()
         {
-            // bootstrap
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -166,9 +157,10 @@ namespace Dev2.Tests.DataList
         }
 
         [TestMethod]
-        public void NotPersistSessionWithSavedData_ExpectEmptyDataList()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBrokerNotPersistSessionWithSavedData_ExpectEmptyDataList()
         {
-            // bootstrap
             var to = new DebugTO();
             var broker = Dev2StudioSessionFactory.CreateBroker();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
@@ -188,10 +180,5 @@ namespace Dev2.Tests.DataList
 
             DeleteDir(rootFolder);
         }
-
-        
-        #endregion PersistSession Tests
-
-
     }
 }

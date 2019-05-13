@@ -380,7 +380,7 @@ namespace Dev2.Runtime.ESB
                     ErrorMessage = errors.MakeDisplayReady()
                 };
 
-                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
+                DebugDispatcher.Instance.Write( new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID });
             }
         }
 

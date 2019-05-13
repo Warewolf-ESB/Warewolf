@@ -1,5 +1,16 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Search;
 using Dev2.Runtime.Interfaces;
@@ -15,14 +26,18 @@ namespace Dev2.Tests.Runtime.Search
     public class ActivitySearcherTests
     {
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivitySearcher))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullResourceCatalog_ShouldThrowException()
+        public void ActivitySearcher_NullResourceCatalog_ShouldThrowException()
         {
             var searcher = new ActivitySearcher(null);
         }
 
         [TestMethod]
-        public void GetSearchResults_WhenToolTitleHasValue_ShouldReturnResult()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivitySearcher))]
+        public void ActivitySearcher_GetSearchResults_WhenToolTitleHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResource = new Mock<IResource>();
@@ -42,14 +57,16 @@ namespace Dev2.Tests.Runtime.Search
             };
             var mockResourceActivityCache = new Mock<IResourceActivityCache>();
             var cache = new System.Collections.Concurrent.ConcurrentDictionary<Guid, IDev2Activity>();
-            var startAct = new TestActivity();
-            startAct.DisplayName = "Start Tool";
-            startAct.NextNodes = new List<IDev2Activity>
+            var startAct = new TestActivity
             {
-                 new TestActivity
-                 {
-                     DisplayName = "Set a value"
-                 }
+                DisplayName = "Start Tool",
+                NextNodes = new List<IDev2Activity>
+                {
+                     new TestActivity
+                     {
+                         DisplayName = "Set a value"
+                     }
+                }
             };
             cache.TryAdd(Guid.Empty, startAct);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
@@ -65,7 +82,9 @@ namespace Dev2.Tests.Runtime.Search
         }
 
         [TestMethod]
-        public void GetSearchResults_WhenToolTitleDoesNotHaveValue_ShouldNotReturnResult()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivitySearcher))]
+        public void ActivitySearcher_GetSearchResults_WhenToolTitleDoesNotHaveValue_ShouldNotReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResource = new Mock<IResource>();
@@ -85,14 +104,16 @@ namespace Dev2.Tests.Runtime.Search
             };
             var mockResourceActivityCache = new Mock<IResourceActivityCache>();
             var cache = new System.Collections.Concurrent.ConcurrentDictionary<Guid, IDev2Activity>();
-            var startAct = new TestActivity();
-            startAct.DisplayName = "Start Tool";
-            startAct.NextNodes = new List<IDev2Activity>
+            var startAct = new TestActivity
             {
-                 new TestActivity
-                 {
-                     DisplayName = "Set a value"
-                 }
+                DisplayName = "Start Tool",
+                NextNodes = new List<IDev2Activity>
+                {
+                     new TestActivity
+                     {
+                         DisplayName = "Set a value"
+                     }
+                }
             };
             cache.TryAdd(Guid.Empty, startAct);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
@@ -101,9 +122,10 @@ namespace Dev2.Tests.Runtime.Search
             Assert.AreEqual(0, searchResults.Count);
         }
 
-
         [TestMethod]
-        public void GetSearchResults_WhenComplexFlowHaveValue_ShouldReturnResult()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivitySearcher))]
+        public void ActivitySearcher_GetSearchResults_WhenComplexFlowHaveValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResource = new Mock<IResource>();
@@ -123,41 +145,45 @@ namespace Dev2.Tests.Runtime.Search
             };
             var mockResourceActivityCache = new Mock<IResourceActivityCache>();
             var cache = new System.Collections.Concurrent.ConcurrentDictionary<Guid, IDev2Activity>();
-            var firstFlow = new TestActivity();
-            firstFlow.DisplayName = "Start Tool";
-            firstFlow.NextNodes = new List<IDev2Activity>
+            var firstFlow = new TestActivity
             {
-                 new TestActivity
-                 {
-                     DisplayName = "Set a value",
-                     NextNodes = new List<IDev2Activity>
+                DisplayName = "Start Tool",
+                NextNodes = new List<IDev2Activity>
+                {
+                     new TestActivity
                      {
-                         new TestActivity
+                         DisplayName = "Set a value",
+                         NextNodes = new List<IDev2Activity>
                          {
-                             DisplayName = "Set Bob Name"
-                         },
-                         new TestActivity
-                         {
-                             DisplayName = "Retrive",
-                             NextNodes = new List<IDev2Activity>
+                             new TestActivity
                              {
-                                 new TestActivity
+                                 DisplayName = "Set Bob Name"
+                             },
+                             new TestActivity
+                             {
+                                 DisplayName = "Retrive",
+                                 NextNodes = new List<IDev2Activity>
                                  {
-                                     DisplayName = "Get Bob Name"
+                                     new TestActivity
+                                     {
+                                         DisplayName = "Get Bob Name"
+                                     }
                                  }
                              }
                          }
                      }
-                 }
+                }
             };
-            var secondFlow = new TestActivity();
-            secondFlow.DisplayName = "Start Tool";
-            secondFlow.NextNodes = new List<IDev2Activity>
+            var secondFlow = new TestActivity
             {
-                 new TestActivity
-                 {
-                     DisplayName = "Set a value"
-                 }
+                DisplayName = "Start Tool",
+                NextNodes = new List<IDev2Activity>
+                {
+                     new TestActivity
+                     {
+                         DisplayName = "Set a value"
+                     }
+                }
             };
             cache.TryAdd(Guid.Empty, firstFlow);
             cache.TryAdd(Guid.NewGuid(), secondFlow);
@@ -171,9 +197,10 @@ namespace Dev2.Tests.Runtime.Search
             Assert.AreEqual("Get Bob Name", searchResults[1].Match);
         }
 
-
         [TestMethod]
-        public void GetSearchResults_WhenMatchInTwoResources_ShouldReturnResult()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivitySearcher))]
+        public void ActivitySearcher_GetSearchResults_WhenMatchInTwoResources_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
 
@@ -203,54 +230,64 @@ namespace Dev2.Tests.Runtime.Search
             };
             var mockResourceActivityCache = new Mock<IResourceActivityCache>();
             var cache = new System.Collections.Concurrent.ConcurrentDictionary<Guid, IDev2Activity>();
-            var firstFlow = new TestActivity();
-            firstFlow.DisplayName = "Start Tool";
-            firstFlow.NextNodes = new List<IDev2Activity>
+            var firstFlow = new TestActivity
             {
-                 new TestActivity
-                 {
-                     DisplayName = "Set a value",
-                     NextNodes = new List<IDev2Activity>
+                DisplayName = "Start Tool",
+                NextNodes = new List<IDev2Activity>
+                {
+                     new TestActivity
                      {
-                         new TestActivity
+                         DisplayName = "Set a value",
+                         NextNodes = new List<IDev2Activity>
                          {
-                             DisplayName = "Set Bob Name"
-                         },
-                         new TestActivity
-                         {
-                             DisplayName = "Retrive",
-                             NextNodes = new List<IDev2Activity>
+                             new TestActivity
                              {
-                                 new TestActivity
+                                 DisplayName = "Set Bob Name"
+                             },
+                             new TestActivity
+                             {
+                                 DisplayName = "Retrive",
+                                 NextNodes = new List<IDev2Activity>
                                  {
-                                     DisplayName = "Get Bob Name"
+                                     new TestActivity
+                                     {
+                                         DisplayName = "Get Bob Name"
+                                     }
                                  }
                              }
                          }
                      }
-                 }
+                }
             };
-            var secondFlow = new TestActivity();
-            secondFlow.DisplayName = "Start Tool";
-            secondFlow.NextNodes = new List<IDev2Activity>
+            var secondFlow = new TestActivity
             {
-                 new TestActivity
-                 {
-                     DisplayName = "What's bobs name"
-                 }
+                DisplayName = "Start Tool",
+                NextNodes = new List<IDev2Activity>
+                {
+                     new TestActivity
+                     {
+                         DisplayName = "What's bobs name"
+                     }
+                }
             };
             cache.TryAdd(Guid.Empty, firstFlow);
             cache.TryAdd(otherResourceId, secondFlow);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
             mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
             var searchResults = searcher.GetSearchResults(searchValue);
+
             Assert.AreEqual(3, searchResults.Count);
-            Assert.AreEqual(Guid.Empty, searchResults[0].ResourceId);
-            Assert.AreEqual("Set Bob Name", searchResults[0].Match);
-            Assert.AreEqual(Guid.Empty, searchResults[1].ResourceId);
-            Assert.AreEqual("Get Bob Name", searchResults[1].Match);
-            Assert.AreEqual(otherResourceId, searchResults[2].ResourceId);
-            Assert.AreEqual("What's bobs name", searchResults[2].Match);
+
+            var firstItem = searchResults.First(result => result.Match == "Set Bob Name");
+            var secondItem = searchResults.First(result => result.Match == "Get Bob Name");
+            var otherItem = searchResults.First(result => result.ResourceId == otherResourceId);
+
+            Assert.AreEqual(Guid.Empty, firstItem.ResourceId);
+            Assert.AreEqual("Set Bob Name", firstItem.Match);
+            Assert.AreEqual(Guid.Empty, secondItem.ResourceId);
+            Assert.AreEqual("Get Bob Name", secondItem.Match);
+            Assert.AreEqual(otherResourceId, otherItem.ResourceId);
+            Assert.AreEqual("What's bobs name", otherItem.Match);
         }
     }
 }

@@ -23,8 +23,8 @@ namespace Dev2.Data.Util
                 throw new ArgumentNullException(nameof(path));
             }
             var idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
-            //TODO: This code should check for >= and not just >
-            var result = idx > 0 ? path.Username.Substring(idx + 1) : path.Username;
+
+            var result = idx >= 0 ? path.Username.Substring(idx + 1) : path.Username;
             return result;
         }
 

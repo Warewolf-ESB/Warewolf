@@ -107,6 +107,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ESB\Execution\Evaluator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -268,10 +269,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>

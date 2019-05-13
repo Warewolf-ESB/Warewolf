@@ -80,6 +80,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
             }
             CustomContainer.Register<IActivityParser>(new ActivityParser());
+            if (EnvironmentVariables.ApplicationPath == null)
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+                EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
+            }
         }
 
         #region Instance

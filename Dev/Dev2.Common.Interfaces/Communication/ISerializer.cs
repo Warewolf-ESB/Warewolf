@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.IO;
 using System.Text;
 
 namespace Dev2.Common.Interfaces.Communication
@@ -49,5 +50,12 @@ namespace Dev2.Common.Interfaces.Communication
         /// <param name="message">The message.</param>
         /// <returns></returns>
         T Deserialize<T>(StringBuilder message) where T : class;
+        void Serialize(StreamWriter sw, object serviceTestModelTo);
+        T Deserialize<T>(StreamReader reader);
+    }
+
+    public interface IBuilderSerializer : ISerializer
+    {
+        StringBuilder SerializeToBuilder(object obj);
     }
 }

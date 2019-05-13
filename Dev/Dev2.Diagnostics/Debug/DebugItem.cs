@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,40 +18,27 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Utils;
 
-
 namespace Dev2.Diagnostics
-
 {
+    //TODO: Issues with the way large results are stored in SaveFile.
     [Serializable]
     public class DebugItem : IDebugItem
     {
-        #region private fields
+        static readonly string _invalidFileNameChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
 
-        static readonly string InvalidFileNameChars =
-            new string(Path.GetInvalidFileNameChars())
-            + new string(Path.GetInvalidPathChars());
+        readonly string _tempFolder;
 
-        readonly string _tempPath;
         readonly Guid _itemId;
         readonly StringBuilder _stringBuilder;
         string _fileName;
         bool _isMoreLinkCreated;
-
-        #endregion fieds
-
-        #region public properties
 
         public static readonly int MaxItemDispatchCount = 10;
         public static readonly int MaxCharDispatchCount = 150;
         public static readonly int ActCharDispatchCount = 100;
 
         public List<IDebugItemResult> ResultsList { get; set; }
-        public static List<DebugItem> EmptyList { get => emptyList; set => emptyList = value; }
-        static List<DebugItem> emptyList = new List<DebugItem>();
-
-        #endregion properties
-
-        #region CTOR
+        public static List<DebugItem> EmptyList { get; set; } = new List<DebugItem>();
 
         public DebugItem()
             : this(null)
@@ -62,81 +48,82 @@ namespace Dev2.Diagnostics
         public DebugItem(IEnumerable<IDebugItemResult> results)
         {
             ResultsList = new List<IDebugItemResult>();
-            _tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
-            if(!Directory.Exists(_tempPath))
-            {
-                Directory.CreateDirectory(_tempPath);
-            }
+            _tempFolder = EnvironmentVariables.DebugItemTempPath;
             _itemId = Guid.NewGuid();
             _isMoreLinkCreated = false;
             _stringBuilder = new StringBuilder();
             _fileName = string.Empty;
-            if(results != null)
+            if (results != null)
             {
                 AddRange(results.ToList());
             }
         }
 
-        #endregion
-
-        #region Contains
-
         public bool Contains(string filterText) => ResultsList.Any(r => r.Value.ContainsSafe(filterText) || r.GroupName.ContainsSafe(filterText));
 
-        #endregion
-
-        #region Public Methods
-
         public void Add(IDebugItemResult itemToAdd) => Add(itemToAdd, false);
+
         public void Add(IDebugItemResult itemToAdd, bool isDeserialize)
         {
+            AddResultItemOrAddToItemResultListLog(itemToAdd, isDeserialize);
+        }
 
+        private void AddResultItemOrAddToItemResultListLog(IDebugItemResult itemToAdd, bool isDeserialize)
+        {
             if (!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount && !isDeserialize)
             {
                 _fileName = string.Format("{0}.txt", _itemId);
-                if (itemToAdd.GroupIndex == MaxItemDispatchCount + 1 && !_isMoreLinkCreated)
+                var shouldCreateMoreLink = itemToAdd.GroupIndex == MaxItemDispatchCount + 1 && !_isMoreLinkCreated;
+                if (shouldCreateMoreLink)
                 {
                     ClearFile(_fileName);
                     _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
-                    ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(_stringBuilder.ToString(), _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
+                    var clonedItem = itemToAdd.Clone();
+                    var moreLink = SaveFile(_stringBuilder.ToString(), _fileName);
                     _stringBuilder.Clear();
+                    clonedItem.MoreLink = moreLink;
+                    ResultsList.Add(clonedItem);
                     _isMoreLinkCreated = true;
                     return;
                 }
 
                 _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
-                if (itemToAdd.Type == DebugItemResultType.Value ||
-                    itemToAdd.Type == DebugItemResultType.Variable)
-                {
-                    SaveFile(_stringBuilder.ToString(), _fileName);
-                    _stringBuilder.Clear();
-                }
 
-
-                if (_stringBuilder.Length > 10000)
-                {
-                    SaveFile(_stringBuilder.ToString(), _fileName);
-                    _stringBuilder.Clear();
-                }
-
+                FlushResultListLogIfNeeded(itemToAdd);
                 return;
             }
 
-
-            if (itemToAdd.Type == DebugItemResultType.Value ||
-                itemToAdd.Type == DebugItemResultType.Variable)
-            {
-                TryCache(itemToAdd);
-            }
+            TruncateItemResultIfNeeded(itemToAdd);
 
             ResultsList.Add(itemToAdd);
         }
 
+        private void FlushResultListLogIfNeeded(IDebugItemResult itemToAdd)
+        {
+            if (itemToAdd.Type == DebugItemResultType.Value || itemToAdd.Type == DebugItemResultType.Variable || _stringBuilder.Length > 10000)
+            {
+                SaveFile(_stringBuilder.ToString(), _fileName);
+                _stringBuilder.Clear();
+            }
+        }
+
+        internal void TruncateItemResultIfNeeded(IDebugItemResult itemToAdd)
+        {
+            var valueOrVariable = itemToAdd.Type == DebugItemResultType.Value || itemToAdd.Type == DebugItemResultType.Variable;
+            var valueLengthTooLong = !string.IsNullOrEmpty(itemToAdd.Value) && itemToAdd.Value.Length > MaxCharDispatchCount;
+            if (valueOrVariable && valueLengthTooLong)
+            {
+                itemToAdd.MoreLink = SaveFile(itemToAdd.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
+                itemToAdd.Value = itemToAdd.Value.Substring(0, ActCharDispatchCount);
+            }
+        }
+
         public void AddRange(List<IDebugItemResult> itemsToAdd)
         {
-            foreach(var debugItemResult in itemsToAdd)
+            foreach (var debugItemResult in itemsToAdd)
             {
-                if(string.IsNullOrEmpty(debugItemResult.Label) && string.IsNullOrEmpty(debugItemResult.Value) && string.IsNullOrEmpty(debugItemResult.Variable) && debugItemResult.Type == DebugItemResultType.Variable)
+                var invalidVariableResult = string.IsNullOrEmpty(debugItemResult.Label) && string.IsNullOrEmpty(debugItemResult.Value) && string.IsNullOrEmpty(debugItemResult.Variable) && debugItemResult.Type == DebugItemResultType.Variable;
+                if (invalidVariableResult)
                 {
                     continue;
                 }
@@ -146,73 +133,42 @@ namespace Dev2.Diagnostics
 
         public IList<IDebugItemResult> FetchResultsList() => ResultsList;
 
-        #region TryCache
-
-        public void TryCache(IDebugItemResult item)
-        {
-            if(item == null)
-            {
-                throw new ArgumentNullException("item");
-            }
-
-            if(!string.IsNullOrEmpty(item.Value) && item.Value.Length > MaxCharDispatchCount)
-            {
-                item.MoreLink = SaveFile(item.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
-                item.Value = item.Value.Substring(0, ActCharDispatchCount);
-            }
-        }
-
-        #endregion
-
-        #region SaveFile
-
+        //This method saves a file to C:\ProgramData\Warewolf\Temp\Warewolf\Debug
         public virtual string SaveFile(string contents, string fileName)
         {
+            var updateContents = contents;
+            var updateFileName = fileName;
 
-            if(string.IsNullOrEmpty(contents))
+            if (string.IsNullOrEmpty(updateContents))
             {
-                throw new ArgumentNullException("contents");
+                throw new ArgumentNullException(nameof(updateContents));
             }
-            contents = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(contents);
-            fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
+            updateContents = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(updateContents);
+            updateFileName = _invalidFileNameChars.Aggregate(updateFileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
 
-            var path = Path.Combine(_tempPath, fileName);
-            File.AppendAllText(path, contents);
+            var path = Path.Combine(_tempFolder , updateFileName);
+            File.AppendAllText(path, updateContents);
             var linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
 
             return linkUri;
         }
 
-        #endregion
-
-        #region DeleteFile
-
         public void ClearFile(string fileName)
         {
-
-            var path = Path.Combine(_tempPath, fileName);
-            if(File.Exists(path))
+            var path = Path.Combine(_tempFolder , fileName);
+            if (File.Exists(path))
             {
                 File.Delete(path);
             }
         }
 
-        #endregion
-
-        #region Flush String Builder
-
         public void FlushStringBuilder()
         {
-            if(_stringBuilder.Length > 0 && !string.IsNullOrEmpty(_fileName))
+            if (_stringBuilder.Length > 0 && !string.IsNullOrEmpty(_fileName))
             {
                 SaveFile(_stringBuilder.ToString(), _fileName);
                 _stringBuilder.Clear();
             }
         }
-
-        #endregion
-
-        #endregion
-        
     }
 }
