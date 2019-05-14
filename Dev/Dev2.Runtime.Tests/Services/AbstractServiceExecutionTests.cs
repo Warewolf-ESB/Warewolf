@@ -151,7 +151,7 @@ namespace Dev2.Tests.Runtime.Services
             mockResourceCatalog.Setup(c => c.GetResource<WebService>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webService);
             mockResourceCatalog.Setup(c => c.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             mockResourceCatalog.Setup(c => c.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new WebSource());
-            var webServiceMock = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()))
+            var webServiceMock = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()), false)
             {
                 Service = webService,
                 InstanceOutputDefintions = "<Outputs>" +
