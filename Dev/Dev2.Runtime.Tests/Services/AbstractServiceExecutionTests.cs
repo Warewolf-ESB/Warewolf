@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
@@ -25,7 +26,6 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class AbstractServiceExecutionTests
     {
-        #region Create Service
 
         [TestMethod]
         public void ServiceExecutionAbstract_ExecuteWithCrazyXML_ShouldMap()
@@ -68,9 +68,10 @@ namespace Dev2.Tests.Runtime.Services
             mockResourceCatalog.Setup(c => c.GetResource<WebService>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webService);
             mockResourceCatalog.Setup(c => c.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             mockResourceCatalog.Setup(c => c.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new WebSource());
-            var webServiceMock = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()), It.IsAny<bool>());
-            webServiceMock.Service = webService;
-            webServiceMock.ReturnFromExecute = "<CommsEngineResponseViewModels xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.datacontract.org/2004/07/TU.Genisys2.CEWBS.ViewModels.Response.CommsEngine\">" +
+            var webServiceMock = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()), It.IsAny<bool>())
+            {
+                Service = webService,
+                ReturnFromExecute = "<CommsEngineResponseViewModels xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.datacontract.org/2004/07/TU.Genisys2.CEWBS.ViewModels.Response.CommsEngine\">" +
                                                "<Exception xmlns:d2p1=\"http://schemas.datacontract.org/2004/07/System\" i:nil=\"true\" xmlns=\"http://schemas.datacontract.org/2004/07/TU.Genisys2.CEWBS.ViewModels.Response\" />" +
                                                "<Message i:nil=\"true\" xmlns=\"http://schemas.datacontract.org/2004/07/TU.Genisys2.CEWBS.ViewModels.Response\" />" +
                                                "<ResponseDate xmlns=\"http://schemas.datacontract.org/2004/07/TU.Genisys2.CEWBS.ViewModels.Response\">2015/05/06 02:07:02 PM</ResponseDate>" +
@@ -88,7 +89,8 @@ namespace Dev2.Tests.Runtime.Services
                                                "</CommsEngineCommunicationToUpdate>" +
                                                "</CommsEngineCommunicationToUpdate>" +
                                                "<CommsEngineCommunicationToView i:nil=\"true\" />" +
-                                               "</CommsEngineResponseViewModels>";
+                                               "</CommsEngineResponseViewModels>"
+            };
             //exe
             webServiceMock.MockExecuteImpl(out ErrorResultTO errors);
             Assert.IsFalse(errors.HasErrors(),"Error while parsing crazy xml");
@@ -149,9 +151,10 @@ namespace Dev2.Tests.Runtime.Services
             mockResourceCatalog.Setup(c => c.GetResource<WebService>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webService);
             mockResourceCatalog.Setup(c => c.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             mockResourceCatalog.Setup(c => c.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new WebSource());
-            var webServiceMock = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()));
-            webServiceMock.Service = webService;
-            webServiceMock.InstanceOutputDefintions = "<Outputs>" +
+            var webServiceMock = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()))
+            {
+                Service = webService,
+                InstanceOutputDefintions = "<Outputs>" +
                                                       "<Output Name=\"CommsEngineCommunicationToUpdate\" MapsTo=\"[[CommsEngineCommunicationToUpdate]]\" Value=\"[[CommsEngineCommunicationToUpdate]]\" />" +
                                                       "<Output Name=\"CommsEngineCommunicationAdded\" MapsTo=\"[[CommsEngineCommunicationAdded]]\" Value=\"[[CommsEngineCommunicationAdded]]\" />" +
                                                       "<Output Name=\"CommsEngineCommunicationToView\" MapsTo=\"[[CommsEngineCommunicationToView]]\" Value=\"[[CommsEngineCommunicationToView]]\" />" +
@@ -176,8 +179,9 @@ namespace Dev2.Tests.Runtime.Services
                                                       "<Output Name=\"AttemptCount\" MapsTo=\"[[AttemptCount]]\" Value=\"[[CommsEngineCommunicationToSend().AttemptCount]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
                                                       "<Output Name=\"Priority\" MapsTo=\"[[Priority]]\" Value=\"[[CommsEngineCommunicationToSend().Priority]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
                                                       "<Output Name=\"MetaData\" MapsTo=\"[[MetaData]]\" Value=\"[[CommsEngineCommunicationToSend().MetaData]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
-                                                      "</Outputs>";
-            webServiceMock.ReturnFromExecute = "{\"CommsEngineCommunicationToUpdate\":null,\"CommsEngineCommunicationToSend\":[{\"CommunicationRequestID\":\"60d47fa8-f208-e511-a221-0018fefdef3a\",\"PolicyNo\":\"AA1001366\",\"EventType\":\"DebitFailed\",\"EventSource\":\"Collections\",\"MessageContent\":\"Hi there!  Your  debit order didn't go through this month. Please give us a shout on 087 357 6529 so we can make sure we've got your details right. Love, The Unlimited\",\"DeliveryAddress\":\"0825688436\",\"OriginalAddress\":\"sample string 10\",\"ScheduledFor\":\"2015-05-27T15:30:02\",\"CommunicationsProfile\":\"sample string 12\",\"CommunicationType\":\"SMS\",\"Subject\":\"Default Subject\",\"Attachments\":\"\",\"HTML\":null,\"AttemptCount\":null,\"Priority\":1,\"MetaData\":\"sample string 15\"}],\"CommsEngineCommunicationAdded\":null,\"CommsEngineCommunicationToView\":null,\"StatusCode\":1,\"Message\":null,\"Exception\":null,\"Result\":\"OK\",\"ResponseDate\":\"2015/06/02 09:58:20 AM\"}";
+                                                      "</Outputs>",
+                ReturnFromExecute = "{\"CommsEngineCommunicationToUpdate\":null,\"CommsEngineCommunicationToSend\":[{\"CommunicationRequestID\":\"60d47fa8-f208-e511-a221-0018fefdef3a\",\"PolicyNo\":\"AA1001366\",\"EventType\":\"DebitFailed\",\"EventSource\":\"Collections\",\"MessageContent\":\"Hi there!  Your  debit order didn't go through this month. Please give us a shout on 087 357 6529 so we can make sure we've got your details right. Love, The Unlimited\",\"DeliveryAddress\":\"0825688436\",\"OriginalAddress\":\"sample string 10\",\"ScheduledFor\":\"2015-05-27T15:30:02\",\"CommunicationsProfile\":\"sample string 12\",\"CommunicationType\":\"SMS\",\"Subject\":\"Default Subject\",\"Attachments\":\"\",\"HTML\":null,\"AttemptCount\":null,\"Priority\":1,\"MetaData\":\"sample string 15\"}],\"CommsEngineCommunicationAdded\":null,\"CommsEngineCommunicationToView\":null,\"StatusCode\":1,\"Message\":null,\"Exception\":null,\"Result\":\"OK\",\"ResponseDate\":\"2015/06/02 09:58:20 AM\"}"
+            };
             //------------Execute Test---------------------------
             webServiceMock.MockExecuteImpl(out ErrorResultTO errors);
             //------------Assert Results-------------------------
@@ -188,7 +192,93 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Hi there!  Your  debit order didn't go through this month. Please give us a shout on 087 357 6529 so we can make sure we've got your details right. Love, The Unlimited",actual);
         }
 
-        #endregion
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("ServiceExecutionAbstract")]
+        public void ServiceExecutionAbstract_OutputServiceAction_GivenInvalidService_ReturnsErrorMessage()
+        {
+            var webService = new Mock<WebService>();
+            webService.Object.ResourceName = "Some Service";
+            var instance = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()), true)
+            {
+                Service = webService.Object,
+                InstanceOutputDefintions = "<Outputs>" +
+                                                      "<Output Name=\"CommsEngineCommunicationToUpdate\" MapsTo=\"[[CommsEngineCommunicationToUpdate]]\" Value=\"[[CommsEngineCommunicationToUpdate]]\" />" +
+                                                      "<Output Name=\"CommsEngineCommunicationAdded\" MapsTo=\"[[CommsEngineCommunicationAdded]]\" Value=\"[[CommsEngineCommunicationAdded]]\" />" +
+                                                      "<Output Name=\"CommsEngineCommunicationToView\" MapsTo=\"[[CommsEngineCommunicationToView]]\" Value=\"[[CommsEngineCommunicationToView]]\" />" +
+                                                      "<Output Name=\"StatusCode\" MapsTo=\"[[StatusCode]]\" Value=\"[[StatusCode]]\" />" +
+                                                      "<Output Name=\"Message\" MapsTo=\"[[Message]]\" Value=\"[[Message]]\" />" +
+                                                      "<Output Name=\"Exception\" MapsTo=\"[[Exception]]\" Value=\"[[Exception]]\" />" +
+                                                      "<Output Name=\"Result\" MapsTo=\"[[Result]]\" Value=\"[[Result]]\" />" +
+                                                      "<Output Name=\"ResponseDate\" MapsTo=\"[[ResponseDate]]\" Value=\"[[ResponseDate]]\" />" +
+                                                      "<Output Name=\"CommunicationRequestID\" MapsTo=\"[[CommunicationRequestID]]\" Value=\"[[CommsEngineCommunicationToSend().CommunicationRequestID]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"PolicyNo\" MapsTo=\"[[PolicyNo]]\" Value=\"[[CommsEngineCommunicationToSend().PolicyNo]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"EventType\" MapsTo=\"[[EventType]]\" Value=\"[[CommsEngineCommunicationToSend().EventType]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"EventSource\" MapsTo=\"[[EventSource]]\" Value=\"[[CommsEngineCommunicationToSend().EventSource]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"MessageContent\" MapsTo=\"[[MessageContent]]\" Value=\"[[CommsEngineCommunicationToSend().MessageContent]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"DeliveryAddress\" MapsTo=\"[[DeliveryAddress]]\" Value=\"[[CommsEngineCommunicationToSend().DeliveryAddress]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"OriginalAddress\" MapsTo=\"[[OriginalAddress]]\" Value=\"[[CommsEngineCommunicationToSend().OriginalAddress]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"ScheduledFor\" MapsTo=\"[[ScheduledFor]]\" Value=\"[[CommsEngineCommunicationToSend().ScheduledFor]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"CommunicationsProfile\" MapsTo=\"[[CommunicationsProfile]]\" Value=\"[[CommsEngineCommunicationToSend().CommunicationsProfile]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"CommunicationType\" MapsTo=\"[[CommunicationType]]\" Value=\"[[CommsEngineCommunicationToSend().CommunicationType]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"Subject\" MapsTo=\"[[Subject]]\" Value=\"[[CommsEngineCommunicationToSend().Subject]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"Attachments\" MapsTo=\"[[Attachments]]\" Value=\"[[CommsEngineCommunicationToSend().Attachments]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"HTML\" MapsTo=\"[[HTML]]\" Value=\"[[CommsEngineCommunicationToSend().HTML]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"AttemptCount\" MapsTo=\"[[AttemptCount]]\" Value=\"[[CommsEngineCommunicationToSend().AttemptCount]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"Priority\" MapsTo=\"[[Priority]]\" Value=\"[[CommsEngineCommunicationToSend().Priority]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"MetaData\" MapsTo=\"[[MetaData]]\" Value=\"[[CommsEngineCommunicationToSend().MetaData]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "</Outputs>",
+            };
+            var id = instance.Execute(out var errors, 0);
 
+            Assert.AreNotEqual(Guid.Empty, id);
+            Assert.AreEqual("Output format in service action Some Service is invalid.Please edit and remap.", errors.FetchErrors()[0]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("ServiceExecutionAbstract")]
+        public void ServiceExecutionAbstract_OutputServiceAction_GivenEmpty_ReturnsErrorMessage()
+        {
+            var webService = new Mock<WebService>();
+            webService.Object.ResourceName = "MockService";
+            webService.Object.OutputDescription = new Mock<IOutputDescription>().Object;
+            webService.Object.OutputDescription.Format = OutputFormats.Unknown;
+
+            var instance = new MockServiceExecutionAbstract<WebService, WebSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()), true)
+            {
+                Service = webService.Object,
+                InstanceOutputDefintions = "<Outputs>" +
+                                                      "<Output Name=\"CommsEngineCommunicationToUpdate\" MapsTo=\"[[CommsEngineCommunicationToUpdate]]\" Value=\"[[CommsEngineCommunicationToUpdate]]\" />" +
+                                                      "<Output Name=\"CommsEngineCommunicationAdded\" MapsTo=\"[[CommsEngineCommunicationAdded]]\" Value=\"[[CommsEngineCommunicationAdded]]\" />" +
+                                                      "<Output Name=\"CommsEngineCommunicationToView\" MapsTo=\"[[CommsEngineCommunicationToView]]\" Value=\"[[CommsEngineCommunicationToView]]\" />" +
+                                                      "<Output Name=\"StatusCode\" MapsTo=\"[[StatusCode]]\" Value=\"[[StatusCode]]\" />" +
+                                                      "<Output Name=\"Message\" MapsTo=\"[[Message]]\" Value=\"[[Message]]\" />" +
+                                                      "<Output Name=\"Exception\" MapsTo=\"[[Exception]]\" Value=\"[[Exception]]\" />" +
+                                                      "<Output Name=\"Result\" MapsTo=\"[[Result]]\" Value=\"[[Result]]\" />" +
+                                                      "<Output Name=\"ResponseDate\" MapsTo=\"[[ResponseDate]]\" Value=\"[[ResponseDate]]\" />" +
+                                                      "<Output Name=\"CommunicationRequestID\" MapsTo=\"[[CommunicationRequestID]]\" Value=\"[[CommsEngineCommunicationToSend().CommunicationRequestID]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"PolicyNo\" MapsTo=\"[[PolicyNo]]\" Value=\"[[CommsEngineCommunicationToSend().PolicyNo]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"EventType\" MapsTo=\"[[EventType]]\" Value=\"[[CommsEngineCommunicationToSend().EventType]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"EventSource\" MapsTo=\"[[EventSource]]\" Value=\"[[CommsEngineCommunicationToSend().EventSource]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"MessageContent\" MapsTo=\"[[MessageContent]]\" Value=\"[[CommsEngineCommunicationToSend().MessageContent]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"DeliveryAddress\" MapsTo=\"[[DeliveryAddress]]\" Value=\"[[CommsEngineCommunicationToSend().DeliveryAddress]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"OriginalAddress\" MapsTo=\"[[OriginalAddress]]\" Value=\"[[CommsEngineCommunicationToSend().OriginalAddress]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"ScheduledFor\" MapsTo=\"[[ScheduledFor]]\" Value=\"[[CommsEngineCommunicationToSend().ScheduledFor]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"CommunicationsProfile\" MapsTo=\"[[CommunicationsProfile]]\" Value=\"[[CommsEngineCommunicationToSend().CommunicationsProfile]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"CommunicationType\" MapsTo=\"[[CommunicationType]]\" Value=\"[[CommsEngineCommunicationToSend().CommunicationType]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"Subject\" MapsTo=\"[[Subject]]\" Value=\"[[CommsEngineCommunicationToSend().Subject]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"Attachments\" MapsTo=\"[[Attachments]]\" Value=\"[[CommsEngineCommunicationToSend().Attachments]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"HTML\" MapsTo=\"[[HTML]]\" Value=\"[[CommsEngineCommunicationToSend().HTML]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"AttemptCount\" MapsTo=\"[[AttemptCount]]\" Value=\"[[CommsEngineCommunicationToSend().AttemptCount]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"Priority\" MapsTo=\"[[Priority]]\" Value=\"[[CommsEngineCommunicationToSend().Priority]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "<Output Name=\"MetaData\" MapsTo=\"[[MetaData]]\" Value=\"[[CommsEngineCommunicationToSend().MetaData]]\" Recordset=\"CommsEngineCommunicationToSend\" />" +
+                                                      "</Outputs>",
+            };
+            var id = instance.Execute(out var errors, 0);
+
+            Assert.AreNotEqual(Guid.Empty, id);
+            Assert.AreEqual("Output format in service action MockService is invalid.", errors.FetchErrors()[0]);
+        }
     }
 }
