@@ -113,7 +113,6 @@
     <Compile Include="DuplicateResource.cs" />
     <Compile Include="ApisJson.cs" />
     <Compile Include="Common\DeleteHelper.cs" />
-    <Compile Include="Common\DirectoryHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
     <Compile Include="Common\NullValueInVariableException.cs" />

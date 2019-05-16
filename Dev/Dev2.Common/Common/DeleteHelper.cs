@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 
@@ -46,7 +45,7 @@ namespace Dev2.Common.Common
             // directory
             if (IsDirectory(path))
             {
-                new DirectoryHelper().CleanUp(path);
+                new DirectoryWrapper().CleanUp(path);
                 return true;
             }
 
