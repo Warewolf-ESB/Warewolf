@@ -319,7 +319,6 @@
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
-    <Compile Include="Scheduler\Interfaces\IDirectoryHelper.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
     <Compile Include="Scheduler\Interfaces\IResourceHistory.cs" />
     <Compile Include="Scheduler\Interfaces\IScheduledResource.cs" />

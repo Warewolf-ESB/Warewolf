@@ -11,9 +11,10 @@
 using System;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Runtime.Security;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
@@ -34,12 +35,12 @@ namespace Dev2.Scheduler.Test
         {
             var service = new Mock<IDev2TaskService>().Object;
             var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
-            var dir = new Mock<IDirectoryHelper>();
-            dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
-            var factory = new ServerSchedulerFactory(service, cFactory, dir.Object, a => a.WorkflowName);
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
+            var factory = new ServerSchedulerFactory(service, cFactory, mockDirectory.Object, a => a.WorkflowName);
             Assert.AreEqual(cFactory, factory.ConvertorFactory);
             Assert.AreEqual(service, factory.TaskService);
-            dir.Verify(a => a.CreateIfNotExists(It.IsAny<string>()));
+            mockDirectory.Verify(a => a.CreateIfNotExists(It.IsAny<string>()));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -89,9 +90,9 @@ directory
 
             var service = new Mock<IDev2TaskService>();
             var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
-            var dir = new Mock<IDirectoryHelper>();
-            dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
-            var factory = new ServerSchedulerFactory(service.Object, cFactory, dir.Object, a => a.WorkflowName);
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
+            var factory = new ServerSchedulerFactory(service.Object, cFactory, mockDirectory.Object, a => a.WorkflowName);
             service.Setup(a => a.Dispose()).Verifiable();
             factory.Dispose();
             service.Verify(a => a.Dispose());
@@ -106,7 +107,7 @@ directory
         {
             var service = new Mock<IDev2TaskService>().Object;
             var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
-            var factory = new ServerSchedulerFactory(service, cFactory, new DirectoryHelper(), a => a.WorkflowName);
+            var factory = new ServerSchedulerFactory(service, cFactory, new DirectoryWrapper(), a => a.WorkflowName);
             var model = (ScheduledResourceModel)factory.CreateModel("bob", new SecurityWrapper(ServerAuthorizationService.Instance));
             Assert.AreEqual("bob", model.WarewolfFolderPath);
             Assert.IsTrue(model.WarewolfAgentPath.Contains(GlobalConstants.SchedulerAgentPath));
@@ -133,7 +134,7 @@ directory
             mockTask.Setup(a => a.XmlText).Returns("bob");
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
 
-            var factory = new ServerSchedulerFactory(service.Object, cFactory.Object, new Mock<IDirectoryHelper>().Object, a => a.WorkflowName);
+            var factory = new ServerSchedulerFactory(service.Object, cFactory.Object, new Mock<IDirectory>().Object, a => a.WorkflowName);
             var trig = new DailyTrigger();
             var res = factory.CreateResource("A", SchedulerStatus.Disabled, trig, "c", Guid.NewGuid().ToString());
             Assert.AreEqual("A", res.Name);
@@ -241,7 +242,7 @@ directory
         {
             IDev2TaskService s = new Dev2TaskService(new TaskServiceConvertorFactory());
             ITaskServiceConvertorFactory fact = new TaskServiceConvertorFactory();
-            var schedulerFactory = new ServerSchedulerFactory(s, fact, new DirectoryHelper(), a => a.WorkflowName);
+            var schedulerFactory = new ServerSchedulerFactory(s, fact, new DirectoryWrapper(), a => a.WorkflowName);
 
 
             var trig = schedulerFactory.CreateTrigger(t);

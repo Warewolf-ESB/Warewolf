@@ -105,6 +105,7 @@
     <Compile Include="WarewolfQueue\WarewolfQueueTests.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <Compile Include="Utils\SearchUtilTests.cs" />
+    <Compile Include="Wrappers\DirectoryWrapperTests.cs" />
     <Compile Include="Wrappers\TimerWrapperTests.cs" />
     <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
     <Compile Include="Wrappers\FilePathWrapperTests.cs" />
