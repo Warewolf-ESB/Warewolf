@@ -194,11 +194,11 @@ namespace Warewolf.Storage
 
         public int GetObjectLength(string recordSetName)
         {
-            JArray findArray(JObject ob, string[] names)
+            JToken findArray(JObject ob, string[] names)
             {
                 if (names.Length == 1)
                 {
-                    return ob[names[0]] as JArray;
+                    return ob[names[0]];
                 }
                 return findArray(ob[names[0]] as JObject, names.Skip(1).ToArray());
             }
@@ -216,8 +216,9 @@ namespace Warewolf.Storage
 
 
 
-                return arr.Count;
-            } catch (KeyNotFoundException e)
+                return arr.Count();
+            }
+            catch (KeyNotFoundException e)
             {
                 throw new Exception("not a json array", e);
             }
@@ -240,10 +241,12 @@ namespace Warewolf.Storage
         public IList<string> EvalAsListOfStrings(string expression, int update)
         {
             var result = Eval(expression, update);
-            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x) {
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
+            {
                 return new List<string> { WarewolfAtomToString(x.Item) };
             }
-            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult) {
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
+            {
                 var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
@@ -328,13 +331,13 @@ namespace Warewolf.Storage
         {
             if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
-                    var x = warewolfAtomResult.Item;
-                    if (x.IsNothing)
-                    {
-                        return null;
-                    }
+                var x = warewolfAtomResult.Item;
+                if (x.IsNothing)
+                {
+                    return null;
+                }
 
-                    return WarewolfAtomToStringErrorIfNull(x);
+                return WarewolfAtomToStringErrorIfNull(x);
             }
             if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
@@ -406,7 +409,7 @@ namespace Warewolf.Storage
         }
 
         public void EvalDelete(string exp, int update)
-    {
+        {
             _env = PublicFunctions.EvalDelete(exp, update, _env);
         }
 
@@ -443,7 +446,7 @@ namespace Warewolf.Storage
         public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update) => EvalAsTable(recordsetExpression, update, false);
         public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update, bool throwsifnotexists)
 
-        {           
+        {
             var result = PublicFunctions.EvalEnvExpressionToTable(recordsetExpression, update, _env, throwsifnotexists);
             return result;
         }
@@ -697,13 +700,15 @@ namespace Warewolf.Storage
             readonly MemoryStream _stream = new MemoryStream();
             readonly JsonTextWriter _jsonWriter;
 
-            public EnvironmentToJsonHelper() {
+            public EnvironmentToJsonHelper()
+            {
                 _jsonWriter = new JsonTextWriter(new StreamWriter(_stream));
                 OpenJson();
             }
 
 
-            protected void OpenJson() {
+            protected void OpenJson()
+            {
                 _jsonWriter.WriteStartObject();
             }
             public void WriteVariables(DataStorage.WarewolfEnvironment _env)
@@ -732,7 +737,8 @@ namespace Warewolf.Storage
                 serializer.Serialize(_jsonWriter, allErrors);
             }
 
-            protected void CloseJson() {
+            protected void CloseJson()
+            {
                 _jsonWriter.WriteEndObject();
                 _jsonWriter.Flush();
             }
