@@ -9,24 +9,17 @@
 */
 
 using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Dev2.Instrumentation;
-using Dev2.Instrumentation.Factory;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
-using Dev2.Studio.Utils;
 using Dev2.Workspaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Security.Claims;
 
 namespace Dev2
 {
-
     public interface ILoadResources
     {
         void CheckExampleResources();
@@ -46,22 +39,20 @@ namespace Dev2
         readonly IDirectory _directory;
         private IResourceCatalog _catalog;
         private readonly IResourceCatalogFactory _resourceCatalogFactory;
-        private readonly IDirectoryHelper _directoryHelper;
 
         public LoadResources(string resourceDirectory, IWriter writer)
-            :this(resourceDirectory, writer, new DirectoryWrapper(), new ResourceCatalogFactory(), new DirectoryHelper())
+            :this(resourceDirectory, writer, new DirectoryWrapper(), new ResourceCatalogFactory())
         {
             
         }
 
-        public LoadResources(string resourceDirectory, IWriter writer, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory, IDirectoryHelper directoryHelper)
+        public LoadResources(string resourceDirectory, IWriter writer, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory)
         {
             _writer = writer;
             _directory = directory;
             _resourceDirectory = resourceDirectory;
             _resourceCatalogFactory = resourceCatalogFactory;
             _catalog = resourceCatalogFactory.New();
-            _directoryHelper = directoryHelper;
         }
 
         public void CheckExampleResources()
@@ -134,9 +125,8 @@ namespace Dev2
             var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, _resourceDirectory);
             if (!_directory.Exists(EnvironmentVariables.ResourcePath) && !_directory.Exists(serverBinResources))
             {
-                var dir = _directoryHelper;
-                dir.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
-                dir.CleanUp(serverBinResources);
+                _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+                _directory.CleanUp(serverBinResources);
             }
         }
         
@@ -156,9 +146,8 @@ namespace Dev2
             var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
             if (!_directory.Exists(EnvironmentVariables.TestPath) && _directory.Exists(serverBinTests))
             {
-                var dir = _directoryHelper;
-                dir.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
-                dir.CleanUp(serverBinTests);
+                _directory.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
+                _directory.CleanUp(serverBinTests);
             }
         }
     }
