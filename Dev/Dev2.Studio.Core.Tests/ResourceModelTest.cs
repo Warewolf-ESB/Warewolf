@@ -30,15 +30,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
 
-
-
 namespace Dev2.Core.Tests
 {
     [TestClass]
     public class ResourceModelTest
     {
-        #region Test Initialization
-
         void Setup()
         {
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
@@ -65,17 +61,12 @@ namespace Dev2.Core.Tests
             };
         }
 
-        #endregion Test Initialization
-
-        #region UpdateMode Tests
-
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceModel_Update")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_Update_WhenWorkflowXamlChanged_ExpectUpdatedResourceModelWithNewXaml()
         {
             //------------Setup for test--------------------------
-            // Setup();
             var environmentModel = CreateMockEnvironment(new EventPublisher());
             var resourceModel = new ResourceModel(environmentModel.Object);
             const string category = "TestCat";
@@ -99,6 +90,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_UpdateResourceModelExpectPropertiesUpdated()
         {
             //------------Setup for test--------------------------
@@ -136,13 +129,13 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(inputs, updateResourceModel.Inputs);
             Assert.AreEqual(outputs, updateResourceModel.Outputs);
         }
-        #endregion UpdateMode Tests
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_DataListPropertyWhereChangedToSameString_NotifyPropertyChangedNotFiredTwice()
         {
             //------------Setup for test--------------------------
-            // Setup();
             var testEnvironmentModel = CreateMockEnvironment();
             var resourceModel = new ResourceModel(testEnvironmentModel.Object);
             var timesFired = 0;
@@ -164,6 +157,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_OnWorkflowSaved_IsWorkflowchangedWherePropertyUpdated_FireOnWorkflowSaved()
         {
             //------------Setup for test--------------------------
@@ -185,14 +180,9 @@ namespace Dev2.Core.Tests
             Assert.AreSame(resourceModel, eventResourceModel);
         }
 
-        #region ToServiceDefinition Tests
-
-
-        #endregion ToServiceDefinition Tests
-
-        #region DataList Tests
-
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_DataList_Setter_UpdatedDataListSectionInServiceDefinition()
         {
             Setup();
@@ -206,7 +196,6 @@ namespace Dev2.Core.Tests
 </DataList>";
 
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
-
 
             var resourceModel = new ResourceModel(environmentModel.Object)
             {
@@ -253,6 +242,7 @@ namespace Dev2.Core.Tests
                 Assert.Fail();
             }
         }
+
         void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -260,6 +250,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_Constructor_IsWorkflowSaved()
         {
             //------------Setup for test--------------------------
@@ -271,16 +263,13 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(resourceModel.IsWorkflowSaved);
         }
-        #endregion DataList Tests
-
 
         [TestMethod]
-        [TestCategory("ResourceModel_DesignValidationService")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         [Description("Design validation memo errors must be added to the errors list.")]
-        [Owner("Trevor Williams-Ros")]
         public void ResourceModel_DesignValidationServicePublishingMemo_UpdatesErrors()
         {
-            //Setup();
             var instanceID = Guid.NewGuid();
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
             pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
@@ -314,9 +303,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [TestCategory("ResourceModel_DesignValidationService")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         [Description("Design validation memo errors must be added to the errors list.")]
-        [Owner("Trevor Williams-Ros")]
         public void ResourceModel_DesignValidationServicePublishingMemo_NoInstanceID_DoesNotUpdatesErrors()
         {
             //Setup();
@@ -343,12 +332,11 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [TestCategory("ResourceModel_Rollback")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         [Description("Resource model rollback must restore fixed errors.")]
-        [Owner("Trevor Williams-Ros")]
         public void ResourceModel_Rollback_FixedErrorsRestored()
         {
-            //Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
@@ -393,14 +381,12 @@ namespace Dev2.Core.Tests
             eventPublisher.Publish(pubMemo);
         }
 
-
         [TestMethod]
-        [TestCategory("ResourceModel_Rollback")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         [Description("Resource model commit must not restore fixed errors.")]
-        [Owner("Trevor Williams-Ros")]
         public void ResourceModel_Commit_FixedErrorsNotRestored()
         {
-            //Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
@@ -446,9 +432,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
-        public void ResourceModel_ToServiceDefinition_InvalidResourceType_ThrowsException()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
+        public void ResourceModel_ToServiceDefinition_WorkflowXaml_IsNull()
         {
             //------------Setup for test--------------------------
             Setup();
@@ -471,12 +457,12 @@ namespace Dev2.Core.Tests
             var serviceDefinition = model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(string.IsNullOrEmpty(serviceDefinition?.ToString()));
+            Assert.IsNull(serviceDefinition);
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ToServiceDefinition_GivenXamlNull_ExpectFetchOfXaml()
         {
             Verify_ToServiceDefinition_GivenXamlNull(ResourceType.WorkflowService);
@@ -510,17 +496,16 @@ namespace Dev2.Core.Tests
             repo.Verify(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()));
         }
 
-
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ToServiceDefinition_GivenXamlPresent_ExpectExistingXamlUsed()
         {
             const string TestCategory = "Test2";
             const string TestXaml = "current xaml";
-            
+
             Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.WorkflowService, TestCategory, TestXaml, true, serviceElement =>
-            
+
             {
                 var actionElement = serviceElement.Element("Action");
                 Assert.IsNotNull(actionElement, "actionElement = null");
@@ -570,13 +555,11 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
-
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
         {
             //------------Setup for test--------------------------
-            //Setup();
             var model = CreateResourceModel();
             model.AddError(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = Guid.NewGuid(), FixData = "Some fix data" });
             model.AddError(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = Guid.NewGuid(), FixData = "Some fix data" });
@@ -612,8 +595,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ToServiceDefinition_WhenSourceType_ShouldHaveFullServiceDefinition()
         {
             //------------Setup for test--------------------------
@@ -629,8 +612,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ToServiceDefinition_Workflow_WhenHasAnAmpersand_ShouldHaveServiceDefinition()
         {
             //------------Setup for test--------------------------
@@ -661,8 +644,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_DisplayName")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_DisplayName_IsNullOrEmptyAndResourceTypeIsWorkflowService_Workflow()
         {
             //------------Setup for test--------------------------
@@ -679,8 +662,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_DisplayName")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_DisplayName_IsNullOrEmptyAndResourceTypeIsNotWorkflowService_ResourceTypeToString()
         {
             //------------Setup for test--------------------------
@@ -697,8 +680,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_GetErrors")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_GetErrors_ErrorsForInstance()
         {
             //------------Setup for test--------------------------
@@ -721,8 +704,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ClearErrors")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ClearErrors_ClearsErrors()
         {
             //------------Setup for test--------------------------
@@ -748,8 +731,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_IDataErrorInfo")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_IDataErrorInfo_ThisAccessor_ResourceName()
         {
             //------------Setup for test--------------------------
@@ -770,8 +753,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_IDataErrorInfo")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_IDataErrorInfo_ThisAccessor_HelpLink()
         {
             //------------Setup for test--------------------------
@@ -790,8 +773,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ClearErrors")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ClearErrors_FiresPropertyChangeForErrors()
         {
             //------------Setup for test--------------------------
@@ -819,8 +802,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ClearErrors")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_ClearErrors_FiresPropertyChangeFoIsValid()
         {
             //------------Setup for test--------------------------
@@ -856,8 +839,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_RemoveError")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_RemoveError_ErrorIsFound_ErrorRemoved()
         {
             //------------Setup for test--------------------------
@@ -891,8 +874,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_RemoveError")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_RemoveError_ErrorIsNotFound_DoesNothing()
         {
             var instanceID = Guid.NewGuid();
@@ -931,8 +914,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_RemoveError")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_RemoveError_ErrorIsNotFoundButErrorExistsWithSameErrorAndFixType_MatchingErrorRemoved()
         {
             var instanceID = Guid.NewGuid();
@@ -970,8 +953,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_Environment")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_Environment_DesignValidationService_WiredUp()
         {
             var eventPublisher = new EventPublisher();
@@ -1004,7 +987,6 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             eventPublisher.Publish(memo);
 
-
             //------------Assert Results-------------------------
             errors = model.GetErrors(instanceID);
             Assert.AreEqual(1, errors.Count);
@@ -1012,8 +994,8 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceModel_Authorization")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
         public void ResourceModel_Authorization_IsAuthorized_IsCorrectForAllPermissions()
         {
             Verify_Authorization_IsAuthorized(AuthorizationContext.Execute);
@@ -1039,6 +1021,152 @@ namespace Dev2.Core.Tests
             }
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
+        public void ResourceModel_Default_Properties()
+        {
+            var resourceModel = new ResourceModel();
 
+            Assert.IsFalse(resourceModel.HasErrors);
+
+            Assert.IsFalse(resourceModel.IsDatabaseService);
+            Assert.IsFalse(resourceModel.IsPluginService);
+            Assert.IsFalse(resourceModel.IsResourceService);
+            Assert.IsFalse(resourceModel.IsVersionResource);
+            Assert.IsFalse(resourceModel.IsNewWorkflow);
+            Assert.IsFalse(resourceModel.IsNotWarewolfPath);
+            Assert.IsFalse(resourceModel.IsOpeningFromOtherDir);
+            Assert.IsNull(resourceModel.UnitTestTargetWorkflowService);
+
+            resourceModel.IsDatabaseService = true;
+            resourceModel.IsPluginService = true;
+            resourceModel.IsResourceService = true;
+            resourceModel.IsVersionResource = true;
+            resourceModel.IsNewWorkflow = true;
+            resourceModel.IsNotWarewolfPath = true;
+            resourceModel.IsOpeningFromOtherDir = true;
+            resourceModel.UnitTestTargetWorkflowService = "Target Workflow Service";
+
+            Assert.IsTrue(resourceModel.IsDatabaseService);
+            Assert.IsTrue(resourceModel.IsPluginService);
+            Assert.IsTrue(resourceModel.IsResourceService);
+            Assert.IsTrue(resourceModel.IsVersionResource);
+            Assert.IsTrue(resourceModel.IsNewWorkflow);
+            Assert.IsTrue(resourceModel.IsNotWarewolfPath);
+            Assert.IsTrue(resourceModel.IsOpeningFromOtherDir);
+            Assert.AreEqual("Target Workflow Service", resourceModel.UnitTestTargetWorkflowService);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
+        [ExpectedException(typeof(Exception))]
+        public void ResourceModel_ToServiceDefinition_InvalidResourceType_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(repository => repository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instanceID = Guid.NewGuid();
+            var resourceModel = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID,
+                WorkflowXaml = null,
+                ResourceType = ResourceType.Unknown
+            };
+
+            //------------Execute Test---------------------------
+            var serviceDefinition = resourceModel.ToServiceDefinition();
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
+        public void ResourceModel_GetSavePath()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var instanceID = Guid.NewGuid();
+            var resourceModel = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID,
+                WorkflowXaml = null,
+                ResourceType = ResourceType.WorkflowService
+            };
+
+            var savePath = resourceModel.GetSavePath();
+            Assert.AreEqual("", savePath);
+
+            resourceModel.Category = "Item\\Resource";
+            resourceModel.ResourceName = "Resource";
+
+            savePath = resourceModel.GetSavePath();
+            Assert.AreEqual("Item\\", savePath);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
+        public void ResourceModel_GetWorkflowXaml_NotNull()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var instanceID = Guid.NewGuid();
+            var resourceModel = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID,
+                WorkflowXaml = null,
+                ResourceType = ResourceType.WorkflowService
+            };
+
+            var xaml = new StringBuilder("new xaml");
+
+            resourceModel.WorkflowXaml = xaml;
+
+            var workflowXaml = resourceModel.GetWorkflowXaml();
+            Assert.AreEqual(xaml, workflowXaml);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceModel))]
+        public void ResourceModel_GetWorkflowXaml_IsNull()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var msg = MakeMessage("test");
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(repository => repository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(msg);
+            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instanceID = Guid.NewGuid();
+            var resourceModel = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID,
+                WorkflowXaml = null,
+                ResourceType = ResourceType.WorkflowService
+            };
+
+            var workflowXaml = resourceModel.GetWorkflowXaml();
+            Assert.AreEqual(msg.Message, workflowXaml);
+        }
     }
 }
