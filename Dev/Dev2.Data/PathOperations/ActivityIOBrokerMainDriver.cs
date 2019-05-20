@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
@@ -383,7 +384,7 @@ namespace Dev2.PathOperations
                 }
                 zip.Save(tempFilename);
             }
-            var dir = new DirectoryHelper();
+            var dir = new DirectoryWrapper();
             dir.CleanUp(tmpDir);
 
             return tempFilename;

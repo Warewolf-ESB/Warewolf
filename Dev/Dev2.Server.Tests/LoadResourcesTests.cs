@@ -9,7 +9,6 @@
 */
 
 using Dev2.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -43,15 +42,13 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
-            
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(It.IsAny<string>()))
                 .Callback<string>((path) => Assert.IsTrue(path.EndsWith(@"\Resources - ServerTests")))
                 .Returns(()=> null).Verifiable();
             //------------------Act-------------------
-            var loadResources =  new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object,mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources =  new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object,mockResourceCatalogFactory.Object);
             loadResources.CheckExampleResources();
             //------------------Assert----------------
             mockResourceCatalog.Verify();
@@ -67,12 +64,11 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             //------------------Act-------------------
-            var loadResources = new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.CheckExampleResources();
             //------------------Assert----------------
             mockResourceCatalog.Verify(o => o.LoadExamplesViaBuilder(It.IsAny<string>()), Times.Never);
@@ -89,15 +85,14 @@ namespace Dev2.Server.Tests
             var mockWriter = new Mock<IWriter>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
             
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.MigrateOldResources();
             //------------------Assert----------------
-            mockDirectoryHelper.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Never);
-            mockDirectoryHelper.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Never);
+            mockDirectory.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Never);
+            mockDirectory.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
@@ -111,18 +106,17 @@ namespace Dev2.Server.Tests
             var mockWriter = new Mock<IWriter>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
-            mockDirectoryHelper.Setup(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true))
+            mockDirectory.Setup(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true))
                 .Verifiable();
-            mockDirectoryHelper.Setup(o => o.CleanUp(It.IsAny<string>()))
+            mockDirectory.Setup(o => o.CleanUp(It.IsAny<string>()))
                 .Verifiable();
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.MigrateOldResources();
             //------------------Assert----------------
-            mockDirectoryHelper.Verify();
+            mockDirectory.Verify();
         }
 
         [TestMethod]
@@ -136,15 +130,14 @@ namespace Dev2.Server.Tests
             var mockWriter = new Mock<IWriter>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             mockDirectory.Setup(o => o.CreateDirectory(It.IsAny<string>())).Verifiable();
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.ValidateResourceFolder();
             //------------------Assert----------------
-            mockDirectoryHelper.Verify();
+            mockDirectory.Verify();
         }
 
         [TestMethod]
@@ -159,12 +152,11 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockResourceCatalog.Setup(o => o.CleanUpOldVersionControlStructure()).Verifiable();
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.MethodsToBeDepricated();
             //------------------Assert----------------
             mockResourceCatalog.Verify();
@@ -182,14 +174,13 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockResourceCatalog.Setup(o => o.CleanUpOldVersionControlStructure()).Verifiable();
 
             mockWriter.Setup(o => o.WriteLine("done.")).Verifiable();
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.LoadResourceCatalog();
             //------------------Assert----------------
             mockWriter.Verify();
@@ -208,7 +199,6 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
@@ -221,7 +211,7 @@ namespace Dev2.Server.Tests
 
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name= "testAssemblyName" } });
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.LoadActivityCache(mockAssemblyLoader.Object);
             //------------------Assert----------------
             mockWriter.Verify(o => o.WriteLine("done."), Times.Exactly(2));
@@ -240,14 +230,13 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
 
             mockWriter.Setup(o => o.Write("Loading server workspace...  ")).Verifiable();
             mockWriter.Setup(o => o.WriteLine("done.")).Verifiable();
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.LoadServerWorkspace();
             //------------------Assert----------------
             mockWriter.Verify();
@@ -265,16 +254,15 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.MigrateOldTests();
             //------------------Assert----------------
-            mockDirectoryHelper.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Never);
-            mockDirectoryHelper.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Never);
+            mockDirectory.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Never);
+            mockDirectory.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
@@ -289,17 +277,16 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-            var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
             mockDirectory.Setup(o => o.Exists(EnvironmentVariables.TestPath)).Returns(false);
             mockDirectory.Setup(o => o.Exists(Path.Combine(EnvironmentVariables.ApplicationPath, "Tests"))).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             //------------------Act-------------------
-            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);
+            var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.MigrateOldTests();
             //------------------Assert----------------
-            mockDirectoryHelper.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Once);
-            mockDirectoryHelper.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Once);
+            mockDirectory.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Once);
+            mockDirectory.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Once);
         }
     }
 }

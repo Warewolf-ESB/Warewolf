@@ -1,12 +1,22 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.DataList.Contract;
@@ -21,16 +31,16 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestCategory("Runtime Hosting")]
     public class TestCatalogTests
     {
-        public static IDirectoryHelper DirectoryHelperInstance()
+        public static IDirectory DirectoryWrapperInstance()
         {
-            return new DirectoryHelper();
+            return new DirectoryWrapper();
         }
         [TestInitialize]
         public void CleanupTestDirectory()
         {
             if (Directory.Exists(EnvironmentVariables.TestPath))
             {
-                DirectoryHelperInstance().CleanUp(EnvironmentVariables.TestPath);
+                DirectoryWrapperInstance().CleanUp(EnvironmentVariables.TestPath);
             }
         }
 
@@ -467,7 +477,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, res2Tests.Count);
             Assert.AreEqual("Test 21", res2Tests[0].TestName);
             Assert.AreEqual("Test 22", res2Tests[1].TestName);
-            DirectoryHelperInstance().CleanUp(EnvironmentVariables.TestPath);
+            DirectoryWrapperInstance().CleanUp(EnvironmentVariables.TestPath);
             Directory.CreateDirectory(EnvironmentVariables.TestPath);
             //------------Execute Test---------------------------
             testCatalog.ReloadAllTests();

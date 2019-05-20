@@ -1,3 +1,4 @@
+#pragma warning disable S1541 // Methods and properties should not be too complex
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -70,7 +71,7 @@ namespace Dev2.Common.Wrappers
 
         public string[] GetDirectories(string workspacePath) => Directory.GetDirectories(workspacePath);
 
-        public string[] GetDirectories(string path, string pattern) => Directory.GetDirectories(path, pattern, System.IO.SearchOption.AllDirectories);
+        public string[] GetDirectories(string path, string pattern) => Directory.GetDirectories(path, pattern, SearchOption.AllDirectories);
 
         public string GetDirectoryName(string path)
         {
@@ -129,6 +130,113 @@ namespace Dev2.Common.Wrappers
         public DirectoryInfo GetParent(string path)
         {
             return Directory.GetParent(path);
+        }
+
+        /// <summary>
+        /// This needs to be remove at Version 3.0
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="extensions"></param>
+        /// <returns></returns>
+        public IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions)
+        {
+            if (extensions == null)
+            {
+                throw new ArgumentNullException("extensions");
+            }
+
+            var _files = new List<string>();
+            foreach (string ext in extensions)
+            {
+                var fyles = Directory.GetFiles(path, string.Format("*{0}", ext));
+                foreach (var item in fyles)
+                {
+                    _files.Add(item);
+                }
+            }
+            return _files;
+        }
+
+        public void Copy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            var dir = new DirectoryInfo(sourceDirName);
+            var dirs = dir.GetDirectories();
+
+            var files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                var temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    var temppath = Path.Combine(destDirName, subdir.Name);
+                    Copy(subdir.FullName, temppath, true);
+                }
+            }
+        }
+
+        public void CleanUp(string path)
+        {
+            if (path != null)
+            {
+                var di = new DirectoryInfo(path);
+                if (di.Exists)
+                {
+                    DeleteFileSystemInfo(di);
+                }
+            }
+        }
+
+        void DeleteFileSystemInfo(FileSystemInfo fsi)
+        {
+            CheckIfDeleteIsValid(fsi);
+            fsi.Attributes = FileAttributes.Normal;
+
+            if (fsi is DirectoryInfo di)
+            {
+                foreach (FileSystemInfo dirInfo in di.GetFileSystemInfos())
+                {
+                    DeleteFileSystemInfo(dirInfo);
+                }
+            }
+            fsi.Delete();
+        }
+
+        void CheckIfDeleteIsValid(FileSystemInfo fsi)
+        {
+            if (IsSystemFolder(fsi))
+            {
+                void thrower()
+                {
+                    throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles, fsi.FullName));
+                }
+                thrower();
+            }
+        }
+        public bool IsSystemFolder(FileSystemInfo fsi)
+        {
+            var result = string.Equals(fsi.FullName, @"C:\", StringComparison.CurrentCultureIgnoreCase);
+            result |= string.Equals(fsi.FullName, @"C:\Windows\System", StringComparison.CurrentCultureIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.System), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Windows), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.AdminTools), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Programs), StringComparison.OrdinalIgnoreCase);
+            return result;
         }
     }
 }

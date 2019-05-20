@@ -17,7 +17,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
@@ -55,7 +54,6 @@ namespace Dev2
         public IAssemblyLoader AssemblyLoader { get; set; }
         public IDirectory Directory { get; set; }
         public IResourceCatalogFactory ResourceCatalogFactory { get; set; }
-        public IDirectoryHelper DirectoryHelper { get; set; }
         public IWebServerConfiguration WebServerConfiguration { get; set; }
         public IWriter Writer { get; set; }
         public IPauseHelper PauseHelper { get; set; }
@@ -73,7 +71,6 @@ namespace Dev2
                 AssemblyLoader = new AssemblyLoader(),
                 Directory = new DirectoryWrapper(),
                 ResourceCatalogFactory = new ResourceCatalogFactory(),
-                DirectoryHelper = new DirectoryHelper(),
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
                 PauseHelper = new PauseHelper(),
@@ -120,7 +117,7 @@ namespace Dev2
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
-            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory, startupConfiguration.DirectoryHelper);
+            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory);
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             _writer = startupConfiguration.Writer;
             _pauseHelper = startupConfiguration.PauseHelper;

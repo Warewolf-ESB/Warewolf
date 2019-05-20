@@ -127,7 +127,6 @@
     <Compile Include="Diagnostics\DebugItemMock.cs" />
     <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="Diagnostics\DebugItemTests.cs" />
-    <Compile Include="DirectoryHelperTests.cs" />
     <Compile Include="ExtMethods\ObjExtTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
