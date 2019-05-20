@@ -196,7 +196,7 @@ namespace Dev2.Common.Wrappers
             }
         }
 
-        static void DeleteFileSystemInfo(FileSystemInfo fsi)
+        void DeleteFileSystemInfo(FileSystemInfo fsi)
         {
             CheckIfDeleteIsValid(fsi);
             fsi.Attributes = FileAttributes.Normal;
@@ -211,78 +211,32 @@ namespace Dev2.Common.Wrappers
             fsi.Delete();
         }
 
-        static void CheckIfDeleteIsValid(FileSystemInfo fsi)
+        void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
-            if (string.Equals(fsi.FullName, @"C:\", StringComparison.CurrentCultureIgnoreCase))
+            if (IsSystemFolder(fsi))
             {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
+                void thrower()
+                {
+                    throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles, fsi.FullName));
+                }
+                thrower();
             }
-            if (string.Equals(fsi.FullName, @"C:\Windows\System", StringComparison.CurrentCultureIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.System),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Windows),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.AdminTools),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
-            if (fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Programs),
-                StringComparison.OrdinalIgnoreCase))
-            {
-                throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
-                    fsi.FullName));
-            }
+        }
+        public bool IsSystemFolder(FileSystemInfo fsi)
+        {
+            var result = string.Equals(fsi.FullName, @"C:\", StringComparison.CurrentCultureIgnoreCase);
+            result |= string.Equals(fsi.FullName, @"C:\Windows\System", StringComparison.CurrentCultureIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.System), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Windows), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.AdminTools), StringComparison.OrdinalIgnoreCase);
+            result |= fsi.FullName.Equals(Environment.GetFolderPath(Environment.SpecialFolder.Programs), StringComparison.OrdinalIgnoreCase);
+            return result;
         }
     }
 }
