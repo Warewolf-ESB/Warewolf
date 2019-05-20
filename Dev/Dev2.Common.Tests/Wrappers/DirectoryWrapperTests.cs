@@ -18,7 +18,7 @@ namespace Dev2.Tests
     [TestClass]
     public class DirectoryWrapperTests
     {
-        private static IDirectory DirectoryWrapperInstance()
+        private static IDirectory NewIDirectoryInstance()
         {
             return new DirectoryWrapper();
         }
@@ -27,77 +27,77 @@ namespace Dev2.Tests
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenCFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(@"C:\");
+            NewIDirectoryInstance().CleanUp(@"C:\");
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenWindowsFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(@"C:\Windows");
+            NewIDirectoryInstance().CleanUp(@"C:\Windows");
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenSystem32Folder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(@"C:\Windows\System32");
+            NewIDirectoryInstance().CleanUp(@"C:\Windows\System32");
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenDesktopFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenDesktopDirectoryFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenSystem32_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenSystemFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.System));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.System));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenUserProfileFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenProgramFilesFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenProgramFilesX86Folder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void DirectoryWrapper_CleanUp_GivenProgramsFolder_ExpectException()
         {
-            DirectoryWrapperInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.Programs));
+            NewIDirectoryInstance().CleanUp(Environment.GetFolderPath(Environment.SpecialFolder.Programs));
         }
     }
 }
