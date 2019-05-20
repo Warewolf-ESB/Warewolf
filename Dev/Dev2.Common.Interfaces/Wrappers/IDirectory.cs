@@ -44,5 +44,6 @@ namespace Dev2.Common.Interfaces.Wrappers
         IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions);
         void Copy(string sourceDirName, string destDirName, bool copySubDirs);
         void CleanUp(string path);
+        bool IsSystemFolder(FileSystemInfo fsi);
     }
 }
