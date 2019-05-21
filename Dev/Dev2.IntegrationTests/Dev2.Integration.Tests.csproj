@@ -177,7 +177,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Server Refresh\ServerRefreshTests.cs" />
-    <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\StudioServerCommsTests.cs" />
