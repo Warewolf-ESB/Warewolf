@@ -48,7 +48,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithStar_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=*&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=*&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
@@ -74,7 +74,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithSource_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=Source&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=Source&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithWorkflowService_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=WorkflowService&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=WorkflowService&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithActivity_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=Activity&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=Activity&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
