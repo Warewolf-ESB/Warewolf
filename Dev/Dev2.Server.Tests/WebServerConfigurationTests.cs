@@ -156,6 +156,7 @@ namespace Dev2.Server.Tests
             ConfigurationManager.AppSettings.Set("sslCertificateName", "WarewolfServer.cer");
 
             var mockWriter = new Mock<IWriter>();
+            mockWriter.Setup(_writer => _writer.WriteLine(It.IsAny<string>())).Callback(() => { Console.WriteLine("Could not start webserver to listen for SSL traffic with cert [ WarewolfServer.cer ]"); });
 
             //----------------Act------------------------
             var webServerConfig = new WebServerConfiguration(mockWriter.Object, new FileWrapper());
