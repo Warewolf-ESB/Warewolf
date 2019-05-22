@@ -845,7 +845,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(10).unique]] = 12"});
             table37.AddRow(new string[] {
                         "",
-                        "!!MoreLink!!"});
+                        "[[rec(11).unique]] = 13"});
 #line 225
    testRunner.And("the \"Unique\" debug outputs as", ((string)(null)), table37, "And ");
 #line hidden

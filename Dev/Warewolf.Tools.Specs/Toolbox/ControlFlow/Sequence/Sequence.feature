@@ -234,7 +234,7 @@ Scenario: Execute a Sequence with Assign and Unique Records
 	  |   | [[rec(8).unique]] =     |
 	  |   | [[rec(9).unique]] = 11  |
 	  |   | [[rec(10).unique]] = 12 |
-	  |   | !!MoreLink!!            |
+	  |   | [[rec(11).unique]] = 13 |
 	  
 
 
