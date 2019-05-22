@@ -130,9 +130,9 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsUsed="{Binding IsUsed}"
+                                                                Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsEnabled="{Binding Path=IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsUsed="{Binding Path=IsUsed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                     <customControls:VariableTextBox.Style>
                                         <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableTextboxStyle}">
@@ -222,9 +222,9 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsUsed="{Binding IsUsed}"
+                                                                Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsEnabled="{Binding Path=IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsUsed="{Binding Path=IsUsed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                     <customControls:VariableTextBox.Style>
                                         <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableTextboxStyle}">
@@ -307,9 +307,9 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsUsed="{Binding IsUsed}"
+                                                                Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsEnabled="{Binding Path=IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsUsed="{Binding Path=IsUsed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                     <customControls:VariableTextBox.Style>
                                         <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableTextboxStyle}">
