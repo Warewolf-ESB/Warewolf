@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -9,9 +9,9 @@
 */
 
 using System.Net;
-using Dev2.Integration.Tests.Interfaces;
+using TestBase.Interfaces;
 
-namespace Dev2.Integration.Tests.MEF.WebTester
+namespace TestBase
 {
     public class GetWorker : IWorker
     {

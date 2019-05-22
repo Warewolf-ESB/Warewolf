@@ -137,16 +137,16 @@ namespace Warewolf.Studio.ViewModels
 
         private void UiAction(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IServiceTestModelTO res)
         {
+            if (res == null)
+            {
+                ShowResourceDeleted(selectedServiceTest, resourceModel);
+                return;
+            }
             if (res?.Result != null)
             {
                 if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
                 {
-                    selectedServiceTest.IsTestRunning = false;
-
-                    ShowPopupController();
-
-                    CloseResourceTestView(resourceModel);
-
+                    ShowResourceDeleted(selectedServiceTest, resourceModel);
                     return;
                 }
 
@@ -177,6 +177,13 @@ namespace Warewolf.Studio.ViewModels
             }
             selectedServiceTest.IsTestRunning = false;
             selectedServiceTest.IsTestLoading = false;
+        }
+
+        private static void ShowResourceDeleted(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel)
+        {
+            selectedServiceTest.IsTestRunning = false;
+            ShowPopupController();
+            CloseResourceTestView(resourceModel);
         }
 
         private void RunTestStepForeachTestStep(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)

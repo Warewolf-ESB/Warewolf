@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -19,15 +19,12 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Core.Tests.Utils;
-using Dev2.Integration.Tests.MEF.WebTester;
 using Dev2.Network;
 
-
-namespace Dev2.Integration.Tests.Helpers
+namespace TestBase
 {
-    public static class TestHelper
+    public class TestHelper
     {
-
         public static readonly string TblStart = "<table>";
         public static readonly string TblEnd = "</table>";
 
@@ -41,14 +38,13 @@ namespace Dev2.Integration.Tests.Helpers
             return fragment;
         }
 
-
         public static string PostDataToWebserver(string postandUrl)
         {
-            if(postandUrl.Split('?').Length == 1)
+            if (postandUrl.Split('?').Length == 1)
             {
                 ExecuteGetWorker(postandUrl);
             }
-            else if(postandUrl.Split('?').Length > 1)
+            else if (postandUrl.Split('?').Length > 1)
             {
                 ExecutePostWorker(postandUrl);
             }
@@ -60,23 +56,23 @@ namespace Dev2.Integration.Tests.Helpers
             return _responseData;
         }
 
-        public static string ExecuteServiceOnLocalhostUsingProxy(string serviceName, Dictionary<string,string> payloadArguments)
+        public static string ExecuteServiceOnLocalhostUsingProxy(string serviceName, Dictionary<string, string> payloadArguments)
         {
             var fact = new CommunicationControllerFactory();
             var comm = fact.CreateController(serviceName);
-            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorkerObject());
             prx.Connect(Guid.NewGuid());
             foreach (var payloadArgument in payloadArguments)
             {
                 comm.AddPayloadArgument(payloadArgument.Key, payloadArgument.Value);
             }
-            if(comm != null)
+            if (comm != null)
             {
                 var messageToExecute = comm.ExecuteCommand<ExecuteMessage>(prx, Guid.Empty);
-                if(messageToExecute != null)
+                if (messageToExecute != null)
                 {
                     var responseMessage = messageToExecute.Message;
-                    if(responseMessage != null)
+                    if (responseMessage != null)
                     {
                         var actual = responseMessage.ToString();
                         return actual;
@@ -91,11 +87,11 @@ namespace Dev2.Integration.Tests.Helpers
         public static string PostDataToWebserver(string postandUrl, out bool wasHttps)
         {
             wasHttps = false;
-            if(postandUrl.Split('?').Length == 1)
+            if (postandUrl.Split('?').Length == 1)
             {
                 wasHttps = ExecuteGetWorker(postandUrl);
             }
-            else if(postandUrl.Split('?').Length > 1)
+            else if (postandUrl.Split('?').Length > 1)
             {
                 ExecutePostWorker(postandUrl);
             }
@@ -107,7 +103,6 @@ namespace Dev2.Integration.Tests.Helpers
             return _responseData;
         }
 
-
         public static IList<IDebugState> FetchRemoteDebugItems(string baseUrl, Guid id)
         {
             var myUri = baseUrl + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
@@ -115,19 +110,15 @@ namespace Dev2.Integration.Tests.Helpers
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 
-            using(var response = req.GetResponse() as HttpWebResponse)
+            using (var response = req.GetResponse() as HttpWebResponse)
             {
-                if(response != null)
+                if (response != null)
                 {
-                    
-                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
-
                         var data = reader.ReadToEnd();
-                        
-                        if(data != null)
-                        
+
+                        if (data != null)
                         {
                             var serializer = new Dev2JsonSerializer();
                             return serializer.Deserialize<List<IDebugState>>(data);
@@ -137,13 +128,12 @@ namespace Dev2.Integration.Tests.Helpers
             }
 
             return null;
-
         }
 
         public static string PostDataToWebserverAsRemoteAgent(string postandUrl, Guid requestID)
         {
             var len = postandUrl.Split('?').Length;
-            if(len == 1)
+            if (len == 1)
             {
                 var result = string.Empty;
 
@@ -154,13 +144,11 @@ namespace Dev2.Integration.Tests.Helpers
                 req.Headers.Add(HttpRequestHeader.From, requestID.ToString()); // Set to remote invoke ID ;)
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
 
-                using(var response = req.GetResponse() as HttpWebResponse)
+                using (var response = req.GetResponse() as HttpWebResponse)
                 {
-                    if(response != null)
+                    if (response != null)
                     {
-                        
-                        using(StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
                             result = reader.ReadToEnd();
                         }
@@ -217,11 +205,11 @@ namespace Dev2.Integration.Tests.Helpers
             var elements = XElement.Parse(payload);
             if (elements.HasElements)
             {
-                foreach(XElement elem in elements.Descendants())
+                foreach (XElement elem in elements.Descendants())
                 {
-                    if(elem.Name != "script")
+                    if (elem.Name != "script")
                     {
-                        if(elem.HasElements)
+                        if (elem.HasElements)
                         {
 
                         }
