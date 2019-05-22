@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -13,7 +13,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace Dev2.Integration.Tests.MEF.WebTester
+namespace TestBase
 {
     public class RequestState
     {

@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -11,9 +11,9 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using Dev2.Integration.Tests.Interfaces;
+using TestBase.Interfaces;
 
-namespace Dev2.Integration.Tests.MEF.WebTester
+namespace TestBase
 {
     public class AsynchronousRequest : ILogger
     {
@@ -66,11 +66,11 @@ namespace Dev2.Integration.Tests.MEF.WebTester
                 postStream.Close();
             }
 
-            using(var responseStream = request.GetResponse() as HttpWebResponse)
+            using (var responseStream = request.GetResponse() as HttpWebResponse)
             {
-                if(responseStream != null)
+                if (responseStream != null)
                 {
-                    using(StreamReader reader = new StreamReader(responseStream.GetResponseStream()))
+                    using (StreamReader reader = new StreamReader(responseStream.GetResponseStream()))
                     {
                         responseData = reader.ReadToEnd();
                     }
@@ -84,10 +84,10 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             request.Timeout = 300000; // wait up to five minutes ;) 
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) =>
-                {
-                    WasHTTPS = true;
-                    return true;
-                };
+            {
+                WasHTTPS = true;
+                return true;
+            };
 
             using (var response = request.GetResponse() as HttpWebResponse)
             {
@@ -99,15 +99,12 @@ namespace Dev2.Integration.Tests.MEF.WebTester
                     }
                 }
             }
-
         }
 
         void MethodGetResponse()
         {
             request.Method = "GET";
             _response = request.GetResponse() as HttpWebResponse;
-
-
         }
 
         public string GetResponseData()
@@ -119,6 +116,5 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         {
             return _response;
         }
-        
     }
 }

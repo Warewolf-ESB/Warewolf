@@ -193,14 +193,7 @@
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="SqlParallelRunStressTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
-    <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
-    <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Test utils\WebTester\Utils\AsynchronousRequest.cs" />
-    <Compile Include="Test utils\WebTester\Utils\RequestState.cs" />
-    <Compile Include="Interfaces\IWorker.cs" />
-    <Compile Include="Test utils\WebTester\Workers\PostWorker.cs" />
-    <Compile Include="Test utils\WebTester\Workers\WebserverGetWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ParserStrings.resx">
@@ -343,6 +336,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestBase\TestBase.csproj">
+      <Project>{b09eec63-dd86-4369-b17c-baff9f1aaaae}</Project>
+      <Name>TestBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>

@@ -10,9 +10,8 @@
 
 using System.Xml;
 using Dev2.Common;
-using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using TestBase;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 {
