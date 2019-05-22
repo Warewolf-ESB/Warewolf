@@ -32,10 +32,16 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
             var response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
 
             var nodes = response.DescendantNodes();
-            var count = nodes.Count();
-            // More than 2 nodes indicate that the service returned dependancies
-            Assert.AreEqual(5, count);
+            var nodesArray = nodes.ToArray();
 
+            Assert.AreEqual(5, nodesArray.Length);
+
+            var txt0 = "<node id=\"2ac0f29a-638e-4f9a-a2cb-b9694087f96c\" x=\"\" y=\"\" broken=\"false\">\r\n  <dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" />\r\n  <dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" />\r\n  <dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" />\r\n</node>";
+            Assert.AreEqual(txt0,  nodesArray[0].ToString());
+            Assert.AreEqual("<dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" />", nodesArray[1].ToString());
+            Assert.AreEqual("<dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" />", nodesArray[2].ToString());
+            Assert.AreEqual("<dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" />", nodesArray[3].ToString());
+            Assert.AreEqual("<node id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" x=\"\" y=\"\" broken=\"false\"></node>", nodesArray[4].ToString());
         }
 
     }
