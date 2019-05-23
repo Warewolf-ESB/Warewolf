@@ -8,9 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Xml;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using TestBase;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
@@ -51,10 +51,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
 
         [TestMethod]
@@ -77,10 +75,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
 
         [TestMethod]
@@ -91,10 +87,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
 
         [TestMethod]
@@ -105,10 +99,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
     }
 }
