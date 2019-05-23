@@ -16,7 +16,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using TestBase;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -322,5 +321,28 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(FindDependencies))]
+        public void FindDependencies_ExistingService_Expected_AllDependanciesReturned()
+        {
+            var values = new Dictionary<string, StringBuilder>
+            {
+                { "ResourceId", new StringBuilder("2ac0f29a-638e-4f9a-a2cb-b9694087f96c") }
+            };
+            var mockWorkspace = new Mock<IWorkspace>();
+
+            var findDependencies = new FindDependencies();
+            var result = findDependencies.Execute(values, mockWorkspace.Object);
+
+
+            var executeMessage = new Dev2JsonSerializer().Deserialize<ExecuteMessage>(result.ToString());
+            
+            Assert.AreEqual(false, executeMessage.HasError);
+            var expected = "<graph title=\"Dependency Graph Of 2ac0f29a-638e-4f9a-a2cb-b9694087f96c\"><node id=\"2ac0f29a-638e-4f9a-a2cb-b9694087f96c\" x=\"\" y=\"\" broken=\"false\"><dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" /><dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" /><dependency id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" /></node><node id=\"9b914373-47e4-4cc5-a169-95e8c21c8efe\" x=\"\" y=\"\" broken=\"false\"></node></graph>";
+            Assert.AreEqual(expected, executeMessage.Message.ToString());
+        }
     }
 }
+ 
