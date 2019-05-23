@@ -1,4 +1,4 @@
-#pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
