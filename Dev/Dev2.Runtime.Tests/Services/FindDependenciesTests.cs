@@ -322,21 +322,5 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(FindDependencies))]
-        public void FindDependencies_ExistingService_Expected_AllDependanciesReturned()
-        {
-            string _webserverURI = "http://localhost:3142/services/";
-            //WorkflowName - WorkflowMappingsInnerWorkflow
-            var postData = $"{_webserverURI}{@"FindDependencyService?ResourceId=2ac0f29a-638e-4f9a-a2cb-b9694087f96c"}";
-            var response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
-
-            var nodes = response.DescendantNodes();
-            var count = nodes.Count();
-            // More than 2 nodes indicate that the service returned dependancies
-            Assert.AreEqual(5, count);
-        }
     }
 }
