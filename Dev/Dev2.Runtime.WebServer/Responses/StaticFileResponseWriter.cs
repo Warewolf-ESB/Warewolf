@@ -35,7 +35,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _chunkSize = chunkSize;
         }
 
-        public void Write(WebServerContext context)
+        public void Write(IResponseMessageContext context)
         {
             var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();
