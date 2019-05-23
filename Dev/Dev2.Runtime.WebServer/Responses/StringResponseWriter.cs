@@ -39,7 +39,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _enforceSizeCap = enforceSizeCap;
         }
 
-        public void Write(WebServerContext context)
+        public void Write(IResponseMessageContext context)
         {
             context.ResponseMessage.Content = new StringContent(_text);
             context.ResponseMessage.Content.Headers.ContentType = _contentType;

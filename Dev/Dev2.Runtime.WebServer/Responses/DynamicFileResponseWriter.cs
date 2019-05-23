@@ -34,7 +34,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _contentPath = contentPath;
         }
 
-        public void Write(WebServerContext context)
+        public void Write(IResponseMessageContext context)
         {
             var content = GetContent();
             context.ResponseMessage.Content = new StringContent(content);

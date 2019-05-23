@@ -16,7 +16,7 @@ using Dev2.Runtime.WebServer.Responses;
 
 namespace Dev2.Runtime.WebServer
 {
-    public class WebServerContext : ICommunicationContext, IDisposable
+    public class WebServerContext : IResponseMessageContext, ICommunicationContext, IDisposable
     {
         readonly HttpRequestMessage _request;
 

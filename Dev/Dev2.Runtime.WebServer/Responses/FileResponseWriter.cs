@@ -13,7 +13,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _fileName = fileName;
         }
 
-        public void Write(WebServerContext context)
+        public void Write(IResponseMessageContext context)
         {
             context.ResponseMessage.Content = new StreamContent(File.Open(_fileName,FileMode.Open,FileAccess.Read,FileShare.ReadWrite));
         }
