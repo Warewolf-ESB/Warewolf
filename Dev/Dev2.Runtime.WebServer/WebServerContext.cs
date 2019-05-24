@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,7 +16,7 @@ using Dev2.Runtime.WebServer.Responses;
 
 namespace Dev2.Runtime.WebServer
 {
-    public class WebServerContext : ICommunicationContext, IDisposable
+    public class WebServerContext : IResponseMessageContext, ICommunicationContext, IDisposable
     {
         readonly HttpRequestMessage _request;
 

@@ -1,4 +1,5 @@
-﻿/*
+﻿#pragma warning disable
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Security.Principal;
@@ -90,6 +92,19 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
+            var mockResponseMessageContext = new Mock<IResponseMessageContext>();
+            var responseMessage = new HttpResponseMessage();
+            mockResponseMessageContext.Setup(o => o.ResponseMessage).Returns(responseMessage);
+            responseWriter.Write(mockResponseMessageContext.Object);
+
+            Assert.AreEqual("application/json", responseMessage.Content.Headers.ContentType.ToString());
+            Assert.AreEqual("OK", responseMessage.ReasonPhrase);
+            Assert.AreEqual(HttpStatusCode.OK, responseMessage.StatusCode);
+            Assert.AreEqual(Version.Parse("1.1"), responseMessage.Version);
+
+            var result = ((StringContent)responseMessage.Content).ReadAsStringAsync();
+            result.Wait();
+            Assert.AreEqual("", result.Result);
         }
 
         [TestMethod]
