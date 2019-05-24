@@ -141,40 +141,6 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
-        public void WebServerConfigurationTests_Execute_SslCertificateName_HasSslEndpoints()
-        {
-            //----------------Arrange--------------------
-
-            string expectedPort = "44";
-            string expectedSslPort = "55";
-
-            ConfigurationManager.AppSettings.Set("webServerPort", expectedPort);
-            ConfigurationManager.AppSettings.Set("webServerSslPort", expectedSslPort);
-
-            ConfigurationManager.AppSettings.Set("webServerEnabled", "true");
-            ConfigurationManager.AppSettings.Set("webServerSslEnabled", "true");
-            ConfigurationManager.AppSettings.Set("sslCertificateName", "WarewolfServer.cer");
-
-            var mockWriter = new Mock<IWriter>();
-            mockWriter.Setup(_writer => _writer.WriteLine(It.IsAny<string>())).Callback(() => { Console.WriteLine("Could not start webserver to listen for SSL traffic with cert [ WarewolfServer.cer ]"); });
-
-            //----------------Act------------------------
-            var webServerConfig = new WebServerConfiguration(mockWriter.Object, new FileWrapper());
-            webServerConfig.Execute();
-            var endPoints = webServerConfig.EndPoints;
-            //----------------Assert---------------------
-            Assert.AreEqual(expectedPort, GlobalConstants.WebServerPort);
-            Assert.AreEqual(expectedSslPort, GlobalConstants.WebServerSslPort);
-
-            Assert.AreEqual(2, endPoints.Length);
-            Assert.AreEqual("http://*:44/", endPoints[0].Url);
-            Assert.AreEqual("https://*:55/", endPoints[1].Url);
-        }
-
-        
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServerConfiguration))]
         public void WebServerConfigurationTests_Execute_WebServerPort_IsEmptyOrNull_ExpectExeption()
         {
             //----------------Arrange--------------------

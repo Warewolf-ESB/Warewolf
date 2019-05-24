@@ -17,15 +17,11 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
-
-
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class FindDependenciesTests
     {
-       
         ExecuteMessage ConvertToMsg(StringBuilder msg)
         {
             var serialier = new Dev2JsonSerializer();
@@ -33,9 +29,9 @@ namespace Dev2.Tests.Runtime.Services
             return result;
         }
 
-        #region CTOR
-
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(FindDependencies))]
         public void FindDependenciesConstructor()
         {
             var esb = new FindDependencies();
@@ -43,13 +39,9 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsInstanceOfType(esb,typeof(IEsbManagementEndpoint));
         }
 
-        #endregion
-
-        #region Execute
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
+        [TestCategory(nameof(FindDependencies))]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FindDependencies_Execute_NullResourceId_Exception()
         {
@@ -63,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
+        [TestCategory(nameof(FindDependencies))]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FindDependencies_Execute_EmptyResourceId_Exception()
         {
@@ -77,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
+        [TestCategory(nameof(FindDependencies))]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FindDependencies_Execute_NonGuidResourceId_Exception()
         {
@@ -91,7 +83,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
+        [TestCategory(nameof(FindDependencies))]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FindDependencies_Execute_ResourceIdKeyNotPresent_Exception()
         {
@@ -105,8 +97,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
-        
+        [TestCategory(nameof(FindDependencies))]
         public void FindDependencies_Execute_GetDependsOnMe_ShouldReturnDependantsRecursive()
         {
             //------------Setup for test--------------------------
@@ -160,11 +151,9 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(parentDepDepId.ToString(), node3.Attribute("id").Value);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
-        
+        [TestCategory(nameof(FindDependencies))]
         public void FindDependencies_Execute_GetDependsOnMeFalse_ShouldReturnDependenciesRecursive()
         {
             //------------Setup for test--------------------------
@@ -218,12 +207,9 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(parentDepDepId.ToString(), node2Dep.Attribute("id").Value);
         }
 
-
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FindDependencies_Execute")]
-        
+        [TestCategory(nameof(FindDependencies))]
         public void FindDependencies_Execute_GetDependsOnMe_WhenCircular_ShouldReturnDependantsRecursive()
         {
             //------------Setup for test--------------------------
@@ -280,24 +266,21 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(node3Dep);
             Assert.AreEqual(parentResourceId.ToString(), node3Dep.Attribute("id").Value);
         }
-        #endregion
-
-        #region HandlesType
 
         [TestMethod]
-        public void FindDependenciesLogHandlesTypeExpectedReturnsFindDependencyService()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(FindDependencies))]
+        public void FindDependencies_LogHandlesTypeExpectedReturnsFindDependencyService()
         {
             var esb = new FindDependencies();
             var result = esb.HandlesType();
             Assert.AreEqual("FindDependencyService", result);
         }
 
-        #endregion
-
-        #region CreateServiceEntry
-
         [TestMethod]
-        public void FetchCurrentServerLogCreateServiceEntryExpectedReturnsDynamicService()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(FindDependencies))]
+        public void FindDependencies_FetchCurrentServerLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new FindDependencies();
             var result = esb.CreateServiceEntry();
@@ -311,12 +294,10 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(esb.HandlesType(), serviceAction.SourceMethod);
         }
 
-        #endregion
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("GetResourceID")]
-        public void GetResourceID_ShouldReturnEmptyGuid()
+        [TestCategory(nameof(FindDependencies))]
+        public void FindDependencies_GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
             var findDependencies = new FindDependencies();
@@ -329,8 +310,8 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("GetResourceID")]
-        public void GetAuthorizationContextForService_ShouldReturnContext()
+        [TestCategory(nameof(FindDependencies))]
+        public void FindDependencies_GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
             var findDependencies = new FindDependencies();

@@ -1,4 +1,4 @@
-#pragma warning disable CC0044
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             IResource _resource;
             Dev2JsonSerializer _serializer;
             bool _canExecute;
-
+            private EsbExecuteRequest _esbExecuteRequest;
             readonly IAuthorizationService _authorizationService;
             readonly IDataObjectFactory _dataObjectFactory;
             readonly IResourceCatalog _resourceCatalog;
@@ -176,12 +176,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return null;
             }
 
-            internal static Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
+            internal Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
             {
-                var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
+                _esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
                 var executionDlid = Guid.Empty;
 
-                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = dataObject.EsbChannel.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out var errors); });
+                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+                {
+                    executionDlid = dataObject.EsbChannel.ExecuteRequest(dataObject, _esbExecuteRequest, workspaceGuid, out var errors);
+                    _executePayload = _esbExecuteRequest.ExecuteResult.ToString();
+                });
 
                 return executionDlid;
             }
@@ -220,7 +224,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return DefaultExecutionResponse(webRequest, serviceName, executionDto);
             }
 
-            private static IResponseWriter ServiceTestExecutionResponse(WebRequestTO webRequest, string serviceName, ref string executePayload, IDSFDataObject dataObject, Dev2JsonSerializer serializer, bool canExecute)
+            private IResponseWriter ServiceTestExecutionResponse(WebRequestTO webRequest, string serviceName, ref string executePayload, IDSFDataObject dataObject, Dev2JsonSerializer serializer, bool canExecute)
             {
                 var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 if (!canExecute)
@@ -228,9 +232,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return new StringResponseWriter(dataObject.Environment.FetchErrors(), formatter.ContentType);
                 }
 
-                var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
+                //var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
 
-                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
+                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, _esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
 
@@ -241,7 +245,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
 
-            private static IResponseWriter DefaultExecutionResponse(WebRequestTO webRequest, string serviceName, ExecutionDto executionDto)
+            private IResponseWriter DefaultExecutionResponse(WebRequestTO webRequest, string serviceName, ExecutionDto executionDto)
             {
                 var allErrors = new ErrorResultTO();
 
@@ -257,8 +261,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                 }
 
-                var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
-                executionDto.Request = esbExecuteRequest;
+                //var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
+                executionDto.Request = _esbExecuteRequest;
 
                 executionDto.ErrorResultTO = allErrors;
 
@@ -267,7 +271,11 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             private static EsbExecuteRequest CreateEsbExecuteRequestFromWebRequest(WebRequestTO webRequest, string serviceName)
             {
-                var esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
+                var esbExecuteRequest = new EsbExecuteRequest
+                {
+                    
+                    ServiceName = serviceName,
+                };
                 foreach (string key in webRequest.Variables)
                 {
                     esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));

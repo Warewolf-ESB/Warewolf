@@ -120,7 +120,7 @@ namespace Dev2.Studio
 
             Task.Factory.StartNew(() =>
             {
-                var dir = new DirectoryHelper();
+                var dir = new DirectoryWrapper();
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GlobalConstants.Warewolf, "Feedback");
                 dir.CleanUp(path);
                 dir.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));

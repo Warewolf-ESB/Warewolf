@@ -49,7 +49,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TestCustomEvenTracking.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
