@@ -86,6 +86,11 @@ namespace Dev2.Tests.Runtime.ESB.Control
             const string hellowWorldResourcePath = "C:\\programdata\\Warewolf\\Resources\\Hello World.bite";
             if (!File.Exists(hellowWorldResourcePath))
             {
+                const string resourcesPath = "C:\\programdata\\Warewolf\\Resources";
+                if (!Directory.Exists(resourcesPath))
+                {
+                    Directory.CreateDirectory(resourcesPath);
+                }
                 File.WriteAllText(hellowWorldResourcePath,
 @"
 <Service ID=""acb75027-ddeb-47d7-814e-a54c37247ec1"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""Hello World"" ResourceType=""WorkflowService"" IsValid=""false"" ServerVersion=""0.0.6213.18869"">
