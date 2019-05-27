@@ -41,7 +41,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LoadResourcesTests.cs" />
     <Compile Include="RegisterDependenciesWorker.cs" />
     <Compile Include="TempFileDeleterTests.cs" />

@@ -46,7 +46,6 @@ using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Tests.Runtime.Hosting
@@ -80,6 +79,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
             }
             CustomContainer.Register<IActivityParser>(new ActivityParser());
+            if (EnvironmentVariables.ApplicationPath == null)
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+                EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
+            }
         }
 
         #region Instance
@@ -3284,9 +3289,8 @@ namespace Dev2.Tests.Runtime.Hosting
                                                EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite", false)).Verifiable();
             fileHelperObject.Setup(o => o.DirectoryName(EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite")).Returns(EnvironmentVariables.ResourcePath + "\\asdf").Verifiable();
             var fileHelper = fileHelperObject.Object;
-            var directoryHelperObject = new Mock<IDirectoryHelper>();
-            directoryHelperObject.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
-            var directoryHelper = directoryHelperObject.Object;
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
             var existingId = Guid.NewGuid().ToString();
             var programDataIds = new string[] {
                 existingId
@@ -3307,7 +3311,7 @@ namespace Dev2.Tests.Runtime.Hosting
             };
 
             //------------Execute Test--------------------------
-            var result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, directoryHelper, fileHelper);
+            var result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, mockDirectory.Object, fileHelper);
             //------------Assert Results------------------------
             Assert.IsNotNull(result);
             var hadMissing = (bool)result;
@@ -3321,7 +3325,7 @@ namespace Dev2.Tests.Runtime.Hosting
             };
 
 
-            result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, directoryHelper, fileHelper);
+            result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, mockDirectory.Object, fileHelper);
 
             //------------Assert Results------------------------
             Assert.IsNotNull(result);
@@ -3329,7 +3333,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(hadMissing);
 
             fileHelperObject.Verify();
-            directoryHelperObject.Verify();
+            mockDirectory.Verify();
         }
 
         [TestMethod]

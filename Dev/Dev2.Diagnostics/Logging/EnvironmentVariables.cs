@@ -11,37 +11,23 @@
 
 using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace Dev2.Common
 {
     public static class EnvironmentVariables
     {
-        static string _appPath;
         static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
-        public static string ApplicationPath
-        {
-            get
+        private static string _applicationPath;
+        public static string ApplicationPath {
+            get => _applicationPath;
+            set
             {
-                if (String.IsNullOrEmpty(_appPath))
+                if (_applicationPath is null)
                 {
-                    try
-                    {
-                        var assembly = Assembly.GetExecutingAssembly();
-                        var loc = assembly.Location;
-                        _appPath = Path.GetDirectoryName(loc);
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
-                        _appPath = Directory.GetCurrentDirectory(); 
-                    }
-
+                    _applicationPath = value;
                 }
-
-                return _appPath;
             }
         }
 
@@ -184,6 +170,19 @@ namespace Dev2.Common
                     Directory.CreateDirectory(workspacePath);
                 }
                 return workspacePath;
+            }
+        }
+
+        public static string DebugItemTempPath
+        {
+            get
+            {
+                var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
+                if (!Directory.Exists(tempPath))
+                {
+                    Directory.CreateDirectory(tempPath);
+                }
+                return tempPath;
             }
         }
 

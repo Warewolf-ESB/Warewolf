@@ -127,12 +127,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         static void VerifyDispatcherWriteCount(DsfDataObject dataObject, int expectedCount)
         {
             var dispatcher = new Mock<IDebugDispatcher>();
-            dispatcher.Setup(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>())).Verifiable();
+            dispatcher.Setup(d => d.Write(new WriteArgs { debugState = It.IsAny<IDebugState>(), isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() })).Verifiable();
 
             var activity = new TestActivity(dispatcher.Object);
 
             Run(activity, dataObject,
-                () => dispatcher.Verify(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Exactly(expectedCount)));
+                () => dispatcher.Verify(d => d.Write(new WriteArgs { debugState = It.IsAny<IDebugState>(), isTestExecution = It.IsAny<bool>(), isDebugFromWeb = It.IsAny<bool>(), testName = It.IsAny<string>(), isRemoteInvoke = It.IsAny<bool>(), remoteInvokerId = It.IsAny<string>(), parentInstanceId = It.IsAny<string>(), remoteDebugItems = It.IsAny<IList<IDebugState>>() }), Times.Exactly(expectedCount)));
         }
 
         protected static void Run(Activity activity, DsfDataObject dataObject, Action completed)
@@ -278,10 +278,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             IDebugState passedDebugState = null;
             var mockDebugDispatcher = new Mock<IDebugDispatcher>();
-            mockDebugDispatcher.Setup(dispatcher => dispatcher.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()))
-                .Callback((IDebugState ds, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteID, string parentId, IList<IDebugState> remoteItems) =>
+            mockDebugDispatcher.Setup(dispatcher => dispatcher.Write(It.IsAny<WriteArgs>()))
+               .Callback<WriteArgs> ((writeArgs) =>
                   {
-                      passedDebugState = ds;
+                      passedDebugState = writeArgs.debugState;
                   });
             var activity = new TestActivity(mockDebugDispatcher.Object)
             {
