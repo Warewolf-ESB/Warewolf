@@ -53,34 +53,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        public void EsbServicesEndpoint_ExecuteWorkflow_GivenHelloWorldWorkflow_RunWorkflowAsyncFalse_ExpectSuccess()
-        {
-            var esbServicesEndpoint = new EsbServicesEndpoint();
-
-            var mockPrincipal = new Mock<IPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
-
-            var dataObject = new DsfDataObject("", Guid.NewGuid())
-            {
-                ResourceID = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1"),
-                ExecutingUser = mockPrincipal.Object,
-                IsDebug = true,
-                RunWorkflowAsync = false,
-            };
-            dataObject.Environment.Assign("[[Name]]", "somename", 0);
-
-            var request = new EsbExecuteRequest();
-            var workspaceId = Guid.NewGuid();
-
-            esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
-
-            const string expectedJson = "{\"Environment\":{\"scalars\":{\"Message\":\"Hello somename.\",\"Name\":\"somename\"},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"\"],\"AllErrors\":[]}";
-            Assert.AreEqual("Hello somename.", dataObject.Environment.EvalAsListOfStrings("[[Message]]", 0)[0]);
-            Assert.AreEqual(expectedJson, dataObject.Environment.ToJson());
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing()
         {
             var esbServicesEndpoint = new EsbServicesEndpoint();
