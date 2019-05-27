@@ -775,13 +775,13 @@ namespace Warewolf.Studio.ViewModels
         void ProcessSequence(ModelItem modelItem)
         {
             var sequence = GetCurrentActivity<DsfSequenceActivity>(modelItem);
-            var buildParentsFromModelItem = BuildParentsFromModelItem(modelItem);
-            if (buildParentsFromModelItem != null)
+            var testStep = BuildParentsFromModelItem(modelItem);
+            if (testStep != null)
             {
-                AddSequence(sequence, buildParentsFromModelItem, buildParentsFromModelItem.Children);
-                if (FindExistingStep(buildParentsFromModelItem.UniqueId.ToString()) == null)
+                AddSequence(sequence, testStep, testStep.Children);
+                if (FindExistingStep(testStep.UniqueId.ToString()) == null)
                 {
-                    SelectedServiceTest.TestSteps.Add(buildParentsFromModelItem);
+                    SelectedServiceTest.TestSteps.Add(testStep);
                 }
             }
             else
@@ -943,7 +943,7 @@ namespace Warewolf.Studio.ViewModels
 
         void AddSequence(DsfSequenceActivity sequence, IServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
-            if (sequence == null)
+            if (sequence is null)
             {
                 return;
             }
@@ -1712,6 +1712,10 @@ namespace Warewolf.Studio.ViewModels
                         return;
                     }
                     Save(new List<IServiceTestModel> { SelectedServiceTest });
+                    if (IsResourceDeleted)
+                    {
+                        return;
+                    }
                 }
                 ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
                 ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
@@ -1818,6 +1822,8 @@ namespace Warewolf.Studio.ViewModels
         bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
 
         public bool CanSave { get; set; }
+
+        bool IsResourceDeleted { get; set; }
 
         static bool GetPermissions() => true;
 
@@ -1972,6 +1978,7 @@ namespace Warewolf.Studio.ViewModels
                 case SaveResult.ResourceDeleted:
                     PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                     _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.EnvironmentID);
+                    IsResourceDeleted = true;
                     break;
                 case SaveResult.ResourceUpdated:
                     UpdateTestsFromResourceUpdate();

@@ -72,7 +72,7 @@ namespace Dev2.Services.Execution
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
             errors.MergeErrors(_errorResult);
-            ExecuteImpl(out errors, update);
+            TryExecuteImpl(out errors, update);
             return DataObj.DataListID;
         }
 
@@ -128,40 +128,21 @@ namespace Dev2.Services.Execution
         }
 
         protected abstract object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater);
-
-        #region ExecuteImpl
-
         public TService Service { protected get; set; }
         public string InstanceInputDefinitions { get; set; }
         public ICollection<IServiceInput> Inputs { protected get; set; }
         public ICollection<IServiceOutputMapping> Outputs { protected get; set; }
 
-        protected void ExecuteImpl(out ErrorResultTO errors, int update)
+        protected void TryExecuteImpl(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
 
-            #region Create OutputFormatter
-
-
-            IOutputFormatter outputFormatter = null;
-
-
-            try
+            if (!GetOutputFormatter(out var outputFormatter) && HandlesOutputFormatting)
             {
-                if (!string.IsNullOrEmpty(InstanceOutputDefintions))
-                {
-                    outputFormatter = GetOutputFormatter(Service);
-                }
-            }
-            catch (Exception)
-            {
-                if (HandlesOutputFormatting)
-                {
-                    errors.AddError(
-                        string.Format(ErrorResource.InvalidOutputFormat + "Please edit and remap.",
-                            Service.ResourceName));
-                    return;
-                }
+                errors.AddError(
+                    string.Format(ErrorResource.InvalidOutputFormat + "Please edit and remap.",
+                        Service.ResourceName));
+                return;
             }
 
             if (HandlesOutputFormatting && outputFormatter == null && !string.IsNullOrEmpty(InstanceOutputDefintions))
@@ -169,9 +150,6 @@ namespace Dev2.Services.Execution
                 errors.AddError(string.Format(ErrorResource.InvalidOutputFormat, Service.ResourceName));
                 return;
             }
-
-            #endregion
-
             try
             {
                 var itrs = new List<IWarewolfIterator>(5);
@@ -181,32 +159,54 @@ namespace Dev2.Services.Execution
                     MergeErrors(errors, update, outputFormatter, itrs, itrCollection);
                     return;
                 }
-                var method = Service.Method;
-                var inputs = method.Parameters;
-                if (inputs.Count == 0)
-                {
-                    ExecuteService(out ErrorResultTO invokeErrors, update, outputFormatter);
-                    errors.MergeErrors(invokeErrors);
-                }
-                else
-                {
-                    BuildParameterIterators(update, inputs, itrCollection, itrs);
-
-                    while (itrCollection.HasMoreData())
-                    {
-                        ExecuteService(itrCollection, itrs, out ErrorResultTO invokeErrors, update, outputFormatter);
-                        errors.MergeErrors(invokeErrors);
-                    }
-                }
+                ExecuteImpl(errors, update, outputFormatter, itrs, itrCollection);
             }
             finally
             {
                 var disposable = Service as IDisposable;
                 disposable?.Dispose();
 
-                // ensure errors bubble up ;)
+                // ensure errors bubble up
                 errors.MergeErrors(_errorResult);
             }
+        }
+
+        private void ExecuteImpl(ErrorResultTO errors, int update, IOutputFormatter outputFormatter, List<IWarewolfIterator> itrs, IWarewolfListIterator itrCollection)
+        {
+            var method = Service.Method;
+            var inputs = method.Parameters;
+            if (inputs.Count == 0)
+            {
+                ExecuteService(out ErrorResultTO invokeErrors, update, outputFormatter);
+                errors.MergeErrors(invokeErrors);
+            }
+            else
+            {
+                BuildParameterIterators(update, inputs, itrCollection, itrs);
+
+                while (itrCollection.HasMoreData())
+                {
+                    ExecuteService(itrCollection, itrs, out ErrorResultTO invokeErrors, update, outputFormatter);
+                    errors.MergeErrors(invokeErrors);
+                }
+            }
+        }
+
+        private bool GetOutputFormatter(out IOutputFormatter outputFormatter)
+        {
+            outputFormatter = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(InstanceOutputDefintions))
+                {
+                    outputFormatter = GetOutputFormatter(Service);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         void MergeErrors(ErrorResultTO errors, int update, IOutputFormatter outputFormatter, List<IWarewolfIterator> itrs, IWarewolfListIterator itrCollection)
@@ -292,10 +292,6 @@ namespace Dev2.Services.Execution
             itrs.Add(paramIterator);
         }
 
-        #endregion
-
-        #region ExecuteService
-
         void ExecuteService(IWarewolfListIterator itrCollection,
             IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
@@ -308,8 +304,6 @@ namespace Dev2.Services.Execution
                 {
                     var injectVal = itrCollection.FetchNextValue(itr);
                     var param = Inputs.ToList()[pos];
-
-
                     param.Value = param.EmptyIsNull &&
                                   (injectVal == null ||
                                    string.Compare(injectVal, string.Empty,
@@ -323,8 +317,7 @@ namespace Dev2.Services.Execution
 
             try
             {
-                ErrorResultTO invokeErrors;
-                ExecuteService(out invokeErrors, update, formater);
+                ExecuteService(out var invokeErrors, update, formater);
                 errors.MergeErrors(invokeErrors);
             }
             catch (Exception ex)
@@ -332,7 +325,6 @@ namespace Dev2.Services.Execution
                 errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.StackTrace));
             }
         }
-
 
         void ExecuteService(out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
@@ -369,8 +361,7 @@ namespace Dev2.Services.Execution
                 }
                 else
                 {
-                    ErrorResultTO invokeErrors;
-                    result = ExecuteService(update, out invokeErrors, formater).ToString();
+                    result = ExecuteService(update, out var invokeErrors, formater).ToString();
                     errors.MergeErrors(invokeErrors);
                 }
                 if (!HandlesOutputFormatting)
@@ -388,10 +379,6 @@ namespace Dev2.Services.Execution
                 errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.StackTrace));
             }
         }
-
-        #endregion
-
-        #region MergeResultIntoDataList
 
         void PushXmlIntoEnvironment(string input, int update)
         {
@@ -533,6 +520,7 @@ namespace Dev2.Services.Execution
 
             return command;
         }
+
         string UnescapeRawXml(string innerXml)
         {
             if (innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
@@ -542,12 +530,7 @@ namespace Dev2.Services.Execution
             return innerXml;
         }
 
-        #endregion
-
-        #region GetOutputFormatter
-
         IOutputFormatter GetOutputFormatter(TService service) => OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
 
-        #endregion
     }
 }

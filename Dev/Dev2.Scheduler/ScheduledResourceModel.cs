@@ -35,7 +35,7 @@ namespace Dev2.Scheduler
         readonly string _warewolfAgentPath;
         readonly string _warewolfFolderPath;
         readonly IFile _fileWrapper;
-        readonly IDirectoryHelper _directoryHelper;
+        readonly IDirectory _directory;
         readonly IDictionary<int, string> _taskStates;
         readonly Func<IScheduledResource, string> _pathResolve;
         const string Sebatchlogonright = "SeBatchLogonRight";
@@ -43,13 +43,13 @@ namespace Dev2.Scheduler
         const char ArgWrapper = '"';
 
         public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath, ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve)
-            : this(taskService, warewolfFolderId, warewolfAgentPath, taskServiceFactory, debugHistoryPath, securityWrapper, pathResolve, new FileWrapper(), new DirectoryHelper())
+            : this(taskService, warewolfFolderId, warewolfAgentPath, taskServiceFactory, debugHistoryPath, securityWrapper, pathResolve, new FileWrapper(), new DirectoryWrapper())
         {
         }
-        public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath, ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve, IFile file, IDirectoryHelper directoryHelper)
+        public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath, ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve, IFile file, IDirectory directory)
         {
             _fileWrapper = file;
-            _directoryHelper = directoryHelper;
+            _directory = directory;
 
             var nullables = new Dictionary<string, object>
                 {
@@ -314,7 +314,7 @@ namespace Dev2.Scheduler
         bool DebugHasErrors(string debugHistoryPath, string correlationId)
         {
             var serializer = new Dev2JsonSerializer();
-            var file = _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = _directory.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
 
             if (file == null)
             {
@@ -324,11 +324,11 @@ namespace Dev2.Scheduler
             return serializer.Deserialize<List<IDebugState>>(_fileWrapper.ReadAllText(file)).Last().HasError;
         }
 
-        bool DebugHistoryExists(string debugHistoryPath, string correlationId) => _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
+        bool DebugHistoryExists(string debugHistoryPath, string correlationId) => _directory.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
 
         string GetUserName(string debugHistoryPath, string correlationId)
         {
-            var file = _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = _directory.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
             if (file != null)
             {
                 return file.Split('_').Last();
@@ -340,7 +340,7 @@ namespace Dev2.Scheduler
         IList<IDebugState> CreateDebugHistory(string debugHistoryPath, string correlationId)
         {
             var serializer = new Dev2JsonSerializer();
-            var file = _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = _directory.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
 
             if (file == null)
             {

@@ -1,5 +1,4 @@
 ﻿using Dev2.Common;
-using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
@@ -8,7 +7,6 @@ namespace Dev2.Diagnostics.Test
     [TestClass]
     public class Dev2LoggerTests
     {
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetLogMaxSize_Scenerio_Result()
@@ -57,6 +55,23 @@ namespace Dev2.Diagnostics.Test
   <level value=""Level0"" />
   <eventLogEntryType value=""ERROR"" />
 </mapping>");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [DeploymentItem("Settings.config")]
+        public void UpdateFileLoggerToProgramData_UpdateFromAsyncRollingFileAppender_ToParallelForwardingAppender()
+        {
+            //------------Setup for test-------------------------
+            string readSettingsBefore = File.ReadAllText("Settings.config");
+            Assert.IsTrue(readSettingsBefore.Contains("Log4Net.Async.AsyncRollingFileAppender"));
+            Assert.IsFalse(readSettingsBefore.Contains("Log4Net.Async.ParallelForwardingAppender"));
+            //------------Execute Test---------------------------
+            Dev2Logger.UpdateFileLoggerToProgramData("Settings.config");
+            //------------Assert Results-------------------------
+            string readSettingsAfter = File.ReadAllText("Settings.config");
+            Assert.IsFalse(readSettingsAfter.Contains("Log4Net.Async.AsyncRollingFileAppender"));
+            Assert.IsTrue(readSettingsAfter.Contains("Log4Net.Async.ParallelForwardingAppender"));
         }
     };
 }

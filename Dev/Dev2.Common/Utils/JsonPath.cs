@@ -1,15 +1,4 @@
 #pragma warning disable
-﻿/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
-
 //
 // C# implementation of JSONPath[1]
 //
@@ -118,7 +107,7 @@ namespace Dev2.Common.Utils
 
         public IJsonPathValueSystem ValueSystem { get; set; }
 
-        public void SelectTo(object obj, string expr, JsonPathResultAccumulator output)
+        public void SelectTo(object obj, string initialExpression, JsonPathResultAccumulator output)
         {
             if (obj == null)
             {
@@ -132,14 +121,14 @@ namespace Dev2.Common.Utils
 
             var i = new Interpreter(output, ValueSystem, ScriptEvaluator);
 
-            expr = Normalize(expr);
+            var expr = Normalize(initialExpression);
 
             if (expr.Length >= 1 && expr[0] == '$') // ^\$:?
             {
                 expr = expr.Substring(expr.Length >= 2 && expr[1] == ';' ? 2 : 1);
             }
 
-            i.Trace(expr, obj, "$");
+            i.StoreExpressionTreeLeafNodes(expr, obj, "$");
         }
 
         public JsonPathNode[] SelectNodes(object obj, string expr)
@@ -158,10 +147,10 @@ namespace Dev2.Common.Utils
 
         static Regex RegExp(string pattern) => new Regex(pattern, RegexOptions.ECMAScript);
 
-        static string Normalize(string expr)
+        static string Normalize(string initialExpression)
         {
             var swap = new NormalizationSwap();
-            expr = RegExp(@"[\['](\??\(.*?\))[\]']").Replace(expr, swap.Capture);
+            var expr = RegExp(@"[\['](\??\(.*?\))[\]']").Replace(initialExpression, swap.Capture);
             expr = RegExp(@"'?\.'?|\['?").Replace(expr, ";");
             expr = RegExp(@";;;|;;").Replace(expr, ";..;");
             expr = RegExp(@";$|'?\]|'$").Replace(expr, string.Empty);
@@ -203,13 +192,13 @@ namespace Dev2.Common.Utils
             return sb.ToString();
         }
 
-        sealed class Interpreter
+        internal sealed class Interpreter
         {
             static readonly char[] Colon = { ':' };
             static readonly char[] Semicolon = { ';' };
-            readonly JsonPathScriptEvaluator _eval;
-            readonly JsonPathResultAccumulator _output;
-            readonly IJsonPathValueSystem _system;
+            internal readonly JsonPathScriptEvaluator _eval;
+            internal readonly JsonPathResultAccumulator _output;
+            internal readonly IJsonPathValueSystem _system;
 
             public Interpreter(JsonPathResultAccumulator output, IJsonPathValueSystem system,
                 JsonPathScriptEvaluator eval)
@@ -221,7 +210,7 @@ namespace Dev2.Common.Utils
                 _system = system;
             }
 
-            public void Trace(string expr, object value, string path)
+            public void StoreExpressionTreeLeafNodes(string expr, object value, string path)
             {
                 if (string.IsNullOrEmpty(expr))
                 {
@@ -233,9 +222,16 @@ namespace Dev2.Common.Utils
                 var atom = i >= 0 ? expr.Substring(0, i) : expr;
                 var tail = i >= 0 ? expr.Substring(i + 1) : string.Empty;
 
+                Trace(value, path, atom, tail);
+            }
+
+#pragma warning disable S1541 // Ignore complexity for the switch method
+            private void Trace(object value, string path, string atom, string tail)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+            {
                 if (value != null && _system.HasMember(value, atom))
                 {
-                    Trace(tail, Index(value, atom), path + ";" + atom);
+                    StoreExpressionTreeLeafNodes(tail, Index(value, atom), path + ";" + atom);
                 }
                 else if (atom == "*")
                 {
@@ -243,12 +239,12 @@ namespace Dev2.Common.Utils
                 }
                 else if (atom == "..")
                 {
-                    Trace(tail, value, path);
+                    StoreExpressionTreeLeafNodes(tail, value, path);
                     Walk(atom, tail, value, path, WalkTree);
                 }
                 else if (atom.Length > 2 && atom[0] == '(' && atom[atom.Length - 1] == ')')
                 {
-                    Trace(_eval(atom, value, path.Substring(path.LastIndexOf(';') + 1)) + ";" + tail, value, path);
+                    StoreExpressionTreeLeafNodes(_eval(atom, value, path.Substring(path.LastIndexOf(';') + 1)) + ";" + tail, value, path);
                 }
                 else if (atom.Length > 3 && atom[0] == '?' && atom[1] == '(' && atom[atom.Length - 1] == ')')
                 {
@@ -264,7 +260,7 @@ namespace Dev2.Common.Utils
                     {
                         foreach (string part in RegExp(@"'?,'?").Split(atom))
                         {
-                            Trace(part + ";" + tail, value, path);
+                            StoreExpressionTreeLeafNodes(part + ";" + tail, value, path);
                         }
                     }
                 }
@@ -307,7 +303,7 @@ namespace Dev2.Common.Utils
 
             void WalkWild(object member, string loc, string expr, object value, string path)
             {
-                Trace(member + ";" + expr, value, path);
+                StoreExpressionTreeLeafNodes(member + ";" + expr, value, path);
             }
 
             void WalkTree(object member, string loc, string expr, object value, string path)
@@ -315,7 +311,7 @@ namespace Dev2.Common.Utils
                 var result = Index(value, member.ToString());
                 if (result != null && !_system.IsPrimitive(result))
                 {
-                    Trace("..;" + expr, result, path + ";" + member);
+                    StoreExpressionTreeLeafNodes("..;" + expr, result, path + ";" + member);
                 }
             }
 
@@ -326,7 +322,7 @@ namespace Dev2.Common.Utils
 
                 if (Convert.ToBoolean(result, CultureInfo.InvariantCulture))
                 {
-                    Trace(member + ";" + expr, value, path);
+                    StoreExpressionTreeLeafNodes(member + ";" + expr, value, path);
                 }
             }
 
@@ -348,10 +344,10 @@ namespace Dev2.Common.Utils
                 end = end < 0 ? Math.Max(0, end + length) : Math.Min(length, end);
                 for (int i = start; i < end; i += step)
                 {
-                    Trace(i + ";" + expr, value, path);
+                    StoreExpressionTreeLeafNodes(i + ";" + expr, value, path);
                 }
             }
-            
+
             static int ParseInt(string str, int defaultValue = 0)
             {
                 if (string.IsNullOrEmpty(str))
@@ -368,7 +364,7 @@ namespace Dev2.Common.Utils
                     return defaultValue;
                 }
             }
-            
+
             object Index(object obj, string member) => _system.GetMemberValue(obj, member);
 
             delegate void WalkCallback(object member, string loc, string expr, object value, string path);

@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -141,18 +142,18 @@ namespace Dev2.Common
             {
                 var appenderElements = log4netElement.Elements("appender");
                 var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
-                var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
-                var fileElement = fileAppender?.Element("file");
-                if (fileElement != null)
+                var currentAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "rollingFile");
+                if (currentAppender != null)
                 {
-                    var valueAttrib = fileElement.Attribute("value");
-                    if (valueAttrib != null)
-                    {
-                        valueAttrib.SetValue("%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log");
-                        settingsDocument.Save(settingsConfigFile);
-                    }
+                    UpdateLogFilePath(settingsConfigFile, settingsDocument, currentAppender);
                 }
-                var layoutElement = fileAppender?.Element("layout");
+                var oldAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
+                if (oldAppender != null)
+                {
+                    UpdateOldAppenderToNewAppender(log4netElement, oldAppender);
+                    UpdateLogFilePath(settingsConfigFile, settingsDocument, oldAppender);
+                }
+                var layoutElement = oldAppender?.Element("layout");
                 if (layoutElement != null)
                 {
                     UpdateConversionPattern(settingsConfigFile, settingsDocument, layoutElement);
@@ -162,6 +163,35 @@ namespace Dev2.Common
                 if (eventLayoutElement != null)
                 {
                     UpdateConversionPattern(settingsConfigFile, settingsDocument, eventLayoutElement);
+                }
+            }
+            settingsDocument.Save(settingsConfigFile);
+        }
+
+        static void UpdateOldAppenderToNewAppender(XElement log4netElement, XElement oldAppender)
+        {
+            var oldAppenderName = oldAppender.Attribute("name");
+            oldAppenderName.SetValue("rollingFile");
+            var oldAppenderType = oldAppender.Attribute("type");
+            oldAppenderType.SetValue("log4net.Appender.RollingFileAppender");
+            var newAppenderElement = 
+               new XElement("appender", new XAttribute("name", "LogFileAppender"), new XAttribute("type", "Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"), 
+                new XElement("appender-ref", new XAttribute("ref", "rollingFile")), 
+                new XElement("bufferSize", new XAttribute("value", "200"))
+               );
+            log4netElement.Add(newAppenderElement);
+        }
+
+        static void UpdateLogFilePath(string settingsConfigFile, XDocument settingsDocument, XElement oldAppender)
+        {
+            var fileElement = oldAppender.Element("file");
+            if (fileElement != null)
+            {
+                var valueAttrib = fileElement.Attribute("value");
+                if (valueAttrib != null)
+                {
+                    valueAttrib.SetValue("%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log");
+                    settingsDocument.Save(settingsConfigFile);
                 }
             }
         }

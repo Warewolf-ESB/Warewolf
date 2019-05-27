@@ -30,12 +30,12 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             DataToolsUIMap.Add_Space_At_The_End_Of_Row1_Value();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
-
         
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void HelloWorld_Is_Highlighted_After_Execution_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -51,6 +51,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void WebRequestTool_Is_Highlighted_After_Execution_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -64,6 +65,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void WorkFlowSelection_Validation_UITest()
         {
             ExplorerUIMap.Filter_Explorer(SelectionHighlightWf);
@@ -81,6 +83,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxWorkFlowSelection_Validation_UITest()
         {
             ExplorerUIMap.Filter_Explorer(DropboxSelectionHighlightWf);
@@ -98,6 +101,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void SelectAndApplyWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -111,6 +115,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxDownloadWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -124,6 +129,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxDeleteWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -137,6 +143,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxUploadWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -150,6 +157,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
+        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxListWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -171,6 +179,18 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             UIMap.Press_F6();
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText.Exists);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UIErrorText.Exists);
+        }
+
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
+        [TestCategory("Debug Input")]
+        public void DebugOutput_MoreLink_UITest()
+        {
+            ExplorerUIMap.Open_Item_With_Double_Click("More Link UI Testing");
+            UIMap.Press_F6();
+            WorkflowTabUIMap.WaitForDebugOutput();
+            WorkflowTabUIMap.Click_Step_1_More_Link();
         }
 
         #region Additional test attributes

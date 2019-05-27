@@ -16,8 +16,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
     [Serializable]
     public class JsonPathSegment : IPathSegment
     {
-        #region Constructors
-
         internal JsonPathSegment()
         {
         }
@@ -28,17 +26,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             IsEnumarable = isEnumarable;
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         public string ActualSegment { get; set; }
         public string DisplaySegment { get; set; }
         public bool IsEnumarable { get; set; }
-
-        #endregion Properties
-
-        #region Methods
 
         public string ToString(bool considerEnumerable)
         {
@@ -60,6 +50,14 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             return ActualSegment;
         }
 
-        #endregion Methods
+        public T As<T>() where T : class, IPathSegment
+        {
+            var ret = this as T;
+            if (ret != null)
+            {
+                return ret;
+            }
+            throw new NotImplementedException();
+        }
     }
 }

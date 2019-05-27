@@ -35,7 +35,7 @@ namespace Dev2
         {
             if (Config.Server.EnableDetailedLogging)
             {
-                _writer.Write("Detailed Logging Enabled");
+                _writer.Write("Detailed Logging Enabled\n");
                 Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
                 Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
                 _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, TimerDueTime, Config.Server.LogFlushInterval);

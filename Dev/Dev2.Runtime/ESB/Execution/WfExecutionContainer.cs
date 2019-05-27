@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -43,11 +44,11 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         /// <summary>
-        /// Executes the specified errors.
+        /// Execute using workflow and parameters as defined in DataObject
         /// </summary>
-        /// <param name="errors">The errors.</param>
+        /// <param name="errors"></param>
         /// <param name="update"></param>
-        /// <returns></returns>
+        /// <returns>Resulting DataListId</returns>
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
             SetDataObjectProperties();
@@ -89,7 +90,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionToken = exeToken;
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, out invokeErrors, true, false, false);
                 }
                 if (CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.Execute))
                 {
@@ -97,7 +98,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
                 }
                 result = DataObject.DataListID;
             }
@@ -109,13 +110,13 @@ namespace Dev2.Runtime.ESB.Execution
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
                 DataObject.Environment.AddError(errorMessage);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, DataObject.ExecutionID.ToString());
                 DataObject.Environment.AddError(ex.Message);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
             return result;
         }
@@ -125,7 +126,7 @@ namespace Dev2.Runtime.ESB.Execution
             var isAuthorized = ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, authorizationContext, resourceId.ToString());
             if (!isAuthorized)
             {
-                dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser.Identity.Name, dataObject.ServiceName));
+                dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));
             }
             return isAuthorized;
         }
