@@ -45,9 +45,11 @@ namespace Dev2.Runtime.WebServer
             var webRequest = dto.WebRequestTO;
             var serializer = dto.Serializer;
             var allErrors = dto.ErrorResultTO;
+            bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
+
             if (!dataObject.Environment.HasErrors())
             {
-                if (!esbExecuteRequest.WasInternalService)
+                if (!wasInternalService)
                 {
                     dataObject.DataListID = executionDlid;
                     dataObject.WorkspaceID = workspaceGuid;
@@ -86,7 +88,7 @@ namespace Dev2.Runtime.WebServer
             {
                 Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
-            if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
+            if (!dataObject.Environment.HasErrors() && wasInternalService)
             {
                 TryGetFormatter(executePayload, ref formatter);
             }

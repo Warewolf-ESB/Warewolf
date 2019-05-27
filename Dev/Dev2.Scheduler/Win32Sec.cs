@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -24,7 +25,7 @@ using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using LSA_HANDLE = System.IntPtr;
 
-
+#pragma warning disable IDE0040, IDE1006, S101
 [StructLayout(LayoutKind.Sequential)]
 struct LSA_OBJECT_ATTRIBUTES
 {
@@ -50,7 +51,7 @@ struct LSA_ENUMERATION_INFORMATION
 {
     internal LSA_HANDLE PSid;
 }
-
+#pragma warning restore IDE0040, IDE1006, S101
 
 static class Win32Sec
 {
@@ -95,7 +96,7 @@ public class SecurityWrapper : ISecurityWrapper
     const uint STATUS_NO_MEMORY = 0xc0000017;
     const uint ERROR_NO_MORE_ITEMS = 2147483674;
     const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
-    LSA_HANDLE lsaHandle;
+    LSA_HANDLE _lsaHandle;
 
     public SecurityWrapper(IAuthorizationService authorizationService)
         : this(Environment.MachineName)
@@ -112,147 +113,144 @@ public class SecurityWrapper : ISecurityWrapper
         lsaAttr.SecurityDescriptor = IntPtr.Zero;
         lsaAttr.SecurityQualityOfService = IntPtr.Zero;
         lsaAttr.Length = Marshal.SizeOf(typeof(LSA_OBJECT_ATTRIBUTES));
-        lsaHandle = IntPtr.Zero;
+        _lsaHandle = IntPtr.Zero;
         LSA_UNICODE_STRING[] system = null;
         if (MachineName != null)
         {
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
+        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out _lsaHandle);
         TestReturnValue(ret);
     }
 
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
-        var windowsAuthorised = false;
+        var sanitizedUserName = userName.Trim();
 
-        var username = CleanUser(userName);
-        var privileges = new LSA_UNICODE_STRING[1];
-        privileges[0] = InitLsaString(privilege);
-        var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
-        var Accounts = new List<String>();
+        var isFullyQualifiedUser = sanitizedUserName.Contains(@"\");
+        var unQualifiedUserName = GetUnqualifiedName(sanitizedUserName);
+        var accounts = GetAccountsWithPrivilege(privilege);
 
-        if (ret == 0)
+        try
         {
-            var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            var myLsaus = new LSA_ENUMERATION_INFORMATION();
-            for (ulong i = 0; i < count; i++)
+            // when this throws every group is checked for a user that matches the userName stripping the host, if this happens we might as well just check Accounts for userName by stripping the host, it is the same thing.
+            // Perhaps we 
+            var isInRole = PrincipalIsInRole(accounts, unQualifiedUserName);
+            if (isInRole)
             {
-                var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
-                LsaInfo[i] =
-                    (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
-                var SID = new SecurityIdentifier(LsaInfo[i].PSid);
-                Accounts.Add(ResolveAccountName(SID));
+                return isInRole;
             }
 
-            try
+            var qualifiedUser = isFullyQualifiedUser ? sanitizedUserName : Environment.MachineName + "\\" + unQualifiedUserName;
+            var userIsAccount = accounts.Any(o => o.Equals(qualifiedUser, StringComparison.InvariantCultureIgnoreCase));
+            if (userIsAccount)
             {
-                return IsWindowsAuthorised(username, ref windowsAuthorised, Accounts);
+                return userIsAccount;
             }
-            catch (Exception)
+            return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
+        }
+        catch (Exception)
+        {
+            return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
+        }
+    }
+
+    private static bool PrincipalIsInRole(List<string> accounts, string unQualifiedUserName)
+    {
+        var principal = TryGetPrincipal(unQualifiedUserName);
+        if (principal != null)
+        {
+            foreach (string account in accounts)
             {
-                var localGroups = GetLocalUserGroupsForTaskSchedule(username);
-                var intersection = localGroups.Intersect(Accounts);
-                return intersection.Any(s => !s.Equals(Environment.MachineName+"\\"+ username, StringComparison.InvariantCultureIgnoreCase));
+                if (principal.IsInRole(account))
+                {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 
-    static bool IsWindowsAuthorised(string userName, ref bool windowsAuthorised, List<string> Accounts)
+    private static WindowsPrincipal TryGetPrincipal(string username)
     {
-        var wp = new WindowsPrincipal(new WindowsIdentity(userName));
-
-        foreach (string account in Accounts)
+        try
         {
-            if (wp.IsInRole(account))
-            {
-                windowsAuthorised = true;
-            }
+            return new WindowsPrincipal(new WindowsIdentity(username));
         }
-
-        return windowsAuthorised;
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
-    IEnumerable<string> FetchSchedulerGroups()
+    private List<string> GetAccountsWithPrivilege(string privilege)
     {
         var privileges = new LSA_UNICODE_STRING[1];
-        privileges[0] = InitLsaString("SeBatchLogonRight");
-        var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
-        var accounts = new List<String>();
-
-        if (ret == 0)
+        privileges[0] = InitLsaString(privilege);
+        var gotAccounts = Win32Sec.LsaEnumerateAccountsWithUserRight(_lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count) == 0;
+        var accountNames = new List<string>();
+        if (gotAccounts)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
             var myLsaus = new LSA_ENUMERATION_INFORMATION();
             for (ulong i = 0; i < count; i++)
             {
                 var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
-
-                LsaInfo[i] =
-                    (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
-                var SID = new SecurityIdentifier(LsaInfo[i].PSid);
-                accounts.Add(ResolveAccountName(SID));
+                LsaInfo[i] = (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
+                var sid = new SecurityIdentifier(LsaInfo[i].PSid);
+                accountNames.Add(ResolveAccountName(sid));
             }
         }
-
-        return accounts;
+        return accountNames;
     }
 
-
-    IEnumerable<string> GetLocalUserGroupsForTaskSchedule(string userName)
+    static bool IsUserAMemberOfAccount(string userName, IList<string> AccountsToCheck) => GetGroupsUserBelongsTo(userName, AccountsToCheck).Any();
+    static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
-            foreach (var grp in FetchSchedulerGroups())
+            foreach (var account in AccountsToCheck)
             {
-                if (CleanUser(grp).ToLower() == userName.ToLower())
+                try
                 {
-                    groups.Add(grp);
+                    var members = GetGroupMembers(pcLocal, account);
+                    if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
+                    {
+                        groups.Add(account);
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    try
-                    {
-                        GetLocalUserGroupsForTaskSchedule(userName, groups, pcLocal, grp);
-                    }
-                    catch (Exception err)
-                    {
-                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, grp), err, GlobalConstants.WarewolfError);
-                    }
+                    Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
                 }
             }
         }
         return groups;
     }
 
-    static void GetLocalUserGroupsForTaskSchedule(string userName, List<string> groups, PrincipalContext pcLocal, string grp)
+    private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
     {
-        var group = GroupPrincipal.FindByIdentity(pcLocal, grp);
+        var group = GroupPrincipal.FindByIdentity(pcLocal, account);
         if (group != null)
         {
-            var members = group.GetMembers();
-            if (members.Any(member => member.SamAccountName.ToLower() == userName.ToLower()))
-            {
-                groups.Add(grp);
-            }
+            return group.GetMembers().ToArray();
         }
+        return new Principal[] { };
     }
 
-    static string CleanUser(string userName)
+    static string GetUnqualifiedName(string userName)
     {
         if (userName.Contains("\\"))
         {
-            userName = userName.Split('\\').Last();
+            return userName.Split('\\').Last().Trim();
         }
 
         return userName;
     }
 
-    String ResolveAccountName(SecurityIdentifier SID)
+    static string ResolveAccountName(SecurityIdentifier SID)
     {
         try
         {
@@ -264,7 +262,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
     }
 
-    void TestReturnValue(uint ReturnValue)
+    static void TestReturnValue(uint ReturnValue)
     {
         if (ReturnValue == 0)
         {
@@ -292,10 +290,10 @@ public class SecurityWrapper : ISecurityWrapper
 
     public void Dispose()
     {
-        if (lsaHandle != IntPtr.Zero)
+        if (_lsaHandle != IntPtr.Zero)
         {
-            Win32Sec.LsaClose(lsaHandle);
-            lsaHandle = IntPtr.Zero;
+            Win32Sec.LsaClose(_lsaHandle);
+            _lsaHandle = IntPtr.Zero;
         }
         GC.SuppressFinalize(this);
     }
@@ -319,18 +317,18 @@ public class SecurityWrapper : ISecurityWrapper
 
     public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
     {
-        userName = CleanUser(userName);
+        var unqualifiedUserName = GetUnqualifiedName(userName).Trim();
 
         IPrincipal identity;
         try
         {
-            identity = new WindowsPrincipal(new WindowsIdentity(userName));
+            identity = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
         }
         catch (Exception e)
         {
-            Dev2Logger.Warn("Failed to get windows security principal for " + userName + " as a windows identity. " + e.Message, GlobalConstants.WarewolfWarn);
-            var groups = GetLocalUserGroupsForTaskSchedule(userName);
-            var tmp = new GenericIdentity(userName);
+            Dev2Logger.Warn("Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity. " + e.Message, GlobalConstants.WarewolfWarn);
+            var groups = GetGroupsUserBelongsTo(unqualifiedUserName, GetAccountsWithPrivilege(privilege));
+            var tmp = new GenericIdentity(unqualifiedUserName);
             identity = new GenericPrincipal(tmp, groups.ToArray());
         }
 
@@ -338,10 +336,8 @@ public class SecurityWrapper : ISecurityWrapper
         {
             return true;
         }
-        Dev2Logger.Warn("User " + userName + " was denied permission to create a scheduled task.", GlobalConstants.WarewolfWarn);
+        Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to create a scheduled task.", GlobalConstants.WarewolfWarn);
 
         return false;
     }
 }
-
-

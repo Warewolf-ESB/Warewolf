@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using System.Text;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Utils;
 using Newtonsoft.Json;
@@ -161,6 +162,7 @@ namespace Dev2.Common.Serializers
                 }
             }
         }
+
 
         public T Deserialize<T>(StreamReader streamWriter)
         {

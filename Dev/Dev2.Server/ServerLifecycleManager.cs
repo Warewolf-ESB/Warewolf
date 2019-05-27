@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +18,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
@@ -36,6 +36,7 @@ using Dev2.Instrumentation.Factory;
 using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
+using System.Reflection;
 
 namespace Dev2
 {
@@ -54,7 +55,6 @@ namespace Dev2
         public IAssemblyLoader AssemblyLoader { get; set; }
         public IDirectory Directory { get; set; }
         public IResourceCatalogFactory ResourceCatalogFactory { get; set; }
-        public IDirectoryHelper DirectoryHelper { get; set; }
         public IWebServerConfiguration WebServerConfiguration { get; set; }
         public IWriter Writer { get; set; }
         public IPauseHelper PauseHelper { get; set; }
@@ -72,7 +72,6 @@ namespace Dev2
                 AssemblyLoader = new AssemblyLoader(),
                 Directory = new DirectoryWrapper(),
                 ResourceCatalogFactory = new ResourceCatalogFactory(),
-                DirectoryHelper = new DirectoryHelper(),
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
                 PauseHelper = new PauseHelper(),
@@ -109,6 +108,7 @@ namespace Dev2
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
+            SetApplicationDirectory();
             LoadPerformanceCounters();
 
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
@@ -118,7 +118,7 @@ namespace Dev2
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
-            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory, startupConfiguration.DirectoryHelper);
+            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory);
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             _writer = startupConfiguration.Writer;
             _pauseHelper = startupConfiguration.PauseHelper;
@@ -126,12 +126,27 @@ namespace Dev2
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
 
+        private static void SetApplicationDirectory()
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+                EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
+                EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
+            }
+        }
+
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
             void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
             {
                 _writer.Write("Opening named pipe client stream for COM IPC... ");
-                _ipcClient = _ipcClient.GetIPCExecutor(clientStreamWrapper);
+                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
                 _writer.WriteLine("done.");
             }
 

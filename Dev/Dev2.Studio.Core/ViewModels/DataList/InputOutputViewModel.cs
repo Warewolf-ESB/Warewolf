@@ -266,7 +266,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
-                    var json = JSONUtils.Format(JsonString);
+                    var json = JsonUtils.Format(JsonString);
                     contentPresenter.Text = json;
                 }
 

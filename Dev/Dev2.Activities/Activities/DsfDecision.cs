@@ -303,7 +303,7 @@ namespace Dev2.Activities
             try
             {
                 var dds = Conditions;
-                var userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
+                var userModel = dds.GenerateToolLabel(env, dds.Mode, out ErrorResultTO error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)

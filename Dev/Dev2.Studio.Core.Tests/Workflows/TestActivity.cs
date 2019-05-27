@@ -48,6 +48,7 @@ namespace Dev2.Core.Tests.Workflows
         public IEnumerable<IDev2Activity> GetNextNodes() => throw new NotImplementedException();
         public List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors() => throw new NotImplementedException();
         public IEnumerable<StateVariable> GetState() => throw new NotImplementedException();
+        T IDev2Activity.As<T>() => this as T;
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -79,5 +80,6 @@ namespace Dev2.Core.Tests.Workflows
         public IEnumerable<IDev2Activity> GetNextNodes() => throw new NotImplementedException();
         public List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors() => throw new NotImplementedException();
         public IEnumerable<StateVariable> GetState() => throw new NotImplementedException();
+        T IDev2Activity.As<T>() => this as T;
     }
 }

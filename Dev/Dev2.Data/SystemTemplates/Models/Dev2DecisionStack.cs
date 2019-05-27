@@ -62,7 +62,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
+        public string GenerateToolLabel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
             var result = new StringBuilder("");
 
@@ -72,7 +72,7 @@ namespace Dev2.Data.SystemTemplates.Models
             // build the output for decisions
             foreach (Dev2Decision dd in TheStack)
             {
-                result.Append(dd.GenerateUserFriendlyModel(env, Mode, out errors));
+                result.Append(dd.GenerateToolLabel(env, Mode, out errors));
                 // append mode if not at end
                 if (cnt + 1 < TheStack.Count)
                 {

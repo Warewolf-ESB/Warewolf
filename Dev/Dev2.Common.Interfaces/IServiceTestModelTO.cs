@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces
         List<IServiceTestOutput> Outputs { get; set; }
         bool NoErrorExpected { get; set; }
         bool ErrorExpected { get; set; }
-        [DefaultValue("")]
+        [DefaultValue(@"")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         string ErrorContainsText { get; set; }
         bool TestPassed { get; set; }

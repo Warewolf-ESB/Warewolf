@@ -233,6 +233,23 @@ namespace Dev2.Data.Tests.TO
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_MakeDataListReady_ExpectJson_ShouldEscapeQuotesInErrorMessages()
+        {
+            var errorResultTo = new ErrorResultTO();
+
+            Assert.AreEqual(0, errorResultTo.FetchErrors().Count);
+            errorResultTo.AddError("this is some exception's \"message\" string");
+            errorResultTo.AddError("Another \"Error\"");
+            errorResultTo.AddError("\"Error\" message");
+
+            var makeDisplayReady = errorResultTo.MakeDataListReady(false);
+            var result = "\"errors\": [ \"this is some exception's \\\"message\\\" string\",\"Another \\\"Error\\\"\",\"\\\"Error\\\" message\"]";
+            Assert.AreEqual(result, makeDisplayReady);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ErrorResultTO))]
         public void ErrorResultTO_MakeDataListReady_AsXmlFalseShouldReturnAllErrorsAsOne()
         {
             var result = "\"errors\": [ \"SomeError\",\"AnotherError\"]";

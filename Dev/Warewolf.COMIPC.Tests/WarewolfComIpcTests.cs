@@ -52,7 +52,7 @@ namespace WarewolfCOMIPC.Test
             var clsid = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
 
             //------------Execute Test---------------------------           
-            var execute = (KeyValuePair<bool, string>)IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
+            var execute = (KeyValuePair<bool, string>)IpcClient.GetIpcExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(execute.Value);
@@ -68,7 +68,7 @@ namespace WarewolfCOMIPC.Test
             var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
 
             //---------------Execute Test ----------------------
-            var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
+            var execute = IpcClient.GetIpcExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
             var enumerable = execute as List<MethodInfoTO>;
 
             //---------------Test Result -----------------------
@@ -87,7 +87,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-             var execute = (KeyValuePair<bool, string>)IpcClient.GetIPCExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
+             var execute = (KeyValuePair<bool, string>)IpcClient.GetIpcExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
 
             //---------------Test Result -----------------------
 

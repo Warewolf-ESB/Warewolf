@@ -810,5 +810,7 @@ namespace Warewolf.Studio.ViewModels
             var clone = serializer.Deserialize<IServiceTestModel>(ser);
             return clone;
         }
+
+        T IServiceTestModel.As<T>() => this as T;
     }
 }

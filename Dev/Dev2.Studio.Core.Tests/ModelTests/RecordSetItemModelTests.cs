@@ -44,7 +44,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void NewRecordSetItemModel_GivenDisplayName_ShouldSetDiplayName()
+        public void RecordsetItemModel_NewRecordSetItemModel_GivenDisplayName_ShouldSetDiplayName()
         {
             //---------------Set up test pack-------------------
             var testitem = "TestItem";
@@ -61,7 +61,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Validatename_GivenValidName_ShouldHaveNoErrorMessage()
+        public void RecordsetItemModel_Validatename_GivenValidName_ShouldHaveNoErrorMessage()
         {
             //---------------Set up test pack-------------------
             var recordSetItemModel = new RecordSetItemModel("DisplayName");
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateRecordsetName_GivenInvalidName_ShouldHaveErrorMessage()
+        public void RecordsetItemModel_ValidateRecordsetName_GivenInvalidName_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
             var recordSetItemModel = new RecordSetItemModel("DisplayName");
@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateName_GivenNameHasXmlEscapeCharacters_ShouldHaveErrorMessage()
+        public void RecordsetItemModel_ValidateName_GivenNameHasXmlEscapeCharacters_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
             var recordSetItemModel = new RecordSetItemModel("DisplayName");

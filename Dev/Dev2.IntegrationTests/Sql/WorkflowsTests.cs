@@ -9,9 +9,9 @@
 */
 
 using System.Net;
-using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using TestBase;
 
 namespace Dev2.Integration.Tests.Sql
 {
