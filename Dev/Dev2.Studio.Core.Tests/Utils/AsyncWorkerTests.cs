@@ -73,6 +73,16 @@ namespace Dev2.Core.Tests.Utils
 
         public static Mock<IAsyncWorker> CreateSynchronousAsyncWorker()
         {
+            return MockAsyncWorker();
+        }
+
+        public static IAsyncWorker CreateSynchronousAsyncWorkerObject()
+        {
+            return MockAsyncWorker().Object;
+        }
+
+        private static Mock<IAsyncWorker> MockAsyncWorker()
+        {
             var mockWorker = new Mock<IAsyncWorker>();
             mockWorker.Setup(r => r.Start(It.IsAny<Action>(), It.IsAny<Action>()))
                 .Returns((Action backgroundAction, Action foregroundAction) =>

@@ -8,12 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Net.Http;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
+    public interface IResponseMessageContext
+    {
+        HttpResponseMessage ResponseMessage { get; }
+    }
+
     public interface IResponseWriter
     {
-        void Write(WebServerContext context);
+        void Write(IResponseMessageContext context);
     }
 }

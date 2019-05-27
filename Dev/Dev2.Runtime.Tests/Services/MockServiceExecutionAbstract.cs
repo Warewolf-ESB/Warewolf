@@ -19,15 +19,16 @@ namespace Dev2.Services.Execution
         where TService : Service, new()
         where TSource : Resource, new()
     {
-
         public bool DidExecuteServiceInvoke { get; private set; }
         public string ReturnFromExecute { get; set; }
-        public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = false)
+        public MockServiceExecutionAbstract(IDSFDataObject dataObj)
+            :base(dataObj)
+        { }
+
+        public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting)
             : base(dataObj, handlesOutputFormatting)
         {
         }
-
-        #region Overrides of ServiceExecutionAbstract<TService,TSource>
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
@@ -44,19 +45,9 @@ namespace Dev2.Services.Execution
             return ReturnFromExecute;
         }
 
-        #endregion
-
-        #region Exposed Functions
-
-        #region Overrides of ServiceExecutionAbstract<TService,TSource>
-
-        #endregion
-
         public void MockExecuteImpl(out ErrorResultTO errors)
         {
-            ExecuteImpl( out errors, 0);
+            TryExecuteImpl(out errors, 0);
         }
-
-        #endregion
     }
 }
