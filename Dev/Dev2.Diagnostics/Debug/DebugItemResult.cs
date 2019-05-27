@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -30,5 +31,22 @@ namespace Dev2.Diagnostics
         public bool MockSelected { get; set; }
 
         public string GetMoreLinkItem() => string.IsNullOrEmpty(Variable) ? Value : string.Format("{0} {1} {2}", Variable, Operator, Value);
+        public IDebugItemResult Clone()
+        {
+            return new DebugItemResult
+            {
+                Type = this.Type,
+                Label = Label,
+                Variable = Variable,
+                Operator = Operator,
+                Value = Value,
+                GroupName = GroupName,
+                GroupIndex = GroupIndex,
+                MoreLink = MoreLink,
+                HasError = HasError,
+                TestStepHasError = TestStepHasError,
+                MockSelected = MockSelected,
+            };
+        }
     }
 }

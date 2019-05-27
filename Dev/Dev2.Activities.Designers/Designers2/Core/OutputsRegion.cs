@@ -330,7 +330,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void ViewJsonObjects()
         {
-            JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+            JsonObjectsView?.ShowJsonString(JsonUtils.Format(ObjectResult));
         }
 
 
@@ -391,7 +391,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (value != null)
                 {
-                    _objectResult = JSONUtils.Format(value);
+                    _objectResult = JsonUtils.Format(value);
                     _modelItem.SetProperty("ObjectResult", value);
                     OnPropertyChanged();
                 }

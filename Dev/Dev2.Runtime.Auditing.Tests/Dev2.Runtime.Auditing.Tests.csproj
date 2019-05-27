@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="Dev2StateLoggerTests.cs" />
     <Compile Include="GetLogDataServiceTest.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateNotifierTests.cs" />
   </ItemGroup>
@@ -193,10 +192,10 @@
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
+      <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.5.0</Version>

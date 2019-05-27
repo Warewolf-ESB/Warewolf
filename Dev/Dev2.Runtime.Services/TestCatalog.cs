@@ -1,4 +1,14 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -8,8 +18,10 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data;
@@ -20,9 +32,9 @@ namespace Dev2.Runtime
 {
     public class TestCatalog : ITestCatalog
     {
-        readonly DirectoryWrapper _directoryWrapper;
-        readonly Dev2JsonSerializer _serializer;
-        readonly FileWrapper _fileWrapper;
+        readonly IDirectory _directoryWrapper;
+        readonly ISerializer _serializer;
+        readonly IFile _fileWrapper;
 
         static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
         {
@@ -374,7 +386,7 @@ namespace Dev2.Runtime
             var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
             foreach (var resourceTestDirectory in resourceTestDirectories)
             {
-                var resIdString = DirectoryWrapper.GetDirectoryName(resourceTestDirectory);
+                var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
                 if (Guid.TryParse(resIdString, out Guid resId))
                 {
                     Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
@@ -389,9 +401,15 @@ namespace Dev2.Runtime
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
             foreach (var file in files)
             {
-                var reader = new StreamReader(file);
-                var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
-                serviceTestModelTos.Add(testModel);
+                try
+                {
+                    var reader = new StreamReader(file);
+                    var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
+                    serviceTestModelTos.Add(testModel);
+                } catch (Exception e)
+                {
+                    Dev2Logger.Warn($"failed loading test: {file} {e.GetType().Name}: " + e.Message, GlobalConstants.WarewolfWarn);
+                }
             }
             return serviceTestModelTos;
         }
@@ -457,7 +475,7 @@ namespace Dev2.Runtime
             }
 
             var fileInfos = info.GetDirectories();
-            var dir = new DirectoryHelper();
+            var dir = new DirectoryWrapper();
             foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToList.Contains(fileInfo.Name.ToUpper())))
             {
                 dir.CleanUp(fileInfo.FullName);

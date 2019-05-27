@@ -56,7 +56,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Factory\ApplicationTrackerFactoryTests.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RevulyticsTrackerTests.cs" />
   </ItemGroup>
@@ -76,10 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RUISDK_5_3_1.x64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="RUISDK_5_3_1.x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

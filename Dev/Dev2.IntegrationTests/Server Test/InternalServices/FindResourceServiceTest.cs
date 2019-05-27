@@ -8,11 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Xml;
 using Dev2.Common;
-using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Newtonsoft.Json.Linq;
+using TestBase;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 {
@@ -48,14 +47,12 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithStar_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=*&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=*&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
 
         [TestMethod]
@@ -74,42 +71,36 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithSource_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=Source&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=Source&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
 
         [TestMethod]
         public void ExecutionWithWorkflowService_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=WorkflowService&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=WorkflowService&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
 
         [TestMethod]
         public void ExecutionWithActivity_ExpectedValidXML()
         {
 
-            var path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=Activity&Roles=*";
+            var path = "http://localhost:3142/services/" + "FindResourceService?ResourceName=*&ResourceType=Activity&Roles=*";
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var xDoc = new XmlDocument();
-            xDoc.LoadXml(result);
-            // 1 == 1, else an error will be thrown
-            Assert.IsTrue(true);
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
+            Assert.IsNotNull(json);
         }
     }
 }

@@ -191,11 +191,11 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 12, "3", new DateTime(2002, 1, 1), "12347", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12348", "dave")
                 };
-            var dirHelper = new Mock<IDirectoryHelper>();
+            var mockDirectory = new Mock<IDirectory>();
 
             var res = new Mock<IScheduledResource>();
 
-            dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
+            mockDirectory.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
@@ -220,19 +220,19 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12345", "dave")
                 };
             // this should return two history items without any debug output
-            var dirHelper = new Mock<IDirectoryHelper>();
+            var mockDirectory = new Mock<IDirectory>();
             var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
-            dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
+            mockDirectory.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             const string content = "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":false,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]";
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob")).Returns(content);
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, mockDirectory.Object);
 
             var serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(content).First();
@@ -261,12 +261,12 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12348", "dave")
                 };
             // this should return two history items without any debug output
-            var dirHelper = new Mock<IDirectoryHelper>();
+            var mockDirectory = new Mock<IDirectory>();
             var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
-            dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "" });
+            mockDirectory.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "" });
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
                       .Returns(
                           "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]");
@@ -276,7 +276,7 @@ securityWrapper
 
             //test
 
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, mockDirectory.Object);
 
             var history = model.CreateHistory(res.Object);
             //WE ONLY RETURN EXECUTED HISTORY
@@ -297,12 +297,12 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 104, "Task Completed", new DateTime(2003, 1, 1), "12348", "dave")
                 };
             // this should return two history items without any debug output
-            var dirHelper = new Mock<IDirectoryHelper>();
+            var mockDirectory = new Mock<IDirectory>();
             var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
-            dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
+            mockDirectory.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
                     .Returns("[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]");
 
@@ -310,7 +310,7 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, mockDirectory.Object);
 
             var history = model.CreateHistory(res.Object);
 
@@ -332,19 +332,19 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", new DateTime(2003, 1, 1), "12348", "dave")
                 };
             // this should return two history items without any debug output
-            var dirHelper = new Mock<IDirectoryHelper>();
+            var mockDirectory = new Mock<IDirectory>();
             var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
-            dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
+            mockDirectory.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
                      .Returns("[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"05d4e815-61bf-49ad-b46c-b6f0e0e2e839\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"BUGS/Bug_11889\",\"HasError\":true,\"ErrorMessage\":\"Service [ BUGS/Bug_11889 ] not found.\",\"Version\":\"\",\"Name\":\"EsbServiceInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-07-24T12:49:28.4006805+02:00\",\"EndTime\":\"2014-07-24T12:49:28.4006805+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\",\"WorkSurfaceMappingId\":\"00000000-0000-0000-0000-000000000000\"}]");
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, mockDirectory.Object);
 
             var history = model.CreateHistory(res.Object);
 
