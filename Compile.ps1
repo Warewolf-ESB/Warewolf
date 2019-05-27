@@ -186,7 +186,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $CSharpVersionFileContents = @"
 using System.Reflection;
 using System.Runtime.CompilerServices;
-#pragma warning restore CC0021 // Use nameof
+#pragma warning disable CC0021 // Use nameof
 [assembly: AssemblyCompany(@"Warewolf")]
 [assembly: AssemblyProduct(@"Warewolf")]
 #pragma warning restore CC0021 // Use nameof
@@ -225,7 +225,7 @@ using System.Runtime.CompilerServices;
 namespace Warewolf.FSharp
 namespace Warewolf.FSharp
 open System.Reflection;
-#pragma warning restore CC0021 // Use nameof
+#pragma warning disable CC0021 // Use nameof
 [<assembly: AssemblyCompany(@"Warewolf")>]
 [<assembly: AssemblyProduct(@"Warewolf")>]
 #pragma warning restore CC0021 // Use nameof
