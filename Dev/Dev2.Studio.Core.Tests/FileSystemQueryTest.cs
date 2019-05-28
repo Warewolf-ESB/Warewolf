@@ -18,6 +18,7 @@ using System.Management;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Infrastructure.Tests;
 using Dev2.Intellisense.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -620,11 +621,13 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            //------------Execute Test---------------------------
             var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             if (shareCollection.Count <= 0)
             {
-                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", @"dev2\IntegrationTester", "I73573r0");
+                var username = @"dev2\IntegrationTester";
+                var password = TestEnvironmentVariables.GetVar(username);
+            //------------Execute Test---------------------------
+                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", username, password);
                 Thread.Sleep(1000);
                 shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             }

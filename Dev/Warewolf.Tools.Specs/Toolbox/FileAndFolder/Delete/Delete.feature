@@ -10,7 +10,7 @@ Scenario Outline: Delete file at location
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -35,7 +35,7 @@ Scenario Outline: Delete file at location Null
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	Then the execution has "<errorOccured>" error
@@ -59,7 +59,7 @@ Scenario Outline: Delete file Validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
 	When validating the delete tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"

@@ -94,6 +94,7 @@ using Dev2.Runtime.Auditing;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Runtime.Hosting;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -2823,7 +2824,8 @@ namespace Dev2.Activities.Specs.Composition
             var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
             if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
             {
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", "I73573r0", false);
+                var password = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
+                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", password, false);
                 sharepointHelper.Delete(serverPath);
             }
         }
