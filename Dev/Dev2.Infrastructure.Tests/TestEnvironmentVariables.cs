@@ -363,7 +363,7 @@ namespace Dev2.Infrastructure.Tests
                 foreach (var usernameAndPassword in usernamesAndPasswords)
                 {
                     var usernamePasswordSplit = Decrypt(usernameAndPassword).Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0] == name)
+                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0].ToLower() == name.ToLower())
                     {
                         return usernamePasswordSplit[1];
                     }
