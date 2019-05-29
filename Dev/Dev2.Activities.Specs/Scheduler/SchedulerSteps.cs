@@ -256,8 +256,6 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
         }
 
-
-
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
         {
@@ -275,13 +273,13 @@ namespace Dev2.Activities.Specs.Scheduler
         [When(@"the ""(.*)"" is executed ""(.*)"" times")]
         public void WhenTheIsExecutedTimes(string scheduleName, int times)
         {
+            var i = 0;
+            var x = new TaskService();
+            x.GetFolder("Warewolf");
+            var task = x.FindTask(scheduleName);
+            Assert.IsNotNull(task, "Task " + scheduleName + " not found in Warewolf folder");
             try
             {
-                var i = 0;
-                var x = new TaskService();
-                x.GetFolder("Warewolf");
-                var task = x.FindTask(scheduleName);
-                Assert.IsNotNull(task, "Task " + scheduleName + " not found in Warewolf folder");
                 do
                 {
                     task.Run();
