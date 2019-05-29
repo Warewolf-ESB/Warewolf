@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
-                    "dev2\\IntegrationTester\" with password \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "dev2\\IntegrationTester\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
     testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
@@ -138,7 +138,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1572 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -149,7 +149,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Destination Private Key File",
                         "Overwrite",
                         "Archive Password"});
-            table1.AddRow(new string[] {
+            table1572.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -161,14 +161,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", selected),
                         "String"});
 #line 21
- testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1572, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1573 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table2.AddRow(new string[] {
+            table1573.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 24
- testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1573, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -993,7 +993,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 78
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1574 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -1004,7 +1004,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Destination Private Key File",
                         "Overwrite",
                         "Archive Password"});
-            table3.AddRow(new string[] {
+            table1574.AddRow(new string[] {
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -1016,7 +1016,7 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", selected),
                         "String"});
 #line 79
- testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1574, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

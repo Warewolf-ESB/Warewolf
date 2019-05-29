@@ -89,6 +89,10 @@
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>

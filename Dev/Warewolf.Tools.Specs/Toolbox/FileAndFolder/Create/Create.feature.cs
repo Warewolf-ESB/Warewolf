@@ -103,7 +103,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
-                    "dev2.local\\IntegrationTester\" with password \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "dev2\\IntegrationTester\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
  testRunner.When("the create file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
@@ -316,7 +316,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
  testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
-                    "dev2\\IntegrationTester\" with password \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "dev2\\IntegrationTester\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
  testRunner.When("the create file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 42
