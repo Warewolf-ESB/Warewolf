@@ -306,10 +306,8 @@ namespace Dev2.Activities.Specs.Scheduler
             {
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
-            }
-            
-            catch (Exception)
-            
+            }            
+            catch (Exception)            
             {
                 /* Invalid user account */
             }
