@@ -294,9 +294,11 @@ namespace Dev2.Studio.Core.DataList
                     item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(item));
                 }
                 item.IsVisible = _vm.IsItemVisible(item.Name);
-                if (_vm.RecsetCollectionCount > 0)
+                if (_vm.RecsetCollectionCount > 0 && _vm.RecsetCollection.Last().IsBlank)
                 {
-                    _vm.RecsetCollection.Insert(_vm.RecsetCollectionCount - 1, item);
+                    _vm.RecsetCollection.RemoveAt(_vm.RecsetCollectionCount - 1);
+                    _vm.Add(item);
+                    AddRowToRecordsets();
                 }
                 else
                 {
