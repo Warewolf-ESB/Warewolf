@@ -443,7 +443,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 var recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
                 tmpRecsetList.Add(recset);
             }
-
         }
 
         void UpdateIntellisenseList()
