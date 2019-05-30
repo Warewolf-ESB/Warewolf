@@ -255,8 +255,6 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
         }
 
-
-
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
         {
