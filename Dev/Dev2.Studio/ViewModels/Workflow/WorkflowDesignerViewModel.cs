@@ -2143,10 +2143,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void UpdateDataListWithMissingParts(bool isLoadEvent)
         {
-            /*if (DataListViewModel.HasErrors)
-            {
-                return;
-            }*/
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
             if (OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
             {
