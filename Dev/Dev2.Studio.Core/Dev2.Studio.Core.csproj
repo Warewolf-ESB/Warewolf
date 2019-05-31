@@ -135,7 +135,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IApplicationAdaptor.cs" />
     <Compile Include="IViewFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
@@ -441,6 +440,11 @@
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="codecracker.CSharp">
+      <Version>1.1.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />
   </ItemGroup>
