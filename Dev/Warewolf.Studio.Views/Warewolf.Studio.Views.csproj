@@ -411,11 +411,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
@@ -435,11 +430,6 @@
     </PackageReference>
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp">
-      <Version>6.6.0.3969</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Unity">
       <Version>3.5.1404</Version>

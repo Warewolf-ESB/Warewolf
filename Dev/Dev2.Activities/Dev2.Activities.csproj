@@ -515,11 +515,6 @@
     <PackageReference Include="RabbitMQ.Client">
       <Version>3.6.1</Version>
     </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp">
-      <Version>6.6.0.3969</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.110</Version>
     </PackageReference>

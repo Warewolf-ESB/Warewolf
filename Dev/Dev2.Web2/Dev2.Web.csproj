@@ -58,10 +58,6 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Dev2.Infrastructure, Version=0.0.6793.15372, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dev2.Infrastructure\bin\Debug\Dev2.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
@@ -330,6 +326,10 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
       <Project>{a398a8f3-a7ca-44f4-8a5f-03b2ba7e1c84}</Project>
       <Name>Dev2.Runtime.Auditing</Name>
@@ -342,13 +342,6 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />
-    <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
