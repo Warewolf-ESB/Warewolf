@@ -183,7 +183,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     # Write version files
     $CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
     Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
-    $CSharpVersionFileContents = @"#pragma warning disable
+    $CSharpVersionFileContents = @"
 using System.Reflection;
 using System.Runtime.CompilerServices;
 [assembly: AssemblyCompany("Warewolf")]
