@@ -153,7 +153,7 @@ namespace Dev2.Common.Tests
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             Assert.IsTrue(executed);
 
             Assert.AreEqual(1, identity.ImpersonateCallCount);
@@ -176,9 +176,9 @@ namespace Dev2.Common.Tests
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             Assert.IsTrue(executed);
-            Assert.AreEqual(0, identity.ImpersonateCallCount);
+            Assert.AreEqual(1, identity.ImpersonateCallCount);
 
             Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
         }
@@ -194,7 +194,7 @@ namespace Dev2.Common.Tests
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, null);
 
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
 
             Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
         }
@@ -224,7 +224,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual("An anonymous identity cannot perform an impersonation.", e.Message);
             }
 
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.IsFalse(executed);
@@ -256,7 +256,7 @@ namespace Dev2.Common.Tests
                 executed = true;
             });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.IsFalse(shouldThrow);
@@ -291,7 +291,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual("some exception", e.Message);
             }
 
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.AreEqual(2, executedCount);
