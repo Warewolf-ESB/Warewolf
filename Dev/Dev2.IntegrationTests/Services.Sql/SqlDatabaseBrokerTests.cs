@@ -25,6 +25,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
 using Warewolf.Test.Agent;
+using System.IO;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
@@ -48,7 +50,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
         {
-            RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
+            RunAs("IntegrationTester", "dev2", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "RSAKLFSVRDEV");
                 var broker = new SqlDatabaseBroker();
@@ -62,7 +64,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
-            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
+            RunAs("NoDBAccessTest", "DEV2", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -83,10 +85,8 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker")]
-        [ExpectedException(typeof(WarewolfDbException))]
-        
+        [ExpectedException(typeof(WarewolfDbException))]        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
-
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
@@ -112,7 +112,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_WindowsUserWithDbAccess_ReturnsValidResult()
         {
-            RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
+            RunAs("IntegrationTester", "dev2", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "RSAKLFSVRDEV");
                 var serviceConn = new DbService
@@ -140,7 +140,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         public void SqlDatabaseBroker_TestService_WindowsUserWithoutDbAccess_ReturnsInvalidResult()
         {
             Exception exception = null;
-            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
+            RunAs("NoDBAccessTest", "DEV2", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
 
@@ -258,12 +258,12 @@ namespace Dev2.Integration.Tests.Services.Sql
             StringAssert.Contains(dataSourceShape.Paths[2].DisplayPath, "TestTextNull"); //This is the field that contains a null value. Previously this column would not have been returned.
         }
 
-        public static bool RunAs(string userName, string domain, string password, Action action)
+        public static bool RunAs(string userName, string domain, Action action)
         {
             var result = false;
             using (var impersonator = new Impersonator())
             {
-                if (impersonator.Impersonate(userName, domain, password))
+                if (impersonator.Impersonate(userName, domain))
                 {
                     action?.Invoke();
                     result = true;
@@ -275,17 +275,15 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         public interface IImpersonator
         {
-            bool Impersonate(string userName, string domain, string password);
+            bool Impersonate(string userName, string domain);
             void Undo();
             bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted);
         }
 
         public class Impersonator : IDisposable, IImpersonator
         {
-
             const int LOGON32_PROVIDER_DEFAULT = 0;
             const int LOGON32_LOGON_INTERACTIVE = 2;
-
 
             #region DllImports
 
@@ -310,12 +308,12 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             #region Impersonate
 
-            public bool Impersonate(string userName, string domain, string password)
+            public bool Impersonate(string username, string domain)
             {
                 var token = IntPtr.Zero;
                 var tokenDuplicate = IntPtr.Zero;
-
-                if (RevertToSelf() && LogonUser(userName, domain, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out token) && DuplicateToken(token, 2, out tokenDuplicate) != 0)
+                var password = TestEnvironmentVariables.GetVar(domain + "\\" + username);
+                if (RevertToSelf() && LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out token) && DuplicateToken(token, 2, out tokenDuplicate) != 0)
                 {
                     var tempWindowsIdentity = new WindowsIdentity(tokenDuplicate);
                     _impersonationContext = tempWindowsIdentity.Impersonate();
@@ -354,7 +352,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             public bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted)
             {
-                return Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(decryptIfEncrypted));
+                return Impersonate(userName, domain);
             }
 
             #endregion

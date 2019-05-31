@@ -1,6 +1,7 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -137,16 +138,16 @@ namespace Warewolf.Studio.ViewModels
 
         private void UiAction(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IServiceTestModelTO res)
         {
+            if (res == null)
+            {
+                ShowResourceDeleted(selectedServiceTest, resourceModel);
+                return;
+            }
             if (res?.Result != null)
             {
                 if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
                 {
-                    selectedServiceTest.IsTestRunning = false;
-
-                    ShowPopupController();
-
-                    CloseResourceTestView(resourceModel);
-
+                    ShowResourceDeleted(selectedServiceTest, resourceModel);
                     return;
                 }
 
@@ -177,6 +178,13 @@ namespace Warewolf.Studio.ViewModels
             }
             selectedServiceTest.IsTestRunning = false;
             selectedServiceTest.IsTestLoading = false;
+        }
+
+        private static void ShowResourceDeleted(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel)
+        {
+            selectedServiceTest.IsTestRunning = false;
+            ShowPopupController();
+            CloseResourceTestView(resourceModel);
         }
 
         private void RunTestStepForeachTestStep(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)

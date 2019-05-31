@@ -1712,6 +1712,10 @@ namespace Warewolf.Studio.ViewModels
                         return;
                     }
                     Save(new List<IServiceTestModel> { SelectedServiceTest });
+                    if (IsResourceDeleted)
+                    {
+                        return;
+                    }
                 }
                 ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
                 ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
@@ -1818,6 +1822,8 @@ namespace Warewolf.Studio.ViewModels
         bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
 
         public bool CanSave { get; set; }
+
+        bool IsResourceDeleted { get; set; }
 
         static bool GetPermissions() => true;
 
@@ -1972,6 +1978,7 @@ namespace Warewolf.Studio.ViewModels
                 case SaveResult.ResourceDeleted:
                     PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                     _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.EnvironmentID);
+                    IsResourceDeleted = true;
                     break;
                 case SaveResult.ResourceUpdated:
                     UpdateTestsFromResourceUpdate();
