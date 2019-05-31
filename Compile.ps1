@@ -225,10 +225,10 @@ using System.Runtime.CompilerServices;
 namespace Warewolf.FSharp
 namespace Warewolf.FSharp
 open System.Reflection;
-#pragma warning disable CC0021 // Use nameof
+#nowarn
 [<assembly: AssemblyCompany(@"Warewolf")>]
 [<assembly: AssemblyProduct(@"Warewolf")>]
-#pragma warning restore CC0021 // Use nameof
+
 [<assembly: AssemblyCopyright(@"Copyright Warewolf 
 "@ + (Get-Date).year + @"
 ")>]
