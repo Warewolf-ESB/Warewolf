@@ -14,6 +14,8 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Studio.Interfaces.DataList
 {
+    public delegate void DataListItemDeletedEventHandler(IDataListItemModel dataListItemModel);
+
     public interface IDataListItemModel : IEquatable<IDataListItemModel>
     {
         string DisplayName { get; set; }
@@ -34,5 +36,6 @@ namespace Dev2.Studio.Interfaces.DataList
         void SetError(string errorMessage);
         void RemoveError();
         string Name { get; set; }
+        event DataListItemDeletedEventHandler OnDeleted;
     }
 }
