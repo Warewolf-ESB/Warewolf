@@ -227,10 +227,7 @@ namespace Dev2.Activities.Specs.Scheduler
         }
 
         [Then(@"""(.*)"" has ""(.*)"" row of history")]
-        public void ThenHasRowOfHistory(string scheduleName, int history)
-        {
-            _scenarioContext["HistoryCount"] = history;
-        }
+        public void ThenHasRowOfHistory(string scheduleName, int history) => _scenarioContext["HistoryCount"] = history;
 
         [Then(@"the history debug output for ""(.*)"" for row ""(.*)"" is")]
         public void ThenTheHistoryDebugOutputForForRowIs(string p0, int p1, Table table)
@@ -244,18 +241,10 @@ namespace Dev2.Activities.Specs.Scheduler
         }
 
         [Given(@"task history ""(.*)"" is ""(.*)""")]
-        public void GivenTaskHistoryIs(string scheduleName, int history)
-        {
-            _scenarioContext["HistoryCount"] = history;
-        }
+        public void GivenTaskHistoryIs(string scheduleName, int history) => _scenarioContext["HistoryCount"] = history;
 
         [Given(@"the task status ""(.*)"" is ""(.*)""")]
-        public void GivenTheTaskStatusIs(string schedule, string status)
-        {
-            _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
-        }
-
-
+        public void GivenTheTaskStatusIs(string schedule, string status) => _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
 
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
@@ -308,10 +297,8 @@ namespace Dev2.Activities.Specs.Scheduler
             {
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
-            }
-            
-            catch (Exception)
-            
+            }            
+            catch (Exception)            
             {
                 /* Invalid user account */
             }

@@ -646,6 +646,213 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a Sequence with Assign and Unique Records")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sequence")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ControlFlow")]
+        public virtual void ExecuteASequenceWithAssignAndUniqueRecords()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a Sequence with Assign and Unique Records", ((string[])(null)));
+#line 178
+this.ScenarioSetup(scenarioInfo);
+#line 179
+      testRunner.Given("I have a Sequence \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table32.AddRow(new string[] {
+                        "[[rec(1).a]]",
+                        "11"});
+            table32.AddRow(new string[] {
+                        "[[rec(2).a]]",
+                        "11"});
+            table32.AddRow(new string[] {
+                        "[[rec(3).a]]",
+                        "11"});
+            table32.AddRow(new string[] {
+                        "[[rec(4).a]]",
+                        "12"});
+            table32.AddRow(new string[] {
+                        "[[rec(5).a]]",
+                        "12"});
+            table32.AddRow(new string[] {
+                        "[[rec(6).a]]",
+                        "13"});
+            table32.AddRow(new string[] {
+                        "[[rec(7).a]]",
+                        "13"});
+            table32.AddRow(new string[] {
+                        "[[rec(8).a]]",
+                        "13"});
+#line 180
+   testRunner.And("\"Test\" contains an Assign \"Assign data\" as", ((string)(null)), table32, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Fields",
+                        "Return Fields",
+                        "Result"});
+            table33.AddRow(new string[] {
+                        "[[rec(*).a]]",
+                        "[[rec().a]]",
+                        "[[rec().unique]]"});
+#line 190
+      testRunner.And("\"Test\" contains find unique \"Unique\" as", ((string)(null)), table33, "And ");
+#line 193
+      testRunner.When("the Sequence tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 194
+   testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table34.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] =",
+                        "11"});
+            table34.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] =",
+                        "11"});
+            table34.AddRow(new string[] {
+                        "3",
+                        "[[rec(3).a]] =",
+                        "11"});
+            table34.AddRow(new string[] {
+                        "4",
+                        "[[rec(4).a]] =",
+                        "12"});
+            table34.AddRow(new string[] {
+                        "5",
+                        "[[rec(5).a]] =",
+                        "12"});
+            table34.AddRow(new string[] {
+                        "6",
+                        "[[rec(6).a]] =",
+                        "13"});
+            table34.AddRow(new string[] {
+                        "7",
+                        "[[rec(7).a]] =",
+                        "13"});
+            table34.AddRow(new string[] {
+                        "8",
+                        "[[rec(8).a]] =",
+                        "13"});
+#line 195
+   testRunner.And("the \"Assign data\" debug inputs as", ((string)(null)), table34, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table35.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] =  11"});
+            table35.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] =  11"});
+            table35.AddRow(new string[] {
+                        "3",
+                        "[[rec(3).a]] =  11"});
+            table35.AddRow(new string[] {
+                        "4",
+                        "[[rec(4).a]] =  12"});
+            table35.AddRow(new string[] {
+                        "5",
+                        "[[rec(5).a]] =  12"});
+            table35.AddRow(new string[] {
+                        "6",
+                        "[[rec(6).a]] =  13"});
+            table35.AddRow(new string[] {
+                        "7",
+                        "[[rec(7).a]] =  13"});
+            table35.AddRow(new string[] {
+                        "8",
+                        "[[rec(8).a]] =  13"});
+#line 205
+   testRunner.And("the \"Assign data\" debug outputs as", ((string)(null)), table35, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "Return Fields"});
+            table36.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rec(1).a]] = 11",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(2).a]] = 11",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(3).a]] = 11",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(4).a]] = 12",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(5).a]] = 12",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(6).a]] = 13",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(7).a]] = 13",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "[[rec(8).a]] = 13",
+                        "[[rec().a]]  ="});
+#line 215
+   testRunner.And("the \"Unique\" debug inputs as", ((string)(null)), table36, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table37.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(2).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(3).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(4).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(5).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(6).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(7).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(8).unique]] ="});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(9).unique]] = 11"});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(10).unique]] = 12"});
+            table37.AddRow(new string[] {
+                        "",
+                        "[[rec(11).unique]] = 13"});
+#line 225
+   testRunner.And("the \"Unique\" debug outputs as", ((string)(null)), table37, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a Sequence with Assign, Base Convert and Case Convert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sequence")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ControlFlow")]
