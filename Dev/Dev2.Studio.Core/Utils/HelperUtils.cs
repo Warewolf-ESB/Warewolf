@@ -12,6 +12,8 @@
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using System;
 using System.IO;
 using System.Windows;
@@ -26,8 +28,8 @@ namespace Dev2.Utils
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var studioFolder = Path.Combine(localAppDataFolder, "Warewolf", "Studio");
 
-            IDirectoryHelper directoryHelper = new DirectoryHelper();
-            directoryHelper.CreateIfNotExists(studioFolder);
+            IDirectory directory = new DirectoryWrapper();
+            directory.CreateIfNotExists(studioFolder);
             
             var settingsConfigFile = Path.Combine(studioFolder, "Settings.config");
             return settingsConfigFile;
@@ -79,8 +81,8 @@ namespace Dev2.Utils
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             var serverLogFolder = Path.Combine(localAppDataFolder, "Warewolf", "Server Log");
 
-            IDirectoryHelper directoryHelper = new DirectoryHelper();
-            directoryHelper.CreateIfNotExists(serverLogFolder);
+            IDirectory directory = new DirectoryWrapper();
+            directory.CreateIfNotExists(serverLogFolder);
 
             var serverLogFile = Path.Combine(serverLogFolder, "warewolf-Server.log");
             return serverLogFile;
