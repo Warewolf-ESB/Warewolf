@@ -59,12 +59,11 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices)
         {
             InitializeWorkspaceResources();
-            _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
 
-        readonly IServerVersionRepository _serverVersionRepository;
+        IServerVersionRepository _serverVersionRepository => ServerVersionRepository.Instance;
         readonly IDirectory _directoryWrapper = new DirectoryWrapper();
         public void CleanUpOldVersionControlStructure()
         {
@@ -75,8 +74,7 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
             InitializeWorkspaceResources();
-            var versioningRepository = serverVersionRepository;
-            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
+            _catalogPluginContainer = new ResourceCatalogPluginContainer(serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
 

@@ -25,8 +25,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class RollbackTo : DefaultEsbManagementEndpoint
     {
-        IServerVersionRepository _serverExplorerRepository;
-
         #region Implementation of DefaultEsbManagementEndpoint
         
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -67,8 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper()); }
-            set { _serverExplorerRepository = value; }
+            get => ServerVersionRepository.Instance;
         }
 
         #endregion

@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Explorer;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -37,7 +38,7 @@ namespace Dev2.Runtime.Hosting
     public class ServerVersionRepository : IServerVersionRepository
     {
         readonly IVersionStrategy _versionStrategy;
-        readonly IResourceCatalog _catalogue;
+        IResourceCatalog _catalogue => ResourceCatalog.Instance;
         readonly IDirectory _directory;
         readonly IFile _file;
         readonly IFilePath _filePath;
@@ -46,27 +47,41 @@ namespace Dev2.Runtime.Hosting
         readonly string _envVersionFolder;
         readonly string _resourcePath;
 
-        public static IServerVersionRepository Instance { get; private set; }
+        private static Lazy<ServerVersionRepository> _instance = new Lazy<ServerVersionRepository>(() =>
+        {
+            var instance = CustomContainer.Get<ServerVersionRepository>();
+            if (instance is null)
+            {
+                instance = new ServerVersionRepository();
+                CustomContainer.Register<IServerVersionRepository>(instance);
+            }
+            return instance;
+        });
+        public static IServerVersionRepository Instance
+        {
+            get => _instance.Value;
+        }
 
-        public ServerVersionRepository(IVersionStrategy versionStrategy, IResourceCatalog catalogue, IDirectory directory, string rootPath, IFile file, IFilePath filePath)
+
+        internal ServerVersionRepository()
+            :this(new VersionStrategy(), new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper())
+        { }
+        internal ServerVersionRepository(IVersionStrategy versionStrategy, IDirectory directory, string rootPath, IFile file, IFilePath filePath)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>
             {          {"versionStrategy", versionStrategy},
-                    {"catalogue", catalogue},
                     {"directory", directory},
                     {"rootPath", rootPath},
                     {"file", file}
             }
             );
             _versionStrategy = versionStrategy;
-            _catalogue = catalogue;
             _directory = directory;
             _rootPath = rootPath;
             _file = file;
             _filePath = filePath;
             _envVersionFolder = EnvironmentVariables.VersionsPath;
             _resourcePath = EnvironmentVariables.ResourcePath;
-            Instance = this;
         }
 
         public IList<IExplorerItem> GetVersions(Guid resourceId)

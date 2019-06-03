@@ -59,7 +59,7 @@ namespace Dev2.Runtime.Hosting
                 TestCatalog = Runtime.TestCatalog.Instance,
                 ExplorerItemFactory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance),
                 Directory = new DirectoryWrapper(),
-                VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper())
+                VersionRepository = ServerVersionRepository.Instance
 
             };
 

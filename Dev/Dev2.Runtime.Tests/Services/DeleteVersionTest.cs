@@ -136,7 +136,8 @@ namespace Dev2.Tests.Runtime.Services
             var server = new Mock<IServerVersionRepository>();
             var res = Guid.NewGuid();
             //------------Execute Test---------------------------
-            deleteVersion.ServerVersionRepo = server.Object;
+            CustomContainer.Register<IServerVersionRepository>(server.Object);
+
             var ax = deleteVersion.Execute(new Dictionary<string, StringBuilder> { { "resourceId", new StringBuilder(res.ToString()) }, { "versionNumber", new StringBuilder("1") } }, ws.Object);
 
             //------------Assert Results-------------------------

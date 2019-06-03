@@ -30,7 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersion : DefaultEsbManagementEndpoint
     {
-        IServerVersionRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalog;
 
         #region Implementation of IEsbManagementEndpoint
@@ -78,8 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), Hosting.ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper()); }
-            set { _serverExplorerRepository = value; }
+            get => ServerVersionRepository.Instance;
         }
 
         public IResourceCatalog ResourceCatalog

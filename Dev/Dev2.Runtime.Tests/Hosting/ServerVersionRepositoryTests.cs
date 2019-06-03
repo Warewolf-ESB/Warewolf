@@ -40,7 +40,6 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ServerVersionRepostory_Ctor_Null_strategy()
         {
 
-            var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
@@ -155,7 +154,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static ServerVersionRepository CreateServerVersionRepository(IVersionStrategy strat, IResourceCatalog cat, IDirectory dir, string rootPath, IFile file, IFilePath filePath)
         {
-            var serverVersionRepostory = new ServerVersionRepository(strat, cat, dir, rootPath, file, filePath);
+            var serverVersionRepostory = new ServerVersionRepository(strat, dir, rootPath, file, filePath);
             return serverVersionRepostory;
         }
 

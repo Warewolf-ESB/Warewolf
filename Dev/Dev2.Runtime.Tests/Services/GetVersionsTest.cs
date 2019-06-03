@@ -102,7 +102,8 @@ using Moq;
                 repo.Setup(a => a.GetVersions(resourceId)).Returns(new List<IExplorerItem> {item});
                 var serializer = new Dev2JsonSerializer();
                 ws.Setup(a => a.ID).Returns(Guid.Empty);
-                getVersions.ServerVersionRepo = repo.Object;
+                CustomContainer.Register<IServerVersionRepository>(repo.Object);
+
                 //------------Execute Test---------------------------
                 var ax = getVersions.Execute(new Dictionary<string, StringBuilder> {{"resourceId",new StringBuilder( resourceId.ToString())}}, ws.Object);
                 //------------Assert Results-------------------------

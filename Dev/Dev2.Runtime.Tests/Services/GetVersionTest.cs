@@ -122,7 +122,8 @@ namespace Dev2.Tests.Runtime.Services
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockRes.Object);
             var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
-            getVersions.ServerVersionRepo = servVer.Object;
+            CustomContainer.Register<IServerVersionRepository>(servVer.Object);
+
             getVersions.ResourceCatalog = cat.Object;
             var serialisr = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
@@ -156,7 +157,8 @@ namespace Dev2.Tests.Runtime.Services
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockRes.Object);
             var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
-            getVersions.ServerVersionRepo = servVer.Object;
+            CustomContainer.Register<IServerVersionRepository>(servVer.Object);
+
             getVersions.ResourceCatalog = cat.Object;
             var serialisr = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
