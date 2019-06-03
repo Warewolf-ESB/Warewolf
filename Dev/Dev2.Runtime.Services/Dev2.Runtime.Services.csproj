@@ -119,7 +119,6 @@
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
     <Compile Include="Interfaces\IHubFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>

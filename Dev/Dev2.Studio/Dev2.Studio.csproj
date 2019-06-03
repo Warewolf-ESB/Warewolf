@@ -214,7 +214,6 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <Compile Include="ViewModels\Merge\ConflictItem.cs" />
     <Compile Include="ViewModels\Merge\ConflictRow.cs" />
     <Compile Include="ViewModels\Merge\Utils\ConflictListStateApplier.cs" />

@@ -131,7 +131,6 @@
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
