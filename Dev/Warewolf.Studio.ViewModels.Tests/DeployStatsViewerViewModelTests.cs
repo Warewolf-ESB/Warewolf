@@ -19,15 +19,114 @@ using Moq;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
 using Dev2.Studio.Interfaces.Deploy;
+using System.Collections.ObjectModel;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
     public class DeployStatsViewerViewModelTests
     {
-        [TestMethod, Timeout(60000)]
-        [Owner("Sanele Mthembu")]
-        public void DeployStatsViewerViewModel_Given_NewItem_OnSourceAndDestination_CheckDestinationPersmisions_ShouldBeTrue()
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_OneParamCTOR_Status_IsEmptyString_ShouldBeTrue()
+        {
+            //-------------------------Arrange----------------------------
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            var mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
+
+            mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
+            //-------------------------Act--------------------------------
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Assert-----------------------------
+            Assert.AreEqual("", deployStatsViewerViewModel.Status);
+        }
+
+        //[TestMethod, Timeout(60000)]
+        //[Owner("Sanele Mthembu")]
+        //[TestCategory(nameof(DeployStatsViewerViewModel))]
+        //public void DeployStatsViewerViewModel_Given_NewItem_OnSourceAndDestination_CheckDestinationPersmisions_ShouldBeTrue()
+        //{
+        //    var explorerTooltips = new Mock<IExplorerTooltips>();
+        //    CustomContainer.Register(explorerTooltips.Object);
+        //    //------------Setup for test--------------------------
+        //    var shellViewModel = new Mock<IShellViewModel>();
+        //    shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+        //    shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+        //    var envMock = new Mock<IEnvironmentViewModel>();
+        //    shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+        //    {
+        //        envMock.Object
+        //    });
+        //    var eventAggregator = new Mock<IEventAggregator>();
+        //    var mockEnvironmentConnection = SetupMockConnection();
+
+        //    var localhost = new Mock<IServer>();
+        //    localhost.Setup(a => a.DisplayName).Returns("Localhost");
+        //    localhost.SetupGet(server => server.CanDeployTo).Returns(true);
+        //    localhost.SetupGet(server => server.IsConnected).Returns(true);
+        //    localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
+        //    var otherServer = new Mock<IServer>();
+        //    otherServer.Setup(server => server.IsConnected).Returns(true);
+        //    otherServer.Setup(a => a.DisplayName).Returns("OtherServer");
+        //    otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
+        //    otherServer.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
+        //    shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
+
+        //    var connectControlSingleton = new Mock<IConnectControlSingleton>();
+        //    CustomContainer.Register(connectControlSingleton.Object);
+        //    var environmentRepository = new Mock<IServerRepository>();
+        //    CustomContainer.Register(environmentRepository.Object);
+
+        //    var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
+        //    //var deployDestinationViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+
+        //    var mockEnvironmentViewModel = new ObservableCollection<IEnvironmentViewModel>()
+        //    {
+        //        new Mock<IEnvironmentViewModel>().Object
+        //    };
+
+        //    var sourceItemViewModel = new ExplorerItemViewModel(localhost.Object, null, null, shellViewModel.Object, null);
+
+        //    var sourceViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
+        //    var sourceExplorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, sourceItemViewModel, null);
+        //    sourceViewModel.Add(sourceExplorerItemViewModel);
+
+        //    var destinationViewModel = SetDestinationExplorerItemViewModels(Guid.NewGuid(), otherServer, shellViewModel, localhost);
+
+        //    IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
+
+        //    sourceExplorerItemViewModel.ResourceId = new Guid("fa4b4786-67d9-414f-8c2e-17673fdcef48");
+        //    sourceExplorerItem.Add(sourceExplorerItemViewModel);
+
+        //    //deployDestinationViewModel.Setup(o => o.Environments).Returns(mockEnvironmentViewModel);
+        //    //deployDestinationViewModel.Setup(o => o.Environments.First().Children).Returns(destinationViewModel);
+        //    //deployDestinationViewModel.Setup(o => o.SelectedEnvironment).Returns(deployDestinationViewModel.Object.Environments.First());
+
+        //    deployDestinationViewModel.Environments.First().Children = destinationViewModel;
+        //    deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
+        //    deployDestinationViewModel.SelectedEnvironment.Connect();
+        //    sourceExplorerItem.First().CanDeploy = true;
+        //    sourceExplorerItem.First().IsResourceChecked = true;
+
+        //    var stat = new DeployStatsViewerViewModel(sourceExplorerItem, deployDestinationViewModel);
+            
+        //    Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
+        //    //------------Execute Test---------------------------
+        //    Assert.IsNotNull(stat);
+
+        //    stat.TryCalculate(sourceExplorerItem);
+        //    //------------Assert Results-------------------------
+        //    Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
+        //    Assert.AreEqual(stat.NewResources, 1);
+        //}
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_TryCalculate_ShouldBeTrue()
         {
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
@@ -66,19 +165,20 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var sourceItemViewModel = new ExplorerItemViewModel(localhost.Object, null, null, shellViewModel.Object, null);
 
-            var sourceViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
             var sourceExplorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, sourceItemViewModel, null);
-            sourceViewModel.Add(sourceExplorerItemViewModel);
 
             var destinationViewModel = SetDestinationExplorerItemViewModels(Guid.NewGuid(), otherServer, shellViewModel, localhost);
 
             IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
+
+            sourceExplorerItemViewModel.ResourceId = new Guid();
 
             sourceExplorerItem.Add(sourceExplorerItemViewModel);
 
             deployDestinationViewModel.Environments.First().Children = destinationViewModel;
             deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
             deployDestinationViewModel.SelectedEnvironment.Connect();
+
             sourceExplorerItem.First().CanDeploy = true;
             sourceExplorerItem.First().IsResourceChecked = true;
 
@@ -86,14 +186,44 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
             //------------Execute Test---------------------------
             Assert.IsNotNull(stat);
-            stat.TryCalculate(sourceExplorerItem);
+            stat.TryCalculate(null);
             //------------Assert Results-------------------------
             Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
-            Assert.AreEqual(stat.NewResources, 1);
+            Assert.AreEqual(stat.NewResources, 0);
+
+            Assert.AreEqual(0, stat.Services);
+            Assert.AreEqual(0, stat.Sources);
+            Assert.AreEqual(0, stat.Unknown);
+            Assert.AreEqual(0, stat.Overrides);
+            Assert.AreEqual(0, stat.New.Count);
+            Assert.AreEqual(0, stat.Conflicts.Count);
+            Assert.AreEqual(0, stat.Connectors);
+            Assert.IsNull(stat.CalculateAction);
+            Assert.IsNull(stat.Status);
+            Assert.IsNull(stat.RenameErrors);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_ReCalculate_ShouldBeTrue()
+        {
+            //-------------------------Arrange----------------------------
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            var mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
+
+            mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.ReCalculate();
+            //-------------------------Assert-----------------------------
+            Assert.AreEqual("", deployStatsViewerViewModel.Status);
         }
 
         [TestMethod, Timeout(60000)]
         [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
         public void DeployStatsViewerViewModel_Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {
             var explorerTooltips = new Mock<IExplorerTooltips>();
@@ -141,6 +271,154 @@ namespace Warewolf.Studio.ViewModels.Tests
             stat.TryCalculate(sourceExplorerItem);
             //------------Assert Results-------------------------
             Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_CalculateRenameErrors_HasErrors_ShouldBeTrue()
+        {
+            //-------------------------Arrange----------------------------
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            var mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockServer = new Mock<IServer>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+
+            mockExplorerItemViewModel.Setup(o => o.ActivityName).Returns("tesssssss");
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"not_Folder");
+            mockExplorerItemViewModel.Setup(o => o.ResourcePath).Returns(@"Category\Testing");
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(Guid.NewGuid());
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+
+            mockExplorerTreeItem.Setup(a => a.ResourceId).Returns(Guid.NewGuid());
+            mockExplorerTreeItem.Setup(a => a.ResourcePath).Returns(@"Category\Testing");
+            mockExplorerTreeItem.Setup(a => a.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(a => a.ResourceType).Returns(@"not_Folder");
+            mockExplorerTreeItem.Setup(a => a.Server).Returns(new Mock<IServer>().Object);
+
+            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
+            sourceExplorerItem.Add(mockExplorerTreeItem.Object);
+
+            var mockEnvironmentConnection = SetupMockConnection();
+
+            mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.UnfilteredChildren).Returns(new ObservableCollection<IExplorerItemViewModel> { mockExplorerItemViewModel.Object });
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.TryCalculate(sourceExplorerItem);
+            //-------------------------Assert-----------------------------
+            mockServer.VerifyAll();
+            mockShellViewModel.VerifyAll();
+            mockExplorerTreeItem.VerifyAll();
+            mockConnectControlViewModel.VerifyAll();
+
+            Assert.AreEqual("", deployStatsViewerViewModel.Status);
+            Assert.AreEqual("\nCategory\\Testing-->Category\\Testing\r\nPlease rename either the source or destination before continuing", deployStatsViewerViewModel.RenameErrors);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_CheckDestinationPermissions_ExplorerItemViewModel_IsNotNull_ShouldBeTrue()
+        {
+            //-------------------------Arrange----------------------------
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            var mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockServer = new Mock<IServer>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+
+            mockExplorerItemViewModel.Setup(o => o.ActivityName).Returns("tesssssss");
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"not_Folder");
+            mockExplorerItemViewModel.Setup(o => o.ResourcePath).Returns(@"Category\Testing");
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(new Guid("00000000-0000-0000-0000-000000000000"));
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+            mockExplorerItemViewModel.Setup(o => o.Server.CanDeployTo).Returns(true);
+
+            mockExplorerTreeItem.Setup(a => a.ResourceId).Returns(new Guid("00000000-0000-0000-0000-000000000000"));
+            mockExplorerTreeItem.Setup(a => a.Server).Returns(mockServer.Object);
+            mockExplorerTreeItem.Setup(a => a.Server.CanDeployFrom).Returns(true);
+            mockExplorerTreeItem.Setup(a => a.Server.CanDeployTo).Returns(true);
+
+            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
+            sourceExplorerItem.Add(mockExplorerTreeItem.Object);
+
+            var mockEnvironmentConnection = SetupMockConnection();
+
+            mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.IsConnected).Returns(true);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.AsList()).Returns(new List<IExplorerItemViewModel>() { mockExplorerItemViewModel.Object });
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(new List<IExplorerTreeItem>() { mockExplorerTreeItem.Object }, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.CheckDestinationPermissions();
+            //-------------------------Assert-----------------------------
+            mockServer.VerifyAll();
+            mockShellViewModel.VerifyAll();
+            mockConnectControlViewModel.VerifyAll();
+            IExplorerTreeItem treeItem = mockExplorerTreeItem.Object;
+
+            Assert.IsFalse(treeItem.CanDeploy);
+            Assert.IsNull(deployStatsViewerViewModel.Status);
+            Assert.IsNull(deployStatsViewerViewModel.RenameErrors);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_CheckDestinationPermissions_ExplorerItemViewModel_IsNull_ShouldBeTrue()
+        {
+            //-------------------------Arrange----------------------------
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            var mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockServer = new Mock<IServer>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+
+            mockExplorerItemViewModel.Setup(o => o.ActivityName).Returns("tesssssss");
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"not_Folder");
+            mockExplorerItemViewModel.Setup(o => o.ResourcePath).Returns(@"Category\Testing");
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(new Guid("00000000-0000-0000-0000-000000000000"));
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+            mockExplorerItemViewModel.Setup(o => o.Server.CanDeployTo).Returns(true);
+
+            mockExplorerTreeItem.Setup(a => a.ResourceId).Returns(new Guid("00000000-0000-0000-0000-000000000001"));
+            mockExplorerTreeItem.Setup(a => a.Server).Returns(mockServer.Object);
+            mockExplorerTreeItem.Setup(a => a.Server.CanDeployFrom).Returns(false);
+            mockExplorerTreeItem.Setup(a => a.Server.CanDeployTo).Returns(false);
+            mockExplorerTreeItem.Setup(a => a.CanDeploy).Returns(true);
+
+            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
+            sourceExplorerItem.Add(mockExplorerTreeItem.Object);
+
+            var mockEnvironmentConnection = SetupMockConnection();
+
+            mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.IsConnected).Returns(true);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.AsList()).Returns(new List<IExplorerItemViewModel>() { mockExplorerItemViewModel.Object });
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(new List<IExplorerTreeItem>() { mockExplorerTreeItem.Object }, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.CheckDestinationPermissions();
+            //-------------------------Assert-----------------------------
+            mockServer.VerifyAll();
+            mockShellViewModel.VerifyAll();
+            mockConnectControlViewModel.VerifyAll();
+
+            IExplorerTreeItem treeItem = mockExplorerTreeItem.Object;
+
+            Assert.IsTrue(treeItem.CanDeploy);
+            Assert.IsNull(deployStatsViewerViewModel.Status);
+            Assert.IsNull(deployStatsViewerViewModel.RenameErrors);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
