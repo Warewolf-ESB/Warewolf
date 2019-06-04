@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.IO;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;

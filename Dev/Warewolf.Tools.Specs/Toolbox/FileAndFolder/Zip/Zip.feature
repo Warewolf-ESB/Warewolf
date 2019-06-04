@@ -15,7 +15,7 @@ Scenario Outline: Zip file at location
 	And result as "<resultVar>"	
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
-	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
     When the Zip file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -65,7 +65,7 @@ Scenario Outline: Zip file at location with overwrite disabled
 	And result as "<resultVar>"	
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
-	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
     When the Zip file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error

@@ -110,7 +110,7 @@ namespace Dev2.Data.TO
                 else
                 {
                     result.Append("\"");
-                    result.Append(formattedMsg);
+                    result.Append(formattedMsg.Replace("\\", "\\\\").Replace("\"", "\\\""));
                     result.Append("\"");
 
                     errCnt++;

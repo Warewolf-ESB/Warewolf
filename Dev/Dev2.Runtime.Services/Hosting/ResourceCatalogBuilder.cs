@@ -91,7 +91,7 @@ namespace Dev2.Runtime.Hosting
 
         private static void BuildStream(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
         {
-            var dir = new DirectoryHelper();
+            var dir = new DirectoryWrapper();
             foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
             {
                 if (!Directory.Exists(path))
@@ -153,7 +153,7 @@ namespace Dev2.Runtime.Hosting
 
             BuildStream(releasePath, allReleaseFolders.ToArray(), programFilesBuilders);
 
-            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryHelper(), new FileWrapper());
+            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryWrapper(), new FileWrapper());
             foreach (var builderTO in programDataBuilders.Concat(programFilesBuilders))
             {
                 builderTO._fileStream.Close();
@@ -165,7 +165,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IDirectoryHelper directoryHelper, IFile fileWrapper)
+        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IDirectory directory, IFile fileWrapper)
         {
             var foundMissingResources = false;
 
@@ -200,7 +200,7 @@ namespace Dev2.Runtime.Hosting
                 var appResourcesPath = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
                 var currentSubPath = currentPath.Replace(appResourcesPath, "").Replace(".xml", ".bite");
                 var MyNewInstalledFilePath = EnvironmentVariables.ResourcePath + $"{currentSubPath}";
-                directoryHelper.CreateIfNotExists(fileWrapper.DirectoryName(MyNewInstalledFilePath));
+                directory.CreateIfNotExists(fileWrapper.DirectoryName(MyNewInstalledFilePath));
 
                 try
                 {
