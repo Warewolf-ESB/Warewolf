@@ -6,9 +6,6 @@ using Warewolf.UI.Tests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasse
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.Test.Agent;
-using System.IO;
-using System.Reflection;
 
 namespace Warewolf.UI.Tests.DebugOutputTests
 {
@@ -35,7 +32,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void HelloWorld_Is_Highlighted_After_Execution_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -51,7 +47,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void WebRequestTool_Is_Highlighted_After_Execution_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -65,7 +60,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void WorkFlowSelection_Validation_UITest()
         {
             ExplorerUIMap.Filter_Explorer(SelectionHighlightWf);
@@ -83,7 +77,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxWorkFlowSelection_Validation_UITest()
         {
             ExplorerUIMap.Filter_Explorer(DropboxSelectionHighlightWf);
@@ -101,7 +94,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void SelectAndApplyWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -115,7 +107,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxDownloadWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -129,7 +120,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxDeleteWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -143,7 +133,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxUploadWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
@@ -157,7 +146,6 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
-        [Ignore]//Cannot get ItemStatus property of activities' WpfControls on the design surface if the Studio under test is built targetting .NET Framework 4.7.2
         public void DropboxListWorkFlowSelection_Validation_UITest()
         {
             UIMap.InitializeABlankWorkflow();
