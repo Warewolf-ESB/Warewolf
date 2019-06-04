@@ -11,6 +11,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -23,11 +24,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var serializer = new Dev2JsonSerializer();            
-         
-            var list = Resources.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(a => a.ResourceType == "WcfSource").Select(a =>
+            var serializer = new Dev2JsonSerializer();
+
+            var resourceCatalog = ResourceCatalog.Instance;
+            var list = resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(a => a.ResourceType == "WcfSource").Select(a =>
             {
-                var res = Resources.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
+                // TODO: should not fetch resource a second time, use "a"
+                var res = resourceCatalog.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
                 if (res != null)
                 {
                     return new WcfServiceSourceDefinition()
@@ -48,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        ResourceCatalog Resources => ResourceCatalog.Instance;
+        IResourceCatalog Resources => ResourceCatalog.Instance;
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 

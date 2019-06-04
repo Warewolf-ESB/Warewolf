@@ -42,6 +42,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => SaveResource(workspaceID, resourceXml, savedPath, "", "");
 
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => SaveResource(workspaceID, resourceXml, savedPath, reason, "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user)
         {
             try

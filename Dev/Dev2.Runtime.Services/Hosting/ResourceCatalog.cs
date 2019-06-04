@@ -42,14 +42,19 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogBuilder Builder { get; set; }
 
         readonly ResourceCatalogPluginContainer _catalogPluginContainer;
-        static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
+        static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
         {
-            var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-            CompileMessageRepo.Instance.Ping();
-            return c;
+            var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
+            if (resourceCatalog is null)
+            {
+                resourceCatalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
+                CompileMessageRepo.Instance.Ping();
+                CustomContainer.Register<IResourceCatalog>(resourceCatalog);
+            }
+            return resourceCatalog;
         }, LazyThreadSafetyMode.PublicationOnly);
 
-        public static ResourceCatalog Instance => LazyCat.Value;
+        public static IResourceCatalog Instance => _instance.Value;
 
         public ResourceCatalog()
             : this(null)
