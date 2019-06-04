@@ -17,6 +17,7 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -28,13 +29,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            var resourceList = Resources.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
+            var resourceList = ResourceCatalog.Instance.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
                 .Cast<DropBoxSource>()
                 .ToList();
             return serializer.SerializeToBuilder(resourceList);
         }
 
-        public ResourceCatalog Resources => ResourceCatalog.Instance;
+        public IResourceCatalog Resources => ResourceCatalog.Instance;
 
         #endregion
 
