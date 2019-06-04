@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
 
@@ -34,7 +35,52 @@ namespace Dev2.Runtime.Hosting
     {
         IExplorerRepositorySync _sync;
         readonly IFile _file;
-        public static IExplorerServerResourceRepository Instance { get; private set; }
+        readonly IExplorerItemFactory _explorerItemFactory;
+        readonly IDirectory _directory;
+        public IDirectory Directory => _directory;
+        readonly IResourceCatalog _resourceCatalog;
+        public IResourceCatalog ResourceCatalogue => _resourceCatalog;
+        readonly ITestCatalog _testCatalog;
+
+        private static IExplorerServerResourceRepository _instance = new ServerExplorerRepository();
+        public static IExplorerServerResourceRepository Instance { get => _instance; }
+        static ServerExplorerRepository()
+        {
+        }
+
+        private ServerExplorerRepository()
+            :this(ServerAuthorizationService.Instance, ResourceCatalog.Instance, Runtime.TestCatalog.Instance, new VersionStrategy(), new DirectoryWrapper(), new FileWrapper(), new FilePathWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID))
+        {
+        }
+
+        private ServerExplorerRepository(IAuthorizationService authorizationService, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, IVersionStrategy versionStrategy, IDirectory directoryWrapper, IFile fileWrapper, IFilePath filePathWrapper, string workspacePath)
+            :this(
+                 resourceCatalog,
+                 new ExplorerItemFactory(resourceCatalog, directoryWrapper, authorizationService),
+                 directoryWrapper,
+                 null,
+                 fileWrapper,
+                 testCatalog)
+        {
+        }
+
+        internal ServerExplorerRepository(IResourceCatalog resourceCatalog, IExplorerItemFactory explorerItemFactory, IDirectory directory, IExplorerRepositorySync sync, IFile file, ITestCatalog testCatalog)
+        {
+            VerifyArgument.AreNotNull(new Dictionary<string, object>
+                {
+                    { "resourceCatalog", resourceCatalog },
+                    { "explorerItemFactory", explorerItemFactory },
+                    { "directory", directory },
+                    { nameof(testCatalog) , testCatalog }
+                });
+            _sync = sync;
+            _file = file;
+            _resourceCatalog = resourceCatalog;
+            _explorerItemFactory = explorerItemFactory;
+            _directory = directory;
+            _testCatalog = testCatalog;
+            IsDirty = false;
+        }
 
         bool _isDirty;
         IExplorerItem _root;
@@ -51,62 +97,17 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        static ServerExplorerRepository()
-        {
-            Instance = new ServerExplorerRepository
-            {
-                ResourceCatalogue = ResourceCatalog.Instance,
-                TestCatalog = Runtime.TestCatalog.Instance,
-                ExplorerItemFactory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance),
-                Directory = new DirectoryWrapper(),
-                VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper())
-
-            };
-
-        }
-
-
-        internal ServerExplorerRepository() { _file = new FileWrapper(); }
-
-        public ServerExplorerRepository(IResourceCatalog resourceCatalog, IExplorerItemFactory explorerItemFactory, IDirectory directory, IExplorerRepositorySync sync, IServerVersionRepository versionRepository, IFile file, ITestCatalog testCatalog)
-        {
-            VerifyArgument.AreNotNull(new Dictionary<string, object>
-                {
-                    { "resourceCatalog", resourceCatalog },
-                    { "explorerItemFactory", explorerItemFactory },
-                    { "directory", directory },
-                    { nameof(testCatalog) , testCatalog }
-                });
-            _sync = sync;
-            _file = file;
-            VersionRepository = versionRepository;
-            ResourceCatalogue = resourceCatalog;
-            ExplorerItemFactory = explorerItemFactory;
-            Directory = directory;
-            TestCatalog = testCatalog;
-            IsDirty = false;
-        }
-
-
-
-        public IExplorerItemFactory ExplorerItemFactory { get; private set; }
-        public IDirectory Directory { get; private set; }
-
-        public IResourceCatalog ResourceCatalogue { get; private set; }
-        public ITestCatalog TestCatalog { private get; set; }
-        public IServerVersionRepository VersionRepository { get; set; }
-
         public IExplorerItem Load(Guid workSpaceId) => Load(workSpaceId, false);
         public IExplorerItem Load(Guid workSpaceId, bool reload)
         {
             if (_root == null || reload)
             {
-                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
+                _root = _explorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
             }
             return _root;
         }
 
-        public IExplorerItem Load(string type, Guid workSpaceId) => ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
+        public IExplorerItem Load(string type, Guid workSpaceId) => _explorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
 
         public IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId)
         {
@@ -141,22 +142,21 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult RenameChildrenPaths(string oldPath, string newName)
         {
             var resourcesToRename =
-                ResourceCatalogue.GetResourceList(GlobalConstants.ServerWorkspaceID)
+                _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID)
                     .Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(oldPath)).ToList();
             if (resourcesToRename.Count == 0)
             {
                 var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success };
                 return resourceCatalogResult;
             }
-            var result = ResourceCatalogue.RenameCategory(GlobalConstants.ServerWorkspaceID, oldPath, newName, resourcesToRename);
+            var result = _resourceCatalog.RenameCategory(GlobalConstants.ServerWorkspaceID, oldPath, newName, resourcesToRename);
             return result;
         }
 
         IExplorerRepositoryResult RenameExplorerItem(IExplorerItem itemToRename, Guid workSpaceId)
         {
-
             var item =
-                ResourceCatalogue.GetResourceList(workSpaceId)
+                _resourceCatalog.GetResourceList(workSpaceId)
                                  .Where(
                                      a =>
                                      (a.ResourceName == itemToRename.DisplayName.Trim()) &&
@@ -165,7 +165,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
-            var result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
+            var result = _resourceCatalog.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -173,13 +173,13 @@ namespace Dev2.Runtime.Hosting
         {
             try
             {
-                if (!Directory.Exists(DirectoryStructureFromPath(path)))
+                if (!_directory.Exists(DirectoryStructureFromPath(path)))
                 {
                     return new ExplorerRepositoryResult(ExecStatus.NoMatch, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
                 }
-                if (!Directory.Exists(newPath))
+                if (!_directory.Exists(newPath))
                 {
-                    Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
+                    _directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
                 }
                 else
@@ -197,13 +197,13 @@ namespace Dev2.Runtime.Hosting
 
         void MoveVersionFolder(string path, string newPath)
         {
-            if (Directory.Exists(DirectoryStructureFromPath(path)) && Directory.Exists(DirectoryStructureFromPath(newPath)))
+            if (_directory.Exists(DirectoryStructureFromPath(path)) && _directory.Exists(DirectoryStructureFromPath(newPath)))
             {
                 var s = DirectoryStructureFromPath(path) + "\\" + GlobalConstants.VersionFolder;
                 var t = DirectoryStructureFromPath(newPath) + "\\" + GlobalConstants.VersionFolder;
-                if (Directory.Exists(DirectoryStructureFromPath(path) + "\\" + GlobalConstants.VersionFolder))
+                if (_directory.Exists(DirectoryStructureFromPath(path) + "\\" + GlobalConstants.VersionFolder))
                 {
-                    Directory.Move(s, t);
+                    _directory.Move(s, t);
                 }
             }
         }
@@ -213,7 +213,7 @@ namespace Dev2.Runtime.Hosting
             var parentItem = Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\') == resource.GetSavePath().ToLowerInvariant().TrimEnd('\\'));
             if (parentItem != null)
             {
-                var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID);
+                var newExplorerItem = _explorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID);
                 if (parentItem.Children == null)
                 {
                     parentItem.Children = new List<IExplorerItem>();
@@ -243,7 +243,7 @@ namespace Dev2.Runtime.Hosting
             return Find(_root, predicate);
         }
 
-        public List<string> LoadDuplicate() => ExplorerItemFactory.GetDuplicatedResourcesPaths();
+        public List<string> LoadDuplicate() => _explorerItemFactory.GetDuplicatedResourcesPaths();
 
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
         {
@@ -291,8 +291,8 @@ namespace Dev2.Runtime.Hosting
             {
                 return DeleteFolder(itemToDelete, workSpaceId);
             }
-            var result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
-            TestCatalog.DeleteAllTests(itemToDelete.ResourceId);
+            var result = _resourceCatalog.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
+            _testCatalog.DeleteAllTests(itemToDelete.ResourceId);
             if (result.Status == ExecStatus.Success)
             {
                 var itemDeleted = Find(_root, itemToDelete.ResourceId);
@@ -348,11 +348,11 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerRepositoryResult DeleteFolder(string path, bool deleteContents, Guid workSpaceId)
         {
-            if (!Directory.Exists(DirectoryStructureFromPath(path)))
+            if (!_directory.Exists(DirectoryStructureFromPath(path)))
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
-            var resourceList = ResourceCatalogue.GetResourceList(workSpaceId);
+            var resourceList = _resourceCatalog.GetResourceList(workSpaceId);
             if (!deleteContents && resourceList.Any(a => a.GetResourcePath(workSpaceId) == path))
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
@@ -365,12 +365,12 @@ namespace Dev2.Runtime.Hosting
             {
                 var testResourceIDsToDelete = resourceList.Where(resource => resource.GetResourcePath(workSpaceId).StartsWith(path));
                 var guids = testResourceIDsToDelete.Select(resourceToDelete => resourceToDelete.ResourceID);
-                Directory.Delete(DirectoryStructureFromPath(path), true);
+                _directory.Delete(DirectoryStructureFromPath(path), true);
 
 
                 foreach (var guid in guids)
                 {
-                    TestCatalog.DeleteAllTests(guid);
+                    _testCatalog.DeleteAllTests(guid);
                 }
 
 
@@ -396,11 +396,11 @@ namespace Dev2.Runtime.Hosting
                 {
                     var dir = $"{DirectoryStructureFromPath(itemToAdd.ResourcePath)}\\";
 
-                    if (Directory.Exists(dir))
+                    if (_directory.Exists(dir))
                     {
                         return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.RequestedFolderAlreadyExists);
                     }
-                    Directory.CreateIfNotExists(dir);
+                    _directory.CreateIfNotExists(dir);
                     if (itemToAdd.ResourcePath.Contains("\\"))
                     {
                         var idx = itemToAdd.ResourcePath.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
@@ -448,11 +448,11 @@ namespace Dev2.Runtime.Hosting
                     movePath = newPath + "\\" + itemToMove.DisplayName;
                 }
                 var oldPath = itemToMove.ResourcePath;
-                Directory.Move(DirectoryStructureFromPath(oldPath), DirectoryStructureFromPath(movePath));
+                _directory.Move(DirectoryStructureFromPath(oldPath), DirectoryStructureFromPath(movePath));
                 MoveChildren(itemToMove, newPath);
                 return new ExplorerRepositoryResult(ExecStatus.Success, "");
             }
-            var item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId) == newPath);
+            var item = _resourceCatalog.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId) == newPath);
             if (item.Any())
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
@@ -501,20 +501,20 @@ namespace Dev2.Runtime.Hosting
             {
                 newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
             }
-            var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
+            var resource = _resourceCatalog.GetResource(workSpaceId, itemToMove.ResourceId);
             var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.bite";
             var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".bite"}";
             if (_file.Exists(source))
             {
                 _file.Move(source, destination);
             }
-            var result = ResourceCatalogue.RenameCategory(workSpaceId, resource.GetSavePath(), newResourcePath, new List<IResource> { resource });
+            var result = _resourceCatalog.RenameCategory(workSpaceId, resource.GetSavePath(), newResourcePath, new List<IResource> { resource });
             itemToMove.ResourcePath = newResourcePath;
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
         public static string DirectoryStructureFromPath(string path) => Path.Combine(EnvironmentVariables.ResourcePath, path);
 
-        public IExplorerItem Load(string type, string filter) => ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
+        public IExplorerItem Load(string type, string filter) => _explorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
     }
 }
