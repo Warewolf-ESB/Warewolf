@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Dev2.Common.Common;
+using Dev2.Common.Wrappers;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -30,7 +30,7 @@ namespace Dev2.Tests.DataList
         {
             if (Directory.Exists(rootFolder + @"\Dev2\"))
             {
-                var dir = new DirectoryHelper();
+                var dir = new DirectoryWrapper();
                 dir.CleanUp(rootFolder + @"\Dev2\");
             }
         }

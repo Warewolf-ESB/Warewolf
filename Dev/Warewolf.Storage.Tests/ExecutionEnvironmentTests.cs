@@ -859,13 +859,23 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        [Ignore]
-        public void ExecutionEnvironment_GetObjectLength_ChildArray()
+        public void ExecutionEnvironment_GetObjectLength_GivenChildObject()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignJson(new AssignValue("[[@Obj()]]", "{\"Child\":{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeArray\":[\"Bob\",\"Bob2\"]}}"), 0);
-            var recordSet = _environment.GetObjectLength("Obj.Child.SomeArray");
-            Assert.AreEqual(2, recordSet);
+            _environment.AssignJson(new AssignValue("[[@Obj]]", "{\"Child\":{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeArray\":[\"Bob\",\"Bob2\"]}}"), 0);
+            var recordSet = _environment.GetObjectLength("Obj.Child");
+            Assert.AreEqual(3, recordSet);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GetObjectLength_GivenChildArray()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignJson(new AssignValue("[[@Obj]]", "{\"Child\":{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeArray\":[\"Bob\",\"Bob2\"]}}"), 0);
+            var grandChildCount = _environment.GetObjectLength("Obj.Child.SomeArray");
+            Assert.AreEqual(2, grandChildCount);
         }
 
         [TestMethod]
@@ -875,9 +885,9 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_GetObjectLength_ChildArray2()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignJson(new AssignValue("[[@Obj().Child.SomeArray]]", "[\"Bob\",\"Bob2\"]"), 0);
-            var recordSet = _environment.GetObjectLength("Obj.Child.SomeArray");
-            Assert.AreEqual(2, recordSet);
+            _environment.AssignJson(new AssignValue("[[@Obj.Child.SomeArray]]", "[\"Bob\",\"Bob2\"]"), 0);
+            var grandChildCount = _environment.GetObjectLength("Obj.Child.SomeArray");
+            Assert.AreEqual(2, grandChildCount);
         }
 
         [TestMethod]

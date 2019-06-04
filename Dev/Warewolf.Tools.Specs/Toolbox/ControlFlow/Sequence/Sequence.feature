@@ -175,7 +175,67 @@ Scenario: Execute a Sequence with Assign and Find Record Index
 	  | [[result]] = 1 |
 
 
-
+Scenario: Execute a Sequence with Assign and Unique Records
+      Given I have a Sequence "Test"
+	  And "Test" contains an Assign "Assign data" as
+      | variable    | value |
+      | [[rec(1).a]] | 11        |
+      | [[rec(2).a]] | 11        |
+      | [[rec(3).a]] | 11        |
+      | [[rec(4).a]] | 12        |
+      | [[rec(5).a]] | 12        |
+      | [[rec(6).a]] | 13        |
+      | [[rec(7).a]] | 13        |
+      | [[rec(8).a]] | 13        |
+      And "Test" contains find unique "Unique" as
+	  | In Fields   | Return Fields | Result           |
+	  | [[rec(*).a]] | [[rec().a]]   | [[rec().unique]] |
+      When the Sequence tool is executed
+	  Then the execution has "NO" error
+	  And the "Assign data" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec(1).a]] = | 11        |
+	  | 2 | [[rec(2).a]] = | 11        |
+	  | 3 | [[rec(3).a]] = | 11        |
+	  | 4 | [[rec(4).a]] = | 12        |
+	  | 5 | [[rec(5).a]] = | 12        |
+	  | 6 | [[rec(6).a]] = | 13        |
+	  | 7 | [[rec(7).a]] = | 13        |
+	  | 8 | [[rec(8).a]] = | 13        |    
+	  And the "Assign data" debug outputs as    
+	  | # |                    |
+	  | 1 | [[rec(1).a]] =  11 |
+	  | 2 | [[rec(2).a]] =  11 |
+	  | 3 | [[rec(3).a]] =  11 |
+	  | 4 | [[rec(4).a]] =  12 |
+	  | 5 | [[rec(5).a]] =  12 |
+	  | 6 | [[rec(6).a]] =  13 |
+	  | 7 | [[rec(7).a]] =  13 |
+	  | 8 | [[rec(8).a]] =  13 |        
+	  And the "Unique" debug inputs as 
+	  | #           |                   | Return Fields  |
+	  | In Field(s) | [[rec(1).a]] = 11 |                |
+	  |             | [[rec(2).a]] = 11 |                |
+	  |             | [[rec(3).a]] = 11 |                |
+	  |             | [[rec(4).a]] = 12 |                |
+	  |             | [[rec(5).a]] = 12 |                |
+	  |             | [[rec(6).a]] = 13 |                |
+	  |             | [[rec(7).a]] = 13 |                |
+	  |             | [[rec(8).a]] = 13 | [[rec().a]]  = |
+	  And the "Unique" debug outputs as 
+	  | # |                         |
+	  | 1 | [[rec(1).unique]] =     |
+	  |   | [[rec(2).unique]] =     |
+	  |   | [[rec(3).unique]] =     |
+	  |   | [[rec(4).unique]] =     |
+	  |   | [[rec(5).unique]] =     |
+	  |   | [[rec(6).unique]] =     |
+	  |   | [[rec(7).unique]] =     |
+	  |   | [[rec(8).unique]] =     |
+	  |   | [[rec(9).unique]] = 11  |
+	  |   | [[rec(10).unique]] = 12 |
+	  |   | [[rec(11).unique]] = 13 |
+	  
 
 
 

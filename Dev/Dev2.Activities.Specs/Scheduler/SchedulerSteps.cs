@@ -33,8 +33,8 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
-
-
+using System.IO;
+using Dev2.Infrastructure.Tests;
 
 namespace Dev2.Activities.Specs.Scheduler
 {
@@ -75,14 +75,13 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("Password", password);
         }
 
-        [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
-        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
+        [Given(@"""(.*)"" has a username of ""(.*)"" and a saved password")]
+        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName)
         {
             _scenarioContext.Add("UserName", userName);
-            _scenarioContext.Add("Password", password);
+            _scenarioContext.Add("Password", TestEnvironmentVariables.GetVar(userName));
         }
-
-
+        
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
@@ -228,10 +227,7 @@ namespace Dev2.Activities.Specs.Scheduler
         }
 
         [Then(@"""(.*)"" has ""(.*)"" row of history")]
-        public void ThenHasRowOfHistory(string scheduleName, int history)
-        {
-            _scenarioContext["HistoryCount"] = history;
-        }
+        public void ThenHasRowOfHistory(string scheduleName, int history) => _scenarioContext["HistoryCount"] = history;
 
         [Then(@"the history debug output for ""(.*)"" for row ""(.*)"" is")]
         public void ThenTheHistoryDebugOutputForForRowIs(string p0, int p1, Table table)
@@ -245,18 +241,10 @@ namespace Dev2.Activities.Specs.Scheduler
         }
 
         [Given(@"task history ""(.*)"" is ""(.*)""")]
-        public void GivenTaskHistoryIs(string scheduleName, int history)
-        {
-            _scenarioContext["HistoryCount"] = history;
-        }
+        public void GivenTaskHistoryIs(string scheduleName, int history) => _scenarioContext["HistoryCount"] = history;
 
         [Given(@"the task status ""(.*)"" is ""(.*)""")]
-        public void GivenTheTaskStatusIs(string schedule, string status)
-        {
-            _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
-        }
-
-
+        public void GivenTheTaskStatusIs(string schedule, string status) => _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
 
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
@@ -309,10 +297,8 @@ namespace Dev2.Activities.Specs.Scheduler
             {
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
-            }
-            
-            catch (Exception)
-            
+            }            
+            catch (Exception)            
             {
                 /* Invalid user account */
             }

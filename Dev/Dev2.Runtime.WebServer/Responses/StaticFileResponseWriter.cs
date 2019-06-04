@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -34,7 +35,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _chunkSize = chunkSize;
         }
 
-        public void Write(WebServerContext context)
+        public void Write(IResponseMessageContext context)
         {
             var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();

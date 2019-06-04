@@ -37,7 +37,7 @@ namespace Dev2.Common
 
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
-            if (userPrinciple == null || IsAlreadyImpersonated(userPrinciple))
+            if (userPrinciple == null)
             {
                 actionToBePerformed?.Invoke();
             }
@@ -80,15 +80,6 @@ namespace Dev2.Common
             }
 
             return impersonationContext;
-        }
-
-        private static bool IsAlreadyImpersonated(IPrincipal userPrinciple)
-        {
-            if (userPrinciple.Identity is WindowsIdentity newIdentity && Thread.CurrentPrincipal.Identity is WindowsIdentity currentIdentity)
-            {
-                return newIdentity.User.Equals(currentIdentity.User);
-            }
-            return false;
         }
 
         public static IPrincipal OrginalExecutingUser { get; set; }

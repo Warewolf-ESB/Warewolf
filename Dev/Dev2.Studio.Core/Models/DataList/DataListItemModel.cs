@@ -11,6 +11,7 @@
 
 using Caliburn.Micro;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces.DataList;
 
 
@@ -72,6 +73,7 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _isUsed = value;
                 NotifyOfPropertyChange(() => IsUsed);
+                _deleteCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -364,6 +366,15 @@ namespace Dev2.Studio.Core.Models.DataList
         public override string ToString() => DisplayName;
 
         #endregion Overrides of Object
+
+        RelayCommand _deleteCommand;
+        public RelayCommand DeleteItemCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(item =>
+        {
+            OnDeleted?.Invoke(this);
+        }, (ob) => !IsUsed && !string.IsNullOrWhiteSpace(DisplayName)));
+
+        public event DataListItemDeletedEventHandler OnDeleted;
+
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IDataListItemModel other) => string.Equals(Description, other.Description)

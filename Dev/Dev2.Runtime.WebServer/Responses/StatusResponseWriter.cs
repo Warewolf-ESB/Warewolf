@@ -25,7 +25,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _statusCode = statusCode;
         }
 
-        public void Write(WebServerContext context)
+        public void Write(IResponseMessageContext context)
         {
             context.ResponseMessage.StatusCode = _statusCode;
         }

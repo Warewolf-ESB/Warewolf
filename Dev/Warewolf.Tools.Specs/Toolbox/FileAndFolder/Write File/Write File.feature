@@ -11,7 +11,7 @@ Scenario Outline: Write file at location
 	And input contents as "<content>"    
 	And use private public key for source is "<sourcePrivateKeyFile>" 
 	And result as "<resultVar>"
-	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
     When the write file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error

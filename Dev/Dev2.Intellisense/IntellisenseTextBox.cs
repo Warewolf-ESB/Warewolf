@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,14 +29,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Instrumentation;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Interfaces;
-
-
-
-
-
-
-
-
 
 namespace Dev2.UI
 {
