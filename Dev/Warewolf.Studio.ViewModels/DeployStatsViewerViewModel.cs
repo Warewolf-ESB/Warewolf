@@ -267,12 +267,12 @@ namespace Warewolf.Studio.ViewModels
             return explorerTreeItems;
         }
 
-        private void CalculateRenameErrors(IList<IExplorerTreeItem> items, IExplorerItemViewModel[] explorerTreeItems)
+        private void CalculateRenameErrors(IList<IExplorerTreeItem> treeItems, IExplorerItemViewModel[] viewModels)
         {
-            var ren = from b in explorerTreeItems
-                      join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
-                      where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                      select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
+            var ren = from viewModel in viewModels
+                      join item in treeItems on new { viewModel.ResourcePath } equals new { item.ResourcePath }
+                      where viewModel.ResourceType != @"Folder" && item.ResourceType != @"Folder" && item.IsResourceChecked.HasValue && item.IsResourceChecked.Value
+                      select new { SourceName = item.ResourcePath, DestinationName = viewModel.ResourcePath, SourceId = item.ResourceId, DestinationId = viewModel.ResourceId };
             var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
             var sb = new StringBuilder();
             if (errors.Any())
