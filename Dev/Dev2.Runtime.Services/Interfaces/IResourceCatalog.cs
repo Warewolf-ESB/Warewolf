@@ -36,6 +36,7 @@ namespace Dev2.Runtime.Interfaces
         void LoadServerActivityCache();
         void Reload();
         DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName);
+        int GetLatestVersionNumberForResource(Guid resourceId);
     }
 
     public interface IResourceCatalogFactory

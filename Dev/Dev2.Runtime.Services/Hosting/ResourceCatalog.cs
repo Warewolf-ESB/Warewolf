@@ -492,5 +492,9 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, "", "");
         ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, "");
         ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
+        public int GetLatestVersionNumberForResource(Guid resourceId)
+        {
+            return _serverVersionRepository.GetLatestVersionNumber(resourceId);
+        }
     }
 }

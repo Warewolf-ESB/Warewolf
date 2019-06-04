@@ -314,7 +314,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
 
             var resumeVersionNumber = dataObject.VersionNumber;
-            dataObject.VersionNumber = ServerVersionRepository.Instance.GetLatestVersionNumber(resourceId: dataObject.ResourceID).ToString();
+            dataObject.VersionNumber = ResourceCatalog.Instance.GetLatestVersionNumberForResource(resourceId: dataObject.ResourceID).ToString();
 
             IDev2Activity startActivity;
             var isDefaultVersion = resumeVersionNumber != null && resumeVersionNumber != "1";
