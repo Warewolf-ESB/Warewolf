@@ -41,6 +41,7 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using System.Reflection;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Warewolf.Test.Agent;
+using System.Threading;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -472,11 +473,11 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             //Send the error in error variable
             var onErrorWebserviceToCall = _scenarioContext.Get<string>("webserviceToCall").Replace("[[error]]", errorValue);
-            using (var webClient = new WebClient())
-            {
-                webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
-                webClient.DownloadString(onErrorWebserviceToCall);
-            }
+            var webClient = WebRequest.Create(onErrorWebserviceToCall);
+            webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+            ServicePointManager.DefaultConnectionLimit = 100;
+            webClient.Timeout = Timeout.Infinite;
+            webClient.GetResponse();
 
             var retryCount = 0;
             string webCallResult;
@@ -485,10 +486,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 retryCount++;
                 //Call the service and get the error back
-                using (var webClient = new WebClient())
+                webClient = WebRequest.Create(webservice);
+                webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                webClient.Timeout = Timeout.Infinite;
+                using (WebResponse response = (HttpWebResponse)webClient.GetResponse())
                 {
-                    webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
-                    webCallResult = webClient.DownloadString(webservice);
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            webCallResult = reader.ReadToEnd();
+                        }
+                    }
                 }
             }
             while (webCallResult.Contains("<FatalError>") && retryCount < 10);

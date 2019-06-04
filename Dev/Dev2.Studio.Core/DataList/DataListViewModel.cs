@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -214,6 +215,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (item != null)
                 {
                     item.PropertyChanged += ItemPropertyChanged;
+                    (item as DataListItemModel).OnDeleted += (dataListItemModel) => RemoveDataListItem(dataListItemModel);
                 }
             }
         }
@@ -441,6 +443,7 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 var recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
+                recset.OnDeleted += (item) => RemoveDataListItem(item);
                 tmpRecsetList.Add(recset);
             }
 

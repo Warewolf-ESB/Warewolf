@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web", "Dev2.Web2\Dev2.Web.csproj", "{76467C57-4F15-4FD6-90BD-68443ADB838D}"
 EndProject
@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "warewolfBI", "warewolfBI\warewolfBI.csproj", "{64B1BC06-92D4-4314-8B7E-279E9D008648}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "warewolfBI", "warewolfBI\warewolfBI.csproj", "{64B1BC06-92D4-4314-8B7E-279E9D008648}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

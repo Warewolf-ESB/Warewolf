@@ -128,10 +128,10 @@
                                                                 Focusable="True"
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
-                                                                DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                DeleteCommand="{Binding DeleteItemCommand}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsEnabled="{Binding Path=IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
                                                                 AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                     <customControls:VariableTextBox.Style>
@@ -140,7 +140,7 @@
                                                 <Trigger Property="Text" Value="">
                                                     <Setter Property="Background" Value="{StaticResource DataListItemName}" />
                                                 </Trigger>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                                <DataTrigger Binding="{Binding Path=HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
                                                     <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
                                                 </DataTrigger>
                                                 <Trigger Property="IsSelectionActive" Value="True">
@@ -220,10 +220,10 @@
                                                                 Focusable="True"
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
-                                                                DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                DeleteCommand="{Binding DeleteItemCommand}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsEnabled="{Binding Path=IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
                                                                 AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                     <customControls:VariableTextBox.Style>
@@ -232,7 +232,7 @@
                                                 <Trigger Property="Text" Value="">
                                                     <Setter Property="Background" Value="{StaticResource DataListItemName}" />
                                                 </Trigger>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                                <DataTrigger Binding="{Binding Path=HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
                                                     <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
                                                 </DataTrigger>
                                                 <Trigger Property="IsSelectionActive" Value="True">
@@ -305,10 +305,10 @@
                                                                 Focusable="True"
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
-                                                                DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                DeleteCommand="{Binding DeleteItemCommand}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                IsEnabled="{Binding Path=IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
                                                                 AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                     <customControls:VariableTextBox.Style>
@@ -317,7 +317,7 @@
                                                 <Trigger Property="Text" Value="">
                                                     <Setter Property="Background" Value="{StaticResource DataListItemName}" />
                                                 </Trigger>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
                                                     <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
                                                 </DataTrigger>
                                                 <Trigger Property="IsSelectionActive" Value="True">

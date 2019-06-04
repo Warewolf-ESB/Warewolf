@@ -186,32 +186,51 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $CSharpVersionFileContents = @"
 using System.Reflection;
 using System.Runtime.CompilerServices;
-[assembly: AssemblyCompany("Warewolf")]
-[assembly: AssemblyProduct("Warewolf")]
-[assembly: AssemblyCopyright("Copyright Warewolf 
+#pragma warning disable CC0021 // Use nameof
+[assembly: AssemblyCompany(@"Warewolf")]
+[assembly: AssemblyProduct(@"Warewolf")]
+#pragma warning restore CC0021 // Use nameof
+[assembly: AssemblyCopyright(@"Copyright Warewolf 
 "@ + (Get-Date).year + @"
 ")]
-[assembly: AssemblyVersion("
+[assembly: AssemblyVersion(@"
 "@ + $FullVersionString + @"
 ")]
-[assembly: AssemblyInformationalVersion("
+[assembly: AssemblyInformationalVersion(@"
 "@ + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + @"
 ")]
-[assembly: InternalsVisibleTo("Dev2.Activities.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
-[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Common.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Core.Tests")]
+[assembly: InternalsVisibleTo("Dev2.CustomControls.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Data.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
-[assembly: InternalsVisibleTo("Dev2.Core.Tests")]
-[assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
 [assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
-[assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
-[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
+[assembly: InternalsVisibleTo("Dev2.Utils.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.Storage.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
-[assembly: InternalsVisibleTo("Dev2.Data.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
+[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
+[assembly: InternalsVisibleTo(@"Dev2.Activities.Designers.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Activities.Specs")]
+[assembly: InternalsVisibleTo(@"Dev2.Activities.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Core.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Data.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Integration.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Runtime.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.Studio.Core.Tests")]
+[assembly: InternalsVisibleTo(@"Dev2.TaskScheduler.Wrappers")]
+[assembly: InternalsVisibleTo(@"Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo(@"Warewolf.Tools.Specs")]
+[assembly: InternalsVisibleTo(@"Warewolf.UIBindingTests.ComDll")]
+[assembly: InternalsVisibleTo(@"Warewolf.UIBindingTests.PluginSource")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
@@ -223,12 +242,14 @@ using System.Runtime.CompilerServices;
 namespace Warewolf.FSharp
 namespace Warewolf.FSharp
 open System.Reflection;
-[<assembly: AssemblyCompany("Warewolf")>]
-[<assembly: AssemblyProduct("Warewolf")>]
-[<assembly: AssemblyCopyright("Copyright Warewolf 
+#nowarn
+[<assembly: AssemblyCompany(@"Warewolf")>]
+[<assembly: AssemblyProduct(@"Warewolf")>]
+
+[<assembly: AssemblyCopyright(@"Copyright Warewolf 
 "@ + (Get-Date).year + @"
 ")>]
-[<assembly: AssemblyVersion("
+[<assembly: AssemblyVersion(@"
 "@ + $FullVersionString + @"
 ")>]
 do()
