@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -38,14 +37,14 @@ namespace Dev2.Studio.Core
 
         public TContent Content
         {
-            get { return _content; }
+            get => _content;
             set
             {
                 if(value != _content)
                 {
                     _content = value;
                     Initialize(value);
-                    OnPropertyChanged("Content");
+                    OnPropertyChanged(nameof(Content));
                 }
             }
         }
@@ -58,57 +57,45 @@ namespace Dev2.Studio.Core
 
         public IDebugTreeViewItemViewModel Parent
         {
-            get
-            {
-                return _parent;
-            }
+            get => _parent;
             set
             {
                 if(value != _parent)
                 {
                     _parent = value;
                     _parent?.VerifyErrorState();
-                    OnPropertyChanged("Parent");
-                    OnPropertyChanged("Depth");
+                    OnPropertyChanged(nameof(Parent));
+                    OnPropertyChanged(nameof(Depth));
                 }
             }
         }
 
         public bool? HasError
         {
-            get
-            {
-                return _hasError;
-            }
+            get => _hasError;
             set
             {
                 _hasError = value;
                 _parent?.VerifyErrorState();
-                OnPropertyChanged("HasError");
+                OnPropertyChanged(nameof(HasError));
             }
         }
         public bool? HasNoError
         {
-            get
-            {
-                return _hasNoError;
-            }
+            get => _hasNoError;
             set
             {
                 _hasNoError = value;
-                OnPropertyChanged("HasNoError");
+                OnPropertyChanged(nameof(HasNoError));
             }
         }
         public bool? MockSelected
         {
-            get
-            {
-                return _mockSelected;
-            }
+            get => _mockSelected;
             set
             {
                 _mockSelected = value;
-                OnPropertyChanged("MockSelected");
+                OnPropertyChanged(nameof(MockSelected));
             }
         }
         public string ActivityTypeName { get; set; }
@@ -116,11 +103,11 @@ namespace Dev2.Studio.Core
 
         public string TestDescription
         {
-            get { return _testDescription; }
+            get => _testDescription;
             set
             {
                 _testDescription = value;
-                OnPropertyChanged("TestDescription");
+                OnPropertyChanged(nameof(TestDescription));
             }
         }
 
@@ -139,21 +126,18 @@ namespace Dev2.Studio.Core
             {
                 HasError = false;
             }
-            OnPropertyChanged("HasError");
+            OnPropertyChanged(nameof(HasError));
         }
 
         public bool IsExpanded
         {
-            get
-            {
-                return _isExpanded;
-            }
+            get => _isExpanded;
             set
             {
                 if(value != _isExpanded)
                 {
                     _isExpanded = value;
-                    OnPropertyChanged("IsExpanded");
+                    OnPropertyChanged(nameof(IsExpanded));
                 }
 
                 // Expand all the way up to the root.
@@ -166,16 +150,13 @@ namespace Dev2.Studio.Core
 
         public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
+            get => _isSelected;
             set
             {
                 if(value != _isSelected)
                 {
                     _isSelected = value;
-                    OnPropertyChanged("IsSelected");
+                    OnPropertyChanged(nameof(IsSelected));
                 }
             }
         }
@@ -185,6 +166,15 @@ namespace Dev2.Studio.Core
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        T IDebugTreeViewItemViewModel.As<T>()
+        {
+            if (this is T debugTreeView)
+            {
+                return debugTreeView;
+            }
+            return null;
         }
     }
 }
