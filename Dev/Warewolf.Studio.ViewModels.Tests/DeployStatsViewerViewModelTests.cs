@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var envMock = new Mock<IEnvironmentViewModel>();
-            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>
             {
                 envMock.Object
             });
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
 
-            sourceExplorerItemViewModel.ResourceId = new Guid();
+            sourceExplorerItemViewModel.ResourceId = Guid.NewGuid();
 
             sourceExplorerItem.Add(sourceExplorerItemViewModel);
 
@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             stat.TryCalculate(null);
             //------------Assert Results-------------------------
             Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
-            Assert.AreEqual(stat.NewResources, 0);
+            Assert.AreEqual(0, stat.NewResources);
 
             Assert.AreEqual(0, stat.Services);
             Assert.AreEqual(0, stat.Sources);
@@ -152,7 +152,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var envMock = new Mock<IEnvironmentViewModel>();
-            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>
             {
                 envMock.Object
             });
@@ -176,9 +176,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var destinationViewModel = SetDestinationExplorerItemViewModels(Guid.Empty, localhost, shellViewModel, localhost);
 
-            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
-
-            sourceExplorerItem.Add(sourceExplorerItemViewModel);
+            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>
+            {
+                sourceExplorerItemViewModel
+            };
 
             deployDestinationViewModel.Environments.First().Children = destinationViewModel;
             deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
@@ -217,10 +218,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerTreeItem.Setup(a => a.ResourceType).Returns(@"not_Folder");
             mockExplorerTreeItem.Setup(a => a.Server).Returns(new Mock<IServer>().Object);
 
-            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
-            sourceExplorerItem.Add(mockExplorerTreeItem.Object);
-
-            var mockEnvironmentConnection = SetupMockConnection();
+            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>
+            {
+                mockExplorerTreeItem.Object
+            };
 
             mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
             mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.UnfilteredChildren).Returns(new ObservableCollection<IExplorerItemViewModel> { mockExplorerItemViewModel.Object });
@@ -264,17 +265,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerTreeItem.Setup(a => a.Server.CanDeployFrom).Returns(true);
             mockExplorerTreeItem.Setup(a => a.Server.CanDeployTo).Returns(true);
 
-            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
-            sourceExplorerItem.Add(mockExplorerTreeItem.Object);
-
-            var mockEnvironmentConnection = SetupMockConnection();
-
             mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
             mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
             mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.IsConnected).Returns(true);
-            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.AsList()).Returns(new List<IExplorerItemViewModel>() { mockExplorerItemViewModel.Object });
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.AsList()).Returns(new List<IExplorerItemViewModel> { mockExplorerItemViewModel.Object });
 
-            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(new List<IExplorerTreeItem>() { mockExplorerTreeItem.Object }, mockDeployDestinationExplorerViewModel.Object);
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(new List<IExplorerTreeItem> { mockExplorerTreeItem.Object }, mockDeployDestinationExplorerViewModel.Object);
             //-------------------------Act--------------------------------
             deployStatsViewerViewModel.CheckDestinationPermissions();
             //-------------------------Assert-----------------------------
@@ -315,17 +311,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerTreeItem.Setup(a => a.Server.CanDeployTo).Returns(false);
             mockExplorerTreeItem.Setup(a => a.CanDeploy).Returns(true);
 
-            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
-            sourceExplorerItem.Add(mockExplorerTreeItem.Object);
-
-            var mockEnvironmentConnection = SetupMockConnection();
-
             mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
             mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
             mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.IsConnected).Returns(true);
-            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.AsList()).Returns(new List<IExplorerItemViewModel>() { mockExplorerItemViewModel.Object });
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment.AsList()).Returns(new List<IExplorerItemViewModel> { mockExplorerItemViewModel.Object });
 
-            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(new List<IExplorerTreeItem>() { mockExplorerTreeItem.Object }, mockDeployDestinationExplorerViewModel.Object);
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(new List<IExplorerTreeItem> { mockExplorerTreeItem.Object }, mockDeployDestinationExplorerViewModel.Object);
             //-------------------------Act--------------------------------
             deployStatsViewerViewModel.CheckDestinationPermissions();
             //-------------------------Assert-----------------------------
