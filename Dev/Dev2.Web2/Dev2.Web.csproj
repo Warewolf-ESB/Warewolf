@@ -164,7 +164,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Auditing\AuditingViewModel.cs" />
-    <Compile Include="Properties\AssemblyCommonInfo.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
