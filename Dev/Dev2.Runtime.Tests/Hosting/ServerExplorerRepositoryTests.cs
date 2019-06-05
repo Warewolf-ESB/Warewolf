@@ -26,6 +26,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -37,26 +38,28 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestCategory("Runtime Hosting")]
     public class ServerExplorerRepositoryTests
     {
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ServerExplorerRepository_Constructor")]
-        public void ServerExplorerRepository_Constructor_ExpectValid()
+        class Config : ServerExplorerRepository.IConfig
         {
-             //------------Setup for test--------------------------
+            public Config(IResourceCatalog resourceCatalog, IExplorerItemFactory explorerItemFactory, IDirectory directoryWrapper, IFile fileWrapper, ITestCatalog testCatalog)
+            {
+                ResourceCatalog = resourceCatalog;
+                ExplorerItemFactory = explorerItemFactory;
+                DirectoryWrapper = directoryWrapper;
+                FileWrapper = fileWrapper;
+                TestCatalog = testCatalog;
+            }
 
-            var factory = new Mock<IExplorerItemFactory>();
-            var dir = new Mock<IDirectory>();
-            var catalogue = new Mock<IResourceCatalog>();
-            
-            var sync = new Mock<IExplorerRepositorySync>();
-            var testCatalogue = new Mock<ITestCatalog>();
-            var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
-            Assert.AreEqual(repo.Directory, dir.Object);
-            Assert.AreEqual(repo.ResourceCatalogue, catalogue.Object);
-
-            
-
+            public IAuthorizationService AuthorizationService { get; set; }
+            public IResourceCatalog ResourceCatalog { get; set; }
+            public ITestCatalog TestCatalog { get; set; }
+            public IExplorerItemFactory ExplorerItemFactory { get; set; }
+            public IVersionStrategy VersionStrategy { get; set; }
+            public IDirectory DirectoryWrapper { get; set; }
+            public IFile FileWrapper { get; set; }
+            public IFilePath FilePathWrapper { get; set; }
+            public string WorkspacePath { get; set; }
         }
+
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_Constructor")]
@@ -70,7 +73,7 @@ namespace Dev2.Tests.Runtime.Hosting
             
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
-            new ServerExplorerRepository(null, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            new ServerExplorerRepository(new Config(null, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             
 
         }
@@ -87,7 +90,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             
             var sync = new Mock<IExplorerRepositorySync>();
-            new ServerExplorerRepository(null, factory.Object, dir.Object, sync.Object, new FileWrapper(), null);
+            new ServerExplorerRepository(new Config(null, factory.Object, dir.Object, new FileWrapper(), null), sync.Object);
             
 
         }
@@ -103,7 +106,7 @@ namespace Dev2.Tests.Runtime.Hosting
             
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
-            new ServerExplorerRepository(catalogue.Object, null, dir.Object, sync.Object, new FileWrapper(),testCatalogue.Object);
+            new ServerExplorerRepository(new Config(catalogue.Object, null, dir.Object, new FileWrapper(),testCatalogue.Object), sync.Object);
             
 
         }
@@ -120,7 +123,7 @@ namespace Dev2.Tests.Runtime.Hosting
             
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
-            new ServerExplorerRepository(catalogue.Object, factory.Object, null, sync.Object, new FileWrapper(),testCatalogue.Object);
+            new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, null, new FileWrapper(),testCatalogue.Object), sync.Object);
             
 
         }
@@ -149,15 +152,15 @@ namespace Dev2.Tests.Runtime.Hosting
                 );
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             //------------Execute Test---------------------------
             var root = serverExplorerRepository.Load(Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(root.ResourceType, "Folder");
+            Assert.AreEqual("Folder", root.ResourceType);
             Assert.AreEqual(2, root.Children.Count);
-            Assert.AreEqual(root.Children.First().DisplayName, "Services");
-            Assert.AreEqual(root.Children[1].DisplayName, "Bobs");
+            Assert.AreEqual("Services", root.Children.First().DisplayName);
+            Assert.AreEqual("Bobs", root.Children[1].DisplayName);
         }
 
         [TestMethod]
@@ -184,12 +187,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Contribute, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             factory.Setup(a => a.CreateRootExplorerItem("Folder", It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             //------------Execute Test---------------------------
             var root = serverExplorerRepository.Load("Folder", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(root.ResourceType, "Folder");
+            Assert.AreEqual("Folder", root.ResourceType);
             Assert.AreEqual(root.Permissions, Permissions.Contribute);
             factory.Verify(a => a.CreateRootExplorerItem("Folder", It.IsAny<string>(), It.IsAny<Guid>()));
         }
@@ -218,12 +221,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             factory.Setup(a => a.CreateRootExplorerItem("Folder", It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             //------------Execute Test---------------------------
             var root = serverExplorerRepository.Load("Folder", "monkey");
             //------------Assert Results-------------------------
-            Assert.AreEqual(root.ResourceType, "Folder");
+            Assert.AreEqual("Folder", root.ResourceType);
             factory.Verify(a => a.CreateRootExplorerItem("Folder", It.IsAny<string>(), It.IsAny<Guid>()));
         }
 
@@ -244,13 +247,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameItem(explorerItem, "bob", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: bob");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: bob", result.Message);
             Assert.AreEqual(ExecStatus.NoMatch, result.Status);
         }
 
@@ -280,13 +283,13 @@ namespace Dev2.Tests.Runtime.Hosting
 
             catalogue.Setup(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave","bob")).Returns(new ResourceCatalogResult { Message = "moo", Status = ExecStatus.AccessViolation }).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameItem(explorerItem, "dave", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "moo");
+            Assert.AreEqual("moo", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.AccessViolation);
             catalogue.Verify(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave","bob"));
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
@@ -317,7 +320,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             catalogue.Setup(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave","bob")).Returns(new ResourceCatalogResult { Message = "moo", Status = ExecStatus.AccessViolation }).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
 
             //------------Execute Test---------------------------
@@ -355,13 +358,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 .Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var fileWrapper = new Mock<IFile>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, fileWrapper.Object, testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, fileWrapper.Object, testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.MoveItem(explorerItem, "dave", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "There is an item that exists with the same name and path");
+            Assert.AreEqual("There is an item that exists with the same name and path", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
             catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), "bob", "dave", It.IsAny<List<IResource>>()), Times.Exactly(0));
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
@@ -394,13 +397,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 .Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var fileWrapper = new Mock<IFile>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, fileWrapper.Object, testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, fileWrapper.Object, testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.MoveItem(explorerItem, "dave", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "moo");
+            Assert.AreEqual("moo", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.AccessViolation);
             catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), "bob", "dave", It.IsAny<List<IResource>>()));
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
@@ -434,13 +437,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 .Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var fileWrapper = new Mock<IFile>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, fileWrapper.Object, testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, fileWrapper.Object, testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.MoveItem(explorerItem, "dave", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "moo");
+            Assert.AreEqual("moo", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), "bob\\dave", "dave", It.IsAny<List<IResource>>()));
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
@@ -468,12 +471,12 @@ namespace Dev2.Tests.Runtime.Hosting
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource")).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteItem(explorerItem, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "bob");
+            Assert.AreEqual("bob", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
             catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
         }
@@ -500,12 +503,12 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource")).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             testCatalogue.Setup(catalog => catalog.DeleteAllTests(It.IsAny<Guid>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteItem(explorerItem, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "bob");
+            Assert.AreEqual("bob", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
             catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
             testCatalogue.Verify(catalog => catalog.DeleteAllTests(It.IsAny<Guid>()), Times.Once);
@@ -530,12 +533,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteItem(explorerItem, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: bob");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: bob", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }
@@ -564,7 +567,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("monkey\\dave");
@@ -572,7 +575,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Error Renaming");
+            Assert.AreEqual("Error Renaming", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
@@ -602,7 +605,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("monkey2");
@@ -610,7 +613,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Error Renaming");
+            Assert.AreEqual("Error Renaming", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
@@ -639,7 +642,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("monkey2");
@@ -647,7 +650,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: monkey");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: monkey", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.NoMatch);
         }
 
@@ -678,7 +681,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("monkey2");
@@ -686,7 +689,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: monkey");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: monkey", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.NoMatch);
         }
 
@@ -715,7 +718,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("monkey2");
@@ -739,13 +742,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
 
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: monkey");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: monkey", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.NoMatch);
 
         }
@@ -763,14 +766,14 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
             sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
                                               "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder already exists on server.");
+            Assert.AreEqual("Requested folder already exists on server.", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
             sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Never());
         }
@@ -788,14 +791,14 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             var sync = new Mock<IExplorerRepositorySync>();
             sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "ReservedService", null, Permissions.DeployFrom,
                                               "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Only user resources can be added from this repository");
+            Assert.AreEqual("Only user resources can be added from this repository", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
             sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Never());
         }
@@ -816,7 +819,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>()));
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             serverExplorerRepository.Load(GlobalConstants.ServerWorkspaceID);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
                                               "/bob/dave");
@@ -844,14 +847,14 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Throws(new FileNotFoundException("bobe"));
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
                                               "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "bobe");
+            Assert.AreEqual("bobe", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
             dir.Verify(a => a.Exists(It.IsAny<string>()));
             dir.Verify(a => a.CreateIfNotExists(It.IsAny<string>()));
@@ -871,13 +874,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var res = new Mock<IResource>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             //------------Execute Test---------------------------
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("bob");
             var result = serverExplorerRepository.DeleteFolder("bob", false, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: " + "bob");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: " + "bob", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }
@@ -895,12 +898,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var res = new Mock<IResource>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             //------------Execute Test---------------------------
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("bob");
             var result = serverExplorerRepository.DeleteFolder("bob", false, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: " + "bob");
+            Assert.AreEqual("Requested folder does not exist on server. Folder: " + "bob", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }
@@ -918,12 +921,12 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             //------------Execute Test---------------------------
             res.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("bob");
             var result = serverExplorerRepository.DeleteFolder("  ", false, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "You may not delete the root path");
+            Assert.AreEqual("You may not delete the root path", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }
@@ -946,13 +949,13 @@ namespace Dev2.Tests.Runtime.Hosting
             res.Setup(a => a.ResourceType).Returns("EmailSource");
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Verifiable();
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "");
+            Assert.AreEqual("", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
 
@@ -977,13 +980,13 @@ namespace Dev2.Tests.Runtime.Hosting
             res.Setup(a => a.ResourceType).Returns("EmailSource");
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Verifiable();
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "");
+            Assert.AreEqual("", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
             testCatalogue.Verify(catalog => catalog.DeleteAllTests(guid), Times.Once);
@@ -1016,7 +1019,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var resources = new List<IResource> { res.Object, res2.Object };
             catalogue.SetupSequence(catalog => catalog.GetResourceList(It.IsAny<Guid>()))
                 .Returns(resources)
@@ -1050,14 +1053,14 @@ namespace Dev2.Tests.Runtime.Hosting
             res.Setup(a => a.ResourceType).Returns("EmailSource");
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Verifiable();
             dir.Setup(a => a.Delete(It.IsAny<string>(), true)).Throws(new FieldAccessException("moon"));
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "moon");
+            Assert.AreEqual("moon", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
 
@@ -1081,13 +1084,15 @@ namespace Dev2.Tests.Runtime.Hosting
             res.Setup(a => a.ResourceType).Returns("EmailSource");
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Fail, Message = "fanta" }).Verifiable();
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
             dir.Verify(a => a.Delete(It.IsAny<string>(), true), Times.Once());
+            Assert.AreEqual(ExecStatus.Success, result.Status);
+            Assert.AreEqual("", result.Message);
 
         }
 
@@ -1103,7 +1108,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var sync = new Mock<IExplorerRepositorySync>();
-            var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var repo = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             //------------Execute Test---------------------------
             repo.MessageSubscription(null);
         }
@@ -1120,10 +1125,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             
             var sync = new Mock<IExplorerRepositorySync>();
-            var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var repo = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var res = repo.AddItem(null, Guid.NewGuid());
-            Assert.AreEqual(res.Status, ExecStatus.Fail);
-            Assert.AreEqual(res.Message, "Item to add was null");
+            Assert.AreEqual(ExecStatus.Fail, res.Status);
+            Assert.AreEqual("Item to add was null", res.Message);
             
 
         }
@@ -1140,10 +1145,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             
             var sync = new Mock<IExplorerRepositorySync>();
-            var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var repo = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var res = repo.RenameItem(null, "bob", Guid.NewGuid());
-            Assert.AreEqual(res.Status, ExecStatus.Fail);
-            Assert.AreEqual(res.Message, "Item to rename was null");
+            Assert.AreEqual(ExecStatus.Fail, res.Status);
+            Assert.AreEqual("Item to rename was null", res.Message);
             
 
         }
@@ -1160,10 +1165,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             
             var sync = new Mock<IExplorerRepositorySync>();
-            var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new FileWrapper(), testCatalogue.Object);
+            var repo = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var res = repo.DeleteItem(null, Guid.NewGuid());
-            Assert.AreEqual(res.Status, ExecStatus.Fail);
-            Assert.AreEqual(res.Message, "Item to delete was null");
+            Assert.AreEqual(ExecStatus.Fail, res.Status);
+            Assert.AreEqual("Item to delete was null", res.Message);
             
 
         }
