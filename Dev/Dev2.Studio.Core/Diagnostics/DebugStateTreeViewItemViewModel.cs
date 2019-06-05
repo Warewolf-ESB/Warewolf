@@ -1,4 +1,13 @@
-#pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,9 +18,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Interfaces;
-
-
-
 
 namespace Dev2.Studio.Core
 {
@@ -56,7 +62,6 @@ namespace Dev2.Studio.Core
                         currentError.Append(errorMessage);
                         Content.ErrorMessage = currentError.ToString();
                     }
-
                 }
                 else
                 {
@@ -66,25 +71,76 @@ namespace Dev2.Studio.Core
                 Content.HasError = true;
                 OnPropertyChanged("Content.ErrorMessage");
                 OnPropertyChanged("Content.HasError");
-                OnPropertyChanged("Content");
+                OnPropertyChanged(nameof(Content));
                 HasError = true;
             }
         }
 
-        
-        protected override void Initialize(IDebugState value)
+
+        protected override void Initialize(IDebugState debugState)
         {
-            if (value == null)
+            if (debugState == null)
             {
                 return;
             }
             SelectionType = ActivitySelectionType.Add;
-            IsSelected = value.ActivityType != ActivityType.Workflow;
+            IsSelected = debugState.ActivityType != ActivityType.Workflow;
 
-            var isRemote = Guid.TryParse(value.Server, out Guid serverId);
-            if (isRemote || string.IsNullOrEmpty(value.Server))
+            SetServerName(debugState);
+            BuildBindableListFromDebugItems(debugState.Inputs, _inputs, true);
+            BuildBindableListFromDebugItems(debugState.Outputs, _outputs);
+            BuildBindableListFromDebugItems(debugState.AssertResultList, _assertResultList);
+
+            if (debugState.HasError)
             {
-                var envId = value.EnvironmentID;
+                HasError = true;
+            }
+            if (debugState.AssertResultList != null)
+            {
+                SetTestDescription(debugState);
+            }
+            SelectionType = ActivitySelectionType.Single;
+        }
+
+        private static bool SetAllError(IDebugState debugState)
+        {
+            var setAllError = false;
+
+            foreach (var debugItem in debugState.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
+            {
+                setAllError = true;
+            }
+
+            return setAllError;
+        }
+
+        private void SetTestDescription(IDebugState debugState)
+        {
+            bool setAllError = SetAllError(debugState);
+
+            foreach (var debugItemResult in debugState.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
+            {
+                if (setAllError)
+                {
+                    HasError = true;
+                    HasNoError = false;
+                }
+                else
+                {
+                    HasError = debugItemResult.HasError;
+                    HasNoError = !debugItemResult.HasError;
+                }
+                MockSelected = debugItemResult.MockSelected;
+                TestDescription = debugItemResult.MockSelected ? "Mock :" : "Assert :";
+            }
+        }
+
+        private void SetServerName(IDebugState debugState)
+        {
+            var isRemote = Guid.TryParse(debugState.Server, out Guid serverId);
+            if (isRemote || string.IsNullOrEmpty(debugState.Server))
+            {
+                var envId = debugState.EnvironmentID;
 
                 var env = _serverRepository.All().FirstOrDefault(e => e.EnvironmentID == envId);
                 if (env == null)
@@ -94,62 +150,24 @@ namespace Dev2.Studio.Core
                 }
                 if (Equals(env, _serverRepository.Source))
                 {
-                    value.Server = "Unknown Remote Server";
+                    debugState.Server = "Unknown Remote Server";
                 }
                 else
                 {
                     if (env != null)
                     {
-                        value.Server = env.Name;
+                        debugState.Server = env.Name;
                     }
                 }
             }
-            BuildBindableListFromDebugItems(value.Inputs, _inputs, true);
-            BuildBindableListFromDebugItems(value.Outputs, _outputs);
-            BuildBindableListFromDebugItems(value.AssertResultList, _assertResultList);
-
-            if (value.HasError)
-            {
-                HasError = true;
-            }
-            if (value.AssertResultList != null)
-            {
-                var setAllError = false;
-                
-                foreach (var debugItem in value.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
-                {
-                    setAllError = true;
-                }
-
-                foreach (var debugItemResult in value.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
-                {
-                    if (setAllError)
-                    {
-                        HasError = true;
-                        HasNoError = false;
-                    }
-                    else
-                    {
-                        HasError = debugItemResult.HasError;
-                        HasNoError = !debugItemResult.HasError;
-                    }
-                    MockSelected = debugItemResult.MockSelected;
-                    TestDescription = debugItemResult.MockSelected ? "Mock :" : "Assert :";
-                }
-            }
-            SelectionType = ActivitySelectionType.Single;
         }
 
         protected override void OnPropertyChanged(string propertyName)
         {
             base.OnPropertyChanged(propertyName);
-            switch (propertyName)
+            if (propertyName == nameof(IsSelected))
             {
-                case "IsSelected":
-                    NotifySelectionChanged();
-                    break;
-                default:
-                    break;
+                NotifySelectionChanged();
             }
         }
 
@@ -162,17 +180,16 @@ namespace Dev2.Studio.Core
                 if (Parent != null)
                 {
                     // Only show selection at the root level!
-                    var parent = (DebugStateTreeViewItemViewModel)Parent;
+                    var parent = Parent;
                     do
                     {
-                        content = parent.Content;
-                        parent = (DebugStateTreeViewItemViewModel)parent.Parent;
+                        content = parent.As<DebugStateTreeViewItemViewModel>()?.Content;
+                        parent = parent.Parent;
                     }
                     while (parent != null);
                 }
                 if (!IsTestView)
                 {
-
                     EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs
                     {
                         DebugState = content,
@@ -227,7 +244,7 @@ namespace Dev2.Studio.Core
             {
                 if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
                 {
-                    var label = isInputs ? string.Format("{0} = ", result.Label) : result.Label;                    
+                    var label = isInputs ? string.Format("{0} = ", result.Label) : result.Label;
                     group = new DebugLineGroup(result.GroupName, label)
                     {
                         MoreLink = result.MoreLink
@@ -246,8 +263,6 @@ namespace Dev2.Studio.Core
             }
         }
 
-        #region Overrides of Object
-
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
@@ -255,7 +270,5 @@ namespace Dev2.Studio.Core
         /// A string that represents the current object.
         /// </returns>
         public override string ToString() => Content.DisplayName;
-
-        #endregion
     }
 }
