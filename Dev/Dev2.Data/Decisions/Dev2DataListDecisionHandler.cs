@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,9 +17,9 @@ namespace Dev2.Data.Decision
 {
     public class Dev2DataListDecisionHandler
     {
-        static Dev2DataListDecisionHandler _inst;
+        private readonly static Dev2DataListDecisionHandler _instance = new Dev2DataListDecisionHandler();
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
-        public static Dev2DataListDecisionHandler Instance => _inst ?? (_inst = new Dev2DataListDecisionHandler());
+        public static Dev2DataListDecisionHandler Instance { get => _instance; }
 
         public void AddEnvironment(Guid id, IExecutionEnvironment env)
         {
