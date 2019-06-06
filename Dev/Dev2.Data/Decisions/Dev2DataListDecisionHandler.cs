@@ -15,6 +15,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.Decision
 {
+    // Referenced in the Resources Namespace and Variables
     public class Dev2DataListDecisionHandler
     {
         private readonly static Dev2DataListDecisionHandler _instance = new Dev2DataListDecisionHandler();
