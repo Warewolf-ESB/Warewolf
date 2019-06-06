@@ -48,7 +48,6 @@ namespace Dev2.Runtime.Hosting
             if (resourceCatalog is null)
             {
                 resourceCatalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-                CompileMessageRepo.Instance.Ping();
                 CustomContainer.Register<IResourceCatalog>(resourceCatalog);
             }
             return resourceCatalog;
