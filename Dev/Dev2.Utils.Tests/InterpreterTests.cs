@@ -206,7 +206,7 @@ namespace Dev2.Utils.Tests
 
             var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
-
+                
             var obj = new object();
             obj = new List<string> { "string1", "string2" }.ToArray();
 
@@ -218,6 +218,107 @@ namespace Dev2.Utils.Tests
             //--------------------------Assert----------------------------
             Assert.AreEqual(eval, interpreter._eval);
             Assert.AreEqual(output, interpreter._output);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Interpreter))]
+        public void Interpreter_Trace_ParseInt_Str_IsNullOrEmpty_ExpectSuccess()
+        {
+            //--------------------------Arrange---------------------------
+            var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
+
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
+
+            var obj = new object();
+            obj = new List<string> { "string1", "string2" }.ToArray();
+
+            mockJsonPathValueSystem.Setup(o => o.IsObject(It.IsAny<object>())).Returns(true);
+
+            var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
+            //--------------------------Act-------------------------------
+            interpreter.StoreExpressionTreeLeafNodes("::;", obj, "test_path;");
+            //--------------------------Assert----------------------------
+            Assert.AreEqual(eval, interpreter._eval);
+            Assert.AreEqual(output, interpreter._output);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Interpreter))]
+        public void Interpreter_Trace_ParseInt_Throw_FormatException_ExpectSuccess()
+        {
+            //--------------------------Arrange---------------------------
+            var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
+
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
+
+            var obj = new object();
+            obj = new List<string> { "string1", "string2" }.ToArray();
+
+            mockJsonPathValueSystem.Setup(o => o.IsObject(It.IsAny<object>())).Returns(true);
+
+            var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
+            //--------------------------Act-------------------------------
+            interpreter.StoreExpressionTreeLeafNodes("-1::;", obj, "test_path;");
+            //--------------------------Assert----------------------------
+            Assert.AreEqual(eval, interpreter._eval);
+            Assert.AreEqual(output, interpreter._output);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Interpreter))]
+        public void Interpreter_Trace_Slice_Value_IsNull_ExpectSuccess()
+        {
+            //--------------------------Arrange---------------------------
+            var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
+
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
+
+            var obj = new object();
+            obj = new List<string> { null };
+
+            mockJsonPathValueSystem.Setup(o => o.IsObject(It.IsAny<object>())).Returns(true);
+
+            var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
+            //--------------------------Act-------------------------------
+            interpreter.StoreExpressionTreeLeafNodes("09:01:00;", null, "test_path;");
+            //--------------------------Assert----------------------------
+            Assert.AreEqual(eval, interpreter._eval);
+            Assert.AreEqual(output, interpreter._output);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Interpreter))]
+        public void Interpreter_WalkFiltered_IsInvoked_ExpectSuccess()
+        {
+            //--------------------------Arrange---------------------------
+            var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
+
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var eval = new JsonPathScriptEvaluator((s, o, ss) => o = true);
+
+            var objList = new List<string> { "string1", "string2" };
+            var isInvoked = false;
+
+            mockJsonPathValueSystem.Setup(o => o.IsObject(It.IsAny<object>())).Returns(true);
+            mockJsonPathValueSystem.Setup(o => o.GetMembers(It.IsAny<object>()))
+                                    .Callback(()=> isInvoked = true)
+                                    .Returns(objList);
+
+            var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object, eval);
+            //--------------------------Act-------------------------------
+            interpreter.StoreExpressionTreeLeafNodes("?(asd);", new object(), "test_path;");
+            //--------------------------Assert----------------------------
+            Assert.AreEqual(eval, interpreter._eval);
+            Assert.AreEqual(output, interpreter._output);
+
+            Assert.IsTrue(isInvoked);
         }
     }
 }
