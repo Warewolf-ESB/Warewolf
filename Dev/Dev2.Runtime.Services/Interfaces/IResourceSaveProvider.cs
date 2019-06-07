@@ -11,6 +11,7 @@ namespace Dev2.Runtime.Interfaces
     public interface IResourceSaveProvider
     {
         ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath);
+        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason);
         ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user);
         ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath);
         ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason, string user);

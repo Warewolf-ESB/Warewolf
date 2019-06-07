@@ -16,6 +16,7 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var serializer = new Dev2JsonSerializer();
             
-            var list = Resources.GetResourceList<RabbitMQSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+            var list = ResourceCatalog.Instance.GetResourceList<RabbitMQSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 if (a is RabbitMQSource res)
                 {
@@ -52,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        public ResourceCatalog Resources => ResourceCatalog.Instance;
+        public IResourceCatalog Resources => ResourceCatalog.Instance;
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 

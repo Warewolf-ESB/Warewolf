@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,9 +19,8 @@ namespace Dev2.Diagnostics.Debug
         readonly IDictionary<Guid, IList<IDebugState>> _data = new Dictionary<Guid, IList<IDebugState>>();
         static readonly object Lock = new object();
 
-        static RemoteDebugMessageRepo _instance;
-
-        public static RemoteDebugMessageRepo Instance => _instance ?? (_instance = new RemoteDebugMessageRepo());
+        private static readonly RemoteDebugMessageRepo _instance = new RemoteDebugMessageRepo();
+        public static RemoteDebugMessageRepo Instance { get => _instance; }
 
         private RemoteDebugMessageRepo()
         {
