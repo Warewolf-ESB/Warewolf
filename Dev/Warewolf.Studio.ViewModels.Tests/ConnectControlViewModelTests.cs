@@ -432,7 +432,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.TryConnectAsync(serverMock.Object);
 
             //assert
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
             Assert.IsFalse(serverConnectedRaised);
         }
         
