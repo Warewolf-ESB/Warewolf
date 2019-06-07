@@ -28,6 +28,6 @@ namespace Dev2.Common.Interfaces.Infrastructure
 
         List<string> LoadDuplicate();
 
-        IExplorerItemFactory ExplorerItemFactory { get; }
+        IExplorerRepositoryResult RenameFolder(string path, string newPath, Guid workSpaceId);
     }
 }
