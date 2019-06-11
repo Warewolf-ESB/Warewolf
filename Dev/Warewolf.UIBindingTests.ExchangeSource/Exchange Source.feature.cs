@@ -159,13 +159,13 @@ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.Sp
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail Send Shows correct error message")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail Exchange Email Send Shows correct error message")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
-        public virtual void FailSendShowsCorrectErrorMessage()
+        public virtual void FailExchangeEmailSendShowsCorrectErrorMessage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Shows correct error message", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Exchange Email Send Shows correct error message", new string[] {
                         "ExchangeSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
@@ -205,3 +205,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+

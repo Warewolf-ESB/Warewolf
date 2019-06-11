@@ -118,13 +118,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail Send Shows correct error message")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail Send Wcf Message Shows correct error message")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Wcf Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WcfSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WcfSource")]
-        public virtual void FailSendShowsCorrectErrorMessage()
+        public virtual void FailSendWcfMessageShowsCorrectErrorMessage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Shows correct error message", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Wcf Message Shows correct error message", new string[] {
                         "WcfSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
@@ -157,3 +157,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+
