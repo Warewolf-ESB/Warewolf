@@ -24,7 +24,7 @@ Scenario: Create New Wcf source
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-Scenario: Fail Send Shows correct error message
+Scenario: Fail Send Wcf Message Shows correct error message
 	Given I open New Wcf Source
 	Then "New WCF Service Source" tab is opened
 	And I type WCF Endpoint Url as "test"
