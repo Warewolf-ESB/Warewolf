@@ -79,7 +79,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _target = new ConnectControlViewModel(_serverMock.Object, _eventAggregatorMock.Object) { ShouldUpdateActiveEnvironment = true };
             _target.ShouldUpdateActiveEnvironment = true;
-            _target.PropertyChanged += _target_PropertyChanged;
+            _target.PropertyChanged += Target_PropertyChanged;
         }
 
         [TestMethod,Timeout(60000)]
@@ -760,11 +760,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var intergrationId = Guid.NewGuid();
             intergration.Setup(server => server.EnvironmentID).Returns(intergrationId);
             intergration.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            var servers = new List<IServer>
-            {
-                intergration.Object,
-                store.Object
-            };
+            
             
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator());
             //------------Execute Test---------------------------
@@ -836,11 +832,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             intergration.Setup(server => server.IsConnected).Returns(true);
             var intergrationId = Guid.NewGuid();
             intergration.Setup(server => server.EnvironmentID).Returns(intergrationId);
-            var servers = new List<IServer>
-            {
-                intergration.Object,
-                store.Object
-            };
+            
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator());
             //------------Execute Test---------------------------
             var privateObject = new PrivateObject(connectControlViewModel);
@@ -879,7 +871,6 @@ namespace Warewolf.Studio.ViewModels.Tests
                 repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
 
             var server = new ServerForTesting(mockExplorerRepository);
-            var server2 = new Server(serverGuid, mockEnvironmentConnection.Object);
             server.EnvironmentID = serverGuid;
             server.ResourceName = "mr_J_bravo";
             server.Connection = mockEnvironmentConnection.Object;
@@ -915,7 +906,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("johnnyBravoServer", mockEnvironmentConnection.Object.DisplayName);
         }
 
-        void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void Target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _changedProperties.Add(e.PropertyName);
         }
