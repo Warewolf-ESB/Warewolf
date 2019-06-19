@@ -54,6 +54,11 @@ namespace Dev2.Network
         const int MillisecondsTimeout = 10000;
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
+        static ServerProxyWithoutChunking()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+        }
+
         public ServerProxyWithoutChunking(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
@@ -84,6 +89,39 @@ namespace Dev2.Network
             HubConnection.StateChanged += HubConnectionStateChanged;
             InitializeEsbProxy();
             AsyncWorker = worker;
+            HubConnection.Start();
+            var t = new Thread(() =>
+            {
+                const int initialDelay = 1;
+                const int multiplier = 2;
+                const int maxDelay = 60;
+                var delay = initialDelay;
+                bool stopped = false;
+
+                HubConnection.StateChanged += (stateChange) =>
+                {
+                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
+                    {
+                        stopped = true;
+                    }
+                };
+                while (true)
+                {
+                    Thread.Sleep(delay);
+                    if (stopped)
+                    {
+                        stopped = false;
+                        delay *= multiplier;
+                        if (delay > maxDelay)
+                        {
+                            delay = initialDelay;
+                        }
+                        HubConnection.Start();
+                    }
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
         }
 
         public IPrincipal Principal { get; private set; }
@@ -172,7 +210,7 @@ namespace Dev2.Network
             {
                 return;
             }
-            StartReconnectTimer();
+            /*StartReconnectTimer();*/
             if (HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
@@ -233,21 +271,21 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
+                /*if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
                     HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
-                }
+                }*/
 
 
-                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
-                {
+                /*if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
+                {*/
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut) && !IsLocalHost)
+                /*    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut) && !IsLocalHost)
                     {
                         ConnectionRetry();
                     }
 
-                }
+                }*/
             }
             catch (AggregateException aex)
             {
@@ -272,7 +310,7 @@ namespace Dev2.Network
         public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
-            try
+            /*try
             {
                 if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
@@ -334,11 +372,11 @@ namespace Dev2.Network
                         , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 HandleConnectError(e);
                 return false;
-            }
+            }*/
             return true;
         }
 
-        void ConnectionRetry()
+        /*void ConnectionRetry()
         {
             HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
             var popup = CustomContainer.Get<IPopupController>();
@@ -360,9 +398,9 @@ namespace Dev2.Network
                     throw new NotConnectedException();
                 }
             });
-        }
+        }*/
 
-        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
+        static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
         void HandleConnectError(Exception e)
         {
@@ -374,11 +412,11 @@ namespace Dev2.Network
         {
             if (IsLocalHost && _reconnectHeartbeat == null)
             {
-                _reconnectHeartbeat = new System.Timers.Timer();
+                /*_reconnectHeartbeat = new System.Timers.Timer();
                 _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
                 _reconnectHeartbeat.Interval = 1000;
                 _reconnectHeartbeat.AutoReset = true;
-                _reconnectHeartbeat.Start();
+                _reconnectHeartbeat.Start();*/
             }
 
         }
@@ -395,7 +433,7 @@ namespace Dev2.Network
 
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
-            if (!IsConnecting)
+            /*if (!IsConnecting)
             {
                 Connect(ID);
             }
@@ -403,11 +441,12 @@ namespace Dev2.Network
             {
                 StopReconnectHeartbeat();
                 ConnectControlSingleton.Instance.Refresh(Guid.Empty);
-            }
+            }*/
         }
 
         public void Disconnect()
         {
+            return;
             // It can take some time to shutdown when permissions have changed ;(
             // Give 5 seconds, then force a dispose ;)
             try
@@ -496,14 +535,14 @@ namespace Dev2.Network
 
             if (wait)
             {
-                HubConnection.Start().Wait(MillisecondsTimeout);
+                /*HubConnection.Start().Wait(MillisecondsTimeout);*/
                 callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                              ? ConnectResult.Success
                              : ConnectResult.ConnectFailed);
             }
             else
             {
-                HubConnection.Start();
+                /*HubConnection.Start();*/
                 AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
@@ -512,11 +551,11 @@ namespace Dev2.Network
 
         public void StartAutoConnect()
         {
-            if (IsConnected)
+            /*if (IsConnected)
             {
                 return;
             }
-            StartReconnectTimer();
+            StartReconnectTimer();*/
         }
 
         public IEventPublisher ServerEvents { get; }
@@ -697,7 +736,7 @@ namespace Dev2.Network
             {
                 if (disposing)
                 {
-                    _reconnectHeartbeat.Dispose();
+                    _reconnectHeartbeat?.Dispose();
                 }
                 _disposedValue = true;
             }
