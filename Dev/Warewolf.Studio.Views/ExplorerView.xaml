@@ -393,6 +393,8 @@
                                            Visibility="{Binding IsServerUnavailableIconVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
                             </Button>
+                            <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Green" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" ToolTip="Connected" Opacity="0.9" />
+                            <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Red" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterInverse}}" ToolTip="Disconnected" Opacity="0.9" />
 
                             <views:CircularProgressBar Grid.Column="0" Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" />
                             <StackPanel Grid.Column="1" Orientation="Horizontal">

@@ -161,7 +161,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if (Connection != null)
+                /*if (Connection != null)
                 {
                     var displayName = Connection.DisplayName;
                     if (IsConnected && (HasLoaded || Connection.IsLocalHost))
@@ -183,7 +183,7 @@ namespace Dev2.Studio.Core.Models
                         }
                     }
                     return displayName;
-                }
+                }*/
 
                 return Connection?.DisplayName ?? "Default Name";
             }
