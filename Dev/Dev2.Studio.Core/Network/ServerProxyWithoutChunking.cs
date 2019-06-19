@@ -50,7 +50,6 @@ namespace Dev2.Network
 {
     public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
-        System.Timers.Timer _reconnectHeartbeat;
         const int MillisecondsTimeout = 10000;
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
@@ -90,6 +89,11 @@ namespace Dev2.Network
             InitializeEsbProxy();
             AsyncWorker = worker;
             HubConnection.Start();
+            StartHubConnectionWatchdogThread();
+        }
+
+        private void StartHubConnectionWatchdogThread()
+        {
             var t = new Thread(() =>
             {
                 const int initialDelay = 1;
@@ -210,7 +214,7 @@ namespace Dev2.Network
             {
                 return;
             }
-            /*StartReconnectTimer();*/
+
             if (HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
@@ -271,21 +275,7 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                /*if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
-                {
-                    HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
-                }*/
-
-
-                /*if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
-                {*/
-                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                /*    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut) && !IsLocalHost)
-                    {
-                        ConnectionRetry();
-                    }
-
-                }*/
+                ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
             }
             catch (AggregateException aex)
             {
@@ -310,138 +300,14 @@ namespace Dev2.Network
         public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
-            /*try
-            {
-                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
-                {
-                    HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
-                }
-
-
-                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start().ConfigureAwait(true);
-                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
-                    {
-                        ConnectionRetry();
-                    }
-
-                }
-                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start().ConfigureAwait(true);
-                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
-                    {
-                        ConnectionRetry();
-                    }
-
-                    var popup = CustomContainer.Get<IPopupController>();
-                    popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
-                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
-                }
-            }
-            catch (AggregateException aex)
-            {
-                aex.Flatten();
-                aex.Handle(ex =>
-                {
-                    if (ex.Message.Contains("1.4"))
-                    {
-                        throw new FallbackException();
-                    }
-
-                    Dev2Logger.Error(this, aex, "Warewolf Error");
-                    if (ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
-                    {
-                        UpdateIsAuthorized(false);
-                        throw new UnauthorizedAccessException();
-                    }
-                    throw new NotConnectedException();
-                });
-            }
-            catch (NotConnectedException)
-            {
-                throw;
-            }
-            catch (Exception e)
-            {
-                var popup = CustomContainer.Get<IPopupController>();
-                popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
-                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
-                HandleConnectError(e);
-                return false;
-            }*/
             return true;
         }
-
-        /*void ConnectionRetry()
-        {
-            HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
-            var popup = CustomContainer.Get<IPopupController>();
-
-            var application = Application.Current;
-            MessageBoxResult res;
-            application?.Dispatcher?.Invoke(() =>
-            {
-                res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
-                if (res == MessageBoxResult.Yes)
-                {
-                    if (!HubConnection.Start().Wait(30000))
-                    {
-                        ConnectionRetry();
-                    }
-                }
-                else
-                {
-                    throw new NotConnectedException();
-                }
-            });
-        }*/
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
         void HandleConnectError(Exception e)
         {
             Dev2Logger.Error(this, e, "Warewolf Error");
-            StartReconnectTimer();
-        }
-
-        protected void StartReconnectTimer()
-        {
-            if (IsLocalHost && _reconnectHeartbeat == null)
-            {
-                /*_reconnectHeartbeat = new System.Timers.Timer();
-                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                _reconnectHeartbeat.Interval = 1000;
-                _reconnectHeartbeat.AutoReset = true;
-                _reconnectHeartbeat.Start();*/
-            }
-
-        }
-
-        protected void StopReconnectHeartbeat()
-        {
-            if (_reconnectHeartbeat != null)
-            {
-                _reconnectHeartbeat.Stop();
-                _reconnectHeartbeat.Dispose();
-                _reconnectHeartbeat = null;
-            }
-        }
-
-        void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
-        {
-            /*if (!IsConnecting)
-            {
-                Connect(ID);
-            }
-            if (IsConnected)
-            {
-                StopReconnectHeartbeat();
-                ConnectControlSingleton.Instance.Refresh(Guid.Empty);
-            }*/
         }
 
         public void Disconnect()
@@ -535,14 +401,12 @@ namespace Dev2.Network
 
             if (wait)
             {
-                /*HubConnection.Start().Wait(MillisecondsTimeout);*/
                 callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                              ? ConnectResult.Success
                              : ConnectResult.ConnectFailed);
             }
             else
             {
-                /*HubConnection.Start();*/
                 AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
@@ -551,11 +415,7 @@ namespace Dev2.Network
 
         public void StartAutoConnect()
         {
-            /*if (IsConnected)
-            {
-                return;
-            }
-            StartReconnectTimer();*/
+
         }
 
         public IEventPublisher ServerEvents { get; }
@@ -734,10 +594,6 @@ namespace Dev2.Network
         {
             if (!_disposedValue)
             {
-                if (disposing)
-                {
-                    _reconnectHeartbeat?.Dispose();
-                }
                 _disposedValue = true;
             }
         }
