@@ -312,14 +312,11 @@ namespace Dev2.Network
 
         public void Disconnect()
         {
-            return;
             // It can take some time to shutdown when permissions have changed ;(
             // Give 5 seconds, then force a dispose ;)
             try
             {
                 IsShuttingDown = true;
-                IsConnected = false;
-                IsConnecting = false;
                 HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
             catch (AggregateException aex)
