@@ -88,44 +88,6 @@ namespace Dev2.Network
             HubConnection.StateChanged += HubConnectionStateChanged;
             InitializeEsbProxy();
             AsyncWorker = worker;
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        private void StartHubConnectionWatchdogThread()
-        {
-            var t = new Thread(() =>
-            {
-                const int initialDelay = 1;
-                const int multiplier = 2;
-                const int maxDelay = 60;
-                var delay = initialDelay;
-                bool stopped = false;
-
-                HubConnection.StateChanged += (stateChange) =>
-                {
-                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
-                    {
-                        stopped = true;
-                    }
-                };
-                while (true)
-                {
-                    Thread.Sleep(delay);
-                    if (stopped)
-                    {
-                        stopped = false;
-                        delay *= multiplier;
-                        if (delay > maxDelay)
-                        {
-                            delay = initialDelay;
-                        }
-                        HubConnection.Start();
-                    }
-                }
-            });
-            t.IsBackground = true;
-            t.Start();
         }
 
         public IPrincipal Principal { get; private set; }
@@ -598,6 +560,51 @@ namespace Dev2.Network
         public void Dispose()
         {
             Dispose(true);
+        }
+    }
+
+    class ServerProxyPersistentConnection : ServerProxyWithoutChunking
+    {
+        public ServerProxyPersistentConnection(Uri serverUri) : base(serverUri)
+        {
+            HubConnection.Start();
+            StartHubConnectionWatchdogThread();
+        }
+
+        private void StartHubConnectionWatchdogThread()
+        {
+            var t = new Thread(() =>
+            {
+                const int initialDelay = 1;
+                const int multiplier = 2;
+                const int maxDelay = 60;
+                var delay = initialDelay;
+                bool stopped = false;
+
+                HubConnection.StateChanged += (stateChange) =>
+                {
+                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
+                    {
+                        stopped = true;
+                    }
+                };
+                while (true)
+                {
+                    Thread.Sleep(delay);
+                    if (stopped)
+                    {
+                        stopped = false;
+                        delay *= multiplier;
+                        if (delay > maxDelay)
+                        {
+                            delay = initialDelay;
+                        }
+                        HubConnection.Start();
+                    }
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
         }
     }
 

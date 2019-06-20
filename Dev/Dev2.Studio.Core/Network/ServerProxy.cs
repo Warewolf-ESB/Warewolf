@@ -36,7 +36,7 @@ namespace Dev2.Network
         readonly IEnvironmentConnection _wrappedConnection;
         public ServerProxy(Uri serverUri)
         {
-           _wrappedConnection = new ServerProxyWithoutChunking(serverUri);
+           _wrappedConnection = new ServerProxyPersistentConnection(serverUri);
             SetupPassthroughEvents();
         }
 
