@@ -69,7 +69,12 @@ namespace Dev2.Common.Wrappers
         public string[] GetFileSystemEntries(string path, string searchPattern) => Directory.GetFileSystemEntries(path, searchPattern);
         public string[] GetFileSystemEntries(string path, string searchPattern, SearchOption searchOption) => Directory.GetFileSystemEntries(path, searchPattern, searchOption);
 
-        public string[] GetDirectories(string workspacePath) => Directory.GetDirectories(workspacePath);
+        public string[] GetDirectories(string path) => Directory.GetDirectories(path);
+        public string[] GetDirectoriesCreateIfNotExists(string path)
+        {
+            CreateIfNotExists(path);
+            return Directory.GetDirectories(path);
+        }
 
         public string[] GetDirectories(string path, string pattern) => Directory.GetDirectories(path, pattern, SearchOption.AllDirectories);
 

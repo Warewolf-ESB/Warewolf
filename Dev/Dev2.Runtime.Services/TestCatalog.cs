@@ -383,7 +383,7 @@ namespace Dev2.Runtime
         public void Load()
         {
             Tests = new ConcurrentDictionary<Guid, List<IServiceTestModelTO>>();
-            var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
+            var resourceTestDirectories = _directoryWrapper.GetDirectoriesCreateIfNotExists(EnvironmentVariables.TestPath);
             foreach (var resourceTestDirectory in resourceTestDirectories)
             {
                 var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
@@ -391,7 +391,6 @@ namespace Dev2.Runtime
                 {
                     Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
                 }
-
             }
         }
 

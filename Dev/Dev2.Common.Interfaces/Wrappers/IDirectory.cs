@@ -29,7 +29,8 @@ namespace Dev2.Common.Interfaces.Wrappers
         string[] GetFileSystemEntries(string path);
         string[] GetFileSystemEntries(string path, string searchPattern);
         string[] GetFileSystemEntries(string path, string searchPattern, SearchOption searchOption);
-        string[] GetDirectories(string workspacePath);
+        string[] GetDirectories(string path);
+        string[] GetDirectoriesCreateIfNotExists(string path);
         string[] GetDirectories(string path, string pattern);
         string GetDirectoryName(string path);
         void Move(string directoryStructureFromPath, string directoryStructureToPath);
