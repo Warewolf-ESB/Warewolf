@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -81,10 +80,14 @@ namespace Dev2.Studio
     {
         ShellViewModel _shellViewModel;
 
-        private Mutex _processGuard;
-
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
+        ManualResetEvent _resetSplashCreated;
+
+        private bool _hasDotNetFramweworkError;
+
+        private readonly IMergeFactory _mergeFactory;
+
         public App(IMergeFactory mergeFactory)
         {
             this._mergeFactory = mergeFactory;
@@ -114,7 +117,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
             CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), nameof(Warewolf) + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
 
@@ -126,13 +129,9 @@ namespace Dev2.Studio
                 dir.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
             });
 
-            var localprocessGuard = new Mutex(true, GlobalConstants.WarewolfStudio, out bool createdNew);
+            _ = new Mutex(true, GlobalConstants.WarewolfStudio, out bool createdNew);
 
-            if (createdNew)
-            {
-                _processGuard = localprocessGuard;
-            }
-            else
+            if (!createdNew)
             {
                 Environment.Exit(Environment.ExitCode);
             }
@@ -148,21 +147,36 @@ namespace Dev2.Studio
 #endif
         }
 
-        static ISplashView _splashView;
 
-        ManualResetEvent _resetSplashCreated;
-        Thread _splashThread;
-        private bool _hasDotNetFramweworkError;
-        private readonly IMergeFactory _mergeFactory;
+#if DEBUG
+        static void SetAsStarted()
+        {
+            try
+            {
+                var studioFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var studioStartedFile = Path.Combine(studioFolder, "StudioStarted");
+                if (File.Exists(studioStartedFile))
+                {
+                    File.Delete(studioStartedFile);
+                }
+                File.WriteAllText(studioStartedFile, DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+            }
+        }
+#endif
+
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
 
-            _splashThread = new Thread(ShowSplash);
-            _splashThread.SetApartmentState(ApartmentState.STA);
-            _splashThread.IsBackground = true;
-            _splashThread.Name = "Splash Screen";
-            _splashThread.Start();
+            var server = RegisterDependencies();
+
+            _hasDotNetFramweworkError = ValidateDotNetFramework();
+
+            StartSplashThread(server);
 
             _resetSplashCreated.WaitOne();
             new Bootstrapper().Start();
@@ -196,25 +210,37 @@ namespace Dev2.Studio
             toolboxPane?.Activate();
 #if DEBUG
             SetAsStarted();
+#endif
         }
 
-        static void SetAsStarted()
+        private static IServer RegisterDependencies()
         {
-            try
-            {
-                var studioFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var studioStartedFile = Path.Combine(studioFolder, "StudioStarted");
-                if (File.Exists(studioStartedFile))
-                {
-                    File.Delete(studioStartedFile);
-                }
-                File.WriteAllText(studioStartedFile, DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-            }
-#endif
+            var repository = ServerRepository.Instance;
+            var server = repository.Source;
+            server.Connect();
+            CustomContainer.Register(server);
+            CustomContainer.Register(repository);
+            var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
+            CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
+
+            var textToDisplay = Warewolf.Studio.Resources.Languages.Core.StandardStyling.Replace("\r\n", "") +
+                                Warewolf.Studio.Resources.Languages.HelpText.WarewolfDefaultHelpDescription +
+                                Warewolf.Studio.Resources.Languages.Core.StandardBodyParagraphClosing;
+
+            var helpViewModel = new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", textToDisplay, null)), new HelpModel(new EventAggregator()));
+            CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
+            CustomContainer.Register<IEventAggregator>(new EventAggregator());
+            CustomContainer.Register<IPopupController>(new PopupController());
+            CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
+            CustomContainer.Register<IWarewolfWebClient>(new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials }));
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
+            CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
+            CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
+            CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
+            return server;
         }
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
@@ -227,7 +253,7 @@ namespace Dev2.Studio
             {
                 foreach (var item in e.Args)
                 {
-                    _shellViewModel.LoadWorkflowAsync(item.Replace("\"", ""));
+                    _ = _shellViewModel.LoadWorkflowAsync(item.Replace("\"", ""));
                 }
             }
         }
@@ -286,47 +312,27 @@ namespace Dev2.Studio
             }
         }
 
-        void ShowSplash()
+        void StartSplashThread(IServer server)
         {
-            // Create the window 
-            var repository = ServerRepository.Instance;
-            var server = repository.Source;
-            server.Connect();
-            CustomContainer.Register(server);
-            CustomContainer.Register(repository);
-            var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
-            CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
+            var splashThread = new Thread(() =>
+            {
+                // Create the window
+                var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
-            var textToDisplay = Warewolf.Studio.Resources.Languages.Core.StandardStyling.Replace("\r\n", "") +
-                                Warewolf.Studio.Resources.Languages.HelpText.WarewolfDefaultHelpDescription +
-                                Warewolf.Studio.Resources.Languages.Core.StandardBodyParagraphClosing;
+                var splashPage = new SplashPage { DataContext = splashViewModel };
+                SplashView = splashPage;
+                // Show it 
+                SplashView.Show(false);
 
-            var helpViewModel = new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", textToDisplay, null)), new HelpModel(new EventAggregator()));
-            CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
-            CustomContainer.Register<IEventAggregator>(new EventAggregator());
-            CustomContainer.Register<IPopupController>(new PopupController());
-            CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
-            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
-            CustomContainer.Register<IWarewolfWebClient>(new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials }));
-            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
-            CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
-            CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
-            CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
+                _resetSplashCreated?.Set();
 
-            _hasDotNetFramweworkError = ValidateDotNetFramework();
-
-            var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
-
-            var splashPage = new SplashPage { DataContext = splashViewModel };
-            SplashView = splashPage;
-            // Show it 
-            SplashView.Show(false);
-
-            _resetSplashCreated?.Set();
-            splashViewModel.ShowServerStudioVersion();
-            Dispatcher.Run();
+                splashViewModel.ShowServerStudioVersion();
+                Dispatcher.Run();
+            });
+            splashThread.SetApartmentState(ApartmentState.STA);
+            splashThread.IsBackground = true;
+            splashThread.Name = "Splash Screen";
+            splashThread.Start();
         }
 
         private static bool ValidateDotNetFramework()
@@ -427,7 +433,7 @@ namespace Dev2.Studio
             }
         }
 
-        public static ISplashView SplashView { get => _splashView; set => _splashView = value; }
+        public static ISplashView SplashView { get; set; }
 
         void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
