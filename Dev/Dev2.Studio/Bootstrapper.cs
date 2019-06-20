@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -54,8 +53,6 @@ namespace Dev2
 
         #region Fields
 
-        bool _serverServiceStartedFromStudio;
-
         #endregion
 
         #region Overrides
@@ -66,10 +63,8 @@ namespace Dev2
             CustomContainer.Register<IPopupController>(new PopupController());
             _mainViewModel = new ShellViewModel();
             CustomContainer.Register<IShellViewModel>(_mainViewModel);
-            CustomContainer.Register<IShellViewModel>(_mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
-            var conn = new ServerProxy("http://localHost:3142", CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
-            conn.Connect(Guid.NewGuid());
+            
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
 
             ClassRoutedEventHandlers.RegisterEvents();
@@ -80,14 +75,7 @@ namespace Dev2
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            if (_serverServiceStartedFromStudio)
-            {
-                var app = Application.Current as IApp;
-                if (app != null)
-                {
-                    app.ShouldRestart = true;
-                }
-            }
+            
         }
 
         #endregion
