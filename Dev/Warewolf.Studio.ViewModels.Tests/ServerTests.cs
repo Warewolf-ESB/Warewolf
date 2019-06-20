@@ -257,7 +257,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DisplayName_GivenEnvirnmentConnectionIsConnected_ShouldHaveValue()
         {
             const string serverName = "Localhost";
-            const string serverNameConnected = "Localhost (Connected)";
             //------------Setup for test--------------------------
             _envConnection.Setup(model => model.IsLocalHost).Returns(true);
             _envConnection.Setup(model => model.IsConnected).Returns(true);
@@ -267,7 +266,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Server(Guid.Empty, _envConnection.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(string.IsNullOrEmpty(server.DisplayName));
-            Assert.AreEqual(serverNameConnected, server.DisplayName);
+            Assert.AreEqual("Localhost", server.DisplayName);
         }
 
         [TestMethod,Timeout(60000)]
