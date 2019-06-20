@@ -299,7 +299,7 @@ namespace Dev2.Data.PathOperations
                 var ftpPath = ExtractFileNameFromPath(path.Path);
                 try
                 {
-                    var tempFileName = BuildTempFileName();
+                    var tempFileName = _file.GetTempFileName();
                     filesToCleanup.Add(tempFileName);
                     var data = sftp.ReadAllBytes(ftpPath);
                     _file.WriteAllBytes(tempFileName, data);
@@ -314,11 +314,6 @@ namespace Dev2.Data.PathOperations
                 }
             }
 
-            static string BuildTempFileName()
-            {
-                var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
-                return tempFileName;
-            }
             string ExtractHostNameFromPath(string path)
             {
                 if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out Uri uriForSftp))

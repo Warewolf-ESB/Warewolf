@@ -152,6 +152,11 @@ namespace Dev2.Common.Wrappers
             var f = new FileInfo(path);
             return f.DirectoryName;
         }
+
+        public string GetTempFileName()
+        {
+            return Path.GetTempFileName();
+        }
     }
 
     [ExcludeFromCodeCoverage]

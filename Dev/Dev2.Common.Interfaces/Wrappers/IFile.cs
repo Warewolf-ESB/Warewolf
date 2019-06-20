@@ -43,6 +43,11 @@ namespace Dev2.Common.Interfaces.Wrappers
         void Copy(string src, string dst, bool overwrite);
         string DirectoryName(string path);
         IFileInfo Info(string path);
+        /// <summary>
+        /// returns the fully qualified path to a new temp file
+        /// </summary>
+        /// <returns></returns>
+        string GetTempFileName();
     }
 
     public interface IDev2StreamWriter : IDisposable
