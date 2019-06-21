@@ -234,10 +234,20 @@ namespace Dev2.Network
 
         public void Connect(Guid id)
         {
+            // bug: since Connect doesn't control connection parameters, Id should not be set from here.
             ID = id;
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                var ensureConnectedWaitTask = new Task(() =>
+                {
+                    while (IsConnected == false)
+                    {
+                        Task.Yield();
+                    }
+                });
+                ensureConnectedWaitTask.Start();
+                ensureConnectedWaitTask.Wait(MillisecondsTimeout);
             }
             catch (AggregateException aex)
             {
