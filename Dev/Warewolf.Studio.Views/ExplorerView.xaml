@@ -26,16 +26,8 @@
             <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
             <core:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
             <views:NotConverter x:Key="NotConverter" />
-            
-            <Style x:Key="PropertyTriggerExampleCircleStyle" TargetType="{x:Type Button}">
-                <Setter Property="Width" Value="20" />
-                <Setter Property="Height" Value="20" />
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Padding" Value="-4" />
-                <Setter Property="Margin" Value="0,0,0,0" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
+
+            <Style x:Key="PropertyTriggerExampleCircleStyle" TargetType="{x:Type Image}">
                 <!--<Setter Property="Fill">
                     <Setter.Value>
                         <SolidColorBrush Color="Transparent" />
@@ -57,7 +49,7 @@
                             <RemoveStoryboard BeginStoryboardName="StartBlinking" />
                         </DataTrigger.EnterActions>
                     </DataTrigger>-->
-                <Setter Property="Opacity" Value="0.3" />
+                <Setter Property="Opacity" Value="1" />
                 <Style.Triggers>
                     <!--<Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
@@ -75,18 +67,18 @@
                         </BeginStoryboard>
                     </Trigger.ExitActions>
                 </Trigger>-->
-                    <DataTrigger Binding="{Binding Path=IsConnecting}" Value="True">
+                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
                         <DataTrigger.EnterActions>
-                            <BeginStoryboard x:Name="StartBlinkig">
+                            <BeginStoryboard Name="MySB">
                                 <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.9" Duration="00:00:00.4" RepeatBehavior="Forever" AutoReverse="True" />
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.3" Duration="00:00:00.4" RepeatBehavior="Forever" AutoReverse="True" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Path=IsConnecting}" Value="False">
+                    <DataTrigger Binding="{Binding IsConnecting}" Value="False">
                         <DataTrigger.EnterActions>
-                            <RemoveStoryboard BeginStoryboardName="StartBlinkig"/>
+                            <RemoveStoryboard BeginStoryboardName="MySB"/>
                         </DataTrigger.EnterActions>
                     </DataTrigger>
                 </Style.Triggers>
@@ -450,14 +442,12 @@
 
                             <Button Grid.Column="0"
                                     Command="{Binding RefreshCommand}"
-                                    Style="{StaticResource PropertyTriggerExampleCircleStyle}"
-                                    Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                <Grid>
-                                    <Image Width="18" Height="18" Source="{StaticResource System-Logo}"
-                                           Visibility="{Binding IsServerIconVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <Image Width="18" Height="18" Source="{StaticResource System-Logo-Mono}"
-                                           Visibility="{Binding IsServerUnavailableIconVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
+                                    Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}">
+                                <!--<Grid>-->
+                                    <Image Style="{StaticResource PropertyTriggerExampleCircleStyle}" Width="18" Height="18" Source="{StaticResource System-Logo}" />
+                                    <!--<Image Width="18" Height="18" Source="{StaticResource System-Logo-Mono}"
+                                           Visibility="{Binding IsServerUnavailableIconVisible, Converter={StaticResource BoolToVisibilityConverter}}" />-->
+                                <!--</Grid>-->
                             </Button>
                             <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Green" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" ToolTip="Connected" />
                             <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Red" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterInverse}}" ToolTip="Disconnected" Opacity="0.9" />
