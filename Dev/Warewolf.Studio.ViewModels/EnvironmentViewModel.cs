@@ -825,6 +825,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isConnected = value;
                 OnPropertyChanged(() => IsConnected);
+
+                IsServerIconVisible = value;
+                IsServerUnavailableIconVisible = !value;
+                OnPropertyChanged(nameof(LogoToolTip));
             }
         }
 
@@ -860,10 +864,9 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isConnecting = value;
-                IsServerIconVisible = !value;
-                IsServerUnavailableIconVisible = !value;
 
                 OnPropertyChanged(() => IsConnecting);
+                OnPropertyChanged(nameof(LogoToolTip));
             }
         }
 
@@ -1052,6 +1055,32 @@ namespace Warewolf.Studio.ViewModels
         public ICollection<IExplorerItemViewModel> AsList() => AsList(Children);
 
         ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection) => rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
+
+
+        public string LogoToolTip
+        {
+            get {
+                if (IsConnected)
+                {
+                    if (IsConnecting)
+                    {
+                        return "Refreshing server resources...";
+                    } else
+                    {
+                        return "Click to refresh server resources";
+                    }
+                } else {
+                    if (IsConnecting)
+                    {
+                        return "Connecting to server...";
+                    }
+                    else
+                    {
+                        return "Server unavailable";
+                    }
+                }
+            }
+        }
 
         public bool IsServerIconVisible
         {

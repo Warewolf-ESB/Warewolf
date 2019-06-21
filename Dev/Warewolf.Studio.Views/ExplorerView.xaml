@@ -27,46 +27,9 @@
             <core:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
             <views:NotConverter x:Key="NotConverter" />
 
-            <Style x:Key="PropertyTriggerExampleCircleStyle" TargetType="{x:Type Image}">
-                <!--<Setter Property="Fill">
-                    <Setter.Value>
-                        <SolidColorBrush Color="Transparent" />
-                    </Setter.Value>
-                </Setter>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsRefreshing}" Value="True">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard Name="StartBlinking">
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)" To="Orange" Duration="00:00:00.4" RepeatBehavior="Forever" AutoReverse="True"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsRefreshing}" Value="False">
-                        <DataTrigger.EnterActions>
-                            <RemoveStoryboard BeginStoryboardName="StartBlinking" />
-                        </DataTrigger.EnterActions>
-                    </DataTrigger>-->
+            <Style x:Key="GridOpacityBlinkStyle" TargetType="{x:Type Grid}">
                 <Setter Property="Opacity" Value="1" />
                 <Style.Triggers>
-                    <!--<Trigger Property="IsMouseOver" Value="True">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.25" Duration="0:0:1" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-                </Trigger>-->
                     <DataTrigger Binding="{Binding IsConnecting}" Value="True">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard Name="MySB">
@@ -142,6 +105,7 @@
                 <Button Grid.Row="0"
                         Grid.Column="1"
                         x:Name="FilterRefreshButton"
+                        Focusable="False"
                         Width="25"
                         Height="25"
                         Margin="0,3,0,-1"
@@ -442,17 +406,18 @@
 
                             <Button Grid.Column="0"
                                     Command="{Binding RefreshCommand}"
+                                    ToolTip="{Binding LogoToolTip}"
                                     Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}">
-                                <!--<Grid>-->
-                                    <Image Style="{StaticResource PropertyTriggerExampleCircleStyle}" Width="18" Height="18" Source="{StaticResource System-Logo}" />
-                                    <!--<Image Width="18" Height="18" Source="{StaticResource System-Logo-Mono}"
-                                           Visibility="{Binding IsServerUnavailableIconVisible, Converter={StaticResource BoolToVisibilityConverter}}" />-->
-                                <!--</Grid>-->
+                                <Grid Style="{StaticResource GridOpacityBlinkStyle}">
+                                    <Image Width="18" Height="18" Source="{StaticResource System-Logo}"
+                                           Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <Image Width="18" Height="18" Source="{StaticResource System-Logo-Mono}"
+                                           Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+                                    </Grid>
                             </Button>
                             <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Green" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" ToolTip="Connected" />
                             <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Red" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterInverse}}" ToolTip="Disconnected" Opacity="0.9" />
 
-                            <!--<views:CircularProgressBar Grid.Column="0" Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" />-->
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <CheckBox x:Name="EnvironmentNameCheckBox"
                                           ClickMode="Press"
