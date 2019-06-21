@@ -26,6 +26,72 @@
             <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
             <core:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
             <views:NotConverter x:Key="NotConverter" />
+            
+            <Style x:Key="PropertyTriggerExampleCircleStyle" TargetType="{x:Type Button}">
+                <Setter Property="Width" Value="20" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="-4" />
+                <Setter Property="Margin" Value="0,0,0,0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
+                <!--<Setter Property="Fill">
+                    <Setter.Value>
+                        <SolidColorBrush Color="Transparent" />
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsRefreshing}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Name="StartBlinking">
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)" To="Orange" Duration="00:00:00.4" RepeatBehavior="Forever" AutoReverse="True"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsRefreshing}" Value="False">
+                        <DataTrigger.EnterActions>
+                            <RemoveStoryboard BeginStoryboardName="StartBlinking" />
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>-->
+                <Setter Property="Opacity" Value="0.3" />
+                <Style.Triggers>
+                    <!--<Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.25" Duration="0:0:1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>-->
+                    <DataTrigger Binding="{Binding Path=IsConnecting}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard x:Name="StartBlinkig">
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.9" Duration="00:00:00.4" RepeatBehavior="Forever" AutoReverse="True" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=IsConnecting}" Value="False">
+                        <DataTrigger.EnterActions>
+                            <RemoveStoryboard BeginStoryboardName="StartBlinkig"/>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.InputBindings>
@@ -384,7 +450,7 @@
 
                             <Button Grid.Column="0"
                                     Command="{Binding RefreshCommand}"
-                                    Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}"
+                                    Style="{StaticResource PropertyTriggerExampleCircleStyle}"
                                     Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                 <Grid>
                                     <Image Width="18" Height="18" Source="{StaticResource System-Logo}"
@@ -393,10 +459,10 @@
                                            Visibility="{Binding IsServerUnavailableIconVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
                             </Button>
-                            <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Green" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" ToolTip="Connected" Opacity="0.9" />
+                            <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Green" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" ToolTip="Connected" />
                             <Ellipse HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7" Fill="Red" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterInverse}}" ToolTip="Disconnected" Opacity="0.9" />
 
-                            <views:CircularProgressBar Grid.Column="0" Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <!--<views:CircularProgressBar Grid.Column="0" Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" />-->
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <CheckBox x:Name="EnvironmentNameCheckBox"
                                           ClickMode="Press"
