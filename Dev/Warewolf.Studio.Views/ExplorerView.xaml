@@ -410,6 +410,7 @@
                                     Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}">
                                 <Grid Style="{StaticResource GridOpacityBlinkStyle}">
                                     <Image Width="18" Height="18" Source="{StaticResource System-Logo}"
+                                           Cursor="Hand"
                                            Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     <Image Width="18" Height="18" Source="{StaticResource System-Logo-Mono}"
                                            Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterNegative}}" />

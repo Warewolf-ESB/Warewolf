@@ -247,7 +247,7 @@ namespace Dev2.Network
                     }
                 });
                 ensureConnectedWaitTask.Start();
-                ensureConnectedWaitTask.Wait(MillisecondsTimeout);
+                ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
             catch (AggregateException aex)
             {

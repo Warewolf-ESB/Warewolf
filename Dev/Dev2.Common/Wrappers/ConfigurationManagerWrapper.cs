@@ -16,41 +16,50 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dev2.Common.Wrappers
 {
     [ExcludeFromCodeCoverage]
-    class ConfigurationManagerWrapper : IConfigurationManager
+    class ConfigurationManagerWrapper<TSettingsData> : IConfigurationManager where TSettingsData : class, new()
     {
+        public delegate TSettingsData LoadDelegate();
+        public delegate void SaveDelegate(TSettingsData settingsData);
+
         private readonly object _settingLock = new object();
         private readonly FileWrapper _fileWrapper;
-        public ConfigurationManagerWrapper()
+        private readonly string _settingsPath;
+        readonly LoadDelegate _loadDelegate;
+        readonly SaveDelegate _saveDelegate;
+        public ConfigurationManagerWrapper(string settingsPath, LoadDelegate loadDelegate, SaveDelegate saveDelegate)
         {
             _fileWrapper = new FileWrapper();
+            _settingsPath = settingsPath;
+            _loadDelegate = loadDelegate;
+            _saveDelegate = saveDelegate;
         }
 
-        volatile ServerSettingsData cache;
+        volatile TSettingsData _cache;
         public string this[string settingName]
         {
             get
             {
-                var cacheCopy = cache;
+                var cacheCopy = _cache;
                 if (cacheCopy != null)
                 {
-                    var prop = typeof(ServerSettingsData).GetProperty(settingName);
+                    var prop = typeof(TSettingsData).GetProperty(settingName);
                     return prop.GetValue(cacheCopy)?.ToString();
                 }
 
                 lock (_settingLock)
                 {
-                    ServerSettingsData settings = null;
+                    TSettingsData settings = null;
                     try
                     {
-                        var text = _fileWrapper.ReadAllText(Config.Server.SettingsPath);
-                        settings = JsonConvert.DeserializeObject<ServerSettingsData>(text);
+                        var text = _fileWrapper.ReadAllText(_settingsPath);
+                        settings = JsonConvert.DeserializeObject<TSettingsData>(text);
                     } catch {
-                        settings = new ServerSettingsData();
+                        settings = new TSettingsData();
                     }
 
-                    cache = settings;
+                    _cache = settings;
 
-                    var prop = typeof(ServerSettingsData).GetProperty(settingName);
+                    var prop = typeof(TSettingsData).GetProperty(settingName);
                     return prop.GetValue(settings)?.ToString();
                 }
             }
@@ -58,23 +67,15 @@ namespace Dev2.Common.Wrappers
             {
                 lock (_settingLock)
                 {
-                    var settings = Config.Server.Get();
-                    var prop = typeof(ServerSettingsData).GetProperty(settingName);
+                    var settings = _loadDelegate();
+                    var prop = typeof(TSettingsData).GetProperty(settingName);
                     prop.SetValue(settings, value);
-                    settings.Save(_fileWrapper);
+                    _saveDelegate(settings);
 
-                    cache = null;
+                    _cache = null;
                 }
             }
         }
     }
 
-    static class ServerSettingsDataExtensionMethods
-    {
-        public static void Save(this ServerSettingsData data, IFile fileWrapper)
-        {
-            var json = JsonConvert.SerializeObject(data);
-            fileWrapper.WriteAllText(Config.Server.SettingsPath, json);
-        }
-    }
 }

@@ -118,6 +118,7 @@
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="Core\PluginSourceDefinition.cs" />
+    <Compile Include="Core\StudioSettingsData.cs" />
     <Compile Include="Core\ServerSettingsData.cs" />
     <Compile Include="Core\SharePointServiceSourceDefinition.cs" />
     <Compile Include="Core\WcfServiceSourceDefinition.cs" />

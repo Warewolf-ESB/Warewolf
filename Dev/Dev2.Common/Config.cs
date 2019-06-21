@@ -6,100 +6,117 @@ using System.Threading;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Newtonsoft.Json;
 
 namespace Dev2.Common
 {
     public class Config
     {
         public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+        public static readonly string UserDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
         private readonly object _configurationLock = new object();
         private readonly static Config _settings = new Config();
 
         public static ServerSettings Server = new ServerSettings();
-        private void InnerConfigureSettings(IConfigurationManager m)
-        {
-            lock (_configurationLock)
-            {
-                Server = new ServerSettings(m, new FileWrapper(), new DirectoryWrapper());
-            }
-        }
-        public static void ConfigureSettings(IConfigurationManager m)
-        {
-            _settings.InnerConfigureSettings(m);
-        }
+        public static StudioSettings Studio = new StudioSettings();
     }
 
-    public class ServerSettings
+
+    public class ConfigSettingsBase<T> where T : class, new()
+    {
+        protected readonly string _settingsPath;
+        protected readonly IDirectory _directoryWrapper;
+        protected readonly IFile _fileWrapper;
+        protected T _settings { get; private set; } = new T();
+
+        protected ConfigSettingsBase(string settingsPath, IFile file, IDirectory directoryWrapper)
+        {
+            _settingsPath = settingsPath;
+            _directoryWrapper = directoryWrapper;
+            _fileWrapper = file;
+
+            Load();
+        }
+
+        protected void Load()
+        {
+            var text = _fileWrapper.ReadAllText(_settingsPath);
+            _settings = JsonConvert.DeserializeObject<T>(text);
+        }
+        protected void Save(T settings)
+        {
+            _directoryWrapper.CreateIfNotExists(System.IO.Path.GetDirectoryName(_settingsPath));
+            var text = JsonConvert.SerializeObject(settings);
+            _fileWrapper.WriteAllText(_settingsPath, text);
+        }
+        public void SaveIfNotExists()
+        {
+            if (!_fileWrapper.Exists(_settingsPath))
+            {
+                var result = new T();
+                var resultProperties = result.GetType().GetProperties();
+                var myType = this.GetType();
+                foreach (var resultProp in resultProperties)
+                {
+                    var myProp = myType.GetProperty(resultProp.Name);
+                    var myValue = myProp.GetValue(this);
+                    resultProp.SetValue(result, myValue);
+                }
+
+                Save(result);
+            }
+        }
+    }
+    public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
     {
         const int DELETE_TRIES_SLEEP = 5000;
         const int DELETE_TRIES_MAX = 30;
 
-        public string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
         public string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
         public string AuditFilePath
         {
-            get => manager[nameof(AuditFilePath)] ?? DefaultAuditPath;
+            get => _settings.AuditFilePath ?? DefaultAuditPath;
             set
             {
-                manager[nameof(AuditFilePath)] = value;
+                _settings.AuditFilePath = value;
+                Save(_settings);
             }
         }
-        public bool EnableDetailedLogging => StringToBool(manager[nameof(EnableDetailedLogging)], true);
+        public bool EnableDetailedLogging => _settings.EnableDetailedLogging ?? true;
 
-        public ushort WebServerPort         => StringToUShort(manager[nameof(WebServerPort)], 0);
-        public ushort WebServerSslPort      => StringToUShort(manager[nameof(WebServerSslPort)], 0);
-        public string SslCertificateName    => manager[nameof(SslCertificateName)];
-        public bool   CollectUsageStats     => StringToBool(manager[nameof(CollectUsageStats)], false);
-        public int    DaysToKeepTempFiles   => StringToInt(manager[nameof(DaysToKeepTempFiles)], 0);
+        public ushort WebServerPort         => _settings.WebServerPort ?? 0;
+        public ushort WebServerSslPort      => _settings.WebServerSslPort ?? 0;
+        public string SslCertificateName    => _settings.SslCertificateName;
+        public bool   CollectUsageStats     => _settings.CollectUsageStats ?? false;
+        public int    DaysToKeepTempFiles   => _settings.DaysToKeepTempFiles ?? 0;
 
-        public int LogFlushInterval => StringToInt(manager[nameof(LogFlushInterval)], 200);
-
-        private static bool StringToBool(string value, bool defaultValue) {
-            if (value is null)
-            {
-                return defaultValue;
-            }
-            return value.Trim().ToLower() == "true";
-        }
-        private static ushort StringToUShort(string value, ushort defaultValue)
-        {
-            if (value is null)
-            {
-                return defaultValue;
-            }
-            return ushort.Parse(value);
-        }
-        private static int StringToInt(string value, int defaultValue)
-        {
-            if (value is null)
-            {
-                return defaultValue;
-            }
-            return int.Parse(value);
-        }
-
-        readonly IConfigurationManager manager;
-        private readonly IDirectory _directoryWrapper;
-        private readonly IFile _fileWrapper;
+        public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
 
         public ServerSettings()
-            : this(new ConfigurationManagerWrapper(), new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        { }
+        public ServerSettings(string settingsPath, FileWrapper fileWrapper, DirectoryWrapper directoryWrapper)
+            : base(settingsPath, fileWrapper, directoryWrapper)
         {
-        }
-
-        public ServerSettings(IConfigurationManager manager, IFile file, IDirectory directoryWrapper)
-        {
-            this.manager = manager;
-            _directoryWrapper = directoryWrapper;
-            _fileWrapper = file;
         }
 
         public void SaveIfNotExists()
         {
-            if (!_fileWrapper.Exists(Config.Server.SettingsPath))
+            if (!_fileWrapper.Exists(SettingsPath))
             {
-                Config.Server.Get().Save(_fileWrapper);
+                var result = new ServerSettingsData();
+                var myProps = this.GetType().GetProperties();
+                var settingsType = typeof(ServerSettingsData);
+                foreach (var myProp in myProps)
+                {
+                    var settingProp = settingsType.GetProperty(myProp.Name);
+                    var myValue = myProp.GetValue(_settings);
+                    settingProp.SetValue(result, myValue);
+                }
+
+                Save(result);
             }
         }
 
@@ -177,5 +194,41 @@ namespace Dev2.Common
         public delegate void VoidEventHandler();
         public event VoidEventHandler OnLogFlushPauseRequested;
         public event VoidEventHandler OnLogFlushResumeRequested;
+    }
+
+    public class StudioSettings : ConfigSettingsBase<StudioSettingsData>
+    {
+        public StudioSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public static string SettingsPath => Path.Combine(Config.UserDataPath, "Studio", "studio_settings.json");
+
+        public int ConnectTimeout => _settings.ConnectTimeout ?? 10000;
+
+        /*public void SaveIfNotExists()
+        {
+            if (!_fileWrapper.Exists(SettingsPath))
+            {
+                Save();
+            }
+        }*/
+
+        public StudioSettingsData Get()
+        {
+            var result = new StudioSettingsData();
+            foreach (var prop in typeof(StudioSettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+            return result;
+        }
     }
 }

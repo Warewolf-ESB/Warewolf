@@ -114,6 +114,7 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
+            Config.Studio.SaveIfNotExists();
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
             CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
