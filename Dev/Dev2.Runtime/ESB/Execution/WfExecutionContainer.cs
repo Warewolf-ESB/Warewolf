@@ -313,12 +313,20 @@ namespace Dev2.Runtime.ESB.Execution
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
 
+            var hasVersionOverride = false;
+            if (!string.IsNullOrWhiteSpace(dataObject.VersionNumber))
+            {
+                hasVersionOverride = true;
+            }
+
             var resumeVersionNumber = dataObject.VersionNumber;
-            dataObject.VersionNumber = ResourceCatalog.Instance.GetLatestVersionNumberForResource(resourceId: dataObject.ResourceID).ToString();
+            if (resumeVersionNumber is null || string.IsNullOrWhiteSpace(resumeVersionNumber))
+            {
+                resumeVersionNumber = ResourceCatalog.Instance.GetLatestVersionNumberForResource(resourceId: dataObject.ResourceID).ToString();
+            }
 
             IDev2Activity startActivity;
-            var isDefaultVersion = resumeVersionNumber != null && resumeVersionNumber != "1";
-            if (isDefaultVersion)
+            if (hasVersionOverride)
             {
                 var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, resumeVersionNumber);
                 startActivity = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
