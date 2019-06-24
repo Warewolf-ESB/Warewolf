@@ -1,6 +1,7 @@
 #pragma warning disable
 ﻿using System;
 using System.Data.SQLite;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Core;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace Dev2.Common
 {
+    [ExcludeFromCodeCoverage]
     public class Config
     {
         public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
@@ -41,30 +43,24 @@ namespace Dev2.Common
 
         protected void Load()
         {
-            var text = _fileWrapper.ReadAllText(_settingsPath);
-            _settings = JsonConvert.DeserializeObject<T>(text);
+            if (_fileWrapper.Exists(_settingsPath))
+            {
+                var text = _fileWrapper.ReadAllText(_settingsPath);
+                _settings = JsonConvert.DeserializeObject<T>(text);
+            }
         }
-        protected void Save(T settings)
+        protected void Save()
         {
             _directoryWrapper.CreateIfNotExists(System.IO.Path.GetDirectoryName(_settingsPath));
-            var text = JsonConvert.SerializeObject(settings);
+            var text = JsonConvert.SerializeObject(this);
             _fileWrapper.WriteAllText(_settingsPath, text);
         }
+
         public void SaveIfNotExists()
         {
             if (!_fileWrapper.Exists(_settingsPath))
             {
-                var result = new T();
-                var resultProperties = result.GetType().GetProperties();
-                var myType = this.GetType();
-                foreach (var resultProp in resultProperties)
-                {
-                    var myProp = myType.GetProperty(resultProp.Name);
-                    var myValue = myProp.GetValue(this);
-                    resultProp.SetValue(result, myValue);
-                }
-
-                Save(result);
+                Save();
             }
         }
     }
@@ -74,50 +70,30 @@ namespace Dev2.Common
         const int DELETE_TRIES_MAX = 30;
 
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
-        public string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
+        public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
         public string AuditFilePath
         {
             get => _settings.AuditFilePath ?? DefaultAuditPath;
             set
             {
                 _settings.AuditFilePath = value;
-                Save(_settings);
+                Save();
             }
         }
         public bool EnableDetailedLogging => _settings.EnableDetailedLogging ?? true;
-
         public ushort WebServerPort         => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort      => _settings.WebServerSslPort ?? 0;
         public string SslCertificateName    => _settings.SslCertificateName;
         public bool   CollectUsageStats     => _settings.CollectUsageStats ?? false;
         public int    DaysToKeepTempFiles   => _settings.DaysToKeepTempFiles ?? 0;
-
         public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
 
         public ServerSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
         { }
-        public ServerSettings(string settingsPath, FileWrapper fileWrapper, DirectoryWrapper directoryWrapper)
+        public ServerSettings(string settingsPath, IFile fileWrapper, IDirectory directoryWrapper)
             : base(settingsPath, fileWrapper, directoryWrapper)
         {
-        }
-
-        public void SaveIfNotExists()
-        {
-            if (!_fileWrapper.Exists(SettingsPath))
-            {
-                var result = new ServerSettingsData();
-                var myProps = this.GetType().GetProperties();
-                var settingsType = typeof(ServerSettingsData);
-                foreach (var myProp in myProps)
-                {
-                    var settingProp = settingsType.GetProperty(myProp.Name);
-                    var myValue = myProp.GetValue(_settings);
-                    settingProp.SetValue(result, myValue);
-                }
-
-                Save(result);
-            }
         }
 
         public ServerSettingsData Get()
@@ -134,7 +110,7 @@ namespace Dev2.Common
 
         public bool SaveLoggingPath(string auditsFilePath)
         {
-            var sourceFilePath = Config.Server.AuditFilePath;
+            var sourceFilePath = this.AuditFilePath;
             if (sourceFilePath != auditsFilePath)
             {
                 var source = Path.Combine(sourceFilePath, "auditDB.db");
@@ -148,7 +124,7 @@ namespace Dev2.Common
                         OnLogFlushPauseRequested?.Invoke();
 
                         _fileWrapper.Copy(source, destination);
-                        Config.Server.AuditFilePath = auditsFilePath;
+                        this.AuditFilePath = auditsFilePath;
                         TryDeleteOldLogFile(_fileWrapper, source);
                     }
                     finally
