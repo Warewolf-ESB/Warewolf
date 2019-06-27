@@ -22,8 +22,8 @@ Scenario Outline: Read File at location
 	Examples: 
 	| NO | Name       | source   | sourceLocation                                                                              | username                     | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | c:\filetoread.txt                                                                           | ""                           | ""       | [[result]] | Guid   | NO           |                      |
-	| 2  | UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                      |
-	| 3  | UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                      |
+	| 2  | UNC        | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                      |
+	| 3  | UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                      |
 	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                   | ""                           | ""       | [[result]] | Guid   | NO           |                      |
 	| 5  | FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodele.txt                                           | IntegrationTester            | I73573r0 | [[result]] | ""     | NO           |                      |
 	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                          | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                      |
@@ -39,8 +39,8 @@ Scenario Outline: Read File at locationNull
 	Examples: 
 	| NO | Name       | source   | sourceLocation                                                                              | username                     | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | NULL                                                                                        | ""                           | ""       | [[result]] | Error  | AN           |                      |
-	| 2  | UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                      |
-	| 3  | UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                      |
+	| 2  | UNC        | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                      |
+	| 3  | UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                      |
 	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                   | ""                           | ""       | [[result]] | Guid   | NO           |                      |
 	| 5  | FTPS       | [[path]] | ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt                                  | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |                      |
 	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                          | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                      |
