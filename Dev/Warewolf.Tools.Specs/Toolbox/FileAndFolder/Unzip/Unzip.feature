@@ -14,7 +14,7 @@ Scenario Outline: Unzip file at location
 	And use private public key for destination is "<destinationPrivateKeyFile>"	
 	And result as "<resultVar>"	
 	And Archive Password as "<archivepassword>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
     When the Unzip file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error

@@ -10,7 +10,7 @@ Scenario Outline: Delete file at location
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -24,7 +24,7 @@ Scenario Outline: Delete file at location
 	| Name       | source   | sourceLocation                                                                                          | username                     | password | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
 	| Local      | [[path]] | c:\filetodelete.txt                                                                                     | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC        | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\filetodelete.txt        | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | "Success" | NO           |                      |
+	| UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt | .\Administrator | Dev2@dmin123 | [[result]] | "Success" | NO           |                      |
 	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORDELETEFILETESTING/filetodelete.txt                                           | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORDELETEFILETESTING/filetodelet.txt                                            | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
 	| SFTP       | [[path]] | sftp://rsaklfsvrdev/filetodelete.txt                                                                    | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
@@ -35,7 +35,7 @@ Scenario Outline: Delete file at location Null
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	Then the execution has "<errorOccured>" error
@@ -59,7 +59,7 @@ Scenario Outline: Delete file Validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
 	When validating the delete tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
@@ -131,4 +131,4 @@ Scenario Outline: Delete file at location with incorrect directories
 	| Name       | source       | sourceLocation      | username                     | password | resultVar  | result | errorOccured | 
 	| Local      | 1234         | c:\filetodelete.txt | ""                           | ""       | [[result]] | ""     | AN           | 
 	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] | ""     | AN           | 
-	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] | ""     | AN           | 
+	| UNC Secure | [[variable]] | ""                  | .\Administrator | Dev2@dmin123 | [[result]] | ""     | AN           | 
