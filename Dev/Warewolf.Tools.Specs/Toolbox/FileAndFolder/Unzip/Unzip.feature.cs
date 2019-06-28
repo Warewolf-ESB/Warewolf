@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.And("I authenticate for share at \"\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\" a" +
-                    "s user \"dev2\\IntegrationTester\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "s user \"SVRDEV.premier.local\\Administrator\" with password \"Dev2@dmin123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
     testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19

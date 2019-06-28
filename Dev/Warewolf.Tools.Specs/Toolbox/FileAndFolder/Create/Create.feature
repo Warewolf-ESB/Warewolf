@@ -22,14 +22,14 @@ Scenario Outline: Create file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | Name       | destination | destinationLocation                                                                             | selected | username          | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | True     | ""                | ""           | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | True     | ""                | ""           | [[result]] | Success | NO           |                           |
-		| 3  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | True     | .\Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                           | True     | ""                | ""           | [[result]] | Success | NO           |                           |
-		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                           | True     | IntegrationTester | I73573r0     | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                                    | True     | dev2              | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                                   | True     | dev2              | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| No | Name       | destination | destinationLocation                                                                             | selected | username                           | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
+		| 3  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | True     | SVRDEV.premier.local\Administrator | Dev2@dmin123 | [[result]] | Success | NO           |                           |
+		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                           | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
+		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                           | True     | IntegrationTester                  | I73573r0     | [[result]] | Success | NO           |                           |
+		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                                    | True     | dev2                               | Q/ulw&]      | [[result]] | Success | NO           |                           |
+		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                                   | True     | dev2                               | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location with overwrite disabled
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
