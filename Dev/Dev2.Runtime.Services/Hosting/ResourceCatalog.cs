@@ -42,14 +42,18 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogBuilder Builder { get; set; }
 
         readonly ResourceCatalogPluginContainer _catalogPluginContainer;
-        static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
+        static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
         {
-            var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-            CompileMessageRepo.Instance.Ping();
-            return c;
+            var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
+            if (resourceCatalog is null)
+            {
+                resourceCatalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
+                CustomContainer.Register<IResourceCatalog>(resourceCatalog);
+            }
+            return resourceCatalog;
         }, LazyThreadSafetyMode.PublicationOnly);
 
-        public static ResourceCatalog Instance => LazyCat.Value;
+        public static IResourceCatalog Instance => _instance.Value;
 
         public ResourceCatalog()
             : this(null)
@@ -487,5 +491,9 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, "", "");
         ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, "");
         ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
+        public int GetLatestVersionNumberForResource(Guid resourceId)
+        {
+            return _serverVersionRepository.GetLatestVersionNumber(resourceId);
+        }
     }
 }
