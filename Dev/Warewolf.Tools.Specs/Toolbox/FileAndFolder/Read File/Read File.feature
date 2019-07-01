@@ -26,8 +26,8 @@ Scenario Outline: Read File at location
 	| 3  | UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | .\Administrator   | Dev2@dmin123 | [[result]] | Guid   | NO           |                      |
 	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                           | ""                | ""           | [[result]] | Guid   | NO           |                      |
 	| 5  | FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodele.txt                                                   | IntegrationTester | I73573r0     | [[result]] | ""     | NO           |                      |
-	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                                  | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 7  | SFTP PK    | [[path]] | sftp://rsaklfsvrdev/filetoread1.txt                                                                 | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 6  | SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetoread.txt                                                                  | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 7  | SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetoread1.txt                                                                 | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Read File at locationNull
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -43,8 +43,8 @@ Scenario Outline: Read File at locationNull
 	| 3  | UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | .\Administrator   | Dev2@dmin123 | [[result]] | Guid   | NO           |                      |
 	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                           | ""                | ""           | [[result]] | Guid   | NO           |                      |
 	| 5  | FTPS       | [[path]] | ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt                                          | IntegrationTester | I73573r0     | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                                  | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 7  | SFTP PK    | [[path]] | sftp://rsaklfsvrdev/filetoread1.txt                                                                 | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 6  | SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetoread.txt                                                                  | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 7  | SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetoread1.txt                                                                 | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 	
 Scenario Outline: Read File validation
