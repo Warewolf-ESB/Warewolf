@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,11 +15,18 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.Decision
 {
+    // Referenced in the Resources Namespace and Variables
     public class Dev2DataListDecisionHandler
     {
-        static Dev2DataListDecisionHandler _inst;
+        private readonly static Dev2DataListDecisionHandler _instance = new Dev2DataListDecisionHandler();
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
-        public static Dev2DataListDecisionHandler Instance => _inst ?? (_inst = new Dev2DataListDecisionHandler());
+        public static Dev2DataListDecisionHandler Instance { get => _instance; }
+
+#pragma warning disable S3253 // we need this constructor to disable beforefieldinit in the C# compiler
+        static Dev2DataListDecisionHandler()
+        {
+        }
+#pragma warning restore S3253 // Constructor and destructor declarations should not be redundant
 
         public void AddEnvironment(Guid id, IExecutionEnvironment env)
         {

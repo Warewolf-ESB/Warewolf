@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,24 +23,23 @@ namespace Dev2.Runtime.Hosting
         readonly IDictionary<Guid, IList<ICompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<ICompileMessageTO>>();
         static Subject<IList<ICompileMessageTO>> _allMessages = new Subject<IList<ICompileMessageTO>>();
         static readonly object Lock = new object();
-        static readonly Timer PersistTimer = new Timer(1000 * 5);
+        static readonly Timer PersistTimer = new Timer(5000);
 
         public string PersistencePath { get; private set; }
 
-        static CompileMessageRepo _instance;
-        public static CompileMessageRepo Instance => _instance ?? (_instance = new CompileMessageRepo());
+        private static readonly CompileMessageRepo _instance = new CompileMessageRepo();
+        public static CompileMessageRepo Instance { get => _instance; }
+
+        static CompileMessageRepo()
+        {
+        }
 
         public CompileMessageRepo()
-            : this(null, false)
+            : this(null)
         {
         }
 
         public CompileMessageRepo(string persistPath)
-            : this(persistPath, true)
-        {
-        }
-
-        public CompileMessageRepo(string persistPath, bool activateBackgroundWorker)
         {
             if(persistPath != null)
             {
@@ -60,8 +58,6 @@ namespace Dev2.Runtime.Hosting
                 Directory.CreateDirectory(path);
             }
         }
-
-        public bool Ping() => true;
 
         public bool AddMessage(Guid workspaceId, IList<ICompileMessageTO> msgs)
         {
@@ -109,7 +105,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public void ClearObservable()
+        public static void ClearObservable()
         {
             _allMessages.OnCompleted();
             _allMessages = new Subject<IList<ICompileMessageTO>>();

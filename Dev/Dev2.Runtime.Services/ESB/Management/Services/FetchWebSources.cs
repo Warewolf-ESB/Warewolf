@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
@@ -37,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
 
             
-            var list = Resources.GetResourceList<WebSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+            var list = ResourceCatalog.Instance.GetResourceList<WebSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 if (a is WebSource res)
                 {
@@ -59,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        ResourceCatalog Resources => ResourceCatalog.Instance;
+        IResourceCatalog Resources => ResourceCatalog.Instance;
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
