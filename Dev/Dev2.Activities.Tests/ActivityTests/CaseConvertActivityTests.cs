@@ -225,6 +225,23 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region AllFirstUpper Tests
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("CaseConvert")]
+        public void CaseConvert_AllFirstUpper_Expected_AllFirstLettersIsUpperCase1()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
+
+            SetupArguments(@"<root><testVar>CHANGE this TO first LETTER upper CASE</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
+
+            var result = ExecuteProcess();
+            const string expected = @"Change This To First Letter Upper Case";
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out string actual, out string error);
+
+            // remove test datalist
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void CaseConvert_AllFirstUpper_Expected_AllFirstLettersIsUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
