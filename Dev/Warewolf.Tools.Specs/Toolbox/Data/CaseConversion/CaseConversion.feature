@@ -48,14 +48,14 @@ Scenario: Convert a sentence to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "WAREWOLF Rocks"	
 	And I convert a variable "[[var]]" to "Title Case"
 	When the case conversion tool is executed
-	Then the sentence will be "WAREWOLF Rocks"
+	Then the sentence will be "Warewolf Rocks"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # | Convert                  | To         |
 	| 1 | [[var]] = WAREWOLF Rocks | Title Case |
 	And the debug output as  
 	| # |                          |
-	| 1 | [[var]] = WAREWOLF Rocks |
+	| 1 | [[var]] = Warewolf Rocks |
 
 Scenario: Convert a sentence starting with a number to UPPER CASE
 	Given I have a case convert variable "[[var]]" with a value of "1 Warewolf Rocks"	
@@ -113,14 +113,14 @@ Scenario: Convert a sentence starting with a number to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "1 WAREWOLF Rocks"	
 	And I convert a variable "[[var]]" to "Title Case"
 	When the case conversion tool is executed
-	Then the sentence will be "1 WAREWOLF Rocks"
+	Then the sentence will be "1 Warewolf Rocks"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # | Convert                    | To         |
 	| 1 | [[var]] = 1 WAREWOLF Rocks | Title Case |
 	And the debug output as  
 	| # |                            |
-	| 1 | [[var]] = 1 WAREWOLF Rocks |
+	| 1 | [[var]] = 1 Warewolf Rocks |
 
 Scenario: Convert a blank to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "blank"	
