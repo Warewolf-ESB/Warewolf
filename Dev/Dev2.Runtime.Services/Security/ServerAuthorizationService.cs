@@ -21,7 +21,7 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.Security
 {
-    public class ServerAuthorizationService : AuthorizationServiceBase
+    public sealed class ServerAuthorizationService : AuthorizationServiceBase
     {
         static ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
 
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.Security
             _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
         }
 
-        public override bool IsAuthorized(AuthorizationContext context, string resource)
+        public sealed override bool IsAuthorized(AuthorizationContext context, string resource)
         {
             bool authorized;
 
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.Security
             return authorized;
         }
 
-        public override bool IsAuthorized(IAuthorizationRequest request)
+        public sealed override bool IsAuthorized(IAuthorizationRequest request)
         {
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
