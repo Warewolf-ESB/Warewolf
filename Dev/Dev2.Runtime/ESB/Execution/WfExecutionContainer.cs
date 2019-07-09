@@ -123,7 +123,8 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
-            var isAuthorized = ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, authorizationContext, resourceId.ToString());
+            var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString()));
             if (!isAuthorized)
             {
                 dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));
@@ -206,14 +207,18 @@ namespace Dev2.Runtime.ESB.Execution
                     KeepLogsForDays = 2,
                     CompressOldLogFiles = true
                 };
-                dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+
+                if (dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+                }
 
                 AddExecutionToExecutionManager(dsfDataObject, resource);
 
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                dsfDataObject.StateNotifier.LogPreExecuteState(resource);
+                dsfDataObject.StateNotifier?.LogPreExecuteState(resource);
 
                 IDev2Activity next;
                 IDev2Activity lastActivity;
@@ -221,11 +226,11 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     lastActivity = resource;
                     next = resource.Execute(dsfDataObject, update);
-                    dsfDataObject.StateNotifier.LogPostExecuteState(resource, next);
+                    dsfDataObject.StateNotifier?.LogPostExecuteState(resource, next);
                 }
                 catch (Exception e)
                 {
-                    dsfDataObject.StateNotifier.LogExecuteException(e, resource);
+                    dsfDataObject.StateNotifier?.LogExecuteException(e, resource);
                     throw;
                 }
 
@@ -283,17 +288,17 @@ namespace Dev2.Runtime.ESB.Execution
                     break;
                 }
 
-                dsfDataObject.StateNotifier.LogPreExecuteState(next);
+                dsfDataObject.StateNotifier?.LogPreExecuteState(next);
                 var current = next;
                 lastActivity = current;
                 try
                 {
                     next = current.Execute(dsfDataObject, update);
-                    dsfDataObject.StateNotifier.LogPostExecuteState(current, next);
+                    dsfDataObject.StateNotifier?.LogPostExecuteState(current, next);
                 }
                 catch (Exception e)
                 {
-                    dsfDataObject.StateNotifier.LogExecuteException(e, current);
+                    dsfDataObject.StateNotifier?.LogExecuteException(e, current);
                     throw;
                 }
                 dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
@@ -301,11 +306,11 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (!stoppedExecution)
             {
-                dsfDataObject.StateNotifier.LogExecuteCompleteState(lastActivity);
+                dsfDataObject.StateNotifier?.LogExecuteCompleteState(lastActivity);
             }
             else
             {
-                dsfDataObject.StateNotifier.LogStopExecutionState(lastActivity);
+                dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
             }
         }
 
