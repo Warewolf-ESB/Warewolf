@@ -188,7 +188,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = emptyDBName?"": "Dev2TestingDB",
-                Server = "rsaklfsvrdev.dev2.local",
+                Server = "SVRDEV.premier.local",
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,

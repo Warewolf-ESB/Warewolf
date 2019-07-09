@@ -2825,7 +2825,7 @@ namespace Dev2.Activities.Specs.Composition
             if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
             {
                 var password = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", password, false);
+                var sharepointHelper = new SharepointHelper("http://SVRDEV.premier.local/", "integrationtester@dev2.local", password, false);
                 sharepointHelper.Delete(serverPath);
             }
         }

@@ -35,15 +35,15 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV |
-   | RSAKLFSVRPDC |
+   | SVRDEV          |
+   | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
    And type options contains
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   And I type Select The Server as "RSAKLFSVRDEV"
+   And I type Select The Server as "SVRDEV"
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
@@ -276,15 +276,15 @@ Scenario: Changing database type after testing connection
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV |
-   | RSAKLFSVRPDC |
+   | SVRDEV          |
+   | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
    And type options contains
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   And I type Select The Server as "RSAKLFSVRDEV"
+   And I type Select The Server as "SVRDEV"
    And I Select Authentication Type as "Windows"
    And "Test Connection" is "Enabled"
    When I click "Test Connection"

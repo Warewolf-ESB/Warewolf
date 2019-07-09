@@ -35,11 +35,11 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV    |
+   | SVRDEV          |
    | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
-   And I type Select The Server as "RSAKLFSVRDEV"
+   And I type Select The Server as "SVRDEV"
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
@@ -71,7 +71,7 @@ Scenario: Creating New DB Source General Testing
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
-	And I type Server as "RSAKLFSVRDEV"
+	And I type Server as "SVRDEV.premier.local"
 	And I Select Authentication Type as "User"
 	Then Username field is "Visible"
 	And Password field is "Visible"
@@ -137,7 +137,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRDEV"
+	  And I type Server as "SVRDEV.premier.local"
 	  And I Select Authentication Type as "User"
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
@@ -189,7 +189,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRDEV"
+	And Server as "SVRDEV.premier.local"
 	And Authentication Type is selected as "User"
 	And Username field is "testuser"
 	And Password field is "******"
@@ -220,7 +220,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRDEV"
+	And Server as "SVRDEV.premier.local"
 	And Authentication Type is selected as "User"
 	And Username field is "testuser"
 	And Password field is "******"
@@ -246,7 +246,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRDEV"
+   When I type Server as "SVRDEV.premier.local"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
@@ -271,11 +271,11 @@ Scenario: Changing database type after testing connection
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV |
-   | RSAKLFSVRPDC |
+   | SVRDEV          |
+   | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
-   And I type Select The Server as "RSAKLFSVRDEV"
+   And I type Select The Server as "SVRDEV"
    And I Select Authentication Type as "Windows"
    And "Test Connection" is "Enabled"
    When I click "Test Connection"
@@ -297,7 +297,7 @@ Scenario: Changing database type after testing connection
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New MySQL DB Source as Windows Auth
 	Given I open New Database Source
-	And I type Server as "RSAKLFSVRDEV"
+	And I type Server as "SVRDEV.premier.local"
 	And I Select Authentication Type as "Windows"
 	Then Username field is "Collapsed"
 	And Password field is "Collapsed"
