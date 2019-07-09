@@ -229,7 +229,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 50
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 51
- testRunner.Then("the sentence will be \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the sentence will be \"WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 52
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -249,7 +249,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table8.AddRow(new string[] {
                         "1",
-                        "[[var]] = Warewolf Rocks"});
+                        "[[var]] = WAREWOLF Rocks"});
 #line 56
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
@@ -446,7 +446,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 115
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 116
- testRunner.Then("the sentence will be \"1 Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the sentence will be \"1 WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 117
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -466,7 +466,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table18.AddRow(new string[] {
                         "1",
-                        "[[var]] = 1 Warewolf Rocks"});
+                        "[[var]] = 1 WAREWOLF Rocks"});
 #line 121
  testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
