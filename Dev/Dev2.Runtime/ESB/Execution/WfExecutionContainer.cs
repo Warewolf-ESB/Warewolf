@@ -335,21 +335,21 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Getting Resource to Execute", executionId);
 
             var hasVersionOverride = false;
-            if (!string.IsNullOrWhiteSpace(versionNumber))
+            if (versionNumber != 0)
             {
                 hasVersionOverride = true;
-            }
-
-            var resumeVersionNumber = versionNumber;
-            if (resumeVersionNumber is null || string.IsNullOrWhiteSpace(resumeVersionNumber))
-            {
-                resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceId).ToString();
             }
 
             IDev2Activity startActivity;
             if (hasVersionOverride)
             {
-                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId, resumeVersionNumber);
+                var resumeVersionNumber = versionNumber;
+                if (resumeVersionNumber == 0)
+                {
+                    resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceId);
+                }
+
+                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId, resumeVersionNumber.ToString());
                 startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId, resourceObject);
             } else
             {
