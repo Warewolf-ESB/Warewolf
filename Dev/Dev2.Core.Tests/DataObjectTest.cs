@@ -443,7 +443,7 @@ namespace Dev2.Tests
             var bookmarkID = Guid.NewGuid();
             var parentID = Guid.NewGuid();
             var instID = Guid.NewGuid();
-            var versionNumber = "Version 2.1";
+            var versionNumber = "2";
 
             var xmlStr = "<Payload>" +
                          "<IsDebug>true</IsDebug>" +
@@ -470,7 +470,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
-            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber);
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
@@ -507,7 +507,7 @@ namespace Dev2.Tests
             var bookmarkID = Guid.NewGuid();
             var parentID = Guid.NewGuid();
             var instID = Guid.NewGuid();
-            var versionNumber = "version2.3";
+            var versionNumber = "1";
 
             var xmlStr = "<Payload>" +
                          "<BDSDebugMode>true</BDSDebugMode>" +
@@ -534,7 +534,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
-            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber);
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
@@ -570,7 +570,7 @@ namespace Dev2.Tests
             var exeID = Guid.NewGuid();
             var parentID = Guid.NewGuid();
             var instID = Guid.NewGuid();
-            var versionNumber = "ver2.3";
+            var versionNumber = "4";
 
             var xmlStr = "<Payload>" +
                          "<IsDebug>true</IsDebug>" +
@@ -596,7 +596,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
-            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber);
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
@@ -635,7 +635,7 @@ namespace Dev2.Tests
             var instID = Guid.NewGuid();
             var mergeIDOut = Guid.NewGuid();
             var mergeIDIn = Guid.NewGuid();
-            var versionNumber = "Ver2.3";
+            var versionNumber = "3";
 
             var xmlStr = "<Payload>" +
                          "<IsDebug>true</IsDebug>" +
@@ -669,7 +669,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
-            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber);
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
