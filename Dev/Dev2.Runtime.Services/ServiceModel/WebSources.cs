@@ -170,19 +170,19 @@ namespace Dev2.Runtime.ServiceModel
             errors = new ErrorResultTO();
             try
             {
+                if (client.Headers[HttpRequestHeader.ContentType].ToLowerInvariant().Contains("multipart"))
+                {
+                    return PerformMultipartWebRequest(client, address, data);
+                }
                 return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
-            }            
-            catch(WebException webex)
+            }
+            catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
             {
                 errors.AddError(webex.Message);
-
-                if (webex.Response is HttpWebResponse httpResponse)
+                using (var responseStream = httpResponse.GetResponseStream())
                 {
-                    using (var responseStream = httpResponse.GetResponseStream())
-                    {
-                        var reader = new StreamReader(responseStream);
-                        return reader.ReadToEnd();
-                    }
+                    var reader = new StreamReader(responseStream);
+                    return reader.ReadToEnd();
                 }
             }
             catch (Exception e)
@@ -201,6 +201,39 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
+        private static string PerformMultipartWebRequest(WebClient client, string address, string data)
+        {
+            var wr = (HttpWebRequest)WebRequest.Create(address);
+            wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
+            wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
+            wr.Method = "POST";
+            var byteData = Encoding.UTF8.GetBytes(data);
+            wr.ContentLength = 1005;
+
+            using (var requestStream = wr.GetRequestStream())
+            {
+                requestStream.Write(byteData, 0, byteData.Length);
+                requestStream.Close();
+            }
+
+            using (var wresp = (HttpWebResponse)wr.GetResponse())
+            {
+                if (wresp.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var responseStream = wresp.GetResponseStream())
+                    {
+                        if (responseStream == null)
+                            return null;
+                        using (var responseReader = new StreamReader(responseStream))
+                        {
+                            return responseReader.ReadToEnd();
+                        }
+                    }
+                }
+
+                throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode.ToString());
+            }
+        }
 
         public static void CreateWebClient(WebSource source, IEnumerable<string> headers)
         {
