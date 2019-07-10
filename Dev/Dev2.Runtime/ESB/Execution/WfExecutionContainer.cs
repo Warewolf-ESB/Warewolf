@@ -204,9 +204,14 @@ namespace Dev2.Runtime.ESB.Execution
         readonly IExecutionManager _executionManager;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+            : this(sa, dataObj, theWorkspace, esbChannel, CustomContainer.Get<IExecutionManager>())
+        {
+        }
+
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _executionManager = CustomContainer.Get<IExecutionManager>();
+            _executionManager = executionManager;
         }
 
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
