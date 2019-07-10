@@ -205,7 +205,7 @@ namespace Dev2.Tests
             dataObject.DatalistOutMergeType = enDataListMergeTypes.Union;
             dataObject.DebugSessionID = Guid.NewGuid();
             dataObject.EnvironmentID = Guid.NewGuid();
-            dataObject.VersionNumber = "Version2.3";
+            dataObject.VersionNumber = 1;
             dataObject.ExecutionCallbackID = Guid.NewGuid();
             dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             dataObject.ExecutingUser = executingUser;
