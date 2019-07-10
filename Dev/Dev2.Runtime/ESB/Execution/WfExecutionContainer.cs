@@ -92,7 +92,9 @@ namespace Dev2.Runtime.ESB.Execution
             var result = new Guid();
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils(_resourceCatalog);
-            ErrorResultTO invokeErrors; 
+            ErrorResultTO invokeErrors;
+            var executionId = DataObject.ExecutionID.ToString();
+
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -101,9 +103,10 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, out invokeErrors, true, false, false);
                 }
-                if (CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.Execute))
+                var resourceId = DataObject.ResourceID;
+                if (CanExecute(resourceId, DataObject, AuthorizationContext.Execute))
                 {
-                    Eval(DataObject.ResourceID, DataObject);
+                    Eval(resourceId, DataObject);
                 }
                 if (DataObject.IsDebugMode())
                 {
@@ -113,7 +116,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (InvalidWorkflowException iwe)
             {
-                Dev2Logger.Error(iwe, DataObject.ExecutionID.ToString());
+                Dev2Logger.Error(iwe, executionId);
                 var msg = iwe.Message;
 
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
@@ -123,7 +126,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, DataObject.ExecutionID.ToString());
+                Dev2Logger.Error(ex, executionId);
                 DataObject.Environment.AddError(ex.Message);
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
@@ -324,33 +327,36 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
+        protected override void Eval(Guid resourceId, IDSFDataObject dataObject)
         {
-            Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
+            var executionId = dataObject.ExecutionID.ToString();
+            var versionNumber = dataObject.VersionNumber;
+
+            Dev2Logger.Debug("Getting Resource to Execute", executionId);
 
             var hasVersionOverride = false;
-            if (!string.IsNullOrWhiteSpace(dataObject.VersionNumber))
+            if (!string.IsNullOrWhiteSpace(versionNumber))
             {
                 hasVersionOverride = true;
             }
 
-            var resumeVersionNumber = dataObject.VersionNumber;
+            var resumeVersionNumber = versionNumber;
             if (resumeVersionNumber is null || string.IsNullOrWhiteSpace(resumeVersionNumber))
             {
-                resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: dataObject.ResourceID).ToString();
+                resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceId).ToString();
             }
 
             IDev2Activity startActivity;
             if (hasVersionOverride)
             {
-                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, resumeVersionNumber);
-                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
+                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId, resumeVersionNumber);
+                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId, resourceObject);
             } else
             {
-                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId);
             }
 
-            Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Got Resource to Execute", executionId);
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
     }
