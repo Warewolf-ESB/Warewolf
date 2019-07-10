@@ -31,9 +31,16 @@ namespace Dev2.Runtime.ESB.WF
     public sealed class WfApplicationUtils
     {
         readonly Action<DebugOutputBase, DebugItem> _add;
+        readonly IResourceCatalog _lazyCat;
 
         public WfApplicationUtils()
+            :this(ResourceCatalog.Instance)
         {
+        }
+
+        public WfApplicationUtils(IResourceCatalog resourceCatalog)
+        {
+            _lazyCat = resourceCatalog;
             _add = AddDebugItem;
         }
 
@@ -238,8 +245,6 @@ namespace Dev2.Runtime.ESB.WF
             var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);
         }
-
-        readonly IResourceCatalog _lazyCat = ResourceCatalog.Instance;
 
         string FindServiceShape(Guid workspaceId, Guid resourceId)
         {

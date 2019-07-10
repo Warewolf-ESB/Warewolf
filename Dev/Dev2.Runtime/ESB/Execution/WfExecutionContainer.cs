@@ -29,6 +29,7 @@ using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Warewolf.Storage.Interfaces;
@@ -37,9 +38,16 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public abstract class WfExecutionContainerBase : EsbExecutionContainer
     {
+        protected readonly IResourceCatalog _resourceCatalog;
         protected WfExecutionContainerBase(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+            : this(sa, dataObj, theWorkspace, esbChannel, ResourceCatalog.Instance)
+        {
+        }
+
+        protected WfExecutionContainerBase(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            _resourceCatalog = resourceCatalog;
             DataObject.Settings = GetWorkflowSetting();
         }
 
@@ -57,7 +65,8 @@ namespace Dev2.Runtime.ESB.Execution
             var dataObjectExecutionId = DataObject.ExecutionID.ToString();
             if (!DataObject.IsSubExecution)
             {
-                Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, user?.Identity?.Name, user?.Identity?.AuthenticationType, user?.Identity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
+                var userIdentity = user?.Identity;
+                Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, userIdentity?.Name, userIdentity?.AuthenticationType, userIdentity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
                 Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl + " ]", dataObjectExecutionId);
             }
             Dev2Logger.Debug("Entered Wf Container", dataObjectExecutionId);
@@ -67,7 +76,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
             SetExecutionOrigin();
 
-            var userPrinciple = Thread.CurrentPrincipal;
+            var userPrinciple = Thread.CurrentPrincipal; // TODO: can we remove this second call the get_CurrentPrincipal
             var result = GlobalConstants.NullDataListID;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(); });
 
@@ -82,7 +91,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var result = new Guid();
             DataObject.StartTime = DateTime.Now;
-            var wfappUtils = new WfApplicationUtils();
+            var wfappUtils = new WfApplicationUtils(_resourceCatalog);
             ErrorResultTO invokeErrors; 
             try
             {
@@ -189,6 +198,7 @@ namespace Dev2.Runtime.ESB.Execution
     }
     public class WfExecutionContainer : WfExecutionContainerBase
     {
+
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
@@ -327,17 +337,17 @@ namespace Dev2.Runtime.ESB.Execution
             var resumeVersionNumber = dataObject.VersionNumber;
             if (resumeVersionNumber is null || string.IsNullOrWhiteSpace(resumeVersionNumber))
             {
-                resumeVersionNumber = ResourceCatalog.Instance.GetLatestVersionNumberForResource(resourceId: dataObject.ResourceID).ToString();
+                resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: dataObject.ResourceID).ToString();
             }
 
             IDev2Activity startActivity;
             if (hasVersionOverride)
             {
-                var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, resumeVersionNumber);
-                startActivity = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
+                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, resumeVersionNumber);
+                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
             } else
             {
-                startActivity = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
             }
 
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
