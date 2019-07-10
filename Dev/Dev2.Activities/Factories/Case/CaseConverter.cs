@@ -93,8 +93,7 @@ namespace Dev2.Activities.Factories.Case
         static string ConvertToAllFirstUpper(string stringToConvert)
         {
             var txInfo = CultureInfo.CurrentCulture.TextInfo;
-            var stringToLower = ConvertToAllLower(stringToConvert);
-            var str = txInfo.ToTitleCase(stringToLower);
+            var str = txInfo.ToTitleCase(stringToConvert);
             return str;
         }
 
