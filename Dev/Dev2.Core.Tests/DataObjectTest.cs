@@ -252,6 +252,7 @@ namespace Dev2.Tests
             var guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
             dataObject.ThreadsToDispose = threadsToDispose;
+            dataObject.AuthCache = new ConcurrentDictionary<(IPrincipal, Dev2.Common.Interfaces.Enums.AuthorizationContext, string), bool>();
 
             //------------Execute Test---------------------------
             var clonedObject = dataObject.Clone();
@@ -260,7 +261,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(70, properties.Length);
+            Assert.AreEqual(71, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -328,6 +329,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.StateNotifier, clonedObject.StateNotifier);
             Assert.AreNotEqual(dataObject.Settings, clonedObject.Settings);
             Assert.AreEqual(dataObject.Settings.KeepLogsForDays, clonedObject.Settings.KeepLogsForDays);
+            Assert.AreNotEqual(dataObject.AuthCache, clonedObject.AuthCache);
         }
 
         #region Debug Mode Test
