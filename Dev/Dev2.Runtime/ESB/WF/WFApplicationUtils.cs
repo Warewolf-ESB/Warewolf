@@ -30,7 +30,6 @@ namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
     {
-        readonly Action<DebugOutputBase, DebugItem> _add;
         readonly IResourceCatalog _lazyCat;
 
         public WfApplicationUtils()
@@ -41,7 +40,6 @@ namespace Dev2.Runtime.ESB.WF
         public WfApplicationUtils(IResourceCatalog resourceCatalog)
         {
             _lazyCat = resourceCatalog;
-            _add = AddDebugItem;
         }
 
 #pragma warning disable S2360 // Optional parameters should not be used, unless they are only used in the same assembly
@@ -210,7 +208,7 @@ namespace Dev2.Runtime.ESB.WF
                 added.Add(defn);
                 var itemToAdd = new DebugItem();
 
-                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0), itemToAdd); // TODO: confirm why 0 is hardcoded for the execution update state?
+                AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0), itemToAdd); // TODO: confirm why 0 is hardcoded for the execution update state?
                 results.Add(itemToAdd);
             }
 

@@ -47,7 +47,7 @@ namespace Dev2.Interfaces
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
-        string VersionNumber { get; set; }
+        int VersionNumber { get; set; }
         int NumberOfSteps { get; set; }
         IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }

@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public  PerfmonExecutionContainer(IEsbExecutionContainer container)
         {
-            VerifyArgument.IsNotNull("Container",container);
+            VerifyArgument.IsNotNull(nameof(Container), container);
             _container = container;
             _locater = CustomContainer.Get<IWarewolfPerformanceCounterLocater>();
             _recPerSecondCounter = _locater.GetCounter("Request Per Second");

@@ -117,7 +117,8 @@ namespace Dev2.DynamicServices
             }
             IsDebug = isDebug;
 
-            VersionNumber = ExtractValue(xe, "VersionNumber");
+            Int32.TryParse(ExtractValue(xe, "VersionNumber"), out int versionNumber);
+            VersionNumber = versionNumber;
 
 
             Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
@@ -177,8 +178,6 @@ namespace Dev2.DynamicServices
 
             // Set incoming service name ;)
             ServiceName = ExtractValue(xe, "Service");
-
-            VersionNumber = ExtractValue(xe, "VersionNumber");
         }
 
         public Guid DebugEnvironmentId { get; set; }
@@ -200,7 +199,7 @@ namespace Dev2.DynamicServices
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
-        public string VersionNumber { get; set; }
+        public int VersionNumber { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
