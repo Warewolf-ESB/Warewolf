@@ -21,7 +21,7 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.Security
 {
-    public sealed class ServerAuthorizationService : AuthorizationServiceBase
+    public class ServerAuthorizationService : AuthorizationServiceBase
     {
         static ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
 
