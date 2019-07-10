@@ -201,16 +201,19 @@ namespace Dev2.Runtime.ESB.Execution
     }
     public class WfExecutionContainer : WfExecutionContainerBase
     {
+        readonly IExecutionManager _executionManager;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            _executionManager = CustomContainer.Get<IExecutionManager>();
         }
 
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var outerStateLogger = dsfDataObject.StateNotifier;
 
+            IStateNotifier stateNotifier = null;
             try
             {
                 dsfDataObject.Settings = new Dev2WorkflowSettingsTO
@@ -223,7 +226,8 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (dsfDataObject.Settings.EnableDetailedLogging)
                 {
-                    dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+                    stateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+                    dsfDataObject.StateNotifier = stateNotifier;
                 }
 
                 AddExecutionToExecutionManager(dsfDataObject, resource);
@@ -231,7 +235,7 @@ namespace Dev2.Runtime.ESB.Execution
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                dsfDataObject.StateNotifier?.LogPreExecuteState(resource);
+                stateNotifier?.LogPreExecuteState(resource);
 
                 IDev2Activity next;
                 IDev2Activity lastActivity;
@@ -239,11 +243,11 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     lastActivity = resource;
                     next = resource.Execute(dsfDataObject, update);
-                    dsfDataObject.StateNotifier?.LogPostExecuteState(resource, next);
+                    stateNotifier?.LogPostExecuteState(resource, next);
                 }
                 catch (Exception e)
                 {
-                    dsfDataObject.StateNotifier?.LogExecuteException(e, resource);
+                    stateNotifier?.LogExecuteException(e, resource);
                     throw;
                 }
 
@@ -251,34 +255,28 @@ namespace Dev2.Runtime.ESB.Execution
             }
             finally
             {
-                var exe = CustomContainer.Get<IExecutionManager>();
-                exe?.CompleteExecution();
+                _executionManager?.CompleteExecution();
 
-                dsfDataObject.StateNotifier?.Dispose();
-                dsfDataObject.StateNotifier = null;
-                if (outerStateLogger != null)
-                {
-                    dsfDataObject.StateNotifier = outerStateLogger;
-                }
+                stateNotifier?.Dispose();
+                dsfDataObject.StateNotifier = outerStateLogger;
             }
         }
 
-        static void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
+        void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
         {
-            var exe = CustomContainer.Get<IExecutionManager>();
             Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
-            if (exe != null)
+            if (_executionManager != null)
             {
-                if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
+                if (!_executionManager.IsRefreshing || dsfDataObject.IsSubExecution)
                 {
                     Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
-                    exe.AddExecution();
+                    _executionManager.AddExecution();
                     Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
                 }
                 else
                 {
                     Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
-                    exe.Wait();
+                    _executionManager.Wait();
                     Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
 
                 }
@@ -291,6 +289,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
         {
+            var stateNotifier = dsfDataObject.StateNotifier;
+            var environment = dsfDataObject.Environment;
+
             bool stoppedExecution = false;
             Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
             while (next != null)
@@ -301,29 +302,29 @@ namespace Dev2.Runtime.ESB.Execution
                     break;
                 }
 
-                dsfDataObject.StateNotifier?.LogPreExecuteState(next);
+                stateNotifier?.LogPreExecuteState(next);
                 var current = next;
                 lastActivity = current;
                 try
                 {
                     next = current.Execute(dsfDataObject, update);
-                    dsfDataObject.StateNotifier?.LogPostExecuteState(current, next);
+                    stateNotifier?.LogPostExecuteState(current, next);
                 }
                 catch (Exception e)
                 {
-                    dsfDataObject.StateNotifier?.LogExecuteException(e, current);
+                    stateNotifier?.LogExecuteException(e, current);
                     throw;
                 }
-                dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
+                environment.AllErrors.UnionWith(environment.Errors);
             }
 
             if (!stoppedExecution)
             {
-                dsfDataObject.StateNotifier?.LogExecuteCompleteState(lastActivity);
+                stateNotifier?.LogExecuteCompleteState(lastActivity);
             }
             else
             {
-                dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
+                stateNotifier?.LogStopExecutionState(lastActivity);
             }
         }
 
