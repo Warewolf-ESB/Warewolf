@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -268,8 +269,8 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             const string Message = "This is a forced exception";
 
             var mock = new Mock<IWebRequestInvoker>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockErrorResultTO = new Mock<ErrorResultTO>();
+            var dsfDataObject = new DsfDataObject("", Guid.NewGuid());
+            var errorResultTO = new ErrorResultTO();
 
 
             var environment = new ExecutionEnvironment();
@@ -288,13 +289,13 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
             
-            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
-            mockDSFDataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new MockEsb());
+            dsfDataObject.Environment = environment;
+            dsfDataObject.IsDebug = true;
+            dsfDataObject.EsbChannel = new MockEsb();
 
             bool timeoutSecondsError = false;
             PrivateObject obj = new PrivateObject(activity);
-            object[] args = new object[] { mockDSFDataObject.Object, 0, mockErrorResultTO.Object, timeoutSecondsError };
+            object[] args = new object[] { dsfDataObject, 0, errorResultTO, timeoutSecondsError };
 
             //------------Execute Test---------------------------
             var act = obj.Invoke("SetTimeoutSecondsError", args);
