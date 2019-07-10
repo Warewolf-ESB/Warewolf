@@ -191,7 +191,7 @@ namespace Dev2.Tests
             var executingUser = new Mock<IPrincipal>().Object;
             //------------Setup for test--------------------------
             var wfInstanceID = Guid.NewGuid();
-            IDSFDataObject dataObject = new Dev2.DynamicServices.DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
             dataObject.BookmarkExecutionCallbackID = Guid.NewGuid();
             dataObject.CurrentBookmarkName = "def";
             dataObject.DataList = new StringBuilder("<x/>");
