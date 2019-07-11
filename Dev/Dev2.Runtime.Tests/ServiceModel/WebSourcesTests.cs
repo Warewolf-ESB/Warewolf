@@ -8,14 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using Dev2.Common;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -24,23 +24,16 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestCategory("Runtime Hosting")]
     public class WebSourcesTests
     {
-        
-        #region CTOR
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
 #pragma warning disable 168
-            
+
             var handler = new WebSources(null);
-            
+
 #pragma warning restore 168
         }
-
-        #endregion
-
-        #region Test
 
         [TestMethod]
         public void WebSourcesTestWithInValidArgsExpectedInvalidValidationResult()
@@ -96,16 +89,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
-            
+
             Assert.IsTrue((client.Credentials as NetworkCredential).UserName == "User");
 
             Assert.IsTrue((client.Credentials as NetworkCredential).Password == "pwd");
-            
+
         }
-
-        #endregion
-
-        #region Get
 
         [TestMethod]
         public void WebSourcesGetWithNullArgsExpectedReturnsNewSource()
@@ -160,6 +149,5 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("some url", results);
         }
 
-        #endregion
     }
 }
