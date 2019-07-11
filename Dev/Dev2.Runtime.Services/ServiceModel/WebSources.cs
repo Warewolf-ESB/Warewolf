@@ -196,14 +196,14 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
-        private static string PerformMultipartWebRequest(WebClient client, string address, string data)
+        public static string PerformMultipartWebRequest(WebClient client, string address, string data)
         {
             var wr = (HttpWebRequest)WebRequest.Create(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
             var byteData = Encoding.UTF8.GetBytes(data);
-            wr.ContentLength = 1005;
+            wr.ContentLength = byteData.Length;
 
             using (var requestStream = wr.GetRequestStream())
             {

@@ -8,26 +8,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
-
 namespace Dev2.Runtime.ServiceModel.Data
-
 {
-    // PBI 5656 - 2013.05.20 - TWR - Created
-    public class WebSource : Resource, IDisposable,IResourceSource, IWebSource
+    public class WebSource : Resource, IDisposable, IResourceSource, IWebSource
     {
         bool _disposed;
-
-        #region Properties
 
         public string Address { get; set; }
         public string DefaultQuery { get; set; }
@@ -47,11 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// This must NEVER be persisted - here so that we only instantiate once!
         /// </summary>
         public WebClient Client { get; set; }
-
-        #endregion
-
-        #region CTOR
-
+        
         public WebSource()
         {
             ResourceID = Guid.Empty;
@@ -86,10 +77,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
 
-        #endregion
-
-        #region ToXml
-
         public override XElement ToXml()
         {
             var result = base.ToXml();
@@ -99,7 +86,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 $"AuthenticationType={AuthenticationType}"
                 );
 
-            if(AuthenticationType == AuthenticationType.User)
+            if (AuthenticationType == AuthenticationType.User)
             {
                 connectionString = string.Join(";",
                     connectionString,
@@ -128,22 +115,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override bool IsResourceVersion => false;
 
-        #endregion
-
-        #region DisposeClient
-
         public void DisposeClient()
         {
-            if(Client != null)
+            if (Client != null)
             {
                 Client.Dispose();
                 Client = null;
             }
         }
-
-        #endregion
-
-        #region Implementation of IDisposable
 
         // This destructor will run only if the Dispose method does not get called. 
         ~WebSource()
@@ -178,11 +157,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called. 
-            if(!_disposed)
+            if (!_disposed)
             {
                 // If disposing equals true, dispose all managed 
                 // and unmanaged resources. 
-                if(disposing)
+                if (disposing)
                 {
                     // Dispose managed resources.
                     DisposeClient();
@@ -195,7 +174,5 @@ namespace Dev2.Runtime.ServiceModel.Data
                 _disposed = true;
             }
         }
-
-        #endregion
     }
 }
