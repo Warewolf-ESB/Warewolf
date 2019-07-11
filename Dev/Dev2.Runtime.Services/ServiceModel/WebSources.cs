@@ -165,9 +165,12 @@ namespace Dev2.Runtime.ServiceModel
             errors = new ErrorResultTO();
             try
             {
-                if (client.Headers[HttpRequestHeader.ContentType].ToLowerInvariant().Contains("multipart"))
+                if (client.Headers[HttpRequestHeader.ContentType] != null)
                 {
-                    return PerformMultipartWebRequest(client, address, data);
+                    if (client.Headers[HttpRequestHeader.ContentType].ToLowerInvariant().Contains("multipart"))
+                    {
+                        return PerformMultipartWebRequest(client, address, data);
+                    }
                 }
                 return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
             }
