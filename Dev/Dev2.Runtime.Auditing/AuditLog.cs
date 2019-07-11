@@ -155,7 +155,7 @@ namespace Dev2.Runtime.Auditing
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
             Environment = dsfDataObject.Environment.ToJson();
-            VersionNumber = dsfDataObject.VersionNumber;
+            VersionNumber = dsfDataObject.VersionNumber.ToString();
             AuditDate = DateTime.Now;
             AuditType = auditType;
             AdditionalDetail = detail;

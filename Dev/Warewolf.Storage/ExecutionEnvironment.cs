@@ -516,7 +516,7 @@ namespace Warewolf.Storage
 
         public string FetchErrors() => string.Join(Environment.NewLine, AllErrors.Union(Errors));
 
-        public bool HasErrors() => (Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s))) > 0;
+        public bool HasErrors() => Errors.Any(s => !string.IsNullOrEmpty(s)) || AllErrors.Any(s => !string.IsNullOrEmpty(s));
 
         public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
 

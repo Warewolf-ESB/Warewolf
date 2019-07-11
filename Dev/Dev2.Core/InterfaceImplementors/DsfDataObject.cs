@@ -22,6 +22,7 @@ using System.Xml.Linq;
 
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.DynamicServices.Objects;
@@ -66,6 +67,7 @@ namespace Dev2.DynamicServices
             Environment = new ExecutionEnvironment();
             _environments = new ConcurrentStack<IExecutionEnvironment>();
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
+            AuthCache = new ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool>();
 
             if (xmldata != null)
             {
@@ -115,7 +117,8 @@ namespace Dev2.DynamicServices
             }
             IsDebug = isDebug;
 
-            VersionNumber = ExtractValue(xe, "VersionNumber");
+            Int32.TryParse(ExtractValue(xe, "VersionNumber"), out int versionNumber);
+            VersionNumber = versionNumber;
 
 
             Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
@@ -175,8 +178,6 @@ namespace Dev2.DynamicServices
 
             // Set incoming service name ;)
             ServiceName = ExtractValue(xe, "Service");
-
-            VersionNumber = ExtractValue(xe, "VersionNumber");
         }
 
         public Guid DebugEnvironmentId { get; set; }
@@ -198,7 +199,7 @@ namespace Dev2.DynamicServices
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
-        public string VersionNumber { get; set; }
+        public int VersionNumber { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
@@ -324,6 +325,7 @@ namespace Dev2.DynamicServices
         public string WebUrl { get; set; }
         public IStateNotifier StateNotifier { get; set; }
         public IDev2WorkflowSettings Settings { get; set; }
+        public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
 
         #endregion Properties
 
@@ -400,6 +402,8 @@ namespace Dev2.DynamicServices
             result.QueryString = QueryString;
             result.ExecutingUser = ExecutingUser;
             result.StateNotifier = StateNotifier;
+            result.AuthCache = new ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool>(AuthCache);
+
             if (ServiceTest != null)
             {
                 var serializer = new Dev2JsonSerializer();
