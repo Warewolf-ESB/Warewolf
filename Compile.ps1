@@ -217,20 +217,6 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
-[assembly: InternalsVisibleTo(@"Dev2.Activities.Designers.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Activities.Specs")]
-[assembly: InternalsVisibleTo(@"Dev2.Activities.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Core.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Data.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Infrastructure.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Integration.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Runtime.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Studio.Core.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.TaskScheduler.Wrappers")]
-[assembly: InternalsVisibleTo(@"Warewolf.Studio.ViewModels.Tests")]
-[assembly: InternalsVisibleTo(@"Warewolf.Tools.Specs")]
-[assembly: InternalsVisibleTo(@"Warewolf.UIBindingTests.ComDll")]
-[assembly: InternalsVisibleTo(@"Warewolf.UIBindingTests.PluginSource")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
