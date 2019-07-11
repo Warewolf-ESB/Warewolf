@@ -263,7 +263,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return;
             }
-            var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
+
+            var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString()));
             if (!isAuthorized)
             {
                 

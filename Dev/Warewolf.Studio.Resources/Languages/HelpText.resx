@@ -328,7 +328,7 @@
     <value>Only variables go in here.	Returns the formatted number.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="CaseConversionHelpConvertToCaseType" xml:space="preserve">
-    <value>Select the type of conversion you would like to make.</value>
+    <value>Select the type of conversion you would like to make. &lt;br /&gt;&lt;br /&gt; NOTE: Title Case does not alter capitalised words such as BLT or CEO.</value>
   </data>
   <data name="CaseConversionHelpTextInput" xml:space="preserve">
     <value>Any variable and/or data goes in here.	To convert the case of some text, put the variable containing the text here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
