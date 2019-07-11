@@ -9,12 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
@@ -23,6 +17,12 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Xml.Linq;
 
 
 namespace Dev2.Runtime.ServiceModel
@@ -30,7 +30,6 @@ namespace Dev2.Runtime.ServiceModel
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
     public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
 
-    // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSources : ExceptionManager
     {
         public WebSources()
@@ -45,8 +44,6 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ArgumentNullException(nameof(resourceCatalog));
             }
         }
-        // POST: Service/WebSources/Get
-
         public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new WebSource();
@@ -65,8 +62,6 @@ namespace Dev2.Runtime.ServiceModel
             }
             return result;
         }
-
-        // POST: Service/WebSources/Test
 
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
