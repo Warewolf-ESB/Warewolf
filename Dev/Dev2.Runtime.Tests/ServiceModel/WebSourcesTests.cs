@@ -9,6 +9,8 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -158,6 +160,35 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
             Assert.AreEqual(contentType, "multipart/form-data");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void WebSources_Execute_SetsContentTypeHeaders_multipart()
+        {
+            var errors = new ErrorResultTO();
+           var headerString = new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" };
+            var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
+          
+            WebSources.Execute(source,WebRequestMethod.Post, "http://www.msn.com/","", false, out errors, headerString.ToArray());
+
+            var client = source.Client;
+            var contentType = client.Headers["Content-Type"];
+            Assert.IsNotNull(contentType);
+            Assert.AreEqual(contentType, "multipart/form-data");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void WebSources__Execute_Without_MultiPart()
+        {
+            var errors = new ErrorResultTO();
+            var headerString = new List<string> { "a:x", "b:e"};
+            var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
+
+            WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out errors, headerString.ToArray());
+
+            var client = source.Client;
+            Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
+            Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
     }
 }
