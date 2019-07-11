@@ -21,7 +21,7 @@ using System.Linq;
 namespace Dev2.Data.TO
 {
     [Serializable]
-    public class ErrorResultTO : IErrorResultTO
+    public sealed class ErrorResultTO : IErrorResultTO
     {
         readonly IList<string> _errorList = new List<string>();
 

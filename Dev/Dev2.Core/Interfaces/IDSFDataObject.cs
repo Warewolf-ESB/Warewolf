@@ -19,12 +19,15 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Web;
 using Warewolf.Storage.Interfaces;
 using Dev2;
+using System.Collections.Concurrent;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Interfaces
 {
     public interface IDSFDataObject
     {
         Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
+        ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
 
         string CurrentBookmarkName { get; set; }
         Guid WorkflowInstanceId { get; set; }
@@ -44,7 +47,7 @@ namespace Dev2.Interfaces
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
-        string VersionNumber { get; set; }
+        int VersionNumber { get; set; }
         int NumberOfSteps { get; set; }
         IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }

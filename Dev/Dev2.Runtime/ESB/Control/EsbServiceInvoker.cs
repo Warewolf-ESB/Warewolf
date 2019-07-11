@@ -122,14 +122,15 @@ namespace Dev2.Runtime.ESB
                 }
                 finally
                 {
-                    if (dataObject.Environment.HasErrors())
+                    var environment = dataObject.Environment;
+                    if (environment.HasErrors())
                     {
-                        var errorString = dataObject.Environment.FetchErrors();
+                        var errorString = environment.FetchErrors();
                         var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                         errors.MergeErrors(executionErrors);
                     }
 
-                    dataObject.Environment.AddError(errors.MakeDataListReady());
+                    environment.AddError(errors.MakeDataListReady());
 
                     if (errors.HasErrors())
                     {

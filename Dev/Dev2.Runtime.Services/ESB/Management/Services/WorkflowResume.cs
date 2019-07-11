@@ -54,11 +54,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             var executionEnv = new ExecutionEnvironment();
             executionEnv.FromJson(decodedEnv);
 
+            Int32.TryParse(versionNumber.ToString(), out int parsedVersionNumber);
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,
                 Environment = executionEnv,                                                
-                VersionNumber = versionNumber.ToString(),
+                VersionNumber = parsedVersionNumber,
                 ExecutingUser = Thread.CurrentPrincipal,
                 IsDebug = true
             };
