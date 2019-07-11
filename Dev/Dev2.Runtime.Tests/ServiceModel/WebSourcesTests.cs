@@ -19,14 +19,13 @@ using System.Net;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
     [TestCategory("Runtime Hosting")]
     public class WebSourcesTests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
+        public void WebSources_ConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
 #pragma warning disable 168
 
@@ -36,7 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void WebSourcesTestWithInValidArgsExpectedInvalidValidationResult()
+        public void WebSources_TestWithInValidArgsExpectedInvalidValidationResult()
         {
             var handler = new WebSources();
             var result = handler.Test("root:'hello'", Guid.Empty, Guid.Empty);
@@ -44,7 +43,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void WebSourcesTestWithInvalidAddressExpectedInvalidValidationResult()
+        public void WebSources_TestWithInvalidAddressExpectedInvalidValidationResult()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous }.ToString();
 
@@ -54,7 +53,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void WebSourcesAssertUserAgentHeaderSet()
+        public void WebSources_AssertUserAgentHeaderSet()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
 
@@ -66,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(agent, GlobalConstants.UserAgentString);
         }
         [TestMethod]
-        public void WebSourcesAssertUserAgentHeaderSet_SetsOtherHeaders()
+        public void WebSources_AssertUserAgentHeaderSet_SetsOtherHeaders()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
 
@@ -80,8 +79,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
         [TestMethod]
-
-        public void WebSourcesAssertUserAgentHeaderSet_SetsUserNameAndPassword()
+        public void WebSources_AssertUserAgentHeaderSet_SetsUserNameAndPassword()
 
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.User, UserName = "User", Password = "pwd" };
@@ -97,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void WebSourcesGetWithNullArgsExpectedReturnsNewSource()
+        public void WebSources_GetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
             var result = handler.Get(null, Guid.Empty, Guid.Empty);
@@ -107,7 +105,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void WebSourcesGetWithInvalidArgsExpectedReturnsNewSource()
+        public void WebSources_GetWithInvalidArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
             var result = handler.Get("xxxxx", Guid.Empty, Guid.Empty);
@@ -118,7 +116,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetAddress_Given_Null_Source_And_NoRelativeUri_Should_Return_relativeUri()
+        public void WebSources_GetAddress_Given_Null_Source_And_NoRelativeUri_Should_Return_relativeUri()
         {
             //------------Setup for test-------------------------
             var webSource = new PrivateType(typeof(WebSources));
@@ -135,7 +133,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GetAddress_Given_Null_Source_And_relativeUri_Should_Return_relativeUri()
+        public void WebSources_GetAddress_Given_Null_Source_And_relativeUri_Should_Return_relativeUri()
         {
             //------------Setup for test-------------------------
             var webSource = new PrivateType(typeof(WebSources));
@@ -149,5 +147,17 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("some url", results);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void WebSources_PerformMultipartWebRequest_SetsContentTypeHeaders()
+        {
+            var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
+            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" });
+            WebSources.PerformMultipartWebRequest(source.Client, source.Address, "");
+            var client = source.Client;
+            var contentType = client.Headers["Content-Type"];
+            Assert.IsNotNull(contentType);
+            Assert.AreEqual(contentType, "multipart/form-data");
+        }
     }
 }

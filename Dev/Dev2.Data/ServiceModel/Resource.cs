@@ -8,18 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-
+using System;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
     public class Resource : ResourceBase
     {
-       
+
         public Resource(IResource copy)
             : base(copy)
         {

@@ -336,7 +336,7 @@
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj">
-      <Project>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</Project>
+      <Project>{4d0919c0-8fa4-480c-8629-00eb128ddee9}</Project>
       <Name>Dev2.Runtime.WebServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
