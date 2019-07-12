@@ -190,17 +190,5 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        public void WebSources_PerformMultipartWebRequest_ReturnNullResponseSttream()
-        {
-            var source = new WebSource { Address = "http://store.warewolf.io:3142/public/Hello%20World?Name=", AuthenticationType = AuthenticationType.Anonymous };
-            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" });
-            WebSources.PerformMultipartWebRequest(source.Client, source.Address, "");
-            var client = source.Client;
-            var contentType = client.Headers["Content-Type"];
-            Assert.IsNotNull(contentType);
-            Assert.AreEqual("multipart/form-data", contentType);
-        }
     }
 }
