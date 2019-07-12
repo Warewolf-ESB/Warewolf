@@ -165,9 +165,10 @@ namespace Dev2.Runtime.ServiceModel
             errors = new ErrorResultTO();
             try
             {
-                if (client.Headers[HttpRequestHeader.ContentType] != null)
+                var contentType = client.Headers[HttpRequestHeader.ContentType];
+                if (contentType != null)
                 {
-                    if (client.Headers[HttpRequestHeader.ContentType].ToLowerInvariant().Contains("multipart"))
+                    if (contentType.ToLowerInvariant().Contains("multipart"))
                     {
                         return PerformMultipartWebRequest(client, address, data);
                     }
