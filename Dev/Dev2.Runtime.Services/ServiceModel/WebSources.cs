@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -166,13 +165,11 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
-                if (contentType != null)
+                if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
                 {
-                    if (contentType.ToLowerInvariant().Contains("multipart"))
-                    {
-                        return PerformMultipartWebRequest(client, address, data);
-                    }
+                    return PerformMultipartWebRequest(client, address, data);
                 }
+
                 return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
             }
             catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
