@@ -159,36 +159,48 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
-            Assert.AreEqual(contentType, "multipart/form-data");
+            Assert.AreEqual("multipart/form-data",contentType);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         public void WebSources_Execute_SetsContentTypeHeaders_multipart()
         {
-            var errors = new ErrorResultTO();
-           var headerString = new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" };
+            var headerString = new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" };
             var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
-          
-            WebSources.Execute(source,WebRequestMethod.Post, "http://www.msn.com/","", false, out errors, headerString.ToArray());
+
+            WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, headerString.ToArray());
 
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
-            Assert.AreEqual(contentType, "multipart/form-data");
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("multipart/form-data",contentType);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         public void WebSources__Execute_Without_MultiPart()
         {
-            var errors = new ErrorResultTO();
-            var headerString = new List<string> { "a:x", "b:e"};
+            var headerString = new List<string> { "a:x", "b:e" };
             var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
 
-            WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out errors, headerString.ToArray());
+            WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, headerString.ToArray());
 
             var client = source.Client;
+            Assert.IsFalse(errors.HasErrors());
             Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void WebSources_PerformMultipartWebRequest_ReturnNullResponseSttream()
+        {
+            var source = new WebSource { Address = "http://store.warewolf.io:3142/public/Hello%20World?Name=", AuthenticationType = AuthenticationType.Anonymous };
+            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" });
+            WebSources.PerformMultipartWebRequest(source.Client, source.Address, "");
+            var client = source.Client;
+            var contentType = client.Headers["Content-Type"];
+            Assert.IsNotNull(contentType);
+            Assert.AreEqual("multipart/form-data", contentType);
         }
     }
 }
