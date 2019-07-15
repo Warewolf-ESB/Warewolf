@@ -14,7 +14,7 @@ Scenario: Creating New Sharepoint Source
    Given I open New Sharepoint Source 
    Then "New SharePoint Service Source" tab is opened
    And title is "New SharePoint Service Source"
-   And I type Address as "http://rsaklfsvrdev"
+   And I type Address as "http://SVRDEV.premier.local"
    Then "New SharePoint Service Source *" tab is opened
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
@@ -36,7 +36,7 @@ Scenario: Creating New Sharepoint Source
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Sharepoint Source under auth type as user
    Given I open New Sharepoint Source
-   And I type Address as "http://rsaklfsvrdev"
+   And I type Address as "http://SVRDEV.premier.local"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
@@ -109,7 +109,7 @@ Scenario: Incorrect address user auth type is not allowing to save
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection 
    Given I open New Sharepoint Source
    And "Save" is "Disabled"
-   And I type Address as "http://rsaklfsvrdev" 
+   And I type Address as "http://SVRDEV.premier.local" 
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
@@ -140,14 +140,14 @@ Scenario: Editing saved Sharepoint Source
    Given I open "Test" Sharepoint source
    Then "Test" tab is opened
    And title is "Test"
-   And Address is "http://rsaklfsvrdev"
+   And Address is "http://SVRDEV.premier.local"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And Authentication Type is "Windows"
    And Username field is "Collapsed"
    And Password field is "Collapsed"
    And "Save" is "Disabled"
-   When I type Address as "http://rsaklfsvrdevs"
+   When I type Address as "http://SVRDEV.premier.locals"
    Then "Test *" tab is opened
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
@@ -165,7 +165,7 @@ Scenario: Editing saved Sharepoint Source
  Scenario: Editing saved Sharepoint Source auth type
    Given I open "Test" Sharepoint source
    Then "Test" tab is opened
-   And Address is "http://rsaklfsvrdev"
+   And Address is "http://SVRDEV.premier.local"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And Authentication Type is "Windows"
@@ -190,7 +190,7 @@ Scenario: Cancel Test
    Given I open New Sharepoint Source 
    Then "New SharePoint Service Source" tab is opened
    And title is "New SharePoint Service Source"
-   And I type Address as "http://rsaklfsvrdev"
+   And I type Address as "http://SVRDEV.premier.local"
    When Test Connecton is "Long Running"
    And I Cancel the Test
    Then "Cancel Test" is "Disabled"

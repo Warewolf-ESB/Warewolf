@@ -16,7 +16,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 {
     public static class SqlServerTestUtils
     {
-        public static DbSource CreateDev2TestingDbSource(AuthenticationType authenticationType = AuthenticationType.User, string server = "rsaklfsvrdev.dev2.local")
+        public static DbSource CreateDev2TestingDbSource(AuthenticationType authenticationType = AuthenticationType.User, string server = "SVRDEV.premier.local")
         {
             var dbSource = new DbSource
             {

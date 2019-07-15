@@ -39,7 +39,7 @@ Scenario: Enable Send and Enable Save
 	When I save as "TestRabbitMq"
 	And the save dialog is opened
 
-Scenario: Fail Send Shows correct error message
+Scenario: Fail Send Rabbit Mq Message Shows correct error message
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened
 	And I type Host as "test"

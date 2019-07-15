@@ -102,8 +102,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
-                    "dev2\\IntegrationTester\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I authenticate for share at \"\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\" a" +
+                    "s user \"SVRDEV.premier.local\\Administrator\" with password \"Dev2@dmin123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
  testRunner.When("the create file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
@@ -167,7 +167,8 @@ this.CreateFileAtLocation("1", "Local", "[[path]]", "c:\\myfile.txt", "True", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\tes" +
+            "t.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -178,7 +179,8 @@ this.CreateFileAtLocation("1", "Local", "[[path]]", "c:\\myfile.txt", "True", "\
         public virtual void CreateFileAtLocation_2()
         {
 #line 8
-this.CreateFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\test.txt", "True", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocation("2", "UNC", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\tes" +
+                    "t.txt", "True", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -190,11 +192,11 @@ this.CreateFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Secure\\test" +
-            ".txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Sec" +
+            "ure\\test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "SVRDEV.premier.local\\Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -202,8 +204,8 @@ this.CreateFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemS
         public virtual void CreateFileAtLocation_3()
         {
 #line 8
-this.CreateFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Secure\\test" +
-                    ".txt", "True", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Sec" +
+                    "ure\\test.txt", "True", "SVRDEV.premier.local\\Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -261,7 +263,7 @@ this.CreateFileAtLocation("5", "FTPS", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -272,7 +274,7 @@ this.CreateFileAtLocation("5", "FTPS", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORC
         public virtual void CreateFileAtLocation_6()
         {
 #line 8
-this.CreateFileAtLocation("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocation("6", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -284,7 +286,7 @@ this.CreateFileAtLocation("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/test1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -295,7 +297,7 @@ this.CreateFileAtLocation("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test.txt
         public virtual void CreateFileAtLocation_7()
         {
 #line 8
-this.CreateFileAtLocation("7", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test1.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.CreateFileAtLocation("7", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test1.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -315,8 +317,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
-                    "dev2\\IntegrationTester\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I authenticate for share at \"\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\" a" +
+                    "s user \"SVRDEV.premier.local\\Administrator\" with password \"Dev2@dmin123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
  testRunner.When("the create file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 42
@@ -380,7 +382,8 @@ this.CreateFileAtLocationWithOverwriteDisabled("1", "Local", "[[path]]", "c:\\my
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\tes" +
+            "t.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -391,7 +394,8 @@ this.CreateFileAtLocationWithOverwriteDisabled("1", "Local", "[[path]]", "c:\\my
         public virtual void CreateFileAtLocationWithOverwriteDisabled_2()
         {
 #line 34
-this.CreateFileAtLocationWithOverwriteDisabled("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\test.txt", "False", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("2", "UNC", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\tes" +
+                    "t.txt", "False", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -403,11 +407,11 @@ this.CreateFileAtLocationWithOverwriteDisabled("2", "UNC", "[[path]]", "\\\\RSAK
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Secure\\test" +
-            ".txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Sec" +
+            "ure\\test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", ".\\Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -415,8 +419,8 @@ this.CreateFileAtLocationWithOverwriteDisabled("2", "UNC", "[[path]]", "\\\\RSAK
         public virtual void CreateFileAtLocationWithOverwriteDisabled_3()
         {
 #line 34
-this.CreateFileAtLocationWithOverwriteDisabled("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Secure\\test" +
-                    ".txt", "False", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("3", "UNC Secure", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Sec" +
+                    "ure\\test.txt", "False", ".\\Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -474,7 +478,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("5", "FTPS", "[[path]]", "ftp://r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -485,7 +489,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("5", "FTPS", "[[path]]", "ftp://r
         public virtual void CreateFileAtLocationWithOverwriteDisabled_6()
         {
 #line 34
-this.CreateFileAtLocationWithOverwriteDisabled("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("6", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -497,7 +501,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("6", "SFTP", "[[path]]", "sftp://
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/test1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -508,7 +512,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("6", "SFTP", "[[path]]", "sftp://
         public virtual void CreateFileAtLocationWithOverwriteDisabled_7()
         {
 #line 34
-this.CreateFileAtLocationWithOverwriteDisabled("7", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test1.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("7", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test1.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -589,7 +593,7 @@ this.CreateFileAtLocationNulls("2", "Local", "[[path]]", "v:\\myfile.txt", "True
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/test1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -600,7 +604,7 @@ this.CreateFileAtLocationNulls("2", "Local", "[[path]]", "v:\\myfile.txt", "True
         public virtual void CreateFileAtLocationNulls_3()
         {
 #line 61
-this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/test1.txt", "True", "\"\"", "Q/ulw&]", "[[result]]", "Failure", "AN", "C:\\Temp\\", ((string[])(null)));
+this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test1.txt", "True", "\"\"", "Q/ulw&]", "[[result]]", "Failure", "AN", "C:\\Temp\\", ((string[])(null)));
 #line hidden
         }
         
@@ -612,8 +616,8 @@ this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/tes
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Secure\\test" +
-            ".tx")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Sec" +
+            "ure\\test.tx")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTesteru")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -624,8 +628,8 @@ this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/tes
         public virtual void CreateFileAtLocationNulls_5()
         {
 #line 61
-this.CreateFileAtLocationNulls("5", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Secure\\test" +
-                    ".tx", "True", "dev2.local\\IntegrationTesteru", "I73573r0", "[[result]]", "Failure", "AN", "", ((string[])(null)));
+this.CreateFileAtLocationNulls("5", "UNC Secure", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileCreateSharedTestingSite\\Sec" +
+                    "ure\\test.tx", "True", "dev2.local\\IntegrationTesteru", "I73573r0", "[[result]]", "Failure", "AN", "", ((string[])(null)));
 #line hidden
         }
         

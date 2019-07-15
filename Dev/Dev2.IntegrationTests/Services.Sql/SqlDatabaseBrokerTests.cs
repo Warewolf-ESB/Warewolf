@@ -52,7 +52,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("IntegrationTester", "dev2", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "RSAKLFSVRDEV");
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "SVRDEV.premier.local");
                 var broker = new SqlDatabaseBroker();
                 var result = broker.GetServiceMethods(dbSource);
                 Assert.AreEqual(true, result.Count > 0);
@@ -114,7 +114,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("IntegrationTester", "dev2", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "RSAKLFSVRDEV");
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "SVRDEV.premier.local");
                 var serviceConn = new DbService
                 {
                     ResourceID = Guid.NewGuid(),
