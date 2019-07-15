@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_TestWithInValidArgsExpectedInvalidValidationResult()
         {
             var handler = new WebSources();
-            var result = handler.Test("root:'hello'", Guid.Empty, Guid.Empty);
+            var result = handler.Test("root:'hello'");
             Assert.IsFalse(result.IsValid);
         }
 
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous }.ToString();
 
             var handler = new WebSources();
-            var result = handler.Test(source, Guid.Empty, Guid.Empty);
+            var result = handler.Test(source);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
         }
 
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_GetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
-            var result = handler.Get(null, Guid.Empty, Guid.Empty);
+            var result = handler.Get(null,  Guid.Empty);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(Guid.Empty, result.ResourceID);
@@ -110,7 +110,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_GetWithInvalidArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
-            var result = handler.Get("xxxxx", Guid.Empty, Guid.Empty);
+            var result = handler.Get("xxxxx", Guid.Empty);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(Guid.Empty, result.ResourceID);
