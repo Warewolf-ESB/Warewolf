@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -44,7 +43,7 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ArgumentNullException(nameof(resourceCatalog));
             }
         }
-        public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
+        public WebSource Get(string resourceId, Guid workspaceId)
         {
             var result = new WebSource();
             try
@@ -63,7 +62,7 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
 
-        public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
+        public ValidationResult Test(string args)
         {
             try
             {
@@ -146,8 +145,8 @@ namespace Dev2.Runtime.ServiceModel
             return $"{source.Address}{relativeUri}";
         }
 
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers)
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, out errors, null);
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors, string[] headers)
         {
             CreateWebClient(source, headers);
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, out errors);
@@ -228,7 +227,7 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
 
-                throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode.ToString());
+                throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode);
             }
         }
 
