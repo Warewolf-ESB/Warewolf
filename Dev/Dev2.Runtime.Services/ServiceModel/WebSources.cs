@@ -203,6 +203,7 @@ namespace Dev2.Runtime.ServiceModel
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
+            data = data.Replace("\n", Environment.NewLine);
             var byteData = Encoding.UTF8.GetBytes(data);
             wr.ContentLength = byteData.Length;
 
