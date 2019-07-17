@@ -203,8 +203,7 @@ namespace Dev2.Runtime.ServiceModel
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
-            data = data.Replace("\n", Environment.NewLine);
-            var byteData = Encoding.UTF8.GetBytes(data);
+            var byteData = ConvertToHttpNewLine(ref data);
             wr.ContentLength = byteData.Length;
 
             using (var requestStream = wr.GetRequestStream())
@@ -220,7 +219,9 @@ namespace Dev2.Runtime.ServiceModel
                     using (var responseStream = wresp.GetResponseStream())
                     {
                         if (responseStream == null)
+                        {
                             return null;
+                        }
                         using (var responseReader = new StreamReader(responseStream))
                         {
                             return responseReader.ReadToEnd();
@@ -230,6 +231,14 @@ namespace Dev2.Runtime.ServiceModel
 
                 throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode);
             }
+        }
+
+        internal static byte[] ConvertToHttpNewLine(ref string data)
+        {
+            data = data.Replace("\r\n", "\n");
+            data = data.Replace("\n", GlobalConstants.HTTPNewLine);
+            var byteData = Encoding.UTF8.GetBytes(data);
+            return byteData;
         }
 
         public static void CreateWebClient(WebSource source, IEnumerable<string> headers)
