@@ -282,6 +282,7 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 
  Scenario: Workflow with ForEach in Rec with star which contains Dot Net DLL
       Given I have a workflow "WFWithForEachContainingDotNetDLL"	
+	   And Debug states are cleared
 	   And "WFWithForEachContainingDotNetDLL" contains an Assign "RecVal" as
 	  | variable         | value |
 	  | [[rec().number]] | 1     |
@@ -382,6 +383,7 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 
   Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only Large Execution
       Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
+	  And Debug states are cleared
 	  And "WFForEachInsideforEachLargeTenFifty" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "10"
 	  And "ForEachTest1" contains a Foreach "ForEachTest2" as "NumOfExecution" executions "50"
 	  And "ForEachTest2" contains an Assign "Testingoutput" as
