@@ -8,16 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-using WarewolfParserInterop;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Warewolf.Resource.Errors;
+using WarewolfParserInterop;
 
 namespace Warewolf.Storage.Tests
 {
@@ -244,7 +244,8 @@ namespace Warewolf.Storage.Tests
                 _environment.GetLength("@obj.people");
 
                 Assert.Fail("expected exception, not a recordset");
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("not a recordset", e.Message);
             }
@@ -261,7 +262,8 @@ namespace Warewolf.Storage.Tests
             {
                 _environment.GetObjectLength("@obj.people");
                 Assert.Fail("expected exception, not a json array");
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("not a json array", e.Message);
             }
@@ -421,7 +423,7 @@ namespace Warewolf.Storage.Tests
             var list = _environment.EvalAsList("[[@Obj]]", 0).ToArray();
 
             Assert.AreEqual(1, list.Length);
-            Assert.AreEqual("{"+ Environment.NewLine +"  \"Name\": \"Bob\""+ Environment.NewLine +"}", (list[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Name\": \"Bob\"" + Environment.NewLine + "}", (list[0] as DataStorage.WarewolfAtom.DataString).Item);
         }
 
         [TestMethod]
@@ -947,7 +949,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_WarewolfEvalResultToString_EnsureNoNewResultTypes()
         {
             /* This test ensures that if we add a new result type we will make sure that we alter WarewolfEvalResultToString */
-            var members = typeof(CommonFunctions.WarewolfEvalResult).FindMembers(System.Reflection.MemberTypes.NestedType, System.Reflection.BindingFlags.Public, (m,s) => true, null).ToArray();
+            var members = typeof(CommonFunctions.WarewolfEvalResult).FindMembers(System.Reflection.MemberTypes.NestedType, System.Reflection.BindingFlags.Public, (m, s) => true, null).ToArray();
 
             Assert.AreEqual(4, members.Length);
             Assert.AreEqual("Tags", members[0].Name);
@@ -1209,7 +1211,7 @@ namespace Warewolf.Storage.Tests
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[a]]", "SomeValue", 0);
             var clause =
-                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before"+ atom.ToString() +"after"));
+                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
             _environment.ApplyUpdate("[[a]]", clause, 0);
 
             var result = _environment.EvalAsListOfStrings("[[a]]", 0);
@@ -1263,7 +1265,8 @@ namespace Warewolf.Storage.Tests
             {
                 _environment.ApplyUpdate("[[rec]]", clause, 0);
                 Assert.Fail("expected exception Scalar value { rec } is NULL");
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("Scalar value { rec } is NULL", e.Message);
             }
@@ -1361,8 +1364,11 @@ namespace Warewolf.Storage.Tests
             try
             {
                 _environment.AssignWithFrame(new AssignValue("[[rec(0).a]", "Value"), 0);
-                Assert.Fail("expected exception parse error");
-            } catch (Exception e)
+                Assert.IsTrue(_environment.HasErrors());
+                Assert.AreEqual("parse error", _environment.FetchErrors());
+
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("parse error", e.Message);
             }
@@ -1405,7 +1411,8 @@ namespace Warewolf.Storage.Tests
             {
                 Assert.IsFalse(ExecutionEnvironment.IsValidRecordSetIndex("[[a]"));
                 Assert.Fail("expected exception, parse error");
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("parse error", e.Message);
             }
@@ -1496,7 +1503,8 @@ namespace Warewolf.Storage.Tests
             {
                 var result = _environment.EvalStrict("[[@Person().Name]]", 0);
                 Assert.Fail("expected no value assigned exception");
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("The expression [[@Person().Name]] has no value assigned.", e.Message);
             }
@@ -1772,7 +1780,7 @@ namespace Warewolf.Storage.Tests
             var result = _environment.EvalAsListOfStrings("[[@Person]]", 0);
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("{"+ Environment.NewLine +"  \"Name\": \"John\""+ Environment.NewLine +"}", result[0]);
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Name\": \"John\"" + Environment.NewLine + "}", result[0]);
         }
 
         [TestMethod]
@@ -1788,7 +1796,8 @@ namespace Warewolf.Storage.Tests
             {
                 _environment.AssignJson(values, 0);
                 Assert.Fail("expected exception parse error");
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual("parse error", e.Message);
             }
@@ -1853,8 +1862,9 @@ namespace Warewolf.Storage.Tests
             try
             {
                 ExecutionEnvironment.WarewolfAtomToStringErrorIfNull(atom);
-                Assert.Fail("expected exception: "+ ErrorResource.VariableIsNull);
-            } catch (Exception e)
+                Assert.Fail("expected exception: " + ErrorResource.VariableIsNull);
+            }
+            catch (Exception e)
             {
                 Assert.AreEqual(ErrorResource.VariableIsNull, e.Message);
             }
