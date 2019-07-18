@@ -697,6 +697,37 @@ Scenario: Assigning a variable that does not exist to a recordset should error
 	| 3 | [[rec(2).a]] = three |
 	| 4 | [[rec(2).b]] = four  |
 
+Scenario: Assigning a variable that does not exist to a recordset should error1
+	Given I assign the value APP to a variable "[[a]]"
+	And I assign the value CAKE to a variable "[[c]]"
+	And I assign the value {KeyA} to a variable "[[rec().key]]"
+	And I assign the value [[a]] to a variable "[[rec().Value]]"
+	And I assign the value {KeyB} to a variable "[[rec().key]]"
+	And I assign the value [[b]] to a variable "[[rec().Value]]"
+	And I assign the value {KeyC} to a variable "[[rec().key]]"
+	And I assign the value [[c]] to a variable "[[rec().Value]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the debug inputs with errors as
+	| # | Variable                   | New Value |
+	| 1 | [[rec().key]]          =   | {KeyA}    |
+	| 2 | [[rec().Value]]          = | [[a]]     |
+	| 3 | [[rec().key]]          =   | {KeyB}    |
+	| 4 | [[rec().Value]]          = | [[b]]     |
+	| 5 | [[rec().key]]          =   | {KeyC}    |
+	| 6 | [[rec().Value]]          = | [[c]]     |
+
+	And the debug output with errors as
+	| # |                         |
+	| 1 | [[a]] = APP             |
+	| 2 | [[c]] = CAKE            |
+	| 3 | [[rec(1).key]] = {KeyA} |
+	| 4 | [[rec(1).Value]] = APP  |
+	| 5 | [[rec(2).key]] = {KeyB} |
+	| 6 | [[rec(2).Value]] =      |
+	| 7 | [[rec(3).key]] = {KeyC} |
+	| 8 | [[rec(3).Value]] = CAKE |
+
 Scenario: Assign a variable equal to a complex expression with scalar and recordset with star
 	Given I assign the value 1 to a variable "[[a]]"
 	And I assign the value 2 to a variable "[[b]]"
