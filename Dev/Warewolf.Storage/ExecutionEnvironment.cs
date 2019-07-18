@@ -173,7 +173,6 @@ namespace Warewolf.Storage
             catch (Exception err)
             {
                 Errors.Add(err.Message);
-                throw;
             }
         }
         public void AssignWithFrame(IEnumerable<IAssignValue> values, int update)
