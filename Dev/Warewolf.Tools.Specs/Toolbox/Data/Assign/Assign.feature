@@ -675,6 +675,27 @@ Scenario: Assign a Variable That Does Not Exist
 	When the assign tool is executed
 	Then the execution has "AN" error
 	And the execution has "Scalar value { var } is NULL" error
+	
+Scenario: Assigning a variable that does not exist to a recordset should error
+	Given I assign the value one to a variable "[[rec().a]]"
+	And I assign the value [[invalidVar]] to a variable "[[rec().b]]"
+	And I assign the value three to a variable "[[rec().a]]"
+	And I assign the value four to a variable "[[rec().b]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the debug inputs with errors as
+	| # | Variable               | New Value      |
+	| 1 | [[rec().a]]          = | one            |
+	| 2 | [[rec().b]]          = | [[invalidVar]] |
+	| 3 | [[rec().a]]          = | three          |
+	| 4 | [[rec().b]]          = | four           |
+
+	And the debug output with errors as
+	| # |                      |
+	| 1 | [[rec(1).a]] = one   |
+	| 2 | [[rec(1).b]] =       |
+	| 3 | [[rec(2).a]] = three |
+	| 4 | [[rec(2).b]] = four  |
 
 Scenario: Assign a variable equal to a complex expression with scalar and recordset with star
 	Given I assign the value 1 to a variable "[[a]]"
