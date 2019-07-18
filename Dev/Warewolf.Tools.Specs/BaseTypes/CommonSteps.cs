@@ -194,6 +194,81 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
+
+        [Given(@"the debug inputs with errors as")]
+        [When(@"the debug inputs with errors as")]
+        [Then(@"the debug inputs with errors as")]
+        public void ThenTheDebugInputsWithErrorsAs(Table table)
+        {
+            var containsInnerActivity = _scenarioContext.ContainsKey("innerActivity");
+            var containsKey = _scenarioContext.ContainsKey("activity");
+
+            if (containsInnerActivity)
+            {
+                _scenarioContext.TryGetValue("innerActivity", out DsfNativeActivity<string> selectAndAppltTool);
+                var result = _scenarioContext.Get<IDSFDataObject>("result");
+                if (result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(selectAndAppltTool, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
+                else
+                {
+                    Assert.Fail("expected errors");
+                }
+            }
+            else if (containsKey)
+            {
+                _scenarioContext.TryGetValue("activity", out object baseAct);
+                var stringAct = baseAct as DsfFlowNodeActivity<string>;
+                var boolAct = baseAct as DsfFlowNodeActivity<bool>;
+                var baseBoolAct = baseAct as DsfActivityAbstract<bool>;
+                var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
+                if (stringAct != null)
+                {
+                    var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                    var result = _scenarioContext.Get<IDSFDataObject>("result");
+                    if (result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
+                    else
+                    {
+                        Assert.Fail("expected errors");
+                    }
+                }
+                else if (boolAct != null || baseBoolAct != null)
+                {
+                    var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var result = _scenarioContext.Get<IDSFDataObject>("result");
+                    if (result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
+                    else
+                    {
+                        Assert.Fail("expected errors");
+                    }
+                }
+                else if (multipleFilesActivity != null)
+                {
+                    var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
+                    var result = _scenarioContext.Get<IDSFDataObject>("result");
+                    if (result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
+                    else
+                    {
+                        Assert.Fail("expected errors");
+                    }
+                }
+            }
+        }
+
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
@@ -206,6 +281,18 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             var result = _scenarioContext.Get<IDSFDataObject>("result");
             if (!result.Environment.HasErrors())
+            {
+                var outputDebugItems = GetOutputDebugItems(null, result.Environment);
+                ThenTheDebugOutputAs(table, outputDebugItems);
+            }
+        }
+
+        [Then(@"the debug output with errors as")]
+        [When(@"the debug output with errors as")]
+        public void ThenTheDebugOutputWithErrorsAs(Table table)
+        {
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
+            if (result.Environment.HasErrors())
             {
                 var outputDebugItems = GetOutputDebugItems(null, result.Environment);
                 ThenTheDebugOutputAs(table, outputDebugItems);
