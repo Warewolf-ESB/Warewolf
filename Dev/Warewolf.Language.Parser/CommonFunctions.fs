@@ -55,6 +55,7 @@ let atomtoString (x : WarewolfAtom) =
     | Int a -> a.ToString()
     | DataString a -> a
     | Nothing -> null
+    | NullPlaceholder -> null
     | PositionedValue(_, b) -> b.ToString()
 
 let warewolfAtomRecordtoString (x : WarewolfAtomRecord) = 
@@ -65,6 +66,7 @@ let warewolfAtomRecordtoString (x : WarewolfAtomRecord) =
     | Int a -> a.ToString()
     | DataString a -> a
     | Nothing -> ""
+    | NullPlaceholder -> ""
     | PositionedValue(_, b) -> b.ToString()
 
 let evalResultToString (a : WarewolfEvalResult) = 
