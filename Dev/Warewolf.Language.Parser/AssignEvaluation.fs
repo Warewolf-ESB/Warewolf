@@ -342,7 +342,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                             if value.Value = null then (WarewolfAtomResult Nothing, null)
                             else ((eval env update false value.Value), null)
                          with
-                            | e -> (WarewolfAtomResult Nothing, e)
+                            | e -> (WarewolfAtomResult NullPlaceholder, e)
     let shouldUseLast = 
         match rightParse with
         | RecordSetExpression a -> 
