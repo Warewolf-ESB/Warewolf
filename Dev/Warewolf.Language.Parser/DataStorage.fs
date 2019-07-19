@@ -28,6 +28,7 @@ type WarewolfAtom =
     | Int of int
     | DataString of string
     | Nothing
+    | NullPlaceholder
     | PositionedValue of (int * WarewolfAtom)
     
     override x.ToString() = 
@@ -38,6 +39,7 @@ type WarewolfAtom =
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> ""
+        | NullPlaceholder -> ""
         | PositionedValue(_, b) -> b.ToString()
     
     override x.Equals y = x.ToString() = y.ToString()
