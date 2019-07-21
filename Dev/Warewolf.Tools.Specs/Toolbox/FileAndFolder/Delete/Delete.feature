@@ -10,7 +10,7 @@ Scenario Outline: Delete file at location
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with saved password
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -25,17 +25,17 @@ Scenario Outline: Delete file at location
 	| Local      | [[path]] | c:\filetodelete.txt                                                                                     | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC        | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\filetodelete.txt        | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt | .\Administrator | Dev2@dmin123 | [[result]] | "Success" | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORDELETEFILETESTING/filetodelete.txt                                           | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORDELETEFILETESTING/filetodelet.txt                                            | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
-	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetodelete.txt                                                                    | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetodelete1.txt                                                                   | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
+	| FTP        | [[path]] | ftp://SVRPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt                                   | ""                           | ""       | [[result]] | "Success" | NO           |                      |
+	| FTPS       | [[path]] | ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                    | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
+	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetodelete.txt                                                            | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
+	| SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetodelete1.txt                                                           | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Delete file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with saved password
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	Then the execution has "<errorOccured>" error
@@ -45,9 +45,9 @@ Scenario Outline: Delete file at location Null
 	| Local      | [[path]] | G:\filetodelete                                                                                        | ""                          | ""       | [[result]] | "Failure" | NO           |                      |
 	| UNC        | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Memo.txt               | ""                          | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC Secure | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt| dev2.local\IntegrationTester| password | [[result]] | "Failure" | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORDELETEFILETESTING/filetodelete.xtx                                          | ""                          | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORDELETEFILETESTING/filetodelet.txt                                           | IntegrationTester           | I73573r0 | [[result]] | ""        | NO           |                      |
-	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/Memo.txt                                                                           | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
+	| FTP        | [[path]] | ftp://SVRPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx                                  | ""                          | ""       | [[result]] | "Success" | NO           |                      |
+	| FTPS       | [[path]] | ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                   | IntegrationTester           | I73573r0 | [[result]] | ""        | NO           |                      |
+	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/Memo.txt                                                                   | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 Scenario Outline: Delete file Validation
     Given I have a variable "[[a]]" with a value "<Val1>"
@@ -59,7 +59,7 @@ Scenario Outline: Delete file Validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with saved password
 	When validating the delete tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
@@ -128,7 +128,7 @@ Scenario Outline: Delete file at location with incorrect directories
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| Name       | source       | sourceLocation      | username                     | password | resultVar  | result | errorOccured | 
-	| Local      | 1234         | c:\filetodelete.txt | ""                           | ""       | [[result]] | ""     | AN           | 
-	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] | ""     | AN           | 
+	| Name       | source       | sourceLocation      | username        | password     | resultVar  | result | errorOccured | 
+	| Local      | 1234         | c:\filetodelete.txt | ""              | ""           | [[result]] | ""     | AN           | 
+	| UNC        | [[var]]      |                     | ""              | ""           | [[result]] | ""     | AN           | 
 	| UNC Secure | [[variable]] | ""                  | .\Administrator | Dev2@dmin123 | [[result]] | ""     | AN           | 
