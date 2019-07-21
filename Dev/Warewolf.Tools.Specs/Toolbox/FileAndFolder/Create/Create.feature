@@ -11,7 +11,7 @@ Scenario Outline: Create file at location
 	And destination credentials as "<username>" and "<password>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with saved password
 	When the create file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -26,8 +26,8 @@ Scenario Outline: Create file at location
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
 		| 2  | UNC        | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
 		| 3  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | True     | SVRDEV.premier.local\Administrator | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                           | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
-		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                           | True     | IntegrationTester                  | I73573r0     | [[result]] | Success | NO           |                           |
+		| 4  | FTP        | [[path]]    | ftp://SVRPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                           | True     | ""                                 | ""           | [[result]] | Success | NO           |                           |
+		| 5  | FTPS       | [[path]]    | ftp://SVRPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                   | True     | IntegrationTester                  | I73573r0     | [[result]] | Success | NO           |                           |
 		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | True     | dev2                               | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 7  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | True     | dev2                               | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
@@ -37,7 +37,7 @@ Scenario Outline: Create file at location with overwrite disabled
 	And destination credentials as "<username>" and "<password>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with password "Dev2@dmin123"
+	And I authenticate for share at "\\SVRDEV.premier.local\FileSystemShareTestingSite" as user "SVRDEV.premier.local\Administrator" with saved password
 	When the create file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -52,8 +52,8 @@ Scenario Outline: Create file at location with overwrite disabled
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | False    | ""                | ""           | [[result]] | Success | NO           |                           |
 		| 2  | UNC        | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | False    | ""                | ""           | [[result]] | Success | NO           |                           |
 		| 3  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | False    | .\Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                           | False    | ""                | ""           | [[result]] | Success | NO           |                           |
-		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                           | False    | IntegrationTester | I73573r0     | [[result]] | Success | NO           |                           |
+		| 4  | FTP        | [[path]]    | ftp://SVRPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                           | False    | ""                | ""           | [[result]] | Success | NO           |                           |
+		| 5  | FTPS       | [[path]]    | ftp://SVRPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                   | False    | IntegrationTester | I73573r0     | [[result]] | Success | NO           |                           |
 		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | False    | dev2              | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 7  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | False    | dev2              | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
