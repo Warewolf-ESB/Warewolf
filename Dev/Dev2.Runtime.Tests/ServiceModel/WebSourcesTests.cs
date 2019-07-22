@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_GetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
-            var result = handler.Get(null,  Guid.Empty);
+            var result = handler.Get(null, Guid.Empty);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(Guid.Empty, result.ResourceID);
@@ -159,7 +160,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
-            Assert.AreEqual("multipart/form-data",contentType);
+            Assert.AreEqual("multipart/form-data", contentType);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -174,7 +175,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
             Assert.IsFalse(errors.HasErrors());
-            Assert.AreEqual("multipart/form-data",contentType);
+            Assert.AreEqual("multipart/form-data", contentType);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -189,6 +190,50 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(errors.HasErrors());
             Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void WebSources_HttpNewLine()
+        {
+            const string data = @"Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cookie: __atuvc=34%7C7; permanent=0; _gitlab_session=226ad8a0be43681acf38c2fab9497240; __profilin=p%3Dt; request_method=GET
+Connection: keep-alive
+Content-Type: multipart/form-data; boundary=---------------------------9051914041544843365972754266
+Content-Length: 554
+
+-----------------------------9051914041544843365972754266
+Content-Disposition: form-data; name=""text""
+
+text default
+-----------------------------9051914041544843365972754266
+Content-Disposition: form-data; name=""file1""; filename=""a.txt""
+Content-Type: text/plain
+
+Content of a.txt.
+
+-----------------------------9051914041544843365972754266
+Content-Disposition: form-data; name=""file2""; filename=""a.html""
+Content-Type: text/html
+
+<!DOCTYPE html><title>Content of a.html.</title>
+
+-----------------------------9051914041544843365972754266--";
+            var rData = data;
+            var byteData = WebSources.ConvertToHttpNewLine(ref rData);
+
+            string expected = data;
+            string result = Encoding.UTF8.GetString(byteData);
+
+            Assert.AreEqual(expected, result);
+
+            rData = data.Replace("\r\n", "\n");
+            byteData = WebSources.ConvertToHttpNewLine(ref rData);
+
+            result = Encoding.UTF8.GetString(byteData);
+
+            Assert.AreEqual(expected, result);
         }
     }
 }

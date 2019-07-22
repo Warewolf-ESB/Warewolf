@@ -35,6 +35,7 @@ let atomtoString (x:WarewolfAtom )=
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> null
+        | NullPlaceholder -> null
         | PositionedValue (_,b) -> b.ToString()
 let warewolfAtomRecordtoString (x:WarewolfAtomRecord )=
     match x with 
@@ -43,6 +44,7 @@ let warewolfAtomRecordtoString (x:WarewolfAtomRecord )=
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> ""
+        | NullPlaceholder -> ""
         | PositionedValue (_,b) -> b.ToString()
 
 let evalResultToString (a:WarewolfEvalResult) = 
@@ -121,7 +123,6 @@ let evalScalar (scalarName:ScalarIdentifier) (env:WarewolfEnvironment) =
     then     ( env.Scalar.[scalarName])
     else raise (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName,scalarName))
              
-
 let rec IndexToString (x:Index) =
     match x with 
         | IntIndex a -> a.ToString()
@@ -820,6 +821,7 @@ let atomtoJToken (x:WarewolfAtom )=
         | Int a -> new JValue(a)
         | DataString a -> new JValue(a)
         | Nothing -> null
+        | NullPlaceholder -> null
         | PositionedValue (_,b) ->  new JValue(b.ToString())
 
 let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom) = 
