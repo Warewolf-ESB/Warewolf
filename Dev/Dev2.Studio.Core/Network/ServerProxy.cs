@@ -51,13 +51,13 @@ namespace Dev2.Network
         
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
-            _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
+            _wrappedConnection = new ServerProxyPersistentConnection(serverUri,credentials,worker);
             SetupPassthroughEvents();
         }
         
         public ServerProxy(string webAddress, string userName, string password)
         {
-            _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
+            _wrappedConnection = new ServerProxyPersistentConnection(webAddress, userName, password);
             SetupPassthroughEvents();
         }
 

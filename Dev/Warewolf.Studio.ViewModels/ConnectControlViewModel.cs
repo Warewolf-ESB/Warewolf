@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
         {
-            PopupController = popupController;
+            PopupController = popupController ?? CustomContainer.Get<IPopupController>();
             if (aggregator == null)
             {
                 throw new ArgumentNullException(nameof(aggregator));
@@ -204,7 +204,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
-                    PopupController?.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                    PopupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
@@ -404,7 +404,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                var result = PopupController.ShowConnectionTimeoutConfirmation(connection.DisplayName);
                 if (result == MessageBoxResult.Yes)
                 {
                     await TryConnectAsync(connection).ConfigureAwait(true);

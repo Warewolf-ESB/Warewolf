@@ -272,7 +272,7 @@ namespace Dev2.Network
         public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
-            return true;
+            return IsConnected;
         }
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
@@ -576,6 +576,23 @@ namespace Dev2.Network
     class ServerProxyPersistentConnection : ServerProxyWithoutChunking
     {
         public ServerProxyPersistentConnection(Uri serverUri) : base(serverUri)
+        {
+            StartConnection();
+        }
+
+        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
+            : base(serverUri, credentials, worker)
+        {
+            StartConnection();
+        }
+
+        public ServerProxyPersistentConnection(string webAddress, string userName, string password) 
+            : base(webAddress, userName, password)
+        {
+            StartConnection();
+        }
+
+        private void StartConnection()
         {
             HubConnection.Start();
             StartHubConnectionWatchdogThread();
