@@ -223,4 +223,3 @@ this.EnsureThatAVariableRecordsetEvaluatesToTheValueOnTheDatalist("[[rec(*).a]]"
 }
 #pragma warning restore
 #endregion
-

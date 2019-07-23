@@ -935,4 +935,3 @@ this.EnsureDeleteVariablesOfDifferentTypesProduceDesiredResults("[[Rec([[var]]).
 }
 #pragma warning restore
 #endregion
-

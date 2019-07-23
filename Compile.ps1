@@ -162,7 +162,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 				    } else {
 					    Write-Host Double checking with hard coded integration manager repo...
 					    # Check tag against hard coded integration manager repo
-					    $originTag = git -C "$PSScriptRoot" ls-remote --tags "file:////rsaklfsvrdev/Git-Repositories/Warewolf" $FullVersionString
+					    $originTag = git -C "$PSScriptRoot" ls-remote --tags "https://gitlab.com/warewolfdevelopers/warewolf" $FullVersionString
 					    if ($originTag.length -ne 0) {
 						    Write-Host Hard coded integration manager repo has tag `"$originTag`".
 					    } else {
@@ -217,20 +217,6 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
-[assembly: InternalsVisibleTo(@"Dev2.Activities.Designers.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Activities.Specs")]
-[assembly: InternalsVisibleTo(@"Dev2.Activities.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Core.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Data.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Infrastructure.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Integration.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Runtime.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.Studio.Core.Tests")]
-[assembly: InternalsVisibleTo(@"Dev2.TaskScheduler.Wrappers")]
-[assembly: InternalsVisibleTo(@"Warewolf.Studio.ViewModels.Tests")]
-[assembly: InternalsVisibleTo(@"Warewolf.Tools.Specs")]
-[assembly: InternalsVisibleTo(@"Warewolf.UIBindingTests.ComDll")]
-[assembly: InternalsVisibleTo(@"Warewolf.UIBindingTests.PluginSource")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force

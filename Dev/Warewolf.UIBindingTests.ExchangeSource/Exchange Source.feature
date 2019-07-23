@@ -42,7 +42,7 @@ Given I open a new exchange source
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-Scenario: Fail Send Shows correct error message
+Scenario: Fail Exchange Email Send Shows correct error message
 	Given I open a new exchange source
 	Then "New Exchange Source" tab is Opened
 	And Title is "New Exchange Source"

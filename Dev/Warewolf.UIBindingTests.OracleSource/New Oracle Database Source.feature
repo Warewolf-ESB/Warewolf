@@ -35,11 +35,11 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV |
-   | RSAKLFSVRPDC |
+   | SVRDEV          |
+   | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
-   And I type Select The Server as "RSAKLFSVRDEV"
+   And I type Select The Server as "SVRDEV"
    And Database dropdown is "Collapsed"
    And "Save" is "Disabled"
    And "Test Connection" is "Disabled"
@@ -70,7 +70,7 @@ Scenario: Creating New DB Source General Testing
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
-	And I type Server as "RSAKLFSVRDEV"
+	And I type Server as "SVRDEV.premier.local"
 	And "Save" is "Disabled"
 	When I type Username as "testuser"
 	And I type Password as "test123"
@@ -111,7 +111,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRDEV"	
+	  And I type Server as "SVRDEV.premier.local"	
 	  When I type Username as "test"
 	  And I type Password as "test"
 	  Then Database dropdown is "Collapsed"
@@ -129,7 +129,7 @@ Scenario: Incorrect Server Address Shows correct error message
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRDEV"
+	And Server as "SVRDEV.premier.local"
 	And Username field is "testuser"
 	And Password field is "******"
 	And "Test Connection" is "Enabled"
@@ -154,7 +154,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRDEV"
+   When I type Server as "SVRDEV.premier.local"
    And "Save" is "Disabled"
    And "Test Connection" is "Disabled"
    When I type Username as "testuser"

@@ -356,7 +356,7 @@ namespace Dev2.Infrastructure.Tests
 
         public static string GetVar(string name)
         {
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
+            const string passwordsPath = @"\\SVRDEV.premier.local\Git-Repositories\Warewolf\.testData";
             if (File.Exists(passwordsPath))
             {
                 var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
@@ -372,6 +372,48 @@ namespace Dev2.Infrastructure.Tests
             return string.Empty;
         }
 
+        public static string TrySetVar(string name, string value)
+        {
+            var newusernameandpassword = Encrypt($"{name}={value}");
+            bool missing = true;
+            const string passwordsPath = @"\\SVRDEV.premier.local\Git-Repositories\Warewolf\.testData";
+            if (File.Exists(passwordsPath))
+            {
+                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
+                foreach (var usernameAndPassword in usernamesAndPasswords)
+                {
+                    if (newusernameandpassword == usernameAndPassword)
+                    {
+                        missing = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                try
+                {
+                    File.WriteAllText(passwordsPath, newusernameandpassword);
+                }
+                catch (IOException e)
+                {
+                    if (!e.Message.Contains("Access is denied for this request."))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        missing = false;
+                    }
+                }
+            }
+            if (missing)
+            {
+                File.AppendAllText(passwordsPath, "\n" + newusernameandpassword);
+            }
+            return value;
+        }
+
         static byte[] key = new byte[8] { 1, 2, 3, 4, 5, 6, 7, 8 };
         static byte[] iv = new byte[8] { 1, 1, 2, 3, 5, 8, 13, 21 };
 
@@ -382,6 +424,15 @@ namespace Dev2.Infrastructure.Tests
             byte[] inputbuffer = Convert.FromBase64String(text);
             byte[] outputBuffer = transform.TransformFinalBlock(inputbuffer, 0, inputbuffer.Length);
             return Encoding.Unicode.GetString(outputBuffer);
+        }
+
+        static string Encrypt(string text)
+        {
+            SymmetricAlgorithm algorithm = DES.Create();
+            ICryptoTransform transform = algorithm.CreateEncryptor(key, iv);
+            byte[] inputbuffer = Encoding.ASCII.GetBytes(text);
+            byte[] outputBuffer = transform.TransformFinalBlock(inputbuffer, 0, inputbuffer.Length);
+            return Convert.ToBase64String(outputBuffer);
         }
     }
 }

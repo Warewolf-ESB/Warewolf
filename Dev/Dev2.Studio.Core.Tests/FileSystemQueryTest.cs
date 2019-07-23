@@ -621,15 +621,15 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
+            var shareCollection = new ShareCollection(@"\\SVRDEV.premier.local\");
             if (shareCollection.Count <= 0)
             {
                 var username = @"dev2\IntegrationTester";
                 var password = TestEnvironmentVariables.GetVar(username);
             //------------Execute Test---------------------------
-                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", username, password);
+                AuthenticateForSharedFolder(@"\\SVRDEV.premier.local\Git-Repositories", username, password);
                 Thread.Sleep(1000);
-                shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
+                shareCollection = new ShareCollection(@"\\SVRDEV.premier.local\");
             }
             //------------Assert Results-------------------------
             Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
@@ -649,11 +649,18 @@ namespace Dev2.Core.Tests
                 ErrorDialog = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "net.exe",
-                Arguments = $"use {site} /USER:{user} /PERSISTENT:YES {password}"
+                Arguments = $"use {site} /DELETE"
             };
             process.OutputDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
             process.ErrorDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
 
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process.WaitForExit();
+            process.CancelErrorRead();
+            process.CancelOutputRead();
+            process.StartInfo.Arguments = $"use {site} /USER:{user} /PERSISTENT:YES {password}";
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
