@@ -28,7 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
             {
                 getDomain = Domain.GetComputerDomain();
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 //not on a domain
             }
