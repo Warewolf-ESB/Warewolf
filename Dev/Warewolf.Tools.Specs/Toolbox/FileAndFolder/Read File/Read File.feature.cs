@@ -228,8 +228,8 @@ this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORTESTING/filetodele.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -237,7 +237,7 @@ this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001
         public virtual void ReadFileAtLocation_5()
         {
 #line 8
-this.ReadFileAtLocation("5", "FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORTESTING/filetodele.txt", "IntegrationTester", "I73573r0", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("5", "FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORTESTING/filetodele.txt", "Administrator", "Dev2@dmin123", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -407,8 +407,8 @@ this.ReadFileAtLocationNull("4", "FTP", "[[path]]", "ftp://SVRPDC.premier.local:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -416,7 +416,7 @@ this.ReadFileAtLocationNull("4", "FTP", "[[path]]", "ftp://SVRPDC.premier.local:
         public virtual void ReadFileAtLocationNull_5()
         {
 #line 32
-this.ReadFileAtLocationNull("5", "FTPS", "[[path]]", "ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt", "IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("5", "FTPS", "[[path]]", "ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt", "Administrator", "Dev2@dmin123", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
