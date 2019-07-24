@@ -131,4 +131,4 @@ Scenario Outline: Delete file at location with incorrect directories
 	| Name       | source       | sourceLocation      | username        | password     | resultVar  | result | errorOccured | 
 	| Local      | 1234         | c:\filetodelete.txt | ""              | ""           | [[result]] | ""     | AN           | 
 	| UNC        | [[var]]      |                     | ""              | ""           | [[result]] | ""     | AN           | 
-	| UNC Secure | [[variable]] | ""                  | .\Administrator | Dev2@dmin123 | [[result]] | ""     | AN           | 
+	#| UNC Secure | [[variable]] | ""                  | .\Administrator | Dev2@dmin123 | [[result]] | ""     | AN           | 
