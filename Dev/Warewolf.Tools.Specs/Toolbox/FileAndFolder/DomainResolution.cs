@@ -22,24 +22,18 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
                 return username;
             }
             username = username.Substring(domainSeperator);
-	        try
-	        {
-                Domain getDomain = null;
-                string domainName = "";
-                try
-                {
-                    getDomain = Domain.GetComputerDomain();
-                }
-                if (getDomain != null)
-                {
-                    domainName = getDomain.Name;
-                }
-                return username.Insert(0, domainName);
-	        }
-	        catch (ActiveDirectoryObjectNotFoundException)
-	        {
-                return username.Insert(0, ".");
-	        }
+            Domain getDomain = null;
+            string domainName = "";
+            try
+            {
+                getDomain = Domain.GetComputerDomain();
+            }
+            catch () { }
+            if (getDomain != null)
+            {
+                domainName = getDomain.Name;
+            }
+            return username.Insert(0, domainName);
         }
     }
 }
