@@ -47,7 +47,7 @@ namespace Dev2.Runtime.WebServer
             var allErrors = dto.ErrorResultTO;
             bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
 
-            if (!dataObject.Environment.HasErrors())
+            if (true)//(dataObject.Environment.HasErrors())
             {
                 if (!wasInternalService)
                 {
