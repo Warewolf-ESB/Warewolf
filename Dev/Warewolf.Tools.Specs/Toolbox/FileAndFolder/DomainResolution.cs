@@ -24,8 +24,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
             username = username.Substring(domainSeperator);
 	        try
 	        {
-                var domainName = Domain.GetComputerDomain();
-                return username.Insert(0, domainName.Name);
+                Domain getDomain = null;
+                string domainName = "";
+                try
+                {
+                    getDomain = Domain.GetComputerDomain();
+                }
+                if (getDomain != null)
+                {
+                    domainName = getDomain.Name;
+                }
+                return username.Insert(0, domainName);
 	        }
 	        catch (ActiveDirectoryObjectNotFoundException)
 	        {
