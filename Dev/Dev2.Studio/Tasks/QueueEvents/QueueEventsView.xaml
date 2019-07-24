@@ -1,0 +1,270 @@
+﻿<UserControl x:Class="Dev2.Tasks.QueueEvents.QueueEventsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:queueEvents="clr-namespace:Dev2.Tasks.QueueEvents"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+             xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+             xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
+             AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
+
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding NewCommand}" Key="N" Modifiers="Ctrl" />
+    </UserControl.InputBindings>
+    
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="1">
+                <TextBlock Width="300"
+                           Foreground="{StaticResource ValidationErrorElement}"
+                           TextWrapping="WrapWithOverflow"
+                           Text=""
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Left"
+                           Visibility="Collapsed" />
+                <Rectangle Fill="Gray" Opacity="0.2"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" BorderBrush="{StaticResource ListBoxItemSelectedBorderBrush}" BorderThickness="0,1,0,0" Margin="{StaticResource ElementBorderTop}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*" MinWidth="210"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="70*" MinWidth="350"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Column="0" 
+                         Style="{StaticResource ListBoxStyle}" 
+                         BorderThickness="1,0,1,1"
+                         ItemsSource="{Binding QueueEvents}" 
+                         SelectedItem="{Binding SelectedQueueEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         SelectionMode="Single" 
+                         x:Name="RabbitMqEvents">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid HorizontalAlignment="Stretch" 
+                                      VerticalAlignment="Stretch" 
+                                      Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                      x:Name="ListBoxItemGrid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
+                                              HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
+                                              Margin="-2,0,0,0"
+                                              ToolTip="{x:Static languages:Tooltips.SchedulerStatusAltTooltipTrigger}"
+                                              IsChecked="{Binding StatusAlt, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SchedulerStatusToCheckedConverter}}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerStatusAltHelpTextTrigger}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </CheckBox>
+                                    <TextBlock Grid.Column="1" 
+                                               Grid.Row="0" 
+                                               HorizontalAlignment="Left" 
+                                               Text="RabbitMQ Event" 
+                                               TextTrimming="CharacterEllipsis" 
+                                               MaxWidth="200" 
+                                               FontSize="12" 
+                                               Margin="0,0,0,-4" 
+                                               FontWeight="Bold" />
+                                    <TextBlock Grid.Column="1" 
+                                               Grid.Row="1" 
+                                               HorizontalAlignment="Left" 
+                                               Text="{Binding NextRunDate}" 
+                                               FontSize="11" 
+                                               Margin="0,-4,0,0" />
+                                    <Button Grid.Column="2" 
+                                            Grid.Row="0" 
+                                            Grid.RowSpan="2" 
+                                            VerticalAlignment="Stretch" 
+                                            HorizontalAlignment="Right" 
+                                            Command="{Binding ElementName=Schedules, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
+                                            IsEnabled="{Binding StatusAlt, Converter={StaticResource InverseScheduleStatusConverter}}"
+                                            Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
+                                        <Button.Content>
+                                            <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>
+                                        </Button.Content>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerDeleteHelpTextTrigger}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                </Grid>
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterPositive}}" AutomationProperties.AutomationId="UI_NewSchedule_Grid_AutoID" >
+                                    <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
+                                            x:Name="New_RabbitMq_Event"
+                                            HorizontalAlignment="Stretch" 
+                                            VerticalAlignment="Stretch" 
+                                            Command="{Binding NewCommand}" 
+                                            ToolTip="{x:Static languages:Tooltips.SchedulerNewScheduleTooltipTrigger}"
+                                            AutomationProperties.AutomationId="UI_NewSchedule_AutoID">
+                                        <Button.Content>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions >
+                                                    <ColumnDefinition Width="15*"/>
+                                                    <ColumnDefinition Width="85*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"></fa:FontAwesome>
+                                                <TextBlock Grid.Column="1" Text="Create a new event" FontSize="14"></TextBlock>
+                                            </Grid>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GridSplitter Grid.Column="1" Background="#C1C3C5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" />
+                <ContentControl Grid.Column="2" Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="{StaticResource ElementBorder}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="RabbitMQ Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                            <ComboBox x:Name="RabbitMqSourcesComboBox"
+                                      Grid.Column="1"
+                                      DisplayMemberPath="Name" 
+                                      SelectedItem="{Binding SelectedQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="{StaticResource ControlBorderTop}"
+                                      ToolTip="{x:Static languages:Tooltips.NewRabbitMqSourceTooltip}"
+                                      ItemsSource="{Binding QueueSources}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourceHelp}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </ComboBox>
+
+                            <TextBlock Text="Queue Name" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                            <ui:IntellisenseTextBox x:Name="QueueNameTextBox"
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    FilterType="All"
+                                                    DefaultText="Queue Name"
+                                                    WrapInBrackets="False"
+                                                    Margin="{StaticResource ControlBorderTop}"
+                                                    ItemsSource="{Binding QueueNames}"
+                                                    Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
+                                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
+                                <ui:IntellisenseTextBox.IntellisenseProvider>
+                                    <interfaceImplementors:CompositeIntellisenseProvider>
+                                        <provider:FileSystemIntellisenseProvider />
+                                    </interfaceImplementors:CompositeIntellisenseProvider>
+                                </ui:IntellisenseTextBox.IntellisenseProvider>
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </ui:IntellisenseTextBox>
+
+                            <TextBlock Text="Workflow" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                            <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" 
+                                         Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                         ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipWorkFlow}"
+                                         HorizontalAlignment="Stretch"
+                                         AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
+                                         IsReadOnly="True">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                                <Button Grid.Column="1" 
+                                        Content="..."
+                                        Margin="{StaticResource ControlBorderLeft}"
+                                        Style="{StaticResource ButtonStyle}"
+                                        ToolTip="Select a workflow to be triggered"
+                                        Command="{Binding AddWorkflowCommand}"
+                                        AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Text="Concurrency" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                            <TextBox Grid.Row="3" 
+                                     Margin="{StaticResource ControlBorderTop}"
+                                     Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
+                            </Grid>
+
+                            <Grid Grid.Row="5" Margin="{StaticResource ControlBorderTop}">
+                            </Grid>
+                        </Grid>
+
+                        
+                    </Grid>
+                </ContentControl>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
