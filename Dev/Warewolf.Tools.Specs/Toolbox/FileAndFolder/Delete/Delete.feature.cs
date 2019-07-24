@@ -226,8 +226,8 @@ this.DeleteFileAtLocation("FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001/FO
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -235,7 +235,7 @@ this.DeleteFileAtLocation("FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001/FO
         public virtual void DeleteFileAtLocation_FTPS()
         {
 #line 8
-this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "IntegrationTester", "I73573r0", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "Administrator", "Dev2@dmin123", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -381,7 +381,7 @@ this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\SVRDEV.premier.local\\File
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Sec" +
             "ure\\filetodelete.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\Administrator")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "password")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Failure\"")]
@@ -391,7 +391,7 @@ this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\SVRDEV.premier.local\\File
         {
 #line 33
 this.DeleteFileAtLocationNull("UNC Secure", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Sec" +
-                    "ure\\filetodelete.txt", "dev2.local\\IntegrationTester", "password", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
+                    "ure\\filetodelete.txt", "dev2.local\\Administrator", "password", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -424,8 +424,8 @@ this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://SVRPDC.premier.local:100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -433,7 +433,7 @@ this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://SVRPDC.premier.local:100
         public virtual void DeleteFileAtLocationNull_Variant5()
         {
 #line 33
-this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "IntegrationTester", "I73573r0", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "Administrator", "Dev2@dmin123", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
