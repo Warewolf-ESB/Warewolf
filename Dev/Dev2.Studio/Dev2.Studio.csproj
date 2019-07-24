@@ -216,6 +216,10 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Tasks\QueueEvents\QueueEventsView.xaml.cs">
+      <DependentUpon>QueueEventsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\QueueEvents\QueueEventsViewModel.cs" />
     <Compile Include="ViewModels\Merge\ConflictItem.cs" />
     <Compile Include="ViewModels\Merge\ConflictRow.cs" />
     <Compile Include="ViewModels\Merge\Utils\ConflictListStateApplier.cs" />
@@ -455,6 +459,10 @@
     <Page Include="Settings\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tasks\QueueEvents\QueueEventsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Brushes.xaml">
       <SubType>Designer</SubType>
