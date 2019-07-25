@@ -287,7 +287,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Throws(new InvalidDataException(Message));
 
-            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+            environment.Assign("[[URL]]", "http://TFSBLD.premier.local:9910/api/values", 0);
             
             dsfDataObject.Environment = environment;
             dsfDataObject.IsDebug = true;
@@ -398,7 +398,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             var dataObjectMock = new Mock<IDSFDataObject>();
 
-            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+            environment.Assign("[[URL]]", "http://TFSBLD.premier.local:9910/api/values", 0);
 
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.IsDebugMode()).Returns(true);
@@ -426,7 +426,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             };
             var environment = new ExecutionEnvironment();
 
-            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+            environment.Assign("[[URL]]", "http://TFSBLD.premier.local:9910/api/values", 0);
 
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.IsDebugMode()).Returns(true);

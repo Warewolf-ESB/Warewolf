@@ -71,7 +71,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
             _weblocalhostsource = new WebServiceSourceDefinition
             {
                 Name = "LocalhostSource",
-                HostName = @"http://rsaklfsvrtfsbld:9810/api/products/Get",
+                HostName = @"http://TFSBLD.premier.local:9810/api/products/Get",
                 Id = Guid.NewGuid()
             };
 

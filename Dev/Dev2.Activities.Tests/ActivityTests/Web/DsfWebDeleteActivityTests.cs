@@ -409,7 +409,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dsfWebDeleteActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var webSource = new WebSource();
-            webSource.Address = "http://rsaklfsvrtfsbld:9910/api/";
+            webSource.Address = "http://TFSBLD.premier.local:9910/api/";
             webSource.AuthenticationType = AuthenticationType.Anonymous;
             mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
             dsfWebDeleteActivity.ResourceCatalog = mockResourceCatalog.Object;

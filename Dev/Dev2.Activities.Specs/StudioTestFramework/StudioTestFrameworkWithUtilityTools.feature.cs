@@ -354,7 +354,7 @@ this.FeatureBackground();
                         "Url"});
             table14.AddRow(new string[] {
                         "\"[[Result]]\"",
-                        "http://rsaklfsvrtfsbld:9810/api/products/Get"});
+                        "http://TFSBLD.premier.local:9810/api/products/Get"});
 #line 92
  testRunner.And("\"WebRequestTestWF\" contains WebRequest \"TestWebRequest\" as", ((string)(null)), table14, "And ");
 #line 95
@@ -1770,3 +1770,4 @@ this.FeatureBackground();
 }
 #pragma warning restore
 #endregion
+

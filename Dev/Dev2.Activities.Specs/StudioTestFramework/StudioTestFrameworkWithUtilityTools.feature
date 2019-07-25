@@ -90,8 +90,8 @@ Scenario: Test WF with Aggregate Calculate
 Scenario: Test WF with WebRequest
 	Given I have a workflow "WebRequestTestWF"
 	And "WebRequestTestWF" contains WebRequest "TestWebRequest" as
-	| Result       | Url                                          |
-	| "[[Result]]" | http://rsaklfsvrtfsbld:9810/api/products/Get |
+	| Result       | Url                                               |
+	| "[[Result]]" | http://TFSBLD.premier.local:9810/api/products/Get |
 	And I save workflow "WebRequestTestWF"
 	Then the test builder is open with "WebRequestTestWF"
 	And I click New Test
