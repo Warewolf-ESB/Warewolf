@@ -77,6 +77,7 @@
     <Compile Include="IServiceExecution.cs" />
     <Compile Include="DatabaseServiceExecution.cs" />
     <Compile Include="ServiceExecutionAbstract.cs" />
+    <Compile Include="WebserviceExecution.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
