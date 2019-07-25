@@ -1,5 +1,5 @@
 
-<Source ID="f8b1a579-2394-489e-835e-21b42e304e09" Name="NewPostgresSource" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="Host=rsaklfsvrdev;Username=postgres;Password=test123;Database=TestDB" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="f8b1a579-2394-489e-835e-21b42e304e09" Name="NewPostgresSource" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="Host=SVRDEV.premier.local;Username=postgres;Password=test123;Database=TestDB" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewPostgresSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

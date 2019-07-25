@@ -1,5 +1,5 @@
 
-<Source ID="b1c12282-1712-419c-9929-5dfe42c90210" Name="NewOracleSource" ResourceType="Oracle" IsValid="false" ServerType="Oracle" Type="DbSource" ConnectionString="User Id=Testuser;Password=test123;Data Source=rsaklfsvrdev;Database=HR;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="b1c12282-1712-419c-9929-5dfe42c90210" Name="NewOracleSource" ResourceType="Oracle" IsValid="false" ServerType="Oracle" Type="DbSource" ConnectionString="User Id=Testuser;Password=test123;Data Source=SVRDEV.premier.local;Database=HR;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewOracleSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
