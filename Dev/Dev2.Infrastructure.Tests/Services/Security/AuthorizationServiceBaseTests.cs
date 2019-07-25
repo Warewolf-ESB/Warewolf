@@ -729,6 +729,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        [Ignore("Test depends too heavily on integraitontester as a domain user.")]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenMemberOfAdministrator_ExpectTrue()
         {
             //------------Setup for test--------------------------
