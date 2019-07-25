@@ -624,9 +624,8 @@ namespace Dev2.Core.Tests
             var shareCollection = new ShareCollection(@"\\SVRDEV.premier.local\");
             if (shareCollection.Count <= 0)
             {
-                var username = @"premier.local\Administrator";
+                var username = @"dev2\IntegrationTester";
                 var password = TestEnvironmentVariables.GetVar(username);
-                Console.WriteLine("Using password: " + password);
             //------------Execute Test---------------------------
                 AuthenticateForSharedFolder(@"\\SVRDEV.premier.local\Git-Repositories", username, password);
                 Thread.Sleep(1000);
