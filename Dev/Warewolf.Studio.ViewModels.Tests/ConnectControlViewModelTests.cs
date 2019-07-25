@@ -422,6 +422,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod,Timeout(60000)]
         [TestCategory(nameof(ConnectControlViewModel))]
+        [Ignore]
         public void ConnectControlViewModel_TestConnectUnsuccessful()
         {
             //arrange
