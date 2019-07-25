@@ -220,6 +220,11 @@
       <DependentUpon>QueueEventsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tasks\QueueEvents\QueueEventsViewModel.cs" />
+    <Compile Include="Tasks\TasksItemViewModel.cs" />
+    <Compile Include="Tasks\TasksView.xaml.cs">
+      <DependentUpon>TasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\TasksViewModel.cs" />
     <Compile Include="ViewModels\Merge\ConflictItem.cs" />
     <Compile Include="ViewModels\Merge\ConflictRow.cs" />
     <Compile Include="ViewModels\Merge\Utils\ConflictListStateApplier.cs" />
@@ -461,6 +466,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Tasks\QueueEvents\QueueEventsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tasks\TasksView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Dev2.Tasks.TasksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:queueevents="clr-namespace:Dev2.Tasks.QueueEvents"
+             xmlns:tasks="clr-namespace:Dev2.Tasks"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance tasks:TasksViewModel}"
+             AutomationProperties.AutomationId="UI_SettingsView_AutoID">
+
+    <UserControl.Resources>
+        <queueevents:QueueEventsView x:Key="QueueEventsView"
+                                     AutomationProperties.AutomationId="QueueEventsViewModel"
+                                     DataContext="{Binding QueueEventsViewModel, Mode=OneWay}"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Border Grid.Row="1" BorderThickness="0,0,0,0" Margin="{StaticResource ElementBorderTop}">
+            <Grid>
+                <TabControl Style="{StaticResource TabControlStyle}">
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Calendar" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding QueueEventsHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="QueueEventsView" />
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

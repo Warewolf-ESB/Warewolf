@@ -12,13 +12,11 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Dev2.Tasks.QueueEvents
 {
-    public class QueueEventsViewModel : IUpdatesHelp, INotifyPropertyChanged
+    public class QueueEventsViewModel : TasksItemViewModel, IUpdatesHelp
     {
         ICommand _newCommand;
         ICommand _deleteCommand;
@@ -105,17 +103,19 @@ namespace Dev2.Tasks.QueueEvents
             QueueEvents.Remove("");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public void UpdateHelpDescriptor(string helpText)
+        {
+            HelpText = helpText;
+        }
+
+        protected override void CloseHelp()
         {
             
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public static bool Save()
         {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            return true;
         }
     }
 }

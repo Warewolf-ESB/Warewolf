@@ -589,12 +589,12 @@ namespace Dev2.Settings
                     }
                     return IsSaved;
                 }
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
+                ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
                 _popupController.ShowSaveSettingsPermissionsErrorMsg();
                 return false;
             }
-            ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
-            _popupController.ShowSaveSettingsNotReachableErrorMsg();
+            ShowError(StringResources.SaveErrorPrefix, StringResources.SaveServerNotReachableErrorMsg);
+            _popupController.ShowSaveServerNotReachableErrorMsg();
             return false;
         }
 
@@ -617,7 +617,7 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
+                ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
                 _popupController.ShowHasDuplicateServerPermissions();
                 return false;
             }
@@ -630,7 +630,7 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsInvalidPermissionEntry);
+                ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsInvalidPermissionEntry);
                 _popupController.ShowInvalidResourcePermission();
                 return false;
             }
@@ -642,7 +642,7 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
+                ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
                 _popupController.ShowHasDuplicateResourcePermissions();
                 return false;
             }
@@ -659,7 +659,7 @@ namespace Dev2.Settings
             }
             if(payload.HasError)
             {
-                ShowError(StringResources.SaveSettingErrorHeader, payload.Message.ToString());
+                ShowError(StringResources.SaveErrorHeader, payload.Message.ToString());
                 return false;
             }
             return true;
