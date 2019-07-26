@@ -47,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
             SaveCommand = _viewModel.SaveCommand;
             OpenSearchCommand = _viewModel.SearchCommand;
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
+            OpenTasksCommand = _viewModel.TasksCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
             StartPageCommand = _viewModel.ShowStartPageCommand;
@@ -115,6 +116,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand OpenSettingsCommand { get; set; }
         public ICommand OpenSearchCommand { get; set; }
         public ICommand OpenSchedulerCommand { get; set; }
+        public ICommand OpenTasksCommand { get; set; }
         public ICommand ExecuteServiceCommand
         {
             get => _executeServiceCommand;

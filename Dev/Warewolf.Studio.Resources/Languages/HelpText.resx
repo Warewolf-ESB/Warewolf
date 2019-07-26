@@ -1083,6 +1083,9 @@
   <data name="MenuSchedulerHelp" xml:space="preserve">
     <value>Schedule workflow executions</value>
   </data>
+  <data name="MenuTasksHelp" xml:space="preserve">
+    <value>Open to Schedule workflow executions or create events</value>
+  </data>
   <data name="MenuSettingsHelp" xml:space="preserve">
     <value>Edit or View system settings such as Security and Logging.</value>
   </data>

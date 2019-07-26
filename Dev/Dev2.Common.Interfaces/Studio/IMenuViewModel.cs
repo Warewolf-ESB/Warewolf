@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand OpenSettingsCommand { get; set; }
         ICommand OpenSearchCommand { get; set; }
         ICommand OpenSchedulerCommand { get; set; }
+        ICommand OpenTasksCommand { get; set; }
         ICommand ExecuteServiceCommand { get; set; }
         ICommand CheckForNewVersionCommand { get; set; }
         ICommand LockCommand { get; set; }
