@@ -2092,6 +2092,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open to Schedule workflow executions or create events.
+        /// </summary>
+        public static string MenuTasksHelp {
+            get {
+                return ResourceManager.GetString("MenuTasksHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the current Tool connection radio button to keep the current Tool connection changes..
         /// </summary>
         public static string MergeCurrentArmRBHelp {

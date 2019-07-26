@@ -22,6 +22,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<ICommand> _deployCommandMock;
         AuthorizeCommand _saveCommand;
         AuthorizeCommand _openSchedulerCommand;
+        AuthorizeCommand _openTasksCommand;
         AuthorizeCommand _openSearchCommand;
         AuthorizeCommand _openSettingsCommand;
         AuthorizeCommand _executeServiceCommand;
@@ -43,6 +44,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _saveCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _openSearchCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _openSchedulerCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
+            _openTasksCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _openSettingsCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _executeServiceCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _startPageCommandMock = new Mock<ICommand>();
@@ -53,6 +55,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.SaveCommand).Returns(_saveCommand);
             _mainViewModelMock.SetupGet(it => it.SearchCommand).Returns(_openSearchCommand);
             _mainViewModelMock.SetupGet(it => it.SchedulerCommand).Returns(_openSchedulerCommand);
+            _mainViewModelMock.SetupGet(it => it.TasksCommand).Returns(_openTasksCommand);
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
             _mainViewModelMock.SetupGet(it => it.ShowStartPageCommand).Returns(_startPageCommandMock.Object);
@@ -125,6 +128,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOpenSchedulerCommand()
         {
             Assert.AreSame(_openSchedulerCommand, _target.OpenSchedulerCommand);
+        }
+
+        [TestMethod, Timeout(60000)]
+        public void TestOpenTasksCommand()
+        {
+            Assert.AreSame(_openTasksCommand, _target.OpenTasksCommand);
         }
 
         [TestMethod,Timeout(60000)]

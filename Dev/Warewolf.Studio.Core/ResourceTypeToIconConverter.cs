@@ -70,7 +70,10 @@ namespace Warewolf.Studio.Core
                     case "OauthSource":
                     case "DropBoxSource":
                         return Application.Current.Resources["DropboxSource"];
+                        //TODO: Remove
                     case "Scheduler":
+                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
+                    case "Tasks":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case "ServiceTestsViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);

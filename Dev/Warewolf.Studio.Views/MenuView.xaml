@@ -227,9 +227,9 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding OpenSchedulerCommand}"
+                    Command="{Binding OpenTasksCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuSchedulerToolTip}">
+                    ToolTip="{x:Static languages:Tooltips.MenuTasksToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
                            Height="35"
                            HorizontalAlignment="Stretch"
@@ -249,7 +249,7 @@
                                Text="{Binding Path=TaskLabel}" />
                 </DockPanel>
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuSchedulerHelp}" />
+                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuTasksHelp}" />
                 </i:Interaction.Behaviors>
             </Button>
 

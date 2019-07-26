@@ -113,6 +113,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand SettingsCommand { get; }
         ICommand SearchCommand { get; }
         IAuthorizeCommand SchedulerCommand { get; }
+        IAuthorizeCommand TasksCommand { get; }
         IToolboxViewModel ToolboxViewModel { get; }
         IHelpWindowViewModel HelpViewModel { get; }
         ICommand ShowStartPageCommand { get; }

@@ -72,6 +72,8 @@ namespace Dev2.Tasks
             DisplayName = StringResources.TasksHeader + " - " + Server.DisplayName;
         }
 
+        public string ResourceType => StringResources.TasksHeader;
+
         public string QueueEventsHeader => QueueEventsViewModel != null && QueueEventsViewModel.IsDirty ? StringResources.QueueEventsHeader + " *" : StringResources.QueueEventsHeader;
 
         public IServer Server { get; set; }

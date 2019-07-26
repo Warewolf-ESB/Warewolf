@@ -61,6 +61,7 @@ using Dev2.ViewModels;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Instrumentation;
+using Dev2.Tasks;
 
 namespace Dev2.Core.Tests
 {
@@ -2850,7 +2851,7 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region OnStudioClosing
-
+        //TODO: Remove
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Leon Rajindrapersadh")]
@@ -2900,6 +2901,58 @@ namespace Dev2.Core.Tests
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
+
+            mvm.Items.Add(vm);
+            Assert.IsFalse(mvm.OnStudioClosing());
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_OnStudioClosing_CallsTasksOnClosing()
+        {
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
+            var environmentModel = new Mock<IServer>();
+
+            var mockEnvironmentConnection = SetupMockConnection();
+            environmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
+            environmentRepository.Setup(repo => repo.Source).Returns(environmentModel.Object);
+
+            var viewModel = new Mock<IShellViewModel>();
+            var server = (IServer)CustomContainer.Get(typeof(IServer));
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server);
+
+            CustomContainer.Register(viewModel.Object);
+
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+            var connected1 = new Mock<IServer>();
+            var connected2 = new Mock<IServer>();
+            var notConnected = new Mock<IServer>();
+            connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected1.Setup(a => a.Disconnect()).Verifiable();
+            connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected2.Setup(a => a.Disconnect()).Verifiable();
+            IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
+            environmentRepository.Setup(repo => repo.All()).Returns(lst);
+            environmentRepository.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(connected1.Object);
+            var vieFactory = new Mock<IViewFactory>();
+            var viewMock = new Mock<IView>();
+            vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
+
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Cancel).Verifiable();
+
+            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
+
+            var tasks = new TasksViewModel(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel.Object) { WorkSurfaceContext = WorkSurfaceContext.Tasks };
+                        
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), tasks, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             mvm.Items.Add(vm);
             Assert.IsFalse(mvm.OnStudioClosing());

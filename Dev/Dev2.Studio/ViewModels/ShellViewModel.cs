@@ -70,6 +70,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
 using Dev2.Instrumentation;
+using Dev2.Tasks;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -104,7 +105,9 @@ namespace Dev2.Studio.ViewModels
         private ICommand _mergeCommand;
         private ICommand _exitCommand;
         private AuthorizeCommand _settingsCommand;
+        //TODO: Remove
         private AuthorizeCommand _schedulerCommand;
+        private AuthorizeCommand _tasksCommand;
         private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
@@ -228,6 +231,7 @@ namespace Dev2.Studio.ViewModels
             NewExchangeSourceCommand.UpdateContext(ActiveServer);
             SettingsCommand.UpdateContext(ActiveServer);
             SchedulerCommand.UpdateContext(ActiveServer);
+            TasksCommand.UpdateContext(ActiveServer);
             DebugCommand.UpdateContext(ActiveServer);
             SaveCommand.UpdateContext(ActiveServer);
         }
@@ -289,9 +293,14 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        //TODO: Change to call into Tasks as Scheduler option to open by default
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
+        }
+        public IAuthorizeCommand TasksCommand
+        {
+            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTasksWorkSurface(), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewServiceCommand
         {
@@ -1821,9 +1830,18 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
                 }
+                //TODO: Remove
                 else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
                 {
                     if (vm is Settings.Scheduler.SchedulerViewModel schedulerViewModel && schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
+                }
+                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Tasks)
+                {
+                    if (vm is TasksViewModel tasksViewModel && tasksViewModel.IsDirty)
                     {
                         closeStudio = CallSaveDialog(closeStudio);
                         break;
