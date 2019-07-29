@@ -107,6 +107,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand _settingsCommand;
         //TODO: Remove
         private AuthorizeCommand _schedulerCommand;
+        private AuthorizeCommand _queueEventsCommand;
         private AuthorizeCommand _tasksCommand;
         private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
@@ -297,6 +298,11 @@ namespace Dev2.Studio.ViewModels
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
+        }
+        //TODO: Change to call into Tasks as Queue Events option to open by default
+        public IAuthorizeCommand QueueEventsCommand
+        {
+            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand TasksCommand
         {

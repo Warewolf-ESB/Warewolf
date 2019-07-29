@@ -48,6 +48,7 @@ namespace Warewolf.Studio.ViewModels
             OpenSearchCommand = _viewModel.SearchCommand;
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
             OpenTasksCommand = _viewModel.TasksCommand;
+            OpenQueueEventsCommand = _viewModel.QueueEventsCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
             StartPageCommand = _viewModel.ShowStartPageCommand;
@@ -116,6 +117,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand OpenSettingsCommand { get; set; }
         public ICommand OpenSearchCommand { get; set; }
         public ICommand OpenSchedulerCommand { get; set; }
+        public ICommand OpenQueueEventsCommand { get; set; }
         public ICommand OpenTasksCommand { get; set; }
         public ICommand ExecuteServiceCommand
         {
@@ -140,6 +142,8 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => DeployLabel);
             OnPropertyChanged(() => SearchLabel);
             OnPropertyChanged(() => TaskLabel);
+            OnPropertyChanged(() => SchedulerLabel);
+            OnPropertyChanged(() => QueueEventsLabel);
             OnPropertyChanged(() => DebugLabel);
             OnPropertyChanged(() => SettingsLabel);
             OnPropertyChanged(() => SupportLabel);
@@ -302,6 +306,32 @@ namespace Warewolf.Studio.ViewModels
                 if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogTaskLabel;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public string SchedulerLabel
+        {
+            get
+            {
+                if (ButtonWidth >= ButtonWidthLarge)
+                {
+                    return Resources.Languages.Core.MenuDialogSchedulerLabel;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public string QueueEventsLabel
+        {
+            get
+            {
+                if (ButtonWidth >= ButtonWidthLarge)
+                {
+                    return Resources.Languages.Core.MenuDialogQueueEventsLabel;
                 }
 
                 return string.Empty;

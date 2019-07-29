@@ -580,6 +580,60 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
+        [TestMethod, Timeout(60000)]
+        public void TestSchedulerLabelNotNullOrEmpty()
+        {
+            //arrange
+            _target.ButtonWidth = 125;
+
+            //act
+            var value = _target.SchedulerLabel;
+
+            //assert
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+        }
+
+        [TestMethod, Timeout(60000)]
+        public void TestSchedulerLabelNullOrEmpty()
+        {
+            //arrange
+            _target.ButtonWidth = 1;
+
+            //act
+            var value = _target.SchedulerLabel;
+
+            //assert
+            Assert.IsTrue(string.IsNullOrEmpty(value));
+        }
+
+
+
+        [TestMethod, Timeout(60000)]
+        public void TestQueueEventsLabelNotNullOrEmpty()
+        {
+            //arrange
+            _target.ButtonWidth = 125;
+
+            //act
+            var value = _target.QueueEventsLabel;
+
+            //assert
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+        }
+
+        [TestMethod, Timeout(60000)]
+        public void TestQueueEventsLabelNullOrEmpty()
+        {
+            //arrange
+            _target.ButtonWidth = 1;
+
+            //act
+            var value = _target.QueueEventsLabel;
+
+            //assert
+            Assert.IsTrue(string.IsNullOrEmpty(value));
+        }
+
         [TestMethod,Timeout(60000)]
         public void TestSettingsLabelNotNullOrEmpty()
         {

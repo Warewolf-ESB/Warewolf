@@ -9,6 +9,7 @@
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
              Width="150"
              d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -58,6 +59,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -221,13 +223,16 @@
                                Text="{Binding Path=SearchLabel}" />
                 </DockPanel>
             </Button>
-            
+
             <!--  TASK  -->
-            <Button Grid.Row="8"
+            <Button x:Name="MenuTaskButton"
+                    Grid.Row="8"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
                     Command="{Binding OpenTasksCommand}"
+                    PreviewMouseMove="MenuTaskButton_PreviewMouseMove"
+                    MouseLeave="MenuTaskButton_MouseLeave"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuTasksToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
@@ -252,6 +257,76 @@
                     <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuTasksHelp}" />
                 </i:Interaction.Behaviors>
             </Button>
+
+            <Grid Grid.Row="8" Grid.Column="2">
+                <Popup Width="Auto" x:Name="TasksPopup" Placement="Right" >
+                    <ItemsControl Foreground="White">
+                        <Button x:Name="MenuSchedulerButton"
+                                Width="{Binding ElementName=QueueEventsDockPanel, Path=ActualWidth}"
+                                HorizontalAlignment="Left"
+                                PreviewMouseMove="MenuTaskButton_PreviewMouseMove"
+                                MouseLeave="MenuTaskButton_MouseLeave"
+                                HorizontalContentAlignment="Left"
+                                Command="{Binding OpenSchedulerCommand}"
+                                Style="{StaticResource SideMenuButtonStyle}"
+                                ToolTip="{x:Static languages:Tooltips.MenuSchedulerToolTip}">
+                            <DockPanel Width="{Binding ElementName=QueueEventsDockPanel, Path=ActualWidth}"
+                                       Height="35"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Stretch"
+                                       Background="Transparent">
+                                <TextBlock Width="25"
+                                           MaxWidth="25"
+                                           MaxHeight="35"
+                                           Padding="4,7.5,4,7.5"
+                                           Style="{StaticResource MenuTextBlockStyle}">
+                                    <fa:FontAwesome FontSize="18"
+                                                    FontWeight="Light"
+                                                    Icon="History" />
+                                </TextBlock>
+                                <TextBlock Padding="0,8,5,5"
+                                           Style="{StaticResource MenuTextBlockStyle}"
+                                           Text="{Binding Path=SchedulerLabel}" />
+                            </DockPanel>
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuSchedulerHelp}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
+                        <Button x:Name="MenuQueueEventsButton"
+                                Width="Auto"
+                                PreviewMouseMove="MenuTaskButton_PreviewMouseMove"
+                                MouseLeave="MenuTaskButton_MouseLeave"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left"
+                                Command="{Binding OpenQueueEventsCommand}"
+                                Style="{StaticResource SideMenuButtonStyle}"
+                                ToolTip="{x:Static languages:Tooltips.MenuQueueEventsToolTip}">
+                            <DockPanel Width="Auto"
+                                       Height="35"
+                                       x:Name="QueueEventsDockPanel"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Stretch"
+                                       Background="Transparent">
+                                <TextBlock Width="25"
+                                           MaxWidth="25"
+                                           MaxHeight="35"
+                                           Padding="4,7.5,4,7.5"
+                                           Style="{StaticResource MenuTextBlockStyle}">
+                                    <fa:FontAwesome FontSize="18"
+                                                    FontWeight="Light"
+                                                    Icon="Calendar" />
+                                </TextBlock>
+                                <TextBlock Padding="0,8,5,5"
+                                           Style="{StaticResource MenuTextBlockStyle}"
+                                           Text="{Binding Path=QueueEventsLabel}" />
+                            </DockPanel>
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuQueueEventsHelp}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
+                    </ItemsControl>
+                </Popup>
+            </Grid>
 
             <!--  DEBUG  -->
             <Button Grid.Row="9"

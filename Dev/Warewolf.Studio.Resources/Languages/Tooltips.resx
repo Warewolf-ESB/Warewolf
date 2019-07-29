@@ -1020,6 +1020,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>
+  <data name="MenuQueueEventsToolTip" xml:space="preserve">
+    <value>Create a queue event to run</value>
+  </data>
   <data name="MenuTasksToolTip" xml:space="preserve">
     <value>View schedules and events</value>
   </data>

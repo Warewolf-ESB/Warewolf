@@ -1083,6 +1083,9 @@
   <data name="MenuSchedulerHelp" xml:space="preserve">
     <value>Schedule workflow executions</value>
   </data>
+  <data name="MenuQueueEventsHelp" xml:space="preserve">
+    <value>Create queue events</value>
+  </data>
   <data name="MenuTasksHelp" xml:space="preserve">
     <value>Open to Schedule workflow executions or create events</value>
   </data>
