@@ -34,6 +34,8 @@ namespace Dev2.Common.Interfaces.Studio
         string DeployLabel { get; }
         string SearchLabel { get; }
         string TaskLabel { get; }
+        string SchedulerLabel { get; }
+        string QueueEventsLabel { get; }
         string DebugLabel { get; }
         string SettingsLabel { get; }
         string SupportLabel { get; }

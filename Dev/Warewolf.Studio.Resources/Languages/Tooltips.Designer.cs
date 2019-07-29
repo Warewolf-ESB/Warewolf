@@ -2761,6 +2761,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a queue event to run.
+        /// </summary>
+        public static string MenuQueueEventsToolTip {
+            get {
+                return ResourceManager.GetString("MenuQueueEventsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save this tab [CTRL+S].
         /// </summary>
         public static string MenuSaveToolTip {
