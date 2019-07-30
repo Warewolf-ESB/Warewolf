@@ -3260,6 +3260,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the source message queue.
+        /// </summary>
+        public static string QueueSourceTooltip {
+            get {
+                return ResourceManager.GetString("QueueSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Append to existing variables.
         /// </summary>
         public static string QuickVariableAppendToolTip {

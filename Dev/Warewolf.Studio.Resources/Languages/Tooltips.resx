@@ -935,6 +935,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
     <value>Create a new rabbitmq source</value>
   </data>
+  <data name="QueueSourceTooltip" xml:space="preserve">
+    <value>Select the source message queue</value>
+  </data>
   <data name="NewPluginSourceTooltip" xml:space="preserve">
     <value>Create a new plugin source</value>
   </data>

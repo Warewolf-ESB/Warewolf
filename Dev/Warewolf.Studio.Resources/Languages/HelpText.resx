@@ -771,6 +771,9 @@
   <data name="EditRabbitMQSourceHelp" xml:space="preserve">
     <value>Edit RabbitMQ Source</value>
   </data>
+  <data name="QueueSourceHelp" xml:space="preserve">
+    <value>Select the source message queue</value>
+  </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
   </data>
