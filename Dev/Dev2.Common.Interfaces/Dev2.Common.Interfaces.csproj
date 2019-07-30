@@ -336,6 +336,7 @@
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
+    <Compile Include="Resources\IQueueSource.cs" />
     <Compile Include="ServerProxyLayer\ISqliteDBSource.cs" />
     <Compile Include="ServerProxyLayer\IUpdateManager.cs" />
     <Compile Include="ServerProxyLayer\IVersionManager.cs" />
