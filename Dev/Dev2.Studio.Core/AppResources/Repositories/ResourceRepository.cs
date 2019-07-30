@@ -993,6 +993,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
+        public List<T> FindResourcesByType<T>(IServer targetEnvironment)
+        {
+            var result = new List<T>();
+            if (targetEnvironment == null)
+            {
+                return result;
+            }
+            var comsController = new CommunicationController { ServiceName = "FindResourcesByType" };
+            comsController.AddPayloadArgument("Type", typeof(T).FullName);
+            result = comsController.ExecuteCommand<List<T>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+            return result;
+        }
+
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
         {
             var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };

@@ -110,6 +110,7 @@
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
+    <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
     <Compile Include="ESB\Management\Services\GetFilterListService.cs" />
     <Compile Include="ESB\Management\Services\GetServerSettings.cs" />
