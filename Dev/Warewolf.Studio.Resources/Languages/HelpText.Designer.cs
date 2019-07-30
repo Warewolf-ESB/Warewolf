@@ -2447,6 +2447,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the source message queue.
+        /// </summary>
+        public static string QueueSourceHelp {
+            get {
+                return ResourceManager.GetString("QueueSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values..
         /// </summary>
         public static string QuickVariableAppendHelpText {
