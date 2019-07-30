@@ -8,8 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Resources;
+using Dev2.Studio.Interfaces;
 using Dev2.Tasks.QueueEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 {
@@ -21,7 +26,8 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNull(queueEventsViewModel.QueueEvents);
             Assert.IsNull(queueEventsViewModel.SelectedQueueEvent);
@@ -50,25 +56,39 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueSources()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var queueSourceID1 = Guid.NewGuid();
+            var queueSourceName1 = "QueueSource1";
 
-            Assert.IsNull(queueEventsViewModel.QueueSources);
-            Assert.IsNull(queueEventsViewModel.SelectedQueueSource);
+            var queueSourceID2 = Guid.NewGuid();
+            var queueSourceName2 = "QueueSource2";
 
-            var queueSource1 = "QueueSource1";
-            var queueSource2 = "QueueSource2";
+            var queueSource1 = new TestQueueSource { ResourceID = queueSourceID1, ResourceName = queueSourceName1 };
+            var queueSource2 = new TestQueueSource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
 
-            var queueSources = new System.Collections.ObjectModel.ObservableCollection<string>
+            var expectedList = new List<IQueueSource>
             {
-                queueSource1,
-                queueSource2
+                queueSource1, queueSource2
             };
 
-            queueEventsViewModel.QueueSources = queueSources;
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+
+            Assert.IsNotNull(queueEventsViewModel.QueueSources);
+            Assert.IsNull(queueEventsViewModel.SelectedQueueSource);
+
             queueEventsViewModel.SelectedQueueSource = queueSource2;
 
             Assert.IsNotNull(queueEventsViewModel.QueueSources);
             Assert.AreEqual(2, queueEventsViewModel.QueueSources.Count);
+            Assert.AreEqual(queueSourceID1, queueEventsViewModel.QueueSources[0].ResourceID);
+            Assert.AreEqual(queueSourceName1, queueEventsViewModel.QueueSources[0].ResourceName);
+            Assert.AreEqual(queueSourceID2, queueEventsViewModel.QueueSources[1].ResourceID);
+            Assert.AreEqual(queueSourceName2, queueEventsViewModel.QueueSources[1].ResourceName);
 
             Assert.IsNotNull(queueEventsViewModel.SelectedQueueSource);
             Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedQueueSource);
@@ -79,7 +99,8 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueNames()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNull(queueEventsViewModel.QueueNames);
             Assert.IsNull(queueEventsViewModel.QueueName);
@@ -108,7 +129,8 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_WorkflowName()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNull(queueEventsViewModel.WorkflowName);
 
@@ -123,7 +145,8 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_Concurrency()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.AreEqual(0, queueEventsViewModel.Concurrency);
 
@@ -138,7 +161,8 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents_AddNew_And_Delete()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNull(queueEventsViewModel.QueueEvents);
 
@@ -151,5 +175,11 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             queueEventsViewModel.DeleteCommand.Execute(null);
             Assert.AreEqual(0, queueEventsViewModel.QueueEvents.Count);
         }
+    }
+
+    public class TestQueueSource : IQueueSource
+    {
+        public Guid ResourceID { get; set; }
+        public string ResourceName { get; set; }
     }
 }
