@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             catch(WebException e)
             {
-                Console.WriteLine(e.Message);
+                Assert.Fail(e.Message);
             }
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
