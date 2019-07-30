@@ -304,9 +304,9 @@ namespace Dev2.Tasks
             ClearErrors();
         }
 
-        private static QueueEventsViewModel CreateQueueEventsViewModel()
+        private QueueEventsViewModel CreateQueueEventsViewModel()
         {
-            var queueEventsViewModel = new QueueEventsViewModel();
+            var queueEventsViewModel = new QueueEventsViewModel(CurrentEnvironment);
             return queueEventsViewModel;
         }
 

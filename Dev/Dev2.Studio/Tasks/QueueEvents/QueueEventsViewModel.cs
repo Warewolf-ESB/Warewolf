@@ -9,8 +9,11 @@
 */
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -20,15 +23,18 @@ namespace Dev2.Tasks.QueueEvents
     {
         ICommand _newCommand;
         ICommand _deleteCommand;
-        string _selectedQueueSource;
+        IQueueSource _selectedQueueSource;
         string _selectedQueueEvent;
         string _queueName;
         string _workflowName;
         int _concurrency;
+        private IServer _server;
+        private IResourceRepository _resourceRepository;
 
-        public QueueEventsViewModel()
+        public QueueEventsViewModel(IServer server)
         {
-            
+            _server = server;
+            _resourceRepository = server.ResourceRepository;
         }
 
         public ObservableCollection<string> QueueEvents { get; set; }
@@ -43,9 +49,9 @@ namespace Dev2.Tasks.QueueEvents
             }
         }
 
-        public ObservableCollection<string> QueueSources { get; set; }
+        public List<IQueueSource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
 
-        public string SelectedQueueSource
+        public IQueueSource SelectedQueueSource
         {
             get => _selectedQueueSource;
             set

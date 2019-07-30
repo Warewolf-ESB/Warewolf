@@ -180,16 +180,16 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="RabbitMQ Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
-                            <ComboBox x:Name="RabbitMqSourcesComboBox"
+                            <TextBlock Text="Queue Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                            <ComboBox x:Name="QueueSourcesComboBox"
                                       Grid.Column="1"
-                                      DisplayMemberPath="Name" 
+                                      DisplayMemberPath="ResourceName" 
                                       SelectedItem="{Binding SelectedQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Margin="{StaticResource ControlBorderTop}"
-                                      ToolTip="{x:Static languages:Tooltips.NewRabbitMqSourceTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.QueueSourceTooltip}"
                                       ItemsSource="{Binding QueueSources}">
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourceHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.QueueSourceHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 </i:Interaction.Behaviors>
                             </ComboBox>
