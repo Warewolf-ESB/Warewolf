@@ -156,7 +156,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
             WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e", "Content-Type: multipart/form-data" });
-            WebSources.PerformMultipartWebRequest(source.Client, source.Address, "");
+            try
+            {
+                WebSources.PerformMultipartWebRequest(source.Client, source.Address, "");
+            }
+            catch(WebException e)
+            {
+                Console.WriteLine(e.Message);
+            }
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
@@ -174,7 +181,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
             Assert.IsNotNull(contentType);
-            Assert.IsFalse(errors.HasErrors());
+            Assert.IsFalse(errors.HasErrors(), "On executing with multipart form data web client source returned at least one error: " + errors.FetchErrors()[0]);
             Assert.AreEqual("multipart/form-data", contentType);
         }
         [TestMethod]
@@ -187,7 +194,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, headerString.ToArray());
 
             var client = source.Client;
-            Assert.IsFalse(errors.HasErrors());
+            Assert.IsFalse(errors.HasErrors(), "On executing without multipart form data web client source returned at least one error: " + errors.FetchErrors()[0]);
             Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
