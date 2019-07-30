@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             catch(WebException e)
             {
-                Assert.Fail(e.Message);
+                Assert.Fail("Error connecting to " + source.Address + "\n" + e.Message);
             }
             var client = source.Client;
             var contentType = client.Headers["Content-Type"];
