@@ -10,6 +10,7 @@
 
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ
+    public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ, IQueueSource
     {
         const int DefaultPort = 5672;
         const string DefaultVirtualHost = "/";
