@@ -8,7 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.Tasks.QueueEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -62,10 +65,10 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             var queueSourceID2 = Guid.NewGuid();
             var queueSourceName2 = "QueueSource2";
 
-            var queueSource1 = new TestQueueSource { ResourceID = queueSourceID1, ResourceName = queueSourceName1 };
-            var queueSource2 = new TestQueueSource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
+            var queueSource1 = new Resource { ResourceID = queueSourceID1, ResourceName = queueSourceName1 };
+            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
 
-            var expectedList = new List<IQueueSource>
+            var expectedList = new List<IResource>
             {
                 queueSource1, queueSource2
             };
@@ -81,17 +84,12 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.IsNotNull(queueEventsViewModel.QueueSources);
             Assert.IsNull(queueEventsViewModel.SelectedQueueSource);
 
-            queueEventsViewModel.SelectedQueueSource = queueSource2;
-
             Assert.IsNotNull(queueEventsViewModel.QueueSources);
             Assert.AreEqual(2, queueEventsViewModel.QueueSources.Count);
             Assert.AreEqual(queueSourceID1, queueEventsViewModel.QueueSources[0].ResourceID);
             Assert.AreEqual(queueSourceName1, queueEventsViewModel.QueueSources[0].ResourceName);
             Assert.AreEqual(queueSourceID2, queueEventsViewModel.QueueSources[1].ResourceID);
             Assert.AreEqual(queueSourceName2, queueEventsViewModel.QueueSources[1].ResourceName);
-
-            Assert.IsNotNull(queueEventsViewModel.SelectedQueueSource);
-            Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedQueueSource);
         }
 
         [TestMethod]
@@ -99,29 +97,43 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueNames()
         {
+            var queueSourceID2 = Guid.NewGuid();
+            var queueSourceName2 = "QueueSource2";
+
+            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
+
+            string[] tempValues = new string[3];
+            tempValues[0] = "value1";
+            tempValues[1] = "value2";
+            tempValues[2] = "value3";
+
+            var expectedQueueNames = new Dictionary<string, string[]>();
+            expectedQueueNames.Add("QueueNames", tempValues);
+
             var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
-            Assert.IsNull(queueEventsViewModel.QueueNames);
+            queueEventsViewModel.SelectedQueueSource = queueSource2;
+
+            Assert.IsNotNull(queueEventsViewModel.SelectedQueueSource);
+            Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedQueueSource);
+            Assert.IsNotNull(queueEventsViewModel.QueueNames);
+            Assert.AreEqual(3, queueEventsViewModel.QueueNames.Count);
+            Assert.AreEqual("value1", queueEventsViewModel.QueueNames[0].Value);
+            Assert.AreEqual("value2", queueEventsViewModel.QueueNames[1].Value);
+            Assert.AreEqual("value3", queueEventsViewModel.QueueNames[2].Value);
+
             Assert.IsNull(queueEventsViewModel.QueueName);
 
-            var queueName1 = "QueueName1";
-            var queueName2 = "QueueName2";
-
-            var queueNames = new System.Collections.ObjectModel.ObservableCollection<string>
-            {
-                queueName1,
-                queueName2
-            };
-
-            queueEventsViewModel.QueueNames = queueNames;
-            queueEventsViewModel.QueueName = queueName2;
-
-            Assert.IsNotNull(queueEventsViewModel.QueueNames);
-            Assert.AreEqual(2, queueEventsViewModel.QueueNames.Count);
+            queueEventsViewModel.QueueName = "value1";
 
             Assert.IsNotNull(queueEventsViewModel.QueueName);
-            Assert.AreEqual(queueName2, queueEventsViewModel.QueueName);
+            Assert.AreEqual("value1", queueEventsViewModel.QueueName);
         }
 
         [TestMethod]
@@ -175,11 +187,5 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             queueEventsViewModel.DeleteCommand.Execute(null);
             Assert.AreEqual(0, queueEventsViewModel.QueueEvents.Count);
         }
-    }
-
-    public class TestQueueSource : IQueueSource
-    {
-        public Guid ResourceID { get; set; }
-        public string ResourceName { get; set; }
     }
 }
