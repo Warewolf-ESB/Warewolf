@@ -11,6 +11,7 @@
              xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
              xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
@@ -195,27 +196,24 @@
                             </ComboBox>
 
                             <TextBlock Text="Queue Name" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
-                            <ui:IntellisenseTextBox x:Name="QueueNameTextBox"
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    FilterType="All"
-                                                    DefaultText="Queue Name"
-                                                    WrapInBrackets="False"
-                                                    Margin="{StaticResource ControlBorderTop}"
-                                                    ItemsSource="{Binding QueueNames}"
-                                                    Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
-                                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
-                                <ui:IntellisenseTextBox.IntellisenseProvider>
-                                    <interfaceImplementors:CompositeIntellisenseProvider>
-                                        <provider:FileSystemIntellisenseProvider />
-                                    </interfaceImplementors:CompositeIntellisenseProvider>
-                                </ui:IntellisenseTextBox.IntellisenseProvider>
+                            <controls:AutoCompleteBox x:Name="QueueNameTextBox"
+                                                      Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      AllowUserInsertLine="False"
+                                                      DefaultText="Queue Name"
+                                                      FilterMode="Contains"
+                                                      Margin="{StaticResource ControlBorderTop}"
+                                                      ValueMemberPath="Value" 
+                                                      ItemsSource="{Binding QueueNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedItem="{Binding SelectedQueueName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                      Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
+                                                      Style="{StaticResource AutoCompleteBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 </i:Interaction.Behaviors>
-                            </ui:IntellisenseTextBox>
+                            </controls:AutoCompleteBox>
 
                             <TextBlock Text="Workflow" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
                             <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
