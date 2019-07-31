@@ -9,15 +9,15 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-steps:
-- task: VSBuild@1
-  inputs:
-    solution: 'Dev\\Server.sln'
-    
+steps:    
 - task: PowerShell@2
   inputs:
     filePath: 'Compile.ps1'
     arguments: '-Server -SolutionWideOutputs -Config Release -AutoVersion -MSBuildPath \"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe\"'
+    
+- task: VSBuild@1
+  inputs:
+    solution: 'Dev\\Server.sln'
 
 - task: Docker@2
   inputs:
