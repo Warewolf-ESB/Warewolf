@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
@@ -23,13 +24,14 @@ namespace Dev2.Tasks.QueueEvents
     {
         ICommand _newCommand;
         ICommand _deleteCommand;
-        IQueueSource _selectedQueueSource;
+        IResource _selectedQueueSource;
         string _selectedQueueEvent;
         string _queueName;
         string _workflowName;
         int _concurrency;
         private IServer _server;
         private IResourceRepository _resourceRepository;
+        private ObservableCollection<INameValue> _queueNames;
 
         public QueueEventsViewModel(IServer server)
         {
@@ -49,19 +51,49 @@ namespace Dev2.Tasks.QueueEvents
             }
         }
 
-        public List<IQueueSource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
+        public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
 
-        public IQueueSource SelectedQueueSource
+        public IResource SelectedQueueSource
         {
             get => _selectedQueueSource;
             set
             {
                 _selectedQueueSource = value;
+                if (_selectedQueueSource != null)
+                {
+                    QueueNames = GetQueueNamesFromSource();
+                }
+                
                 OnPropertyChanged(nameof(SelectedQueueSource));
             }
         }
 
-        public ObservableCollection<string> QueueNames { get; set; }
+        private ObservableCollection<INameValue> GetQueueNamesFromSource()
+        {
+            var queueNames = new ObservableCollection<INameValue>();
+
+            var list = _resourceRepository.FindAutocompleteOptions(_server, SelectedQueueSource);
+
+#pragma warning disable CC0021 // Use nameof
+            foreach (var item in list["QueueNames"])
+#pragma warning restore CC0021 // Use nameof
+            {
+                var nameValue = new NameValue(item, item);
+                queueNames.Add(nameValue);
+            }
+
+            return queueNames;
+        }
+
+        public ObservableCollection<INameValue> QueueNames
+        {
+            get => _queueNames;
+            set
+            {
+                _queueNames = value;
+                OnPropertyChanged(nameof(QueueNames));
+            }
+        }
 
         public string QueueName
         {
