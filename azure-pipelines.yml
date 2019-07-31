@@ -12,7 +12,8 @@ pool:
 steps:
 - task: VSBuild@1
   inputs:
-    solution: '*.sln'
+    solution: 'Dev\\Server.sln'
+    
 - task: PowerShell@2
   inputs:
     filePath: 'Compile.ps1'
