@@ -45,22 +45,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                //// get Type of interface
-
-                //// get all classes implementing interface
-
-                //// get all resources that are saved that are instances of these classes
-
-                //// return their id and name
-
-
-
-                //foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                //{
-                //    assembly.ExportedTypes.Where(o => o.FullName == typeName);
-                //}
-
-                //var result = ResourceCatalog.Instance.FindResourcesByType(typeName, theWorkspace);
                 var result = new List<IQueueSource> { new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "My rabbitsource" } };
                 if (result != null)
                 {
