@@ -9,25 +9,14 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-variables:
-  solution: 'Dev\\Server.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: PowerShell@2
   inputs:
-    restoreSolution: '$(solution)'
+    filePath: 'Compile.ps1'
+    arguments: '-Server -SolutionWideOutputs -Config Release -AutoVersion'
 
-- task: VSBuild@1
+- task: Docker@2
   inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    repository: 'warewolfserver/warewolfserver:tagname'
+    command: 'buildAndPush'
+    Dockerfile: Bin/Server/Dockerfile'
