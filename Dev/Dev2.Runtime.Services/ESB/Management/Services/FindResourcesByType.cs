@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
@@ -45,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                var result = new List<IQueueSource> { new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "My rabbitsource" } };
+                var result = new List<IResource> { new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "My rabbitsource" } };
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();
