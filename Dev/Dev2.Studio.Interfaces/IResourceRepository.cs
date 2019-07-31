@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -42,7 +43,8 @@ namespace Dev2.Studio.Interfaces
         void DeployResources(IServer targetEnviroment, IServer sourceEnviroment, IDeployDto dto);
         ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IServer targetEnvironment, enSourceType sourceType);
-        List<T> FindResourcesByType<T>(IServer targetEnvironment);
+        List<IResource> FindResourcesByType<T>(IServer targetEnvironment);
+        Dictionary<string, string[]> FindAutocompleteOptions(IServer targetEnvironment, IResource selectedSource);
         List<IResourceModel> FindResourcesByID(IServer targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
         IList<T> GetResourceList<T>(IServer targetEnvironment) where T : new();
         Settings ReadSettings(IServer currentEnv);

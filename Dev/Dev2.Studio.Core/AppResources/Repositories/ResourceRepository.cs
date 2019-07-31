@@ -22,6 +22,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -993,16 +994,29 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public List<T> FindResourcesByType<T>(IServer targetEnvironment)
+        public List<IResource> FindResourcesByType<T>(IServer targetEnvironment)
         {
-            var result = new List<T>();
+            var result = new List<IResource>();
             if (targetEnvironment == null)
             {
                 return result;
             }
             var comsController = new CommunicationController { ServiceName = "FindResourcesByType" };
             comsController.AddPayloadArgument("Type", typeof(T).FullName);
-            result = comsController.ExecuteCommand<List<T>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+            result = comsController.ExecuteCommand<List<IResource>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+            return result;
+        }
+
+        public Dictionary<string, string[]> FindAutocompleteOptions(IServer targetEnvironment, IResource selectedSource)
+        {
+            var result = new Dictionary<string, string[]>();
+            if (targetEnvironment == null)
+            {
+                return result;
+            }
+            var comsController = new CommunicationController { ServiceName = "FindAutocompleteOptions" };
+            comsController.AddPayloadArgument("SelectedSource", selectedSource.ToString());
+            result = comsController.ExecuteCommand<Dictionary<string, string[]>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
 
