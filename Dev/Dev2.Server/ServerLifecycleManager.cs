@@ -196,9 +196,7 @@ namespace Dev2
             catch (Exception e)
             {
 #pragma warning disable S2228 // Console logging should not be used
-#pragma warning disable S2228 // Console logging should not be used
                 Console.WriteLine(e);
-#pragma warning restore S2228 // Console logging should not be used
 #pragma warning restore S2228 // Console logging should not be used
                 Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
