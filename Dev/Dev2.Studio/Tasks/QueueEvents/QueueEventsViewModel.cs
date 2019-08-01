@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
@@ -32,11 +33,15 @@ namespace Dev2.Tasks.QueueEvents
         private IServer _server;
         private IResourceRepository _resourceRepository;
         private ObservableCollection<INameValue> _queueNames;
+        private ICollection<IServiceInput> _inputs;
+        private bool _pasteResponseVisible;
+        private string _pasteResponse;
 
         public QueueEventsViewModel(IServer server)
         {
             _server = server;
             _resourceRepository = server.ResourceRepository;
+            Inputs = new ObservableCollection<IServiceInput>();
         }
 
         public ObservableCollection<string> QueueEvents { get; set; }
@@ -122,6 +127,36 @@ namespace Dev2.Tasks.QueueEvents
             {
                 _concurrency = value;
                 OnPropertyChanged(nameof(Concurrency));
+            }
+        }
+
+        public ICollection<IServiceInput> Inputs
+        {
+            get => _inputs;
+            set
+            {
+                _inputs = value;
+                OnPropertyChanged(nameof(Inputs));
+            }
+        }
+
+        public bool PasteResponseVisible
+        {
+            get => _pasteResponseVisible;
+            set
+            {
+                _pasteResponseVisible = value;
+                OnPropertyChanged(nameof(PasteResponseVisible));
+            }
+        }
+
+        public string PasteResponse
+        {
+            get => _pasteResponse;
+            set
+            {
+                _pasteResponse = value;
+                OnPropertyChanged(nameof(PasteResponse));
             }
         }
 
