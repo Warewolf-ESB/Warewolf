@@ -37,7 +37,7 @@ Scenario: Creating New DB Source General Testing
    | Options         |
    | SVRDEV          |
    | RSAKLFSVRPDC    |
-   | RSAKLFSVRTFSBLD |
+   | TFSBLD.premier.local |
    | RSAKLFSVRWRWBLD |
    And type options contains
    | Options              |
@@ -102,7 +102,7 @@ Scenario: Creating New DB Source as User Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
       Given I open New Database Source
-      And I type Server as "RSAKLFSVRTFSBLD"
+      And I type Server as "TFSBLD.premier.local"
       And "Save" is "Disabled"
       And I Select Authentication Type as "Windows"
       Then Username field is "Collapsed"
@@ -121,7 +121,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       Given I open New Database Source
-      And I type Server as "RSAKLFSVRTFSBLD"
+      And I type Server as "TFSBLD.premier.local"
       And I Select Authentication Type as "User"
       Then Username field is "Visible"
       And Password field is "Visible"
@@ -163,7 +163,7 @@ Scenario: Incorrect Server Address Shows correct error message
 Scenario: Testing as Windows and swapping it resets the test connection 
       Given I open New Database Source
       And "Save" is "Disabled"
-      And I type Server as "RSAKLFSVRTFSBLD"
+      And I type Server as "TFSBLD.premier.local"
       And "Test Connection" is "Enabled"
       And I Select Authentication Type as "User"
       Then Username field is "Visible"
@@ -278,7 +278,7 @@ Scenario: Changing database type after testing connection
    | Options         |
    | SVRDEV          |
    | RSAKLFSVRPDC    |
-   | RSAKLFSVRTFSBLD |
+   | TFSBLD.premier.local |
    | RSAKLFSVRWRWBLD |
    And type options contains
    | Options              |

@@ -1,5 +1,5 @@
 
-<Source ID="3032b7fd-f12a-4ab8-be7d-2f4705c31317" Name="WebDeleteServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6169.30938" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="3032b7fd-f12a-4ab8-be7d-2f4705c31317" Name="WebDeleteServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://TFSBLD.premier.local:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6169.30938" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>WebDeleteServiceSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

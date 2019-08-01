@@ -35,7 +35,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             Utils.SetupResourceDictionary();
             var manageDatabaseSourceControl = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "SVRDEV.premier.local", "RSAKLFSVRPDC", "RSAKLFSVRTFSBLD", "RSAKLFSVRWRWBLD" });
+            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "SVRDEV.premier.local", "RSAKLFSVRPDC", "TFSBLD.premier.local", "RSAKLFSVRWRWBLD" });
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();

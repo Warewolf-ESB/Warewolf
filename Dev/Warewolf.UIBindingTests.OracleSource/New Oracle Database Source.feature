@@ -37,7 +37,7 @@ Scenario: Creating New DB Source General Testing
    | Options         |
    | SVRDEV          |
    | RSAKLFSVRPDC    |
-   | RSAKLFSVRTFSBLD |
+   | TFSBLD.premier.local |
    | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "SVRDEV"
    And Database dropdown is "Collapsed"
@@ -94,7 +94,7 @@ Scenario: Creating New DB Source as User Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRTFSBLD"	  
+	  And I type Server as "TFSBLD.premier.local"	  
 	  When I type Username as "testuser"
 	  And I type Password as "test123"
 	  Then Database dropdown is "Collapsed"

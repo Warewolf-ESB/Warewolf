@@ -732,10 +732,10 @@ this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3
 #line 182
 this.ScenarioSetup(scenarioInfo);
 #line 183
- testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://rsaklfsvrtfsbld/I" +
+ testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://TFSBLD.premier.local/I" +
                     "ntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 184
- testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote:314" +
+ testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote.premier.local:314" +
                     "2/secure/Wait?WaitSeconds=15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
  testRunner.And("I have a web request variable \"[[results().res]]\" equal to \"res1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -752,10 +752,10 @@ this.ScenarioSetup(scenarioInfo);
                         "URL",
                         "Header"});
             table25.AddRow(new string[] {
-                        "[[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
+                        "[[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx",
                         ""});
             table25.AddRow(new string[] {
-                        "[[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15",
+                        "[[urls(2).url]] = http://tst-ci-remote.premier.local:3142/secure/Wait?WaitSeconds=15",
                         ""});
 #line 190
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
