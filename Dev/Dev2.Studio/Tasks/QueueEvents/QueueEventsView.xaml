@@ -8,10 +8,11 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-             xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-             xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
+             xmlns:controls1="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
+             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
@@ -21,7 +22,7 @@
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding NewCommand}" Key="N" Modifiers="Ctrl" />
     </UserControl.InputBindings>
-    
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -154,27 +155,23 @@
                 </ListBox>
                 <GridSplitter Grid.Column="1" Background="#C1C3C5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" />
                 <ContentControl Grid.Column="2" Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
-                    <Grid>
+                    <Grid Margin="{StaticResource ElementBorder}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Row="0" Grid.Column="0" Margin="{StaticResource ElementBorder}">
+                        <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -252,37 +249,167 @@
                                      Grid.Column="1"
                                      Margin="{StaticResource ControlBorderTop}"
                                      Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
 
-                            <Separator Grid.Row="4"
-                                       Grid.Column="0"
-                                       Grid.ColumnSpan="2"
-                                       Margin="0,3,0,0"
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Separator Grid.Row="0"
+                                       Margin="{StaticResource ControlBorderTop}"
                                        Style="{StaticResource Separator}" />
-                            
-                            <Expander Grid.Row="5" 
-                                      Grid.Column="0"
-                                      Grid.ColumnSpan="2"
+
+                            <Expander Grid.Row="1" 
                                       Style="{StaticResource ServiceTestTestStepExpander}" 
                                       IsExpanded="True" 
                                       Margin="{StaticResource ControlBorderTop}"
                                       Header="Advanced Options">
-                                
+
                             </Expander>
 
-                            <Separator Grid.Row="6"
-                                       Grid.Column="0"
-                                       Grid.ColumnSpan="2"
-                                       Margin="0,3,0,0"
+                            <Separator Grid.Row="2"
+                                       Margin="{StaticResource ControlBorderTop}"
                                        Style="{StaticResource Separator}" />
 
-                            <Grid Grid.Row="7" >
-                            </Grid>
+                        </Grid>
 
-                            <Grid Grid.Row="8" Margin="{StaticResource ControlBorderTop}">
+                        <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="{x:Static languages:Core.InputsHeader}" Grid.Row="0" Grid.Column="0" FontWeight="Bold" />
+
+                            <CheckBox x:Name="PasteResonseCheckBox" 
+                                          Grid.Row="0" 
+                                          Grid.Column="1"
+                                          IsChecked="{Binding PasteResponseVisible}" 
+                                          ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                                          Content="Paste Response"
+                                          HorizontalAlignment="Left">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" 
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+
+                            <!--QueueStats-->
+
+                            <controls1:Dev2DataGrid x:Name="LargeDataGrid"
+                                                        Grid.Row="1"
+                                                        Grid.ColumnSpan="2"
+                                                        ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ActivityMappingDataGridStyle}"
+                                                        Height="Auto"
+                                                        MinHeight="100"
+                                                        Margin="{StaticResource ControlBorderTop}"
+                                                        Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+
+                                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="SizeToCells"
+                                                                MinWidth="65"
+                                                                Header="Parameter"
+                                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                                    <TextBlock Text="{Binding Path=Name}"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   VerticalAlignment="Center"
+                                                                   Padding="3,0"
+                                                                   ToolTip="{Binding OutputColumn.ColumnName}">
+                                                        <AutomationProperties.AutomationId>
+                                                            <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                <Binding Path="IndexNumber" />
+                                                            </MultiBinding>
+                                                        </AutomationProperties.AutomationId>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                                MinWidth="125"
+                                                                Header="Test Data"
+                                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ui:IntellisenseTextBox DefaultText="Test Data"
+                                                                            AllowMultilinePaste="True"
+                                                                            AcceptsReturn="True"
+                                                                            AllowUserInsertLine="True"
+                                                                            MaxHeight="80"
+                                                                            Margin="0,0,1,1"
+                                                                            TextWrapping="Wrap"
+                                                                            WrapInBrackets="False"
+                                                                            ToolTip="{x:Static languages:Tooltips.WebInsertToolTipColumn}"
+                                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                                                 SourcePropertyName="Value"
+                                                                                 SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                    </i:Interaction.Behaviors>
+                                                    <AutomationProperties.AutomationId>
+                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                            <Binding Path="IndexNumber" />
+                                                        </MultiBinding>
+                                                    </AutomationProperties.AutomationId>
+                                                </ui:IntellisenseTextBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </controls1:Dev2DataGrid>
+
+                            <Grid x:Name="ResponseGrid" 
+                                      Grid.Row="1"
+                                      Grid.ColumnSpan="2"
+                                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Paste Response" FontWeight="Bold" />
+
+                                <TextBox Grid.Row="1"
+                                             Text="{Binding PasteResponse}" 
+                                             x:Name="ResponseTextbox"
+                                             Style="{StaticResource StretchedTextBoxStyle}"
+                                             customControls:WatermarkTextBox.Watermark="Paste response here"
+                                             SnapsToDevicePixels="True" 
+                                             VerticalScrollBarVisibility="Auto"
+                                             MinHeight="100"
+                                             ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
+                                             HorizontalScrollBarVisibility="Disabled" >
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteInputHelp}" 
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
                             </Grid>
                         </Grid>
 
-                        
+                        <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">
+                        </Grid>
                     </Grid>
                 </ContentControl>
             </Grid>
