@@ -408,142 +408,134 @@
                             </Grid>
                         </Grid>
 
-                        <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">
-                            <Expander Grid.Row="0" 
-                                      Grid.Column="0"
-                                      Grid.ColumnSpan="2"
-                                      Style="{StaticResource ServiceTestTestStepExpander}" 
-                                      IsExpanded="True" 
-                                      Header="History">
-                                <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource ElementBorderLeft}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <DataGrid ItemsSource="{Binding History}"
-                                      Grid.Column="0"
-                                      EnableRowVirtualization="False"
-                                      SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
-                                      Style="{StaticResource SchedulerDataGridStyle}"
-                                      VerticalScrollBarVisibility="Auto"
-                                      HorizontalScrollBarVisibility="Auto"
-                                      RowHeight="22"
-                                      Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                        <DataGrid.Columns>
-                                            <DataGridTemplateColumn Width="27"
-                                                            MinWidth="27"
-                                                            IsReadOnly="True"
-                                                            Header="#"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         BorderThickness="0"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                        <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">                           
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <DataGrid ItemsSource="{Binding History}"
+                                Grid.Column="0"
+                                EnableRowVirtualization="False"
+                                SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
+                                Style="{StaticResource SchedulerDataGridStyle}"
+                                VerticalScrollBarVisibility="Auto"
+                                HorizontalScrollBarVisibility="Auto"
+                                RowHeight="22"
+                                Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="27"
+                                                    MinWidth="27"
+                                                    IsReadOnly="True"
+                                                    Header="#"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    BorderThickness="0"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Width="*"
-                                                            MinWidth="80"
-                                                            IsReadOnly="True"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Start Time"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                    MinWidth="80"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Start Time"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    BorderThickness="0"
+                                                    Text="{Binding TaskHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Width="*"
-                                                            MinWidth="70"
-                                                            IsReadOnly="True"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Duration"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.Duration, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                    MinWidth="70"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Duration"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    BorderThickness="0"
+                                                    Text="{Binding TaskHistoryOutput.Duration, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Width="*"
-                                                            IsReadOnly="True"
-                                                            MinWidth="80"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="End Time"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                    IsReadOnly="True"
+                                                    MinWidth="80"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="End Time"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    BorderThickness="0"
+                                                    Text="{Binding TaskHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Width="*"
-                                                            MinWidth="50"
-                                                            IsReadOnly="True"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Status"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.Success, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                    MinWidth="50"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Status"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    BorderThickness="0"
+                                                    Text="{Binding TaskHistoryOutput.Success, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Width="*"
-                                                            MinWidth="70"
-                                                            IsReadOnly="True"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Execution id"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.EventId, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                    MinWidth="70"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Execution id"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    BorderThickness="0"
+                                                    Text="{Binding TaskHistoryOutput.EventId, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Width="*"
-                                                            MinWidth="90"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            IsReadOnly="True"
-                                                            Header="User Context"
-                                                            >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                         BorderThickness="0"
-                                                         Text="{Binding UserName, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </Grid>
-                            </Expander>
+                                    <DataGridTemplateColumn Width="*"
+                                                    MinWidth="90"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    IsReadOnly="True"
+                                                    Header="User Context"
+                                                    >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox IsReadOnly="True"
+                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                    BorderThickness="0"
+                                                    Text="{Binding UserName, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>                               
+                            
                         </Grid>
                     </Grid>
                 </ContentControl>
