@@ -18,7 +18,6 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Util;
 using Dev2.Integration.Tests.Services.Sql;
-using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
@@ -50,7 +49,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
         public void SetupScenerio()
         {
-            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            try
+            {
+                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
+            catch
+            {
+                
+            }
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             scenarioContext.Add("dbSource", dbSource);
