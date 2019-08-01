@@ -246,5 +246,23 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             Assert.AreEqual("Paste Response", queueEventsViewModel.PasteResponse);
         }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_ViewQueueStats()
+        {
+            Uri uri = new Uri("https://www.rabbitmq.com/blog/tag/statistics/");
+
+            var mockServer = new Mock<IServer>();
+            var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
+            mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object);
+
+            queueEventsViewModel.QueueStatsCommand.Execute(null);
+
+            mockExternalProcessExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
+        }
     }
 }
