@@ -3873,6 +3873,22 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_CreateNewQueueEvent_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            //---------------Execute Test ----------------------
+            ShellViewModel.CreateNewQueueEvent(Guid.Empty);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetRefreshExplorerState_GivenTrue_ShouldSetExplorerStateCorrectly()
         {
@@ -4035,6 +4051,31 @@ namespace Dev2.Core.Tests
 
             //---------------Execute Test ----------------------
             ShellViewModel.NewSchedule(Guid.Empty);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            wcm.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_NewQueueEvent_GivenId_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            var pv = new PrivateObject(ShellViewModel);
+            var resourceModel = new Mock<IContextualResourceModel>();
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            wcm.Setup(manager => manager.TryCreateNewQueueEventWorkSurface(resourceModel.Object));
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
+                .Returns(resourceModel.Object);
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.NewQueueEvent(Guid.Empty);
             //---------------Test Result -----------------------
             EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
             wcm.VerifyAll();

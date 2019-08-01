@@ -302,7 +302,7 @@ namespace Dev2.Studio.ViewModels
         //TODO: Change to call into Tasks as Queue Events option to open by default
         public IAuthorizeCommand QueueEventsCommand
         {
-            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
+            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTasksWorkSurface(), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand TasksCommand
         {
@@ -592,6 +592,11 @@ namespace Dev2.Studio.ViewModels
         public void NewSchedule(Guid resourceId)
         {
             CreateNewSchedule(resourceId);
+        }
+
+        public void NewQueueEvent(Guid resourceId)
+        {
+            CreateNewQueueEvent(resourceId);
         }
 
         public void BrowserDebug(Guid resourceId, IServer server)
@@ -1044,6 +1049,13 @@ namespace Dev2.Studio.ViewModels
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
             _worksurfaceContextManager.TryCreateNewScheduleWorkSurface(contextualResourceModel);
+        }
+
+        public void CreateNewQueueEvent(Guid resourceId)
+        {
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            _worksurfaceContextManager.TryCreateNewQueueEventWorkSurface(contextualResourceModel);
         }
 
         public void CreateTest(Guid resourceId)

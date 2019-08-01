@@ -97,6 +97,7 @@ namespace Dev2.Studio.Interfaces
         void StudioDebug(Guid resourceId, IServer server);
         void CopyUrlLink(Guid resourceId, IServer server);
         void NewSchedule(Guid resourceId);
+        void NewQueueEvent(Guid resourceId);
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
         void OnActiveServerChanged();
