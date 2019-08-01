@@ -133,6 +133,7 @@ namespace Dev2.Studio.ViewModels
         void AddSchedulerWorkSurface();
         void AddTasksWorkSurface();
         void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
+        void TryCreateNewQueueEventWorkSurface(IContextualResourceModel resourceModel);
 
         void AddWorkspaceItem(IContextualResourceModel model);
         void DeleteContext(IContextualResourceModel model);
@@ -1226,6 +1227,15 @@ namespace Dev2.Studio.ViewModels
                 ShowDependencies(true, resource, ActiveServer);
             }
         }
+        public void TryCreateNewQueueEventWorkSurface(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel != null)
+            {
+                //TODO: Open Tasks QueueEvent Tab with workflow populated
+                AddTasksWorkSurface();
+            }
+        }
+
         //TODO: Remove or update?
         public void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
