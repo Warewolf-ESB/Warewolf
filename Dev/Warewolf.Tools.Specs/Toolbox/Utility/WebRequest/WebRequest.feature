@@ -180,7 +180,7 @@ Scenario Outline: Enter a URL to download html with timeout specified too short
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15  | 10             |
 
 Scenario: Enter a recordset star input and output
-	Given I have a web request variable "[[urls().url]]" equal to "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	Given I have a web request variable "[[urls().url]]" equal to "http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx"	
 	And I have a web request variable "[[urls().url]]" equal to "http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15"	
 	And I have a web request variable "[[results().res]]" equal to "res1"	
 	And I have the url "[[urls(*).url]]" without timeout
@@ -189,5 +189,5 @@ Scenario: Enter a recordset star input and output
 	Then the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                                     | Header |
-	| [[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx |        |
-	| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15  |        |
+	| [[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx |        |
+	| [[urls(2).url]] = http://tst-ci-remote.premier.local:3142/secure/Wait?WaitSeconds=15  |        |

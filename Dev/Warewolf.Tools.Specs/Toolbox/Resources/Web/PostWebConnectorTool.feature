@@ -59,7 +59,7 @@ Scenario: Adding parameters in Post Post Web Connector Tool request headers is u
 	And Post Query is Enabled
 	And Post Generate Outputs is Enabled
 	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Post Query String
-	And Post Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx"
+	And Post Url as "http://TFSBLD.premier.local/integrationTestSite/GetCountries.ashx"
 	And I add Post Header as
          | Name  | Value |
          | [[a]] | T     |

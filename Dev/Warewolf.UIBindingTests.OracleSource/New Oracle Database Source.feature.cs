@@ -117,7 +117,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table1.AddRow(new string[] {
-                        "RSAKLFSVRTFSBLD"});
+                        "TFSBLD.premier.local"});
             table1.AddRow(new string[] {
                         "RSAKLFSVRWRWBLD"});
 #line 36
@@ -243,7 +243,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 96
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 97
-   testRunner.And("I type Server as \"RSAKLFSVRTFSBLD\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Server as \"TFSBLD.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
    testRunner.When("I type Username as \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 99

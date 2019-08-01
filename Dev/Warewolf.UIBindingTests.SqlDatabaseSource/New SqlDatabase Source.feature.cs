@@ -117,7 +117,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table1.AddRow(new string[] {
-                        "RSAKLFSVRTFSBLD"});
+                        "TFSBLD.premier.local"});
             table1.AddRow(new string[] {
                         "RSAKLFSVRWRWBLD"});
 #line 36
@@ -260,7 +260,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 104
       testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 105
-      testRunner.And("I type Server as \"RSAKLFSVRTFSBLD\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+      testRunner.And("I type Server as \"TFSBLD.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
       testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 107
@@ -303,7 +303,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 123
       testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
-      testRunner.And("I type Server as \"RSAKLFSVRTFSBLD\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+      testRunner.And("I type Server as \"TFSBLD.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 125
       testRunner.And("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
@@ -397,7 +397,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 165
       testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
-      testRunner.And("I type Server as \"RSAKLFSVRTFSBLD\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+      testRunner.And("I type Server as \"TFSBLD.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 167
       testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 168
@@ -644,7 +644,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table3.AddRow(new string[] {
-                        "RSAKLFSVRTFSBLD"});
+                        "TFSBLD.premier.local"});
             table3.AddRow(new string[] {
                         "RSAKLFSVRWRWBLD"});
 #line 277

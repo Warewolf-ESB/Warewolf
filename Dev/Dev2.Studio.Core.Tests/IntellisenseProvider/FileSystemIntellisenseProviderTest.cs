@@ -182,7 +182,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 18,
-                InputText = @"\\RSAKLFSVRTFSBLD\",
+                InputText = @"\\TFSBLD.premier.local\",
                 IsInCalculateMode = false,
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
@@ -201,7 +201,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 36,
-                InputText = @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff",
+                InputText = @"\\TFSBLD.premier.local\DevelopmentDropOff",
                 IsInCalculateMode = false,
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
@@ -221,7 +221,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 41,
-                InputText = @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\_Arch",
+                InputText = @"\\TFSBLD.premier.local\DevelopmentDropOff\_Arch",
                 IsInCalculateMode = false,
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
@@ -240,7 +240,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 44,
-                InputText = @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\LoadTest",
+                InputText = @"\\TFSBLD.premier.local\DevelopmentDropOff\LoadTest",
                 IsInCalculateMode = false,
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
@@ -259,7 +259,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 39,
-                InputText = @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Runt",
+                InputText = @"\\TFSBLD.premier.local\DevelopmentDropOff\Runt",
                 IsInCalculateMode = false,
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
@@ -281,7 +281,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 39,
-                InputText = @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Runt",
+                InputText = @"\\TFSBLD.premier.local\DevelopmentDropOff\Runt",
                 IsInCalculateMode = false,
                 DesiredResultSet = IntellisenseDesiredResultSet.EntireSet
             };
@@ -408,19 +408,19 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             QueryCollection = new List<string>();
             switch (searchPath)
             {
-                case @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Runt":
+                case @"\\TFSBLD.premier.local\DevelopmentDropOff\Runt":
                     AddToList(1);
                     break;
-                case @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\LoadTest":
+                case @"\\TFSBLD.premier.local\DevelopmentDropOff\LoadTest":
                     AddToList(1);
                     break;
-                case @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\_Arch":
+                case @"\\TFSBLD.premier.local\DevelopmentDropOff\_Arch":
                     AddToList(1);
                     break;
-                case @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff":
+                case @"\\TFSBLD.premier.local\DevelopmentDropOff":
                     AddToList(16);
                     break;
-                case @"\\RSAKLFSVRTFSBLD\":
+                case @"\\TFSBLD.premier.local\":
                     AddToList(6);
                     break;
                 case @"\\":

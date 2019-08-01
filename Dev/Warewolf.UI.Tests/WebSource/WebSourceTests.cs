@@ -26,7 +26,7 @@ namespace Warewolf.UI.Tests.WebSource
             WebSourceUIMap.Click_UserButton_On_WebServiceSourceTab();
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username Textbox not enabled");
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
-            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab("http://RSAKLFSVRTFSBLD:9810");
+            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab("http://TFSBLD.premier.local:9810");
             WebSourceUIMap.Enter_RunAsUser_On_WebServiceSourceTab();
             WebSourceUIMap.Enter_DefaultQuery_On_WebServiceSourceTab("");
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");

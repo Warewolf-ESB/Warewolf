@@ -39,7 +39,10 @@ namespace Dev2.Integration.Tests.Services.Sql
         public static void MyClassInitialize(TestContext testContext)
         {
             _containerOps = TestLauncher.StartLocalMSSQLContainer(testContext.ResultsDirectory);
-            Thread.Sleep(10000);
+            if (_containerOps != null)
+            {
+                Thread.Sleep(10000);
+            }
         }
 
         [ClassCleanup]

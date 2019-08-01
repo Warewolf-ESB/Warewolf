@@ -58,7 +58,7 @@ Scenario: Adding parameters in Delete Post Web Connector Tool request headers is
 	And Delete Query is Enabled
 	And Delete Generate Outputs is Enabled
 	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Delete Query String
-	And Delete Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx"
+	And Delete Url as "http://TFSBLD.premier.local/integrationTestSite/GetCountries.ashx"
 	And I add Delete Header as
          | Name  | Value |
          | [[a]] | T     |

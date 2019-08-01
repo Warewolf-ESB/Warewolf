@@ -59,7 +59,7 @@ Scenario: Adding parameters in Put Web Connectgor Tool request headers is updati
 	And Put Query is Enabled
 	And Put Generate Outputs is Enabled
 	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Put Query String
-	And Put Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx"
+	And Put Url as "http://TFSBLD.premier.local/integrationTestSite/GetCountries.ashx"
 	And I add Put Header as
          | Name  | Value |
          | [[a]] | T     |
