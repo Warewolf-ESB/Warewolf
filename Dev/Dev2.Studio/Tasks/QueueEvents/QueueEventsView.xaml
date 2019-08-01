@@ -265,7 +265,7 @@
                                       Style="{StaticResource ServiceTestTestStepExpander}" 
                                       IsExpanded="True" 
                                       Margin="{StaticResource ControlBorderTop}"
-                                      Header="Advanced Options">
+                                      Header="Options">
 
                             </Expander>
 
