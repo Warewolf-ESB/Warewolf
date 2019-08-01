@@ -566,6 +566,18 @@
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
+                                            <MenuItem Name="QueueEvent"
+								                      Command="{Binding QueueEventCommand}"
+								                      Header="Queue Event"
+								                      Style="{StaticResource MenuItemStyle}"
+								                      IsEnabled="{Binding CanCreateQueueEvent}"
+								                      ToolTip="{Binding ExplorerTooltips.QueueEventToolTip}"
+								                      Visibility="{Binding IsQueueEventVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Calendar" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
                                             <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                                             <MenuItem Name="NewFolderFromItem"
