@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
@@ -18,6 +19,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Warewolf.Core;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 {
@@ -186,6 +190,61 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             queueEventsViewModel.DeleteCommand.Execute(null);
             Assert.AreEqual(0, queueEventsViewModel.QueueEvents.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Inputs()
+        {
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+
+            Assert.IsNotNull(queueEventsViewModel.Inputs);
+
+            var inputs = new ObservableCollection<IServiceInput>();
+            inputs.Add(new ServiceInput("name1", "value1"));
+            inputs.Add(new ServiceInput("name2", "value2"));
+
+            queueEventsViewModel.Inputs = inputs;
+
+            var inputsAsList = queueEventsViewModel.Inputs.ToList();
+
+            Assert.AreEqual(2, queueEventsViewModel.Inputs.Count);
+            Assert.AreEqual("name1", inputsAsList[0].Name);
+            Assert.AreEqual("value1", inputsAsList[0].Value);
+            Assert.AreEqual("name2", inputsAsList[1].Name);
+            Assert.AreEqual("value2", inputsAsList[1].Value);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_PasteResponseVisible()
+        {
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+
+            Assert.IsFalse(queueEventsViewModel.PasteResponseVisible);
+
+            queueEventsViewModel.PasteResponseVisible = true;
+
+            Assert.IsTrue(queueEventsViewModel.PasteResponseVisible);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_PasteResponse()
+        {
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+
+            Assert.IsNull(queueEventsViewModel.PasteResponse);
+
+            queueEventsViewModel.PasteResponse = "Paste Response";
+
+            Assert.AreEqual("Paste Response", queueEventsViewModel.PasteResponse);
         }
     }
 }
