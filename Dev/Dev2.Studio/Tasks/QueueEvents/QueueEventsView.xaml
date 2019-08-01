@@ -300,7 +300,20 @@
                                 </i:Interaction.Behaviors>
                             </CheckBox>
 
-                            <!--QueueStats-->
+                            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <TextBlock Text="Queue Stats" />
+                                <Button Content="..."
+                                        Margin="{StaticResource ControlBorderLeft}"
+                                        Style="{StaticResource ButtonStyle}"
+                                        ToolTip="Select to view Queue Stats"
+                                        Command="{Binding QueueStatsCommand}"
+                                        AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </Button>
+                            </StackPanel>
 
                             <controls1:Dev2DataGrid x:Name="LargeDataGrid"
                                                         Grid.Row="1"
