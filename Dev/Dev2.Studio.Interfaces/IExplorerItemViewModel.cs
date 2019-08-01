@@ -42,6 +42,7 @@ namespace Dev2.Studio.Interfaces
         bool CanDebugStudio { get; set; }
         bool CanDebugBrowser { get; set; }
         bool CanCreateSchedule { get; set; }
+        bool CanCreateQueueEvent { get; set; }
         bool CanViewRunAllTests { get; set; }
         bool CanContribute { get; set; }
         IVersionInfo VersionInfo { get; set; }

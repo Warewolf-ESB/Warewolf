@@ -155,6 +155,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _canDebugStudio;
         private bool _canDebugBrowser;
         private bool _canCreateSchedule;
+        private bool _canCreateQueueEvent;
         private bool _isVersion;
         private bool _isDependenciesVisible;
         private bool _isDebugBrowserVisible;
@@ -335,6 +336,10 @@ namespace Warewolf.Studio.ViewModels
             ScheduleCommand = new DelegateCommand(type =>
             {
                 _explorerItemViewModelCommandController.ScheduleCommand(ResourceId);
+            });
+            QueueEventCommand = new DelegateCommand(type =>
+            {
+                _explorerItemViewModelCommandController.QueueEventCommand(ResourceId);
             });
             RunAllTestsCommand = new DelegateCommand(type =>
             {
@@ -700,6 +705,7 @@ namespace Warewolf.Studio.ViewModels
             CanDebugStudio = false;
             CanDebugBrowser = false;
             CanCreateSchedule = false;
+            CanCreateQueueEvent = false;
             CanCreateTest = false;
             CanViewRunAllTests = false;
             CanCreateTest = false;
@@ -741,6 +747,7 @@ namespace Warewolf.Studio.ViewModels
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanCreateSchedule = true;
+            CanCreateQueueEvent = true;
             CanCreateTest = true;
         }
 
@@ -767,6 +774,7 @@ namespace Warewolf.Studio.ViewModels
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanCreateSchedule = true;
+            CanCreateQueueEvent = true;
             CanCreateTest = true;
             CanViewRunAllTests = true;
         }
@@ -986,6 +994,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DebugStudioCommand { get; set; }
         public ICommand DebugBrowserCommand { get; set; }
         public ICommand ScheduleCommand { get; set; }
+        public ICommand QueueEventCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }
         public ICommand CopyUrlCommand { get; set; }
 
@@ -1314,6 +1323,17 @@ namespace Warewolf.Studio.ViewModels
                 _canCreateSchedule = value;
                 ExplorerTooltips.ScheduleTooltip = _canCreateSchedule ? Resources.Languages.Tooltips.ScheduleToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateSchedule);
+            }
+        }
+
+        public bool CanCreateQueueEvent
+        {
+            get => _canCreateQueueEvent && !IsSaveDialog;
+            set
+            {
+                _canCreateQueueEvent = value;
+                ExplorerTooltips.QueueEventTooltip = _canCreateQueueEvent ? Resources.Languages.Tooltips.QueueEventToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanCreateQueueEvent);
             }
         }
 
