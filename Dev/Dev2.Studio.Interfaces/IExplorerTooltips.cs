@@ -32,6 +32,7 @@ namespace Dev2.Studio.Interfaces
         string DebugStudioTooltip { get; set; }
         string DebugBrowserTooltip { get; set; }
         string ScheduleTooltip { get; set; }
+        string QueueEventTooltip { get; set; }
         string NewFolderTooltip { get; set; }
         string RenameTooltip { get; set; }
         string DeleteTooltip { get; set; }

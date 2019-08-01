@@ -3260,6 +3260,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a queue event to run.
+        /// </summary>
+        public static string QueueEventToolTip {
+            get {
+                return ResourceManager.GetString("QueueEventToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the source message queue.
         /// </summary>
         public static string QueueSourceTooltip {

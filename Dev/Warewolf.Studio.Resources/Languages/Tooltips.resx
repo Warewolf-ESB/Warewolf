@@ -685,6 +685,9 @@ Returns the output of the script, if any.</value>
   <data name="ScheduleToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>
+  <data name="QueueEventToolTip" xml:space="preserve">
+    <value>Create a queue event to run</value>
+  </data>
   <data name="SchedulerStatusAltTooltipTrigger" xml:space="preserve">
     <value>Enable or Disable the schedule</value>
   </data>
