@@ -88,7 +88,7 @@ namespace Warewolf.Studio.ViewModels
             ButtonWidth = ButtonWidthLarge;
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
-            DebugIcon = FontAwesomeIcon.Play;
+            DebugIcon = FontAwesomeIcon.Bug;
             
         }
 
@@ -343,7 +343,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 SetProperty(ref _isProcessing, value);
-                DebugIcon = _isProcessing ? FontAwesomeIcon.Stop : FontAwesomeIcon.Play;
+                DebugIcon = _isProcessing ? FontAwesomeIcon.Stop : FontAwesomeIcon.Bug;
                 OnPropertyChanged(()=>DebugLabel);
             }
         }
