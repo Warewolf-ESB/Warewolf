@@ -368,7 +368,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod,Timeout(60000)]
         public void TestDebugIcon_Default()
         {
-            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Play, _target.DebugIcon);
+            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Bug, _target.DebugIcon);
         }
 
         [TestMethod,Timeout(60000)]
@@ -727,7 +727,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(value);
             Assert.IsTrue(_changedProperties.Contains("DebugLabel"));
-            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Play, _target.DebugIcon);
+            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Bug, _target.DebugIcon);
         }
 
         [TestMethod,Timeout(60000)]
