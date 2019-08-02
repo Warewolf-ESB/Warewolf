@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table2.AddRow(new string[] {
-                        "http://tst-ci-remote:3142",
+                        "http://tst-ci-remote.premier.local:3142",
                         "User"});
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table2, "Given ");
@@ -184,7 +184,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table4.AddRow(new string[] {
-                        "http://wolfs-den:3142",
+                        "http://wolfs-den.premier.local:3142",
                         "Public"});
 #line 33
  testRunner.Given("I create a server source as", ((string)(null)), table4, "Given ");

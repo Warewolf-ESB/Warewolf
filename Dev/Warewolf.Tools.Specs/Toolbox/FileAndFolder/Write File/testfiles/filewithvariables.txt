@@ -1,6 +1,6 @@
 ﻿http://dev2-warewolf.cloudapp.net:3142
 
-http://tst-ci-remote:3142/dsf
+http://tst-ci-remote.premier.local:3142/dsf
 
 http://remote.dev2.co.za:3142/dsf 
 

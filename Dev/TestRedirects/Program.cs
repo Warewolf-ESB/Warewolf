@@ -25,7 +25,7 @@ namespace TestRedirects
 
            Console.WriteLine("sss");
             ServerProxy x = new ServerProxy("http://localhost:3142/dsf",CredentialCache.DefaultNetworkCredentials);
-            ServerProxy y = new ServerProxy("http://tst-ci-remote:3142/dsf", CredentialCache.DefaultNetworkCredentials);
+            ServerProxy y = new ServerProxy("http://tst-ci-remote.premier.local:3142/dsf", CredentialCache.DefaultNetworkCredentials);
             x.Connect(Guid.NewGuid());
             y.Connect(Guid.NewGuid());
 
