@@ -33,7 +33,7 @@
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DebugInputsTooltip}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                     </MenuItem.Icon>
                 </MenuItem>
 
@@ -45,7 +45,7 @@
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DebugStudioTooltip}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                     </MenuItem.Icon>
                 </MenuItem>
 
@@ -57,7 +57,7 @@
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DebugBrowserTooltip}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                     </MenuItem.Icon>
                 </MenuItem>
 
