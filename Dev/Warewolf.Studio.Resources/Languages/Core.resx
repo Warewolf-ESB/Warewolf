@@ -196,7 +196,7 @@
     <value>Search</value>
   </data>
   <data name="MenuDialogTaskLabel" xml:space="preserve">
-    <value>Task</value>
+    <value>Triggers</value>
   </data>
   <data name="MenuDialogSchedulerLabel" xml:space="preserve">
     <value>Scheduler</value>

@@ -739,7 +739,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task.
+        ///   Looks up a localized string similar to Triggers.
         /// </summary>
         public static string MenuDialogTaskLabel {
             get {
