@@ -526,7 +526,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugInputsTooltip}"
 								                      Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -538,7 +538,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugStudioTooltip}"
 								                      Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -550,7 +550,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugBrowserTooltip}"
 								                      Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
