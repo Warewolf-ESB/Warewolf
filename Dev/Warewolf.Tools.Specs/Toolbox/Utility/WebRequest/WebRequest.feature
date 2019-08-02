@@ -139,11 +139,11 @@ Examples:
 	| url                                                  | timeoutSeconds | Header  | Error                                                                            |
 	| 88                                                   |                |         | Unable to connect to the remote server                                           |
 	| [[y]]                                                |                |         | Invalid URI: The hostname could not be parsed                                    |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15 | 10             |         | Value [[y]] for TimeoutSeconds Text could not be interpreted as a numeric value. |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15 | 10             |         | Value    for TimeoutSeconds Text could not be interpreted as a numeric value.    |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15 | 10             |         | Value sdf for TimeoutSeconds Text could not be interpreted as a numeric value.   |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15 | 10             | 21245   | Index was outside the bounds of the array                                        |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15 | 10             | [[var]] | Object reference not set to instance  of object                                  |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=15 | 10             |         | Value [[y]] for TimeoutSeconds Text could not be interpreted as a numeric value. |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=15 | 10             |         | Value    for TimeoutSeconds Text could not be interpreted as a numeric value.    |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=15 | 10             |         | Value sdf for TimeoutSeconds Text could not be interpreted as a numeric value.   |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=15 | 10             | 21245   | Index was outside the bounds of the array                                        |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=15 | 10             | [[var]] | Object reference not set to instance  of object                                  |
 
 
 Scenario: Enter a URL that is a null variable
@@ -176,12 +176,12 @@ Scenario Outline: Enter a URL to download html with timeout specified too short
 	| [[result]] = String |
 	Examples:
 	| url                                                   | timeoutSeconds |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150 | 10             |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15  | 10             |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=150 | 10             |
+	| http://tst-ci-remote.premier.local:3142/Public/Wait?WaitSeconds=15  | 10             |
 
 Scenario: Enter a recordset star input and output
 	Given I have a web request variable "[[urls().url]]" equal to "http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx"	
-	And I have a web request variable "[[urls().url]]" equal to "http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15"	
+	And I have a web request variable "[[urls().url]]" equal to "http://tst-ci-remote.premier.local:3142/secure/Wait?WaitSeconds=15"	
 	And I have a web request variable "[[results().res]]" equal to "res1"	
 	And I have the url "[[urls(*).url]]" without timeout
 	And I have web request result as "[[results(*).res]]"
@@ -190,4 +190,4 @@ Scenario: Enter a recordset star input and output
 	And the debug inputs as  
 	| URL                                                                     | Header |
 	| [[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx |        |
-	| [[urls(2).url]] = http://tst-ci-remote.premier.local:3142/secure/Wait?WaitSeconds=15  |        |
+	| [[urls(2).url]] = http://tst-ci-remote.premier.local.premier.local:3142/secure/Wait?WaitSeconds=15  |        |
