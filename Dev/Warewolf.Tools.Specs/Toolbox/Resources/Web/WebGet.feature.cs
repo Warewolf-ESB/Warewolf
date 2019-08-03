@@ -102,11 +102,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.Then("Get Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1681 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1685 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 12
- testRunner.And("Get Header appears as", ((string)(null)), table1681, "And ");
+ testRunner.And("Get Header appears as", ((string)(null)), table1685, "And ");
 #line 14
  testRunner.And("Get Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
@@ -118,11 +118,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.And("Get Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1682 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1686 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 19
- testRunner.And("Get mapped outputs are", ((string)(null)), table1682, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1686, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -184,23 +184,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.Then("Get Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1683 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1687 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1683.AddRow(new string[] {
+            table1687.AddRow(new string[] {
                         "Id",
                         "[[UnnamedArrayData().Id]]"});
-            table1683.AddRow(new string[] {
+            table1687.AddRow(new string[] {
                         "Name",
                         "[[UnnamedArrayData().Name]]"});
-            table1683.AddRow(new string[] {
+            table1687.AddRow(new string[] {
                         "Category",
                         "[[UnnamedArrayData().Category]]"});
-            table1683.AddRow(new string[] {
+            table1687.AddRow(new string[] {
                         "Price",
                         "[[UnnamedArrayData().Price]]"});
 #line 43
- testRunner.And("Get mapped outputs are", ((string)(null)), table1683, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1687, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -236,23 +236,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
  testRunner.Then("Get Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1684 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1688 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1684.AddRow(new string[] {
+            table1688.AddRow(new string[] {
                         "Id",
                         "[[UnnamedArrayData().Id]]"});
-            table1684.AddRow(new string[] {
+            table1688.AddRow(new string[] {
                         "Name",
                         "[[UnnamedArrayData().Name]]"});
-            table1684.AddRow(new string[] {
+            table1688.AddRow(new string[] {
                         "Category",
                         "[[UnnamedArrayData().Category]]"});
-            table1684.AddRow(new string[] {
+            table1688.AddRow(new string[] {
                         "Price",
                         "[[UnnamedArrayData().Price]]"});
 #line 63
- testRunner.And("Get mapped outputs are", ((string)(null)), table1684, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1688, "And ");
 #line 69
  testRunner.When("I Select \"OtherWebSource\" as a Get web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 70
@@ -266,11 +266,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 74
  testRunner.And("Get Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1685 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1689 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
 #line 75
- testRunner.And("Get mapped outputs are", ((string)(null)), table1685, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1689, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -306,43 +306,43 @@ this.ScenarioSetup(scenarioInfo);
 #line 89
  testRunner.Then("Get Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1686 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1690 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1686.AddRow(new string[] {
+            table1690.AddRow(new string[] {
                         "Id",
                         "[[UnnamedArrayData().Id]]"});
-            table1686.AddRow(new string[] {
+            table1690.AddRow(new string[] {
                         "Name",
                         "[[UnnamedArrayData().Name]]"});
-            table1686.AddRow(new string[] {
+            table1690.AddRow(new string[] {
                         "Category",
                         "[[UnnamedArrayData().Category]]"});
-            table1686.AddRow(new string[] {
+            table1690.AddRow(new string[] {
                         "Price",
                         "[[UnnamedArrayData().Price]]"});
 #line 90
- testRunner.And("Get mapped outputs are", ((string)(null)), table1686, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1690, "And ");
 #line 96
  testRunner.When("I change Recordset Name to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1687 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1691 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1687.AddRow(new string[] {
+            table1691.AddRow(new string[] {
                         "Id",
                         "[[Id]]"});
-            table1687.AddRow(new string[] {
+            table1691.AddRow(new string[] {
                         "Name",
                         "[[Name]]"});
-            table1687.AddRow(new string[] {
+            table1691.AddRow(new string[] {
                         "Category",
                         "[[Category]]"});
-            table1687.AddRow(new string[] {
+            table1691.AddRow(new string[] {
                         "Price",
                         "[[Price]]"});
 #line 97
- testRunner.And("Get mapped outputs are", ((string)(null)), table1687, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1691, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -378,43 +378,43 @@ this.ScenarioSetup(scenarioInfo);
 #line 115
  testRunner.Then("Get Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1688 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1692 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1688.AddRow(new string[] {
+            table1692.AddRow(new string[] {
                         "Id",
                         "[[UnnamedArrayData().Id]]"});
-            table1688.AddRow(new string[] {
+            table1692.AddRow(new string[] {
                         "Name",
                         "[[UnnamedArrayData().Name]]"});
-            table1688.AddRow(new string[] {
+            table1692.AddRow(new string[] {
                         "Category",
                         "[[UnnamedArrayData().Category]]"});
-            table1688.AddRow(new string[] {
+            table1692.AddRow(new string[] {
                         "Price",
                         "[[UnnamedArrayData().Price]]"});
 #line 116
- testRunner.And("Get mapped outputs are", ((string)(null)), table1688, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1692, "And ");
 #line 122
  testRunner.When("I change Recordset Name to \"newRecordset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1689 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1693 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1689.AddRow(new string[] {
+            table1693.AddRow(new string[] {
                         "Id",
                         "[[newRecordset().Id]]"});
-            table1689.AddRow(new string[] {
+            table1693.AddRow(new string[] {
                         "Name",
                         "[[newRecordset().Name]]"});
-            table1689.AddRow(new string[] {
+            table1693.AddRow(new string[] {
                         "Category",
                         "[[newRecordset().Category]]"});
-            table1689.AddRow(new string[] {
+            table1693.AddRow(new string[] {
                         "Price",
                         "[[newRecordset().Price]]"});
 #line 123
- testRunner.And("Get mapped outputs are", ((string)(null)), table1689, "And ");
+ testRunner.And("Get mapped outputs are", ((string)(null)), table1693, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

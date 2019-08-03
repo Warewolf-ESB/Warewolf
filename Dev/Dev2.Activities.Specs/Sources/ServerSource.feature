@@ -15,9 +15,9 @@ Scenario: Create Windows Server Source
 
 Scenario: Create User Server Source
 	Given I create a server source as
-	| Address                   | AuthenticationType |
+	| Address                                 | AuthenticationType |
 	| http://tst-ci-remote.premier.local:3142 | User               |
-	And User as "dev2\IntegrationTester"
+	And User as ".\Administrator"
 	When I Test the connection
 	Then The result is "success"
 
@@ -31,7 +31,7 @@ Scenario: Create Bad User Server Source
 
 Scenario: Create Public Server Source
 	Given I create a server source as
-	| Address               | AuthenticationType |
+	| Address                             | AuthenticationType |
 	| http://wolfs-den.premier.local:3142 | Public             |
 	When I Test the connection
 	Then The result is "success"

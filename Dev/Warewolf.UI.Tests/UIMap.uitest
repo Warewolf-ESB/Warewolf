@@ -6308,7 +6308,7 @@
               <AndCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="Name">{"ServerType":"SqlDatabase","Server":"rsaklfsvrdev.dev2.local","DatabaseName":"Dev2TestingDB","Port":1433,"AuthenticationType":"User","UserID":"testuser","Password":"test123","DataList":"","ConnectionString":"Data Source=rsaklfsvrdev.dev2.local,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;","IsSource":true,"IsService":false,"IsFolder":false,"IsReservedService":false,"IsServer":false,"IsResourceVersion":false,"Version":null,"ResourceID":"ffa6880d-3b24-4d34-b829-a2db45e1c664","ResourceType":"SqlDatabase","ResourceName":"TestingDb","IsValid":false,"Errors":[],"ReloadActions":false,"UserPermissions":0,"VersionInfo":{"DateTimeStamp":"2017-01-12T08:28:31.4692206+02:00","Reason":"Save","User":"Unknown","VersionNumber":"1","ResourceId":"ffa6880d-3b24-4d34-b829-a2db45e1c664","VersionId":"47f2ec5f-a20a-41de-bbea-5653cb87b60c"}}</PropertyCondition>
+                <PropertyCondition Name="Name">{"ServerType":"SqlDatabase","Server":"SVRDEV.premier.local","DatabaseName":"Dev2TestingDB","Port":1433,"AuthenticationType":"User","UserID":"testuser","Password":"test123","DataList":"","ConnectionString":"Data Source=SVRDEV.premier.local,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;","IsSource":true,"IsService":false,"IsFolder":false,"IsReservedService":false,"IsServer":false,"IsResourceVersion":false,"Version":null,"ResourceID":"ffa6880d-3b24-4d34-b829-a2db45e1c664","ResourceType":"SqlDatabase","ResourceName":"TestingDb","IsValid":false,"Errors":[],"ReloadActions":false,"UserPermissions":0,"VersionInfo":{"DateTimeStamp":"2017-01-12T08:28:31.4692206+02:00","Reason":"Save","User":"Unknown","VersionNumber":"1","ResourceId":"ffa6880d-3b24-4d34-b829-a2db45e1c664","VersionId":"47f2ec5f-a20a-41de-bbea-5653cb87b60c"}}</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
@@ -11679,7 +11679,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="ListItem" Id="ComboboxListItemAsSharepointTestServer" FriendlyName="{&quot;Server&quot;:&quot;http://rsaklfsvrdev/&quot;,&quot;AuthenticationTy..." SpecialControlType="None">
+            <UIObject ControlType="ListItem" Id="ComboboxListItemAsSharepointTestServer" FriendlyName="{&quot;Server&quot;:&quot;http://SVRDEV.premier.local/&quot;,&quot;AuthenticationTy..." SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -11687,7 +11687,7 @@
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                <PropertyCondition Name="Name">{"Server":"http://rsaklfsvrdev/","AuthenticationType":"Windows","UserName":"","Password":"","IsSource":true,"IsService":false,"IsFolder":false,"IsReservedService":false,"IsServer":false,"IsResourceVersion":false,"IsSharepointOnline":false,"Version":null,"ResourceID":"94d4b4ca-31e1-494d-886b-cd94224c9a8b","ResourceType":"SharepointServerSource","ResourceName":"SharePoint Test Server","IsValid":false,"Errors":[],"ReloadActions":false,"UserPermissions":0,"VersionInfo":{"DateTimeStamp":"2015-07-07T09:49:43.2102319+02:00","Reason":"Save","User":"Unknown","VersionNumber":"1","ResourceId":"94d4b4ca-31e1-494d-886b-cd94224c9a8b","VersionId":"6d47f370-c0d3-4b96-89d7-52090a38331a"}}</PropertyCondition>
+                <PropertyCondition Name="Name">{"Server":"http://SVRDEV.premier.local/","AuthenticationType":"Windows","UserName":"","Password":"","IsSource":true,"IsService":false,"IsFolder":false,"IsReservedService":false,"IsServer":false,"IsResourceVersion":false,"IsSharepointOnline":false,"Version":null,"ResourceID":"94d4b4ca-31e1-494d-886b-cd94224c9a8b","ResourceType":"SharepointServerSource","ResourceName":"SharePoint Test Server","IsValid":false,"Errors":[],"ReloadActions":false,"UserPermissions":0,"VersionInfo":{"DateTimeStamp":"2015-07-07T09:49:43.2102319+02:00","Reason":"Save","User":"Unknown","VersionNumber":"1","ResourceId":"94d4b4ca-31e1-494d-886b-cd94224c9a8b","VersionId":"6d47f370-c0d3-4b96-89d7-52090a38331a"}}</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />

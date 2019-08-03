@@ -337,7 +337,7 @@ Scenario: Error not bubbling up
 	And "Wolf-1212_Test" contains "ErrorHandled" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
-	  |                  |               | Error              | [[Error]]  |
+	  |                  |               | Error               | [[Error]]   |
 	When "Wolf-1212_Test" is executed
 	Then the workflow execution has "NO" error
 	And the "ErrorHandled" in Workflow "Wolf-1212_Test" debug outputs as
@@ -376,5 +376,5 @@ Scenario: Executing WebGet Returning False
 	  When "Testing - WebGet" is executed
 	  Then the workflow execution has "NO" error
 	  And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
-	  |                     |
+	  |                    |
 	  | [[Result]] = False |

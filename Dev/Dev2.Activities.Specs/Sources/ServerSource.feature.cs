@@ -133,7 +133,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table2, "Given ");
 #line 20
- testRunner.And("User as \"dev2\\IntegrationTester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User as \".\\Administrator\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22

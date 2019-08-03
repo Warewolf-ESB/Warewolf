@@ -167,7 +167,7 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="ListItem" Id="RSAKLFSVRDEV" FriendlyName="RSAKLFSVRDEV" SpecialControlType="None">
+                                            <UIObject ControlType="ListItem" Id="SVRDEV" FriendlyName="SVRDEV" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -175,7 +175,7 @@
                                               <AndCondition>
                                                 <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="Name">RSAKLFSVRDEV</PropertyCondition>
+                                                <PropertyCondition Name="Name">SVRDEV</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />

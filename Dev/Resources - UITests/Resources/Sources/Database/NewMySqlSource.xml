@@ -1,5 +1,5 @@
 
-<Source ID="97d6272e-15a1-483f-afdb-a076f602604f" Name="NewMySqlSource" ResourceType="MySqlDatabase" IsValid="false" ServerType="MySqlDatabase" Type="DbSource" ConnectionString="Server=rsaklfsvrdev;Database=test;Uid=root;Pwd=admin;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="97d6272e-15a1-483f-afdb-a076f602604f" Name="NewMySqlSource" ResourceType="MySqlDatabase" IsValid="false" ServerType="MySqlDatabase" Type="DbSource" ConnectionString="Server=SVRDEV.premier.local;Database=test;Uid=root;Pwd=admin;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewMySqlSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
