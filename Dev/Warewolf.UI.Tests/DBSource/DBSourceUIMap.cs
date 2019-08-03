@@ -67,14 +67,14 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
         {
             var point = new Point();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRDEV and waiting for the spinner.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with SVRDEV and waiting for the spinner.");
         }
 
-        [When(@"I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist")]
-        public void Select_RSAKLFSVRDEV_From_Server_Source_Wizard_Dropdownlist()
+        [When(@"I Select SVRDEV From Server Source Wizard Dropdownlist")]
+        public void Select_SVRDEV_From_Server_Source_Wizard_Dropdownlist()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRDEV, new Point(97, 17));
-            Assert.AreEqual("RSAKLFSVRDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRDEV is not selected as the server in the DB source wizard.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.SVRDEV, new Point(97, 17));
+            Assert.AreEqual("SVRDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "SVRDEV is not selected as the server in the DB source wizard.");
         }
 
         [Then(@"I Enter Text Into Database Server Tab")]
@@ -201,20 +201,20 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         [Then(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRDEV";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "SVRDEV";
         }
 
-        [Given(@"RSAKLFSVRDEV appears as an option in the DB source wizard server combobox")]
-        [Then(@"RSAKLFSVRDEV appears as an option in the DB source wizard server combobox")]
-        public void Assert_RSAKLFSVRDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
+        [Given(@"SVRDEV appears as an option in the DB source wizard server combobox")]
+        [Then(@"SVRDEV appears as an option in the DB source wizard server combobox")]
+        public void Assert_SVRDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRDEV.Exists, "RSAKLFSVRDEV does not exist as an option in DB source wizard server combobox.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.SVRDEV.Exists, "SVRDEV does not exist as an option in DB source wizard server combobox.");
         }
 
-        [When(@"I Type RSAKLFSVRDEV into DB Source Wizard Server Textbox")]
-        public void Type_RSAKLFSVRDEV_into_DB_Source_Wizard_Server_Textbox()
+        [When(@"I Type SVRDEV into DB Source Wizard Server Textbox")]
+        public void Type_SVRDEV_into_DB_Source_Wizard_Server_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRDEV";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "SVRDEV";
         }
 
         public UIMap UIMap

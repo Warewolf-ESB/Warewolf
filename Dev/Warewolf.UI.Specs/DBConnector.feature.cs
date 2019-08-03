@@ -102,9 +102,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.And("I Type rsaklfsvrgen into DB Source Wizard Server Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.Given("RSAKLFSVRDEV appears as an option in the DB source wizard server combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("SVRDEV appears as an option in the DB source wizard server combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 13
- testRunner.When("I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Select SVRDEV From Server Source Wizard Dropdownlist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
  testRunner.And("I Click UserButton On Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
@@ -141,9 +141,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
  testRunner.And("I Type rsaklfsvrgen into DB Source Wizard Server Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
- testRunner.Given("RSAKLFSVRDEV appears as an option in the DB source wizard server combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("SVRDEV appears as an option in the DB source wizard server combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
- testRunner.When("I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Select SVRDEV From Server Source Wizard Dropdownlist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
  testRunner.And("I Click DB Source Wizard Test Connection Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30

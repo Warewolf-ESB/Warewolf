@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             DBSourceUIMap.Click_UserButton_On_DatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("rsaklfsvrdev.dev2.local");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("SVRDEV.premier.local");
             DBSourceUIMap.IEnterRunAsUserTestUserOnDatabaseSource("testuser", "test123");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();

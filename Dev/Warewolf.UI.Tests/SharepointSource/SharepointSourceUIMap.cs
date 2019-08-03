@@ -17,7 +17,7 @@ namespace Warewolf.UI.Tests.SharepointSource.SharepointSourceUIMapClasses
         [When(@"I Enter Sharepoint ServerSource ServerName")]
         public void Enter_Sharepoint_ServerSource_ServerName()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrdev/";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://SVRDEV.premier.local/";
         }
 
         [When(@"I Enter Sharepoint ServerSource User Credentials")]
@@ -29,7 +29,7 @@ namespace Warewolf.UI.Tests.SharepointSource.SharepointSourceUIMapClasses
 
         public void Enter_TextIntoAddress_In_SharepointServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrdev";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://SVRDEV.premier.local";
         }
 
         [When(@"I Click Sharepoint Server Source TestConnection")]
