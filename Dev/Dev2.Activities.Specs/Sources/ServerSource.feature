@@ -17,7 +17,7 @@ Scenario: Create User Server Source
 	Given I create a server source as
 	| Address                                 | AuthenticationType |
 	| http://tst-ci-remote.premier.local:3142 | User               |
-	And User as ".\Administrator"
+	And User as "Administrator"
 	When I Test the connection
 	Then The result is "success"
 
