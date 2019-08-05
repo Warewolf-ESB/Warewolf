@@ -40,6 +40,12 @@ namespace Dev2.Tasks.QueueEvents
         private bool _pasteResponseVisible;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
+        private bool _isTesting;
+        private bool _testFailed;
+        private bool _testPassed;
+        private bool _testResultsAvailable;
+        private bool _isTestResultsEmptyRows;
+        private string _testResults;
 
         public QueueEventsViewModel(IServer server)
             : this(server, new ExternalProcessExecutor())
@@ -53,6 +59,43 @@ namespace Dev2.Tasks.QueueEvents
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
             Inputs = new ObservableCollection<IServiceInput>();
+            PasteResponseCommand = new DelegateCommand(ExecutePaste);
+            TestCommand = new DelegateCommand(ExecuteTest);
+            IsTesting = false;
+        }
+
+        public void ExecutePaste()
+        {
+            PasteResponseVisible = true;
+        }
+
+        public void ExecuteTest()
+        {
+            TestResults = null;
+            IsTesting = true;
+
+            try
+            {
+                TestResults = "{some text}";
+
+                IsTestResultsEmptyRows = TestResults == null;
+                if (TestResults != null)
+                {
+                    TestResultsAvailable = true;
+                    IsTestResultsEmptyRows = TestResults == string.Empty;
+                    IsTesting = false;
+                    TestPassed = true;
+                    TestFailed = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                IsTesting = false;
+                TestPassed = false;
+                TestFailed = true;
+            }
+            PasteResponseVisible = false;
         }
 
         public ObservableCollection<string> QueueEvents { get; set; }
@@ -151,6 +194,8 @@ namespace Dev2.Tasks.QueueEvents
             }
         }
 
+        public ICommand PasteResponseCommand { get; private set; }
+
         public bool PasteResponseVisible
         {
             get => _pasteResponseVisible;
@@ -168,6 +213,40 @@ namespace Dev2.Tasks.QueueEvents
             {
                 _pasteResponse = value;
                 OnPropertyChanged(nameof(PasteResponse));
+            }
+        }
+
+        public bool TestResultsAvailable
+        {
+            get => _testResultsAvailable;
+            set
+            {
+                _testResultsAvailable = value;
+                OnPropertyChanged(nameof(TestResultsAvailable));
+            }
+        }
+
+        public bool IsTestResultsEmptyRows
+        {
+            get => _isTestResultsEmptyRows;
+            set
+            {
+                _isTestResultsEmptyRows = value;
+                OnPropertyChanged(nameof(IsTestResultsEmptyRows));
+            }
+        }
+
+        public string TestResults
+        {
+            get => _testResults;
+            set
+            {
+                _testResults = value;
+                if (!string.IsNullOrEmpty(_testResults))
+                {
+                    //Model.Response = _testResults
+                }
+                OnPropertyChanged(nameof(TestResults));
             }
         }
 
@@ -193,6 +272,38 @@ namespace Dev2.Tasks.QueueEvents
         private void DeleteQueueEvent()
         {
             QueueEvents.Remove("");
+        }
+
+        public ICommand TestCommand { get; private set; }
+
+        public bool IsTesting
+        {
+            get => _isTesting;
+            set
+            {
+                _isTesting = value;
+                OnPropertyChanged(nameof(IsTesting));
+            }
+        }
+
+        public bool TestFailed
+        {
+            get => _testFailed;
+            set
+            {
+                _testFailed = value;
+                OnPropertyChanged(nameof(TestFailed));
+            }
+        }
+
+        public bool TestPassed
+        {
+            get => _testPassed;
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(nameof(TestPassed));
+            }
         }
 
         public void UpdateHelpDescriptor(string helpText)
