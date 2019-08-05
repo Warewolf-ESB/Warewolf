@@ -1,5 +1,5 @@
 Param(
-  [string]$MSBuildPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\MSBuild.exe",
+  [string]$MSBuildPath="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
   [string]$Target="",
   [string]$CustomVersion="",
   [string]$NuGet="",
