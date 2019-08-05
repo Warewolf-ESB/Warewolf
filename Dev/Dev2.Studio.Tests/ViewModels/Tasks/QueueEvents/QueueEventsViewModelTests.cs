@@ -264,5 +264,40 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             mockExternalProcessExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
         }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_PasteResponseCommand()
+        {
+            var mockServer = new Mock<IServer>();
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            Assert.IsFalse(queueEventsViewModel.PasteResponseVisible);
+
+            queueEventsViewModel.PasteResponseCommand.Execute(null);
+            Assert.IsTrue(queueEventsViewModel.PasteResponseVisible);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_TestCommand()
+        {
+            var mockServer = new Mock<IServer>();
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            Assert.IsNull(queueEventsViewModel.TestResults);
+            Assert.IsFalse(queueEventsViewModel.IsTesting);
+            Assert.IsFalse(queueEventsViewModel.IsTestResultsEmptyRows);
+
+            queueEventsViewModel.TestCommand.Execute(null);
+
+            Assert.IsTrue(queueEventsViewModel.TestResultsAvailable);
+            Assert.IsFalse(queueEventsViewModel.IsTestResultsEmptyRows);
+            Assert.IsFalse(queueEventsViewModel.IsTesting);
+            Assert.IsTrue(queueEventsViewModel.TestPassed);
+            Assert.IsFalse(queueEventsViewModel.TestFailed);
+        }
     }
 }
