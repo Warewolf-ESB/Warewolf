@@ -160,6 +160,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -280,25 +282,13 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="{x:Static languages:Core.InputsHeader}" Grid.Row="0" Grid.Column="0" FontWeight="Bold" />
-
-                            <CheckBox x:Name="PasteResonseCheckBox" 
-                                          Grid.Row="0" 
-                                          Grid.Column="1"
-                                          IsChecked="{Binding PasteResponseVisible}" 
-                                          ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
-                                          Content="Paste Response"
-                                          HorizontalAlignment="Left">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" 
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </CheckBox>
 
                             <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
                                 <TextBlock Text="Queue Stats" />
@@ -322,8 +312,7 @@
                                                         Style="{StaticResource ActivityMappingDataGridStyle}"
                                                         Height="Auto"
                                                         MinHeight="100"
-                                                        Margin="{StaticResource ControlBorderTop}"
-                                                        Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                        Margin="{StaticResource ControlBorderTop}">
 
                                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                 <DataGrid.Columns>
@@ -388,11 +377,114 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </controls1:Dev2DataGrid>
+                        </Grid>
+
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                            <fa:ImageAwesome Width="14" 
+                                             Height="14" 
+                                             Margin="{StaticResource ControlBorderRight}" 
+                                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                                             Visibility="{Binding TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                                             Icon="Check" 
+                                             HorizontalAlignment="Right" />
+                            <fa:ImageAwesome Width="14" 
+                                             Height="14" 
+                                             Margin="{StaticResource ControlBorderRight}" 
+                                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                                             Visibility="{Binding TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                                             Icon="Ban" 
+                                             HorizontalAlignment="Right" />
+                            <customControls:CircularProgressBar Width="25"
+                                                                HorizontalAlignment="Right" 
+                                                                Margin="{StaticResource ControlBorderRight}"
+                                                                Height="25"
+                                                                Padding="2.5"
+                                                                Visibility="{Binding IsTesting,Converter={StaticResource BoolToVis}}" />
+
+                            <Button Width="25" 
+                                    Height="25"
+                                    x:Name="PasteButton"
+                                    Grid.Row="0" 
+                                    Grid.Column="1"
+                                    Margin="{StaticResource ControlBorderRight}"
+                                    Command="{Binding PasteResponseCommand}" 
+                                    ToolTip="{x:Static languages:Tooltips.ManageWebServicePasteTooltip}"
+                                    Visibility="{Binding PasteResponseAvailable, Converter={StaticResource BoolToVis}}"
+                                    VerticalAlignment="Top">
+                                <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                                FontSize="16" 
+                                                FontWeight="DemiBold" 
+                                                Icon="Pencil" 
+                                                VerticalAlignment="Top" 
+                                                HorizontalAlignment="Center"/>
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteHelp}" 
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </Button>
+
+                            <Button x:Name="TestActionButton" 
+                                    HorizontalAlignment="Right" 
+                                    Command="{Binding TestCommand}" 
+                                    ToolTip="{x:Static languages:Tooltips.ServiceTestActionTooltip}"
+                                    Content="Test"
+                                    Width="46">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestHelp}" 
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </Button>
+                        </StackPanel>
+
+                        <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid x:Name="OutputsGrid" 
+                                  Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{x:Static languages:Core.OutputsLabel}" 
+                                           FontWeight="Bold" 
+                                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+                                <Border Grid.Row="1" 
+                                        Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
+                                        Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                                    <ScrollViewer>
+                                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                            <TextBlock Text="{Binding TestResults}" 
+                                                       Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
+                                                       TextWrapping="Wrap"
+                                                       HorizontalAlignment="Stretch" 
+                                                       VerticalAlignment="Stretch"
+                                                       ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                            </TextBlock>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                                <TextBlock Grid.Row="1"
+                                           Text="None" 
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Margin="0,0,0,-3"
+                                           Style="{StaticResource MenuTextBlockStyle}"
+                                           Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                            </Grid>
 
                             <Grid x:Name="ResponseGrid" 
-                                      Grid.Row="1"
-                                      Grid.ColumnSpan="2"
-                                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                  Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
@@ -404,151 +496,142 @@
                                 <TextBlock Text="Paste Response" FontWeight="Bold" />
 
                                 <TextBox Grid.Row="1"
-                                             Text="{Binding PasteResponse}" 
-                                             x:Name="ResponseTextbox"
-                                             Style="{StaticResource StretchedTextBoxStyle}"
-                                             customControls:WatermarkTextBox.Watermark="Paste response here"
-                                             SnapsToDevicePixels="True" 
-                                             VerticalScrollBarVisibility="Auto"
-                                             MinHeight="100"
-                                             ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
-                                             HorizontalScrollBarVisibility="Disabled" >
+                                         Text="{Binding TestResults}" 
+                                         x:Name="ResponseTextbox"
+                                         Style="{StaticResource StretchedTextBoxStyle}"
+                                         customControls:WatermarkTextBox.Watermark="Paste response here"
+                                         SnapsToDevicePixels="True" 
+                                         VerticalScrollBarVisibility="Auto"
+                                         ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
+                                         HorizontalScrollBarVisibility="Disabled" >
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteInputHelp}" 
-                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
                             </Grid>
                         </Grid>
 
-                        <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">                           
+                        <Grid Grid.Row="5" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <DataGrid ItemsSource="{Binding History}"
-                                Grid.Column="0"
-                                EnableRowVirtualization="False"
-                                SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
-                                Style="{StaticResource SchedulerDataGridStyle}"
-                                VerticalScrollBarVisibility="Auto"
-                                HorizontalScrollBarVisibility="Auto"
-                                RowHeight="22"
-                                Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                      Grid.Column="0"
+                                      EnableRowVirtualization="False"
+                                      SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
+                                      Style="{StaticResource SchedulerDataGridStyle}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      RowHeight="22"
+                                      Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Width="27"
-                                                    MinWidth="27"
-                                                    IsReadOnly="True"
-                                                    Header="#"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    >
+                                                            MinWidth="27"
+                                                            IsReadOnly="True"
+                                                            Header="#"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}" >
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    BorderThickness="0"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}" />
+                                                         BorderThickness="0"
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTemplateColumn Width="*"
-                                                    MinWidth="80"
-                                                    IsReadOnly="True"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    Header="Start Time"
-                                                    >
+                                                            MinWidth="80"
+                                                            IsReadOnly="True"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                            Header="Start Time">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    BorderThickness="0"
-                                                    Text="{Binding TaskHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         BorderThickness="0"
+                                                         Text="{Binding TaskHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTemplateColumn Width="*"
-                                                    MinWidth="70"
-                                                    IsReadOnly="True"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    Header="Duration"
-                                                    >
+                                                            MinWidth="70"
+                                                            IsReadOnly="True"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                            Header="Duration">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    BorderThickness="0"
-                                                    Text="{Binding TaskHistoryOutput.Duration, Mode=OneWay}" />
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         BorderThickness="0"
+                                                         Text="{Binding TaskHistoryOutput.Duration, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTemplateColumn Width="*"
-                                                    IsReadOnly="True"
-                                                    MinWidth="80"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    Header="End Time"
-                                                    >
+                                                            IsReadOnly="True"
+                                                            MinWidth="80"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                            Header="End Time">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    BorderThickness="0"
-                                                    Text="{Binding TaskHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         BorderThickness="0"
+                                                         Text="{Binding TaskHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTemplateColumn Width="*"
-                                                    MinWidth="50"
-                                                    IsReadOnly="True"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    Header="Status"
-                                                    >
+                                                            MinWidth="50"
+                                                            IsReadOnly="True"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                            Header="Status">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    BorderThickness="0"
-                                                    Text="{Binding TaskHistoryOutput.Success, Mode=OneWay}" />
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         BorderThickness="0"
+                                                         Text="{Binding TaskHistoryOutput.Success, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTemplateColumn Width="*"
-                                                    MinWidth="70"
-                                                    IsReadOnly="True"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    Header="Execution id"
-                                                    >
+                                                            MinWidth="70"
+                                                            IsReadOnly="True"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                            Header="Execution id">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    BorderThickness="0"
-                                                    Text="{Binding TaskHistoryOutput.EventId, Mode=OneWay}" />
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         BorderThickness="0"
+                                                         Text="{Binding TaskHistoryOutput.EventId, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTemplateColumn Width="*"
-                                                    MinWidth="90"
-                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                    IsReadOnly="True"
-                                                    Header="User Context"
-                                                    >
+                                                            MinWidth="90"
+                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                            IsReadOnly="True"
+                                                            Header="User Context">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
-                                                    Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                    BorderThickness="0"
-                                                    Text="{Binding UserName, Mode=OneWay}" />
+                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                         BorderThickness="0"
+                                                         Text="{Binding UserName, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
-                            </DataGrid>                               
-                            
+                            </DataGrid>
                         </Grid>
                     </Grid>
                 </ContentControl>
