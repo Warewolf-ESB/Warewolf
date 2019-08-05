@@ -43,17 +43,17 @@ Background: Setup for workflows for tests
 			
 
 Scenario: Test WF with Cmd Script
-	Given I have a workflow "CmdScriptTestWF"	
-	And "CmdScriptTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "echo Kingdom of KwaZulu Natal" and result as "[[result]]"	
+	Given I have a workflow "CmdScriptTestWF"
+	And "CmdScriptTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "echo Kingdom of KwaZulu Natal" and result as "[[result]]"
 	And I save workflow "CmdScriptTestWF"
 	Then the test builder is open with "CmdScriptTestWF"
 	And I click New Test
-	And a new test is added	
+	And a new test is added
     And test name starts with "Test 1"
 	And I Add "testCmdScript" as TestStep
-	And I add StepOutputs as  
+	And I add StepOutputs as
 	  	 | Variable Name | Condition | Value                    |
-	  	 | [[result]]    | =         | Kingdom of KwaZulu Natal |  
+	  	 | [[result]]    | =         | Kingdom of KwaZulu Natal | 
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -118,6 +118,7 @@ Scenario: Test WF with Ruby
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RubyTestWF" is deleted as cleanup
 
+@Ignore
 Scenario: Test WF with Sharepoint Copy File
 	Given I have a workflow "ShapointCopyFileTestWF"	
 	  And "ShapointCopyFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
@@ -143,6 +144,7 @@ Scenario: Test WF with Sharepoint Copy File
 	Then workflow "ShapointCopyFileTestWF" is deleted as cleanup
 	Then the file "e.bite" is deleted from the Sharepoint server as cleanup
 	
+@Ignore
 Scenario: Test WF with Sharepoint Create List Items
 	Given I have a workflow "ShapointCreateListItemsTestWF"	
 	  And "ShapointCreateListItemsTestWF" contains an Assign "MyAssign" as
@@ -177,6 +179,7 @@ Scenario: Test WF with Sharepoint Create List Items
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointCreateListItemsTestWF" is deleted as cleanup
 	
+@Ignore
 Scenario: Test WF with Sharepoint Delete File List
 	Given I have a workflow "ShapointDeleteFileListTestWF"	 
 	And "ShapointDeleteFileListTestWF" contains SharepointDeleteFile "TestSharePDeleteFile" as 
@@ -198,6 +201,7 @@ Scenario: Test WF with Sharepoint Delete File List
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointDeleteFileListTestWF" is deleted as cleanup
 	
+@Ignore
 Scenario: Test WF with Sharepoint Delete File
 	Given I have a workflow "ShapointDelSingleItemTestWF"		
 	And "ShapointDelSingleItemTestWF" contains SharepointDeleteSingle "TestSharePdeleteListItem" as 
@@ -220,6 +224,7 @@ Scenario: Test WF with Sharepoint Delete File
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointDelSingleItemTestWF" is deleted as cleanup
 
+@Ignore
 Scenario: Test WF with Sharepoint Download File
 	Given I have a workflow "ShapointDownloadFileTestWF"
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
@@ -246,6 +251,7 @@ Scenario: Test WF with Sharepoint Download File
 	Then the file "Hello World.bite" is deleted from the Sharepoint server as cleanup
 	Then the folder "DownloadedFromSharepoint" is deleted from the server as cleanup
 	
+@Ignore
 Scenario: Test WF with Sharepoint Upload File
 	Given I have a workflow "ShapointUploadFileTestWF"		 
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
@@ -268,6 +274,7 @@ Scenario: Test WF with Sharepoint Upload File
 	Then workflow "ShapointUploadFileTestWF" is deleted as cleanup
 	Then the file "a.bite" is deleted from the Sharepoint server as cleanup
 
+@Ignore
 Scenario: Test WF with Sharepoint Move File
 	Given I have a workflow "ShapointMoveFileTestWF"	
 	And "ShapointMoveFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
@@ -292,6 +299,7 @@ Scenario: Test WF with Sharepoint Move File
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointMoveFileTestWF" is deleted as cleanup
 
+@Ignore
 Scenario: Test WF with Sharepoint Read Folder
 	Given I have a workflow "ShapointReadFolderTestWF"
 	And "ShapointReadFolderTestWF" contains SharepointReadFolder "TestSharePReadFolder" as 
@@ -313,6 +321,7 @@ Scenario: Test WF with Sharepoint Read Folder
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointReadFolderTestWF" is deleted as cleanup
 
+@Ignore
 Scenario: Test WF with Sharepoint Read List Item
 	Given I have a workflow "ShapointReadListItemTestWF"	
 	And "ShapointReadListItemTestWF" contains SharepointReadListItem "TestSharePReadListItem" as 
@@ -334,6 +343,7 @@ Scenario: Test WF with Sharepoint Read List Item
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointReadListItemTestWF" is deleted as cleanup
 
+@Ignore
 Scenario: Test WF with Sharepoint Update List Item
 	Given I have a workflow "ShapointUpdateListItemTestWF"	
 	   And "ShapointCreateListItemsTestWF" contains a recordset name randomizing Assign "MyAssign" as

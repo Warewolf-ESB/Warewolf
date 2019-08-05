@@ -274,6 +274,7 @@ Scenario: Workflow with Performance counters
 	| Request Per Second                                | x     |
 	| Count of requests for workflows which don't exist | 9     |
 
+@Ignore
 Scenario: Sharepoint Acceptance Tests
 	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
 	  And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as

@@ -192,7 +192,7 @@ Scenario: Test WF with RabbitMq Consume object Array result
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeObjectResultTestFailWF" is deleted as cleanup
 	
-	Scenario: Test WF with RabbitMq Consume and count Recordset
+Scenario: Test WF with RabbitMq Consume and count Recordset
 	Given I have a workflow "RabbitMqConsumeAndCountTestFailWF"
 	And "RabbitMqConsumeAndCountTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[msgRec().msgs]]" 
 	And Queue Name as "TestQuestForSpecsEmptyResults"
