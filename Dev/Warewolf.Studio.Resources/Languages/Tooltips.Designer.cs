@@ -893,6 +893,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the source message dead-letter queue.
+        /// </summary>
+        public static string DeadLetterQueueSourceTooltip {
+            get {
+                return ResourceManager.GetString("DeadLetterQueueSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugBrowserToolTip {

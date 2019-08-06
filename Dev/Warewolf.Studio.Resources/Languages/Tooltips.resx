@@ -941,6 +941,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="QueueSourceTooltip" xml:space="preserve">
     <value>Select the source message queue</value>
   </data>
+  <data name="DeadLetterQueueSourceTooltip" xml:space="preserve">
+    <value>Select the source message dead-letter queue</value>
+  </data>
   <data name="NewPluginSourceTooltip" xml:space="preserve">
     <value>Create a new plugin source</value>
   </data>
