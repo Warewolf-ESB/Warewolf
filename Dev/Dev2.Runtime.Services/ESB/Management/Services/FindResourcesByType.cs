@@ -21,12 +21,24 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindResourcesByType : DefaultEsbManagementEndpoint
     {
+        private readonly IResourceCatalog _resourceCatalog;
+
+        public FindResourcesByType()
+            : this(ResourceCatalog.Instance)
+        {
+        }
+        public FindResourcesByType(IResourceCatalog resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+        }
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -46,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                var result = ResourceCatalog.Instance.FindByType<IQueueSource>();
+                var result = _resourceCatalog.FindByType<IQueueSource>();
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();
