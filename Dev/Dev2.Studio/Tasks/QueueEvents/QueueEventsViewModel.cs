@@ -28,14 +28,17 @@ namespace Dev2.Tasks.QueueEvents
         ICommand _newCommand;
         ICommand _deleteCommand;
         IResource _selectedQueueSource;
+        IResource _selectedDeadLetterQueueSource;
         string _selectedQueueEvent;
         string _queueName;
+        string _deadLetterQueue;
         string _workflowName;
         int _concurrency;
         private IServer _server;
         private IResourceRepository _resourceRepository;
         private IExternalProcessExecutor _externalProcessExecutor;
         private ObservableCollection<INameValue> _queueNames;
+        private ObservableCollection<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
         private bool _pasteResponseVisible;
         private string _pasteResponse;
@@ -120,18 +123,35 @@ namespace Dev2.Tasks.QueueEvents
                 _selectedQueueSource = value;
                 if (_selectedQueueSource != null)
                 {
-                    QueueNames = GetQueueNamesFromSource();
+                    QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
                 }
                 
                 OnPropertyChanged(nameof(SelectedQueueSource));
             }
         }
 
-        private ObservableCollection<INameValue> GetQueueNamesFromSource()
+        public List<IResource> DeadLetterQueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
+
+        public IResource SelectedDeadLetterQueueSource
+        {
+            get => _selectedDeadLetterQueueSource;
+            set
+            {
+                _selectedDeadLetterQueueSource = value;
+                if (_selectedDeadLetterQueueSource != null)
+                {
+                    DeadLetterQueues = GetQueueNamesFromSource(_selectedDeadLetterQueueSource);
+                }
+
+                OnPropertyChanged(nameof(SelectedDeadLetterQueueSource));
+            }
+        }
+
+        private ObservableCollection<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
             var queueNames = new ObservableCollection<INameValue>();
 
-            var list = _resourceRepository.FindAutocompleteOptions(_server, SelectedQueueSource);
+            var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
 
 #pragma warning disable CC0021 // Use nameof
             foreach (var item in list["QueueNames"])
@@ -161,6 +181,26 @@ namespace Dev2.Tasks.QueueEvents
             {
                 _queueName = value;
                 OnPropertyChanged(nameof(QueueName));
+            }
+        }
+
+        public ObservableCollection<INameValue> DeadLetterQueues
+        {
+            get => _deadLetterQueues;
+            set
+            {
+                _deadLetterQueues = value;
+                OnPropertyChanged(nameof(DeadLetterQueues));
+            }
+        }
+
+        public string DeadLetterQueue
+        {
+            get => _deadLetterQueue;
+            set
+            {
+                _deadLetterQueue = value;
+                OnPropertyChanged(nameof(DeadLetterQueue));
             }
         }
 
