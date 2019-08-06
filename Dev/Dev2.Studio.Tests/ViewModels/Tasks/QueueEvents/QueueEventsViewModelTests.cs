@@ -99,6 +99,44 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_DeadLetterQueueSources()
+        {
+            var queueSourceID1 = Guid.NewGuid();
+            var queueSourceName1 = "QueueSource1";
+
+            var queueSourceID2 = Guid.NewGuid();
+            var queueSourceName2 = "QueueSource2";
+
+            var queueSource1 = new Resource { ResourceID = queueSourceID1, ResourceName = queueSourceName1 };
+            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
+
+            var expectedList = new List<IResource>
+            {
+                queueSource1, queueSource2
+            };
+
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+
+            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueueSources);
+            Assert.IsNull(queueEventsViewModel.SelectedDeadLetterQueueSource);
+
+            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueueSources);
+            Assert.AreEqual(2, queueEventsViewModel.DeadLetterQueueSources.Count);
+            Assert.AreEqual(queueSourceID1, queueEventsViewModel.DeadLetterQueueSources[0].ResourceID);
+            Assert.AreEqual(queueSourceName1, queueEventsViewModel.DeadLetterQueueSources[0].ResourceName);
+            Assert.AreEqual(queueSourceID2, queueEventsViewModel.DeadLetterQueueSources[1].ResourceID);
+            Assert.AreEqual(queueSourceName2, queueEventsViewModel.DeadLetterQueueSources[1].ResourceName);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueNames()
         {
             var queueSourceID2 = Guid.NewGuid();
@@ -138,6 +176,50 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             Assert.IsNotNull(queueEventsViewModel.QueueName);
             Assert.AreEqual("value1", queueEventsViewModel.QueueName);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_DeadLetterQueues()
+        {
+            var queueSourceID2 = Guid.NewGuid();
+            var queueSourceName2 = "QueueSource2";
+
+            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
+
+            string[] tempValues = new string[3];
+            tempValues[0] = "value1";
+            tempValues[1] = "value2";
+            tempValues[2] = "value3";
+
+            var expectedQueueNames = new Dictionary<string, string[]>();
+            expectedQueueNames.Add("QueueNames", tempValues);
+
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+
+            queueEventsViewModel.SelectedDeadLetterQueueSource = queueSource2;
+
+            Assert.IsNotNull(queueEventsViewModel.SelectedDeadLetterQueueSource);
+            Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedDeadLetterQueueSource);
+            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueues);
+            Assert.AreEqual(3, queueEventsViewModel.DeadLetterQueues.Count);
+            Assert.AreEqual("value1", queueEventsViewModel.DeadLetterQueues[0].Value);
+            Assert.AreEqual("value2", queueEventsViewModel.DeadLetterQueues[1].Value);
+            Assert.AreEqual("value3", queueEventsViewModel.DeadLetterQueues[2].Value);
+
+            Assert.IsNull(queueEventsViewModel.DeadLetterQueue);
+
+            queueEventsViewModel.DeadLetterQueue = "value1";
+
+            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueue);
+            Assert.AreEqual("value1", queueEventsViewModel.DeadLetterQueue);
         }
 
         [TestMethod]
