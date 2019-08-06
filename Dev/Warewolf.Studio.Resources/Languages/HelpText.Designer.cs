@@ -904,6 +904,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the source message dead-letter queue.
+        /// </summary>
+        public static string DeadLetterQueueSourceHelp {
+            get {
+                return ResourceManager.GetString("DeadLetterQueueSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a test for the current workflow.
         /// </summary>
         public static string DebugOutputViewAddNewTestHelp {
