@@ -23,8 +23,13 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.Interfaces
 {
+    public interface IResourceProvider
+    {
+        List<IResource> GetResources(Guid workspaceID);
+    }
+
     // PBI 953 - 2013.05.16 - TWR - Created
-    public interface IResourceLoadProvider
+    public interface IResourceLoadProvider : IResourceProvider
     {
         T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new();
         T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new();
@@ -48,6 +53,7 @@ namespace Dev2.Runtime.Interfaces
         StringBuilder GetResourceContents(IResource resource);
         List<IResource> GetResources(Guid workspaceID);
         IEnumerable GetModels(Guid workspaceID, enSourceType sourceType);
+        T[] FindByType<T>();
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID) where TServiceType : DynamicServiceObjectBase;
         ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; }
         ConcurrentDictionary<Guid, object> WorkspaceLocks { get; }
