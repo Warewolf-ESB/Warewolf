@@ -159,6 +159,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -194,17 +196,16 @@
                                 </i:Interaction.Behaviors>
                             </ComboBox>
 
-                            <TextBlock Text="Queue Name" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                            <TextBlock Text="Queue" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                             <controls:AutoCompleteBox x:Name="QueueNameTextBox"
                                                       Grid.Row="1"
                                                       Grid.Column="1"
                                                       AllowUserInsertLine="False"
-                                                      DefaultText="Queue Name"
+                                                      DefaultText="Queue"
                                                       FilterMode="Contains"
                                                       Margin="{StaticResource ControlBorderTop}"
                                                       ValueMemberPath="Value" 
                                                       ItemsSource="{Binding QueueNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectedItem="{Binding SelectedQueueName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                       Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
                                                       Style="{StaticResource AutoCompleteBoxStyle}">
@@ -255,15 +256,11 @@
 
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Separator Grid.Row="0"
-                                       Margin="{StaticResource ControlBorderTop}"
-                                       Style="{StaticResource Separator}" />
 
-                            <Expander Grid.Row="1" 
+                            <Expander Grid.Row="0" 
                                       Style="{StaticResource ServiceTestTestStepExpander}" 
                                       IsExpanded="True" 
                                       Margin="{StaticResource ControlBorderTop}"
@@ -271,13 +268,83 @@
 
                             </Expander>
 
-                            <Separator Grid.Row="2"
+                            <Separator Grid.Row="1"
                                        Margin="{StaticResource ControlBorderTop}"
                                        Style="{StaticResource Separator}" />
 
                         </Grid>
 
-                        <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
+                        <GroupBox x:Name="OnErrorGroupBox"
+                                  Style="{StaticResource ActivityGroupBoxStyle}"
+                                  VerticalContentAlignment="Stretch"
+                                  Width="Auto"
+                                  Grid.Row="2">
+                            <GroupBox.Header>
+                                <TextBlock Text="On Error" Margin="1" Padding="1" />
+                            </GroupBox.Header>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Queue Sink" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                <ComboBox x:Name="DeadLetterQueueSourcesComboBox"
+                                              Grid.Column="1"
+                                              DisplayMemberPath="ResourceName" 
+                                              SelectedItem="{Binding SelectedDeadLetterQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Margin="{StaticResource ControlBorderTop}"
+                                              ToolTip="{x:Static languages:Tooltips.DeadLetterQueueSourceTooltip}"
+                                              ItemsSource="{Binding DeadLetterQueueSources}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.DeadLetterQueueSourceHelp}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </ComboBox>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Queue" />
+                                <controls:AutoCompleteBox x:Name="DeadLetterQueueTextBox"
+                                                              Grid.Row="1"
+                                                              Grid.Column="1"
+                                                              AllowUserInsertLine="False"
+                                                              DefaultText="Dead-letter Queue"
+                                                              FilterMode="Contains"
+                                                              Margin="{StaticResource ControlBorderTop}"
+                                                              ValueMemberPath="Value" 
+                                                              ItemsSource="{Binding DeadLetterQueues, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Text="{Binding DeadLetterQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
+                                                              Style="{StaticResource AutoCompleteBoxStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </controls:AutoCompleteBox>
+
+                                <Expander Grid.Row="2" 
+                                          Grid.Column="0"
+                                          Grid.ColumnSpan="2"
+                                          Style="{StaticResource ServiceTestTestStepExpander}" 
+                                          IsExpanded="True" 
+                                          Margin="{StaticResource ControlBorderTop}"
+                                          Header="Options">
+
+                                </Expander>
+                            </Grid>
+                        </GroupBox>
+
+                        <Separator Grid.Row="3"
+                                   Margin="{StaticResource ControlBorderTop}"
+                                   Style="{StaticResource Separator}" />
+
+                        <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -379,7 +446,7 @@
                             </controls1:Dev2DataGrid>
                         </Grid>
 
-                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                             <fa:ImageAwesome Width="14" 
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
@@ -436,7 +503,7 @@
                             </Button>
                         </StackPanel>
 
-                        <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
+                        <Grid Grid.Row="6" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -512,7 +579,7 @@
                             </Grid>
                         </Grid>
 
-                        <Grid Grid.Row="5" Margin="{StaticResource ControlBorderTop}">
+                        <Grid Grid.Row="7" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
