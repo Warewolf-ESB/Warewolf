@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                var result = new List<IResource> { new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "My rabbitsource" } };
+                var result = ResourceCatalog.Instance.FindByType<IQueueSource>();
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();
