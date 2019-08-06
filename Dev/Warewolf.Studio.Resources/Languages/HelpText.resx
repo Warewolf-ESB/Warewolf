@@ -774,6 +774,9 @@
   <data name="QueueSourceHelp" xml:space="preserve">
     <value>Select the source message queue</value>
   </data>
+  <data name="DeadLetterQueueSourceHelp" xml:space="preserve">
+    <value>Select the source message dead-letter queue</value>
+  </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
   </data>
