@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Resources;
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Runtime.Services
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(o => o.FindByType<IQueueSource>()).Returns(expected);
             //------------Setup for test-------------------------
-            var service = new FindResourcesByType(mockResourceCatalog.Object);
+            var service = new FindResourcesByType(new Lazy<IResourceCatalog>(() => mockResourceCatalog.Object));
             IWorkspace workspace = null;
             var values = new Dictionary<string, StringBuilder>();
             values.Add("Type", new StringBuilder(typeof(IQueueSource).FullName));
