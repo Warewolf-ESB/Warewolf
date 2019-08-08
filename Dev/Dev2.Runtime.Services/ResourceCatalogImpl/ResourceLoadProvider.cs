@@ -248,7 +248,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     case nameof(enSourceType.PluginSource):
                         return typeof(PluginSource);
                     case nameof(enSourceType.Unknown):
-                        throw new Exception($"unexpected resource type: {legacyResourceType}");
+                        //throw new Exception($"unexpected resource type: {legacyResourceType}");
                         return typeof(WebService); // should it be WebService?
                     case nameof(enSourceType.Dev2Server):
                         return typeof(ServerSource);
