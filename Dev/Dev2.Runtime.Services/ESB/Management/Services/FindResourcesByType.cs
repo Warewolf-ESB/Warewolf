@@ -28,13 +28,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindResourcesByType : DefaultEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _resourceCatalog;
+        private readonly Lazy<IResourceCatalog> _resourceCatalog;
 
         public FindResourcesByType()
-            : this(ResourceCatalog.Instance)
+            : this(new Lazy<IResourceCatalog>(() => ResourceCatalog.Instance))
         {
         }
-        public FindResourcesByType(IResourceCatalog resourceCatalog)
+        public FindResourcesByType(Lazy<IResourceCatalog> resourceCatalog)
         {
             _resourceCatalog = resourceCatalog;
         }
@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                var result = _resourceCatalog.FindByType<IQueueSource>();
+                var result = _resourceCatalog.Value.FindByType<IQueueSource>();
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();
