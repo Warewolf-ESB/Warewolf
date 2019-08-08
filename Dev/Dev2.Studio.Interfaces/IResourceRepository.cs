@@ -33,7 +33,7 @@ namespace Dev2.Studio.Interfaces
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
-        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource,string environment,Guid startActivityId, string versionNumber);
+        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource, string environment, Guid startActivityId, string versionNumber);
         void Add(IResourceModel resource);
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
@@ -59,7 +59,6 @@ namespace Dev2.Studio.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         ICollection<IResourceModel> All();
-
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
@@ -81,5 +80,6 @@ namespace Dev2.Studio.Interfaces
 
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
         List<ISearchResult> Filter(ISearch searchValue);
+        IEnumerable<dynamic> ExecutionEvents(IServer targetEnvironment, Guid executionId);
     }
 }

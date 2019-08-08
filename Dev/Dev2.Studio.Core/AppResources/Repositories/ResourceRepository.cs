@@ -30,6 +30,7 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Auditing;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Factories;
@@ -1019,7 +1020,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             result = comsController.ExecuteCommand<Dictionary<string, string[]>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
-
+       
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
         {
             var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };
@@ -1142,5 +1143,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comController.AddPayloadArgument("versionNumber", versionNumber);
             return comController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
         }
+
+        public IEnumerable<dynamic> ExecutionEvents(IServer targetEnvironment, Guid executionId)
+        {
+            throw new NotImplementedException();
+        }
+        //public IEnumerable<dynamic> GetExecutionEvents(IServer targetEnvironment, Guid executionId)
+        //{
+        //    var result = Dev2StateAuditLogger.Query(entry => entry.ExecutionID == executionId).ToList();
+
+        //    if (targetEnvironment == null)
+        //    {
+        //        return result;
+        //    }
+        //    var comsController = new CommunicationController { ServiceName = "GetExecutionHistory" };
+        //    comsController.AddPayloadArgument("LoadExecutionEvents", selectedSource.ToString());
+        //    result = comsController.ExecuteCommand<Dictionary<string, string[]>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+        //    return result;
+        //}
     }
 }
