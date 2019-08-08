@@ -13,6 +13,7 @@
              xmlns:controls1="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
+             xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
@@ -155,7 +156,15 @@
                 </ListBox>
                 <GridSplitter Grid.Column="1" Background="#C1C3C5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" />
                 <ContentControl Grid.Column="2" Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
-                    <Grid Margin="{StaticResource ElementBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="{StaticResource ElementBorder}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -164,8 +173,11 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                           
                         </Grid.RowDefinitions>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -579,11 +591,64 @@
                             </Grid>
                         </Grid>
 
-                        <Grid Grid.Row="7" Margin="{StaticResource ControlBorderTop}">
+                        <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
+                            <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <Grid Grid.Row="8" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <DataGrid ItemsSource="{Binding History}"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Username " x:Name="UsernameTextBlock" Grid.Row="0" Grid.Column="0"/>
+                            <TextBox Width="220"
+                                         Grid.Row="0"
+                                         Grid.Column="1"
+                                         AutomationProperties.AutomationId="UI_UserNameTextBox"
+                                         ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         customControls:WatermarkTextBox.Watermark="domain\username"
+                                         Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+
+                            <TextBlock Text="Password " Margin="{StaticResource ControlBorderTop}" Grid.Row="1" Grid.Column="0"/>
+                            <PasswordBox Width="220"
+                                             Margin="{StaticResource ControlBorderTop}"
+                                             AutomationProperties.AutomationId="UI_PasswordBox"
+                                             Grid.Row="1"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Left"
+                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
+                                             attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                                             attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </PasswordBox>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource ElementBorderLeft}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <customControls:CircularProgressBar Grid.Column="0"
+                                                                Height="150"
+                                                                Width="150"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+
+                        <DataGrid ItemsSource="{Binding History}"
                                       Grid.Column="0"
                                       EnableRowVirtualization="False"
                                       SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
@@ -699,7 +764,8 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </Grid>
+                      
+                    </Grid>
                     </Grid>
                 </ContentControl>
             </Grid>
