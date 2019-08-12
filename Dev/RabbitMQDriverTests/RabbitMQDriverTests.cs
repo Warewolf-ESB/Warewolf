@@ -10,9 +10,9 @@
 
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Warewolf.Driver.RabbitMQ;
 using System.Text;
+using System.Threading;
 
 namespace RabbitMQDriverTests
 {
@@ -30,13 +30,28 @@ namespace RabbitMQDriverTests
 
             var testConsumer = new TestConsumer();
 
-            var config = new RabbitConfig();
+            var config = new RabbitConfig
+            {
+                QueueName = "testQueueName",
+                Exchange = "",
+                RoutingKey = "testQueueName",
+            };
 
             //----------------------Act--------------------------
 
             var connection = queueSource.NewConnection(config);
             connection.StartConsuming(config, testConsumer);
 
+            int i = 0;
+            while (!testConsumer.IsDataReceived)
+            {
+                Thread.Sleep(100);
+                if (i >= 30)
+                {
+                    break;
+                }
+                i++;
+            }
             //----------------------Assert-----------------------
             Assert.IsFalse(testConsumer.IsDataReceived);
         }
@@ -47,28 +62,20 @@ namespace RabbitMQDriverTests
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
-            var mockQueueSource = new Mock<IQueueSource>();
-            var mockQueueConnection = new Mock<IQueueConnection>();
-            var mockConfig = new Mock<IQueueConfig>();
-            var mockPublisher = new Mock<IPublisher>();
+            var queueSource = new RabbitMQSource();
 
-            var testConsumer = new TestConsumer();
-            var config = mockConfig.Object;
-
-            mockQueueConnection.Setup(o => o.NewPublisher(config)).Returns(mockPublisher.Object);
-
-            mockQueueSource.Setup(o => o.NewConnection(config)).Returns(mockQueueConnection.Object);
-
-            var queueSource = mockQueueSource.Object;
+            var config = new RabbitConfig
+            {
+                QueueName = "testQueueName",
+                Exchange = "",
+                RoutingKey = "testQueueName",
+            };
 
             //----------------------Act--------------------------
             var data = Encoding.UTF8.GetBytes("Hello");
             var connection = queueSource.NewConnection(config);
             var publisher = connection.NewPublisher(config);
             publisher.Publish(data);
-
-
-            mockPublisher.Verify(o => o.Publish(data), Times.Once);
         }
 
         public class TestConsumer : IConsumer

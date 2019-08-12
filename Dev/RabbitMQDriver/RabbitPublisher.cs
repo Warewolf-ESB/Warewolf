@@ -13,18 +13,24 @@ using RabbitMQ.Client;
 
 namespace Warewolf.Driver.RabbitMQ
 {
-    public class RabbitMQSource : IQueueSource
+    public class RabbitPublisher : IPublisher
     {
-        private readonly ConnectionFactory _factory;
+        private readonly string _exchange;
+        private readonly string _routingKey;
+        private readonly IBasicProperties _basicProperties;
+        private IModel _channel;
 
-        public RabbitMQSource()
+        public RabbitPublisher(RabbitConfig config, IModel channel)
         {
-            _factory = new ConnectionFactory() { HostName = "localhost" };
+            _exchange = config.Exchange;
+            _routingKey = config.RoutingKey;
+            _basicProperties = config.BasicProperties;
+            _channel = channel;
         }
 
-        public IQueueConnection NewConnection(IQueueConfig config)
+        public void Publish(byte[] value)
         {
-            return new RabbitConnection(_factory.CreateConnection());
+            _channel.BasicPublish(_exchange, _routingKey, _basicProperties, value);
         }
     }
 }

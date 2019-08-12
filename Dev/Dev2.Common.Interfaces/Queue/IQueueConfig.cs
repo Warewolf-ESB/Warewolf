@@ -13,5 +13,6 @@ namespace Dev2.Common.Interfaces
     public interface IQueueConfig
     {
         // IOption Options { get; }
+        
     }
 }
