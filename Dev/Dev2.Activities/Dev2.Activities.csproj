@@ -105,6 +105,7 @@
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
+    <Compile Include="Activities\RabbitMQ\Publish\PublishRabbitMQActivity.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
     <Compile Include="Comparer\DataSplitDTOComparer.cs" />

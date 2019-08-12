@@ -26,12 +26,12 @@ using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    [Obsolete("This Activity is now obsolete and only kept for services that use this version of the Activity. The new activity is PublishRabbitMQActivity")]
-    public class DsfPublishRabbitMQActivity : DsfBaseActivity, IEquatable<DsfPublishRabbitMQActivity>
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
+    public class PublishRabbitMQActivity : DsfBaseActivity, IEquatable<PublishRabbitMQActivity>
     {
         #region Ctor
 
-        public DsfPublishRabbitMQActivity()
+        public PublishRabbitMQActivity()
         {
             DisplayName = "RabbitMQ Publish";
         }
@@ -43,6 +43,17 @@ namespace Dev2.Activities.RabbitMQ.Publish
         [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
+
+        [Inputs("Exchange Type")]
+        public string ExchangeType { get; set; }
+
+        [Inputs("Exchange")]
+        [FindMissing]
+        public string Exchange { get; set; }
+
+        [Inputs("Routing Key")]
+        [FindMissing]
+        public string RoutingKey { get; set; }
 
         [FindMissing]
         public bool IsDurable { get; set; }
@@ -86,6 +97,24 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 {
                     Name = "QueueName",
                     Value = QueueName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Exchange",
+                    Value = Exchange,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "ExchangeType",
+                    Value = ExchangeType,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RoutingKey",
+                    Value = RoutingKey,
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
@@ -154,7 +183,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
+                        Channel.ExchangeDeclare(queueName, ExchangeType, IsDurable, IsAutoDelete, null);
                         Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
                         Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
 
@@ -176,7 +205,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         #endregion Overrides of DsfBaseActivity
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(DsfPublishRabbitMQActivity other)
+        public bool Equals(PublishRabbitMQActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
@@ -193,6 +222,9 @@ namespace Dev2.Activities.RabbitMQ.Publish
             return base.Equals(other)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                 && string.Equals(QueueName, other.QueueName)
+                && string.Equals(RoutingKey, other.RoutingKey)
+                && string.Equals(Exchange, other.Exchange)
+                && string.Equals(ExchangeType, other.ExchangeType)
                 && IsDurable == other.IsDurable
                 && IsExclusive == other.IsExclusive
                 && IsAutoDelete == other.IsAutoDelete
@@ -228,6 +260,9 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Exchange != null ? Exchange.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ExchangeType != null ? ExchangeType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RoutingKey != null ? RoutingKey.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDurable.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsExclusive.GetHashCode();
