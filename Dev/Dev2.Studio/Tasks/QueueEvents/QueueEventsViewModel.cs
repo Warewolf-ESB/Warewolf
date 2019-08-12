@@ -36,14 +36,16 @@ namespace Dev2.Tasks.QueueEvents
         string _workflowName;
         int _concurrency;
         private IServer _server;
+        private Guid _executionId;
         private IResourceRepository _resourceRepository;
-        private IExternalProcessExecutor _externalProcessExecutor;
+        IExternalProcessExecutor _externalProcessExecutor;
         private ObservableCollection<INameValue> _queueNames;
         private ObservableCollection<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
         private bool _pasteResponseVisible;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
+        private IEnumerable<dynamic> _executionEvents;
         private bool _isTesting;
         private bool _testFailed;
         private bool _testPassed;
@@ -114,7 +116,7 @@ namespace Dev2.Tasks.QueueEvents
                 OnPropertyChanged(nameof(SelectedQueueEvent));
             }
         }
-
+      //  public IEnumerable<dynamic> ExecutionEvents => _executionEvents.ExecutionEvents(_server, _executionId);
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
 
         public IResource SelectedQueueSource
@@ -170,7 +172,7 @@ namespace Dev2.Tasks.QueueEvents
         {
             var queueNames = new ObservableCollection<INameValue>();
 
-            var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
+            var list = _resourceRepository.FindAutocompleteOptions(_server, SelectedQueueSource);
 
 #pragma warning disable CC0021 // Use nameof
             foreach (var item in list["QueueNames"])
