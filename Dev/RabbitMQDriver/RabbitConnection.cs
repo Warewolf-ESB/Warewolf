@@ -28,13 +28,14 @@ namespace Warewolf.Driver.RabbitMQ
 
         public IPublisher NewPublisher(IQueueConfig config)
         {
-            throw new System.NotImplementedException();
+            var channel = CreateChannel(config as RabbitConfig);
+            return new RabbitPublisher(config as RabbitConfig, channel);
         }
 
         public void StartConsuming(IQueueConfig config, IConsumer consumer)
         {
-            var rconfig = config as RabbitConfig;
-            var channel = rconfig.CreateChannel(_connection);
+            var rConfig = config as RabbitConfig; 
+            IModel channel = CreateChannel(config as RabbitConfig);
 
             var evConsumer = new EventingBasicConsumer(channel);
             evConsumer.Received += (ch, ea) =>
@@ -45,6 +46,15 @@ namespace Warewolf.Driver.RabbitMQ
 
                 channel.BasicAck(ea.DeliveryTag, false);
             };
+
+            channel.BasicConsume(queue: rConfig.QueueName,
+                                        noAck: false,
+                                        consumer: evConsumer);
+        }
+
+        private IModel CreateChannel(RabbitConfig rConfig)
+        {
+            return rConfig.CreateChannel(_connection);
         }
     }
 }

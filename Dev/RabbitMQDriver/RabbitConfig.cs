@@ -10,12 +10,22 @@
 
 using Dev2.Common.Interfaces;
 using RabbitMQ.Client;
+using System.Collections.Generic;
 using IConnection = RabbitMQ.Client.IConnection;
 
 namespace Warewolf.Driver.RabbitMQ
 {
     public class RabbitConfig : IQueueConfig
     {
+        public string Exchange { get; set; }
+        public string RoutingKey { get; set; }
+        public IBasicProperties BasicProperties { get; set; }
+        public string QueueName { get; set; }
+        public bool Durable { get; set; }
+        public bool Exclusive { get; set; }
+        public bool AutoDelete { get; set; }
+        public IDictionary<string, object> Arguments { get; set; }
+
         public RabbitConfig()
         {
         }
@@ -24,6 +34,7 @@ namespace Warewolf.Driver.RabbitMQ
         internal IModel CreateChannel(IConnection connection)
         {
             var channel = connection.CreateModel();
+            channel.QueueDeclare(QueueName, Durable, Exclusive, AutoDelete, Arguments);
 
               //configure channel using options here             
             return channel;
