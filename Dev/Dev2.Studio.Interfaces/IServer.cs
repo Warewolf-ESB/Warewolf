@@ -40,7 +40,6 @@ namespace Dev2.Studio.Interfaces
         bool HasLoadedResources { get; }
         IEnvironmentConnection Connection { get; set; }
         IResourceRepository ResourceRepository { get; }
-        IEnumerable<dynamic> ExecutionEvents { get; }
         void Connect();
 
         void Disconnect();

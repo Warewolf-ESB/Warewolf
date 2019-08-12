@@ -8,18 +8,29 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Serializers;
+using Dev2.Data.TO;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Tasks.QueueEvents
 {
@@ -35,7 +46,6 @@ namespace Dev2.Tasks.QueueEvents
         string _workflowName;
         int _concurrency;
         private IServer _server;
-        private Guid _executionId;
         private IResourceRepository _resourceRepository;
         IExternalProcessExecutor _externalProcessExecutor;
         private ObservableCollection<INameValue> _queueNames;
@@ -44,21 +54,36 @@ namespace Dev2.Tasks.QueueEvents
         private bool _pasteResponseVisible;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
-        private IEnumerable<dynamic> _executionEvents;
         private bool _isTesting;
         private bool _testFailed;
         private bool _testPassed;
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private string _testResults;
+        IExecutionHistory _selectedHistory;
+        IList<IExecutionHistory> _history;
+        readonly IAsyncWorker _asyncWorker;
+        string _connectionError;
+        bool _hasConnectionError;
+        bool _isProgressBarVisible;
+        bool _isHistoryTabVisible;
+        IQueueResourceModel _queueResourceModel;
+        IQueueResource _selectedQueue;
+        DebugOutputViewModel _debugOutputViewModel;
+        bool _errorShown;
+        readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
+        bool _isDirty;
+        TabItem _activeItem;
+        //TODO: Not sure we requre this
+        //  readonly IPopupController _popupController;
 
         public QueueEventsViewModel(IServer server)
-            : this(server, new ExternalProcessExecutor())
+            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker())
         {
 
         }
 
-        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
+        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker)
         {
             _server = server;
             _resourceRepository = server.ResourceRepository;
@@ -67,7 +92,17 @@ namespace Dev2.Tasks.QueueEvents
             PasteResponseCommand = new DelegateCommand(ExecutePaste);
             TestCommand = new DelegateCommand(ExecuteTest);
             IsTesting = false;
+            Errors = new ErrorResultTO();
+            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
+            _asyncWorker = asyncWorker;
+
+            InitializeHelp();
+            //TODO:Not sure if this required
+            // var serverRepository = CustomContainer.Get<IServerRepository>();
+            //  DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), serverRepository, new DebugOutputFilterStrategy());
+
         }
+
 
         public void ExecutePaste()
         {
@@ -104,19 +139,7 @@ namespace Dev2.Tasks.QueueEvents
         }
 
         public ObservableCollection<string> QueueEvents { get; set; }
-
-        public string SelectedQueueEvent
-        {
-            get => _selectedQueueEvent;
-            set
-            {
-                _selectedQueueEvent = value;
-                OnPropertyChanged(nameof(SelectedQueueEvent));
-            }
-        }
-      //  public IEnumerable<dynamic> ExecutionEvents => _executionEvents.ExecutionEvents(_server, _executionId);
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
-
         public IResource SelectedQueueSource
         {
             get => _selectedQueueSource;
@@ -361,6 +384,354 @@ namespace Dev2.Tasks.QueueEvents
         public static bool Save()
         {
             return true;
+        }
+
+        public string SelectedQueueEvent
+        {
+            get => _selectedQueueEvent;
+            set
+            {
+                _selectedQueueEvent = value;
+                OnPropertyChanged(nameof(SelectedQueueEvent));
+            }
+        }
+        public TabItem ActiveItem
+        {
+            private get => _activeItem;
+            set
+            {
+                if (Equals(value, _activeItem))
+                {
+                    return;
+                }
+                _activeItem = value;
+                if (IsHistoryTab)
+                {
+                    OnPropertyChanged(nameof(History));
+                }
+            }
+        }
+        bool IsHistoryTab
+        {
+            get
+            {
+                if (ActiveItem != null)
+                {
+                    return (string)ActiveItem.Header == nameof(History);
+                }
+                return false;
+            }
+        }
+        public IQueueResourceModel QueueResourceModel
+        {
+            get => _queueResourceModel;
+            set
+            {
+                _queueResourceModel = value;
+                OnPropertyChanged(nameof(QueueResourceModel));
+                OnPropertyChanged(nameof(ExecutionHistory));
+            }
+        }
+        public IList<IExecutionHistory> History
+        {
+            get
+            {
+                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewItem)
+                {
+                    _asyncWorker.Start(() =>
+                    {
+                        IsHistoryTabVisible = false;
+                        IsProgressBarVisible = true;
+                        _history = QueueResourceModel.CreateHistory(SelectedQueue).ToList();
+                    }
+                   , () =>
+                   {
+
+                       IsHistoryTabVisible = true;
+                       IsProgressBarVisible = false;
+                       OnPropertyChanged(nameof(History));
+                   });
+                }
+                var history = _history;
+                _history = null;
+                return history ?? new List<IExecutionHistory>();
+            }
+        }
+        public bool IsHistoryTabVisible
+        {
+            get => _isHistoryTabVisible;
+            private set
+            {
+                _isHistoryTabVisible = value;
+                OnPropertyChanged(nameof(IsHistoryTabVisible));
+            }
+        }
+        public bool IsProgressBarVisible
+        {
+            get => _isProgressBarVisible;
+            set
+            {
+                _isProgressBarVisible = value;
+                OnPropertyChanged(nameof(IsProgressBarVisible));
+            }
+        }
+        public string AccountName
+        {
+            get => SelectedQueue != null ? SelectedQueue.UserName : string.Empty;
+            set
+            {
+                if (SelectedQueue != null)
+                {
+                    if (Equals(SelectedQueue.UserName, value))
+                    {
+                        return;
+                    }
+                    ClearError(Core.SchedulerLoginErrorMessage);
+                    SelectedQueue.UserName = value;
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(AccountName));
+                }
+            }
+        }
+        public IQueueResource SelectedQueue
+        {
+            get => _selectedQueue;
+            set
+            {
+                if (value == null)
+                {
+                    _selectedQueue = null;
+                    OnPropertyChanged(nameof(SelectedQueue));
+                    return;
+                }
+                if (Equals(_selectedQueue, value) || value.IsNewItem)
+                {
+                    return;
+                }
+                _selectedQueue = value;
+                Item = _ser.Deserialize<IQueueResource>(_ser.SerializeToBuilder(_selectedQueue));
+                OnPropertyChanged(nameof(SelectedQueue));
+                if (_selectedQueue != null)
+                {
+                    OnPropertyChanged(nameof(Status));
+                    OnPropertyChanged(nameof(WorkflowName));
+                    OnPropertyChanged(nameof(QueueName));
+                    OnPropertyChanged(nameof(AccountName));
+                    OnPropertyChanged(nameof(Password));
+                    OnPropertyChanged(nameof(Errors));
+                    OnPropertyChanged(nameof(Error));
+                    OnPropertyChanged(nameof(SelectedHistory));
+                    SelectedHistory = null;
+                    OnPropertyChanged(nameof(History));
+                }
+            }
+        }
+        void InitializeHelp()
+        {
+            HelpToggle = CreateHelpToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.SchedulerSettingsHelpTextSettingsView;
+        }
+        public ActivityDesignerToggle HelpToggle { get; private set; }
+        static ActivityDesignerToggle CreateHelpToggle()
+        {
+            var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", nameof(HelpToggle));
+
+            return toggle;
+        }
+        public DebugOutputViewModel DebugOutputViewModel
+        {
+            get => _debugOutputViewModel;
+            set
+            {
+                _debugOutputViewModel = value;
+                OnPropertyChanged(nameof(DebugOutputViewModel));
+            }
+        }
+        public new bool IsDirty
+        {
+            get
+            {
+                try
+                {
+                    if (SelectedQueue == null)
+                    {
+                        SetQueueName(false);
+                        return false;
+                    }
+                    var dirty = !SelectedQueue.Equals(Item);
+                    SelectedQueue.IsDirty = dirty;
+                    SetQueueName(dirty);
+                    return dirty;
+                }
+                catch (Exception ex)
+                {
+                    if (!_errorShown)
+                    {
+                        //TODO: Not sure if this is required
+                        // _popupController.ShowCorruptTaskResult(ex.Message);
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                        _errorShown = true;
+                    }
+                }
+                return false;
+            }
+            set
+            {
+                if (value.Equals(_isDirty))
+                {
+                    return;
+                }
+                _isDirty = value;
+                OnPropertyChanged(nameof(IsDirty));
+            }
+        }
+        public IServer Server { private get; set; }
+        void SetQueueName(bool dirty)
+        {
+            var baseName = "Queue";
+            if (Server != null)
+            {
+                baseName = baseName + " - " + Server.DisplayName;
+            }
+            if (dirty)
+            {
+                if (!baseName.EndsWith(" *"))
+                {
+                    QueueName = baseName + " *";
+                }
+            }
+            else
+            {
+                QueueName = baseName;
+            }
+        }
+        public ObservableCollection<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
+        public IExecutionHistory SelectedHistory
+        {
+            get => _selectedHistory;
+            set
+            {
+                if (null == value)
+                {
+                    //TODO: Not sure what we are doing here....
+                    // EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
+                    return;
+                }
+                _selectedHistory = value;
+                //TODO: Needs Discussion
+                //DebugOutputViewModel.Clear();
+                if (value.DebugOutput != null)
+                {
+                    foreach (var debugState in value.DebugOutput)
+                    {
+                        if (debugState != null)
+                        {
+                            debugState.StateType = StateType.Clear;
+                            debugState.SessionID = DebugOutputViewModel.SessionID;
+                            //TODO: Needs Discussion
+                            //DebugOutputViewModel.Clear();
+                            // DebugOutputViewModel.Append(debugState);
+                        }
+                    }
+                }
+                OnPropertyChanged(nameof(SelectedHistory));
+            }
+        }
+        public IQueueResource Item { get; set; }
+        public string Password
+        {
+            get => SelectedQueue != null ? SelectedQueue.Password : string.Empty;
+            set
+            {
+                if (SelectedQueue != null)
+                {
+                    if (Equals(SelectedQueue.Password, value))
+                    {
+                        return;
+                    }
+                    ClearError(Core.QueueEventsLoginErrorMessage);
+                    SelectedQueue.Password = value;
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(Password));
+                }
+            }
+        }
+
+        public void ClearError(string description)
+        {
+            Errors.RemoveError(description);
+            OnPropertyChanged(nameof(Error));
+            OnPropertyChanged(nameof(HasErrors));
+        }
+        public QueueStatus Status
+        {
+            get => SelectedQueue?.Status ?? QueueStatus.Enabled;
+            set
+            {
+                if (SelectedQueue != null)
+                {
+                    if (value == SelectedQueue.Status)
+                    {
+                        return;
+                    }
+                    SelectedQueue.Status = value;
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(Status));
+                }
+            }
+        }
+        public void ShowError(string description)
+        {
+            if (!string.IsNullOrEmpty(description))
+            {
+                Errors.AddError(description, true);
+                OnPropertyChanged(nameof(Error));
+                OnPropertyChanged(nameof(HasErrors));
+            }
+        }
+        public bool HasErrors => Errors.HasErrors();
+        public IErrorResultTO Errors
+        {
+            get => _selectedQueue != null ? _selectedQueue.Errors : new ErrorResultTO();
+            private set
+            {
+                if (_selectedQueue != null)
+                {
+                    _selectedQueue.Errors = value;
+                }
+
+                OnPropertyChanged(nameof(Errors));
+            }
+        }
+
+        public string Error => HasErrors ? Errors.FetchErrors()[0] : string.Empty;
+        public void ClearConnectionError()
+        {
+            ConnectionError = string.Empty;
+            HasConnectionError = false;
+        }
+        public void SetConnectionError()
+        {
+            ConnectionError = Core.QueueConnectionError;
+            HasConnectionError = true;
+        }
+        public bool HasConnectionError
+        {
+            get => _hasConnectionError;
+            set
+            {
+                _hasConnectionError = value;
+                OnPropertyChanged(nameof(HasConnectionError));
+            }
+        }
+        public string ConnectionError
+        {
+            get => _connectionError;
+            set
+            {
+                _connectionError = value;
+                OnPropertyChanged(nameof(ConnectionError));
+            }
         }
     }
 }

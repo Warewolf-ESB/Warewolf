@@ -10,17 +10,23 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.Tasks.QueueEvents;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 using Warewolf.Core;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
@@ -340,7 +346,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
             mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object);
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new SynchronousAsyncWorker());
 
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
@@ -381,5 +387,283 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.IsTrue(queueEventsViewModel.TestPassed);
             Assert.IsFalse(queueEventsViewModel.TestFailed);
         }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Candice Daniel")]
+        public void QueueEventsViewModel_AccountName()
+        {
+            var _accountNameChanged = false;
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "AccountName")
+                {
+                    _accountNameChanged = true;
+                }
+            };
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+            queueEventsViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage, queueEventsViewModel.Error);
+            //------------Execute Test-------------------------- -
+            queueEventsViewModel.AccountName = "someAccountName";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("someAccountName", queueEventsViewModel.AccountName);
+            Assert.AreEqual("", queueEventsViewModel.Error);
+            Assert.AreEqual("someAccountName", queueEventsViewModel.SelectedQueue.UserName);
+            Assert.IsTrue(_accountNameChanged);
+
+            queueEventsViewModel.AccountName = "someAccountName";
+            Assert.AreEqual("someAccountName", queueEventsViewModel.AccountName);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Candice Daniel")]
+        public void QueueEventsViewModel_Password_SetPassword_IsDirty()
+        {
+            var _passwordChanged = false;
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Password")
+                {
+                    _passwordChanged = true;
+                }
+            };
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+            queueEventsViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage, queueEventsViewModel.Error);
+            //------------Execute Test---------------------------
+            queueEventsViewModel.Password = "somePassword";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("somePassword", queueEventsViewModel.Password);
+            Assert.AreEqual("", queueEventsViewModel.Error);
+            Assert.IsTrue(_passwordChanged);
+
+            queueEventsViewModel.Password = "somePassword";
+            Assert.AreEqual("somePassword", queueEventsViewModel.Password);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        public void QueueEventsViewModel_AccountName_SetAccountName_SelectedTaskNull_NothingChangedOnTask()
+        {
+            //------------Setup for test--------------------------
+            var _accountNameChanged = false;
+
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+
+            queueEventsViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage, queueEventsViewModel.Error);
+            queueEventsViewModel.AccountName = "someAccountName";
+            queueEventsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "AccountName")
+                {
+                    _accountNameChanged = true;
+                }
+            };
+            //--------------Assert Preconditions------------------
+            Assert.AreEqual("", queueEventsViewModel.Error);
+            var queueResource = queueEventsViewModel.SelectedQueue;
+            Assert.AreEqual("someAccountName", queueResource.UserName);
+            //------------Execute Test---------------------------
+            queueEventsViewModel.SelectedQueue = null;
+            queueEventsViewModel.AccountName = "another account name";
+            //------------Assert Results-------------------------
+            Assert.IsNull(queueEventsViewModel.SelectedQueue);
+            Assert.AreEqual("someAccountName", queueResource.UserName);
+            Assert.IsFalse(_accountNameChanged);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        public void QueueEventsViewModel_ConnectionError_SetAndClearError_ValidErrorSetAndClear()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+            //------------Execute Test---------------------------
+            queueEventsViewModel.SetConnectionError();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueConnectionError, queueEventsViewModel.ConnectionError);
+            Assert.IsTrue(queueEventsViewModel.HasConnectionError);
+
+            queueEventsViewModel.ClearConnectionError();
+
+            Assert.AreEqual("", queueEventsViewModel.ConnectionError);
+            Assert.IsFalse(queueEventsViewModel.HasConnectionError);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        public void QueueEventsViewModel_SelectedHistory_SetSelectedHistory()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+            //------------Execute Test---------------------------
+            var selectedHistory = new ExecutionHistoryForTest();
+            queueEventsViewModel.SelectedHistory = selectedHistory;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(queueEventsViewModel.SelectedHistory);
+
+            queueEventsViewModel.SelectedHistory = selectedHistory;
+            Assert.IsNotNull(queueEventsViewModel.SelectedHistory);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        public void QueueEventsViewModel_History_Get_ShouldCallCreateHistoryOnQueueResourceModel()
+        {
+            //------------Setup for test--------------------------
+            var queueEventsViewModel = new QueueEventsViewModel(new Mock<IServer>().Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+
+            var activeItem = new TabItem { Header = "History" };
+            queueEventsViewModel.ActiveItem = activeItem;
+            var mockQueueResourceModel = new Mock<IQueueResourceModel>();
+            var histories = new List<IExecutionHistory> { new Mock<IExecutionHistory>().Object };
+            mockQueueResourceModel.Setup(model => model.CreateHistory(It.IsAny<IQueueResource>())).Returns(histories);
+            queueEventsViewModel.QueueResourceModel = mockQueueResourceModel.Object;
+            queueEventsViewModel.SelectedQueue = new Mock<IQueueResource>().Object;
+            //------------Execute Test---------------------------
+            var resourceHistories = queueEventsViewModel.History;
+            //------------Assert Results-------------------------
+          //  mockQueueResourceModel.Verify(model => model.CreateHistory(It.IsAny<IQueueResource>()), Times.Once());
+            Assert.IsNotNull(resourceHistories);
+            Assert.IsTrue(queueEventsViewModel.IsHistoryTabVisible);
+            Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
+
+            queueEventsViewModel.IsProgressBarVisible = false;
+            Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        public void QueueEventsViewModel_Status_SetStatus_IsDirtyTrue()
+        {
+            //------------Setup for test--------------------------
+            var queueEventsViewModel = new QueueEventsViewModel(new Mock<IServer>().Object);
+            var queuedResourceForTest = new QueuedResourceForTest();
+            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+            //------------Execute Test---------------------------
+            Assert.IsFalse(queueEventsViewModel.SelectedQueue.IsDirty);
+            queueEventsViewModel.Status = QueueStatus.Disabled;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
+
+            queueEventsViewModel.Status = QueueStatus.Disabled;
+            Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
+        }
+        class QueuedResourceForTest : IQueueResource
+        {
+            bool _isNewItem;
+            bool _isDirty;
+            string _queueName;
+
+            public QueuedResourceForTest()
+            {
+                Errors = new ErrorResultTO();
+            }
+
+            public bool IsDirty
+            {
+                get
+                {
+                    return _isDirty;
+                }
+                set
+                {
+                    _isDirty = value;
+                }
+            }
+            public string Name { get; set; }
+            public string OldName { get; set; }
+            public QueueStatus Status { get; set; }
+            public DateTime NextRunDate { get; set; }
+            public int NumberOfHistoryToKeep { get; set; }
+            public string WorkflowName { get; set; }
+            public Guid ResourceId { get; set; }
+            public string UserName { get; set; }
+            public string Password { get; set; }
+            public IErrorResultTO Errors { get; set; }
+            public bool IsNew { get; set; }
+            public bool IsNewItem
+            {
+                get
+                {
+                    return _isNewItem;
+                }
+                set
+                {
+                    _isNewItem = value;
+                }
+            }
+            public string NameForDisplay { get; private set; }
+            public string QueueName
+            {
+                get => _queueName;
+                set
+                {
+                    _queueName = value;
+                }
+            }
+            public void SetItem(IQueueResource item)
+            {
+            }
+            public bool Equals(IQueueResource other)
+            {
+                return !IsDirty;
+            }
+        }
+        public class ExecutionHistoryForTest : IExecutionHistory
+        {
+            public string WorkflowOutput { get; }
+            public IList<IDebugState> DebugOutput { get; }
+            public IExecutionInfo ExecutionHistoryOutput { get; }
+            public string UserName { get; set; }
+        }
+
+        // TODO: public IQueueResourceModel QueueResourceModel
+        // TODO: public IList<IExecutionHistory> History
+        // TODO: public IExecutionHistory SelectedHistory
+        // TODO: public ObservableCollection<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
+
+        // TODO: public IQueueResource SelectedQueue
+        // TODO: public IQueueResource Item { get; set; }
+        // TODO: public QueueStatus Status
+
+        // TODO: public void ShowError(string description)
+        // TODO: public bool HasErrors
+        // TODO: public IErrorResultTO Errors
+
+        // TODO: public string AccountName
+        // TODO: public string Password
+        // TODO: public void ClearConnectionError()
+        // TODO: public bool HasConnectionError
+        // TODO: public string ConnectionError
+
+        // TODO: public DebugOutputViewModel DebugOutputViewModel
+        // TODO: public new bool IsDirty
+        // TODO: public bool IsProgressBarVisible
     }
 }

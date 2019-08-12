@@ -901,6 +901,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to queue on this server. You need Administrator permission..
+        /// </summary>
+        public static string QueueConnectionError {
+            get {
+                return ResourceManager.GetString("QueueConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Logon failure: unknown user name or bad password.
+        /// </summary>
+        public static string QueueEventsLoginErrorMessage {
+            get {
+                return ResourceManager.GetString("QueueEventsLoginErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New RabbitMQ Source.
         /// </summary>
         public static string RabbitMQSourceNewHeaderLabel {
