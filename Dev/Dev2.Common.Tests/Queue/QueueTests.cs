@@ -56,7 +56,6 @@ namespace Dev2.Common.Tests.Queue
             var mockConfig = new Mock<IQueueConfig>();
             var mockPublisher = new Mock<IPublisher>();
 
-            var testConsumer = new TestConsumer();
             var config = mockConfig.Object;
 
             mockQueueConnection.Setup(o => o.NewPublisher(config)).Returns(mockPublisher.Object);
