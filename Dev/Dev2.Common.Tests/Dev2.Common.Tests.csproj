@@ -82,6 +82,7 @@
     <Compile Include="JsonResource.cs" />
     <Compile Include="ConfigTest.cs" />
     <Compile Include="ComputerNameTests.cs" />
+    <Compile Include="Queue\QueueTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
     <Compile Include="SearchTests.cs" />

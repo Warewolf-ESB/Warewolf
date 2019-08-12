@@ -227,6 +227,11 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="Queue\IQueueConfig.cs" />
+    <Compile Include="Queue\IPublisher.cs" />
+    <Compile Include="Queue\IQueueConnection.cs" />
+    <Compile Include="Queue\IQueueConsumer.cs" />
+    <Compile Include="Queue\IQueueSource.cs" />
     <Compile Include="ISharepointHelper.cs" />
     <Compile Include="IToolConflictItem.cs" />
     <Compile Include="IMergeView.cs" />
