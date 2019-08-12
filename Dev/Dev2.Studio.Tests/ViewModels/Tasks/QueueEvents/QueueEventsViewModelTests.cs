@@ -28,6 +28,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using Warewolf.Core;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 {

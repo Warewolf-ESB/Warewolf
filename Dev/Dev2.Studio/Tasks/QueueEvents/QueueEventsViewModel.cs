@@ -149,9 +149,26 @@ namespace Dev2.Tasks.QueueEvents
                 if (_selectedQueueSource != null)
                 {
                     QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
+                    Options = new List<OptionView>
+                    {
+                        OptionViewFactory.New(new OptionAutocomplete { Name = "Suggestion 1" }),
+                        OptionViewFactory.New(new OptionBool { Name = "Item check 1" }),
+                        OptionViewFactory.New(new OptionInt { Name = "Number 1" })
+                    };
                 }
 
                 OnPropertyChanged(nameof(SelectedQueueSource));
+            }
+        }
+        
+
+        public List<OptionView> Options
+        {
+            get => _options;
+            set
+            {
+                _options = value;
+                OnPropertyChanged(nameof(Options));
             }
         }
 
