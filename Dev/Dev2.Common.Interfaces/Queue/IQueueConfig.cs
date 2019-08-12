@@ -8,11 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-namespace Dev2.Common.Interfaces.Queue
+namespace Dev2.Common.Interfaces
 {
     public interface IQueueConfig
     {
-       // IOption Options { get; }
+        // IOption Options { get; }
     }
 }
