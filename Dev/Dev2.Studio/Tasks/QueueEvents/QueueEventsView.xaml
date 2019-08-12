@@ -15,6 +15,7 @@
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
              xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
+             xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
