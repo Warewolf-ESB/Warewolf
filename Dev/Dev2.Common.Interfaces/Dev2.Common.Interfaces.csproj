@@ -194,6 +194,9 @@
     <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
+    <Compile Include="Queue\QueueRunStatus.cs" />
+    <Compile Include="Queue\IExecutionHistory.cs" />
+    <Compile Include="Queue\IExecutionInfo.cs" />
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerUpdateManager.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
@@ -318,6 +321,10 @@
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IMessage.cs" />
+    <Compile Include="Queue\IQueuedResource.cs" />
+    <Compile Include="Queue\IQueueResourceModel.cs" />
+    <Compile Include="Queue\IQueueTrigger.cs" />
+    <Compile Include="Queue\QueueStatus.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />

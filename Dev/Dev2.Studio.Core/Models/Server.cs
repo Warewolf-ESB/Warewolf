@@ -449,6 +449,5 @@ namespace Dev2.Studio.Core.Models
         }
 
         public IVersionInfo VersionInfo { get; set; }
-        public IEnumerable<dynamic> ExecutionEvents => throw new NotImplementedException();
     }
 }

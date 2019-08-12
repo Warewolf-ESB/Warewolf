@@ -112,7 +112,7 @@
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
-    <Compile Include="ESB\Management\Services\GetExecutionEvents.cs" />
+    <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
     <Compile Include="ESB\Management\Services\GetFilterListService.cs" />
     <Compile Include="ESB\Management\Services\GetServerSettings.cs" />

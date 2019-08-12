@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Queue;assembly=Dev2.Common.Interfaces"
              xmlns:queueEvents="clr-namespace:Dev2.Tasks.QueueEvents"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
@@ -165,51 +166,51 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Row="0" Grid.Column="0" Margin="{StaticResource ElementBorder}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                           
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Queue Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
-                            <ComboBox x:Name="QueueSourcesComboBox"
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Queue Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                <ComboBox x:Name="QueueSourcesComboBox"
                                       Grid.Column="1"
                                       DisplayMemberPath="ResourceName" 
                                       SelectedItem="{Binding SelectedQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Margin="{StaticResource ControlBorderTop}"
                                       ToolTip="{x:Static languages:Tooltips.QueueSourceTooltip}"
                                       ItemsSource="{Binding QueueSources}">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.QueueSourceHelp}"
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueSourceHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </ComboBox>
+                                    </i:Interaction.Behaviors>
+                                </ComboBox>
 
-                            <TextBlock Text="Queue" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
-                            <controls:AutoCompleteBox x:Name="QueueNameTextBox"
+                                <TextBlock Text="Queue" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                <controls:AutoCompleteBox x:Name="QueueNameTextBox"
                                                       Grid.Row="1"
                                                       Grid.Column="1"
                                                       AllowUserInsertLine="False"
@@ -221,108 +222,108 @@
                                                       Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
                                                       Style="{StaticResource AutoCompleteBoxStyle}">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </controls:AutoCompleteBox>
+                                    </i:Interaction.Behaviors>
+                                </controls:AutoCompleteBox>
 
-                            <TextBlock Text="Workflow" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                            <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" 
+                                <TextBlock Text="Workflow" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                                <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" 
                                          Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource ReadOnlyTextBoxStyle}"
                                          ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipWorkFlow}"
                                          HorizontalAlignment="Stretch"
                                          AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
                                          IsReadOnly="True">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </TextBox>
-                                <Button Grid.Column="1" 
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                    <Button Grid.Column="1" 
                                         Content="..."
                                         Margin="{StaticResource ControlBorderLeft}"
                                         Style="{StaticResource ButtonStyle}"
                                         ToolTip="Select a workflow to be triggered"
                                         Command="{Binding AddWorkflowCommand}"
                                         AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </Button>
-                            </Grid>
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                </Grid>
 
-                            <TextBlock Text="Concurrency" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                            <TextBox Grid.Row="3" 
+                                <TextBlock Text="Concurrency" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                                <TextBox Grid.Row="3" 
                                      Grid.Column="1"
                                      Margin="{StaticResource ControlBorderTop}"
                                      Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
+                            </Grid>
 
-                        <Grid Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                            <Expander Grid.Row="0" 
+                                <Expander Grid.Row="0" 
                                       Style="{StaticResource ServiceTestTestStepExpander}" 
                                       IsExpanded="True" 
                                       Margin="{StaticResource ControlBorderTop}"
                                       Header="Options">
 
-                            </Expander>
+                                </Expander>
 
-                            <Separator Grid.Row="1"
+                                <Separator Grid.Row="1"
                                        Margin="{StaticResource ControlBorderTop}"
                                        Style="{StaticResource Separator}" />
 
-                        </Grid>
+                            </Grid>
 
-                        <GroupBox x:Name="OnErrorGroupBox"
+                            <GroupBox x:Name="OnErrorGroupBox"
                                   Style="{StaticResource ActivityGroupBoxStyle}"
                                   VerticalContentAlignment="Stretch"
                                   Width="Auto"
                                   Grid.Row="2">
-                            <GroupBox.Header>
-                                <TextBlock Text="On Error" Margin="1" Padding="1" />
-                            </GroupBox.Header>
+                                <GroupBox.Header>
+                                    <TextBlock Text="On Error" Margin="1" Padding="1" />
+                                </GroupBox.Header>
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
-                                <TextBlock Text="Queue Sink" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
-                                <ComboBox x:Name="DeadLetterQueueSourcesComboBox"
+                                    <TextBlock Text="Queue Sink" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                    <ComboBox x:Name="DeadLetterQueueSourcesComboBox"
                                               Grid.Column="1"
                                               DisplayMemberPath="ResourceName" 
                                               SelectedItem="{Binding SelectedDeadLetterQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Margin="{StaticResource ControlBorderTop}"
                                               ToolTip="{x:Static languages:Tooltips.DeadLetterQueueSourceTooltip}"
                                               ItemsSource="{Binding DeadLetterQueueSources}">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.DeadLetterQueueSourceHelp}"
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.DeadLetterQueueSourceHelp}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </ComboBox>
+                                        </i:Interaction.Behaviors>
+                                    </ComboBox>
 
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Queue" />
-                                <controls:AutoCompleteBox x:Name="DeadLetterQueueTextBox"
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Queue" />
+                                    <controls:AutoCompleteBox x:Name="DeadLetterQueueTextBox"
                                                               Grid.Row="1"
                                                               Grid.Column="1"
                                                               AllowUserInsertLine="False"
@@ -334,13 +335,13 @@
                                                               Text="{Binding DeadLetterQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                               ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
                                                               Style="{StaticResource AutoCompleteBoxStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </controls:AutoCompleteBox>
+                                        </i:Interaction.Behaviors>
+                                    </controls:AutoCompleteBox>
 
-                                <Expander Grid.Row="2" 
+                                    <Expander Grid.Row="2" 
                                           Grid.Column="0"
                                           Grid.ColumnSpan="2"
                                           Style="{StaticResource ServiceTestTestStepExpander}" 
@@ -348,43 +349,43 @@
                                           Margin="{StaticResource ControlBorderTop}"
                                           Header="Options">
 
-                                </Expander>
-                            </Grid>
-                        </GroupBox>
+                                    </Expander>
+                                </Grid>
+                            </GroupBox>
 
-                        <Separator Grid.Row="3"
+                            <Separator Grid.Row="3"
                                    Margin="{StaticResource ControlBorderTop}"
                                    Style="{StaticResource Separator}" />
 
-                        <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                            <TextBlock Text="{x:Static languages:Core.InputsHeader}" Grid.Row="0" Grid.Column="0" FontWeight="Bold" />
+                                <TextBlock Text="{x:Static languages:Core.InputsHeader}" Grid.Row="0" Grid.Column="0" FontWeight="Bold" />
 
-                            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                                <TextBlock Text="Queue Stats" />
-                                <Button Content="..."
+                                <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <TextBlock Text="Queue Stats" />
+                                    <Button Content="..."
                                         Margin="{StaticResource ControlBorderLeft}"
                                         Style="{StaticResource ButtonStyle}"
                                         ToolTip="Select to view Queue Stats"
                                         Command="{Binding QueueStatsCommand}"
                                         AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </Button>
-                            </StackPanel>
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                </StackPanel>
 
-                            <controls1:Dev2DataGrid x:Name="LargeDataGrid"
+                                <controls1:Dev2DataGrid x:Name="LargeDataGrid"
                                                         Grid.Row="1"
                                                         Grid.ColumnSpan="2"
                                                         ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -393,17 +394,17 @@
                                                         MinHeight="100"
                                                         Margin="{StaticResource ControlBorderTop}">
 
-                                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Width="SizeToCells"
+                                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="SizeToCells"
                                                                 MinWidth="65"
                                                                 Header="Parameter"
                                                                 HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                                 d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                                    <TextBlock Text="{Binding Path=Name}"
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                                        <TextBlock Text="{Binding Path=Name}"
                                                                    TextTrimming="CharacterEllipsis"
                                                                    VerticalAlignment="Center"
                                                                    Padding="3,0"
@@ -414,19 +415,19 @@
                                                                 <Binding Path="IndexNumber" />
                                                             </MultiBinding>
                                                         </AutomationProperties.AutomationId>
-                                                    </TextBlock>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Width="*"
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*"
                                                                 MinWidth="125"
                                                                 Header="Test Data"
                                                                 HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                                 d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ui:IntellisenseTextBox DefaultText="Test Data"
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ui:IntellisenseTextBox DefaultText="Test Data"
                                                                             AllowMultilinePaste="True"
                                                                             AcceptsReturn="True"
                                                                             AllowUserInsertLine="True"
@@ -437,50 +438,50 @@
                                                                             ToolTip="{x:Static languages:Tooltips.WebInsertToolTipColumn}"
                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                             Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
-                                                    <i:Interaction.Behaviors>
-                                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:HelpText.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                            <errors:ErrorsSetter Source="{Binding}"
                                                                                  SourcePropertyName="Value"
                                                                                  SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
                                                                                  Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                    </i:Interaction.Behaviors>
-                                                    <AutomationProperties.AutomationId>
-                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                                            <Binding Path="IndexNumber" />
-                                                        </MultiBinding>
-                                                    </AutomationProperties.AutomationId>
-                                                </ui:IntellisenseTextBox>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </controls1:Dev2DataGrid>
-                        </Grid>
+                                                        </i:Interaction.Behaviors>
+                                                        <AutomationProperties.AutomationId>
+                                                            <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                <Binding Path="IndexNumber" />
+                                                            </MultiBinding>
+                                                        </AutomationProperties.AutomationId>
+                                                    </ui:IntellisenseTextBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </controls1:Dev2DataGrid>
+                            </Grid>
 
-                        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
-                            <fa:ImageAwesome Width="14" 
+                            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                                <fa:ImageAwesome Width="14" 
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
                                              Foreground="{StaticResource WareWolfOrangeBrush}" 
                                              Visibility="{Binding TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
                                              Icon="Check" 
                                              HorizontalAlignment="Right" />
-                            <fa:ImageAwesome Width="14" 
+                                <fa:ImageAwesome Width="14" 
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
                                              Foreground="{StaticResource WareWolfOrangeBrush}" 
                                              Visibility="{Binding TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
                                              Icon="Ban" 
                                              HorizontalAlignment="Right" />
-                            <customControls:CircularProgressBar Width="25"
+                                <customControls:CircularProgressBar Width="25"
                                                                 HorizontalAlignment="Right" 
                                                                 Margin="{StaticResource ControlBorderRight}"
                                                                 Height="25"
                                                                 Padding="2.5"
                                                                 Visibility="{Binding IsTesting,Converter={StaticResource BoolToVis}}" />
 
-                            <Button Width="25" 
+                                <Button Width="25" 
                                     Height="25"
                                     x:Name="PasteButton"
                                     Grid.Row="0" 
@@ -490,91 +491,91 @@
                                     ToolTip="{x:Static languages:Tooltips.ManageWebServicePasteTooltip}"
                                     Visibility="{Binding PasteResponseAvailable, Converter={StaticResource BoolToVis}}"
                                     VerticalAlignment="Top">
-                                <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                    <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                                 FontSize="16" 
                                                 FontWeight="DemiBold" 
                                                 Icon="Pencil" 
                                                 VerticalAlignment="Top" 
                                                 HorizontalAlignment="Center"/>
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteHelp}" 
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteHelp}" 
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </Button>
+                                    </i:Interaction.Behaviors>
+                                </Button>
 
-                            <Button x:Name="TestActionButton" 
+                                <Button x:Name="TestActionButton" 
                                     HorizontalAlignment="Right" 
                                     Command="{Binding TestCommand}" 
                                     ToolTip="{x:Static languages:Tooltips.ServiceTestActionTooltip}"
                                     Content="Test"
                                     Width="46">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestHelp}" 
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestHelp}" 
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </Button>
-                        </StackPanel>
+                                    </i:Interaction.Behaviors>
+                                </Button>
+                            </StackPanel>
 
-                        <Grid Grid.Row="6" Margin="{StaticResource ControlBorderTop}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <Grid x:Name="OutputsGrid" 
-                                  Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                            <Grid Grid.Row="6" Margin="{StaticResource ControlBorderTop}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{x:Static languages:Core.OutputsLabel}" 
+                                <Grid x:Name="OutputsGrid" 
+                                  Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{x:Static languages:Core.OutputsLabel}" 
                                            FontWeight="Bold" 
                                            Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
-                                <Border Grid.Row="1" 
+                                    <Border Grid.Row="1" 
                                         Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
                                         Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-                                    <ScrollViewer>
-                                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                                            <TextBlock Text="{Binding TestResults}" 
+                                        <ScrollViewer>
+                                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                                <TextBlock Text="{Binding TestResults}" 
                                                        Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
                                                        TextWrapping="Wrap"
                                                        HorizontalAlignment="Stretch" 
                                                        VerticalAlignment="Stretch"
                                                        ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                                                        ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                            </TextBlock>
-                                        </Grid>
-                                    </ScrollViewer>
-                                </Border>
-                                <TextBlock Grid.Row="1"
+                                                </TextBlock>
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </Border>
+                                    <TextBlock Grid.Row="1"
                                            Text="None" 
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
                                            Margin="0,0,0,-3"
                                            Style="{StaticResource MenuTextBlockStyle}"
                                            Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
-                            </Grid>
+                                </Grid>
 
-                            <Grid x:Name="ResponseGrid" 
+                                <Grid x:Name="ResponseGrid" 
                                   Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-                                <TextBlock Text="Paste Response" FontWeight="Bold" />
+                                    <TextBlock Text="Paste Response" FontWeight="Bold" />
 
-                                <TextBox Grid.Row="1"
+                                    <TextBox Grid.Row="1"
                                          Text="{Binding TestResults}" 
                                          x:Name="ResponseTextbox"
                                          Style="{StaticResource StretchedTextBoxStyle}"
@@ -583,29 +584,29 @@
                                          VerticalScrollBarVisibility="Auto"
                                          ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
                                          HorizontalScrollBarVisibility="Disabled" >
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteInputHelp}" 
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteInputHelp}" 
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </TextBox>
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                </Grid>
                             </Grid>
-                        </Grid>
 
-                        <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
-                            <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
+                                <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
+                            </StackPanel>
 
-                        <Grid Grid.Row="8" Margin="{StaticResource ControlBorderTop}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="Username " x:Name="UsernameTextBlock" Grid.Row="0" Grid.Column="0"/>
-                            <TextBox Width="220"
+                            <Grid Grid.Row="8" Margin="{StaticResource ControlBorderTop}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Username " x:Name="UsernameTextBlock" Grid.Row="0" Grid.Column="0"/>
+                                <TextBox Width="220"
                                          Grid.Row="0"
                                          Grid.Column="1"
                                          AutomationProperties.AutomationId="UI_UserNameTextBox"
@@ -614,14 +615,14 @@
                                          HorizontalAlignment="Left"
                                          customControls:WatermarkTextBox.Watermark="domain\username"
                                          Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
 
-                            <TextBlock Text="Password " Margin="{StaticResource ControlBorderTop}" Grid.Row="1" Grid.Column="0"/>
-                            <PasswordBox Width="220"
+                                <TextBlock Text="Password " Margin="{StaticResource ControlBorderTop}" Grid.Row="1" Grid.Column="0"/>
+                                <PasswordBox Width="220"
                                              Margin="{StaticResource ControlBorderTop}"
                                              AutomationProperties.AutomationId="UI_PasswordBox"
                                              Grid.Row="1"
@@ -630,29 +631,28 @@
                                              ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
                                              attachedProperties:PasswordBoxAssistant.BindPassword="true"
                                              attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </PasswordBox>
+                                    </i:Interaction.Behaviors>
+                                </PasswordBox>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource ElementBorderLeft}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <customControls:CircularProgressBar Grid.Column="0"
+                        <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource ElementBorderLeft}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <customControls:CircularProgressBar Grid.Column="0"
                                                                 Height="150"
                                                                 Width="150"
                                                                 HorizontalAlignment="Center"
                                                                 VerticalAlignment="Center"
                                                                 Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
-
-                        <DataGrid ItemsSource="{Binding History}"
+                            <DataGrid ItemsSource="{Binding History}"
                                       Grid.Column="0"
                                       EnableRowVirtualization="False"
                                       SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
-                                      Style="{StaticResource SchedulerDataGridStyle}"
+                                      Style="{StaticResource QueueDataGridStyle}"
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Auto"
                                       RowHeight="22"
@@ -662,7 +662,8 @@
                                                             MinWidth="27"
                                                             IsReadOnly="True"
                                                             Header="#"
-                                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}" >
+                                                            HeaderStyle="{StaticResource QueueDataGridHeaderStyle}"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
@@ -677,13 +678,14 @@
                                                             MinWidth="80"
                                                             IsReadOnly="True"
                                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Start Time">
+                                                            Header="Start Time"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
                                                          Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                          BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
+                                                         Text="{Binding ExecutionHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -692,13 +694,14 @@
                                                             MinWidth="70"
                                                             IsReadOnly="True"
                                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Duration">
+                                                            Header="Duration"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
                                                          Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                          BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.Duration, Mode=OneWay}" />
+                                                         Text="{Binding ExecutionHistoryOutput.Duration, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -707,13 +710,14 @@
                                                             IsReadOnly="True"
                                                             MinWidth="80"
                                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="End Time">
+                                                            Header="End Time"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
                                                          Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                          BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
+                                                         Text="{Binding ExecutionHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -722,13 +726,14 @@
                                                             MinWidth="50"
                                                             IsReadOnly="True"
                                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Status">
+                                                            Header="Status"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
                                                          Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                          BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.Success, Mode=OneWay}" />
+                                                         Text="{Binding ExecutionHistoryOutput.Success, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -737,13 +742,14 @@
                                                             MinWidth="70"
                                                             IsReadOnly="True"
                                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                            Header="Execution id">
+                                                            Header="Execution id"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
                                                          Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                          BorderThickness="0"
-                                                         Text="{Binding TaskHistoryOutput.EventId, Mode=OneWay}" />
+                                                         Text="{Binding ExecutionHistoryOutput.ExecutionId, Mode=OneWay}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -752,7 +758,8 @@
                                                             MinWidth="90"
                                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                             IsReadOnly="True"
-                                                            Header="User Context">
+                                                            Header="User Context"
+                                                            d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox IsReadOnly="True"
@@ -764,8 +771,8 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                      
-                    </Grid>
+
+                        </Grid>
                     </Grid>
                 </ContentControl>
             </Grid>
