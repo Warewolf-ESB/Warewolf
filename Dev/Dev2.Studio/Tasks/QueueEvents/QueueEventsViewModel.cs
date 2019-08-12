@@ -30,7 +30,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
+using Warewolf.UI;
 
 namespace Dev2.Tasks.QueueEvents
 {
@@ -74,6 +76,8 @@ namespace Dev2.Tasks.QueueEvents
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         bool _isDirty;
         TabItem _activeItem;
+        private List<OptionView> _options;
+
         //TODO: Not sure we requre this
         //  readonly IPopupController _popupController;
 
