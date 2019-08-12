@@ -13,12 +13,16 @@
              xmlns:controls1="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
+             xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
              AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
 
+    <UserControl.Resources>
+        <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
+    </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding NewCommand}" Key="N" Modifiers="Ctrl" />
     </UserControl.InputBindings>
@@ -266,8 +270,16 @@
                                       Margin="{StaticResource ControlBorderTop}"
                                       Header="Options">
 
+
+                                <ListBox x:Name="OptionsListBox" 
+                                         ItemsSource="{Binding Options}" 
+                                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}">
+                                </ListBox>
+                                
                             </Expander>
 
+                            
+                            
                             <Separator Grid.Row="1"
                                        Margin="{StaticResource ControlBorderTop}"
                                        Style="{StaticResource Separator}" />

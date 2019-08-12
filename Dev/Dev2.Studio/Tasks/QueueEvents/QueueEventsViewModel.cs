@@ -18,8 +18,9 @@ using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
+using Warewolf.Options;
+using Warewolf.UI;
 
 namespace Dev2.Tasks.QueueEvents
 {
@@ -49,6 +50,7 @@ namespace Dev2.Tasks.QueueEvents
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private string _testResults;
+        private List<OptionView> _options;
 
         public QueueEventsViewModel(IServer server)
             : this(server, new ExternalProcessExecutor())
@@ -124,9 +126,26 @@ namespace Dev2.Tasks.QueueEvents
                 if (_selectedQueueSource != null)
                 {
                     QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
+                    Options = new List<OptionView>
+                    {
+                        OptionViewFactory.New(new OptionAutocomplete { Name = "Suggestion 1" }),
+                        OptionViewFactory.New(new OptionBool { Name = "Item check 1" }),
+                        OptionViewFactory.New(new OptionInt { Name = "Number 1" })
+                    };
                 }
-                
+
                 OnPropertyChanged(nameof(SelectedQueueSource));
+            }
+        }
+        
+
+        public List<OptionView> Options
+        {
+            get => _options;
+            set
+            {
+                _options = value;
+                OnPropertyChanged(nameof(Options));
             }
         }
 
@@ -353,7 +372,7 @@ namespace Dev2.Tasks.QueueEvents
 
         protected override void CloseHelp()
         {
-            
+
         }
 
         public static bool Save()
