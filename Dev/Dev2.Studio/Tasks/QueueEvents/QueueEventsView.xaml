@@ -21,6 +21,9 @@
              d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
              AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
 
+    <UserControl.Resources>
+        <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
+    </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding NewCommand}" Key="N" Modifiers="Ctrl" />
     </UserControl.InputBindings>
@@ -279,9 +282,17 @@
                                       Margin="{StaticResource ControlBorderTop}"
                                       Header="Options">
 
-                                </Expander>
 
-                                <Separator Grid.Row="1"
+                                <ListBox x:Name="OptionsListBox" 
+                                         ItemsSource="{Binding Options}" 
+                                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}">
+                                </ListBox>
+                                
+                            </Expander>
+
+                            
+                            
+                            <Separator Grid.Row="1"
                                        Margin="{StaticResource ControlBorderTop}"
                                        Style="{StaticResource Separator}" />
 

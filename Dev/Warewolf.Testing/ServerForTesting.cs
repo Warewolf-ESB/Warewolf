@@ -317,7 +317,7 @@ namespace Warewolf.Testing
         public IEnvironmentConnection Connection { get; set; }
         public IResourceRepository ResourceRepository { get; }
 
-        public IEnumerable<dynamic> ExecutionEvents => throw new NotImplementedException();
+        public IEnumerable<dynamic> ExecutionEvents { get; }
 
         public void ForceLoadResources()
         {
