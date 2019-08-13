@@ -607,7 +607,7 @@ namespace Dev2.Tasks.QueueEvents
                 QueueName = baseName;
             }
         }
-        public ObservableCollection<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
+        public IList<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
 
         public IQueueResource Item { get; set; }
         public string Password

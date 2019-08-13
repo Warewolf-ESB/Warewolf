@@ -20,13 +20,13 @@ namespace Dev2.Common.Interfaces.Queue
         /// <summary>
         ///     get all the resources that have a Queue.
         /// </summary>
-        ObservableCollection<IQueueResource> QueueResources { get; set; }
+        IList<IQueueResource> QueueResources { get; set; }
 
         /// <summary>
         ///     Get a Queue resource
         /// </summary>
         /// <returns></returns>
-        ObservableCollection<IQueueResource> GetQueueResources();
+        IList<IQueueResource> GetQueueResources();
 
 
         /// <summary>
