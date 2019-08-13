@@ -619,32 +619,9 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         public class ExecutionHistoryForTest : IExecutionHistory
         {
             public string WorkflowOutput { get; }
-            public IList<IDebugState> DebugOutput { get; }
-            public IExecutionInfo ExecutionHistoryOutput { get; }
+            public IExecutionInfo ExecutionInfo { get; }
             public string UserName { get; set; }
         }
-
-        // TODO: public IQueueResourceModel QueueResourceModel
-        // TODO: public IList<IExecutionHistory> History
-        // TODO: public IExecutionHistory SelectedHistory
-        // TODO: public ObservableCollection<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
-
-        // TODO: public IQueueResource SelectedQueue
-        // TODO: public IQueueResource Item { get; set; }
-        // TODO: public QueueStatus Status
-
-        // TODO: public void ShowError(string description)
-        // TODO: public bool HasErrors
-        // TODO: public IErrorResultTO Errors
-
-        // TODO: public string AccountName
-        // TODO: public string Password
-        // TODO: public void ClearConnectionError()
-        // TODO: public bool HasConnectionError
-        // TODO: public string ConnectionError
-
-        // TODO: public DebugOutputViewModel DebugOutputViewModel
-        // TODO: public new bool IsDirty
-        // TODO: public bool IsProgressBarVisible
+      
     }
 }

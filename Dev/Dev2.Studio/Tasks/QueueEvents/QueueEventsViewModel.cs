@@ -62,7 +62,6 @@ namespace Dev2.Tasks.QueueEvents
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private string _testResults;
-        IExecutionHistory _selectedHistory;
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
         string _connectionError;
@@ -71,7 +70,6 @@ namespace Dev2.Tasks.QueueEvents
         bool _isHistoryTabVisible;
         IQueueResourceModel _queueResourceModel;
         IQueueResource _selectedQueue;
-        DebugOutputViewModel _debugOutputViewModel;
         bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         bool _isDirty;
