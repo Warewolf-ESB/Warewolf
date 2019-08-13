@@ -16,6 +16,7 @@ namespace Warewolf.UI.Tests.SharepointSource
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Source Wizards")]
+        [Ignore]//TODO: Re-introduce this test once the new Sharepoint server on premier.local domain comes online.
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SharepointSource_From_ExplorerContextMenu_UITests()
         {

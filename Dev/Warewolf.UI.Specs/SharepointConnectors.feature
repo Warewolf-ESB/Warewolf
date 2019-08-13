@@ -4,6 +4,8 @@ Feature: SharepointConnector
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
+#TODO: Re-introduce this test when the new sharepoint server on the premier.local domain comes online.
+@Ignore
 Scenario: Create Sharepoint Source From Tool
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
