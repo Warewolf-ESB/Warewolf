@@ -10,7 +10,6 @@
 
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;

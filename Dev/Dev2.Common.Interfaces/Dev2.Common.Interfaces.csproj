@@ -231,7 +231,6 @@
     <Compile Include="Queue\IPublisher.cs" />
     <Compile Include="Queue\IQueueConnection.cs" />
     <Compile Include="Queue\IQueueConsumer.cs" />
-    <Compile Include="Queue\IQueueProcessorMonitor.cs" />
     <Compile Include="Queue\IQueueSource.cs" />
     <Compile Include="ISharepointHelper.cs" />
     <Compile Include="IToolConflictItem.cs" />
