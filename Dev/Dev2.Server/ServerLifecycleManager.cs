@@ -37,7 +37,7 @@ using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
-using Dev2.Common.Interfaces.Queue;
+using Dev2;
 
 namespace Dev2
 {
@@ -61,7 +61,7 @@ namespace Dev2
         public IPauseHelper PauseHelper { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
-        public IQueueProcessorMonitor QueueProcessMonitor { get; set; }
+        public IQueueProcessorMonitor QueueProcessMonitor { get; set; } = new EmptyQueueProcessorMonitor();
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {

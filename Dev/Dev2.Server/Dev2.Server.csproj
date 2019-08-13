@@ -219,6 +219,8 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="EmptyQueueProcessorMonitor.cs" />
+    <Compile Include="IQueueProcessorMonitor.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="LifeCycleInitializationList.cs" />
     <Compile Include="LoadResources.cs" />
@@ -230,6 +232,7 @@
     </AdditionalFiles>
     <Compile Include="PauseHelper.cs" />
     <Compile Include="LoadRuntimeConfigurations.cs" />
+    <Compile Include="QueueProcessorMonitor.cs" />
     <Compile Include="ServerEnvironmentPreparer.cs" />
     <Compile Include="ServerLifecycleManagerService.cs">
       <SubType>Component</SubType>
