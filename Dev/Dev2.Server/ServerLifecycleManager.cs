@@ -37,6 +37,7 @@ using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
+using Dev2.Common.Interfaces.Queue;
 
 namespace Dev2
 {
@@ -60,6 +61,7 @@ namespace Dev2
         public IPauseHelper PauseHelper { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
+        public IQueueProcessorMonitor QueueProcessMonitor { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -99,7 +101,8 @@ namespace Dev2
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
         private readonly IPauseHelper _pauseHelper;
-        
+        private readonly IQueueProcessorMonitor _queueProcessMonitor;
+
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
@@ -122,6 +125,7 @@ namespace Dev2
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             _writer = startupConfiguration.Writer;
             _pauseHelper = startupConfiguration.PauseHelper;
+            _queueProcessMonitor = startupConfiguration.QueueProcessMonitor;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
@@ -185,6 +189,7 @@ namespace Dev2
                 LoadTestCatalog();
                 StartTrackingUsage();
                 _startWebServer.Execute(webServerConfig, _pauseHelper);
+                _queueProcessMonitor.Start();
 #if DEBUG
                 SetAsStarted();
 #endif
