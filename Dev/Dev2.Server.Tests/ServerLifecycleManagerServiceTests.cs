@@ -18,6 +18,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using WarewolfCOMIPC.Client;
 
 namespace Dev2.Server.Tests
@@ -114,7 +115,7 @@ namespace Dev2.Server.Tests
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Throws(new System.Exception("The system cannot find the file specified")).Verifiable();
             using (var serverLifeCylcleManager = new ServerLifecycleManager(mockEnvironmentPreparer.Object))
             {
-                serverLifeCylcleManager.Run(items);
+                serverLifeCylcleManager.Run(items).Wait();
             }
             //------------------------Assert-------------------------
             mockSerLifeCycleWorker.Verify();
@@ -164,7 +165,7 @@ namespace Dev2.Server.Tests
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
-                serverLifeCycleManager.Run(items);
+                serverLifeCycleManager.Run(items).Wait();
             }
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
@@ -222,7 +223,7 @@ namespace Dev2.Server.Tests
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
-                serverLifeCycleManager.Run(items);
+                serverLifeCycleManager.Run(items).Wait();
             }
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
@@ -236,6 +237,56 @@ namespace Dev2.Server.Tests
             mockSerLifeCycleWorker.Verify();
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleMananger_Run_ReturnsTask()
+        {
+            //------------------------Arrange------------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockPauseHelper = new Mock<IPauseHelper>();
+            var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+
+            var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
+
+            EnvironmentVariables.IsServerOnline = true;
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+
+            //------------------------Act----------------------------
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                PauseHelper = mockPauseHelper.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+            };
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
+            {
+                var t = serverLifeCycleManager.Run(items);
+                //------------------------Assert-------------------------
+                Assert.IsInstanceOfType(t, typeof(Task));
+
+            }
+        }
 
         class ServerLifecycleManagerServiceTest : ServerLifecycleManagerService
         {

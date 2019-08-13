@@ -8,7 +8,7 @@ namespace Dev2.PerformanceCounters.Counters
 {
     public class WarewolfAverageExecutionTimePerformanceCounter : MyPerfCounter, IPerformanceCounter, IDisposable
     {
-        IBobsPerformanceCounter _baseCounter;
+        IWarewolfPerformanceCounter _baseCounter;
         bool _started;
         readonly WarewolfPerfCounterType _perfCounterType;
 
