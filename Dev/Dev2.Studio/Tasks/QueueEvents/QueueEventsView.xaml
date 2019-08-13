@@ -197,38 +197,41 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Text="Queue Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                 <ComboBox x:Name="QueueSourcesComboBox"
-                                      Grid.Column="1"
-                                      DisplayMemberPath="ResourceName" 
-                                      SelectedItem="{Binding SelectedQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Margin="{StaticResource ControlBorderTop}"
-                                      ToolTip="{x:Static languages:Tooltips.QueueSourceTooltip}"
-                                      ItemsSource="{Binding QueueSources}">
+                                          Grid.Column="1"
+                                          DisplayMemberPath="ResourceName" 
+                                          SelectedItem="{Binding SelectedQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Margin="{StaticResource ControlBorderTop}"
+                                          ToolTip="{x:Static languages:Tooltips.QueueSourceTooltip}"
+                                          ItemsSource="{Binding QueueSources}">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:HelpText.QueueSourceHelp}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </ComboBox>
 
                                 <TextBlock Text="Queue" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                 <controls:AutoCompleteBox x:Name="QueueNameTextBox"
-                                                      Grid.Row="1"
-                                                      Grid.Column="1"
-                                                      AllowUserInsertLine="False"
-                                                      DefaultText="Queue"
-                                                      FilterMode="Contains"
-                                                      Margin="{StaticResource ControlBorderTop}"
-                                                      ValueMemberPath="Value" 
-                                                      ItemsSource="{Binding QueueNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
-                                                      Style="{StaticResource AutoCompleteBoxStyle}">
+                                                          Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          AllowUserInsertLine="False"
+                                                          DefaultText="Queue"
+                                                          FilterMode="Contains"
+                                                          Margin="{StaticResource ControlBorderTop}"
+                                                          ValueMemberPath="Value" 
+                                                          ItemsSource="{Binding QueueNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
+                                                          Style="{StaticResource AutoCompleteBoxStyle}">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </controls:AutoCompleteBox>
 
@@ -239,36 +242,76 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Column="0" 
-                                         Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                         ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipWorkFlow}"
-                                         HorizontalAlignment="Stretch"
-                                         AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
-                                         IsReadOnly="True">
+                                             Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipWorkFlow}"
+                                             HorizontalAlignment="Stretch"
+                                             AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
+                                             IsReadOnly="True">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>
                                     <Button Grid.Column="1" 
-                                        Content="..."
-                                        Margin="{StaticResource ControlBorderLeft}"
-                                        Style="{StaticResource ButtonStyle}"
-                                        ToolTip="Select a workflow to be triggered"
-                                        Command="{Binding AddWorkflowCommand}"
-                                        AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
+                                            Content="..."
+                                            Margin="{StaticResource ControlBorderLeft}"
+                                            Style="{StaticResource ButtonStyle}"
+                                            ToolTip="Select a workflow to be triggered"
+                                            Command="{Binding AddWorkflowCommand}"
+                                            AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
                                 </Grid>
 
                                 <TextBlock Text="Concurrency" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
                                 <TextBox Grid.Row="3" 
-                                     Grid.Column="1"
-                                     Margin="{StaticResource ControlBorderTop}"
-                                     Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Grid.Column="1"
+                                         Margin="{StaticResource ControlBorderTop}"
+                                         Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
+                                    <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <TextBlock Text="Username" 
+                                           x:Name="UsernameTextBlock" 
+                                           Grid.Row="5" 
+                                           Grid.Column="0"/>
+                                <TextBox Grid.Row="5"
+                                         Grid.Column="1"
+                                         AutomationProperties.AutomationId="UI_UserNameTextBox"
+                                         ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         customControls:WatermarkTextBox.Watermark="domain\username"
+                                         Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+
+                                <TextBlock Text="Password" 
+                                           Margin="{StaticResource ControlBorderTop}" 
+                                           Grid.Row="6" 
+                                           Grid.Column="0"/>
+                                <PasswordBox Margin="{StaticResource ControlBorderTop}"
+                                             AutomationProperties.AutomationId="UI_PasswordBox"
+                                             Grid.Row="6"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Left"
+                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
+                                             attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                                             attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </PasswordBox>
                             </Grid>
 
                             <Grid Grid.Row="1">
@@ -278,26 +321,21 @@
                                 </Grid.RowDefinitions>
 
                                 <Expander Grid.Row="0" 
-                                      Style="{StaticResource ServiceTestTestStepExpander}" 
-                                      IsExpanded="True" 
-                                      Margin="{StaticResource ControlBorderTop}"
-                                      Header="Options">
+                                          Style="{StaticResource ServiceTestTestStepExpander}" 
+                                          IsExpanded="True" 
+                                          Margin="{StaticResource ControlBorderTop}"
+                                          Header="Options">
 
-
-                                <ListBox x:Name="OptionsListBox" 
+                                    <ListBox x:Name="OptionsListBox" 
                                          ItemsSource="{Binding Options}" 
                                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
                                          Padding="0,3,3,3">
-                                </ListBox>
-                                
-                            </Expander>
+                                    </ListBox>
 
-                            
-                            
-                            <Separator Grid.Row="1"
-                                       Margin="{StaticResource ControlBorderTop}"
-                                       Style="{StaticResource Separator}" />
+                                </Expander>
+
+                                <Separator Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Style="{StaticResource Separator}" />
 
                             </Grid>
 
@@ -367,9 +405,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <Separator Grid.Row="3"
-                                   Margin="{StaticResource ControlBorderTop}"
-                                   Style="{StaticResource Separator}" />
+                            <Separator Grid.Row="3" Margin="{StaticResource ControlBorderTop}" Style="{StaticResource Separator}" />
 
                             <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
                                 <Grid.ColumnDefinitions>
@@ -540,7 +576,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Grid x:Name="OutputsGrid" 
-                                  Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
@@ -550,35 +586,37 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Text="{x:Static languages:Core.OutputsLabel}" 
-                                           FontWeight="Bold" 
-                                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+                                               FontWeight="Bold" 
+                                               Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
                                     <Border Grid.Row="1" 
-                                        Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
-                                        Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                                            Grid.Column="0" 
+                                            BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
+                                            BorderThickness="1" 
+                                            Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
                                         <ScrollViewer>
                                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                                                 <TextBlock Text="{Binding TestResults}" 
-                                                       Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
-                                                       TextWrapping="Wrap"
-                                                       HorizontalAlignment="Stretch" 
-                                                       VerticalAlignment="Stretch"
-                                                       ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
+                                                           TextWrapping="Wrap"
+                                                           HorizontalAlignment="Stretch" 
+                                                           VerticalAlignment="Stretch"
+                                                           ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                                           ScrollViewer.VerticalScrollBarVisibility="Auto">
                                                 </TextBlock>
                                             </Grid>
                                         </ScrollViewer>
                                     </Border>
                                     <TextBlock Grid.Row="1"
-                                           Text="None" 
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Margin="0,0,0,-3"
-                                           Style="{StaticResource MenuTextBlockStyle}"
-                                           Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                                               Text="None" 
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Margin="0,0,0,-3"
+                                               Style="{StaticResource MenuTextBlockStyle}"
+                                               Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
                                 </Grid>
 
                                 <Grid x:Name="ResponseGrid" 
-                                  Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
@@ -590,67 +628,22 @@
                                     <TextBlock Text="Paste Response" FontWeight="Bold" />
 
                                     <TextBox Grid.Row="1"
-                                         Text="{Binding TestResults}" 
-                                         x:Name="ResponseTextbox"
-                                         Style="{StaticResource StretchedTextBoxStyle}"
-                                         customControls:WatermarkTextBox.Watermark="Paste response here"
-                                         SnapsToDevicePixels="True" 
-                                         VerticalScrollBarVisibility="Auto"
-                                         ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
-                                         HorizontalScrollBarVisibility="Disabled" >
+                                             Text="{Binding TestResults}" 
+                                             x:Name="ResponseTextbox"
+                                             Style="{StaticResource StretchedTextBoxStyle}"
+                                             customControls:WatermarkTextBox.Watermark="Paste response here"
+                                             SnapsToDevicePixels="True" 
+                                             VerticalScrollBarVisibility="Auto"
+                                             ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
+                                             HorizontalScrollBarVisibility="Disabled" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteInputHelp}" 
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>
                                 </Grid>
                             </Grid>
 
-                            <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
-                                <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
-                            </StackPanel>
-
-                            <Grid Grid.Row="8" Margin="{StaticResource ControlBorderTop}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="Username " x:Name="UsernameTextBlock" Grid.Row="0" Grid.Column="0"/>
-                                <TextBox Width="220"
-                                         Grid.Row="0"
-                                         Grid.Column="1"
-                                         AutomationProperties.AutomationId="UI_UserNameTextBox"
-                                         ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Left"
-                                         customControls:WatermarkTextBox.Watermark="domain\username"
-                                         Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </TextBox>
-
-                                <TextBlock Text="Password " Margin="{StaticResource ControlBorderTop}" Grid.Row="1" Grid.Column="0"/>
-                                <PasswordBox Width="220"
-                                             Margin="{StaticResource ControlBorderTop}"
-                                             AutomationProperties.AutomationId="UI_PasswordBox"
-                                             Grid.Row="1"
-                                             Grid.Column="1"
-                                             HorizontalAlignment="Left"
-                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
-                                             attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                                             attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </PasswordBox>
-                            </Grid>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource ElementBorderLeft}">
                             <Grid.ColumnDefinitions>
