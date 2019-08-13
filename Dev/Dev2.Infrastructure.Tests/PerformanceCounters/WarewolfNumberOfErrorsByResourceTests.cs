@@ -53,7 +53,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfNumberOfErrorsByResource_Reset_ClearsCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfNumberOfErrorsByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
@@ -68,7 +68,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfNumberOfErrorsByResource_Increment_CallsUnderlyingCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfNumberOfErrorsByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
@@ -83,7 +83,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfNumberOfErrorsByResource_IncrementBy_CallsUnderlyingCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfNumberOfErrorsByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
@@ -98,7 +98,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfNumberOfErrorsByResource_Setup_CreatesCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object);
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfNumberOfErrorsByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
@@ -111,7 +111,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfNumberOfErrorsByResource_Decrement_CallsUnderlyingCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockCounter.SetupGet(o => o.RawValue).Returns(1);
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
