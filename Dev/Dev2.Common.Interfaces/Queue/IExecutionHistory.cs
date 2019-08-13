@@ -16,8 +16,7 @@ namespace Dev2.Common.Interfaces.Queue
     public interface IExecutionHistory
     {
         string WorkflowOutput { get; }
-        IList<IDebugState> DebugOutput { get; }
-        IExecutionInfo ExecutionHistoryOutput { get; }
+        IExecutionInfo ExecutionInfo { get; }
         string UserName { get; set; }
     }
 }

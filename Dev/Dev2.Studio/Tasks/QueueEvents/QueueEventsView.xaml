@@ -285,8 +285,6 @@
                                          Grid.Column="1"
                                          AutomationProperties.AutomationId="UI_UserNameTextBox"
                                          ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Left"
                                          customControls:WatermarkTextBox.Watermark="domain\username"
                                          Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
@@ -303,7 +301,6 @@
                                              AutomationProperties.AutomationId="UI_PasswordBox"
                                              Grid.Row="6"
                                              Grid.Column="1"
-                                             HorizontalAlignment="Left"
                                              ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
                                              attachedProperties:PasswordBoxAssistant.BindPassword="true"
                                              attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
