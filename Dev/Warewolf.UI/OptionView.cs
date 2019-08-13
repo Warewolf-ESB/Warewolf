@@ -7,12 +7,14 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using Warewolf.Options;
 
 namespace Warewolf.UI
 {
+    [ExcludeFromCodeCoverage]
     public class OptionViewDataTemplateSelector : DataTemplateSelector
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -27,6 +29,7 @@ namespace Warewolf.UI
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class OptionView
     {
         public OptionView(IOption option)
@@ -39,7 +42,7 @@ namespace Warewolf.UI
         {
             get
             {
-                string dataTemplateName = "OptionAutocomplete";
+                string dataTemplateName = "OptionNoneStyle";
                 if (DataContext is IOptionBool)
                 {
                     dataTemplateName = "OptionBoolStyle";
@@ -56,6 +59,7 @@ namespace Warewolf.UI
             }
         }
     }
+    [ExcludeFromCodeCoverage]
     public class OptionViewFactory
     {
         public static OptionView New(IOption option)

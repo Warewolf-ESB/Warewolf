@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Warewolf.Options
 {
-    public interface IOption : INotifyPropertyChanged
+    public interface IOption
     {
         string Name { get; set; }
     }
@@ -38,83 +38,68 @@ namespace Warewolf.Options
 
     }
 
-    public class OptionAutocomplete : IOptionAutocomplete
+    [ExcludeFromCodeCoverage]
+    public class OptionAutocomplete : BindableBase, IOptionAutocomplete
     {
-        private readonly string _name;
+        private string _name;
         public string Name
         {
             get => _name;
-            set => OnPropertyChanged(nameof(Name));
+            set => SetProperty(ref _name, value);
         }
 
-        private readonly string _value;
+        private string _value;
         public string Value
         {
             get => _value;
-            set => OnPropertyChanged(nameof(Value));
+            set => SetProperty(ref _value, value);
         }
 
         public string Default => string.Empty;
 
         public string[] Suggestions => new string[] { "" };
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string PropertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
-        }
     }
 
-    public class OptionInt : IOptionInt
+    [ExcludeFromCodeCoverage]
+    public class OptionInt : BindableBase, IOptionInt
     {
-        private readonly string _name;
+        private string _name;
         public string Name
         {
             get => _name;
-            set => OnPropertyChanged(nameof(Name));
+            set => SetProperty(ref _name, value);
         }
 
-        private readonly int _value;
+        private int _value;
         public int Value
         {
             get => _value;
-            set => OnPropertyChanged(nameof(Value));
+            set
+            {
+                SetProperty(ref _value, value);
+            }
         }
 
         public int Default => 0;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string PropertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
-        }
     }
 
-    public class OptionBool : IOptionBool
+    [ExcludeFromCodeCoverage]
+    public class OptionBool : BindableBase, IOptionBool
     {
-        private readonly string _name;
+        private string _name;
         public string Name
         {
             get => _name;
-            set => OnPropertyChanged(nameof(Name));
+            set => SetProperty(ref _name, value);
         }
 
-        private readonly bool _value;
+        private bool _value;
         public bool Value
         {
             get => _value;
-            set => OnPropertyChanged(nameof(Value));
+            set => SetProperty(ref _value, value);
         }
 
         public bool Default => true;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string PropertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
-        }
     }
 }

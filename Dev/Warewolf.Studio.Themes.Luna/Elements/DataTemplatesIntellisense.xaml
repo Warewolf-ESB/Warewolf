@@ -2,7 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
                     xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
-                    xmlns:options="clr-namespace:Warewolf.Options;assembly=Warewolf.Interfaces">
+                    xmlns:options="clr-namespace:Warewolf.Options;assembly=Warewolf.Interfaces"
+                    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources">
 
 
     <ResourceDictionary.MergedDictionaries>
@@ -38,16 +41,29 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="OptionNoneStyle">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="None" HorizontalAlignment="Center" />
+        </Grid>
+    </DataTemplate>
+    
     <DataTemplate x:Key="OptionBoolStyle" DataType="{x:Type options:OptionBool}">
-        <Grid DataContext="{Binding Path=DataContext}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
-            <CheckBox Grid.Column="1" IsChecked="{Binding Path=Value}" />
-
+            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+            <CheckBox Grid.Column="1" IsChecked="{Binding Path=Value}" Margin="-6,0,0,0" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
         </Grid>
     </DataTemplate>
 
@@ -59,27 +75,33 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
-            <TextBox Grid.Column="1" Text="{Binding Path=Value}" />
-
+            <TextBox Grid.Column="1" Text="{Binding Path=Value}" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
         </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="OptionAutocompleteStyle" DataType="{x:Type options:OptionAutocomplete}">
-        <Grid DataContext="{Binding Path=DataContext}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
+            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
             <controls:AutoCompleteBox Grid.Column="1" 
                                       AllowUserInsertLine="False"
                                       FilterMode="Contains"
                                       ValueMemberPath="Value" 
                                       ItemsSource="{Binding Path=Suggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource AutoCompleteBoxStyle}" />
-
+                                      Style="{StaticResource AutoCompleteBoxStyle}" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </controls:AutoCompleteBox>
         </Grid>
     </DataTemplate>
 
