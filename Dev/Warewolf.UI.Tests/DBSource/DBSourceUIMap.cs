@@ -196,14 +196,6 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             Assert.AreEqual("Dev2TestingDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIDev2TestingDBText.DisplayText);
         }
 
-        [Given(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
-        [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
-        [Then(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
-        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "SVRDEV";
-        }
-
         [Given(@"SVRDEV appears as an option in the DB source wizard server combobox")]
         [Then(@"SVRDEV appears as an option in the DB source wizard server combobox")]
         public void Assert_SVRDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
@@ -214,7 +206,7 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         [When(@"I Type SVRDEV into DB Source Wizard Server Textbox")]
         public void Type_SVRDEV_into_DB_Source_Wizard_Server_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "SVRDEV";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "SVRDEV.premier.local";
         }
 
         public UIMap UIMap
