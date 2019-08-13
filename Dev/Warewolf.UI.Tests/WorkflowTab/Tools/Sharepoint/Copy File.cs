@@ -16,6 +16,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Sharepoint Tools")]
+        [Ignore]//TODO: Re-introduce this test once the new Sharepoint server on premier.local domain comes online.
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             Assert.IsTrue(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Exists, "Sharepoint Copy tool does does not exist after dragging tool from toolbox.");
