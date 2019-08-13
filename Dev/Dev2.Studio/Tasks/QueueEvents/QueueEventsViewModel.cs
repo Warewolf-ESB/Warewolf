@@ -197,7 +197,7 @@ namespace Dev2.Tasks.QueueEvents
         {
             var queueNames = new ObservableCollection<INameValue>();
 
-            var list = _resourceRepository.FindAutocompleteOptions(_server, SelectedQueueSource);
+            var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
 
 #pragma warning disable CC0021 // Use nameof
             foreach (var item in list["QueueNames"])

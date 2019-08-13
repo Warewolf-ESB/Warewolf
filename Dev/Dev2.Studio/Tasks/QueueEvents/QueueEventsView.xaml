@@ -286,7 +286,9 @@
 
                                 <ListBox x:Name="OptionsListBox" 
                                          ItemsSource="{Binding Options}" 
-                                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}">
+                                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                                         Padding="0,3,3,3">
                                 </ListBox>
                                 
                             </Expander>
