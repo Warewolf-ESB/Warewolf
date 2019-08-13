@@ -512,26 +512,6 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(QueueEventsViewModel))]
-        public void QueueEventsViewModel_SelectedHistory_SetSelectedHistory()
-        {
-            //------------Setup for test--------------------------
-            var mockServer = new Mock<IServer>();
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            var queuedResourceForTest = new QueuedResourceForTest();
-            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
-            //------------Execute Test---------------------------
-            var selectedHistory = new ExecutionHistoryForTest();
-            queueEventsViewModel.SelectedHistory = selectedHistory;
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(queueEventsViewModel.SelectedHistory);
-
-            queueEventsViewModel.SelectedHistory = selectedHistory;
-            Assert.IsNotNull(queueEventsViewModel.SelectedHistory);
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(QueueEventsViewModel))]
         public void QueueEventsViewModel_History_Get_ShouldCallCreateHistoryOnQueueResourceModel()
         {
             //------------Setup for test--------------------------
