@@ -78,9 +78,6 @@ namespace Dev2.Tasks.QueueEvents
         TabItem _activeItem;
         private List<OptionView> _options;
 
-        //TODO: Not sure we requre this
-        //  readonly IPopupController _popupController;
-
         public QueueEventsViewModel(IServer server)
             : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker())
         {
@@ -101,10 +98,6 @@ namespace Dev2.Tasks.QueueEvents
             _asyncWorker = asyncWorker;
 
             InitializeHelp();
-            //TODO:Not sure if this required
-            // var serverRepository = CustomContainer.Get<IServerRepository>();
-            //  DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), serverRepository, new DebugOutputFilterStrategy());
-
         }
 
 
@@ -541,8 +534,6 @@ namespace Dev2.Tasks.QueueEvents
                     OnPropertyChanged(nameof(Password));
                     OnPropertyChanged(nameof(Errors));
                     OnPropertyChanged(nameof(Error));
-                    OnPropertyChanged(nameof(SelectedHistory));
-                    SelectedHistory = null;
                     OnPropertyChanged(nameof(History));
                 }
             }
@@ -559,15 +550,7 @@ namespace Dev2.Tasks.QueueEvents
 
             return toggle;
         }
-        public DebugOutputViewModel DebugOutputViewModel
-        {
-            get => _debugOutputViewModel;
-            set
-            {
-                _debugOutputViewModel = value;
-                OnPropertyChanged(nameof(DebugOutputViewModel));
-            }
-        }
+
         public new bool IsDirty
         {
             get
@@ -627,37 +610,7 @@ namespace Dev2.Tasks.QueueEvents
             }
         }
         public ObservableCollection<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
-        public IExecutionHistory SelectedHistory
-        {
-            get => _selectedHistory;
-            set
-            {
-                if (null == value)
-                {
-                    //TODO: Not sure what we are doing here....
-                    // EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
-                    return;
-                }
-                _selectedHistory = value;
-                //TODO: Needs Discussion
-                //DebugOutputViewModel.Clear();
-                if (value.DebugOutput != null)
-                {
-                    foreach (var debugState in value.DebugOutput)
-                    {
-                        if (debugState != null)
-                        {
-                            debugState.StateType = StateType.Clear;
-                            debugState.SessionID = DebugOutputViewModel.SessionID;
-                            //TODO: Needs Discussion
-                            //DebugOutputViewModel.Clear();
-                            // DebugOutputViewModel.Append(debugState);
-                        }
-                    }
-                }
-                OnPropertyChanged(nameof(SelectedHistory));
-            }
-        }
+
         public IQueueResource Item { get; set; }
         public string Password
         {
