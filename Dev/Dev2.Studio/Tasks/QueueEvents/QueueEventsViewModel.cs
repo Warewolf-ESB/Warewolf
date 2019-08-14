@@ -96,6 +96,7 @@ namespace Dev2.Tasks.QueueEvents
             _asyncWorker = asyncWorker;
 
             InitializeHelp();
+            Options = new List<OptionView>();
         }
 
 
@@ -144,18 +145,22 @@ namespace Dev2.Tasks.QueueEvents
                 if (_selectedQueueSource != null)
                 {
                     QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
-                    Options = new List<OptionView>
-                    {
-                        OptionViewFactory.New(new OptionAutocomplete { Name = "Suggestion 1" }),
-                        OptionViewFactory.New(new OptionBool { Name = "Item check 1" }),
-                        OptionViewFactory.New(new OptionInt { Name = "Number 1" })
-                    };
+                    FindOptions(_selectedQueueSource);
                 }
 
                 OnPropertyChanged(nameof(SelectedQueueSource));
             }
         }
-        
+
+        private void FindOptions(IResource selectedQueueSource)
+        {
+            var options = _resourceRepository.FindOptions(_server, selectedQueueSource);
+            foreach (var option in options)
+            {
+                var optionView = new OptionView(option);
+                Options.Add(optionView);
+            }
+        }
 
         public List<OptionView> Options
         {
