@@ -29,6 +29,7 @@ using System.Linq;
 using System.Windows.Controls;
 using Warewolf.Core;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Options;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 {
@@ -149,25 +150,55 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             var queueSourceID2 = Guid.NewGuid();
             var queueSourceName2 = "QueueSource2";
 
-            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
+            var queueSource2 = new Resource
+            {
+                ResourceID = queueSourceID2,
+                ResourceName = queueSourceName2
+            };
 
             string[] tempValues = new string[3];
             tempValues[0] = "value1";
             tempValues[1] = "value2";
             tempValues[2] = "value3";
 
-            var expectedQueueNames = new Dictionary<string, string[]>();
-            expectedQueueNames.Add("QueueNames", tempValues);
+            var expectedQueueNames = new Dictionary<string, string[]>
+            {
+                { "QueueNames", tempValues }
+            };
+
+            var expectedOptionBool = new OptionBool
+            {
+                Name = "bool",
+                Value = false
+            };
+            var expectedOptionInt = new OptionInt
+            {
+                Name = "int",
+                Value = 10
+            };
+            var expectedOptionAutocompletebox = new OptionAutocomplete
+            {
+                Name = "auto",
+                Value = "new text"
+            };
+            var expectedOptions = new List<IOption>
+            {
+                expectedOptionBool,
+                expectedOptionInt,
+                expectedOptionAutocompletebox
+            };
 
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource2)).Returns(expectedOptions);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            queueEventsViewModel.SelectedQueueSource = queueSource2;
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object)
+            {
+                SelectedQueueSource = queueSource2
+            };
 
             Assert.IsNotNull(queueEventsViewModel.SelectedQueueSource);
             Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedQueueSource);
@@ -176,6 +207,28 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.AreEqual("value1", queueEventsViewModel.QueueNames[0].Value);
             Assert.AreEqual("value2", queueEventsViewModel.QueueNames[1].Value);
             Assert.AreEqual("value3", queueEventsViewModel.QueueNames[2].Value);
+
+            Assert.AreEqual(3, queueEventsViewModel.Options.Count);
+
+            var optionOne = queueEventsViewModel.Options[0].DataContext as OptionBool;
+            Assert.IsNotNull(optionOne);
+            Assert.AreEqual("bool", optionOne.Name);
+            Assert.IsFalse(optionOne.Value);
+            Assert.IsTrue(optionOne.Default);
+
+            var optionTwo = queueEventsViewModel.Options[1].DataContext as OptionInt;
+            Assert.IsNotNull(optionTwo);
+            Assert.AreEqual("int", optionTwo.Name);
+            Assert.AreEqual(10, optionTwo.Value);
+            Assert.AreEqual(0, optionTwo.Default);
+
+            var optionThree = queueEventsViewModel.Options[2].DataContext as OptionAutocomplete;
+            Assert.IsNotNull(optionThree);
+            Assert.AreEqual("auto", optionThree.Name);
+            Assert.AreEqual("new text", optionThree.Value);
+            Assert.AreEqual(1, optionThree.Suggestions.Count());
+            Assert.AreEqual("", optionThree.Suggestions[0]);
+            Assert.AreEqual("", optionThree.Default);
 
             Assert.IsNull(queueEventsViewModel.QueueName);
 
