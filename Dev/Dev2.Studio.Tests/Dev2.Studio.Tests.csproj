@@ -97,21 +97,9 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
-      <Project>{22CA968B-0D28-47FC-B09F-892A75BA9F4C}</Project>
-      <Name>Warewolf.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{A5B33303-3458-4084-A99F-3A604099A438}</Project>
-      <Name>Warewolf.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
-      <Project>{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}</Project>
-      <Name>Warewolf.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

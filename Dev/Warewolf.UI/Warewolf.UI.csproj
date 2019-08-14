@@ -59,8 +59,12 @@
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{A5B33303-3458-4084-A99F-3A604099A438}</Project>
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
