@@ -97,6 +97,8 @@ namespace Dev2.Runtime.ESB
                 ServerStats.IncrementTotalRequests();
                 ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
                 DispatchDebugErrors(errors, dataObject, StateType.End);
+                dataObject.Environment.Errors.Clear();
+                dataObject.Environment.AllErrors.Clear();
             }
             return result;
         }
