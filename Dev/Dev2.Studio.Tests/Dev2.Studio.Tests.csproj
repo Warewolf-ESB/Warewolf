@@ -97,6 +97,10 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{22CA968B-0D28-47FC-B09F-892A75BA9F4C}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{A5B33303-3458-4084-A99F-3A604099A438}</Project>
       <Name>Warewolf.Interfaces</Name>
