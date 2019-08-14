@@ -16,7 +16,6 @@ using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
-using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
 

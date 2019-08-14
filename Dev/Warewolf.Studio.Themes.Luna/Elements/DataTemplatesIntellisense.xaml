@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
                     xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
-                    xmlns:options="clr-namespace:Warewolf.Data.Options;assembly=Warewolf.Data"
+                    xmlns:options="clr-namespace:Warewolf.Options;assembly=Warewolf.Data"
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources">

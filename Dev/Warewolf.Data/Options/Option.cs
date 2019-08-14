@@ -8,9 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Options;
-
-namespace Warewolf.Data.Options
+namespace Warewolf.Options
 {
     public class OptionAutocomplete : BindableBase, IOptionAutocomplete
     {
@@ -30,7 +28,7 @@ namespace Warewolf.Data.Options
 
         public string Default => string.Empty;
 
-        public string[] Suggestions => new string[] { "" };
+        public string[] Suggestions { get; set; }
     }
 
     public class OptionInt : BindableBase, IOptionInt
