@@ -7,6 +7,9 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+using Dev2;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,7 +32,6 @@ namespace Warewolf.UI
         }
     }
 
-    [ExcludeFromCodeCoverage]
     public class OptionView
     {
         public OptionView(IOption option)
@@ -55,7 +57,10 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionAutocompleteStyle";
                 }
-                return Application.Current.TryFindResource(dataTemplateName) as DataTemplate;
+                var currentApp = CustomContainer.Get<IApplicationAdaptor>();
+                var application = currentApp ?? new ApplicationAdaptor(Application.Current);
+
+                return application?.TryFindResource(dataTemplateName) as DataTemplate;
             }
         }
     }
