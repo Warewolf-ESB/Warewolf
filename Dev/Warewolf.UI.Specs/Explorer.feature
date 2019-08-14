@@ -46,6 +46,8 @@ Scenario: Opening Workflow local and remote using right click
    And I Select Delete From Explorer Context Menu
    And I Click MessageBox Yes 
 
+#TODO: Re-introduce this after the move to the new domain on premier.local
+@Ignore
  Scenario: Filter Should Clear On Connection Of Remote Server
    Given The Warewolf Studio is running
    When I Filter the Explorer with "Hello World" 
