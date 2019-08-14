@@ -81,7 +81,14 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", TestEnvironmentVariables.GetVar(userName));
         }
-        
+
+        [Given(@"""(.*)"" has a username of ""(.*)"" and password ""(.*)""")]
+        public void GivenHasAUsernameOfAndPassword(string p0, string p1, string p2)
+        {
+            _scenarioContext.Add("UserName", p1);
+            _scenarioContext.Add("Password", TestEnvironmentVariables.TrySetVar(p1, p2));
+        }
+
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
