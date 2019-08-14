@@ -34,22 +34,22 @@ namespace Warewolf.Driver.RabbitMQ
 
         public void StartConsuming(IQueueConfig config, IConsumer consumer)
         {
-            var rConfig = config as RabbitConfig; 
+            var rabbitConfig = config as RabbitConfig; 
             IModel channel = CreateChannel(config as RabbitConfig);
 
-            var evConsumer = new EventingBasicConsumer(channel);
-            evConsumer.Received += (ch, ea) =>
+            var eventConsumer = new EventingBasicConsumer(channel);
+            eventConsumer.Received += (model, eventArgs) =>
             {
-                var body = ea.Body;
+                var body = eventArgs.Body;
 
                 consumer.Consume(body);
 
-                channel.BasicAck(ea.DeliveryTag, false);
+                channel.BasicAck(eventArgs.DeliveryTag, false);
             };
 
-            channel.BasicConsume(queue: rConfig.QueueName,
+            channel.BasicConsume(queue: rabbitConfig.QueueName,
                                         noAck: false,
-                                        consumer: evConsumer);
+                                        consumer: eventConsumer);
         }
 
         private IModel CreateChannel(RabbitConfig rConfig)
