@@ -709,13 +709,6 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             {
                 return !IsDirty;
             }
-        }
-        public class ExecutionHistoryForTest : IExecutionHistory
-        {
-            public string WorkflowOutput { get; }
-            public IExecutionInfo ExecutionInfo { get; }
-            public string UserName { get; set; }
-        }
-      
+        }     
     }
 }
