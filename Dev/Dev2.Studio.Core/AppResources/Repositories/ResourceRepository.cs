@@ -40,6 +40,7 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
+using Warewolf.Options;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -1020,7 +1021,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             result = comsController.ExecuteCommand<Dictionary<string, string[]>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
-       
+
+        public List<IOption> FindOptions(IServer targetEnvironment, IResource selectedSource)
+        {
+            var result = new List<IOption>();
+            if (targetEnvironment == null)
+            {
+                return result;
+            }
+            var comsController = new CommunicationController { ServiceName = "FindOptions" };
+            comsController.AddPayloadArgument("SelectedSource", selectedSource.ToString());
+            result = comsController.ExecuteCommand<List<IOption>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+            return result;
+        }
+
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
         {
             var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };

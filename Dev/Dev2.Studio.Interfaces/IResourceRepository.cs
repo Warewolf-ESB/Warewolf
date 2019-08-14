@@ -25,6 +25,7 @@ using Dev2.Studio.Interfaces.Enums;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
+using Warewolf.Options;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -45,6 +46,7 @@ namespace Dev2.Studio.Interfaces
         List<T> FindSourcesByType<T>(IServer targetEnvironment, enSourceType sourceType);
         List<IResource> FindResourcesByType<T>(IServer targetEnvironment);
         Dictionary<string, string[]> FindAutocompleteOptions(IServer targetEnvironment, IResource selectedSource);
+        List<IOption> FindOptions(IServer targetEnvironment, IResource selectedSource);
         List<IResourceModel> FindResourcesByID(IServer targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
         IList<T> GetResourceList<T>(IServer targetEnvironment) where T : new();
         Settings ReadSettings(IServer currentEnv);
