@@ -242,6 +242,7 @@
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
     <Compile Include="Services\FetchAllTestsTest.cs" />
+    <Compile Include="Services\FindOptionsTests.cs" />
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
@@ -375,6 +376,10 @@
     <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
       <Name>Warewolf.COMIPC.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{A5B33303-3458-4084-A99F-3A604099A438}</Project>
+      <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
