@@ -530,9 +530,6 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.IsNotNull(resourceHistories);
             Assert.IsTrue(queueEventsViewModel.IsHistoryTabVisible);
             Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
-
-            queueEventsViewModel.IsProgressBarVisible = false;
-            Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
