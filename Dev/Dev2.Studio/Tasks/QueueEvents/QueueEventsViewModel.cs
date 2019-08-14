@@ -75,6 +75,7 @@ namespace Dev2.Tasks.QueueEvents
         bool _isDirty;
         TabItem _activeItem;
         private List<OptionView> _options;
+        private List<OptionView> _deadLetterOptions;
 
         public QueueEventsViewModel(IServer server)
             : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker())
@@ -97,6 +98,7 @@ namespace Dev2.Tasks.QueueEvents
 
             InitializeHelp();
             Options = new List<OptionView>();
+            DeadLetterOptions = new List<OptionView>();
         }
 
 
@@ -145,21 +147,23 @@ namespace Dev2.Tasks.QueueEvents
                 if (_selectedQueueSource != null)
                 {
                     QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
-                    FindOptions(_selectedQueueSource);
+                    Options = FindOptions(_selectedQueueSource);
                 }
 
                 OnPropertyChanged(nameof(SelectedQueueSource));
             }
         }
 
-        private void FindOptions(IResource selectedQueueSource)
+        private List<OptionView> FindOptions(IResource selectedQueueSource)
         {
+            var optionViews = new List<OptionView>();
             var options = _resourceRepository.FindOptions(_server, selectedQueueSource);
             foreach (var option in options)
             {
                 var optionView = new OptionView(option);
-                Options.Add(optionView);
+                optionViews.Add(optionView);
             }
+            return optionViews;
         }
 
         public List<OptionView> Options
@@ -169,6 +173,16 @@ namespace Dev2.Tasks.QueueEvents
             {
                 _options = value;
                 OnPropertyChanged(nameof(Options));
+            }
+        }
+
+        public List<OptionView> DeadLetterOptions
+        {
+            get => _deadLetterOptions;
+            set
+            {
+                _deadLetterOptions = value;
+                OnPropertyChanged(nameof(DeadLetterOptions));
             }
         }
 
@@ -183,6 +197,7 @@ namespace Dev2.Tasks.QueueEvents
                 if (_selectedDeadLetterQueueSource != null)
                 {
                     DeadLetterQueues = GetQueueNamesFromSource(_selectedDeadLetterQueueSource);
+                    DeadLetterOptions = FindOptions(_selectedDeadLetterQueueSource);
                 }
 
                 OnPropertyChanged(nameof(SelectedDeadLetterQueueSource));
