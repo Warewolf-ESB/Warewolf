@@ -166,27 +166,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
                 { "QueueNames", tempValues }
             };
 
-            var expectedOptionBool = new OptionBool
-            {
-                Name = "bool",
-                Value = false
-            };
-            var expectedOptionInt = new OptionInt
-            {
-                Name = "int",
-                Value = 10
-            };
-            var expectedOptionAutocompletebox = new OptionAutocomplete
-            {
-                Name = "auto",
-                Value = "new text"
-            };
-            var expectedOptions = new List<IOption>
-            {
-                expectedOptionBool,
-                expectedOptionInt,
-                expectedOptionAutocompletebox
-            };
+            List<IOption> expectedOptions = SetupOptionsView();
 
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
@@ -238,6 +218,32 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.AreEqual("value1", queueEventsViewModel.QueueName);
         }
 
+        private static List<IOption> SetupOptionsView()
+        {
+            var expectedOptionBool = new OptionBool
+            {
+                Name = "bool",
+                Value = false
+            };
+            var expectedOptionInt = new OptionInt
+            {
+                Name = "int",
+                Value = 10
+            };
+            var expectedOptionAutocompletebox = new OptionAutocomplete
+            {
+                Name = "auto",
+                Value = "new text"
+            };
+            var expectedOptions = new List<IOption>
+            {
+                expectedOptionBool,
+                expectedOptionInt,
+                expectedOptionAutocompletebox
+            };
+            return expectedOptions;
+        }
+
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
@@ -253,12 +259,17 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             tempValues[1] = "value2";
             tempValues[2] = "value3";
 
-            var expectedQueueNames = new Dictionary<string, string[]>();
-            expectedQueueNames.Add("QueueNames", tempValues);
+            var expectedQueueNames = new Dictionary<string, string[]>
+            {
+                { "QueueNames", tempValues }
+            };
+
+            List<IOption> expectedOptions = SetupOptionsView();
 
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource2)).Returns(expectedOptions);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
@@ -273,6 +284,28 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.AreEqual("value1", queueEventsViewModel.DeadLetterQueues[0].Value);
             Assert.AreEqual("value2", queueEventsViewModel.DeadLetterQueues[1].Value);
             Assert.AreEqual("value3", queueEventsViewModel.DeadLetterQueues[2].Value);
+
+            Assert.AreEqual(3, queueEventsViewModel.DeadLetterOptions.Count);
+
+            var optionOne = queueEventsViewModel.DeadLetterOptions[0].DataContext as OptionBool;
+            Assert.IsNotNull(optionOne);
+            Assert.AreEqual("bool", optionOne.Name);
+            Assert.IsFalse(optionOne.Value);
+            Assert.IsTrue(optionOne.Default);
+
+            var optionTwo = queueEventsViewModel.DeadLetterOptions[1].DataContext as OptionInt;
+            Assert.IsNotNull(optionTwo);
+            Assert.AreEqual("int", optionTwo.Name);
+            Assert.AreEqual(10, optionTwo.Value);
+            Assert.AreEqual(0, optionTwo.Default);
+
+            var optionThree = queueEventsViewModel.DeadLetterOptions[2].DataContext as OptionAutocomplete;
+            Assert.IsNotNull(optionThree);
+            Assert.AreEqual("auto", optionThree.Name);
+            Assert.AreEqual("new text", optionThree.Value);
+            Assert.AreEqual(1, optionThree.Suggestions.Count());
+            Assert.AreEqual("", optionThree.Suggestions[0]);
+            Assert.AreEqual("", optionThree.Default);
 
             Assert.IsNull(queueEventsViewModel.DeadLetterQueue);
 
