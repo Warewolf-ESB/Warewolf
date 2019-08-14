@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Data.TO;
@@ -28,8 +27,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using Warewolf.Core;
-using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Options;
+using Warewolf.Data.Options;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 {
@@ -266,6 +266,10 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             List<IOption> expectedOptions = SetupOptionsView();
 
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            mockApplicationAdapter.Setup(p => p.TryFindResource(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(mockApplicationAdapter.Object);
+
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
@@ -273,9 +277,10 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            queueEventsViewModel.SelectedDeadLetterQueueSource = queueSource2;
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object)
+            {
+                SelectedDeadLetterQueueSource = queueSource2
+            };
 
             Assert.IsNotNull(queueEventsViewModel.SelectedDeadLetterQueueSource);
             Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedDeadLetterQueueSource);
@@ -293,11 +298,17 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.IsFalse(optionOne.Value);
             Assert.IsTrue(optionOne.Default);
 
+            var optionOneTemplate = queueEventsViewModel.DeadLetterOptions[0].DataTemplate;
+            mockApplicationAdapter.Verify(model => model.TryFindResource("OptionBoolStyle"), Times.Once());
+
             var optionTwo = queueEventsViewModel.DeadLetterOptions[1].DataContext as OptionInt;
             Assert.IsNotNull(optionTwo);
             Assert.AreEqual("int", optionTwo.Name);
             Assert.AreEqual(10, optionTwo.Value);
             Assert.AreEqual(0, optionTwo.Default);
+
+            var optionTwoTemplate = queueEventsViewModel.DeadLetterOptions[1].DataTemplate;
+            mockApplicationAdapter.Verify(model => model.TryFindResource("OptionIntStyle"), Times.Once());
 
             var optionThree = queueEventsViewModel.DeadLetterOptions[2].DataContext as OptionAutocomplete;
             Assert.IsNotNull(optionThree);
@@ -306,6 +317,9 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.AreEqual(1, optionThree.Suggestions.Count());
             Assert.AreEqual("", optionThree.Suggestions[0]);
             Assert.AreEqual("", optionThree.Default);
+
+            var optionThreeTemplate = queueEventsViewModel.DeadLetterOptions[2].DataTemplate;
+            mockApplicationAdapter.Verify(model => model.TryFindResource("OptionAutocompleteStyle"), Times.Once());
 
             Assert.IsNull(queueEventsViewModel.DeadLetterQueue);
 
