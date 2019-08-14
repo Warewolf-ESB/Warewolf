@@ -309,6 +309,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Interfaces", "Ware
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI", "Warewolf.UI\Warewolf.UI.csproj", "{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Data", "Warewolf.Data\Warewolf.Data.csproj", "{22CA968B-0D28-47FC-B09F-892A75BA9F4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1206,6 +1208,14 @@ Global
 		{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}.Release|x86.ActiveCfg = Release|Any CPU
 		{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}.Release|x86.Build.0 = Release|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Debug|x86.Build.0 = Debug|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Release|x86.ActiveCfg = Release|Any CPU
+		{22CA968B-0D28-47FC-B09F-892A75BA9F4C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
