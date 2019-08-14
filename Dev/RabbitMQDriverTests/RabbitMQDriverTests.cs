@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Driver.RabbitMQ;
 using System.Text;
 using System.Threading;
+using RabbitMQ.Client;
+using IConnection = RabbitMQ.Client.IConnection;
 
 namespace RabbitMQDriverTests
 {
@@ -76,6 +78,34 @@ namespace RabbitMQDriverTests
             var connection = queueSource.NewConnection(config);
             var publisher = connection.NewPublisher(config);
             publisher.Publish(data);
+
+            //------------------------Assert----------------------
+            var testPublishSuccess = new TestPublishSuccess();
+            var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
+
+            Assert.AreEqual(config.Exchange, sentData.Exchange);
+            Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
+            Assert.AreEqual(Encoding.UTF8.GetString(data), Encoding.UTF8.GetString(sentData.Body));
+        }
+
+        public class TestPublishSuccess
+        {
+            readonly IConnectionFactory _factory;
+            public TestPublishSuccess()
+            {
+                _factory = new ConnectionFactory() { HostName = "rsaklfsvrdev.dev2.local", UserName = "test", Password = "test" };
+            }
+
+            private IConnection NewConnection()
+            {
+                return _factory.CreateConnection();
+            }
+
+            public BasicGetResult GetSentMessage(string queueName)
+            {
+                var channel = NewConnection().CreateModel();
+                return channel.BasicGet(queue: queueName, noAck: true);
+            }
         }
 
         public class TestConsumer : IConsumer
