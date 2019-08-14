@@ -39,7 +39,10 @@ namespace Warewolf.UI.Tests.Tools
         public void PathCreateTool_FileSystemIntellisenseProvider_UITest()
         {
             _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-            FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit.Text = @"\\rsaklfsvrpdc\";
+            FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit.Text = @"\\SVRPDC.premier.local\";
+            FileToolsUIMap.Open_CreateTool_LargeView();
+            FileToolsUIMap.Click_Create_Done_Button();
+            Keyboard.SendKeys(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit, "{END}{BACK}");
             Assert.IsTrue(UIMap.MainStudioWindow.IntellisenseOptionsList.FirstOption.Exists, "No file system provided intellisense results are showing.");
         }
 
