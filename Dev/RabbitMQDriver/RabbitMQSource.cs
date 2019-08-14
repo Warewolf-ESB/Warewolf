@@ -19,7 +19,7 @@ namespace Warewolf.Driver.RabbitMQ
 
         public RabbitMQSource()
         {
-            _factory = new ConnectionFactory() { HostName = "localhost" };
+            _factory = new ConnectionFactory() { HostName = "rsaklfsvrdev.dev2.local", UserName = "test", Password = "test" };
         }
 
         public IQueueConnection NewConnection(IQueueConfig config)
