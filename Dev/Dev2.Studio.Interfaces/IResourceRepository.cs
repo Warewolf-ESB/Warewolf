@@ -82,6 +82,6 @@ namespace Dev2.Studio.Interfaces
 
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
         List<ISearchResult> Filter(ISearch searchValue);
-        IEnumerable<dynamic> ExecutionEvents(IServer targetEnvironment, Guid executionId);
+      
     }
 }
