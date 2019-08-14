@@ -8,8 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace Warewolf.Options
 {
     public interface IOption
@@ -38,7 +36,6 @@ namespace Warewolf.Options
 
     }
 
-    [ExcludeFromCodeCoverage]
     public class OptionAutocomplete : BindableBase, IOptionAutocomplete
     {
         private string _name;
@@ -60,7 +57,6 @@ namespace Warewolf.Options
         public string[] Suggestions => new string[] { "" };
     }
 
-    [ExcludeFromCodeCoverage]
     public class OptionInt : BindableBase, IOptionInt
     {
         private string _name;
@@ -83,7 +79,6 @@ namespace Warewolf.Options
         public int Default => 0;
     }
 
-    [ExcludeFromCodeCoverage]
     public class OptionBool : BindableBase, IOptionBool
     {
         private string _name;
