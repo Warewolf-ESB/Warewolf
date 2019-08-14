@@ -59,12 +59,4 @@ namespace Warewolf.UI
             }
         }
     }
-    [ExcludeFromCodeCoverage]
-    public class OptionViewFactory
-    {
-        public static OptionView New(IOption option)
-        {
-            return new OptionView(option);
-        }
-    }
 }
