@@ -738,10 +738,6 @@
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{a5b33303-3458-4084-a99f-3a604099a438}</Project>
-      <Name>Warewolf.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
       <Project>{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}</Project>
       <Name>Warewolf.MergeParser</Name>
@@ -797,10 +793,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
-      <Project>{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}</Project>
-      <Name>Warewolf.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
