@@ -509,7 +509,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Candice Daniel")]
-        public void QueueEventsViewModel_Password_SetPassword_IsDirty()
+        public void QueueEventsViewModel_Password_SetPassword()
         {
             var _passwordChanged = false;
             //------------Setup for test--------------------------
@@ -532,9 +532,6 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.AreEqual("somePassword", queueEventsViewModel.Password);
             Assert.AreEqual("", queueEventsViewModel.Error);
             Assert.IsTrue(_passwordChanged);
-
-            queueEventsViewModel.Password = "somePassword";
-            Assert.AreEqual("somePassword", queueEventsViewModel.Password);
         }
 
         [TestMethod]
@@ -619,14 +616,11 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             Assert.IsNotNull(resourceHistories);
             Assert.IsTrue(queueEventsViewModel.IsHistoryTabVisible);
             Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
-
-            queueEventsViewModel.IsProgressBarVisible = false;
-            Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(QueueEventsViewModel))]
-        public void QueueEventsViewModel_Status_SetStatus_IsDirtyTrue()
+        public void QueueEventsViewModel_Status_SetStatus()
         {
             //------------Setup for test--------------------------
             var queueEventsViewModel = new QueueEventsViewModel(new Mock<IServer>().Object);

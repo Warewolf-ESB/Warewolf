@@ -37,12 +37,6 @@ namespace Dev2.Common.Interfaces.Queue
         QueueStatus Status { get; set; }
 
         /// <summary>
-        ///     The next time that this Queue will run
-        /// </summary>
-        DateTime NextRunDate { get; set; }
-
-
-        /// <summary>
         ///     The workflow that we will run
         /// </summary>
         string WorkflowName { get; set; }
@@ -70,8 +64,8 @@ namespace Dev2.Common.Interfaces.Queue
 
         bool IsNewItem { get; }
         string NameForDisplay { get; }
-
-   }
+        string Name { get; set; }
+    }
 
     public interface INewQueuedResource
     {

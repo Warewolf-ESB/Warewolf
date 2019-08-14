@@ -50,8 +50,9 @@ namespace Dev2.Tasks.QueueEvents
         private IServer _server;
         private IResourceRepository _resourceRepository;
         IExternalProcessExecutor _externalProcessExecutor;
-        private ObservableCollection<INameValue> _queueNames;
-        private ObservableCollection<INameValue> _deadLetterQueues;
+        private IList<INameValue> _queueNames; 
+
+        private IList<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
         private bool _pasteResponseVisible;
         private string _pasteResponse;
@@ -88,7 +89,7 @@ namespace Dev2.Tasks.QueueEvents
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
-            Inputs = new ObservableCollection<IServiceInput>();
+            Inputs = new List<IServiceInput>();
             PasteResponseCommand = new DelegateCommand(ExecutePaste);
             TestCommand = new DelegateCommand(ExecuteTest);
             IsTesting = false;
@@ -136,7 +137,7 @@ namespace Dev2.Tasks.QueueEvents
             PasteResponseVisible = false;
         }
 
-        public ObservableCollection<string> QueueEvents { get; set; }
+        public IList<string> QueueEvents { get; set; }
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
         public IResource SelectedQueueSource
         {
@@ -204,9 +205,9 @@ namespace Dev2.Tasks.QueueEvents
             }
         }
 
-        private ObservableCollection<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
+        private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
-            var queueNames = new ObservableCollection<INameValue>();
+            var queueNames = new List<INameValue>();
 
             var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
 
@@ -221,7 +222,7 @@ namespace Dev2.Tasks.QueueEvents
             return queueNames;
         }
 
-        public ObservableCollection<INameValue> QueueNames
+        public IList<INameValue> QueueNames
         {
             get => _queueNames;
             set
@@ -241,7 +242,7 @@ namespace Dev2.Tasks.QueueEvents
             }
         }
 
-        public ObservableCollection<INameValue> DeadLetterQueues
+        public IList<INameValue> DeadLetterQueues
         {
             get => _deadLetterQueues;
             set
@@ -627,7 +628,7 @@ namespace Dev2.Tasks.QueueEvents
                 QueueName = baseName;
             }
         }
-        public ObservableCollection<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new ObservableCollection<IQueueResource>();
+        public IList<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<IQueueResource>();
 
         public IQueueResource Item { get; set; }
         public string Password
