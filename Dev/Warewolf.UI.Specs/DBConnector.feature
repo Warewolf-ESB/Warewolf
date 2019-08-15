@@ -21,7 +21,7 @@ Scenario: Create DB Source From Tool
 	When I Click New Workflow Ribbon Button
 	And I Drag Toolbox SQL Server Tool Onto DesignSurface
 	And I Select NewSQLServerDatabaseSource FromSqlServerTool
+	And I Can Select Hostname From Server Source Wizard Dropdownlist
 	And I Type SVRDEV into DB Source Wizard Server Textbox
-	When I Select SVRDEV From Server Source Wizard Dropdownlist
 	And I Click DB Source Wizard Test Connection Button
 	Then The DB Source Wizard Test Succeeded Image Is Visible
