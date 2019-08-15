@@ -34,9 +34,11 @@ namespace Dev2
 
         protected override void OnStart(string[] args)
         {
-            Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info("** Service Starting **", GlobalConstants.WarewolfInfo);
             RunSuccessful = true;
-            _serverLifecycleManager.Run(new LifeCycleInitializationList());
+            var t = _serverLifecycleManager.Run(new LifeCycleInitializationList());
+            t.Wait();
+            Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
         }
 
         protected override void OnStop()

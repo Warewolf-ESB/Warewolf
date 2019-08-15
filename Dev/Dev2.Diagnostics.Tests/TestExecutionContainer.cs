@@ -82,10 +82,10 @@ namespace Dev2.Diagnostics.Test
         public void PerfmonContainer_Ctor_WrappedMethods()
         {
             var cont = new Cont();
-            var mockPerformanceCounter = new Mock<IBobsPerformanceCounter>();
-            var mockPerformanceCounter2 = new Mock<IBobsPerformanceCounter>();
-            var mockPerformanceCounter3 = new Mock<IBobsPerformanceCounter>();
-            var mockPerformanceCounter4 = new Mock<IBobsPerformanceCounter>();
+            var mockPerformanceCounter = new Mock<IWarewolfPerformanceCounter>();
+            var mockPerformanceCounter2 = new Mock<IWarewolfPerformanceCounter>();
+            var mockPerformanceCounter3 = new Mock<IWarewolfPerformanceCounter>();
+            var mockPerformanceCounter4 = new Mock<IWarewolfPerformanceCounter>();
             _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, It.IsAny<string>(), GlobalConstants.GlobalCounterName)).Throws(new Exception("no other counters expected to be created"));
             _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Request Per Second", GlobalConstants.GlobalCounterName)).Returns(mockPerformanceCounter.Object);
             _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Concurrent requests currently executing", GlobalConstants.GlobalCounterName)).Returns(mockPerformanceCounter2.Object);

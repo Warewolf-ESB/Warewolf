@@ -37,6 +37,7 @@ using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Dev2
 {
@@ -44,7 +45,7 @@ namespace Dev2
     {
         bool InteractiveMode { get; set; }
 
-        void Run(IEnumerable<IServerLifecycleWorker> initWorkers);
+        Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
         void Stop(bool didBreak, int result);
     }
 
@@ -85,7 +86,8 @@ namespace Dev2
     {
         public bool InteractiveMode { get; set; } = true;
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
-
+        private IDirectory _startUpDirectory;
+        private IResourceCatalogFactory _startupResourceCatalogFactory;
         bool _isDisposed;
 
         Timer _timer;
@@ -94,7 +96,7 @@ namespace Dev2
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IIpcClient _ipcClient;
         
-        private readonly ILoadResources _loadResources;
+        private ILoadResources _loadResources;
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
@@ -109,18 +111,19 @@ namespace Dev2
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
             SetApplicationDirectory();
-            LoadPerformanceCounters();
-
+            _writer = startupConfiguration.Writer;
+            
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
+            _startUpDirectory = startupConfiguration.Directory;
+            _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
-            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory);
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
-            _writer = startupConfiguration.Writer;
+            
             _pauseHelper = startupConfiguration.PauseHelper;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
@@ -140,69 +143,80 @@ namespace Dev2
                 EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
             }
         }
-
-        public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
+        /// <summary>
+        /// Starts up the server with relevant workers.
+        /// NOTE: This must return a task as in Windows Server 2008 and Windows Server 2012 there is an issue
+        /// with the WMI Performance Adapter that causes it to prevent the Warewolf Server Service to need a double restart.
+        /// </summary>
+        /// <param name="initWorkers">Initilization Workers</param>
+        /// <returns>A Task that starts up the Warewolf Server.</returns>
+        public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
+            return Task.Run(() =>
             {
-                _writer.Write("Opening named pipe client stream for COM IPC... ");
-                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
-                _writer.WriteLine("done.");
-            }
+                LoadPerformanceCounters();
 
-            // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
-#if DEBUG
-            try
+            }).ContinueWith((t) =>
             {
-                var miq = MoqInstallerActionFactory.CreateInstallerActions();
-                miq.ExecuteMoqInstallerActions();
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
-            }
-#endif
-
-            try
-            {
-                foreach (var worker in initWorkers)
+                void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
                 {
-                    worker.Execute();
+                    _writer.Write("Opening named pipe client stream for COM IPC... ");
+                    _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
+                    _writer.WriteLine("done.");
                 }
 
-                LoadHostSecurityProvider();
-                _loadResources.CheckExampleResources();
-                _loadResources.MigrateOldTests();
-                var webServerConfig = _webServerConfiguration;
-                webServerConfig.Execute();
-                new LoadRuntimeConfigurations(_writer).Execute();
-                OpenCOMStream(null);
-                _loadResources.LoadResourceCatalog();
-                _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
-                _loadResources.LoadServerWorkspace();
-                _loadResources.LoadActivityCache(_assemblyLoader);
-                LoadTestCatalog();
-                StartTrackingUsage();
-                _startWebServer.Execute(webServerConfig, _pauseHelper);
+                // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
-                SetAsStarted();
-#endif
-                if (InteractiveMode)
+                try
                 {
-                    WaitForUserExit();
+                    var miq = MoqInstallerActionFactory.CreateInstallerActions();
+                    miq.ExecuteMoqInstallerActions();
                 }
-            }
-            catch (Exception e)
-            {
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+                }
+#endif
+
+                try
+                {
+                    foreach (var worker in initWorkers)
+                    {
+                        worker.Execute();
+                    }
+                    _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
+                    LoadHostSecurityProvider();
+                    _loadResources.CheckExampleResources();
+                    _loadResources.MigrateOldTests();
+                    var webServerConfig = _webServerConfiguration;
+                    webServerConfig.Execute();
+                    new LoadRuntimeConfigurations(_writer).Execute();
+                    OpenCOMStream(null);
+                    _loadResources.LoadResourceCatalog();
+                    _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                    new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
+                    _loadResources.LoadServerWorkspace();
+                    _loadResources.LoadActivityCache(_assemblyLoader);
+                    LoadTestCatalog();
+                    StartTrackingUsage();
+                    _startWebServer.Execute(webServerConfig, _pauseHelper);
+#if DEBUG
+                    SetAsStarted();
+#endif
+                    if (InteractiveMode)
+                    {
+                        WaitForUserExit();
+                    }
+                }
+                catch (Exception e)
+                {
 #pragma warning disable S2228 // Console logging should not be used
-#pragma warning disable S2228 // Console logging should not be used
-                Console.WriteLine(e);
+                    Console.WriteLine(e);
 #pragma warning restore S2228 // Console logging should not be used
-#pragma warning restore S2228 // Console logging should not be used
-                Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
-                Stop(true, 0);
-            }
+                    Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
+                    Stop(true, 0);
+                }
+            });
         }
 
         void StartTrackingUsage()
