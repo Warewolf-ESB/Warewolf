@@ -1313,7 +1313,7 @@ namespace Dev2.Activities.Specs.Composition
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
-            Assert.AreEqual(count, children);
+            Assert.AreEqual(count, children, String.Join(", ", debugStates.Select(val=>val.DisplayName)));
         }
 
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" has at least ""(.*)"" nested children")]
