@@ -411,7 +411,7 @@ You need Administrator permission.</value>
   <data name="QueueEventsHeader" xml:space="preserve">
     <value>Queue Events</value>
   </data>
-  <data name="TasksHeader" xml:space="preserve">
-    <value>Tasks</value>
+  <data name="TriggersHeader" xml:space="preserve">
+    <value>Triggers</value>
   </data>
 </root>

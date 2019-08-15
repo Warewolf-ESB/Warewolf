@@ -24,8 +24,8 @@ namespace Dev2.Studio.Interfaces.Enums
         [Description("Scheduler")]
         Scheduler,
 
-        [Description("Tasks")]
-        Tasks,
+        [Description("Triggers")]
+        Triggers,
 
         [Description("Settings")]
         Settings,

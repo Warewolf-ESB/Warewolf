@@ -14,27 +14,23 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Data.TO;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.UI;
 
-namespace Dev2.Tasks.QueueEvents
+namespace Dev2.Triggers.QueueEvents
 {
     public class QueueEventsViewModel : TasksItemViewModel, IUpdatesHelp
     {

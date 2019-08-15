@@ -25,12 +25,12 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Tasks.QueueEvents;
+using Dev2.Triggers.QueueEvents;
 using Dev2.Threading;
 
-namespace Dev2.Tasks
+namespace Dev2.Triggers
 {
-    public class TasksViewModel : BaseWorkSurfaceViewModel, IStudioTab
+    public class TriggersViewModel : BaseWorkSurfaceViewModel, IStudioTab
     {
         string _displayName;
         bool _isDirty;
@@ -49,12 +49,12 @@ namespace Dev2.Tasks
         IServer _currentEnvironment;
 
         [ExcludeFromCodeCoverage]
-        public TasksViewModel()
+        public TriggersViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
         }
 
-        public TasksViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel)
+        public TriggersViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel)
             : base(eventPublisher)
         {
             Server = server;
@@ -69,10 +69,10 @@ namespace Dev2.Tasks
             ToEnvironmentModel = toEnvironmentModel ?? (a => a.ToEnvironmentModel());
             CurrentEnvironment = ToEnvironmentModel?.Invoke(server);
             LoadTasks();
-            DisplayName = StringResources.TasksHeader + " - " + Server.DisplayName;
+            DisplayName = StringResources.TriggersHeader + " - " + Server.DisplayName;
         }
 
-        public string ResourceType => StringResources.TasksHeader;
+        public string ResourceType => StringResources.TriggersHeader;
 
         public string QueueEventsHeader => QueueEventsViewModel != null && QueueEventsViewModel.IsDirty ? StringResources.QueueEventsHeader + " *" : StringResources.QueueEventsHeader;
 

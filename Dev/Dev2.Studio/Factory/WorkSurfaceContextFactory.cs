@@ -19,7 +19,7 @@ using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Tasks;
+using Dev2.Triggers;
 
 namespace Dev2.Studio.Factory
 {
@@ -61,7 +61,7 @@ namespace Dev2.Studio.Factory
                 key.ResourceID = Guid.Empty;
             }
             //TODO: Remove Scheduler check
-            if (vm is TasksViewModel || vm is SchedulerViewModel || vm is SettingsViewModel)
+            if (vm is TriggersViewModel || vm is SchedulerViewModel || vm is SettingsViewModel)
             {
                 key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey;
             }
