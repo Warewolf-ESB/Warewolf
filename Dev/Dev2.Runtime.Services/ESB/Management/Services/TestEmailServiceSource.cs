@@ -21,6 +21,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using Warewolf.Resource.Messages;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -52,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 try
                 {
-                    var mailMessage = new MailMessage(src.EmailFrom, src.EmailTo, Warewolf.Resource.Messages.Messages.Test_EmailServerSource_Header, Warewolf.Resource.Messages.Messages.Test_EmailServerSource_EmailBody);
+                    var mailMessage = new MailMessage(src.EmailFrom, src.EmailTo, Messages.Test_EmailServerSource_Header, Messages.Test_EmailServerSource_EmailBody);
                     con.Send(mailMessage);
                 }
                 catch (SmtpException e)

@@ -32,6 +32,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -139,7 +140,7 @@ namespace Dev2.Runtime.ESB.Execution
             var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString()));
             if (!isAuthorized)
             {
-                dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));
+                dataObject.Environment.AddError(string.Format(ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));
             }
             return isAuthorized;
         }

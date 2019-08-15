@@ -12,6 +12,7 @@
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Globalization;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.DateAndTime
 {
@@ -44,7 +45,7 @@ namespace Dev2.Common.DateAndTime
 
                 return parsedCorreclty;
             }
-            error = Warewolf.Resource.Errors.ErrorResource.CannorParseInputDateTimeWithGivenFormat;
+            error = ErrorResource.CannorParseInputDateTimeWithGivenFormat;
             return parsedCorreclty;
         }
     }
