@@ -20,6 +20,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.State;
+using Warewolf.Resource.Messages;
 
 namespace Dev2.Activities.SelectAndApply
 {
@@ -324,7 +325,7 @@ namespace Dev2.Activities.SelectAndApply
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
             if (nonPassingSteps != null && nonPassingSteps.Count == 0)
             {
-                testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                testRunResult.Message = Messages.Test_PassedResult;
                 testRunResult.RunTestResult = RunResult.TestPassed;
             }
             else

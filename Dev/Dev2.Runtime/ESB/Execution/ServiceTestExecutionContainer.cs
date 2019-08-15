@@ -33,6 +33,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -157,7 +158,7 @@ namespace Dev2.Runtime.ESB.Execution
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
                 var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
-                var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
+                var testNotauthorizedmsg = string.Format(Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
                 DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
                 DataObject.StopExecution = true;
             }

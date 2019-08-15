@@ -25,6 +25,7 @@ using Dev2.Common;
 using System.Activities.Statements;
 using Dev2.Common.State;
 using Dev2.Communication;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
 {
@@ -201,7 +202,7 @@ namespace Dev2.Activities
             {
                 if (Default == null)
                 {
-                    dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
+                    dataObject.Environment.Errors.Add(ErrorResource.SwitchNoDefaultError);
                 }
                 else
                 {
