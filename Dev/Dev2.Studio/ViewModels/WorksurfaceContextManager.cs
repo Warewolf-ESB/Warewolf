@@ -49,7 +49,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Views.Merge;
 using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
-using Dev2.Tasks;
+using Dev2.Triggers;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1217,7 +1217,7 @@ namespace Dev2.Studio.ViewModels
                 _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
                                                 Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
             }
-            ActivateOrCreateUniqueWorkSurface<TasksViewModel>(WorkSurfaceContext.Tasks);
+            ActivateOrCreateUniqueWorkSurface<TriggersViewModel>(WorkSurfaceContext.Triggers);
         }
 
         public void TryShowDependencies(IContextualResourceModel resource)
@@ -1444,7 +1444,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         return RemoveScheduler(vm, true);
                     }
-                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Tasks)
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Triggers)
                     {
                         return CloseTasks(vm, true);
                     }
@@ -1479,7 +1479,7 @@ namespace Dev2.Studio.ViewModels
 
         static bool CloseTasks(IWorkSurfaceViewModel vm, bool remove)
         {
-            if (vm is TasksViewModel tasksViewModel)
+            if (vm is TriggersViewModel tasksViewModel)
             {
                 remove = tasksViewModel.DoDeactivate(true);
                 if (remove)

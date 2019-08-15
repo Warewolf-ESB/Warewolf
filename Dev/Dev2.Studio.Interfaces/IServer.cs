@@ -27,6 +27,7 @@ namespace Dev2.Studio.Interfaces
     {
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
+
         event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
 
         IAuthorizationService AuthorizationService { get; }

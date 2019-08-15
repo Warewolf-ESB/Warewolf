@@ -70,7 +70,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
 using Dev2.Instrumentation;
-using Dev2.Tasks;
+using Dev2.Triggers;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1857,9 +1857,9 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
                 }
-                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Tasks)
+                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Triggers)
                 {
-                    if (vm is TasksViewModel tasksViewModel && tasksViewModel.IsDirty)
+                    if (vm is TriggersViewModel tasksViewModel && tasksViewModel.IsDirty)
                     {
                         closeStudio = CallSaveDialog(closeStudio);
                         break;

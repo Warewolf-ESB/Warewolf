@@ -20,6 +20,7 @@ namespace Warewolf.Testing
     {
         public ServerForTesting(Mock<IExplorerRepository> explorerRepository)
         {
+
             MockExplorerRepo = explorerRepository;
             _explorerProxy = explorerRepository.Object;
             ResourceName = "localhost";

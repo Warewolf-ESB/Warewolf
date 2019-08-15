@@ -73,7 +73,7 @@ namespace Warewolf.Studio.Core
                         //TODO: Remove
                     case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
-                    case "Tasks":
+                    case "Triggers":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case "ServiceTestsViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);

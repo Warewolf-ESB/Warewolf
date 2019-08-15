@@ -1157,23 +1157,5 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comController.AddPayloadArgument("versionNumber", versionNumber);
             return comController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
         }
-
-        public IEnumerable<dynamic> ExecutionEvents(IServer targetEnvironment, Guid executionId)
-        {
-            throw new NotImplementedException();
-        }
-        //public IEnumerable<dynamic> GetExecutionEvents(IServer targetEnvironment, Guid executionId)
-        //{
-        //    var result = Dev2StateAuditLogger.Query(entry => entry.ExecutionID == executionId).ToList();
-
-        //    if (targetEnvironment == null)
-        //    {
-        //        return result;
-        //    }
-        //    var comsController = new CommunicationController { ServiceName = "GetExecutionHistory" };
-        //    comsController.AddPayloadArgument("LoadExecutionEvents", selectedSource.ToString());
-        //    result = comsController.ExecuteCommand<Dictionary<string, string[]>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
-        //    return result;
-        //}
     }
 }

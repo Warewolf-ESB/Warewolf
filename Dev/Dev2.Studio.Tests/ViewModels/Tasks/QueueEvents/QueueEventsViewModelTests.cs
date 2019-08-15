@@ -17,7 +17,7 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Dev2.Tasks.QueueEvents;
+using Dev2.Triggers.QueueEvents;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -708,13 +708,6 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             {
                 return !IsDirty;
             }
-        }
-        public class ExecutionHistoryForTest : IExecutionHistory
-        {
-            public string WorkflowOutput { get; }
-            public IExecutionInfo ExecutionInfo { get; }
-            public string UserName { get; set; }
-        }
-      
+        }     
     }
 }

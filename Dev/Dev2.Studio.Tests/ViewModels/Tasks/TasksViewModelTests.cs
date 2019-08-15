@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
-using Dev2.Tasks;
+using Dev2.Triggers;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -39,31 +39,31 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TasksViewModel_Constructor_NullPopupController_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            new TasksViewModel(new Mock<IEventAggregator>().Object, null, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            new TriggersViewModel(new Mock<IEventAggregator>().Object, null, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TasksViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            new TasksViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            new TriggersViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_Constructor_Properties_Initialized()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -75,7 +75,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             var mockEnvironment = new Mock<IServer>();
             mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
@@ -88,7 +88,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_NewQueueEventCommand()
         {
             var foregroundWorkWasCalled = false;
@@ -105,7 +105,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
             var mockServer = new Mock<IServer>();
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
             tasksViewModel.QueueEventsViewModel.QueueEvents = new System.Collections.ObjectModel.ObservableCollection<string>();
             tasksViewModel.NewQueueEventCommand.Execute(null);
 
@@ -115,7 +115,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_False_Expect_True()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -128,7 +128,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             var mockEnvironment = new Mock<IServer>();
             mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
@@ -142,7 +142,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_True_Unauthorized_Expect_True()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -160,7 +160,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
@@ -174,7 +174,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_True_Expect_True()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -191,7 +191,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
@@ -202,7 +202,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_True_Cancel_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -220,7 +220,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
@@ -233,7 +233,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_True_None_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -251,7 +251,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
@@ -264,7 +264,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_True_No_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -285,7 +285,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             })
@@ -302,7 +302,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TasksViewModel))]
+        [TestCategory(nameof(TriggersViewModel))]
         public void TasksViewModel_DoDeactivate_ShowMessage_True_Yes_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -320,7 +320,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TasksViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
