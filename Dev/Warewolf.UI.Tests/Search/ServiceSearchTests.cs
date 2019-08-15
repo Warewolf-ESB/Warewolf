@@ -34,6 +34,7 @@ namespace Warewolf.UI.Tests.Search
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
+        [Ignore]//TODO: Re-introduce this ui test once the build rig has been moved to the new domain hosted at premier.local
         public void Given_Match_WholeWord_And_Case_And_Hello_World_Returns_Row()
         {
             _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
