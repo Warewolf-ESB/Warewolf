@@ -5,6 +5,10 @@
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Link="AssemblyCommonInfo.cs" />
   </ItemGroup>

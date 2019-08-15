@@ -28,7 +28,6 @@ using System.Linq;
 using System.Windows.Controls;
 using Warewolf.Core;
 using Warewolf.Options;
-using Warewolf.Data.Options;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
