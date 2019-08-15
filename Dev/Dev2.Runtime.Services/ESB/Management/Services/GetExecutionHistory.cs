@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -29,9 +28,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class ExecutionHistory : IExecutionHistory
     {
-        public ExecutionHistory(string workflowOutput, IExecutionInfo ExecutionInfo, string userName)
+        public ExecutionHistory(string workflowOutput, IExecutionInfo executionInfo, string userName)
         {
-            ExecutionInfo = ExecutionInfo;
+            ExecutionInfo = executionInfo;
             WorkflowOutput = workflowOutput;
             UserName = userName;
         }
@@ -105,7 +104,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
+        public new AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
+
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList></DataList>");
 
         public override string HandlesType() => "GetExecutionHistoryService";

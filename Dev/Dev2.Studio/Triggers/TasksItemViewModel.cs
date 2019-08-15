@@ -16,7 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Dev2.Tasks
+namespace Dev2.Triggers
 {
     public abstract class TasksItemViewModel : DependencyObject, INotifyPropertyChanged
     {
