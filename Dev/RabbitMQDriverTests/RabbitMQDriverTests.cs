@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using RabbitMQ.Client;
 using IConnection = RabbitMQ.Client.IConnection;
+using System;
 
 namespace RabbitMQDriverTests
 {
@@ -41,8 +42,10 @@ namespace RabbitMQDriverTests
 
             //----------------------Act--------------------------
 
-            var connection = queueSource.NewConnection(config);
-            connection.StartConsuming(config, testConsumer);
+            using (var connection = queueSource.NewConnection(config))
+            {
+                connection.StartConsuming(config, testConsumer);
+            }
 
             int i = 0;
             while (!testConsumer.IsDataReceived)
@@ -80,17 +83,21 @@ namespace RabbitMQDriverTests
             publisher.Publish(data);
 
             //------------------------Assert----------------------
-            var testPublishSuccess = new TestPublishSuccess();
+            using var testPublishSuccess = new TestPublishSuccess();
             var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
 
             Assert.AreEqual(config.Exchange, sentData.Exchange);
             Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
             Assert.AreEqual(Encoding.UTF8.GetString(data), Encoding.UTF8.GetString(sentData.Body));
+
         }
 
-        public class TestPublishSuccess
+        public class TestPublishSuccess : IDisposable
         {
             readonly IConnectionFactory _factory;
+            private IConnection _connection;
+            private IModel _channel;
+
             public TestPublishSuccess()
             {
                 _factory = new ConnectionFactory() { HostName = "rsaklfsvrdev.dev2.local", UserName = "test", Password = "test" };
@@ -98,13 +105,19 @@ namespace RabbitMQDriverTests
 
             private IConnection NewConnection()
             {
-                return _factory.CreateConnection();
+                return _connection = _factory.CreateConnection();
             }
 
             public BasicGetResult GetSentMessage(string queueName)
             {
-                var channel = NewConnection().CreateModel();
-                return channel.BasicGet(queue: queueName, noAck: true);
+                _channel = NewConnection().CreateModel();
+                return _channel.BasicGet(queue: queueName, noAck: false);
+            }
+
+            public void Dispose()
+            {
+                _connection.Dispose();
+                _channel.Dispose();
             }
         }
 
