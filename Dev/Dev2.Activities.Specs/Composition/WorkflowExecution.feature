@@ -277,9 +277,8 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	   And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(2).d]] = String |
-
-
-
+	  
+@NestedForEachExecution
  Scenario: Workflow with ForEach in Rec with star which contains Dot Net DLL
       Given I have a workflow "WFWithForEachContainingDotNetDLL"	
 	   And Debug states are cleared
@@ -381,6 +380,7 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 123 |	  		
 
+@NestedForEachExecution
   Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only Large Execution
       Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
 	  And Debug states are cleared
