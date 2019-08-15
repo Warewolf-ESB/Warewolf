@@ -26,6 +26,11 @@ namespace Warewolf.Driver.RabbitMQ
 
         public bool IsOpen => _connection.IsOpen;
 
+        public void Dispose()
+        {
+            _connection.Dispose();
+        }
+
         public IPublisher NewPublisher(IQueueConfig config)
         {
             var channel = CreateChannel(config as RabbitConfig);
