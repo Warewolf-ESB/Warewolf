@@ -11,6 +11,8 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Warewolf.Studio.Views
@@ -42,5 +44,24 @@ namespace Warewolf.Studio.Views
             VersionButton.Style = TryFindResource("SideMenuButtonStyle") as Style;
         }
 
+        private void MenuTaskButton_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (MenuTaskButton is Button menuTaskButton && !menuTaskButton.IsMouseOver ||
+                MenuSchedulerButton is Button menuSchedulerButton && !menuSchedulerButton.IsMouseOver ||
+                MenuQueueEventsButton is Button menuQueueEventsButton && !menuQueueEventsButton.IsMouseOver)
+            {
+                TasksPopup.IsOpen = true;
+            }
+        }
+
+        private void MenuTaskButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (MenuTaskButton is Button menuTaskButton && !menuTaskButton.IsMouseOver &&
+                MenuSchedulerButton is Button menuSchedulerButton && !menuSchedulerButton.IsMouseOver &&
+                MenuQueueEventsButton is Button menuQueueEventsButton && !menuQueueEventsButton.IsMouseOver)
+            {
+                TasksPopup.IsOpen = false;
+            }
+        }
     }
 }

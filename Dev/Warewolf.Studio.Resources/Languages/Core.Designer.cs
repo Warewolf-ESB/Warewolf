@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Core {
@@ -676,11 +676,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Queue Events.
+        /// </summary>
+        public static string MenuDialogQueueEventsLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogQueueEventsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string MenuDialogSaveLabel {
             get {
                 return ResourceManager.GetString("MenuDialogSaveLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler.
+        /// </summary>
+        public static string MenuDialogSchedulerLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSchedulerLabel", resourceCulture);
             }
         }
         
@@ -721,7 +739,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task.
+        ///   Looks up a localized string similar to Triggers.
         /// </summary>
         public static string MenuDialogTaskLabel {
             get {
@@ -879,6 +897,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PostgreSqlSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("PostgreSqlSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to queue on this server. You need Administrator permission..
+        /// </summary>
+        public static string QueueConnectionError {
+            get {
+                return ResourceManager.GetString("QueueConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Logon failure: unknown user name or bad password.
+        /// </summary>
+        public static string QueueEventsLoginErrorMessage {
+            get {
+                return ResourceManager.GetString("QueueEventsLoginErrorMessage", resourceCulture);
             }
         }
         

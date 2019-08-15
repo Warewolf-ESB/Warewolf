@@ -34,6 +34,7 @@ namespace Warewolf.Studio.ViewModels
         string _debugStudioTooltip;
         string _debugBrowserTooltip;
         string _scheduleTooltip;
+        string _queueEventTooltip;
         string _newFolderTooltip;
         string _renameTooltip;
         string _deleteTooltip;
@@ -267,6 +268,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _scheduleTooltip = value;
                 OnPropertyChanged(() => ScheduleTooltip);
+            }
+        }
+        public string QueueEventTooltip
+        {
+            get => _queueEventTooltip;
+            set
+            {
+                _queueEventTooltip = value;
+                OnPropertyChanged(() => QueueEventTooltip);
             }
         }
         public string NewFolderTooltip

@@ -904,6 +904,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the source message dead-letter queue.
+        /// </summary>
+        public static string DeadLetterQueueSourceHelp {
+            get {
+                return ResourceManager.GetString("DeadLetterQueueSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a test for the current workflow.
         /// </summary>
         public static string DebugOutputViewAddNewTestHelp {
@@ -2048,6 +2057,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create queue events.
+        /// </summary>
+        public static string MenuQueueEventsHelp {
+            get {
+                return ResourceManager.GetString("MenuQueueEventsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saves the active tab in the studio.
         /// </summary>
         public static string MenuSaveTabHelp {
@@ -2088,6 +2106,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuSettingsHelp {
             get {
                 return ResourceManager.GetString("MenuSettingsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open to Schedule workflow executions or create events.
+        /// </summary>
+        public static string MenuTasksHelp {
+            get {
+                return ResourceManager.GetString("MenuTasksHelp", resourceCulture);
             }
         }
         
@@ -2425,6 +2452,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PreviewInputHelpText {
             get {
                 return ResourceManager.GetString("PreviewInputHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the source message queue.
+        /// </summary>
+        public static string QueueSourceHelp {
+            get {
+                return ResourceManager.GetString("QueueSourceHelp", resourceCulture);
             }
         }
         
