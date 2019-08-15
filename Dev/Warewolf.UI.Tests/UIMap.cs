@@ -45,6 +45,7 @@ namespace Warewolf.UI.Tests
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackSettings.WaitForReadyTimeout = 60000;
+            Assert.IsTrue(Playback.PlaybackSettings.WaitForReadyTimeout > 0, "Failed to set wait for ready timeout. If you are running a specflow test make sure SpecFlow generated the coded UI testing attributes correctly.");
             Mouse.MouseMoveSpeed = 2500;
             Mouse.MouseDragSpeed = 2500;
             Playback.PlaybackError -= OnPlaybackError;
