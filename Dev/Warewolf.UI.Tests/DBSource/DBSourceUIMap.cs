@@ -70,11 +70,12 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with SVRDEV and waiting for the spinner.");
         }
 
-        [When(@"I Select SVRDEV From Server Source Wizard Dropdownlist")]
-        public void Select_SVRDEV_From_Server_Source_Wizard_Dropdownlist()
+        [When(@"I Can Select Hostname From Server Source Wizard Dropdownlist")]
+        public void WhenICanSelectHostnameFromServerSourceWizardDropdownlist()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.SVRDEV, new Point(97, 17));
-            Assert.AreEqual("SVRDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "SVRDEV is not selected as the server in the DB source wizard.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = Environment.MachineName;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.FirstItem, new Point(97, 17));
+            Assert.AreEqual(Environment.MachineName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "Hostname is not selected as the server in the DB source wizard.");
         }
 
         [Then(@"I Enter Text Into Database Server Tab")]
