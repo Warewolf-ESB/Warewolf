@@ -468,6 +468,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewSchedule(_target.ResourceId));
         }
 
+        [TestMethod, Timeout(60000)]
+        public void ExplorerItemViewModel_QueueEventCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.QueueEventCommand.Execute(null);
+            Assert.IsTrue(_target.QueueEventCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.NewQueueEvent(_target.ResourceId));
+        }
+
         [TestMethod,Timeout(60000)]
         public void RunAllTestsCommand()
         {

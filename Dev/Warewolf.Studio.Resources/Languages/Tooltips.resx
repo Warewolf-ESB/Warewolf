@@ -685,6 +685,9 @@ Returns the output of the script, if any.</value>
   <data name="ScheduleToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>
+  <data name="QueueEventToolTip" xml:space="preserve">
+    <value>Create a queue event to run</value>
+  </data>
   <data name="SchedulerStatusAltTooltipTrigger" xml:space="preserve">
     <value>Enable or Disable the schedule</value>
   </data>
@@ -935,6 +938,12 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
     <value>Create a new rabbitmq source</value>
   </data>
+  <data name="QueueSourceTooltip" xml:space="preserve">
+    <value>Select the source message queue</value>
+  </data>
+  <data name="DeadLetterQueueSourceTooltip" xml:space="preserve">
+    <value>Select the source message dead-letter queue</value>
+  </data>
   <data name="NewPluginSourceTooltip" xml:space="preserve">
     <value>Create a new plugin source</value>
   </data>
@@ -1019,6 +1028,12 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
+  </data>
+  <data name="MenuQueueEventsToolTip" xml:space="preserve">
+    <value>Create a queue event to run</value>
+  </data>
+  <data name="MenuTasksToolTip" xml:space="preserve">
+    <value>View schedules and events</value>
   </data>
   <data name="MenuSaveToolTip" xml:space="preserve">
     <value>Save this tab [CTRL+S]</value>

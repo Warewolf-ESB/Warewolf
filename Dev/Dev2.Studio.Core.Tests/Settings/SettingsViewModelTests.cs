@@ -454,7 +454,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
             Assert.AreEqual("Error while saving: Server unreachable.", viewModel.Errors);
-            popupController.Verify(controller => controller.ShowSaveSettingsNotReachableErrorMsg(), Times.Once);
+            popupController.Verify(controller => controller.ShowSaveServerNotReachableErrorMsg(), Times.Once);
         }
 
         [TestMethod]

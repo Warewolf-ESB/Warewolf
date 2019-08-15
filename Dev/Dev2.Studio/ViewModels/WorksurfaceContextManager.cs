@@ -49,6 +49,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Views.Merge;
 using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
+using Dev2.Triggers;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -128,8 +129,11 @@ namespace Dev2.Studio.ViewModels
         Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel);
         void TryShowDependencies(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
+        //TODO: Remove
         void AddSchedulerWorkSurface();
+        void AddTasksWorkSurface();
         void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
+        void TryCreateNewQueueEventWorkSurface(IContextualResourceModel resourceModel);
 
         void AddWorkspaceItem(IContextualResourceModel model);
         void DeleteContext(IContextualResourceModel model);
@@ -1195,6 +1199,7 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
+        //TODO: Remove
         public void AddSchedulerWorkSurface()
         {
             if (_applicationTracker != null)
@@ -1205,6 +1210,16 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
+        public void AddTasksWorkSurface()
+        {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
+            }
+            ActivateOrCreateUniqueWorkSurface<TriggersViewModel>(WorkSurfaceContext.Triggers);
+        }
+
         public void TryShowDependencies(IContextualResourceModel resource)
         {
             if (resource != null)
@@ -1212,7 +1227,16 @@ namespace Dev2.Studio.ViewModels
                 ShowDependencies(true, resource, ActiveServer);
             }
         }
+        public void TryCreateNewQueueEventWorkSurface(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel != null)
+            {
+                //TODO: Open Tasks QueueEvent Tab with workflow populated
+                AddTasksWorkSurface();
+            }
+        }
 
+        //TODO: Remove or update?
         public void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
             if (resourceModel != null)
@@ -1220,7 +1244,7 @@ namespace Dev2.Studio.ViewModels
                 CreateNewScheduleWorkSurface(resourceModel);
             }
         }
-
+        //TODO: Remove or update?
         void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
             var key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID);
@@ -1415,9 +1439,14 @@ namespace Dev2.Studio.ViewModels
                     {
                         return CloseSettings(vm, true);
                     }
+                    //TODO: Remove
                     if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
                     {
                         return RemoveScheduler(vm, true);
+                    }
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Triggers)
+                    {
+                        return CloseTasks(vm, true);
                     }
                 }
                 if (vm is IStudioTab tab)
@@ -1443,6 +1472,19 @@ namespace Dev2.Studio.ViewModels
                 if (remove)
                 {
                     schedulerViewModel.Dispose();
+                }
+            }
+            return remove;
+        }
+
+        static bool CloseTasks(IWorkSurfaceViewModel vm, bool remove)
+        {
+            if (vm is TriggersViewModel tasksViewModel)
+            {
+                remove = tasksViewModel.DoDeactivate(true);
+                if (remove)
+                {
+                    tasksViewModel.Dispose();
                 }
             }
             return remove;

@@ -771,6 +771,12 @@
   <data name="EditRabbitMQSourceHelp" xml:space="preserve">
     <value>Edit RabbitMQ Source</value>
   </data>
+  <data name="QueueSourceHelp" xml:space="preserve">
+    <value>Select the source message queue</value>
+  </data>
+  <data name="DeadLetterQueueSourceHelp" xml:space="preserve">
+    <value>Select the source message dead-letter queue</value>
+  </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
   </data>
@@ -1082,6 +1088,12 @@
   </data>
   <data name="MenuSchedulerHelp" xml:space="preserve">
     <value>Schedule workflow executions</value>
+  </data>
+  <data name="MenuQueueEventsHelp" xml:space="preserve">
+    <value>Create queue events</value>
+  </data>
+  <data name="MenuTasksHelp" xml:space="preserve">
+    <value>Open to Schedule workflow executions or create events</value>
   </data>
   <data name="MenuSettingsHelp" xml:space="preserve">
     <value>Edit or View system settings such as Security and Logging.</value>
