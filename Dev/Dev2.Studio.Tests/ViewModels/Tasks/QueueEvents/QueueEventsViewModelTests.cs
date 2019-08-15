@@ -17,7 +17,7 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Dev2.Tasks.QueueEvents;
+using Dev2.Triggers.QueueEvents;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

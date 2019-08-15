@@ -600,11 +600,11 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks.
+        ///   Looks up a localized string similar to Triggers.
         /// </summary>
-        public static string TasksHeader {
+        public static string TriggersHeader {
             get {
-                return ResourceManager.GetString("TasksHeader", resourceCulture);
+                return ResourceManager.GetString("TriggersHeader", resourceCulture);
             }
         }
         

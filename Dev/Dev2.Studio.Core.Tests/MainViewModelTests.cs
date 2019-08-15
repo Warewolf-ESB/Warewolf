@@ -61,7 +61,7 @@ using Dev2.ViewModels;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Instrumentation;
-using Dev2.Tasks;
+using Dev2.Triggers;
 
 namespace Dev2.Core.Tests
 {
@@ -2950,7 +2950,7 @@ namespace Dev2.Core.Tests
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
-            var tasks = new TasksViewModel(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel.Object) { WorkSurfaceContext = WorkSurfaceContext.Tasks };
+            var tasks = new TriggersViewModel(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel.Object) { WorkSurfaceContext = WorkSurfaceContext.Triggers };
                         
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), tasks, new Mock<IPopupController>().Object, (a, b, c) => { });
 

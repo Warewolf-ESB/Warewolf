@@ -216,15 +216,15 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Tasks\QueueEvents\QueueEventsView.xaml.cs">
+    <Compile Include="Triggers\QueueEvents\QueueEventsView.xaml.cs">
       <DependentUpon>QueueEventsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\QueueEvents\QueueEventsViewModel.cs" />
-    <Compile Include="Tasks\TasksItemViewModel.cs" />
-    <Compile Include="Tasks\TasksView.xaml.cs">
-      <DependentUpon>TasksView.xaml</DependentUpon>
+    <Compile Include="Triggers\QueueEvents\QueueEventsViewModel.cs" />
+    <Compile Include="Triggers\TasksItemViewModel.cs" />
+    <Compile Include="Triggers\TriggersView.xaml.cs">
+      <DependentUpon>TriggersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\TasksViewModel.cs" />
+    <Compile Include="Triggers\TriggersViewModel.cs" />
     <Compile Include="ViewModels\Merge\ConflictItem.cs" />
     <Compile Include="ViewModels\Merge\ConflictRow.cs" />
     <Compile Include="ViewModels\Merge\Utils\ConflictListStateApplier.cs" />
@@ -465,11 +465,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tasks\QueueEvents\QueueEventsView.xaml">
+    <Page Include="Triggers\QueueEvents\QueueEventsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tasks\TasksView.xaml">
+    <Page Include="Triggers\TriggersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

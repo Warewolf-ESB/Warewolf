@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Tasks.QueueEvents
+namespace Dev2.Triggers.QueueEvents
 {
     /// <summary>
     /// Interaction logic for QueueEventsView.xaml
