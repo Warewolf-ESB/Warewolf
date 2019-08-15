@@ -23,7 +23,7 @@ using System;
 namespace Dev2.Studio.Tests.ViewModels.Tasks
 {
     [TestClass]
-    public class TasksViewModelTests
+    public class TriggerViewModelTests
     {
         [TestInitialize]
         public void SetupForTest()
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TasksViewModel_Constructor_NullPopupController_ThrowsArgumentNullException()
+        public void TriggersViewModel_Constructor_NullPopupController_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -53,7 +53,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TasksViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
+        public void TriggersViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -64,7 +64,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_Constructor_Properties_Initialized()
+        public void TriggersViewModel_Constructor_Properties_Initialized()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -82,14 +82,14 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
             Assert.AreEqual(mockServer.Object, tasksViewModel.Server);
             Assert.AreEqual(mockEnvironment.Object, tasksViewModel.CurrentEnvironment);
-            Assert.AreEqual("Tasks - TestServer", tasksViewModel.DisplayName);
+            Assert.AreEqual("Triggers - TestServer", tasksViewModel.DisplayName);
             Assert.AreEqual("Queue Events", tasksViewModel.QueueEventsHeader);
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_NewQueueEventCommand()
+        public void TriggersViewModel_NewQueueEventCommand()
         {
             var foregroundWorkWasCalled = false;
 
@@ -116,7 +116,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_False_Expect_True()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_False_Expect_True()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -143,7 +143,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_True_Unauthorized_Expect_True()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Unauthorized_Expect_True()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -175,7 +175,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_True_Expect_True()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Expect_True()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -203,7 +203,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_True_Cancel_MessageBox_Expect_False()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Cancel_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -234,7 +234,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_True_None_MessageBox_Expect_False()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_None_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -265,7 +265,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_True_No_MessageBox_Expect_False()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_No_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
@@ -303,7 +303,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
-        public void TasksViewModel_DoDeactivate_ShowMessage_True_Yes_MessageBox_Expect_False()
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Yes_MessageBox_Expect_False()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
