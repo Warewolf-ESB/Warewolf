@@ -46,7 +46,7 @@
     <Compile Include="AppResources\Converters\CustomIconsTests.cs" />
     <Compile Include="ViewModels\SearchModelTests.cs" />
     <Compile Include="ViewModels\Tasks\QueueEvents\QueueEventsViewModelTests.cs" />
-    <Compile Include="ViewModels\Tasks\TasksViewModelTests.cs" />
+    <Compile Include="ViewModels\Tasks\TriggersViewModelTests.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
