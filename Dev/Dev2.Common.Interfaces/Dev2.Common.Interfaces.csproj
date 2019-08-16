@@ -194,9 +194,10 @@
     <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
-    <Compile Include="Queue\QueueRunStatus.cs" />
-    <Compile Include="Queue\IExecutionHistory.cs" />
-    <Compile Include="Queue\IExecutionInfo.cs" />
+    <Compile Include="Triggers\ITrigger.cs" />
+    <Compile Include="Triggers\Queue\QueueRunStatus.cs" />
+    <Compile Include="Triggers\Queue\IExecutionHistory.cs" />
+    <Compile Include="Triggers\Queue\IExecutionInfo.cs" />
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerUpdateManager.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
@@ -321,10 +322,9 @@
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IMessage.cs" />
-    <Compile Include="Queue\IQueuedResource.cs" />
-    <Compile Include="Queue\IQueueResourceModel.cs" />
-    <Compile Include="Queue\IQueueTrigger.cs" />
-    <Compile Include="Queue\QueueStatus.cs" />
+    <Compile Include="Triggers\Queue\ITriggerQueue.cs" />
+    <Compile Include="Triggers\Queue\IQueueResourceModel.cs" />
+    <Compile Include="Triggers\Queue\QueueStatus.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
@@ -436,6 +436,10 @@
     <None Include="Dev2.Common.Interfaces.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
