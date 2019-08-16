@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Data.TO;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
@@ -66,7 +67,7 @@ namespace Dev2.Triggers.QueueEvents
         bool _isProgressBarVisible;
         bool _isHistoryTabVisible;
         IQueueResourceModel _queueResourceModel;
-        IQueueResource _selectedQueue;
+        ITriggerQueueView _selectedQueue;
         bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         bool _isDirty;
@@ -522,7 +523,7 @@ namespace Dev2.Triggers.QueueEvents
                 }
             }
         }
-        public IQueueResource SelectedQueue
+        public ITriggerQueueView SelectedQueue
         {
             get => _selectedQueue;
             set
@@ -538,7 +539,7 @@ namespace Dev2.Triggers.QueueEvents
                     return;
                 }
                 _selectedQueue = value;
-                Item = _ser.Deserialize<IQueueResource>(_ser.SerializeToBuilder(_selectedQueue));
+                Item = _ser.Deserialize<ITriggerQueueView>(_ser.SerializeToBuilder(_selectedQueue));
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
@@ -624,9 +625,9 @@ namespace Dev2.Triggers.QueueEvents
                 QueueName = baseName;
             }
         }
-        public IList<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<IQueueResource>();
+        public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 
-        public IQueueResource Item { get; set; }
+        public ITriggerQueueView Item { get; set; }
         public string Password
         {
             get => SelectedQueue != null ? SelectedQueue.Password : string.Empty;
