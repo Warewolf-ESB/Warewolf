@@ -29,7 +29,6 @@ using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Scheduler;
 using Dev2.Services.Security;
-using Dev2.Settings.Scheduler;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -45,6 +44,7 @@ using Moq;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.Services.Events;
+using Dev2.Triggers.Scheduler;
 
 namespace Dev2.Core.Tests.Settings
 {

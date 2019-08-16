@@ -21,7 +21,7 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
-using Dev2.Settings.Scheduler;
+using Dev2.Triggers.Scheduler;
 using Dev2.Studio.Core;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Util;

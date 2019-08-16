@@ -20,12 +20,12 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
-using Dev2.Settings.Scheduler;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Triggers.QueueEvents;
+using Dev2.Triggers.Scheduler;
 using Dev2.Threading;
 
 namespace Dev2.Triggers
@@ -40,6 +40,7 @@ namespace Dev2.Triggers
         bool _isLoading;
 
         QueueEventsViewModel _queueEventsViewModel;
+        SchedulerViewModel _schedulerViewModel;
 
         readonly IPopupController _popupController;
         readonly IAsyncWorker _asyncWorker;
@@ -76,6 +77,8 @@ namespace Dev2.Triggers
 
         public string QueueEventsHeader => QueueEventsViewModel != null && QueueEventsViewModel.IsDirty ? StringResources.QueueEventsHeader + " *" : StringResources.QueueEventsHeader;
 
+        public string SchedulerHeader => SchedulerViewModel != null && SchedulerViewModel.IsDirty ? StringResources.SchedulerHeader + " *" : StringResources.SchedulerHeader;
+
         public IServer Server { get; set; }
 
         public override string DisplayName
@@ -102,6 +105,19 @@ namespace Dev2.Triggers
             }
         }
 
+        public SchedulerViewModel SchedulerViewModel
+        {
+            get => _schedulerViewModel;
+            private set
+            {
+                if (Equals(value, _schedulerViewModel))
+                {
+                    return;
+                }
+                _schedulerViewModel = value;
+                NotifyOfPropertyChange(() => SchedulerViewModel);
+            }
+        }
         public RelayCommand SaveCommand { get; private set; }
 
         public ICommand NewQueueEventCommand => _newQueueEventCommand ??
@@ -117,8 +133,7 @@ namespace Dev2.Triggers
 
         private void CreateSchedule(object obj)
         {
-            //TODO: Call Scheduler NewCommand
-            QueueEventsViewModel.NewCommand.Execute(obj);
+            SchedulerViewModel.NewCommand.Execute(obj);
         }
 
         public Func<IServer, IServer> ToEnvironmentModel
@@ -263,7 +278,7 @@ namespace Dev2.Triggers
             }, () =>
             {
                 IsLoading = false;
-                //TODO: Add SchedulerViewModel
+                SchedulerViewModel = CreateSchedulerViewModel();
                 QueueEventsViewModel = CreateQueueEventsViewModel();
 
                 AddPropertyChangedHandlers();
@@ -279,7 +294,18 @@ namespace Dev2.Triggers
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(TasksItemViewModel.IsDirtyProperty, typeof(TasksItemViewModel));
-            //TODO: Add SchedulerViewModel
+            //TODO: I will come back to this, want to get the rest through code review
+            //if (SchedulerViewModel != null)
+            //{
+            //    isDirtyProperty.AddValueChanged(SchedulerViewModel, OnIsDirtyPropertyChanged);
+            //    SchedulerViewModel.PropertyChanged += (sender, args) =>
+            //    {
+            //        if (args.PropertyName == nameof(IsDirty))
+            //        {
+            //            OnIsDirtyPropertyChanged(null, new EventArgs());
+            //        }
+            //    };
+            //}
             if (QueueEventsViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(QueueEventsViewModel, OnIsDirtyPropertyChanged);
@@ -290,17 +316,21 @@ namespace Dev2.Triggers
                         OnIsDirtyPropertyChanged(null, new EventArgs());
                     }
                 };
-            }
+            }     
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            //TODO: Add SchedulerViewModel
+            if (SchedulerViewModel != null)
+            {
+                IsDirty = SchedulerViewModel.IsDirty;
+            }
             if (QueueEventsViewModel != null)
             {
                 IsDirty = QueueEventsViewModel.IsDirty;
             }
             NotifyOfPropertyChange(() => QueueEventsHeader);
+            NotifyOfPropertyChange(() => SchedulerHeader);
             ClearErrors();
         }
 
@@ -310,6 +340,11 @@ namespace Dev2.Triggers
             return queueEventsViewModel;
         }
 
+        private static SchedulerViewModel CreateSchedulerViewModel()
+        {
+            var schedulerViewModel = new SchedulerViewModel();
+            return schedulerViewModel;
+        }
         public bool DoDeactivate(bool showMessage)
         {
             if (showMessage)
@@ -368,12 +403,16 @@ namespace Dev2.Triggers
 
         void ResetIsDirtyForChildren()
         {
-            //TODO: Add SchedulerViewModel
+            if (SchedulerViewModel != null)
+            {
+                SchedulerViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => SchedulerHeader);
+            }
             if (QueueEventsViewModel != null)
             {
                 QueueEventsViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => QueueEventsHeader);
-            }
+            }        
         }
 
         protected virtual void ShowError(string header, string description)

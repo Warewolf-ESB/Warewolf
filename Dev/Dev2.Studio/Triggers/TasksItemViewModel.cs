@@ -55,7 +55,7 @@ namespace Dev2.Triggers
 
         [JsonIgnore]
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register(nameof(IsDirty), typeof(bool), typeof(TasksItemViewModel), new PropertyMetadata(false));
-
+      
         protected abstract void CloseHelp();
 
         public event PropertyChangedEventHandler PropertyChanged;
