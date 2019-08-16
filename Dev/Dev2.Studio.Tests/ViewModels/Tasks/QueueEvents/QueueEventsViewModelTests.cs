@@ -29,6 +29,8 @@ using System.Windows.Controls;
 using Warewolf.Core;
 using Warewolf.Options;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces.Trigger;
+using Dev2.Triggers;
 
 namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 {
@@ -619,9 +621,9 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             queueEventsViewModel.ActiveItem = activeItem;
             var mockQueueResourceModel = new Mock<IQueueResourceModel>();
             var histories = new List<IExecutionHistory> { new Mock<IExecutionHistory>().Object };
-            mockQueueResourceModel.Setup(model => model.CreateHistory(It.IsAny<IQueueResource>())).Returns(histories);
+            mockQueueResourceModel.Setup(model => model.CreateHistory(It.IsAny<ITriggerQueue>())).Returns(histories);
             queueEventsViewModel.QueueResourceModel = mockQueueResourceModel.Object;
-            queueEventsViewModel.SelectedQueue = new Mock<IQueueResource>().Object;
+            queueEventsViewModel.SelectedQueue = new Mock<ITriggerQueueView>().Object;
             //------------Execute Test---------------------------
             var resourceHistories = queueEventsViewModel.History;
             //------------Assert Results-------------------------
@@ -648,7 +650,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             queueEventsViewModel.Status = QueueStatus.Disabled;
             Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
         }
-        class QueuedResourceForTest : IQueueResource
+        class QueuedResourceForTest : ITriggerQueueView
         {
             bool _isNewItem;
             bool _isDirty;
@@ -661,14 +663,8 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             public bool IsDirty
             {
-                get
-                {
-                    return _isDirty;
-                }
-                set
-                {
-                    _isDirty = value;
-                }
+                get => _isDirty;
+                set => _isDirty = value;
             }
             public string Name { get; set; }
             public string OldName { get; set; }
@@ -683,28 +679,28 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             public bool IsNew { get; set; }
             public bool IsNewItem
             {
-                get
-                {
-                    return _isNewItem;
-                }
-                set
-                {
-                    _isNewItem = value;
-                }
+                get => _isNewItem;
+                set => _isNewItem = value;
             }
             public string NameForDisplay { get; private set; }
             public string QueueName
             {
                 get => _queueName;
-                set
-                {
-                    _queueName = value;
-                }
+                set => _queueName = value;
             }
-            public void SetItem(IQueueResource item)
+
+            public IResource QueueSource { get; set; }
+            public int Concurrency { get; set; }
+            public IOption[] Options { get; set; }
+            public IResource QueueSink { get; set; }
+            public string DeadLetterQueue { get; set; }
+            public IOption[] DeadLetterOptions { get; set; }
+            public ICollection<IServiceInput> Inputs { get; set; }
+
+            public void SetItem(ITriggerQueue item)
             {
             }
-            public bool Equals(IQueueResource other)
+            public bool Equals(ITriggerQueue other)
             {
                 return !IsDirty;
             }
