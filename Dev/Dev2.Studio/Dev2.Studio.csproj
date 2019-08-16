@@ -304,14 +304,14 @@
     </Compile>
     <Compile Include="Settings\Perfcounters\PerformanceCountersByMachine.cs" />
     <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
-    <Compile Include="Settings\Scheduler\CredentialUI.cs" />
-    <Compile Include="Settings\Scheduler\DummyResource.cs" />
-    <Compile Include="Settings\Scheduler\SchedulerTaskManager.cs" />
-    <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
+    <Compile Include="Triggers\Scheduler\CredentialUI.cs" />
+    <Compile Include="Triggers\Scheduler\DummyResource.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerTaskManager.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
-    <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerViewModel.cs" />
+    <Compile Include="Triggers\Scheduler\ClientScheduledResourceModel.cs" />
     <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
     <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
@@ -453,7 +453,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Scheduler\SchedulerView.xaml">
+    <Page Include="Triggers\Scheduler\SchedulerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

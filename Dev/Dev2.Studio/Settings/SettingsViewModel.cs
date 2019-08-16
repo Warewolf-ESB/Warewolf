@@ -26,7 +26,6 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
-using Dev2.Settings.Scheduler;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -80,8 +79,6 @@ namespace Dev2.Settings
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
 
-            ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
-            CurrentEnvironment= ToEnvironmentModel?.Invoke(server);
             LoadSettings();
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = StringResources.SettingsTitle + " - " + Server.DisplayName;
@@ -349,17 +346,6 @@ namespace Dev2.Settings
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;
 
-        public Func<IServer, IServer> ToEnvironmentModel
-        {
-            get
-            {
-                return _toEnvironmentModel ?? (a => a.ToEnvironmentModel()); 
-            }
-            set
-            {
-                _toEnvironmentModel = value;
-            }
-        }
 
         void LoadSettings()
         {

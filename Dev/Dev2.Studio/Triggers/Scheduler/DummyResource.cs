@@ -1,4 +1,13 @@
-#pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data.TO;
@@ -36,8 +45,6 @@ namespace Dev2.Scheduler
             _isNewItem = true;
             _newCommand = new DelegateCommand(model);
         }
-
-        #region Implementation of IScheduledResource
         
         public bool IsDirty
         {
@@ -221,13 +228,9 @@ namespace Dev2.Scheduler
 
         public string NameForDisplay { get; private set; }
 
-        public void SetItem(IScheduledResource item)
+        public static void SetItem(IScheduledResource item)
         {
         }
-
-        #endregion
-
-        #region Implementation of INewScheduledResource
 
         public ICommand NewCommand
         {
@@ -241,12 +244,6 @@ namespace Dev2.Scheduler
             }
         }
 
-        #endregion
-
-        #region Implementation of IEquatable<IScheduledResource>
-
         public bool Equals(IScheduledResource other) => false;
-
-        #endregion
     }
 }
