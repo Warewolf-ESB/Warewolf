@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.Reflection;
+using System.Windows.Input;
 using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -121,12 +122,21 @@ namespace Warewolf.UI.Tests.ServerSource
             WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
             Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            Mouse.MoveScrollWheel(-10);
+            Mouse.MoveScrollWheel(10);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated.Exists, "This UI test expects ExistingCodedUITestServerSource to exist in the connect control dropdown list.");
             ExplorerUIMap.Filter_Explorer(newName);
             ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
             DialogsUIMap.Click_Yes_On_The_Confirm_Delete();
             Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated), "Server exists in connect control dropdown list after it was deleted from the explorer.");
+            try
+            {
+                Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated), "Server exists in connect control dropdown list after it was deleted from the explorer.");
+            }
+            finally
+            {
+                Keyboard.SendKeys("{ESC}", ModifierKeys.None);
+            }
         }
 
         [TestMethod]
