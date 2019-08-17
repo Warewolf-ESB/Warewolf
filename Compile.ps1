@@ -103,7 +103,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
     # Get all the latest version tags from server repo.
-    git -C "$PSScriptRoot" fetch --all --tags
+    git -C "$PSScriptRoot" fetch --all --tags -f
 
     # Generate informational version.
     # (from git commit id and time)
