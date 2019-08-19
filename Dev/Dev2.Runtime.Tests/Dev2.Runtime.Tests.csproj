@@ -422,6 +422,10 @@
       <Project>{7925b0c6-88dc-49a4-bbe1-c0550987f63a}</Project>
       <Name>Warewolf.TestingDotnetDllCascading</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Calculate_RecordSet_Subtract.xml" />
