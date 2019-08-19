@@ -8,19 +8,45 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using Caliburn.Micro;
+using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Communication;
+using Dev2.Data.TO;
+using Dev2.Dialogs;
+using Dev2.Scheduler;
 using Dev2.Services.Security;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
-using Dev2.Triggers;
+using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Win32.TaskScheduler;
 using Moq;
-using System;
+using Dev2.Studio.Interfaces.Enums;
+using Dev2.Services.Events;
+using Dev2.Triggers;
+using Dev2.Triggers.Scheduler;
 
-namespace Dev2.Studio.Tests.ViewModels.Tasks
+namespace Dev2.Core.Tests.Triggers
 {
     [TestClass]
     public class TriggerViewModelTests
@@ -84,6 +110,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
             Assert.AreEqual(mockEnvironment.Object, tasksViewModel.CurrentEnvironment);
             Assert.AreEqual("Triggers - TestServer", tasksViewModel.DisplayName);
             Assert.AreEqual("Queue Events", tasksViewModel.QueueEventsHeader);
+            Assert.AreEqual("Scheduler", tasksViewModel.SchedulerHeader);
         }
 
         [TestMethod]
@@ -107,7 +134,33 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks
 
             var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
             tasksViewModel.QueueEventsViewModel.QueueEvents = new System.Collections.ObjectModel.ObservableCollection<string>();
-            tasksViewModel.NewQueueEventCommand.Execute(null);
+            tasksViewModel.NewScheduleCommand.Execute(null);
+
+            Assert.IsTrue(foregroundWorkWasCalled);
+            Assert.AreEqual(1, tasksViewModel.QueueEventsViewModel.QueueEvents.Count);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TriggersViewModel))]
+        public void TriggersViewModel_NewScheduleCommand()
+        {
+            var foregroundWorkWasCalled = false;
+
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockPopupController = new Mock<IPopupController>();
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            var asyncWorker = new SynchronousAsyncWorker();
+            asyncWorker.Start(() => { },
+                () =>
+                {
+                    foregroundWorkWasCalled = true;
+                });
+
+            var mockServer = new Mock<IServer>();
+
+            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
+            //  tasksViewModel.SchedulerViewModel.SelectedTask = new System.Collections.ObjectModel.ObservableCollection<string>();
+            tasksViewModel.NewScheduleCommand.Execute(null);
 
             Assert.IsTrue(foregroundWorkWasCalled);
             Assert.AreEqual(1, tasksViewModel.QueueEventsViewModel.QueueEvents.Count);

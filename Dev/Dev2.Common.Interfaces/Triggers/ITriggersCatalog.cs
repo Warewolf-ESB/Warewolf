@@ -15,9 +15,9 @@ namespace Dev2.Common.Interfaces.Triggers
 {
     public interface ITriggersCatalog
     {
-        void SaveQueue(Guid resourceId, ITriggerQueue triggerQueue);
+        void SaveTriggerQueue(ITriggerQueue triggerQueue);
         void Load();
-        void DeleteQueue(Guid resourceId, ITriggerQueue triggerQueue);
-        void DeleteAllQueues();
+        void DeleteTriggerQueue(ITriggerQueue triggerQueue);
+        void DeleteAllTriggerQueues();
     }
 }
