@@ -8,12 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
@@ -23,12 +17,18 @@ using Dev2.Scheduler;
 using Dev2.Studio.Enums;
 using Dev2.TaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Windows;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Triggers.Scheduler
 {
-    class SchedulerTaskManager
+    public class SchedulerTaskManager
     {
         readonly SchedulerViewModel _schedulerViewModel;
         int _newTaskCounter = 1;

@@ -8,22 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
@@ -35,21 +25,27 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
+using Dev2.Triggers.Scheduler;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
-using Dev2.Studio.Interfaces.Enums;
-using Warewolf.Studio.ViewModels;
-using Dev2.Services.Events;
-using Dev2.Triggers.Scheduler;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 
-namespace Dev2.Core.Tests.Settings
+namespace Dev2.Core.Tests.Triggers.Scheduler
 {
     [TestClass]
-    [TestCategory("Studio Settings Core")]
+    [TestCategory("Studio Triggers Scheduler Core")]
     public class SchedulerViewModelTests
     {
         [TestInitialize]
@@ -73,9 +69,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            
-            new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a=> new Mock<IServer>().Object);
-            
+
+            new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+
             //------------Assert Results-------------------------
         }
 
@@ -87,9 +83,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            
+
             new SchedulerViewModel();
-            
+
             //------------Assert Results-------------------------
         }
 
@@ -101,9 +97,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object,a=> new Mock<IServer>().Object);
-            
+
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+
             //------------Assert Results-------------------------
         }
 
@@ -115,9 +111,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            
+
             new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, null, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-            
+
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -128,9 +124,9 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            
+
             new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-            
+
             //------------Assert Results-------------------------
         }
 
@@ -210,7 +206,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(schdulerViewModel.Errors);
             Assert.AreEqual("Scheduler - ", schdulerViewModel.DisplayName);
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SchedulerViewModel_Constructor")]
@@ -255,7 +251,7 @@ namespace Dev2.Core.Tests.Settings
             var _hasErrorChange = false;
             var _errorChange = false;
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -292,7 +288,7 @@ namespace Dev2.Core.Tests.Settings
 
             Assert.IsTrue(schedulerViewModel.HasErrors);
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -395,7 +391,7 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
             schedulerViewModel.Trigger = scheduleTrigger;
-            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf",Guid.NewGuid().ToString());
+            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf", Guid.NewGuid().ToString());
 
             schedulerViewModel.SelectedTask = scheduleResource;
             //------------Execute Test---------------------------
@@ -447,7 +443,7 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.Status = SchedulerStatus.Disabled;
             Assert.AreEqual(SchedulerStatus.Disabled, schedulerViewModel.Status);
         }
-        
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_NumberOfRecordsToKeep")]
@@ -657,7 +653,7 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
-            
+
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
 
@@ -673,7 +669,7 @@ namespace Dev2.Core.Tests.Settings
 
             var activeServer = new Server(Guid.NewGuid(), mockEnvConnection.Object)
             {
-                Permissions = new List<IWindowsGroupPermission> {WindowsGroupPermission.CreateAdministrators()}
+                Permissions = new List<IWindowsGroupPermission> { WindowsGroupPermission.CreateAdministrators() }
             };
             ServerRepository.Instance.ActiveServer = activeServer;
 
@@ -758,7 +754,7 @@ namespace Dev2.Core.Tests.Settings
             var _taskListChanged = false;
 
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -830,7 +826,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].OldName);
 
         }
-        
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_SaveCommand")]
@@ -930,7 +926,7 @@ namespace Dev2.Core.Tests.Settings
             var _nameChanged = false;
 
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -1152,7 +1148,7 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(agg.Object, new DirectoryObjectPickerDialog(), new PopupController(), new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -1246,7 +1242,7 @@ namespace Dev2.Core.Tests.Settings
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             schedulerViewModel.ActiveItem = activeItem;
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -1581,11 +1577,11 @@ namespace Dev2.Core.Tests.Settings
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
             var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object)
-                {
-                    ScheduledResourceModel = resourceModel.Object,
-                    SelectedTask = resources[0],
-                    Name = "monkeys"
-                };
+            {
+                ScheduledResourceModel = resourceModel.Object,
+                SelectedTask = resources[0],
+                Name = "monkeys"
+            };
             // validation occurs on property changes
             Assert.IsFalse(schedulerViewModel.HasErrors);
 
@@ -1601,11 +1597,11 @@ namespace Dev2.Core.Tests.Settings
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
             var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object)
-                {
-                    ScheduledResourceModel = resourceModel.Object,
-                    SelectedTask = resources[0],
-                    Name = "dave"
-                };
+            {
+                ScheduledResourceModel = resourceModel.Object,
+                SelectedTask = resources[0],
+                Name = "dave"
+            };
             //create duplicate name
             Assert.IsTrue(schedulerViewModel.HasErrors);
             Assert.AreEqual("There is already a task with the same name", schedulerViewModel.Error);
@@ -1644,20 +1640,20 @@ namespace Dev2.Core.Tests.Settings
             var _taskListChange = false;
             var _historyChange = false;
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
-          {
-              switch (args.PropertyName)
-              {
-                  case "TaskList":
-                      _taskListChange = true;
-                      break;
-                  case "History":
-                      _historyChange = true;
-                      break;
-                  default:
-                      break;
-              }
-          };
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
+            {
+                switch (args.PropertyName)
+                {
+                    case "TaskList":
+                        _taskListChange = true;
+                        break;
+                    case "History":
+                        _historyChange = true;
+                        break;
+                    default:
+                        break;
+                }
+            };
 
             schedulerViewModel.DeleteCommand.Execute(resources[1]);
             //------------Assert Results-------------------------
@@ -1790,7 +1786,7 @@ namespace Dev2.Core.Tests.Settings
 
             var _triggerTextChange = false;
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -1845,7 +1841,7 @@ namespace Dev2.Core.Tests.Settings
             mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IServer>())).Returns(true);
 
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
-            
+
             var treeItem = new Mock<IExplorerTreeItem>();
             treeItem.Setup(a => a.ResourceName).Returns("TestFlow2");
             treeItem.Setup(a => a.ResourceId).Returns(resId);
@@ -1865,9 +1861,9 @@ namespace Dev2.Core.Tests.Settings
             var _workflowNameChange = false;
             var _taskListChange = false;
 
-            
 
-            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+
+            schedulerViewModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
                 {
@@ -1939,13 +1935,13 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            
+
             var t = new DailyTrigger();
 
             t.StartBoundary = new DateTime(2014, 01, 01);
             var t2 = new DailyTrigger();
             t2.StartBoundary = new DateTime(2014, 01, 01);
-            
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -1960,13 +1956,13 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            
+
             var t = new DailyTrigger();
 
             t.StartBoundary = new DateTime(2014, 01, 01);
             var t2 = new DailyTrigger();
             t2.StartBoundary = new DateTime(2015, 01, 01);
-            
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -2115,104 +2111,9 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.CallShowErrorDialog(errorMessageUsed);
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorMessageCalled);
-            Assert.AreEqual(errorMessageUsed,errorMessageCalled);
+            Assert.AreEqual(errorMessageUsed, errorMessageCalled);
         }
     }
 
-    class DummySchedulerViewModelForTest : SchedulerViewModel
-    {
-        public DummySchedulerViewModelForTest(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker)
-                                            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, server, toEnvironmentModel, getResourcePicker)
-        {
-            SelectedTask = new Mock<IScheduledResource>().Object;
-        }
-    }
 
-    class MySchedulerTaskManager : SchedulerTaskManager
-    {
-        internal MySchedulerTaskManager(IServer server, SchedulerViewModel vm, Task<IResourcePickerDialog> resourcePickerDialog)
-                                 : this(server, vm, resourcePickerDialog, new Mock<IShellViewModel>().Object)
-        {
-        }
-        internal MySchedulerTaskManager(IServer server, SchedulerViewModel vm, Task<IResourcePickerDialog> resourcePickerDialog, IShellViewModel shellVm)
-                                 : base(vm, resourcePickerDialog)
-        {
-
-        }
-
-
-    }
-
-    class SchedulerViewModelForTest : SchedulerViewModel
-    {
-        public SchedulerViewModelForTest(IServer env) : base( a => env)
-        {
-            SchedulerTaskManager = new ScheduleTaskManagerStub(env, this,System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
-        }
-
-        public SchedulerViewModelForTest(IServer env, IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
-            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IServer>().Object)
-        {
-            SchedulerTaskManager = new ScheduleTaskManagerStub(env, this, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
-        }
-        #region Overrides of SchedulerViewModel
-
-        public bool GetCredentialsCalled
-        {
-            get
-            {
-                var stub = SchedulerTaskManager as ScheduleTaskManagerStub;
-                return stub != null && stub.GetCredentialsCalled;
-            }
-        }
-
-        public bool ShowSaveErrorDialogCalled
-        {
-            get;
-            private set;
-        }
-
-        public void CallShowErrorDialog(string error)
-        {
-            base.ShowSaveErrorDialog(error);
-        }
-        protected internal override void ShowSaveErrorDialog(string error)
-        {
-            ShowSaveErrorDialogCalled = true;
-        }
-
-        
-        #endregion
-    }
-
-    class ScheduleTaskManagerStub : MySchedulerTaskManager
-    {
-        public ScheduleTaskManagerStub(IServer server, SchedulerViewModel schedulerViewModel, Task<IResourcePickerDialog> getResourcePicker)
-            : base(server, schedulerViewModel, getResourcePicker)
-        {
-        }
-
-        public bool GetCredentialsCalled
-        {
-            get;
-            private set;
-        }
-
-        protected override void GetCredentials(IScheduledResource scheduledResource)
-        {
-            if (string.IsNullOrEmpty(scheduledResource.UserName) || string.IsNullOrEmpty(scheduledResource.Password))
-            {
-                GetCredentialsCalled = true;
-                scheduledResource.UserName = "some username";
-                scheduledResource.Password = "some password";
-            }
-        }
-
-        protected override IScheduleTrigger ShowEditTriggerDialog()
-        {
-            var dailyTrigger = new DailyTrigger { StartBoundary = new DateTime(2013, 04, 01, 02, 21, 25) };
-            return SchedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, dailyTrigger));
-        }
-
-    }
 }
