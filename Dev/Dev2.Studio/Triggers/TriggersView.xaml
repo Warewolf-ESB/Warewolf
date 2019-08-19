@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:queueevents="clr-namespace:Dev2.Triggers.QueueEvents"
+             xmlns:queueEvents="clr-namespace:Dev2.Triggers.QueueEvents"
+             xmlns:scheduler="clr-namespace:Dev2.Triggers.Scheduler"
              xmlns:triggers="clr-namespace:Dev2.Triggers"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              d:DesignHeight="300"
@@ -13,9 +14,12 @@
              AutomationProperties.AutomationId="UI_SettingsView_AutoID">
 
     <UserControl.Resources>
-        <queueevents:QueueEventsView x:Key="QueueEventsView"
+        <queueEvents:QueueEventsView x:Key="QueueEventsView" 
                                      AutomationProperties.AutomationId="QueueEventsViewModel"
                                      DataContext="{Binding QueueEventsViewModel, Mode=OneWay}"/>
+        <scheduler:SchedulerView x:Key="SchedulerView" 
+                                     AutomationProperties.AutomationId="SchedulerViewModel"
+                                     DataContext="{Binding SchedulerViewModel, Mode=OneWay}"/>
     </UserControl.Resources>
     
     <Grid>
@@ -31,6 +35,17 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <StaticResource ResourceKey="QueueEventsView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="History" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding SchedulerHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="SchedulerView" />
                         </TabItem.Content>
                     </TabItem>
                 </TabControl>
