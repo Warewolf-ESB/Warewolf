@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Queue
 {
-    public interface IQueueResourceModel : IDisposable
+    public interface ITriggerQueueResourceModel : IDisposable
     {
         IList<ITriggerQueue> QueueResources { get; set; }
         IList<ITriggerQueue> GetQueueResources();

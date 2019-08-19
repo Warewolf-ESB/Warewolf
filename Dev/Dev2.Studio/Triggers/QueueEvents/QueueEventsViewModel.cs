@@ -28,7 +28,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
+using Warewolf.Trigger;
 using Warewolf.UI;
 
 namespace Dev2.Triggers.QueueEvents
@@ -47,7 +49,7 @@ namespace Dev2.Triggers.QueueEvents
         private IServer _server;
         private IResourceRepository _resourceRepository;
         IExternalProcessExecutor _externalProcessExecutor;
-        private IList<INameValue> _queueNames; 
+        private IList<INameValue> _queueNames;
 
         private IList<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
@@ -66,7 +68,7 @@ namespace Dev2.Triggers.QueueEvents
         bool _hasConnectionError;
         bool _isProgressBarVisible;
         bool _isHistoryTabVisible;
-        IQueueResourceModel _queueResourceModel;
+        ITriggerQueueResourceModel _queueResourceModel;
         ITriggerQueueView _selectedQueue;
         bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
@@ -411,8 +413,35 @@ namespace Dev2.Triggers.QueueEvents
 
         }
 
-        public static bool Save()
+        public bool Save()
         {
+            ITriggerQueue triggerQueue = new TriggerQueue
+            {
+                QueueSource = SelectedQueueSource,
+                QueueName = QueueName,
+                WorkflowName = WorkflowName,
+                Concurrency = Concurrency,
+                UserName = AccountName,
+                Password = Password,
+                Options = new IOption[] { },
+                QueueSink = SelectedDeadLetterQueueSource,
+                DeadLetterQueue = DeadLetterQueue,
+                DeadLetterOptions = new IOption[] { },
+                Inputs = Inputs
+            };
+
+            foreach (var option in Options)
+            {
+                triggerQueue.Options = new IOption[] { option.DataContext };
+            }
+            foreach (var option in DeadLetterOptions)
+            {
+                triggerQueue.DeadLetterOptions = new IOption[] { option.DataContext };
+            }
+
+            //Save using QueueResourceModel
+            //QueueResourceModel.Save(triggerQueue)
+
             return true;
         }
 
@@ -452,7 +481,7 @@ namespace Dev2.Triggers.QueueEvents
                 return false;
             }
         }
-        public IQueueResourceModel QueueResourceModel
+        public ITriggerQueueResourceModel QueueResourceModel
         {
             get => _queueResourceModel;
             set

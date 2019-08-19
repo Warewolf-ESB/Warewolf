@@ -619,7 +619,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
 
             var activeItem = new TabItem { Header = "History" };
             queueEventsViewModel.ActiveItem = activeItem;
-            var mockQueueResourceModel = new Mock<IQueueResourceModel>();
+            var mockQueueResourceModel = new Mock<ITriggerQueueResourceModel>();
             var histories = new List<IExecutionHistory> { new Mock<IExecutionHistory>().Object };
             mockQueueResourceModel.Setup(model => model.CreateHistory(It.IsAny<ITriggerQueue>())).Returns(histories);
             queueEventsViewModel.QueueResourceModel = mockQueueResourceModel.Object;

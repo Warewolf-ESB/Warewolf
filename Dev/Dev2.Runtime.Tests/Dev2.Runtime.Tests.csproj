@@ -245,6 +245,7 @@
     <Compile Include="Services\FindOptionsTests.cs" />
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
+    <Compile Include="Triggers\TriggersCatalogTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
