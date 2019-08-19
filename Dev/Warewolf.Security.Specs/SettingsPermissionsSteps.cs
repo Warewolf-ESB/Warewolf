@@ -240,6 +240,7 @@ namespace Dev2.Activities.Specs.Permissions
                 }
             }
             var resourceModels = environmentModel.ResourceRepository.All();
+            Assert.IsTrue(resourceModels.Count() > 0, "Cannot load any resources from " + environmentModel.DisplayName);
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
             var totalNumberOfResources = resourceModels.Count;
             var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
