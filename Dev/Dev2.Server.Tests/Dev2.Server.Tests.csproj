@@ -45,6 +45,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="LoadResourcesTests.cs" />
+    <Compile Include="QueueProcessorMonitorTests.cs" />
     <Compile Include="RegisterDependenciesWorker.cs" />
     <Compile Include="TempFileDeleterTests.cs" />
     <Compile Include="StartWebServerTests.cs" />
