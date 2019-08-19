@@ -535,6 +535,7 @@ where pn.nspname = 'public';
         public static string ContentType { get;}= "Content-Type";
         public static string SaveReasonForDeploy { get; } = "Deploy";
         public static string HTTPNewLine { get; } = "\r\n";
+        public static string QueueWorkerExe { get; } = "QueueWorker.exe";
 
         public static readonly string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static readonly string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";

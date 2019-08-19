@@ -17,6 +17,7 @@ namespace Dev2.Common.Wrappers
     {
         void Kill();
         Process Unwrap();
+        bool WaitForExit(int milliseconds);
     }
     public interface IProcessFactory
     {
@@ -31,6 +32,8 @@ namespace Dev2.Common.Wrappers
         {
             _process = process;
         }
+
+        public bool WaitForExit(int milliseconds) => _process.WaitForExit(milliseconds);
 
         public void Dispose()
         {

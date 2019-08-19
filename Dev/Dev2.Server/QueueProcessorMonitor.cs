@@ -9,9 +9,81 @@
 */
 
 
+using Dev2.Common;
+using Dev2.Common.Wrappers;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+
 namespace Dev2
 {
-    public class QueueProcessorMonitor
+    public class QueueProcessorMonitor : IQueueProcessorMonitor
     {
+        private readonly IQueueConfigLoader _queueConfigLoader;
+        private readonly IProcessFactory _processFactory;
+
+        List<(Thread Thread, string Name)> Processes = new List<(Thread Thread, string Name)>();
+
+        bool _running { get; set; } 
+
+        public QueueProcessorMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader)
+        {
+            _processFactory = processFactory;
+            _queueConfigLoader = queueConfigLoader;
+        }
+
+        public void Start()
+        {
+            _running = true;
+            foreach (var config in _queueConfigLoader.Configs)
+            {
+                var thread = new Thread(()=> Start(config));
+                thread.Start();
+                Processes.Add((thread, config));
+            }
+
+            ProcessMonitor();
+        }
+
+        public void Stop()
+        {
+            _running = false;
+        }
+
+        private void Start(string config)
+        {
+            var startInfo = new ProcessStartInfo(GlobalConstants.QueueWorkerExe, $"-c '{config}'"); 
+            using (var process = _processFactory.Start(startInfo))
+            {
+                while (!process.WaitForExit(1000))
+                {
+                    //TODO: check queue progress, kill if necessary
+                }
+                Console.WriteLine("died!! " + JsonConvert.SerializeObject(config));
+            }
+        }
+
+        private void ProcessMonitor()
+        {
+            while (_running)
+            {
+                var items = Processes.ToArray();
+                foreach (var process in items)
+                {
+                    if (!process.Thread.IsAlive)
+                    {
+                        var thread = new Thread(() => Start(process.Name));
+                        thread.Start();
+
+                        Processes.Remove(process);
+                        Processes.Add((thread, process.Name));
+                    }
+                };
+
+                Thread.Sleep(1000);
+            }
+        }
     }
 }
