@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Scheduler;
-using Dev2.Settings.Scheduler;
+using Dev2.Triggers.Scheduler;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Moq;

@@ -22,6 +22,7 @@ using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
@@ -30,8 +31,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
+using Warewolf.Trigger;
 using Warewolf.UI;
 
 namespace Dev2.Triggers.QueueEvents
@@ -50,7 +53,7 @@ namespace Dev2.Triggers.QueueEvents
         private IServer _server;
         private IResourceRepository _resourceRepository;
         IExternalProcessExecutor _externalProcessExecutor;
-        private IList<INameValue> _queueNames; 
+        private IList<INameValue> _queueNames;
 
         private IList<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
@@ -71,8 +74,8 @@ namespace Dev2.Triggers.QueueEvents
         bool _hasConnectionError;
         bool _isProgressBarVisible;
         bool _isHistoryTabVisible;
-        IQueueResourceModel _queueResourceModel;
-        IQueueResource _selectedQueue;
+        ITriggerQueueResourceModel _queueResourceModel;
+        ITriggerQueueView _selectedQueue;
         bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         bool _isDirty;
@@ -439,8 +442,35 @@ namespace Dev2.Triggers.QueueEvents
 
         }
 
-        public static bool Save()
+        public bool Save()
         {
+            ITriggerQueue triggerQueue = new TriggerQueue
+            {
+                QueueSource = SelectedQueueSource,
+                QueueName = QueueName,
+                WorkflowName = WorkflowName,
+                Concurrency = Concurrency,
+                UserName = AccountName,
+                Password = Password,
+                Options = new IOption[] { },
+                QueueSink = SelectedDeadLetterQueueSource,
+                DeadLetterQueue = DeadLetterQueue,
+                DeadLetterOptions = new IOption[] { },
+                Inputs = Inputs
+            };
+
+            foreach (var option in Options)
+            {
+                triggerQueue.Options = new IOption[] { option.DataContext };
+            }
+            foreach (var option in DeadLetterOptions)
+            {
+                triggerQueue.DeadLetterOptions = new IOption[] { option.DataContext };
+            }
+
+            //Save using QueueResourceModel
+            //QueueResourceModel.Save(triggerQueue)
+
             return true;
         }
 
@@ -480,7 +510,7 @@ namespace Dev2.Triggers.QueueEvents
                 return false;
             }
         }
-        public IQueueResourceModel QueueResourceModel
+        public ITriggerQueueResourceModel QueueResourceModel
         {
             get => _queueResourceModel;
             set
@@ -551,7 +581,7 @@ namespace Dev2.Triggers.QueueEvents
                 }
             }
         }
-        public IQueueResource SelectedQueue
+        public ITriggerQueueView SelectedQueue
         {
             get => _selectedQueue;
             set
@@ -567,7 +597,7 @@ namespace Dev2.Triggers.QueueEvents
                     return;
                 }
                 _selectedQueue = value;
-                Item = _ser.Deserialize<IQueueResource>(_ser.SerializeToBuilder(_selectedQueue));
+                Item = _ser.Deserialize<ITriggerQueueView>(_ser.SerializeToBuilder(_selectedQueue));
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
@@ -653,9 +683,9 @@ namespace Dev2.Triggers.QueueEvents
                 QueueName = baseName;
             }
         }
-        public IList<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<IQueueResource>();
+        public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 
-        public IQueueResource Item { get; set; }
+        public ITriggerQueueView Item { get; set; }
         public string Password
         {
             get => SelectedQueue != null ? SelectedQueue.Password : string.Empty;

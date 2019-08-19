@@ -17,8 +17,8 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Data.TO;
-using Dev2.Settings.Scheduler;
 using Dev2.Studio.Interfaces;
+using Dev2.Triggers.Scheduler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

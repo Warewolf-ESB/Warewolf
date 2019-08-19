@@ -555,6 +555,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scheduler.
+        /// </summary>
+        public static string SchedulerHeader {
+            get {
+                return ResourceManager.GetString("SchedulerHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LOGGING.
         /// </summary>
         public static string SettingsLogging {
