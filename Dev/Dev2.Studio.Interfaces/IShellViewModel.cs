@@ -97,6 +97,7 @@ namespace Dev2.Studio.Interfaces
         void StudioDebug(Guid resourceId, IServer server);
         void CopyUrlLink(Guid resourceId, IServer server);
         void NewSchedule(Guid resourceId);
+        void NewQueueEvent(Guid resourceId);
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
         void OnActiveServerChanged();
@@ -113,6 +114,8 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand SettingsCommand { get; }
         ICommand SearchCommand { get; }
         IAuthorizeCommand SchedulerCommand { get; }
+        IAuthorizeCommand QueueEventsCommand { get; }
+        IAuthorizeCommand TasksCommand { get; }
         IToolboxViewModel ToolboxViewModel { get; }
         IHelpWindowViewModel HelpViewModel { get; }
         ICommand ShowStartPageCommand { get; }

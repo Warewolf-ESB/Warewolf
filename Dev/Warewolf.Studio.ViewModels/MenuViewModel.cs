@@ -47,6 +47,8 @@ namespace Warewolf.Studio.ViewModels
             SaveCommand = _viewModel.SaveCommand;
             OpenSearchCommand = _viewModel.SearchCommand;
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
+            OpenTasksCommand = _viewModel.TasksCommand;
+            OpenQueueEventsCommand = _viewModel.QueueEventsCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
             StartPageCommand = _viewModel.ShowStartPageCommand;
@@ -86,7 +88,7 @@ namespace Warewolf.Studio.ViewModels
             ButtonWidth = ButtonWidthLarge;
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
-            DebugIcon = FontAwesomeIcon.Play;
+            DebugIcon = FontAwesomeIcon.Bug;
             
         }
 
@@ -115,6 +117,8 @@ namespace Warewolf.Studio.ViewModels
         public ICommand OpenSettingsCommand { get; set; }
         public ICommand OpenSearchCommand { get; set; }
         public ICommand OpenSchedulerCommand { get; set; }
+        public ICommand OpenQueueEventsCommand { get; set; }
+        public ICommand OpenTasksCommand { get; set; }
         public ICommand ExecuteServiceCommand
         {
             get => _executeServiceCommand;
@@ -138,6 +142,8 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => DeployLabel);
             OnPropertyChanged(() => SearchLabel);
             OnPropertyChanged(() => TaskLabel);
+            OnPropertyChanged(() => SchedulerLabel);
+            OnPropertyChanged(() => QueueEventsLabel);
             OnPropertyChanged(() => DebugLabel);
             OnPropertyChanged(() => SettingsLabel);
             OnPropertyChanged(() => SupportLabel);
@@ -305,13 +311,39 @@ namespace Warewolf.Studio.ViewModels
                 return string.Empty;
             }
         }
+
+        public string SchedulerLabel
+        {
+            get
+            {
+                if (ButtonWidth >= ButtonWidthLarge)
+                {
+                    return Resources.Languages.Core.MenuDialogSchedulerLabel;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public string QueueEventsLabel
+        {
+            get
+            {
+                if (ButtonWidth >= ButtonWidthLarge)
+                {
+                    return Resources.Languages.Core.MenuDialogQueueEventsLabel;
+                }
+
+                return string.Empty;
+            }
+        }
         public bool IsProcessing
         {
             get => _isProcessing;
             set
             {
                 SetProperty(ref _isProcessing, value);
-                DebugIcon = _isProcessing ? FontAwesomeIcon.Stop : FontAwesomeIcon.Play;
+                DebugIcon = _isProcessing ? FontAwesomeIcon.Stop : FontAwesomeIcon.Bug;
                 OnPropertyChanged(()=>DebugLabel);
             }
         }

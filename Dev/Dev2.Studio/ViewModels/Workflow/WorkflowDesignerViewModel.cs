@@ -243,6 +243,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDebugStudio = false;
             CanDebugBrowser = false;
             CanCreateSchedule = false;
+            CanCreateQueueEvent = false;
             CanCreateTest = false;
             CanRunAllTests = false;
             CanDuplicate = false;
@@ -259,6 +260,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanCreateSchedule = !ResourceModel.IsNewWorkflow;
+            CanCreateQueueEvent = !ResourceModel.IsNewWorkflow;
             CanCreateTest = !ResourceModel.IsNewWorkflow;
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
             CanDuplicate = !ResourceModel.IsNewWorkflow;
@@ -275,6 +277,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanCreateSchedule = !ResourceModel.IsNewWorkflow;
+            CanCreateQueueEvent = !ResourceModel.IsNewWorkflow;
             CanCreateTest = !ResourceModel.IsNewWorkflow;
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
             CanDuplicate = !ResourceModel.IsNewWorkflow;
@@ -490,6 +493,27 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _scheduleTooltip = value;
                 OnPropertyChanged("ScheduleTooltip");
+            }
+        }
+
+        public bool CanCreateQueueEvent
+        {
+            get => _canCreateQueueEvent;
+            set
+            {
+                _canCreateQueueEvent = value;
+                QueueEventTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Tooltips.QueueEventToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged("CanCreateQueueEvent");
+            }
+        }
+
+        public string QueueEventTooltip
+        {
+            get => _queueEventTooltip;
+            set
+            {
+                _queueEventTooltip = value;
+                OnPropertyChanged("QueueEventTooltip");
             }
         }
 
@@ -801,6 +825,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (mvm?.ActiveItem != null)
                 {
                     mvm.CreateNewSchedule(mvm.ActiveItem.ContextualResourceModel.ID);
+                }
+            }
+        }));
+
+        public ICommand QueueEventCommand => _queueEventCommand ?? (_queueEventCommand = new DelegateCommand(param =>
+        {
+            if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            {
+                var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                if (mvm?.ActiveItem != null)
+                {
+                    mvm.CreateNewQueueEvent(mvm.ActiveItem.ContextualResourceModel.ID);
                 }
             }
         }));
@@ -2391,6 +2427,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         ICommand _debugStudioCommand;
         ICommand _debugBrowserCommand;
         ICommand _scheduleCommand;
+        ICommand _queueEventCommand;
         ICommand _testEditorCommand;
         ICommand _runAllTestsCommand;
         ICommand _duplicateCommand;
@@ -2404,6 +2441,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canDebugStudio;
         bool _debugBrowser;
         bool _canCreateSchedule;
+        bool _canCreateQueueEvent;
         bool _canCreateTest;
         bool _canRunAllTests;
         bool _canDuplicate;
@@ -2417,6 +2455,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         string _debugStudioTooltip;
         string _debugBrowserTooltip;
         string _scheduleTooltip;
+        string _queueEventTooltip;
         string _createTestTooltip;
         string _runAllTestsTooltip;
         string _duplicateTooltip;

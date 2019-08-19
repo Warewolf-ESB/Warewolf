@@ -27,6 +27,7 @@ namespace Dev2.Studio.Interfaces
     {
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
+
         event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
 
         IAuthorizationService AuthorizationService { get; }
@@ -40,7 +41,6 @@ namespace Dev2.Studio.Interfaces
         bool HasLoadedResources { get; }
         IEnvironmentConnection Connection { get; set; }
         IResourceRepository ResourceRepository { get; }
-
         void Connect();
 
         void Disconnect();

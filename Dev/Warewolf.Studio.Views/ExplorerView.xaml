@@ -526,7 +526,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugInputsTooltip}"
 								                      Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -538,7 +538,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugStudioTooltip}"
 								                      Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -550,20 +550,39 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugBrowserTooltip}"
 								                      Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
-                                            <MenuItem Name="Schedule"
+                                            <MenuItem Header="Triggers"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      Visibility="{Binding IsTriggersVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                                <MenuItem Name="Schedule"
 								                      Command="{Binding ScheduleCommand}"
 								                      Header="Schedule"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanCreateSchedule}"
 								                      ToolTip="{Binding ExplorerTooltips.ScheduleTooltip}"
 								                      Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
-                                                </MenuItem.Icon>
+                                                    <MenuItem.Icon>
+                                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+
+                                                <MenuItem Name="QueueEvent"
+								                      Command="{Binding QueueEventCommand}"
+								                      Header="Queue Event"
+								                      Style="{StaticResource MenuItemStyle}"
+								                      IsEnabled="{Binding CanCreateQueueEvent}"
+								                      ToolTip="{Binding ExplorerTooltips.QueueEventToolTip}"
+								                      Visibility="{Binding IsQueueEventVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <MenuItem.Icon>
+                                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Calendar" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
                                             </MenuItem>
 
                                             <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>

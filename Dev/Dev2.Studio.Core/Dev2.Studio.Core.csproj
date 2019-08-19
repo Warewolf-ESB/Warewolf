@@ -376,6 +376,10 @@
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
+      <Project>{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}</Project>
+      <Name>Dev2.Runtime.Auditing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
@@ -407,6 +411,10 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>

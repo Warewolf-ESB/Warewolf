@@ -24,6 +24,8 @@ using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
+using Warewolf.Options;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -32,7 +34,7 @@ namespace Dev2.Studio.Interfaces
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
-        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource,string environment,Guid startActivityId, string versionNumber);
+        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource, string environment, Guid startActivityId, string versionNumber);
         void Add(IResourceModel resource);
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
@@ -42,6 +44,9 @@ namespace Dev2.Studio.Interfaces
         void DeployResources(IServer targetEnviroment, IServer sourceEnviroment, IDeployDto dto);
         ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IServer targetEnvironment, enSourceType sourceType);
+        List<IResource> FindResourcesByType<T>(IServer targetEnvironment);
+        Dictionary<string, string[]> FindAutocompleteOptions(IServer targetEnvironment, IResource selectedSource);
+        List<IOption> FindOptions(IServer targetEnvironment, IResource selectedSource);
         List<IResourceModel> FindResourcesByID(IServer targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
         IList<T> GetResourceList<T>(IServer targetEnvironment) where T : new();
         Settings ReadSettings(IServer currentEnv);
@@ -56,7 +61,6 @@ namespace Dev2.Studio.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         ICollection<IResourceModel> All();
-
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
@@ -78,5 +82,6 @@ namespace Dev2.Studio.Interfaces
 
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
         List<ISearchResult> Filter(ISearch searchValue);
+      
     }
 }
