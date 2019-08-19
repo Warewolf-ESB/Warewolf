@@ -195,6 +195,7 @@
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
     <Compile Include="Triggers\ITrigger.cs" />
+    <Compile Include="Triggers\ITriggersCatalog.cs" />
     <Compile Include="Triggers\Queue\QueueRunStatus.cs" />
     <Compile Include="Triggers\Queue\IExecutionHistory.cs" />
     <Compile Include="Triggers\Queue\IExecutionInfo.cs" />
@@ -323,7 +324,7 @@
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="Triggers\Queue\ITriggerQueue.cs" />
-    <Compile Include="Triggers\Queue\IQueueResourceModel.cs" />
+    <Compile Include="Triggers\Queue\ITriggerQueueResourceModel.cs" />
     <Compile Include="Triggers\Queue\QueueStatus.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />

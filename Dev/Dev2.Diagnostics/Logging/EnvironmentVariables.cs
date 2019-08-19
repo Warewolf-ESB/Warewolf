@@ -60,6 +60,15 @@ namespace Dev2.Common
                 return resourcePath;
             }
         }
+
+        public static string TriggersPath
+        {
+            get
+            {
+                var resourcePath = Path.Combine(AppDataPath, "Triggers");
+                return resourcePath;
+            }
+        }
         public static string DetailLogPath
         {
             get
