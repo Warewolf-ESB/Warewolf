@@ -81,12 +81,12 @@ namespace Dev2.Triggers.QueueEvents
         private List<OptionView> _deadLetterOptions;
 
         public QueueEventsViewModel(IServer server)
-            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker())
+            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(),null)
         {
 
         }
 
-        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker)
+        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker,IResourcePickerDialog resourcePickerDialog)
         {
             _server = server;
             _resourceRepository = server.ResourceRepository;
@@ -97,7 +97,7 @@ namespace Dev2.Triggers.QueueEvents
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
             IsTesting = false;
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
-            _currentResourcePicker = CreateResourcePickerDialog();
+            _currentResourcePicker = resourcePickerDialog??CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
@@ -108,7 +108,13 @@ namespace Dev2.Triggers.QueueEvents
 
         private void OpenResourcePicker()
         {
-            _currentResourcePicker.ShowDialog();
+            if (_currentResourcePicker.ShowDialog(_server))
+            {
+                var selectedResource = _currentResourcePicker.SelectedResource;
+                WorkflowName = selectedResource.ResourcePath;
+                SelectedQueue.ResourceId = selectedResource.ResourceId;
+                SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+            }
         }
 
         public void ExecutePaste()
