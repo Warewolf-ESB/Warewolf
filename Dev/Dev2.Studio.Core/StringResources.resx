@@ -379,16 +379,16 @@ Cancel - Do not close the studio.</value>
   <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
     <value>Help\PageNotAvailable.htm</value>
   </data>
-  <data name="SaveSettingErrorPrefix" xml:space="preserve">
+  <data name="SaveErrorPrefix" xml:space="preserve">
     <value>Error while saving</value>
   </data>
-  <data name="SaveSettingErrorHeader" xml:space="preserve">
+  <data name="SaveErrorHeader" xml:space="preserve">
     <value>Save Error</value>
   </data>
   <data name="NetworkSettingErrorPrefix" xml:space="preserve">
     <value>Network Error</value>
   </data>
-  <data name="SaveSettingsNotReachableErrorMsg" xml:space="preserve">
+  <data name="SaveServerNotReachableErrorMsg" xml:space="preserve">
     <value>Error while saving: Server unreachable.</value>
   </data>
   <data name="SaveSettingsPermissionsErrorMsg" xml:space="preserve">
@@ -407,5 +407,11 @@ You need Administrator permission.</value>
   </data>
   <data name="SaveSettingsInvalidPermissionEntry" xml:space="preserve">
     <value>To save a resource persmission, you must have Resource Name and Windows group entered</value>
+  </data>
+  <data name="QueueEventsHeader" xml:space="preserve">
+    <value>Queue Events</value>
+  </data>
+  <data name="TriggersHeader" xml:space="preserve">
+    <value>Triggers</value>
   </data>
 </root>

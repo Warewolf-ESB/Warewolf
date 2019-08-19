@@ -46,6 +46,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName);
         MessageBoxResult ShowSettingsCloseConfirmation();
         MessageBoxResult ShowSchedulerCloseConfirmation();
+        MessageBoxResult ShowTasksCloseConfirmation();
 
         MessageBoxResult ShowSaveErrorDialog(string errorMessage);
         MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName);
@@ -74,7 +75,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowInvalidResourcePermission();
         MessageBoxResult ShowHasDuplicateResourcePermissions();
         MessageBoxResult ShowHasDuplicateServerPermissions();
-        MessageBoxResult ShowSaveSettingsNotReachableErrorMsg();
+        MessageBoxResult ShowSaveServerNotReachableErrorMsg();
         MessageBoxResult ShowSaveSettingsPermissionsErrorMsg();
         MessageBoxResult ShowInstallationErrorOccurred();
     }

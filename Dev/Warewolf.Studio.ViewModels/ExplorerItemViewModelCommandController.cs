@@ -95,6 +95,11 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewSchedule(resourceId);
         }
 
+        public void QueueEventCommand(Guid resourceId)
+        {
+            _shellViewModel.NewQueueEvent(resourceId);
+        }
+
         public void RunAllTestsCommand(string ResourcePath, Guid resourceId)
         {
             _shellViewModel.RunAllTests(ResourcePath, resourceId);

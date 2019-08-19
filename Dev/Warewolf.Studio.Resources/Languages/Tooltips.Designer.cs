@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -889,6 +889,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DbInsertToolTipColumn {
             get {
                 return ResourceManager.GetString("DbInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the source message dead-letter queue.
+        /// </summary>
+        public static string DeadLetterQueueSourceTooltip {
+            get {
+                return ResourceManager.GetString("DeadLetterQueueSourceTooltip", resourceCulture);
             }
         }
         
@@ -2761,6 +2770,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a queue event to run.
+        /// </summary>
+        public static string MenuQueueEventsToolTip {
+            get {
+                return ResourceManager.GetString("MenuQueueEventsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save this tab [CTRL+S].
         /// </summary>
         public static string MenuSaveToolTip {
@@ -2793,6 +2811,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuSettingsToolTip {
             get {
                 return ResourceManager.GetString("MenuSettingsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View schedules and events.
+        /// </summary>
+        public static string MenuTasksToolTip {
+            get {
+                return ResourceManager.GetString("MenuTasksToolTip", resourceCulture);
             }
         }
         
@@ -3238,6 +3265,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceSelectNamespaceToolTip {
             get {
                 return ResourceManager.GetString("PluginServiceSelectNamespaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a queue event to run.
+        /// </summary>
+        public static string QueueEventToolTip {
+            get {
+                return ResourceManager.GetString("QueueEventToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the source message queue.
+        /// </summary>
+        public static string QueueSourceTooltip {
+            get {
+                return ResourceManager.GetString("QueueSourceTooltip", resourceCulture);
             }
         }
         

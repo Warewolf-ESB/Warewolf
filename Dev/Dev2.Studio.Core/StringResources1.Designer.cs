@@ -19,7 +19,7 @@ namespace Dev2.Studio.Core {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StringResources {
@@ -442,6 +442,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Queue Events.
+        /// </summary>
+        public static string QueueEventsHeader {
+            get {
+                return ResourceManager.GetString("QueueEventsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string Ribbon_Debug {
@@ -462,18 +471,27 @@ namespace Dev2.Studio.Core {
         /// <summary>
         ///   Looks up a localized string similar to Save Error.
         /// </summary>
-        public static string SaveSettingErrorHeader {
+        public static string SaveErrorHeader {
             get {
-                return ResourceManager.GetString("SaveSettingErrorHeader", resourceCulture);
+                return ResourceManager.GetString("SaveErrorHeader", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error while saving.
         /// </summary>
-        public static string SaveSettingErrorPrefix {
+        public static string SaveErrorPrefix {
             get {
-                return ResourceManager.GetString("SaveSettingErrorPrefix", resourceCulture);
+                return ResourceManager.GetString("SaveErrorPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Server unreachable..
+        /// </summary>
+        public static string SaveServerNotReachableErrorMsg {
+            get {
+                return ResourceManager.GetString("SaveServerNotReachableErrorMsg", resourceCulture);
             }
         }
         
@@ -505,15 +523,6 @@ namespace Dev2.Studio.Core {
         public static string SaveSettingsInvalidPermissionEntry {
             get {
                 return ResourceManager.GetString("SaveSettingsInvalidPermissionEntry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while saving: Server unreachable..
-        /// </summary>
-        public static string SaveSettingsNotReachableErrorMsg {
-            get {
-                return ResourceManager.GetString("SaveSettingsNotReachableErrorMsg", resourceCulture);
             }
         }
         
@@ -587,6 +596,15 @@ namespace Dev2.Studio.Core {
         public static string SourcePermission_Error {
             get {
                 return ResourceManager.GetString("SourcePermission_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Triggers.
+        /// </summary>
+        public static string TriggersHeader {
+            get {
+                return ResourceManager.GetString("TriggersHeader", resourceCulture);
             }
         }
         

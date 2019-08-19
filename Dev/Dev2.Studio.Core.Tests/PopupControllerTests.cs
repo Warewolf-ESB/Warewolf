@@ -1136,6 +1136,51 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowTasksCloseConfirmation")]
+        public void PopupController_ShowTasksCloseConfirmation_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
+            var expectedDesc = "Tasks have not been saved." + Environment.NewLine
+                              + "Would you like to save the tasks? " + Environment.NewLine +
+                              "-----------------------------------------------------------------" +
+                              Environment.NewLine +
+                              "Yes - Save the tasks." + Environment.NewLine +
+                              "No - Discard your changes." + Environment.NewLine +
+                              "Cancel - Returns you to tasks.";
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowTasksCloseConfirmation();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
+            Assert.AreEqual("Tasks Have Changed", header);
+            Assert.AreEqual(expectedDesc, description);
+            Assert.AreEqual(MessageBoxImage.Information, imageType);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("PopupController_ShowNoInputsSelectedWhenClickLink")]
         public void PopupController_ShowNoInputsSelectedWhenClickLink_SetProperties_AllPropertiesDisplayed()

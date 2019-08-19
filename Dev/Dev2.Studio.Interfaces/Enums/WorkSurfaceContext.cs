@@ -20,8 +20,12 @@ namespace Dev2.Studio.Interfaces.Enums
         Service,
         SourceManager,
 
+        //TODO: Remove
         [Description("Scheduler")]
         Scheduler,
+
+        [Description("Triggers")]
+        Triggers,
 
         [Description("Settings")]
         Settings,

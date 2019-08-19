@@ -477,6 +477,25 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowTasksCloseConfirmation()
+        {
+            var description = "Tasks have not been saved." + Environment.NewLine
+                              + "Would you like to save the tasks? " + Environment.NewLine +
+                              "-----------------------------------------------------------------" +
+                              Environment.NewLine +
+                              "Yes - Save the tasks." + Environment.NewLine +
+                              "No - Discard your changes." + Environment.NewLine +
+                              "Cancel - Returns you to tasks.";
+            AssignCommonValues("Tasks Have Changed", description, MessageBoxButton.YesNoCancel);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowSaveErrorDialog(string errorMessage)
         {
@@ -539,7 +558,7 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowInvalidResourcePermission()
         {
-            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            AssignCommonValues(StringResources.SaveErrorPrefix,
             StringResources.SaveSettingsInvalidPermissionEntry, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
@@ -552,7 +571,7 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowHasDuplicateResourcePermissions()
         {
-            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            AssignCommonValues(StringResources.SaveErrorPrefix,
             StringResources.SaveSettingsDuplicateResourcePermissions, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
@@ -565,7 +584,7 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowHasDuplicateServerPermissions()
         {
-            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            AssignCommonValues(StringResources.SaveErrorPrefix,
             StringResources.SaveSettingsDuplicateServerPermissions, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
@@ -576,10 +595,10 @@ namespace Dev2.Studio.Controller
             ApplyToAll = false;
             return Show();
         }
-        public MessageBoxResult ShowSaveSettingsNotReachableErrorMsg()
+        public MessageBoxResult ShowSaveServerNotReachableErrorMsg()
         {
-            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
-            StringResources.SaveSettingsNotReachableErrorMsg, MessageBoxButton.OK);
+            AssignCommonValues(StringResources.SaveErrorPrefix,
+            StringResources.SaveServerNotReachableErrorMsg, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -591,7 +610,7 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowSaveSettingsPermissionsErrorMsg()
         {
-            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            AssignCommonValues(StringResources.SaveErrorPrefix,
             StringResources.SaveSettingsPermissionsErrorMsg, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;

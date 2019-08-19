@@ -965,6 +965,14 @@
       <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>

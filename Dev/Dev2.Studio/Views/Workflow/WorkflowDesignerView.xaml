@@ -33,7 +33,7 @@
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DebugInputsTooltip}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                     </MenuItem.Icon>
                 </MenuItem>
 
@@ -45,7 +45,7 @@
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DebugStudioTooltip}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                     </MenuItem.Icon>
                 </MenuItem>
 
@@ -57,19 +57,36 @@
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DebugBrowserTooltip}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Name="Schedule"
-                          Command="{Binding ScheduleCommand}"
-                          Header="Schedule"
-                          IsEnabled="{Binding CanCreateSchedule}"
-                          Style="{StaticResource MenuItemStyle}"
-                          ToolTip="{Binding ScheduleTooltip}">
+                <MenuItem Header="Triggers"
+                          Style="{StaticResource MenuItemStyle}">
                     <MenuItem.Icon>
-                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
                     </MenuItem.Icon>
+                    <MenuItem Name="Schedule"
+                              Command="{Binding ScheduleCommand}"
+                              Header="Schedule"
+                              IsEnabled="{Binding CanCreateSchedule}"
+                              Style="{StaticResource MenuItemStyle}"
+                              ToolTip="{Binding ScheduleTooltip}">
+                        <MenuItem.Icon>
+                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Name="QueueEvent"
+                              Command="{Binding QueueEventCommand}"
+                              Header="Queue Event"
+                              Style="{StaticResource MenuItemStyle}"
+                              IsEnabled="{Binding CanCreateQueueEvent}"
+                              ToolTip="{Binding QueueEventTooltip}">
+                        <MenuItem.Icon>
+                            <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Calendar" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
 
                 <Separator />
