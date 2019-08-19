@@ -9,36 +9,62 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Triggers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Communication;
 using Dev2.Triggers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.Triggers
 {
     public class TriggersCatalog : ITriggersCatalog
     {
         readonly IDirectory _directoryWrapper;
+        readonly ISerializer _serializer;
+        readonly IFile _fileWrapper;
+
+        static readonly Lazy<TriggersCatalog> LazyCat = new Lazy<TriggersCatalog>(() =>
+        {
+            var c = new TriggersCatalog();
+            return c;
+        }, LazyThreadSafetyMode.PublicationOnly);
+
+        public static ITriggersCatalog Instance => LazyCat.Value;
 
         public TriggersCatalog()
         {
             _directoryWrapper = new DirectoryWrapper();
+            _fileWrapper = new FileWrapper();
+            _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TriggersPath);
             Queues = new List<ITriggerQueue>();
+            _serializer = new Dev2JsonSerializer();
         }
 
         public List<ITriggerQueue> Queues { get; set; }
 
-        public void DeleteAllQueues()
+        public void DeleteAllTriggerQueues()
         {
-            
+            if (_directoryWrapper.Exists(EnvironmentVariables.TriggersPath))
+            {
+                _directoryWrapper.Delete(EnvironmentVariables.TriggersPath, true);
+                Queues.Clear();
+            }
         }
 
-        public void DeleteQueue(Guid resourceId, ITriggerQueue triggerQueue)
+        public void DeleteTriggerQueue(ITriggerQueue triggerQueue)
         {
-            
+            var queueFilePath = GetQueueFilePath(triggerQueue);
+
+            if (_fileWrapper.Exists(queueFilePath))
+            {
+                _fileWrapper.Delete(queueFilePath);
+            }
         }
 
         public void Load()
@@ -55,7 +81,17 @@ namespace Dev2.Runtime.Triggers
             }
         }
 
-        public void SaveQueue(Guid resourceId, ITriggerQueue triggerQueue)
+        public void SaveTriggerQueue(ITriggerQueue triggerQueue)
+        {
+            var queueFilePath = GetQueueFilePath(triggerQueue);
+
+            triggerQueue.Password = DpapiWrapper.EncryptIfDecrypted(triggerQueue.Password);
+
+            var sw = new StreamWriter(queueFilePath, false);
+            _serializer.Serialize(sw, triggerQueue);
+        }
+
+        private static string GetQueueFilePath(ITriggerQueue triggerQueue)
         {
             var source = triggerQueue.QueueSource.ResourceName;
             var queue = triggerQueue.QueueName;
@@ -64,7 +100,7 @@ namespace Dev2.Runtime.Triggers
             var filePath = $"{source}_{queue}_{workflowName}";
 
             var queueFilePath = Path.Combine(dirPath, $"{filePath}.bite");
-            _directoryWrapper.CreateIfNotExists(queueFilePath);
+            return queueFilePath;
         }
     }
 }
