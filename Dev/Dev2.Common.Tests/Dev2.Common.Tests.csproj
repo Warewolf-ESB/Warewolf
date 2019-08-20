@@ -102,6 +102,7 @@
     <Compile Include="DataNodeTests.cs" />
     <Compile Include="UtilitiesTests.cs" />
     <Compile Include="Utils\JSONUtilsTests.cs" />
+    <Compile Include="WarewolfWebRequestForwarderTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="Utils\VerifyArgumentTests.cs" />

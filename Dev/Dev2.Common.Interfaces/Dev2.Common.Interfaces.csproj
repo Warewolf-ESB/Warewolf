@@ -194,6 +194,7 @@
     <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
+    <Compile Include="IWarewolfWebRequestForwarder.cs" />
     <Compile Include="Queue\QueueRunStatus.cs" />
     <Compile Include="Queue\IExecutionHistory.cs" />
     <Compile Include="Queue\IExecutionInfo.cs" />
