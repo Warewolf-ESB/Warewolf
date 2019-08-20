@@ -44,7 +44,7 @@ namespace Warewolf.UI.Load.Specs
         [AfterFeature]
         public static void RemoveScheduledTasks()
         {
-            if (ScenarioContext.Current.ContainsKey("localTaskService"))
+            if (ScenarioContext.Current != null && ScenarioContext.Current.ContainsKey("localTaskService"))
             {
                 var localTaskService = ScenarioContext.Current.Get<TaskService>("localTaskService");
                 var numberOfTasks = ScenarioContext.Current.Get<String>("numberOfTasks");
