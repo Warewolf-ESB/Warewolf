@@ -26,7 +26,7 @@ namespace Dev2
 
         private readonly List<(Thread Thread, string Name)> _processes = new List<(Thread Thread, string Name)>();
 
-        public bool _running { get; set; } 
+        private bool _running;
 
         public QueueProcessorMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader)
         {
