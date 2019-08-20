@@ -121,11 +121,6 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public void ExecutePaste()
-        {
-            PasteResponseVisible = true;
-        }
-
         public void ExecuteTest()
         {
             TestResults = null;
