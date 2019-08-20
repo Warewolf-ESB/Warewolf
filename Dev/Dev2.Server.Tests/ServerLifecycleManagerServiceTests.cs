@@ -102,7 +102,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
-        public void ServerLifecycleMananger_OpenCOMStream_Fails()
+        public void ServerLifecycleManager_OpenCOMStream_Fails()
         {
             //------------------------Arrange------------------------
             var mockWriter = new Mock<IWriter>();
@@ -123,7 +123,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
-        public void ServerLifecycleMananger_IsServerOnline_True()
+        public void ServerLifecycleManager_IsServerOnline_True()
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
@@ -181,7 +181,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
-        public void ServerLifecycleMananger_Verify_QueueProcessMonitorStart_IsServerOnline_True()
+        public void ServerLifecycleManager_Verify_QueueProcessMonitorStart_IsServerOnline_True()
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
@@ -244,7 +244,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
-        public void ServerLifecycleMananger_IsServerOnline_False()
+        public void ServerLifecycleManager_IsServerOnline_False()
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
