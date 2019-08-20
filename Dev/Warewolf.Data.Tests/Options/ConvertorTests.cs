@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -22,7 +32,7 @@ namespace Warewolf.Data.Tests
         {
             var result = ConvertDataToOptionsList();
 
-            Assert.AreEqual("i", result[0].Name);
+            Assert.AreEqual(nameof(TestData.MyInt), result[0].Name);
             Assert.AreEqual(12, ((OptionInt) result[0]).Value);
         }
 
@@ -31,7 +41,7 @@ namespace Warewolf.Data.Tests
         {
             var result = ConvertDataToOptionsList();
 
-            Assert.AreEqual("s", result[1].Name);
+            Assert.AreEqual(nameof(TestData.MyString), result[1].Name);
             Assert.AreEqual("hello", ((OptionAutocomplete)result[1]).Value);
             var expected = new TestData.OptionsForS().Options;
             var suggestions = ((OptionAutocomplete)result[1]).Suggestions;
@@ -43,7 +53,7 @@ namespace Warewolf.Data.Tests
         {
             var result = ConvertDataToOptionsList();
 
-            Assert.AreEqual("b", result[2].Name);
+            Assert.AreEqual(nameof(TestData.MyBool), result[2].Name);
             Assert.AreEqual(true, ((OptionBool)result[2]).Value);
         }
 
@@ -51,9 +61,9 @@ namespace Warewolf.Data.Tests
         {
             var cls = new TestData
             {
-                i = 12,
-                s = "hello",
-                b = true
+                MyInt = 12,
+                MyString = "hello",
+                MyBool = true
             };
 
             return OptionConvertor.Convert(cls);
@@ -61,10 +71,10 @@ namespace Warewolf.Data.Tests
 
         public class TestData
         {
-            public int i { get; set; }
+            public int MyInt { get; set; }
             [DataProvider(typeof(OptionsForS))]
-            public string s { get; set; }
-            public bool b { get; set; }
+            public string MyString { get; set; }
+            public bool MyBool { get; set; }
 
             public class OptionsForS : IOptionDataList
             {
