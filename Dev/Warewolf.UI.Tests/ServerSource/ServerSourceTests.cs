@@ -147,10 +147,6 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             try
             {
-                _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-                ExplorerUIMap.ConnectToRestrictedRemoteServer();
-                UIMap.WaitForControlVisible(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem);
-
                 UIMap.Click_Settings_RibbonButton();
                 SettingsUIMap.AddNewServerPermissionsUser();
 
@@ -165,7 +161,6 @@ namespace Warewolf.UI.Tests.ServerSource
             finally
             {
                 Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
-                _containerOps?.Dispose();
             }
         }
 
