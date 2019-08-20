@@ -296,9 +296,9 @@
                                                         <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Local Server Source (Connected)</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="Name" Operator="Contains">Local Server Source</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />

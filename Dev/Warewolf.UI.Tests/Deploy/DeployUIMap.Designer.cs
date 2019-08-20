@@ -808,7 +808,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     this.mLocalServerSourceText = new WpfText(this);
                     #region Search Criteria
-                    this.mLocalServerSourceText.SearchProperties[WpfText.PropertyNames.Name] = "Local Server Source (Connected)";
+                    this.mLocalServerSourceText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Local Server Source", PropertyExpressionOperator.Contains));
                     this.mLocalServerSourceText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
