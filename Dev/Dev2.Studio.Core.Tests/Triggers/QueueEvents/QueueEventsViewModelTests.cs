@@ -403,21 +403,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_PasteResponseVisible()
-        {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsFalse(queueEventsViewModel.PasteResponseVisible);
-
-            queueEventsViewModel.PasteResponseVisible = true;
-
-            Assert.IsTrue(queueEventsViewModel.PasteResponseVisible);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents_PasteResponse()
         {
             var mockServer = new Mock<IServer>();
@@ -446,20 +431,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
             mockExternalProcessExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_PasteResponseCommand()
-        {
-            var mockServer = new Mock<IServer>();
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            Assert.IsFalse(queueEventsViewModel.PasteResponseVisible);
-
-            queueEventsViewModel.PasteResponseCommand.Execute(null);
-            Assert.IsTrue(queueEventsViewModel.PasteResponseVisible);
         }
 
         [TestMethod]
