@@ -19,6 +19,8 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Data.TO;
+using Dev2.Dialogs;
+using Dev2.Studio.Enums;
 using Dev2.Runtime.Triggers;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Trigger;
@@ -27,10 +29,12 @@ using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
+using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger;
 using Warewolf.UI;
 
@@ -66,6 +70,8 @@ namespace Dev2.Triggers.QueueEvents
         private string _testResults;
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
+        private readonly EnvironmentViewModel _source;
+        IResourcePickerDialog _currentResourcePicker;
         string _connectionError;
         bool _hasConnectionError;
         bool _isProgressBarVisible;
@@ -80,26 +86,44 @@ namespace Dev2.Triggers.QueueEvents
         private List<OptionView> _deadLetterOptions;
 
         public QueueEventsViewModel(IServer server)
-            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker())
+            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(),null)
         {
 
         }
 
-        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker)
+        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker,IResourcePickerDialog resourcePickerDialog)
         {
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
             Inputs = new List<IServiceInput>();
             TestCommand = new DelegateCommand(ExecuteTest);
+            AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
             IsTesting = false;
+            _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            _currentResourcePicker = resourcePickerDialog??CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
-
             InitializeHelp();
             Options = new List<OptionView>();
             DeadLetterOptions = new List<OptionView>();
+        }
+
+        private void OpenResourcePicker()
+        {
+            if (_currentResourcePicker.ShowDialog(_server))
+            {
+                var selectedResource = _currentResourcePicker.SelectedResource;
+                WorkflowName = selectedResource.ResourcePath;
+                SelectedQueue.ResourceId = selectedResource.ResourceId;
+                SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+            }
+        }
+
+        public void ExecutePaste()
+        {
+            PasteResponseVisible = true;
         }
 
         public void ExecuteTest()
@@ -197,6 +221,16 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(SelectedDeadLetterQueueSource));
             }
         }
+
+        IResourcePickerDialog CreateResourcePickerDialog()
+        {
+            var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
+            return res;
+        }
+
+        Task<IResourcePickerDialog> GetResourcePickerDialog => ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
+
 
         private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
@@ -354,6 +388,7 @@ namespace Dev2.Triggers.QueueEvents
         }
 
         public ICommand TestCommand { get; private set; }
+        public ICommand AddWorkflowCommand { get; private set; }
 
         public bool IsTesting
         {

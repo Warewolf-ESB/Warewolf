@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Data.TO;
+using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
@@ -426,7 +427,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
             mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new SynchronousAsyncWorker());
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new SynchronousAsyncWorker(),new Mock<IResourcePickerDialog>().Object);
 
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
