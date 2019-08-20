@@ -10,14 +10,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -32,23 +34,29 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Dev2Logger.Info("Save Queue Service", GlobalConstants.WarewolfInfo);
+                if (values == null)
+                {
+                    throw new InvalidDataContractException(ErrorResource.NoParameter);
+                }
+
+                Dev2Logger.Info("Save Trigger Queue Service", GlobalConstants.WarewolfInfo);
                 msg.HasError = false;
 
                 values.TryGetValue("TriggerQueue", out StringBuilder resourceDefinition);
 
                 var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
 
-                //ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, triggerQueue, EnvironmentVariables.QueuePath)
+                TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
+
+                return serializer.SerializeToBuilder(msg);
             }
             catch (Exception err)
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error("Save Queue Service Failed: " + err.Message, GlobalConstants.WarewolfError);
+                throw;
             }
-
-            return serializer.SerializeToBuilder(msg);
         }
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
