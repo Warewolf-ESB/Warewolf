@@ -29,6 +29,7 @@ using System.Windows.Controls;
 using Warewolf.Core;
 using Warewolf.Options;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Dialogs;
 using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Triggers;
 
@@ -446,7 +447,7 @@ namespace Dev2.Studio.Tests.ViewModels.Tasks.QueueEvents
             var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
             mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new SynchronousAsyncWorker());
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new SynchronousAsyncWorker(),new Mock<IResourcePickerDialog>().Object);
 
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
