@@ -21,11 +21,11 @@ namespace Dev2.Common.Tests.Queue
     {
         [TestMethod]
         [Owner("Sphamandla Dube")]
-        [TestCategory(nameof(IQueueSource))]
+        [TestCategory(nameof(IQueueConnectionFactory))]
         public void IQueue_StartConsuming_GivenNoEvents_Success()
         {
             //----------------------Arrange----------------------
-            var mockQueueSource = new Mock<IQueueSource>();
+            var mockQueueSource = new Mock<IQueueConnectionFactory>();
             var mockQueueConnection = new Mock<IQueueConnection>();
             var mockConfig = new Mock<IQueueConfig>();
 
@@ -47,11 +47,11 @@ namespace Dev2.Common.Tests.Queue
 
         [TestMethod]
         [Owner("Sphamandla Dube")]
-        [TestCategory(nameof(IQueueSource))]
+        [TestCategory(nameof(IQueueConnectionFactory))]
         public void IQueue_Publish_Success()
         {
             //----------------------Arrange----------------------
-            var mockQueueSource = new Mock<IQueueSource>();
+            var mockQueueSource = new Mock<IQueueConnectionFactory>();
             var mockQueueConnection = new Mock<IQueueConnection>();
             var mockConfig = new Mock<IQueueConfig>();
             var mockPublisher = new Mock<IPublisher>();

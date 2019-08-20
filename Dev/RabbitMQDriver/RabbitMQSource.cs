@@ -13,7 +13,7 @@ using RabbitMQ.Client;
 
 namespace Warewolf.Driver.RabbitMQ
 {
-    public class RabbitMQSource : IQueueSource
+    public class RabbitMQSource : IQueueConnectionFactory
     {
         private readonly ConnectionFactory _factory;
 

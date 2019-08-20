@@ -10,7 +10,7 @@
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IQueueSource
+    public interface IQueueConnectionFactory
     {
         IQueueConnection NewConnection(IQueueConfig config);
     }
