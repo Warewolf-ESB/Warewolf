@@ -14,12 +14,11 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using Warewolf.Security.Encryption;
 
 
 
 
-namespace Dev2.Warewolf.Security.Encryption
+namespace Warewolf.Security.Encryption
 {
     [TestClass]
     public class DPAPIWrapperTests

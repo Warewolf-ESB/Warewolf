@@ -10,7 +10,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Dev2.Warewolf.Security.Encryption
+namespace Warewolf.Security.Encryption
 {
     public static class AESThenHMAC
     {
