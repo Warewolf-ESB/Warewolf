@@ -243,6 +243,7 @@
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
     <Compile Include="Services\FetchAllTestsTest.cs" />
     <Compile Include="Services\FindOptionsTests.cs" />
+    <Compile Include="Services\SaveTriggerQueueServiceTests.cs" />
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
     <Compile Include="Triggers\TriggersCatalogTests.cs" />
