@@ -24,9 +24,9 @@ namespace Dev2
         private readonly IQueueConfigLoader _queueConfigLoader;
         private readonly IProcessFactory _processFactory;
 
-        List<(Thread Thread, string Name)> Processes = new List<(Thread Thread, string Name)>();
+        private readonly List<(Thread Thread, string Name)> _processes = new List<(Thread Thread, string Name)>();
 
-        bool _running { get; set; } 
+        public bool _running { get; set; } 
 
         public QueueProcessorMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader)
         {
@@ -41,7 +41,7 @@ namespace Dev2
             {
                 var thread = new Thread(()=> Start(config));
                 thread.Start();
-                Processes.Add((thread, config));
+                _processes.Add((thread, config));
             }
 
             ProcessMonitor();
@@ -69,7 +69,7 @@ namespace Dev2
         {
             while (_running)
             {
-                var items = Processes.ToArray();
+                var items = _processes.ToArray();
                 foreach (var process in items)
                 {
                     if (!process.Thread.IsAlive)
@@ -77,8 +77,8 @@ namespace Dev2
                         var thread = new Thread(() => Start(process.Name));
                         thread.Start();
 
-                        Processes.Remove(process);
-                        Processes.Add((thread, process.Name));
+                        _processes.Remove(process);
+                        _processes.Add((thread, process.Name));
                     }
                 };
 
