@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.ConnectionHelpers;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -23,6 +24,7 @@ using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Dev2.Triggers;
 using Dev2.Triggers.QueueEvents;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -39,6 +41,25 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
+        [TestInitialize]
+        public void SetupForTest()
+        {
+            AppUsageStats.LocalHost = "http://localhost:3142";
+            var shell = new Mock<IShellViewModel>();
+            var lcl = new Mock<IServer>();
+            lcl.Setup(a => a.DisplayName).Returns("Localhost");
+            shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
+            shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            var serverRepo = new Mock<IServerRepository>();
+       
+            CustomContainer.Register(shell.Object);
+            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(connectControlSingleton.Object);
+            CustomContainer.Register(explorerTooltips.Object);
+            CustomContainer.Register(serverRepo.Object);
+        }
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
