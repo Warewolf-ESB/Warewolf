@@ -102,7 +102,7 @@
     <Compile Include="DataNodeTests.cs" />
     <Compile Include="UtilitiesTests.cs" />
     <Compile Include="Utils\JSONUtilsTests.cs" />
-    <Compile Include="WarewolfWebRequestForwarderTests.cs" />
+    <Compile Include="WebRequestForwarderTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="Utils\VerifyArgumentTests.cs" />
@@ -179,6 +179,9 @@
       <Version>1.4.0</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+    <PackageReference Include="RichardSzalay.MockHttp">
+      <Version>5.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
