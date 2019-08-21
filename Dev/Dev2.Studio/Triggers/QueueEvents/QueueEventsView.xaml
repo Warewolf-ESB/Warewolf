@@ -358,7 +358,7 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Text="Queue Sink" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                    <TextBlock Text="Queue Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                     <ComboBox x:Name="DeadLetterQueueSourcesComboBox"
                                               Grid.Column="1"
                                               DisplayMemberPath="ResourceName" 
