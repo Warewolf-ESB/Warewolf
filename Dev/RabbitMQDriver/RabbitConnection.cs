@@ -26,11 +26,6 @@ namespace Warewolf.Driver.RabbitMQ
 
         public bool IsOpen => _connection.IsOpen;
 
-        public void Dispose()
-        {
-            _connection.Dispose();
-        }
-
         public IPublisher NewPublisher(IQueueConfig config)
         {
             var channel = CreateChannel(config as RabbitConfig);
@@ -60,6 +55,26 @@ namespace Warewolf.Driver.RabbitMQ
         private IModel CreateChannel(RabbitConfig rConfig)
         {
             return rConfig.CreateChannel(_connection);
+        }
+
+        private bool _isDisposed = false;
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!_isDisposed)
+            {
+                if (isDisposing)
+                {
+                    _connection.Dispose();
+                }
+
+                _isDisposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }
