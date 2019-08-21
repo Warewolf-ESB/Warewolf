@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error("Save Queue Service Failed: " + err.Message, GlobalConstants.WarewolfError);
-                throw;
+                return serializer.SerializeToBuilder(msg);
             }
         }
 
