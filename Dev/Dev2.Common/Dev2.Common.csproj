@@ -146,6 +146,7 @@
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
+    <Compile Include="IHttpClient.cs" />
     <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />
     <Compile Include="IncludeApi.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Utils\JsonPath.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
     <Compile Include="Utils\VerifyArgument.cs" />
+    <Compile Include="WebRequestForwarderBase.cs" />
     <Compile Include="WebServiceHeaderBuilder.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />

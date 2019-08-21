@@ -9,12 +9,13 @@
 */
 
 
+using System.Net.Http;
+using System.Threading.Tasks;
+
 namespace Dev2.Common.Interfaces
 {
-    public interface IWarewolfWebRequestForwarder
+    public interface IWebRequestForwarder
     {
-        bool IsMessageProcessed { get; }
-
-        void ProcessMessage();
+        Task<HttpResponseMessage> SendUrl(string url);
     }
 }
