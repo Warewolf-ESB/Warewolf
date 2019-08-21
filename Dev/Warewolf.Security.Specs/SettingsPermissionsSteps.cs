@@ -242,9 +242,11 @@ namespace Dev2.Activities.Specs.Permissions
             var resourceModels = environmentModel.ResourceRepository.All();
             Assert.IsTrue(resourceModels.Count() > 0, "Cannot load any resources from " + environmentModel.DisplayName);
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
+            var samplePerm = resourceModels.FirstOrDefault((resource) => { return resource.UserPermissions != resourcePermissions; }).UserPermissions;
+            var allMatchOfSample = resourceModels.Count(model => model.UserPermissions == samplePerm);
             var totalNumberOfResources = resourceModels.Count;
             var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
-            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, "Total number of resources with " + resourcePermissions + " permission is " + allMatch + ". There are " + totalNumberOfResources + " resources in total. Therefore " + totalNumberOfResourcesWithoutMatch + " total resources do not have that permission.");
+            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, $"Total number of resources with \"{resourcePermissions}\" permission is {allMatch}. {allMatchOfSample} Resources do, however, have \"{samplePerm}\" permissions.");
         }
 
         [Then(@"resources should not have ""(.*)""")]
