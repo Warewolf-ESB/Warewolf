@@ -56,14 +56,14 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var triggerQueue = new TriggerQueue
             {
-                QueueSource = mockResource.Object,
+                QueueSourceId = resourceId,
                 QueueName = "Queue",
                 WorkflowName = "Workflow",
                 Concurrency = 100,
                 UserName = "Bob",
                 Password = "123456",
                 Options = new IOption[] { mockOption.Object },
-                QueueSink = mockResource.Object,
+                QueueSinkId = resourceId,
                 DeadLetterQueue = "DeadLetterQueue",
                 DeadLetterOptions = new IOption[] { mockOption.Object },
                 Inputs = mockInputs.Object,

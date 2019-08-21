@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Warewolf.Options;
 
@@ -19,14 +18,14 @@ namespace Dev2.Triggers
     public interface ITriggerQueue : ITrigger, IEquatable<ITriggerQueue>
     {
         Guid TriggerId { get; set; }
-        IResource QueueSource { get; set; }
+        Guid QueueSourceId { get; set; }
         string QueueName { get; set; }
         string WorkflowName { get; set; }
         int Concurrency { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
         IOption[] Options { get; set; }
-        IResource QueueSink { get; set; }
+        Guid QueueSinkId { get; set; }
         string DeadLetterQueue { get; set; }
         IOption[] DeadLetterOptions { get; set; }
         ICollection<IServiceInput> Inputs { get; set; }

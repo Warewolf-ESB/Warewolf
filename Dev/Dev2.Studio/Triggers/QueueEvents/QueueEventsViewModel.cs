@@ -21,6 +21,7 @@ using Dev2.Common.Serializers;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Studio.Enums;
+using Dev2.Runtime.Triggers;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
@@ -50,9 +51,9 @@ namespace Dev2.Triggers.QueueEvents
         string _deadLetterQueue;
         string _workflowName;
         int _concurrency;
-        private IServer _server;
-        private IResourceRepository _resourceRepository;
-        IExternalProcessExecutor _externalProcessExecutor;
+        private readonly IServer _server;
+        private readonly IResourceRepository _resourceRepository;
+        readonly IExternalProcessExecutor _externalProcessExecutor;
         private IList<INameValue> _queueNames;
 
         private IList<INameValue> _deadLetterQueues;
@@ -65,6 +66,7 @@ namespace Dev2.Triggers.QueueEvents
         private bool _testPassed;
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
+        private bool _isHistoryExpanded;
         private string _testResults;
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
@@ -95,7 +97,6 @@ namespace Dev2.Triggers.QueueEvents
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
             Inputs = new List<IServiceInput>();
-            PasteResponseCommand = new DelegateCommand(ExecutePaste);
             TestCommand = new DelegateCommand(ExecuteTest);
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
             IsTesting = false;
@@ -118,11 +119,6 @@ namespace Dev2.Triggers.QueueEvents
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
             }
-        }
-
-        public void ExecutePaste()
-        {
-            PasteResponseVisible = true;
         }
 
         public void ExecuteTest()
@@ -151,7 +147,6 @@ namespace Dev2.Triggers.QueueEvents
                 TestPassed = false;
                 TestFailed = true;
             }
-            PasteResponseVisible = false;
         }
 
         public IList<string> QueueEvents { get; set; }
@@ -319,18 +314,6 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public ICommand PasteResponseCommand { get; private set; }
-
-        public bool PasteResponseVisible
-        {
-            get => _pasteResponseVisible;
-            set
-            {
-                _pasteResponseVisible = value;
-                OnPropertyChanged(nameof(PasteResponseVisible));
-            }
-        }
-
         public string PasteResponse
         {
             get => _pasteResponse;
@@ -446,14 +429,14 @@ namespace Dev2.Triggers.QueueEvents
         {
             ITriggerQueue triggerQueue = new TriggerQueue
             {
-                QueueSource = SelectedQueueSource,
+                QueueSourceId = SelectedQueueSource.ResourceID,
                 QueueName = QueueName,
                 WorkflowName = WorkflowName,
                 Concurrency = Concurrency,
                 UserName = AccountName,
                 Password = Password,
                 Options = new IOption[] { },
-                QueueSink = SelectedDeadLetterQueueSource,
+                QueueSinkId = SelectedDeadLetterQueueSource.ResourceID,
                 DeadLetterQueue = DeadLetterQueue,
                 DeadLetterOptions = new IOption[] { },
                 Inputs = Inputs
@@ -468,8 +451,7 @@ namespace Dev2.Triggers.QueueEvents
                 triggerQueue.DeadLetterOptions = new IOption[] { option.DataContext };
             }
 
-            //Save using QueueResourceModel
-            //QueueResourceModel.Save(triggerQueue)
+            TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
 
             return true;
         }
@@ -520,11 +502,27 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(ExecutionHistory));
             }
         }
+
+        public bool IsHistoryExpanded
+        {
+            get => _isHistoryExpanded;
+            set
+            {
+                _isHistoryExpanded = value;
+                OnPropertyChanged(nameof(IsHistoryExpanded));
+                OnPropertyChanged(nameof(History));
+            }
+        }
+
         public IList<IExecutionHistory> History
         {
             get
             {
-                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewItem)
+                if (!IsHistoryExpanded)
+                {
+                    return new List<IExecutionHistory>();
+                }
+                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewQueue)
                 {
                     _asyncWorker.Start(() =>
                     {
@@ -592,7 +590,7 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(SelectedQueue));
                     return;
                 }
-                if (Equals(_selectedQueue, value) || value.IsNewItem)
+                if (Equals(_selectedQueue, value) || value.IsNewQueue)
                 {
                     return;
                 }

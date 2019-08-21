@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.ConnectionHelpers;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -23,6 +24,7 @@ using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Dev2.Triggers;
 using Dev2.Triggers.QueueEvents;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -39,6 +41,25 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
+        [TestInitialize]
+        public void SetupForTest()
+        {
+            AppUsageStats.LocalHost = "http://localhost:3142";
+            var shell = new Mock<IShellViewModel>();
+            var lcl = new Mock<IServer>();
+            lcl.Setup(a => a.DisplayName).Returns("Localhost");
+            shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
+            shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            var serverRepo = new Mock<IServerRepository>();
+       
+            CustomContainer.Register(shell.Object);
+            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(connectControlSingleton.Object);
+            CustomContainer.Register(explorerTooltips.Object);
+            CustomContainer.Register(serverRepo.Object);
+        }
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
@@ -404,21 +425,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_PasteResponseVisible()
-        {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsFalse(queueEventsViewModel.PasteResponseVisible);
-
-            queueEventsViewModel.PasteResponseVisible = true;
-
-            Assert.IsTrue(queueEventsViewModel.PasteResponseVisible);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents_PasteResponse()
         {
             var mockServer = new Mock<IServer>();
@@ -447,20 +453,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
             mockExternalProcessExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_PasteResponseCommand()
-        {
-            var mockServer = new Mock<IServer>();
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            Assert.IsFalse(queueEventsViewModel.PasteResponseVisible);
-
-            queueEventsViewModel.PasteResponseCommand.Execute(null);
-            Assert.IsTrue(queueEventsViewModel.PasteResponseVisible);
         }
 
         [TestMethod]
@@ -662,7 +654,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             }
             public Guid TriggerId { get; set; }
             public string Name { get; set; }
-            public string OldName { get; set; }
+            public string OldQueueName { get; set; }
             public QueueStatus Status { get; set; }
             public DateTime NextRunDate { get; set; }
             public int NumberOfHistoryToKeep { get; set; }
@@ -672,22 +664,22 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             public string Password { get; set; }
             public IErrorResultTO Errors { get; set; }
             public bool IsNew { get; set; }
-            public bool IsNewItem
+            public bool IsNewQueue
             {
                 get => _isNewItem;
                 set => _isNewItem = value;
             }
-            public string NameForDisplay { get; private set; }
+            public string NameForDisplay { get; set; }
             public string QueueName
             {
                 get => _queueName;
                 set => _queueName = value;
             }
 
-            public IResource QueueSource { get; set; }
+            public Guid QueueSourceId { get; set; }
             public int Concurrency { get; set; }
             public IOption[] Options { get; set; }
-            public IResource QueueSink { get; set; }
+            public Guid QueueSinkId { get; set; }
             public string DeadLetterQueue { get; set; }
             public IOption[] DeadLetterOptions { get; set; }
             public ICollection<IServiceInput> Inputs { get; set; }
