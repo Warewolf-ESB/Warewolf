@@ -102,9 +102,10 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var mockResource = new Mock<IResource>();
             mockResource.Setup(resource => resource.ResourceName).Returns(source);
+            mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
 
             var triggerQueueEvent =  new TriggerQueue();
-            triggerQueueEvent.QueueSource= mockResource.Object;
+            triggerQueueEvent.QueueSourceId= mockResource.Object.ResourceID;
             triggerQueueEvent.QueueName= queue;
             triggerQueueEvent.WorkflowName= workflowName;
 

@@ -131,6 +131,9 @@ namespace Dev2.Tests.Runtime.Services
         public IOption[] DeadLetterOptions { get; set; }
         public ICollection<IServiceInput> Inputs { get; set; }
         public Guid ResourceId { get; set; }
+        public Guid QueueSourceId { get; set; }
+        public Guid QueueSinkId { get; set; }
+        public string Name { get; set; }
 
         public bool Equals(ITriggerQueue other) => throw new NotImplementedException();
     }
