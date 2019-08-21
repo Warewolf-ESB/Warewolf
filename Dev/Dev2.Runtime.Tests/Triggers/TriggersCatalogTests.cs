@@ -11,6 +11,7 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Serializers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
@@ -19,6 +20,7 @@ using Moq;
 using System;
 using System.IO;
 using System.Linq;
+using Warewolf.Security.Encryption;
 using Warewolf.Trigger;
 
 namespace Dev2.Tests.Runtime.Triggers
@@ -34,7 +36,7 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestInitialize]
         public void CleanupTestDirectory()
         {
-            if (Directory.Exists(EnvironmentVariables.TriggersPath))
+            if (Directory.Exists(EnvironmentVariables.QueueTriggersPath))
             {
                 DirectoryWrapperInstance().CleanUp(EnvironmentVariables.TriggersPath);
             }
@@ -47,11 +49,11 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             //------------Setup for test--------------------------
             //------------Assert Preconditions-------------------
-            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TriggersPath));
+            Assert.IsFalse(Directory.Exists(EnvironmentVariables.QueueTriggersPath));
             //------------Execute Test---------------------------
             new TriggersCatalog();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Directory.Exists(EnvironmentVariables.TriggersPath));
+            Assert.IsTrue(Directory.Exists(EnvironmentVariables.QueueTriggersPath));
         }
 
         [TestMethod]
@@ -72,21 +74,65 @@ namespace Dev2.Tests.Runtime.Triggers
             mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
 
             var triggerCatalog = new TriggersCatalog();
+            var triggerQueueEvent = mockTriggerQueue.Object;
+            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-            triggerCatalog.SaveTriggerQueue(mockTriggerQueue.Object);
+            var path = EnvironmentVariables.QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
 
-            var filePath = $"{source}_{queue}_{workflowName}";
-
-            var path = EnvironmentVariables.TriggersPath + "\\" + filePath + ".bite";
-
-            var triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.TriggersPath).ToList();
+            var triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
 
             Assert.AreEqual(1, triggerQueueFiles.Count);
             Assert.AreEqual(path, triggerQueueFiles[0]);
 
             triggerCatalog.DeleteTriggerQueue(mockTriggerQueue.Object);
 
-            triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.TriggersPath).ToList();
+            triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
+
+            Assert.AreEqual(0, triggerQueueFiles.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_SaveTriggerQueue_ShouldSaveEncrypted()
+        {
+            var source = "TestResource";
+            var queue = "TestQueueName";
+            var workflowName = "TestWorkflow";
+
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(resource => resource.ResourceName).Returns(source);
+
+            var triggerQueueEvent =  new TriggerQueue();
+            triggerQueueEvent.QueueSource= mockResource.Object;
+            triggerQueueEvent.QueueName= queue;
+            triggerQueueEvent.WorkflowName= workflowName;
+
+            var triggerCatalog = new TriggersCatalog();
+            
+            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+
+            var path = EnvironmentVariables.QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
+
+            var triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
+
+            Assert.AreEqual(1, triggerQueueFiles.Count);
+            Assert.AreEqual(path, triggerQueueFiles[0]);
+
+            var savedData = File.ReadAllText(path);
+            var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
+            Assert.IsTrue(isEncrypted);
+
+            var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
+            var serializer = new Dev2JsonSerializer();
+
+            var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+            Assert.IsNotNull(theSavedTrigger);
+            Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
+
+            triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+
+            triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
 
             Assert.AreEqual(0, triggerQueueFiles.Count);
         }
@@ -109,25 +155,24 @@ namespace Dev2.Tests.Runtime.Triggers
             mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
 
             var triggerCatalog = new TriggersCatalog();
+            var triggerQueueEvent = mockTriggerQueue.Object;
+            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-            triggerCatalog.SaveTriggerQueue(mockTriggerQueue.Object);
 
-            var filePath = $"{source}_{queue}_{workflowName}";
+            var path = EnvironmentVariables.QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
 
-            var path = EnvironmentVariables.TriggersPath + "\\" + filePath + ".bite";
-
-            var triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.TriggersPath).ToList();
+            var triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
 
             Assert.AreEqual(1, triggerQueueFiles.Count);
             Assert.AreEqual(path, triggerQueueFiles[0]);
 
             triggerCatalog.DeleteAllTriggerQueues();
 
-            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TriggersPath));
+            Assert.IsFalse(Directory.Exists(EnvironmentVariables.QueueTriggersPath));
 
             var newTriggerCatalog = new TriggersCatalog();
 
-            Assert.IsTrue(Directory.Exists(EnvironmentVariables.TriggersPath));
+            Assert.IsTrue(Directory.Exists(EnvironmentVariables.QueueTriggersPath));
         }
     }
 }
