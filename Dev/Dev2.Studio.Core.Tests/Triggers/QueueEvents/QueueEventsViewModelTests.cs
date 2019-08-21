@@ -335,8 +335,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.IsNotNull(optionThree);
             Assert.AreEqual("auto", optionThree.Name);
             Assert.AreEqual("new text", optionThree.Value);
-            Assert.AreEqual(1, optionThree.Suggestions.Count());
-            Assert.AreEqual("", optionThree.Suggestions[0]);
+            Assert.IsNull( optionThree.Suggestions);
             Assert.AreEqual("", optionThree.Default);
 
             var optionThreeTemplate = queueEventsViewModel.DeadLetterOptions[2].DataTemplate;
