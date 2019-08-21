@@ -77,7 +77,8 @@ namespace RabbitMQDriverTests
             };
 
             //----------------------Act--------------------------
-            var data = Encoding.UTF8.GetBytes("Hello");
+            var message = Guid.NewGuid().ToString();
+            var data = Encoding.UTF8.GetBytes(message);
             var connection = queueSource.NewConnection(config);
             var publisher = connection.NewPublisher(config);
             publisher.Publish(data);
@@ -88,7 +89,7 @@ namespace RabbitMQDriverTests
 
             Assert.AreEqual(config.Exchange, sentData.Exchange);
             Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
-            Assert.AreEqual(Encoding.UTF8.GetString(data), Encoding.UTF8.GetString(sentData.Body));
+            Assert.AreEqual(message, Encoding.UTF8.GetString(sentData.Body));
 
         }
 
@@ -111,7 +112,7 @@ namespace RabbitMQDriverTests
             public BasicGetResult GetSentMessage(string queueName)
             {
                 _channel = NewConnection().CreateModel();
-                return _channel.BasicGet(queue: queueName, noAck: false);
+                return _channel.BasicGet(queue: queueName, noAck: true);
             }
 
             public void Dispose()
