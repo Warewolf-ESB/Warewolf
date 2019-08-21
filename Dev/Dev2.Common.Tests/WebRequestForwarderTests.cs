@@ -24,7 +24,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebRequestForwarderBase))]
-        public void WarewolfWebRequestForwarder_ProcessMessage_Success()
+        public void WebRequestForwarder_ProcessMessage_Success()
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
