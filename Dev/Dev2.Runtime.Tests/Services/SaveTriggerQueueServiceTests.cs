@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
@@ -20,6 +22,7 @@ using Dev2.Triggers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Options;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -97,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SaveTriggerQueueService_Execute()
         {
             var serializer = new Dev2JsonSerializer();
-            var source = new Mock<ITriggerQueue>();
+            var source = new TriggerQueueForTest();
 
             var values = new Dictionary<string, StringBuilder>
             {
@@ -110,5 +113,25 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsFalse(result.HasError);
         }
+    }
+
+    internal class TriggerQueueForTest : ITriggerQueue
+    {
+
+        public Guid TriggerId { get; set; }
+        public IResource QueueSource { get; set; }
+        public string QueueName { get; set; }
+        public string WorkflowName { get; set; }
+        public int Concurrency { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public IOption[] Options { get; set; }
+        public IResource QueueSink { get; set; }
+        public string DeadLetterQueue { get; set; }
+        public IOption[] DeadLetterOptions { get; set; }
+        public ICollection<IServiceInput> Inputs { get; set; }
+        public Guid ResourceId { get; set; }
+
+        public bool Equals(ITriggerQueue other) => throw new NotImplementedException();
     }
 }

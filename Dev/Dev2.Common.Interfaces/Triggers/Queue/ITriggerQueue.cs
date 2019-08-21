@@ -18,6 +18,7 @@ namespace Dev2.Triggers
 {
     public interface ITriggerQueue : ITrigger, IEquatable<ITriggerQueue>
     {
+        Guid TriggerId { get; set; }
         IResource QueueSource { get; set; }
         string QueueName { get; set; }
         string WorkflowName { get; set; }

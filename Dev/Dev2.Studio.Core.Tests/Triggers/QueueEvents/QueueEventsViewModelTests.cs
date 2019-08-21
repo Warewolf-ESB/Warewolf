@@ -660,6 +660,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 get => _isDirty;
                 set => _isDirty = value;
             }
+            public Guid TriggerId { get; set; }
             public string Name { get; set; }
             public string OldName { get; set; }
             public QueueStatus Status { get; set; }
