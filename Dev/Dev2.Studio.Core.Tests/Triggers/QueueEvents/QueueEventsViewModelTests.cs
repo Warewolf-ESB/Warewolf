@@ -632,7 +632,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 set => _isDirty = value;
             }
             public string Name { get; set; }
-            public string OldName { get; set; }
+            public string OldQueueName { get; set; }
             public QueueStatus Status { get; set; }
             public DateTime NextRunDate { get; set; }
             public int NumberOfHistoryToKeep { get; set; }
@@ -642,22 +642,22 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             public string Password { get; set; }
             public IErrorResultTO Errors { get; set; }
             public bool IsNew { get; set; }
-            public bool IsNewItem
+            public bool IsNewQueue
             {
                 get => _isNewItem;
                 set => _isNewItem = value;
             }
-            public string NameForDisplay { get; private set; }
+            public string NameForDisplay { get; set; }
             public string QueueName
             {
                 get => _queueName;
                 set => _queueName = value;
             }
 
-            public IResource QueueSource { get; set; }
+            public Guid QueueSourceId { get; set; }
             public int Concurrency { get; set; }
             public IOption[] Options { get; set; }
-            public IResource QueueSink { get; set; }
+            public Guid QueueSinkId { get; set; }
             public string DeadLetterQueue { get; set; }
             public IOption[] DeadLetterOptions { get; set; }
             public ICollection<IServiceInput> Inputs { get; set; }

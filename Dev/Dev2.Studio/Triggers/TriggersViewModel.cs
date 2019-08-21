@@ -65,7 +65,7 @@ namespace Dev2.Triggers
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
 
-            SaveCommand = new RelayCommand(o => SaveTasks(), o => IsDirty);
+            SaveCommand = new RelayCommand(o => SaveTriggers(), o => IsDirty);
 
             ToEnvironmentModel = toEnvironmentModel ?? (a => a.ToEnvironmentModel());
             CurrentEnvironment = ToEnvironmentModel?.Invoke(server);
@@ -356,7 +356,7 @@ namespace Dev2.Triggers
                 }
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    return SaveTasks();
+                    return SaveTriggers();
                 }
 
                 if (messageBoxResult == MessageBoxResult.No)
@@ -367,13 +367,13 @@ namespace Dev2.Triggers
             }
             else
             {
-                return SaveTasks();
+                return SaveTriggers();
             }
 
             return true;
         }
 
-        bool SaveTasks()
+        bool SaveTriggers()
         {
             if (CurrentEnvironment.IsConnected)
             {

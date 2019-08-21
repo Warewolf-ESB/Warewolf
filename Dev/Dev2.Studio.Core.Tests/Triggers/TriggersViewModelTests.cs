@@ -9,42 +9,16 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Communication;
-using Dev2.Data.TO;
-using Dev2.Dialogs;
-using Dev2.Scheduler;
 using Dev2.Services.Security;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
-using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
-using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Win32.TaskScheduler;
 using Moq;
-using Dev2.Studio.Interfaces.Enums;
-using Dev2.Services.Events;
 using Dev2.Triggers;
-using Dev2.Triggers.Scheduler;
 
 namespace Dev2.Core.Tests.Triggers
 {
@@ -101,16 +75,16 @@ namespace Dev2.Core.Tests.Triggers
             var mockEnvironment = new Mock<IServer>();
             mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
 
-            Assert.AreEqual(mockServer.Object, tasksViewModel.Server);
-            Assert.AreEqual(mockEnvironment.Object, tasksViewModel.CurrentEnvironment);
-            Assert.AreEqual("Triggers - TestServer", tasksViewModel.DisplayName);
-            Assert.AreEqual("Queue Events", tasksViewModel.QueueEventsHeader);
-            Assert.AreEqual("Scheduler", tasksViewModel.SchedulerHeader);
+            Assert.AreEqual(mockServer.Object, triggersViewModel.Server);
+            Assert.AreEqual(mockEnvironment.Object, triggersViewModel.CurrentEnvironment);
+            Assert.AreEqual("Triggers - TestServer", triggersViewModel.DisplayName);
+            Assert.AreEqual("Queue Events", triggersViewModel.QueueEventsHeader);
+            Assert.AreEqual("Scheduler", triggersViewModel.SchedulerHeader);
         }
 
         [TestMethod]
@@ -132,12 +106,12 @@ namespace Dev2.Core.Tests.Triggers
 
             var mockServer = new Mock<IServer>();
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
-            tasksViewModel.QueueEventsViewModel.QueueEvents = new System.Collections.ObjectModel.ObservableCollection<string>();
-            tasksViewModel.NewScheduleCommand.Execute(null);
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
+            triggersViewModel.QueueEventsViewModel.QueueEvents = new System.Collections.ObjectModel.ObservableCollection<string>();
+            triggersViewModel.NewScheduleCommand.Execute(null);
 
             Assert.IsTrue(foregroundWorkWasCalled);
-            Assert.AreEqual(1, tasksViewModel.QueueEventsViewModel.QueueEvents.Count);
+            Assert.AreEqual(1, triggersViewModel.QueueEventsViewModel.QueueEvents.Count);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -158,12 +132,12 @@ namespace Dev2.Core.Tests.Triggers
 
             var mockServer = new Mock<IServer>();
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
             //  tasksViewModel.SchedulerViewModel.SelectedTask = new System.Collections.ObjectModel.ObservableCollection<string>();
-            tasksViewModel.NewScheduleCommand.Execute(null);
+            triggersViewModel.NewScheduleCommand.Execute(null);
 
             Assert.IsTrue(foregroundWorkWasCalled);
-            Assert.AreEqual(1, tasksViewModel.QueueEventsViewModel.QueueEvents.Count);
+            Assert.AreEqual(1, triggersViewModel.QueueEventsViewModel.QueueEvents.Count);
         }
 
         [TestMethod]
@@ -181,15 +155,15 @@ namespace Dev2.Core.Tests.Triggers
             var mockEnvironment = new Mock<IServer>();
             mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
 
-            var value = tasksViewModel.DoDeactivate(false);
+            var value = triggersViewModel.DoDeactivate(false);
             Assert.IsFalse(value);
-            Assert.IsTrue(tasksViewModel.HasErrors);
-            Assert.AreEqual(StringResources.SaveServerNotReachableErrorMsg, tasksViewModel.Errors);
+            Assert.IsTrue(triggersViewModel.HasErrors);
+            Assert.AreEqual(StringResources.SaveServerNotReachableErrorMsg, triggersViewModel.Errors);
             mockPopupController.Verify(popupController => popupController.ShowSaveServerNotReachableErrorMsg(), Times.Once);
         }
 
@@ -213,15 +187,15 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
 
-            var value = tasksViewModel.DoDeactivate(false);
+            var value = triggersViewModel.DoDeactivate(false);
             Assert.IsFalse(value);
-            Assert.IsTrue(tasksViewModel.HasErrors);
-            Assert.AreEqual(StringResources.SaveSettingsPermissionsErrorMsg, tasksViewModel.Errors);
+            Assert.IsTrue(triggersViewModel.HasErrors);
+            Assert.AreEqual(StringResources.SaveSettingsPermissionsErrorMsg, triggersViewModel.Errors);
             mockPopupController.Verify(popupController => popupController.ShowSaveSettingsPermissionsErrorMsg(), Times.Once);
         }
 
@@ -244,12 +218,26 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironment.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            var mockServerRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(mockServerRepository.Object);
+
+            var asyncWorker = new SynchronousAsyncWorker();
+            asyncWorker.Start(() => { },
+                () =>
+                {
+                    
+                });
+
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
 
-            var value = tasksViewModel.DoDeactivate(false);
+            var value = triggersViewModel.DoDeactivate(false);
             Assert.IsTrue(value);
         }
 
@@ -273,13 +261,15 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
-            });
-            tasksViewModel.IsDirty = true;
+            })
+            {
+                IsDirty = true
+            };
 
-            var value = tasksViewModel.DoDeactivate(true);
+            var value = triggersViewModel.DoDeactivate(true);
             Assert.IsFalse(value);
             mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
         }
@@ -304,13 +294,15 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
-            });
-            tasksViewModel.IsDirty = true;
+            })
+            {
+                IsDirty = true
+            };
 
-            var value = tasksViewModel.DoDeactivate(true);
+            var value = triggersViewModel.DoDeactivate(true);
             Assert.IsFalse(value);
             mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
         }
@@ -338,7 +330,7 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             })
@@ -346,10 +338,10 @@ namespace Dev2.Core.Tests.Triggers
                 IsDirty = true
             };
 
-            var value = tasksViewModel.DoDeactivate(true);
+            var value = triggersViewModel.DoDeactivate(true);
             Assert.IsTrue(value);
-            Assert.IsFalse(tasksViewModel.IsDirty);
-            Assert.IsFalse(tasksViewModel.QueueEventsViewModel.IsDirty);
+            Assert.IsFalse(triggersViewModel.IsDirty);
+            Assert.IsFalse(triggersViewModel.QueueEventsViewModel.IsDirty);
             mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
         }
 
@@ -373,18 +365,20 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
 
-            var tasksViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
-            });
-            tasksViewModel.IsDirty = true;
+            })
+            {
+                IsDirty = true
+            };
 
-            var value = tasksViewModel.DoDeactivate(true);
+            var value = triggersViewModel.DoDeactivate(true);
             Assert.IsTrue(value);
-            Assert.IsFalse(tasksViewModel.IsDirty);
-            Assert.IsTrue(tasksViewModel.IsSaved);
-            Assert.IsTrue(tasksViewModel.IsSavedSuccessVisible);
-            Assert.IsFalse(tasksViewModel.IsErrorsVisible);
+            Assert.IsFalse(triggersViewModel.IsDirty);
+            Assert.IsTrue(triggersViewModel.IsSaved);
+            Assert.IsTrue(triggersViewModel.IsSavedSuccessVisible);
+            Assert.IsFalse(triggersViewModel.IsErrorsVisible);
             mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
         }
     }
