@@ -94,6 +94,55 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_SaveTriggerQueue_WhenHasTriggerId_ShouldSave_NotUpdateTriggerId()
+        {
+            var source = "TestResource";
+            var queue = "TestQueueName";
+            var workflowName = "TestWorkflow";
+            var triggerId = Guid.NewGuid();
+
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(resource => resource.ResourceName).Returns(source);
+            mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
+
+            var triggerQueueEvent = new TriggerQueue();
+            triggerQueueEvent.QueueSourceId = mockResource.Object.ResourceID;
+            triggerQueueEvent.QueueName = queue;
+            triggerQueueEvent.WorkflowName = workflowName;
+            triggerQueueEvent.TriggerId = triggerId;
+
+            var triggerCatalog = new TriggersCatalog();
+            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+
+            var path = EnvironmentVariables.QueueTriggersPath + "\\" + triggerId + ".bite";
+
+            var triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
+
+            Assert.AreEqual(1, triggerQueueFiles.Count);
+            Assert.AreEqual(path, triggerQueueFiles[0]);
+
+            var savedData = File.ReadAllText(path);
+            var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
+            Assert.IsTrue(isEncrypted);
+
+            var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
+            var serializer = new Dev2JsonSerializer();
+
+            var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+            Assert.IsNotNull(theSavedTrigger);
+            Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
+            Assert.AreEqual(triggerId, theSavedTrigger.TriggerId);
+
+            triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+
+            triggerQueueFiles = Directory.EnumerateFiles(EnvironmentVariables.QueueTriggersPath).ToList();
+
+            Assert.AreEqual(0, triggerQueueFiles.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
         public void TriggersCatalog_SaveTriggerQueue_ShouldSaveEncrypted()
         {
             var source = "TestResource";
