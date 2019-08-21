@@ -79,7 +79,7 @@
                             <Grid>
                                 <Grid HorizontalAlignment="Stretch" 
                                       VerticalAlignment="Stretch" 
-                                      Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                      Visibility="{Binding IsNewQueue,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                       x:Name="ListBoxItemGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="25" />
@@ -103,7 +103,7 @@
                                     <TextBlock Grid.Column="1" 
                                                Grid.Row="0" 
                                                HorizontalAlignment="Left" 
-                                               Text="RabbitMQ Event" 
+                                               Text="Queue" 
                                                TextTrimming="CharacterEllipsis" 
                                                MaxWidth="200" 
                                                FontSize="12" 

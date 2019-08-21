@@ -93,7 +93,7 @@ namespace Dev2.Runtime.Triggers
 
         private static string GetQueueFilePath(ITriggerQueue triggerQueue)
         {
-            var source = triggerQueue.QueueSource.ResourceName;
+            var source = triggerQueue.QueueSourceId.ToString();
             var queue = triggerQueue.QueueName;
             var workflowName = triggerQueue.WorkflowName;
             var dirPath = EnvironmentVariables.TriggersPath;

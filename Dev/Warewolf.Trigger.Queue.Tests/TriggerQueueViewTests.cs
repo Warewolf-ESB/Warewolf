@@ -49,22 +49,22 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(TriggerQueueView))]
         public void TriggerQueueView_Equals_MisMatch_Expect_False()
         {
-            var mockResource = new Mock<IResource>();
-            mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
+            var resourceId = Guid.NewGuid();
+            var queueSinkResourceId = Guid.NewGuid();
 
             var mockOption = new Mock<IOption>();
             var mockInputs = new Mock<ICollection<IServiceInput>>();
 
             var triggerQueueView = new TriggerQueueView
             {
-                QueueSource = mockResource.Object,
+                QueueSourceId = resourceId,
                 QueueName = "Queue",
                 WorkflowName = "Workflow",
                 Concurrency = 100,
                 UserName = "Bob",
                 Password = "123456",
                 Options = new IOption[] { mockOption.Object },
-                QueueSink = mockResource.Object,
+                QueueSinkId = queueSinkResourceId,
                 DeadLetterQueue = "DeadLetterQueue",
                 DeadLetterOptions = new IOption[] { mockOption.Object },
                 Inputs = mockInputs.Object
@@ -86,20 +86,18 @@ namespace Warewolf.Trigger.Queue.Tests
             {
                 ResourceId = resourceId,
                 IsDirty = true,
-                OldName = "OldName",
+                OldQueueName = "OldName",
                 Status = QueueStatus.Enabled,
                 Errors = mockErrorResultTO.Object,
-                IsNew = true,
                 Name = "Name"
             };
 
             Assert.AreEqual(resourceId, triggerQueueView.ResourceId);
             Assert.IsTrue(triggerQueueView.IsDirty);
-            Assert.AreEqual("OldName", triggerQueueView.OldName);
+            Assert.AreEqual("OldName", triggerQueueView.OldQueueName);
             Assert.AreEqual(QueueStatus.Enabled, triggerQueueView.Status);
             Assert.IsNotNull(triggerQueueView.Errors);
-            Assert.IsTrue(triggerQueueView.IsNew);
-            Assert.IsFalse(triggerQueueView.IsNewItem);
+            Assert.IsFalse(triggerQueueView.IsNewQueue);
             Assert.AreEqual(string.Empty, triggerQueueView.NameForDisplay);
             Assert.AreEqual("Name", triggerQueueView.Name);
         }

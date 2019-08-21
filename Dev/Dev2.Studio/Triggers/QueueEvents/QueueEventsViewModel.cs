@@ -429,14 +429,14 @@ namespace Dev2.Triggers.QueueEvents
         {
             ITriggerQueue triggerQueue = new TriggerQueue
             {
-                QueueSource = SelectedQueueSource,
+                QueueSourceId = SelectedQueueSource.ResourceID,
                 QueueName = QueueName,
                 WorkflowName = WorkflowName,
                 Concurrency = Concurrency,
                 UserName = AccountName,
                 Password = Password,
                 Options = new IOption[] { },
-                QueueSink = SelectedDeadLetterQueueSource,
+                QueueSinkId = SelectedDeadLetterQueueSource.ResourceID,
                 DeadLetterQueue = DeadLetterQueue,
                 DeadLetterOptions = new IOption[] { },
                 Inputs = Inputs
@@ -522,7 +522,7 @@ namespace Dev2.Triggers.QueueEvents
                 {
                     return new List<IExecutionHistory>();
                 }
-                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewItem)
+                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewQueue)
                 {
                     _asyncWorker.Start(() =>
                     {
@@ -590,7 +590,7 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(SelectedQueue));
                     return;
                 }
-                if (Equals(_selectedQueue, value) || value.IsNewItem)
+                if (Equals(_selectedQueue, value) || value.IsNewQueue)
                 {
                     return;
                 }

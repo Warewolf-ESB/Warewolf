@@ -12,5 +12,6 @@ namespace Dev2.Triggers
 {
     public interface ITrigger
     {
+        string Name { get; set; }
     }
 }

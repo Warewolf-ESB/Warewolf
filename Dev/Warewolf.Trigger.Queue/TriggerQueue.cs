@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Triggers;
 using Warewolf.Options;
@@ -19,14 +18,15 @@ namespace Warewolf.Trigger
 {
     public class TriggerQueue : ITriggerQueue
     {
-        public IResource QueueSource { get; set; }
+        public string Name { get; set; }
+        public Guid QueueSourceId { get; set; }
         public string QueueName { get; set; }
         public string WorkflowName { get; set; }
         public int Concurrency { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public IOption[] Options { get; set; }
-        public IResource QueueSink { get; set; }
+        public Guid QueueSinkId { get; set; }
         public string DeadLetterQueue { get; set; }
         public IOption[] DeadLetterOptions { get; set; }
         public ICollection<IServiceInput> Inputs { get; set; }
@@ -45,14 +45,15 @@ namespace Warewolf.Trigger
             }
 
             var equals = true;
-            equals &= QueueSource == other.QueueSource;
+            equals &= Name == other.Name;
+            equals &= QueueSourceId == other.QueueSourceId;
             equals &= string.Equals(QueueName, other.QueueName);
             equals &= string.Equals(WorkflowName, other.WorkflowName);
             equals &= Concurrency == other.Concurrency;
             equals &= string.Equals(UserName, other.UserName);
             equals &= string.Equals(Password, other.Password);
             equals &= Options == other.Options;
-            equals &= QueueSink == other.QueueSink;
+            equals &= QueueSinkId == other.QueueSinkId;
             equals &= string.Equals(DeadLetterQueue, other.DeadLetterQueue);
             equals &= DeadLetterOptions == other.DeadLetterOptions;
             equals &= Inputs == other.Inputs;
