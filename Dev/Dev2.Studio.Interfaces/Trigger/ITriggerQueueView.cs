@@ -17,12 +17,10 @@ namespace Dev2.Studio.Interfaces.Trigger
     public interface ITriggerQueueView : ITriggerQueue
     {
         bool IsDirty { get; set; }
-        string OldName { get; set; }
+        string OldQueueName { get; set; }
         QueueStatus Status { get; set; }
         IErrorResultTO Errors { get; set; }
-        bool IsNew { get; set; }
-        bool IsNewItem { get; }
-        string NameForDisplay { get; }
-        string Name { get; set; }
+        bool IsNewQueue { get; set; }
+        string NameForDisplay { get; set; }
     }
 }
