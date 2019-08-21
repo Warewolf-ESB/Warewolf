@@ -115,10 +115,25 @@ namespace RabbitMQDriverTests
                 return _channel.BasicGet(queue: queueName, noAck: true);
             }
 
+            private bool _isDisposed = false;
+
+            protected virtual void Dispose(bool isDisposing)
+            {
+                if (!_isDisposed)
+                {
+                    if (isDisposing)
+                    {
+                        _channel.Dispose();
+                        _connection.Dispose();
+                    }
+
+                    _isDisposed = true;
+                }
+            }
+
             public void Dispose()
             {
-                _connection.Dispose();
-                _channel.Dispose();
+                Dispose(true);
             }
         }
 
