@@ -25,7 +25,7 @@ namespace Dev2.Common.Interfaces.Wrappers
 
         bool Exists(string path);
         void Delete(string tmpFileName);
-        void WriteAllText(string p1, string p2);
+        void WriteAllText(string path, string contents);
         void Copy(string source, string destination);
 
         void WriteAllBytes(string path, byte[] contents);
