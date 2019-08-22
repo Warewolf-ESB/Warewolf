@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -34,12 +35,12 @@ namespace Dev2.Common.Tests
 
             mockHttpClient.Setup(o => o.GetAsync(It.IsAny<string>())).Returns(Task.Run(()=> response));
 
-            var testWebRequestForwarder = new TestWebRequestForwarder(mockHttpClient.Object);
+            IWebRequestForwarder testWebRequestForwarder = new TestWebRequestForwarder(mockHttpClient.Object);
 
             //-----------------------------Act----------------------------------
-            var result = testWebRequestForwarder.TestSendUrl("http:example.co.za");
+            var requestForwarder = testWebRequestForwarder.SendUrl("http:example.co.za");
             //-----------------------------Assert-------------------------------
-            Assert.AreEqual(response, result);
+            Assert.AreEqual(response, requestForwarder.Result);
             mockHttpClient.Verify(o => o.GetAsync(It.IsAny<string>()), Times.Once);
         }
 
@@ -47,11 +48,6 @@ namespace Dev2.Common.Tests
         {
             public TestWebRequestForwarder(IHttpClient httpClient) : base(httpClient)
             {
-            }
-
-            public HttpResponseMessage TestSendUrl(string url)
-            {
-                return SendUrl(url).Result;
             }
         }
     }
