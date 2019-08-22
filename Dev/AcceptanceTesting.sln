@@ -317,9 +317,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Data", "Warewolf.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI", "Warewolf.UI\Warewolf.UI.csproj", "{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Common", "Warewolf.Common\Warewolf.Common.csproj", "{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common", "Warewolf.Common\Warewolf.Common.csproj", "{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Common.Tests", "Warewolf.Common.Tests\Warewolf.Common.Tests.csproj", "{C395E757-4BDB-4C42-B3A8-A560ADD94786}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Tests", "Warewolf.Common.Tests\Warewolf.Common.Tests.csproj", "{C395E757-4BDB-4C42-B3A8-A560ADD94786}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.QueueWorker", "RabbitMQWorkerConsole\Warewolf.QueueWorker.csproj", "{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1266,6 +1268,14 @@ Global
 		{C395E757-4BDB-4C42-B3A8-A560ADD94786}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C395E757-4BDB-4C42-B3A8-A560ADD94786}.Release|x86.ActiveCfg = Release|Any CPU
 		{C395E757-4BDB-4C42-B3A8-A560ADD94786}.Release|x86.Build.0 = Release|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Debug|x86.Build.0 = Debug|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Release|x86.ActiveCfg = Release|Any CPU
+		{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

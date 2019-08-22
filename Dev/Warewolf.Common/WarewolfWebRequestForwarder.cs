@@ -9,10 +9,12 @@
 */
 
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Dev2.Common.Interfaces;
 
 namespace Warewolf.Common
 {
@@ -61,9 +63,8 @@ namespace Warewolf.Common
 
         private string BuildQueryString(string data)
         {
-            var query = HttpUtility.ParseQueryString(string.Empty);
-            query[_valueKey] = data;
-            return query.ToString();
+            var encodedData = WebUtility.UrlEncode(data);
+            return $"{_valueKey}={encodedData}";
         }
     }
 }
