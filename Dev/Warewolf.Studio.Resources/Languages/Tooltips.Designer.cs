@@ -3269,11 +3269,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QueueConcurrencyTooltip.
+        /// </summary>
+        public static string QueueConcurrencyTooltip {
+            get {
+                return ResourceManager.GetString("QueueConcurrencyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a queue event to run.
         /// </summary>
         public static string QueueEventToolTip {
             get {
                 return ResourceManager.GetString("QueueEventToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save the queue as.
+        /// </summary>
+        public static string QueueNameTooltip {
+            get {
+                return ResourceManager.GetString("QueueNameTooltip", resourceCulture);
             }
         }
         
