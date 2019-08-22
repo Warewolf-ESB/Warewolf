@@ -23,7 +23,6 @@ using Dev2.Dialogs;
 using Dev2.Studio.Enums;
 using Dev2.Runtime.Triggers;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
@@ -40,6 +39,7 @@ using Warewolf.UI;
 using Dev2.Common.Interfaces.Studio.Controller;
 using System.Windows;
 using System.Collections.ObjectModel;
+using Dev2.Common.Common;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -79,14 +79,15 @@ namespace Dev2.Triggers.QueueEvents
         bool _isProgressBarVisible;
         bool _isHistoryTabVisible;
         ITriggerQueueResourceModel _queueResourceModel;
-        ITriggerQueueView _selectedQueue;
+        TriggerQueueView _selectedQueue;
         bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         bool _isDirty;
+        private bool _enabled;
         TabItem _activeItem;
         private List<OptionView> _options;
         private List<OptionView> _deadLetterOptions;
-        private ObservableCollection<ITriggerQueueView> _queues;
+        private ObservableCollection<TriggerQueueView> _queues;
 
         public IPopupController PopupController { get; }
 
@@ -114,7 +115,7 @@ namespace Dev2.Triggers.QueueEvents
             Options = new List<OptionView>();
             DeadLetterOptions = new List<OptionView>();
             PopupController = CustomContainer.Get<IPopupController>();
-            Queues = new ObservableCollection<ITriggerQueueView>();
+            Queues = new ObservableCollection<TriggerQueueView>();
             AddDummyTriggerQueueView();
         }
 
@@ -163,7 +164,7 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public ObservableCollection<ITriggerQueueView> Queues
+        public ObservableCollection<TriggerQueueView> Queues
         {
             get => _queues;
             set
@@ -391,6 +392,8 @@ namespace Dev2.Triggers.QueueEvents
         public ICommand NewCommand => _newCommand ??
                        (_newCommand = new DelegateCommand(CreateNewQueueEvent));
 
+        IEnumerable<TriggerQueueView> RealTests() => _queues.Where(model => model.GetType() != typeof(DummyTriggerQueueView)).ToObservableCollection();
+
         private void CreateNewQueueEvent()
         {
             SelectedQueue = null;
@@ -400,24 +403,48 @@ namespace Dev2.Triggers.QueueEvents
                 return;
             }
 
+            var queueNumber = GetNewQueueNumber("Queue");
+
             var queue = new TriggerQueueView
             {
-                IsNewQueue = false
+                IsNewQueue = false,
+                NewQueue = true,
+                TriggerQueueName = "Queue " + (queueNumber == 0 ? 1 : queueNumber)
             };
 
             AddAndSelectQueue(queue);
         }
 
-        void AddAndSelectQueue(ITriggerQueueView triggerQueueView)
+        int GetNewQueueNumber(string name)
         {
-            var index = Queues.Count - 1;
+            var counter = 1;
+            var fullName = name + " " + counter;
+
+            while (Contains(fullName))
+            {
+                counter++;
+                fullName = name + " " + counter;
+            }
+
+            return counter;
+        }
+
+        bool Contains(string nameToCheck)
+        {
+            var triggerQueue = RealTests().FirstOrDefault(a => a.TriggerQueueName.Contains(nameToCheck));
+            return triggerQueue != null;
+        }
+
+        void AddAndSelectQueue(TriggerQueueView triggerQueueView)
+        {
+            var index = _queues.Count - 1;
             if (index >= 0)
             {
-                Queues.Insert(index, triggerQueueView);
+                _queues.Insert(index, triggerQueueView);
             }
             else
             {
-                Queues.Add(triggerQueueView);
+                _queues.Add(triggerQueueView);
             }
             SelectedQueue = triggerQueueView;
         }
@@ -576,7 +603,7 @@ namespace Dev2.Triggers.QueueEvents
                     {
                         IsHistoryTabVisible = false;
                         IsProgressBarVisible = true;
-                        _history = QueueResourceModel.CreateHistory(SelectedQueue).ToList();
+                        //_history = QueueResourceModel.CreateHistory(SelectedQueue).ToList()
                     }
                    , () =>
                    {
@@ -627,7 +654,7 @@ namespace Dev2.Triggers.QueueEvents
                 }
             }
         }
-        public ITriggerQueueView SelectedQueue
+        public TriggerQueueView SelectedQueue
         {
             get => _selectedQueue;
             set
@@ -643,11 +670,11 @@ namespace Dev2.Triggers.QueueEvents
                     return;
                 }
                 _selectedQueue = value;
-                Item = _ser.Deserialize<ITriggerQueueView>(_ser.SerializeToBuilder(_selectedQueue));
+                Item = _ser.Deserialize<TriggerQueueView>(_ser.SerializeToBuilder(_selectedQueue));
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
-                    OnPropertyChanged(nameof(Status));
+                    OnPropertyChanged(nameof(Enabled));
                     OnPropertyChanged(nameof(WorkflowName));
                     OnPropertyChanged(nameof(QueueName));
                     OnPropertyChanged(nameof(AccountName));
@@ -683,7 +710,7 @@ namespace Dev2.Triggers.QueueEvents
                         return false;
                     }
                     var dirty = !SelectedQueue.Equals(Item);
-                    SelectedQueue.IsDirty = dirty;
+                    //SelectedQueue.IsDirty = dirty;
                     SetQueueName(dirty);
                     return dirty;
                 }
@@ -731,7 +758,7 @@ namespace Dev2.Triggers.QueueEvents
         }
         public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 
-        public ITriggerQueueView Item { get; set; }
+        public TriggerQueueView Item { get; set; }
         public string Password
         {
             get => SelectedQueue != null ? SelectedQueue.Password : string.Empty;
@@ -757,23 +784,18 @@ namespace Dev2.Triggers.QueueEvents
             OnPropertyChanged(nameof(Error));
             OnPropertyChanged(nameof(HasErrors));
         }
-        public QueueStatus Status
+
+        public bool Enabled
         {
-            get => SelectedQueue?.Status ?? QueueStatus.Enabled;
+            get => _enabled;
             set
             {
-                if (SelectedQueue != null)
-                {
-                    if (value == SelectedQueue.Status)
-                    {
-                        return;
-                    }
-                    SelectedQueue.Status = value;
-                    OnPropertyChanged(nameof(IsDirty));
-                    OnPropertyChanged(nameof(Status));
-                }
+                _enabled = value;
+                OnPropertyChanged(nameof(Enabled));
+                OnPropertyChanged(nameof(IsDirty));
             }
         }
+
         public void ShowError(string description)
         {
             if (!string.IsNullOrEmpty(description))
