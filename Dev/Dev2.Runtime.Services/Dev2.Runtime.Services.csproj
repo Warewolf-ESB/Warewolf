@@ -114,6 +114,7 @@
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
+    <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
     <Compile Include="ESB\Management\Services\GetFilterListService.cs" />

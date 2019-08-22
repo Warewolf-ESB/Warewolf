@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Triggers;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Triggers;
@@ -23,39 +24,50 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SaveTriggerQueueService : IEsbManagementEndpoint
+    public class FetchTriggerQueues : IEsbManagementEndpoint
     {
+        private ITriggersCatalog _triggersCatalog;
+
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
-
             try
             {
-                if (values == null)
+                Dev2Logger.Info("Fetch Trigger Queue Service", GlobalConstants.WarewolfInfo);
+
+                var triggerQueues = TriggersCatalog.Queues;
+                var message = new CompressedExecuteMessage
                 {
-                    throw new InvalidDataContractException(ErrorResource.NoParameter);
-                }
+                    HasError = false
+                };
+                message.SetMessage(serializer.Serialize(triggerQueues));
+                message.HasError = false;
 
-                Dev2Logger.Info("Save Trigger Queue Service", GlobalConstants.WarewolfInfo);
-                msg.HasError = false;
-
-                values.TryGetValue("TriggerQueue", out StringBuilder resourceDefinition);
-
-                var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
-
-                TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
-
-                return serializer.SerializeToBuilder(msg);
+                return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {
-                msg.HasError = true;
-                msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error("Save Queue Service Failed: " + err.Message, GlobalConstants.WarewolfError);
+                var msg = new ExecuteMessage
+                {
+                    HasError = true,
+                    Message = new StringBuilder(err.Message)
+                };
+                Dev2Logger.Error("Fetch Queue Service Failed: " + err.Message, GlobalConstants.WarewolfError);
                 return serializer.SerializeToBuilder(msg);
+            }
+        }
+
+        public ITriggersCatalog TriggersCatalog
+        {
+            get
+            {
+                return _triggersCatalog ?? Triggers.TriggersCatalog.Instance;
+            }
+            set
+            {
+                _triggersCatalog = value;
             }
         }
 
@@ -63,6 +75,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => nameof(SaveTriggerQueueService);
+        public string HandlesType() => nameof(FetchTriggerQueues);
     }
 }
