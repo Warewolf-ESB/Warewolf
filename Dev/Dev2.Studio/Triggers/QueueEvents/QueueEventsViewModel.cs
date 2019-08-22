@@ -63,13 +63,13 @@ namespace Dev2.Triggers.QueueEvents
         private ICollection<IServiceInput> _inputs;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
-        private bool _isTesting;
-        private bool _testFailed;
-        private bool _testPassed;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
+        private bool _isVerifying;
+        private bool _verifyFailed;
+        private bool _verifyPassed;
+        private bool _verifyResultsAvailable;
+        private bool _isVerifyResultsEmptyRows;
         private bool _isHistoryExpanded;
-        private string _testResults;
+        private string _verifyResults;
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
         private readonly EnvironmentViewModel _source;
@@ -91,21 +91,21 @@ namespace Dev2.Triggers.QueueEvents
         public IPopupController PopupController { get; }
 
         public QueueEventsViewModel(IServer server)
-            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(),null)
+            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(), null)
         {
 
         }
 
-        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker,IResourcePickerDialog resourcePickerDialog)
+        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker, IResourcePickerDialog resourcePickerDialog)
         {
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
             Inputs = new List<IServiceInput>();
-            TestCommand = new DelegateCommand(ExecuteTest);
+            VerifyCommand = new DelegateCommand(ExecuteVerify);
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
-            IsTesting = false;
+            IsVerifying = false;
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
@@ -135,31 +135,31 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public void ExecuteTest()
+        public void ExecuteVerify()
         {
-            TestResults = null;
-            IsTesting = true;
+            VerifyResults = null;
+            _isVerifying = true;
 
             try
             {
-                TestResults = "{some text}";
+                VerifyResults = "{some text}";
 
-                IsTestResultsEmptyRows = TestResults == null;
-                if (TestResults != null)
+                IsVerifyResultsEmptyRows = VerifyResults == null;
+                if (VerifyResults != null)
                 {
-                    TestResultsAvailable = true;
-                    IsTestResultsEmptyRows = TestResults == string.Empty;
-                    IsTesting = false;
-                    TestPassed = true;
-                    TestFailed = false;
+                    VerifyResultsAvailable = true;
+                    IsVerifyResultsEmptyRows = VerifyResults == string.Empty;
+                    _isVerifying = false;
+                    VerifyPassed = true;
+                    VerifyFailed = false;
                 }
             }
             catch (Exception ex)
             {
                 var msg = ex.Message;
-                IsTesting = false;
-                TestPassed = false;
-                TestFailed = true;
+                IsVerifying = false;
+                VerifyPassed = false;
+                VerifyFailed = true;
             }
         }
 
@@ -346,37 +346,37 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public bool TestResultsAvailable
+        public bool VerifyResultsAvailable
         {
-            get => _testResultsAvailable;
+            get => _verifyResultsAvailable;
             set
             {
-                _testResultsAvailable = value;
-                OnPropertyChanged(nameof(TestResultsAvailable));
+                _verifyResultsAvailable = value;
+                OnPropertyChanged(nameof(VerifyResultsAvailable));
             }
         }
 
-        public bool IsTestResultsEmptyRows
+        public bool IsVerifyResultsEmptyRows
         {
-            get => _isTestResultsEmptyRows;
+            get => _isVerifyResultsEmptyRows;
             set
             {
-                _isTestResultsEmptyRows = value;
-                OnPropertyChanged(nameof(IsTestResultsEmptyRows));
+                _isVerifyResultsEmptyRows = value;
+                OnPropertyChanged(nameof(IsVerifyResultsEmptyRows));
             }
         }
 
-        public string TestResults
+        public string VerifyResults
         {
-            get => _testResults;
+            get => _verifyResults;
             set
             {
-                _testResults = value;
-                if (!string.IsNullOrEmpty(_testResults))
+                _verifyResults = value;
+                if (!string.IsNullOrEmpty(_verifyResults))
                 {
-                    //Model.Response = _testResults
+                    //Model.Response = _verifyResults
                 }
-                OnPropertyChanged(nameof(TestResults));
+                OnPropertyChanged(nameof(VerifyResults));
             }
         }
 
@@ -430,36 +430,36 @@ namespace Dev2.Triggers.QueueEvents
             Queues.Remove(SelectedQueue);
         }
 
-        public ICommand TestCommand { get; private set; }
+        public ICommand VerifyCommand { get; private set; }
         public ICommand AddWorkflowCommand { get; private set; }
 
-        public bool IsTesting
+        public bool IsVerifying
         {
-            get => _isTesting;
+            get => _isVerifying;
             set
             {
-                _isTesting = value;
-                OnPropertyChanged(nameof(IsTesting));
+                _isVerifying = value;
+                OnPropertyChanged(nameof(IsVerifying));
             }
         }
 
-        public bool TestFailed
+        public bool VerifyFailed
         {
-            get => _testFailed;
+            get => _verifyFailed;
             set
             {
-                _testFailed = value;
-                OnPropertyChanged(nameof(TestFailed));
+                _verifyFailed = value;
+                OnPropertyChanged(nameof(VerifyFailed));
             }
         }
 
-        public bool TestPassed
+        public bool VerifyPassed
         {
-            get => _testPassed;
+            get => _verifyPassed;
             set
             {
-                _testPassed = value;
-                OnPropertyChanged(nameof(TestPassed));
+                _verifyPassed = value;
+                OnPropertyChanged(nameof(VerifyPassed));
             }
         }
 
