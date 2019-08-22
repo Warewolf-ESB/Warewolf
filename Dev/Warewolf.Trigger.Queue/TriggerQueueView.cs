@@ -10,19 +10,16 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
-using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Triggers;
 using Warewolf.Options;
 
 namespace Warewolf.Trigger
 {
-    public class TriggerQueueView : BindableBase, ITriggerQueueView
+    public class TriggerQueueView : BindableBase
     {
-        private string _name;
+        private string _triggerQueueName;
         private Guid _queueSourceId;
         private string _queueName;
         private string _workflowName;
@@ -37,20 +34,23 @@ namespace Warewolf.Trigger
 
         private bool _isDirty;
         private string _oldQueueName;
-        private QueueStatus _queueStatus;
+        private bool _enabled;
         private IErrorResultTO _errors;
         private bool _isNewQueue;
+        private bool _newQueue;
         private string _nameForDisplay;
         private TriggerQueueView _item;
+        bool _isValidatingIsDirty;
 
         public Guid TriggerId { get; set; }
-        public string Name
+        public string TriggerQueueName
         {
-            get => _name;
+            get => _triggerQueueName;
             set
             {
-                _name = value;
-                RaisePropertyChanged(nameof(Name));
+                _triggerQueueName = value;
+                RaisePropertyChanged(nameof(TriggerQueueName));
+                SetDisplayName(IsDirty);
             }
         }
         public Guid QueueSourceId
@@ -156,11 +156,30 @@ namespace Warewolf.Trigger
 
         public bool IsDirty
         {
-            get => _isDirty;
-            set
+            get
             {
-                _isDirty = value;
-                RaisePropertyChanged(nameof(IsDirty));
+                if (_isValidatingIsDirty)
+                {
+                    return false;
+                }
+                _isValidatingIsDirty = true;
+                var _isDirty = false;
+                var notEquals = !Equals(Item);
+                if (NewQueue)
+                {
+                    _isDirty = true;
+                }
+                else
+                {
+                    if (notEquals)
+                    {
+                        _isDirty = true;
+                    }
+                }
+
+                SetDisplayName(_isDirty);
+                _isValidatingIsDirty = false;
+                return _isDirty;
             }
         }
         public string OldQueueName
@@ -172,13 +191,13 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(OldQueueName));
             }
         }
-        public QueueStatus Status
+        public bool Enabled
         {
-            get => _queueStatus;
+            get => _enabled;
             set
             {
-                _queueStatus = value;
-                RaisePropertyChanged(nameof(Status));
+                _enabled = value;
+                RaisePropertyChanged(nameof(Enabled));
             }
         }
         public IErrorResultTO Errors
@@ -197,6 +216,15 @@ namespace Warewolf.Trigger
             {
                 _isNewQueue = value;
                 RaisePropertyChanged(nameof(IsNewQueue));
+            }
+        }
+        public bool NewQueue
+        {
+            get => _newQueue;
+            set
+            {
+                _newQueue = value;
+                RaisePropertyChanged(nameof(NewQueue));
             }
         }
         public string NameForDisplay
@@ -224,7 +252,7 @@ namespace Warewolf.Trigger
 
         void SetDisplayName(bool isDirty)
         {
-            NameForDisplay = isDirty ? QueueName + " *" : QueueName;
+            NameForDisplay = isDirty ? TriggerQueueName + " *" : TriggerQueueName;
         }
 
         public bool Equals(ITriggerQueue other)
