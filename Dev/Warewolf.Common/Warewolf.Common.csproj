@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
   </ItemGroup>
 

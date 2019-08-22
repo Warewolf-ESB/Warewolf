@@ -8,35 +8,36 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Warewolf.Common
 {
-    public class WarewolfWebRequestForwarder : WebRequestForwarderBase,  IConsumer
+    public class WarewolfWebRequestForwarder : IConsumer
     {
         readonly string _url;
         readonly string _valueKey;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        private WarewolfWebRequestForwarder(IHttpClient httpClient) : base(httpClient)
+        private WarewolfWebRequestForwarder()
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClient httpClient, string url, string valueKey)
-            : this(httpClient)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, string url, string valueKey)
         {
+            _httpClientFactory = httpClientFactory;
             _url = url;
             _valueKey = valueKey;
         }
 
-        public void Consume(byte[] body)
+        public async void Consume(byte[] body)
         {
-            var builder = BuildUri(_url, body);
+            var builder = BuildUri(_url, body); 
 
-            SendEventToWarewolf(builder.ToString());
+            using (await SendEventToWarewolf(builder.ToString())) { };
         }
 
         private UriBuilder BuildUri(string url, byte[] body)
@@ -50,9 +51,12 @@ namespace Warewolf.Common
             return builder;
         }
 
-        private HttpResponseMessage SendEventToWarewolf(string url)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri)
         {
-            return SendUrl(_url).Result;
+            using (var client = _httpClientFactory.New(uri))
+            {
+                return await client.GetAsync(uri);
+            }
         }
 
         private string BuildQueryString(string data)

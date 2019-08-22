@@ -9,24 +9,22 @@
 */
 
 
+using Dev2.Common.Interfaces;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Dev2.Common
 {
-    public interface IHttpClient
-    {
-        Task<HttpResponseMessage> GetAsync(string url);
-    }
-
     public class HttpClientWrapper : IHttpClient
     {
         readonly HttpClient _httpClient;
 
-        public HttpClientWrapper()
+        public HttpClientWrapper(HttpClient client)
         {
-            _httpClient = new HttpClient();
+            _httpClient = client;
         }
+
+        public void Dispose() => _httpClient.Dispose();
 
         public Task<HttpResponseMessage> GetAsync(string url)
         {
