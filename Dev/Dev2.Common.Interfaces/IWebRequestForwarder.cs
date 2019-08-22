@@ -9,13 +9,14 @@
 */
 
 
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IWebRequestForwarder
+    public interface IHttpClient : IDisposable
     {
-        Task<HttpResponseMessage> SendUrl(string url);
+        Task<HttpResponseMessage> GetAsync(string url);
     }
 }

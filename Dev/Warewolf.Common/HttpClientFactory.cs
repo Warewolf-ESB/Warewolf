@@ -9,24 +9,32 @@
 */
 
 
+using Dev2.Common;
 using Dev2.Common.Interfaces;
+using System;
 using System.Net.Http;
-using System.Threading.Tasks;
 
-namespace Dev2.Common
+namespace Warewolf.Common
 {
-    public class WebRequestForwarderBase : IWebRequestForwarder
+    public interface IHttpClientFactory
     {
-        readonly IHttpClient _httpClient;
+        IHttpClient New(Uri uri);
+        IHttpClient New(string url);
+    }
 
-        public WebRequestForwarderBase(IHttpClient httpClient)
+    public class HttpClientFactory : IHttpClientFactory
+    {
+        public IHttpClient New(Uri uri)
         {
-            _httpClient = httpClient;
+            var baseAddress = uri.GetLeftPart(UriPartial.Authority);
+            var client = new HttpClient { BaseAddress = new Uri(baseAddress) };
+
+            return new HttpClientWrapper(client);
         }
 
-        public Task<HttpResponseMessage> SendUrl(string url)
+        public IHttpClient New(string url)
         {
-            return _httpClient.GetAsync(url);
+            return New(new Uri(url));
         }
     }
 }
