@@ -57,9 +57,9 @@ namespace Dev2.Common.Wrappers
             PerformActionAsServerUser(() => File.Delete(tmpFileName));
         }
 
-        public void WriteAllText(string p1, string p2)
+        public void WriteAllText(string path, string contents)
         {
-            PerformActionAsServerUser(() => File.WriteAllText(p1, p2));
+            PerformActionAsServerUser(() => File.WriteAllText(path, contents));
         }
 
         public void Copy(string source, string destination)

@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
+using Dev2.Core.Tests.Environments;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -55,12 +56,16 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             var explorerTooltips = new Mock<IExplorerTooltips>();
-            var serverRepo = new Mock<IServerRepository>();
-       
+           
             CustomContainer.Register(shell.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
             CustomContainer.Register(connectControlSingleton.Object);
             CustomContainer.Register(explorerTooltips.Object);
+
+            var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var serverRepo = new Mock<IServerRepository>();
+            serverRepo.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
+            CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
         }
         [TestMethod]
@@ -334,8 +339,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.IsNotNull(optionThree);
             Assert.AreEqual("auto", optionThree.Name);
             Assert.AreEqual("new text", optionThree.Value);
-            Assert.AreEqual(1, optionThree.Suggestions.Count());
-            Assert.AreEqual("", optionThree.Suggestions[0]);
+            Assert.IsNull( optionThree.Suggestions);
             Assert.AreEqual("", optionThree.Default);
 
             var optionThreeTemplate = queueEventsViewModel.DeadLetterOptions[2].DataTemplate;

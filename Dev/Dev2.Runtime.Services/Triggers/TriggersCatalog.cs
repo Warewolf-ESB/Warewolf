@@ -37,17 +37,21 @@ namespace Dev2.Runtime.Triggers
 
         public static ITriggersCatalog Instance => LazyCat.Value;
 
-        public TriggersCatalog()
+        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer)
         {
-            _directoryWrapper = new DirectoryWrapper();
-            _fileWrapper = new FileWrapper();
-            _queueTriggersPath = EnvironmentVariables.QueueTriggersPath;
+            _directoryWrapper = directoryWrapper;
+            _fileWrapper = fileWrapper;
+            _queueTriggersPath = queueTriggersPath;
             _directoryWrapper.CreateIfNotExists(_queueTriggersPath);
             Queues = new List<ITriggerQueue>();
-            _serializer = new Dev2JsonSerializer();
+            _serializer = serializer;
         }
 
-        public List<ITriggerQueue> Queues { get; set; }
+        private TriggersCatalog():this(new DirectoryWrapper(), new FileWrapper(), EnvironmentVariables.QueueTriggersPath, new Dev2JsonSerializer())
+        {
+        }
+
+        public IList<ITriggerQueue> Queues { get; set; }
 
         public void DeleteAllTriggerQueues()
         {
@@ -66,18 +70,24 @@ namespace Dev2.Runtime.Triggers
             {
                 _fileWrapper.Delete(queueFilePath);
             }
+            Queues.Remove(triggerQueue);
         }
 
         public void Load()
         {
             Queues = new List<ITriggerQueue>();
-            var resourceTestDirectories = _directoryWrapper.GetDirectories(_queueTriggersPath);
-            foreach (var resourceTestDirectory in resourceTestDirectories)
+            var triggerQueueFileNames = _directoryWrapper.GetFiles(_queueTriggersPath);
+            foreach (var triggerQueueFileName in triggerQueueFileNames)
             {
-                var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
-                if (Guid.TryParse(resIdString, out Guid resId))
+                try
                 {
-                    //Queues
+                    var fileData = _fileWrapper.ReadAllText(triggerQueueFileName);
+                    var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
+                    var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+                    Queues.Add(triggerQueue);
+                }catch(Exception ex)
+                {
+                    Dev2Logger.Error($"TriggersCatalog - Load - {triggerQueueFileName}", ex, GlobalConstants.WarewolfError);
                 }
             }
         }
@@ -93,11 +103,7 @@ namespace Dev2.Runtime.Triggers
             var saveData = DpapiWrapper.Encrypt(serializedData);
 
             var queueFilePath = GetQueueFilePath(triggerQueue);
-            using (var sw = new StreamWriter(queueFilePath, false))
-            {
-                sw.Write(saveData);
-            }
-            
+            _fileWrapper.WriteAllText(queueFilePath, saveData);
         }
 
         private string GetQueueFilePath(ITriggerQueue triggerQueue)
