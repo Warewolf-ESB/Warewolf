@@ -37,6 +37,9 @@ using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger;
 using Warewolf.UI;
+using Dev2.Common.Interfaces.Studio.Controller;
+using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -58,7 +61,6 @@ namespace Dev2.Triggers.QueueEvents
 
         private IList<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
-        private bool _pasteResponseVisible;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
         private bool _isTesting;
@@ -84,6 +86,9 @@ namespace Dev2.Triggers.QueueEvents
         TabItem _activeItem;
         private List<OptionView> _options;
         private List<OptionView> _deadLetterOptions;
+        private ObservableCollection<ITriggerQueueView> _queues;
+
+        public IPopupController PopupController { get; }
 
         public QueueEventsViewModel(IServer server)
             : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(),null)
@@ -93,6 +98,7 @@ namespace Dev2.Triggers.QueueEvents
 
         public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker,IResourcePickerDialog resourcePickerDialog)
         {
+            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
@@ -101,13 +107,21 @@ namespace Dev2.Triggers.QueueEvents
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
             IsTesting = false;
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
-            _currentResourcePicker = resourcePickerDialog??CreateResourcePickerDialog();
+            _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
-            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
             InitializeHelp();
             Options = new List<OptionView>();
             DeadLetterOptions = new List<OptionView>();
+            PopupController = CustomContainer.Get<IPopupController>();
+            Queues = new ObservableCollection<ITriggerQueueView>();
+            AddDummyTriggerQueueView();
+        }
+
+        private void AddDummyTriggerQueueView()
+        {
+            var dummyTriggerQueueView = new DummyTriggerQueueView();
+            Queues.Add(dummyTriggerQueueView);
         }
 
         private void OpenResourcePicker()
@@ -149,7 +163,15 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public IList<string> QueueEvents { get; set; }
+        public ObservableCollection<ITriggerQueueView> Queues
+        {
+            get => _queues;
+            set
+            {
+                _queues = value;
+                OnPropertyChanged(nameof(Queues));
+            }
+        }
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
         public IResource SelectedQueueSource
         {
@@ -371,7 +393,33 @@ namespace Dev2.Triggers.QueueEvents
 
         private void CreateNewQueueEvent()
         {
-            QueueEvents.Add("");
+            SelectedQueue = null;
+            if (IsDirty)
+            {
+                PopupController?.Show(Core.TriggerQueueSaveEditedTestsMessage, Core.TriggerQueueSaveEditedQueueHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
+                return;
+            }
+
+            var queue = new TriggerQueueView
+            {
+                IsNewQueue = false
+            };
+
+            AddAndSelectQueue(queue);
+        }
+
+        void AddAndSelectQueue(ITriggerQueueView triggerQueueView)
+        {
+            var index = Queues.Count - 1;
+            if (index >= 0)
+            {
+                Queues.Insert(index, triggerQueueView);
+            }
+            else
+            {
+                Queues.Add(triggerQueueView);
+            }
+            SelectedQueue = triggerQueueView;
         }
 
         public ICommand DeleteCommand => _deleteCommand ??
@@ -379,7 +427,7 @@ namespace Dev2.Triggers.QueueEvents
 
         private void DeleteQueueEvent()
         {
-            QueueEvents.Remove("");
+            Queues.Remove(SelectedQueue);
         }
 
         public ICommand TestCommand { get; private set; }
@@ -735,7 +783,7 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(HasErrors));
             }
         }
-        public bool HasErrors => Errors.HasErrors();
+        public bool HasErrors => false;// Errors.HasErrors();
         public IErrorResultTO Errors
         {
             get => _selectedQueue != null ? _selectedQueue.Errors : new ErrorResultTO();

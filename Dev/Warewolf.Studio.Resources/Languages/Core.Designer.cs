@@ -1417,6 +1417,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save before continuing.
+        /// </summary>
+        public static string TriggerQueueSaveEditedQueueHeader {
+            get {
+                return ResourceManager.GetString("TriggerQueueSaveEditedQueueHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save currently edited Queue before creating a new one..
+        /// </summary>
+        public static string TriggerQueueSaveEditedTestsMessage {
+            get {
+                return ResourceManager.GetString("TriggerQueueSaveEditedTestsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name:.
         /// </summary>
         public static string UserNameLabel {

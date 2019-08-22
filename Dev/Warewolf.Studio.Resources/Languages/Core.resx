@@ -305,6 +305,12 @@ The window will be reloaded when you click OK.</value>
   <data name="ServiceTestRunAllUnsavedTestsHeader" xml:space="preserve">
     <value>Save before continuing</value>
   </data>
+  <data name="TriggerQueueSaveEditedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Queue before creating a new one.</value>
+  </data>
+  <data name="TriggerQueueSaveEditedQueueHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
   <data name="ExplorerMoveFailedMessage" xml:space="preserve">
     <value>An unexpected error occured which prevented the resource from being moved.</value>
   </data>

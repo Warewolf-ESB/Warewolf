@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
@@ -30,10 +31,12 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Controls;
 using Warewolf.Core;
 using Warewolf.Options;
+using Warewolf.Trigger;
 
 namespace Dev2.Core.Tests.Triggers.QueueEvents
 {
@@ -68,7 +71,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var mockServer = new Mock<IServer>();
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
-            Assert.IsNull(queueEventsViewModel.QueueEvents);
+            Assert.IsNull(queueEventsViewModel.Queues
+                );
             Assert.IsNull(queueEventsViewModel.SelectedQueueEvent);
 
             var queue1 = "Queue1";
@@ -80,11 +84,11 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 queue2
             };
 
-            queueEventsViewModel.QueueEvents = queueEvents;
+            //queueEventsViewModel.QueueEvents = queueEvents;
             queueEventsViewModel.SelectedQueueEvent = queue2;
 
-            Assert.IsNotNull(queueEventsViewModel.QueueEvents);
-            Assert.AreEqual(2, queueEventsViewModel.QueueEvents.Count);
+            Assert.IsNotNull(queueEventsViewModel.Queues);
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
             Assert.IsNotNull(queueEventsViewModel.SelectedQueueEvent);
             Assert.AreEqual(queue2, queueEventsViewModel.SelectedQueueEvent);
@@ -350,8 +354,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_WorkflowName()
         {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queueEventsViewModel = CreateViewModel();
 
             Assert.IsNull(queueEventsViewModel.WorkflowName);
 
@@ -366,8 +369,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_Concurrency()
         {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queueEventsViewModel = CreateViewModel();
 
             Assert.AreEqual(0, queueEventsViewModel.Concurrency);
 
@@ -377,24 +379,65 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.AreEqual(concurrency, queueEventsViewModel.Concurrency);
         }
 
+        QueueEventsViewModel CreateViewModel()
+        {
+            var mockServer = new Mock<IServer>();
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            return new QueueEventsViewModel(mockServer.Object,mockExternalExecutor.Object,mockAsyncWorker.Object,mockResourcePickerDialog.Object);
+        }
+
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_AddNew_And_Delete()
+        public void QueueEventsViewModel_QueueEvents_AddNew_ShouldAddNewItem()
         {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            var queueEventsViewModel = CreateViewModel();
 
-            Assert.IsNull(queueEventsViewModel.QueueEvents);
-
-            queueEventsViewModel.QueueEvents = new System.Collections.ObjectModel.ObservableCollection<string>();
             queueEventsViewModel.NewCommand.Execute(null);
 
-            Assert.IsNotNull(queueEventsViewModel.QueueEvents);
-            Assert.AreEqual(1, queueEventsViewModel.QueueEvents.Count);
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
+            //TODO: Verify that one item is a new item and the other is the "Create New" item
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Delete_ShouldDeleteSelectedItem()
+        {
+            var queueEventsViewModel = CreateViewModel();
+            var triggerQueueView = new TriggerQueueView();
+
+            queueEventsViewModel.Queues.Add(triggerQueueView);
+            queueEventsViewModel.SelectedQueue = triggerQueueView;
+
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
             queueEventsViewModel.DeleteCommand.Execute(null);
-            Assert.AreEqual(0, queueEventsViewModel.QueueEvents.Count);
+            Assert.AreEqual(1, queueEventsViewModel.Queues.Count);
+
+            //TODO: Verify that one item is the "Create New" item
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Hagashen Naidu")]
+        public void QueueEventsViewModel_QueueEvents_AddNew_Should_FirePropertyChangedEventForQueuesProperty()
+        {
+            var queueEventsViewModel = CreateViewModel();
+            var propertyChangedFired = false;
+            queueEventsViewModel.Queues.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Add)
+                {
+                    propertyChangedFired = true;
+                }
+            };
+
+            queueEventsViewModel.NewCommand.Execute(null);
+
+            Assert.IsTrue(propertyChangedFired);
         }
 
         [TestMethod]

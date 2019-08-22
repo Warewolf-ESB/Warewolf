@@ -454,6 +454,10 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
       <Project>{b7faa26b-ddcb-4967-9fcb-89afba92e726}</Project>
       <Name>Warewolf.UI</Name>
