@@ -21,12 +21,24 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindResourcesByType : DefaultEsbManagementEndpoint
     {
+        private readonly Lazy<IResourceCatalog> _resourceCatalog;
+
+        public FindResourcesByType()
+            : this(new Lazy<IResourceCatalog>(() => ResourceCatalog.Instance))
+        {
+        }
+        public FindResourcesByType(Lazy<IResourceCatalog> resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+        }
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -46,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                var result = new List<IResource> { new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "My rabbitsource" } };
+                var result = _resourceCatalog.Value.FindByType<IQueueSource>();
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();
