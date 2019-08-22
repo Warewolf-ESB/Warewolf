@@ -508,7 +508,7 @@
                                 </controls1:Dev2DataGrid>
                             </Grid>
 
-                            <!-- Map Data Button -->
+                            <!-- Verify Data Button -->
                             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                                 <fa:ImageAwesome Width="14" 
                                              Height="14" 
@@ -535,7 +535,7 @@
                                         HorizontalAlignment="Right" 
                                         Command="{Binding TestCommand}" 
                                         ToolTip="{x:Static languages:Tooltips.ServiceTestActionTooltip}"
-                                        Content="Map"
+                                        Content="Verify"
                                         Width="46">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestHelp}" 
