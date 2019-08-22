@@ -65,7 +65,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
             var serverRepo = new Mock<IServerRepository>();
             serverRepo.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
-            CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
         }
         [TestMethod]
