@@ -19,7 +19,7 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Triggers;
-using Dev2.Studio.Interfaces.Trigger;
+using Warewolf.Trigger;
 
 namespace Dev2.Core.Tests.Triggers
 {
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests.Triggers
             var mockServer = new Mock<IServer>();
 
             var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
-            triggersViewModel.QueueEventsViewModel.Queues = new System.Collections.ObjectModel.ObservableCollection<ITriggerQueueView>();
+            triggersViewModel.QueueEventsViewModel.Queues = new System.Collections.ObjectModel.ObservableCollection<TriggerQueueView>();
             triggersViewModel.NewScheduleCommand.Execute(null);
 
             Assert.IsTrue(foregroundWorkWasCalled);

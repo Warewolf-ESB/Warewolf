@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -84,22 +82,83 @@ namespace Warewolf.Trigger.Queue.Tests
             var resourceId = Guid.NewGuid();
             var triggerQueueView = new TriggerQueueView
             {
+                TriggerId = resourceId,
                 ResourceId = resourceId,
-                IsDirty = true,
                 OldQueueName = "OldName",
-                Status = QueueStatus.Enabled,
+                Enabled = true,
                 Errors = mockErrorResultTO.Object,
-                Name = "Name"
+                TriggerQueueName = "TriggerQueueName",
+                NameForDisplay = "NameForDisplay",
+                IsNewQueue = true
             };
 
+            Assert.AreEqual(resourceId, triggerQueueView.TriggerId);
             Assert.AreEqual(resourceId, triggerQueueView.ResourceId);
-            Assert.IsTrue(triggerQueueView.IsDirty);
+            Assert.IsFalse(triggerQueueView.IsDirty);
             Assert.AreEqual("OldName", triggerQueueView.OldQueueName);
-            Assert.AreEqual(QueueStatus.Enabled, triggerQueueView.Status);
+            Assert.IsTrue(triggerQueueView.Enabled);
             Assert.IsNotNull(triggerQueueView.Errors);
-            Assert.IsFalse(triggerQueueView.IsNewQueue);
-            Assert.AreEqual(string.Empty, triggerQueueView.NameForDisplay);
-            Assert.AreEqual("Name", triggerQueueView.Name);
+            Assert.IsTrue(triggerQueueView.IsNewQueue);
+            Assert.AreEqual("TriggerQueueName", triggerQueueView.TriggerQueueName);
+            Assert.AreEqual("NameForDisplay", triggerQueueView.NameForDisplay);
+            Assert.IsTrue(triggerQueueView.IsNewQueue);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggerQueueView))]
+        public void TriggerQueueView_Item_IsDirty_True()
+        {
+            var resourceId = Guid.NewGuid();
+            var triggerQueueView = new TriggerQueueView
+            {
+                ResourceId = resourceId,
+                OldQueueName = "OldName",
+                Enabled = true,
+                TriggerQueueName = "TriggerQueueName",
+                IsNewQueue = true
+            };
+
+            var triggerQueueViewItem = new TriggerQueueView
+            {
+                ResourceId = resourceId,
+                OldQueueName = "OldName",
+                Enabled = true,
+                TriggerQueueName = "TriggerQueueName",
+                IsNewQueue = true,
+                Item = triggerQueueView
+            };
+
+            Assert.AreEqual("TriggerQueueName *", triggerQueueViewItem.NameForDisplay);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggerQueueView))]
+        public void TriggerQueueView_Item_IsDirty_False()
+        {
+            var resourceId1 = Guid.NewGuid();
+            var resourceId2 = Guid.NewGuid();
+            var triggerQueueView = new TriggerQueueView
+            {
+                ResourceId = resourceId1,
+                OldQueueName = "OldName",
+                Enabled = true,
+                TriggerQueueName = "TriggerQueueName",
+                IsNewQueue = true
+            };
+
+            var triggerQueueViewItem = new TriggerQueueView
+            {
+                ResourceId = resourceId2,
+                OldQueueName = "OldName",
+                Enabled = true,
+                TriggerQueueName = "TriggerQueueName",
+                IsNewQueue = true,
+                Item = triggerQueueView
+            };
+
+            Assert.AreEqual("TriggerQueueName", triggerQueueViewItem.NameForDisplay);
         }
     }
 }
