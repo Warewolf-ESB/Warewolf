@@ -1442,6 +1442,9 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="ServiceTestHelp" xml:space="preserve">
     <value>Test the execution of this resource.</value>
   </data>
+  <data name="ServiceVerifyHelp" xml:space="preserve">
+    <value>Verify the mapped data against the inputs of the selected workflow.</value>
+  </data>
   <data name="ServiceTestInputsValueHelpText" xml:space="preserve">
     <value>The input value for the service. This is the input to the service for the test you want to run.</value>
   </data>
