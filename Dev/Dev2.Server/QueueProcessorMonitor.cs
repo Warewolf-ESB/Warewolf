@@ -12,7 +12,6 @@
 using Dev2.Common;
 using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -25,13 +24,14 @@ namespace Dev2
         private readonly IProcessFactory _processFactory;
 
         private readonly List<(Thread Thread, string Name)> _processes = new List<(Thread Thread, string Name)>();
-
+        private readonly IWriter _writer;
         private bool _running;
 
-        public QueueProcessorMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader)
+        public QueueProcessorMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, IWriter writer)
         {
             _processFactory = processFactory;
             _queueConfigLoader = queueConfigLoader;
+            _writer = writer;
         }
 
         public void Start()
@@ -54,14 +54,15 @@ namespace Dev2
 
         private void Start(string config)
         {
-            var startInfo = new ProcessStartInfo(GlobalConstants.QueueWorkerExe, $"-c '{config}'"); 
+            var worker = GlobalConstants.QueueWorkerExe;
+            var startInfo = new ProcessStartInfo(worker, $"-c '{config}'"); 
             using (var process = _processFactory.Start(startInfo))
             {
                 while (!process.WaitForExit(1000))
                 {
                     //TODO: check queue progress, kill if necessary
                 }
-                Console.WriteLine("died!! " + JsonConvert.SerializeObject(config));
+                _writer.WriteLine($"{worker} has died, Error:" + JsonConvert.SerializeObject(config));
             }
         }
 

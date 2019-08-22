@@ -40,8 +40,10 @@ namespace Dev2.Server.Tests
                                 .Callback<ProcessStartInfo>((startInfo)=> { if (pass) pass = (GlobalConstants.QueueWorkerExe == startInfo.FileName); })
                                 .Returns(mockProcess.Object);
 
+            var worker = GlobalConstants.QueueWorkerExe;
+
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueProcessorMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object);
+            var processMonitor = new QueueProcessorMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
                         .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)
