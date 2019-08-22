@@ -1128,6 +1128,12 @@
   <data name="NewRabbitMQSourceHelp" xml:space="preserve">
     <value>New RabbitMQ Source</value>
   </data>
+  <data name="QueueNameHelp" xml:space="preserve">
+    <value>QueueNameHelp</value>
+  </data>
+  <data name="QueueConcurrencyHelp" xml:space="preserve">
+    <value>QueueConcurrencyHelp</value>
+  </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
   </data>
