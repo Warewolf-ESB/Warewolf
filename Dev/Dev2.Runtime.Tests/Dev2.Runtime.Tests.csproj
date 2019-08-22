@@ -145,6 +145,7 @@
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
+    <Compile Include="Services\FindResourcesByTypeTests.cs" />
     <Compile Include="Services\FindResourceTestsS.cs" />
     <Compile Include="Services\FetchServerPermissionsTests.cs" />
     <Compile Include="Services\DeleteAllTestsTests.cs" />
