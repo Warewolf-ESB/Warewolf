@@ -529,14 +529,14 @@
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
                                              Foreground="{StaticResource WareWolfOrangeBrush}" 
-                                             Visibility="{Binding TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                                             Visibility="{Binding VerifyPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
                                              Icon="Check" 
                                              HorizontalAlignment="Right" />
                                 <fa:ImageAwesome Width="14" 
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
                                              Foreground="{StaticResource WareWolfOrangeBrush}" 
-                                             Visibility="{Binding TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                                             Visibility="{Binding VerifyFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
                                              Icon="Ban" 
                                              HorizontalAlignment="Right" />
                                 <customControls:CircularProgressBar Width="25"
@@ -544,16 +544,16 @@
                                                                 Margin="{StaticResource ControlBorderRight}"
                                                                 Height="25"
                                                                 Padding="2.5"
-                                                                Visibility="{Binding IsTesting,Converter={StaticResource BoolToVis}}" />
+                                                                Visibility="{Binding IsVerifying,Converter={StaticResource BoolToVis}}" />
 
-                                <Button x:Name="TestActionButton" 
+                                <Button x:Name="VerifyActionButton" 
                                         HorizontalAlignment="Right" 
-                                        Command="{Binding TestCommand}" 
-                                        ToolTip="{x:Static languages:Tooltips.ServiceTestActionTooltip}"
+                                        Command="{Binding VerifyCommand}" 
+                                        ToolTip="{x:Static languages:Tooltips.ServiceVerifyActionTooltip}"
                                         Content="Verify"
                                         Width="46">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestHelp}" 
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceVerifyHelp}" 
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </Button>
@@ -581,7 +581,7 @@
                                     <TextBlock Text="Map data" FontWeight="Bold" />
 
                                     <TextBox Grid.Row="1"
-                                             Text="{Binding TestResults}" 
+                                             Text="{Binding VerifyResults}" 
                                              x:Name="ResponseTextbox"
                                              Style="{StaticResource StretchedTextBoxStyle}"
                                              customControls:WatermarkTextBox.Watermark="Paste data here"

@@ -62,7 +62,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
             var serverRepo = new Mock<IServerRepository>();
             serverRepo.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
-            CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
         }
         [TestMethod]
@@ -502,22 +501,22 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_TestCommand()
+        public void QueueEventsViewModel_QueueEvents_VerifyCommand()
         {
             var mockServer = new Mock<IServer>();
 
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            Assert.IsNull(queueEventsViewModel.TestResults);
-            Assert.IsFalse(queueEventsViewModel.IsTesting);
-            Assert.IsFalse(queueEventsViewModel.IsTestResultsEmptyRows);
+            Assert.IsNull(queueEventsViewModel.VerifyResults);
+            Assert.IsFalse(queueEventsViewModel.IsVerifying);
+            Assert.IsFalse(queueEventsViewModel.IsVerifyResultsEmptyRows);
 
-            queueEventsViewModel.TestCommand.Execute(null);
+            queueEventsViewModel.VerifyCommand.Execute(null);
 
-            Assert.IsTrue(queueEventsViewModel.TestResultsAvailable);
-            Assert.IsFalse(queueEventsViewModel.IsTestResultsEmptyRows);
-            Assert.IsFalse(queueEventsViewModel.IsTesting);
-            Assert.IsTrue(queueEventsViewModel.TestPassed);
-            Assert.IsFalse(queueEventsViewModel.TestFailed);
+            Assert.IsTrue(queueEventsViewModel.VerifyResultsAvailable);
+            Assert.IsFalse(queueEventsViewModel.IsVerifyResultsEmptyRows);
+            Assert.IsFalse(queueEventsViewModel.IsVerifying);
+            Assert.IsTrue(queueEventsViewModel.VerifyPassed);
+            Assert.IsFalse(queueEventsViewModel.VerifyFailed);
         }
 
         [TestMethod]

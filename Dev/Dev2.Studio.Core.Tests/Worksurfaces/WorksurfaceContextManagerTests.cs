@@ -22,8 +22,9 @@ namespace Dev2.Core.Tests
     [TestCategory("Studio Worksurfaces Core")]
     public class WorksurfaceContextManagerTests : MainViewModelBase
     {
-        Action VerifyAction;
-        Action SetActiveServerAction;
+        Action _verifyAction;
+        Action _setActiveServerAction;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -33,13 +34,13 @@ namespace Dev2.Core.Tests
             var workFlow = XML.XmlResource.Fetch("ResourceWithErrors");
             svr.Setup(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
             .Returns(new StringBuilder(workFlow.ToString(SaveOptions.DisableFormatting)));
-            VerifyAction = () =>
+            _verifyAction = () =>
             {
                 svr.Verify(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()));
             };
-            SetActiveServerAction = () =>
+            _setActiveServerAction = () =>
             {
-                ShellViewModel.ActiveServer = svr.Object;
+                _shellViewModel.ActiveServer = svr.Object;
             };
             var ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
@@ -53,7 +54,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -71,14 +72,14 @@ namespace Dev2.Core.Tests
             var sharePointSource = new Mock<ISharepointServerSource>();
             var viewMock = new Mock<IView>();
             sharePointSource.SetupAllProperties();
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
 
             sorksurfaceContextManager.EditResource(sharePointSource.Object, viewMock.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -93,13 +94,13 @@ namespace Dev2.Core.Tests
             var sharePointSource = new Mock<IOAuthSource>();
             sharePointSource.SetupAllProperties();
             var viewMock = new Mock<IView>();
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditResource(sharePointSource.Object, viewMock.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -119,13 +120,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditWcfSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -145,13 +146,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditRabbitMQSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -171,13 +172,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditDropBoxSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -197,13 +198,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditExchangeSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -223,13 +224,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditEmailSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -249,13 +250,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditSharePointSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -275,13 +276,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditWebSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -301,13 +302,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditComPluginSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -328,14 +329,14 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
-            ActiveEnvironment.Setup(model => model.Name).Returns("Localhost");
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
+            _activeEnvironment.Setup(model => model.Name).Returns("Localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditOdbcSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -355,13 +356,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditOracleSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -381,13 +382,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditPostgreSqlSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -406,13 +407,13 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditMySqlSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -432,14 +433,14 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var view = new Mock<IView>();
             resourceModelMock.Setup(model => model.GetView(It.IsAny<Func<IView>>())).Returns(view.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.EditMySqlSource(resourceModelMock.Object, view.Object);
-            var afterCount = ShellViewModel.Items.Count;
+            var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
 
@@ -458,9 +459,9 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
 
-            var beforeCount = ShellViewModel.Items.Count;
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
@@ -468,13 +469,13 @@ namespace Dev2.Core.Tests
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
 
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -491,21 +492,21 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
 
         }
@@ -522,21 +523,21 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
 
         }
@@ -554,20 +555,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
 
         }
@@ -585,20 +586,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
 
         }
@@ -616,20 +617,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IWebServiceSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IWebServiceSource>);
             Assert.IsTrue(workSurfaceViewModels);
 
         }
@@ -649,20 +650,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IWcfServerSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IWcfServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -679,20 +680,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IEmailServiceSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IEmailServiceSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -711,20 +712,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IExchangeSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IExchangeSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -743,20 +744,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -775,20 +776,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<ISharepointServerSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<ISharepointServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -807,20 +808,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var mock = new Mock<IServerRepository>();
             var viewFactory = new Mock<IViewFactory>();
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, mock.Object, viewFactory.Object);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, mock.Object, viewFactory.Object);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -839,20 +840,20 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            ShellViewModel.ActiveServer = server.Object;
-            ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
+            _shellViewModel.ActiveServer = server.Object;
+            _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IRabbitMQServiceSourceDefinition>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IRabbitMQServiceSourceDefinition>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -874,16 +875,16 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IServerRepository>();
             var envModel = new Mock<IServer>();
             envRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(envModel.Object);
-            var beforeCount = ShellViewModel.Items.Count;
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
-            SetActiveServerAction.Invoke();
+            var beforeCount = _shellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
+            _setActiveServerAction.Invoke();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -906,17 +907,17 @@ namespace Dev2.Core.Tests
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
-            serverRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(ActiveEnvironment.Object);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, serverRepo.Object, vieFactory.Object);
-            SetActiveServerAction.Invoke();
-            var beforeCount = ShellViewModel.Items.Count;
+            serverRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(_activeEnvironment.Object);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel, serverRepo.Object, vieFactory.Object);
+            _setActiveServerAction.Invoke();
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
 
             Assert.IsTrue(workSurfaceViewModels);
         }
@@ -936,16 +937,16 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-            SetActiveServerAction.Invoke();
-            var beforeCount = ShellViewModel.Items.Count;
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            _setActiveServerAction.Invoke();
+            var beforeCount = _shellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
-            var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
+            var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
         }
 
@@ -964,23 +965,82 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            ActiveEnvironment.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(resourceModelMock.Object);
+            _activeEnvironment.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(resourceModelMock.Object);
 
             var versionMock = new Mock<IVersionInfo>();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try
             {
-                ShellViewModel.OpenVersion(Guid.NewGuid(), versionMock.Object);
+                _shellViewModel.OpenVersion(Guid.NewGuid(), versionMock.Object);
             }
             catch (Exception)//Weird error cause by empty designer on unittests
             {
                 //---------------Test Result -----------------------
-                VerifyAction.Invoke();
-                ActiveEnvironment.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+                _verifyAction.Invoke();
+                _activeEnvironment.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
             }
+        }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void AddEventsWorkSurface_ShouldPassThrouh()
+        {
+            //---------------Set up test pack-------------------
+            CreateFullExportsAndVm();
+            CustomContainer.Register<IShellViewModel>(_shellViewModel);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(worksurfaceContextManager);
+            //---------------Execute Test ----------------------
+
+            worksurfaceContextManager.AddEventsWorkSurface();
+            var afterCount = _shellViewModel.Items.Count;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(afterCount > beforeCount);
 
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void AddSchedulerWorkSurface_ShouldPassThrouh()
+        {
+            //---------------Set up test pack-------------------
+            CreateFullExportsAndVm();
+            CustomContainer.Register<IShellViewModel>(_shellViewModel);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(worksurfaceContextManager);
+            //---------------Execute Test ----------------------
+
+            worksurfaceContextManager.AddSchedulerWorkSurface();
+            var afterCount = _shellViewModel.Items.Count;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(afterCount > beforeCount);
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void AddTasksSurface_ShouldPassThrouh()
+        {
+            //---------------Set up test pack-------------------
+            CreateFullExportsAndVm();
+            CustomContainer.Register<IShellViewModel>(_shellViewModel);
+            var worksurfaceContextManager = new WorksurfaceContextManager(false, _shellViewModel);
+            var beforeCount = _shellViewModel.Items.Count;
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(worksurfaceContextManager);
+            //---------------Execute Test ----------------------
+
+            worksurfaceContextManager.AddTasksWorkSurface();
+            var afterCount = _shellViewModel.Items.Count;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(afterCount > beforeCount);
+
+        }
+
     }
 }

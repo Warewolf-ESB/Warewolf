@@ -4447,6 +4447,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verify the mapped data to the inputs of the selected workflow.
+        /// </summary>
+        public static string ServiceVerifyActionTooltip {
+            get {
+                return ResourceManager.GetString("ServiceVerifyActionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute this flow as a REST API.
         /// </summary>
         public static string ServiceViewInBrowserTooltip {

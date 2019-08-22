@@ -3612,6 +3612,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verify the mapped data against the inputs of the selected workflow..
+        /// </summary>
+        public static string ServiceVerifyHelp {
+            get {
+                return ResourceManager.GetString("ServiceVerifyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes the performance counters for this specific resource.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceHelpText {
