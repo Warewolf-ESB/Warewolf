@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
@@ -22,7 +21,6 @@ using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Dev2.Triggers;
 using Dev2.Triggers.QueueEvents;
@@ -34,7 +32,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows.Controls;
 using Warewolf.Core;
 using Warewolf.Options;
 using Warewolf.Trigger;
@@ -668,7 +665,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(QueueEventsViewModel))]
-        public void QueueEventsViewModel_Status_SetStatus()
+        public void QueueEventsViewModel_Enabled_SetState()
         {
             //------------Setup for test--------------------------
             var queueEventsViewModel = new QueueEventsViewModel(new Mock<IServer>().Object);
@@ -676,14 +673,13 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.SelectedQueue = queuedResourceForTest;
             //------------Execute Test---------------------------
             Assert.IsFalse(queueEventsViewModel.SelectedQueue.IsDirty);
-            queueEventsViewModel.Status = QueueStatus.Disabled;
             //------------Assert Results-------------------------
-            Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
+            Assert.IsFalse(queueEventsViewModel.Enabled);
 
-            queueEventsViewModel.Status = QueueStatus.Disabled;
-            Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
+            queueEventsViewModel.Enabled = true;
+            Assert.IsTrue(queueEventsViewModel.Enabled);
         }
-        class QueuedResourceForTest : ITriggerQueueView
+        class QueuedResourceForTest : TriggerQueueView
         {
             bool _isNewItem;
             bool _isDirty;
@@ -694,47 +690,44 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 Errors = new ErrorResultTO();
             }
 
-            public bool IsDirty
+            public new bool IsDirty
             {
                 get => _isDirty;
                 set => _isDirty = value;
             }
-            public Guid TriggerId { get; set; }
-            public string Name { get; set; }
-            public string OldQueueName { get; set; }
-            public QueueStatus Status { get; set; }
-            public DateTime NextRunDate { get; set; }
-            public int NumberOfHistoryToKeep { get; set; }
-            public string WorkflowName { get; set; }
-            public Guid ResourceId { get; set; }
-            public string UserName { get; set; }
-            public string Password { get; set; }
-            public IErrorResultTO Errors { get; set; }
-            public bool IsNew { get; set; }
-            public bool IsNewQueue
+            public new Guid TriggerId { get; set; }
+            public new string TriggerQueueName { get; set; }
+            public new string OldQueueName { get; set; }
+            public new bool Enabled { get; set; }
+            public new string WorkflowName { get; set; }
+            public new Guid ResourceId { get; set; }
+            public new string UserName { get; set; }
+            public new string Password { get; set; }
+            public new IErrorResultTO Errors { get; set; }
+            public new bool IsNewQueue
             {
                 get => _isNewItem;
                 set => _isNewItem = value;
             }
-            public string NameForDisplay { get; set; }
-            public string QueueName
+            public new string NameForDisplay { get; set; }
+            public new string QueueName
             {
                 get => _queueName;
                 set => _queueName = value;
             }
 
-            public Guid QueueSourceId { get; set; }
-            public int Concurrency { get; set; }
-            public IOption[] Options { get; set; }
-            public Guid QueueSinkId { get; set; }
-            public string DeadLetterQueue { get; set; }
-            public IOption[] DeadLetterOptions { get; set; }
-            public ICollection<IServiceInput> Inputs { get; set; }
+            public new Guid QueueSourceId { get; set; }
+            public new int Concurrency { get; set; }
+            public new IOption[] Options { get; set; }
+            public new Guid QueueSinkId { get; set; }
+            public new string DeadLetterQueue { get; set; }
+            public new IOption[] DeadLetterOptions { get; set; }
+            public new ICollection<IServiceInput> Inputs { get; set; }
 
             public void SetItem(ITriggerQueue item)
             {
             }
-            public bool Equals(ITriggerQueue other)
+            public new bool Equals(ITriggerQueue other)
             {
                 return !IsDirty;
             }
