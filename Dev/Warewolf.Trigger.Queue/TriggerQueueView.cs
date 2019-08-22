@@ -22,7 +22,7 @@ namespace Warewolf.Trigger
 {
     public class TriggerQueueView : BindableBase, ITriggerQueueView
     {
-        public Guid TriggerId { get; set; }
+        private string _name;
         private Guid _queueSourceId;
         private string _queueName;
         private string _workflowName;
@@ -43,6 +43,16 @@ namespace Warewolf.Trigger
         private string _nameForDisplay;
         private TriggerQueueView _item;
 
+        public Guid TriggerId { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                RaisePropertyChanged(nameof(Name));
+            }
+        }
         public Guid QueueSourceId
         {
             get => _queueSourceId;
@@ -211,8 +221,6 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(IsDirty));
             }
         }
-
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void SetDisplayName(bool isDirty)
         {

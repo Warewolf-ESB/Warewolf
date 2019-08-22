@@ -70,16 +70,16 @@
                 <ListBox Grid.Column="0" 
                          Style="{StaticResource ListBoxStyle}" 
                          BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding QueueEvents}" 
+                         ItemsSource="{Binding Queues}" 
                          SelectedItem="{Binding SelectedQueueEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          SelectionMode="Single" 
-                         x:Name="RabbitMqEvents">
+                         x:Name="TriggerQueues">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid HorizontalAlignment="Stretch" 
                                       VerticalAlignment="Stretch" 
-                                      Visibility="{Binding IsNewQueue,Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                      Visibility="{Binding IsNewQueue,Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                       x:Name="ListBoxItemGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="25" />
@@ -88,20 +88,19 @@
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
-                                              HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
+                                    <CheckBox Grid.Column="0"
+                                              HorizontalAlignment="Left" 
+                                              Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
                                               ToolTip="{x:Static languages:Tooltips.SchedulerStatusAltTooltipTrigger}"
-                                              IsChecked="{Binding StatusAlt, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SchedulerStatusToCheckedConverter}}">
+                                              >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerStatusAltHelpTextTrigger}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </CheckBox>
-                                    <TextBlock Grid.Column="1" 
-                                               Grid.Row="0" 
+                                    <TextBlock Grid.Column="1"
                                                HorizontalAlignment="Left" 
                                                Text="Queue" 
                                                TextTrimming="CharacterEllipsis" 
@@ -109,19 +108,11 @@
                                                FontSize="12" 
                                                Margin="0,0,0,-4" 
                                                FontWeight="Bold" />
-                                    <TextBlock Grid.Column="1" 
-                                               Grid.Row="1" 
-                                               HorizontalAlignment="Left" 
-                                               Text="{Binding NextRunDate}" 
-                                               FontSize="11" 
-                                               Margin="0,-4,0,0" />
                                     <Button Grid.Column="2" 
-                                            Grid.Row="0" 
-                                            Grid.RowSpan="2" 
                                             VerticalAlignment="Stretch" 
                                             HorizontalAlignment="Right" 
-                                            Command="{Binding ElementName=Schedules, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
-                                            IsEnabled="{Binding StatusAlt, Converter={StaticResource InverseScheduleStatusConverter}}"
+                                            Command="{Binding ElementName=TriggerQueues, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
+                                            
                                             Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>
@@ -132,12 +123,14 @@
                                         </i:Interaction.Behaviors>
                                     </Button>
                                 </Grid>
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterPositive}}" AutomationProperties.AutomationId="UI_NewSchedule_Grid_AutoID" >
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                      Visibility="{Binding IsNewQueue,Converter={StaticResource BoolToVisibilityConverterPositive}}" 
+                                      AutomationProperties.AutomationId="UI_NewQueue_Grid_AutoID" >
                                     <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
-                                            x:Name="New_RabbitMq_Event"
+                                            x:Name="New_Queue"
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
-                                            Command="{Binding NewCommand}" 
+                                            Command="{Binding ElementName=TriggerQueues, Path=DataContext.NewCommand}" 
                                             ToolTip="{x:Static languages:Tooltips.SchedulerNewScheduleTooltipTrigger}"
                                             AutomationProperties.AutomationId="UI_NewSchedule_AutoID">
                                         <Button.Content>
@@ -149,8 +142,8 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"></fa:FontAwesome>
-                                                <TextBlock Grid.Column="1" Text="Create a new event" FontSize="14"></TextBlock>
+                                                <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="Create a new queue" FontSize="14"/>
                                             </Grid>
                                         </Button.Content>
                                     </Button>
@@ -160,7 +153,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <GridSplitter Grid.Column="1" Background="#C1C3C5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" />
-                <ContentControl Grid.Column="2" Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                <ContentControl Grid.Column="2" Visibility="{Binding SelectedQueue, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
