@@ -8,11 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Studio.Interfaces;
+
 namespace Warewolf.Trigger
 {
     public class DummyTriggerQueueView : TriggerQueueView
     {
-        public DummyTriggerQueueView()
+        public DummyTriggerQueueView(IServer server)
+            : base(server)
         {
             NameForDisplay = "'";
             IsNewQueue = true;
