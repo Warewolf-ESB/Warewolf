@@ -8,16 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Driver.RabbitMQ;
 using System.Text;
 using System.Threading;
 using RabbitMQ.Client;
 using IConnection = RabbitMQ.Client.IConnection;
 using System;
+using Warewolf.Triggers;
 
-namespace RabbitMQDriverTests
+namespace Warewolf.Driver.RabbitMQ.Tests
 {
     [TestClass]
     public class RabbitMQDriverTests

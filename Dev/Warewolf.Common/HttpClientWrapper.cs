@@ -9,11 +9,11 @@
 */
 
 
-using Dev2.Common.Interfaces;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Warewolf.Web;
 
-namespace Dev2.Common
+namespace Warewolf
 {
     public class HttpClientWrapper : IHttpClient
     {

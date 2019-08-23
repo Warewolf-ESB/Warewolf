@@ -9,10 +9,9 @@
 */
 
 
-using Dev2.Common;
-using Dev2.Common.Interfaces;
 using System;
 using System.Net.Http;
+using Warewolf.Web;
 
 namespace Warewolf.Common
 {

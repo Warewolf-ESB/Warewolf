@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RabbitMQDriver\Warewolf.Driver.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>

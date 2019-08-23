@@ -13,8 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using Dev2.Common.Interfaces;
+using Warewolf.Triggers;
 
 namespace Warewolf.Common
 {
@@ -39,7 +38,10 @@ namespace Warewolf.Common
         {
             var builder = BuildUri(_url, body); 
 
-            using (await SendEventToWarewolf(builder.ToString())) { };
+            using (await SendEventToWarewolf(builder.ToString()))
+            {
+                // empty block
+            }
         }
 
         private UriBuilder BuildUri(string url, byte[] body)

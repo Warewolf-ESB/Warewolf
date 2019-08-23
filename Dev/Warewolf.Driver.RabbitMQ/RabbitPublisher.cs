@@ -8,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces;
 using RabbitMQ.Client;
+using Warewolf.Triggers;
 
 namespace Warewolf.Driver.RabbitMQ
 {

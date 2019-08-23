@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,12 +13,11 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Common;
+using Warewolf.Web;
 
 namespace Dev2.Common.Tests
 {
@@ -42,7 +41,7 @@ namespace Dev2.Common.Tests
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>())).Returns(mockHttpClient.Object);
             //-----------------------------Act----------------------------------
             var factory = mockHttpClientFactory.Object;
-            var client = factory.New(new Uri("http://peaple.co.za"));
+            var client = factory.New(new Uri("http://warewolf.io"));
             client.GetAsync("/person/1");
             //-----------------------------Assert-------------------------------
             mockHttpClient.Verify(o => o.GetAsync(It.IsAny<string>()), Times.Once);

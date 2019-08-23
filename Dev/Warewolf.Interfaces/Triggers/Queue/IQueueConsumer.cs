@@ -9,7 +9,7 @@
 */
 
 
-namespace Dev2.Common.Interfaces
+namespace Warewolf.Triggers
 {
     public interface IConsumer
     {

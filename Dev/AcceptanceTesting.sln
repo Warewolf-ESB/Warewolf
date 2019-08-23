@@ -305,9 +305,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBase", "TestBase\TestBase.csproj", "{B09EEC63-DD86-4369-B17C-BAFF9F1AAAAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ", "RabbitMQDriver\Warewolf.Driver.RabbitMQ.csproj", "{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ", "Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj", "{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQTests", "RabbitMQDriverTests\Warewolf.Driver.RabbitMQTests.csproj", "{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQTests", "Warewolf.Driver.RabbitMQTests\Warewolf.Driver.RabbitMQTests.csproj", "{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Data.Tests", "Warewolf.Data.Tests\Warewolf.Data.Tests.csproj", "{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}"
 EndProject
@@ -321,7 +321,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common", "Warewolf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Tests", "Warewolf.Common.Tests\Warewolf.Common.Tests.csproj", "{C395E757-4BDB-4C42-B3A8-A560ADD94786}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.QueueWorker", "RabbitMQWorkerConsole\Warewolf.QueueWorker.csproj", "{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.QueueWorker", "Warewolf.QueueWorker\Warewolf.QueueWorker.csproj", "{88794BAC-C9EA-48A6-A9C4-0A76A44CAEDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
