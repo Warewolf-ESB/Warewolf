@@ -13,7 +13,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Dev2.Common.Interfaces
+namespace Warewolf.Web
 {
     public interface IHttpClient : IDisposable
     {

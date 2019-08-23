@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

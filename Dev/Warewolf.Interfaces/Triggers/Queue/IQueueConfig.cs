@@ -8,15 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
-namespace Dev2.Common.Interfaces
+namespace Warewolf.Triggers
 {
-    public interface IQueueConnection : IDisposable
+    public interface IQueueConfig
     {
-        bool IsOpen { get; }
-
-        IPublisher NewPublisher(IQueueConfig config);
-        void StartConsuming(IQueueConfig config, IConsumer consumer);
     }
 }

@@ -82,7 +82,6 @@
     <Compile Include="JsonResource.cs" />
     <Compile Include="ConfigTest.cs" />
     <Compile Include="ComputerNameTests.cs" />
-    <Compile Include="Queue\QueueTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
     <Compile Include="SearchTests.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="DataNodeTests.cs" />
     <Compile Include="UtilitiesTests.cs" />
     <Compile Include="Utils\JSONUtilsTests.cs" />
-    <Compile Include="WebRequestForwarderTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="Utils\VerifyArgumentTests.cs" />
