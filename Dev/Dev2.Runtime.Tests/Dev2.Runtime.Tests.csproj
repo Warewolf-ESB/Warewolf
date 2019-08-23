@@ -144,6 +144,8 @@
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
+    <Compile Include="Services\FetchTriggerQueuesTest.cs" />
+    <Compile Include="Services\FindResourcesByTypeTests.cs" />
     <Compile Include="Services\FindResourceTestsS.cs" />
     <Compile Include="Services\FetchServerPermissionsTests.cs" />
     <Compile Include="Services\DeleteAllTestsTests.cs" />
@@ -243,8 +245,10 @@
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
     <Compile Include="Services\FetchAllTestsTest.cs" />
     <Compile Include="Services\FindOptionsTests.cs" />
+    <Compile Include="Services\SaveTriggerQueueServiceTests.cs" />
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
+    <Compile Include="Triggers\TriggersCatalogTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
@@ -420,6 +424,10 @@
     <ProjectReference Include="..\Warewolf.TestingDotnetDllCascading\Warewolf.TestingDotnetDllCascading.csproj">
       <Project>{7925b0c6-88dc-49a4-bbe1-c0550987f63a}</Project>
       <Name>Warewolf.TestingDotnetDllCascading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

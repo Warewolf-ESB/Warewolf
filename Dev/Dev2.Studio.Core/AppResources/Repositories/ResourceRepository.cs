@@ -39,6 +39,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
+using Dev2.Triggers;
 using Dev2.Utils;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
@@ -594,6 +595,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new NullReferenceException("Cannot save resource. Cannot get Communication Controller.");
             }
+        }
+
+        public ExecuteMessage SaveQueue(ITriggerQueue triggerQueue)
+        {
+            if (GetCommunicationController == null)
+            {
+                throw new NullReferenceException("Cannot save Queue. Cannot get Communication Controller.");
+            }
+            var serializer = new Dev2JsonSerializer();
+            var comsController = GetCommunicationController.Invoke("SaveQueueService");
+            comsController.AddPayloadArgument("TriggerQueue", serializer.SerializeToBuilder(triggerQueue));
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(serializer.Serialize(triggerQueue));
+            var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+            return result;
         }
 
         public TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests)

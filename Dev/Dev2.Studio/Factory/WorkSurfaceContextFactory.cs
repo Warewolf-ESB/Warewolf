@@ -12,7 +12,7 @@ using System;
 using Dev2.Common.ExtMethods;
 using Dev2.Factory;
 using Dev2.Settings;
-using Dev2.Settings.Scheduler;
+using Dev2.Triggers.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;

@@ -134,6 +134,13 @@
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Network\WebServerTests.cs" />
+    <Compile Include="Triggers\ClientScheduledResourceTests.cs" />
+    <Compile Include="Triggers\QueueEvents\QueueEventsViewModelTests.cs" />
+    <Compile Include="Triggers\ResourceHistoryForTest.cs" />
+    <Compile Include="Triggers\ScheduledResourceForTest.cs" />
+    <Compile Include="Triggers\SchedulerViewModelForTest.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerViewModelTests.cs" />
+    <Compile Include="Triggers\TriggersViewModelTests.cs" />
     <Compile Include="Worksurfaces\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="CommonSetupHelper.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
@@ -211,8 +218,6 @@
     <Compile Include="DependencyGraph\DependencyGraphGeneratorTest.cs" />
     <Compile Include="ResourceModelFactoryTests.cs" />
     <Compile Include="Settings\SettingsItemViewModelTests.cs" />
-    <Compile Include="Settings\ClientScheduledResourceTests.cs" />
-    <Compile Include="Settings\SchedulerViewModelTests.cs" />
     <Compile Include="ProviderExtensionsTest.cs" />
     <Compile Include="Settings\LogSettingsViewModelTests.cs" />
     <Compile Include="ShareTests.cs" />
@@ -385,10 +390,6 @@
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
-      <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
-      <Name>Dev2.TaskScheduler.Wrappers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
@@ -397,6 +398,10 @@
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
+      <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
+      <Name>Dev2.TaskScheduler.Wrappers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
@@ -404,6 +409,14 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.MergeParser.Tests\Warewolf.MergeParser.Tests.csproj">
       <Project>{240C477A-DD4C-4604-A6E9-43024257104E}</Project>
@@ -441,6 +454,14 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
+      <Project>{b7faa26b-ddcb-4967-9fcb-89afba92e726}</Project>
+      <Name>Warewolf.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Utility - Assign.xml" />
@@ -468,6 +489,7 @@
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

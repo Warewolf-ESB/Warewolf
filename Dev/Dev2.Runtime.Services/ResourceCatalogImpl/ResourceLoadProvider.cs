@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
@@ -37,7 +38,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         readonly object _loadLock = new object();
         readonly FileWrapper _dev2FileWrapper;
         readonly IPerformanceCounter _perfCounter;
-
+        private readonly TypeCache _typeCache;
 
         public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IServerVersionRepository serverVersionRepository, IEnumerable<DynamicService> managementServices = null)
             : this(new FileWrapper())
@@ -61,6 +62,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             _workspaceResources = workspaceResources;
             _serverVersionRepository = serverVersionRepository;
             LoadFrequentlyUsedServices();
+
+            _typeCache = new TypeCache();
+            LoadResourceTypeCache();
         }
 
         ResourceLoadProvider(FileWrapper fileWrapper)
@@ -174,6 +178,116 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             var result = commands.ContainsKey(sourceType) ? commands[sourceType].Invoke() : null;
             return result;
+        }
+        void LoadResourceTypeCache()
+        {
+            _typeCache.Find<IQueueSource>(this);
+            _typeCache.Find<Workflow>(this);
+        }
+
+        class TypeCache
+        {
+            private readonly ConcurrentDictionary<string, (Type, IResource[])> _cache = new ConcurrentDictionary<string, (Type, IResource[])>();
+            private readonly Type[] _resourceTypes;
+
+            public TypeCache()
+            {
+                _resourceTypes = GetAllResourceTypes();
+            }
+
+            public (Type Type, IResource[] Result) Find<T>(IResourceProvider resourceProvider)
+            {
+                var type = typeof(T);
+                var matchingTypes = _resourceTypes.Where(o => type.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract).ToArray();
+
+                var matchingResources = resourceProvider.GetResources(GlobalConstants.ServerWorkspaceID)
+                                .Where(o => matchingTypes.Any(t => t.FullName.Equals(MapType(o.ResourceType).FullName))).ToArray();
+
+                var result = (type, matchingResources);
+                _cache[type.FullName] = result;
+                return result;
+            }
+            public T[] FindByType<T>(IResourceLoadProvider resourceLoadProvider)
+            {
+                return Find<T>(resourceLoadProvider).Result.Cast<T>().ToArray();
+            }
+
+            private static Type[] GetAllResourceTypes()
+            {
+                var iresourceType = typeof(IResource);
+                var resourceTypes = AppDomain.CurrentDomain.GetAssemblies()
+                                        .Where(o => o != null && !o.IsDynamic)
+                                        .SelectMany(o => o.ExportedTypes)
+                                        .Where(o => iresourceType.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract)
+                                        .ToArray();
+                return resourceTypes;
+            }
+
+            private Type MapType(string legacyResourceType)
+            {
+                switch (legacyResourceType)
+                {
+                    case nameof(enSourceType.SqlDatabase):
+                        return typeof(DbSource);
+                    case nameof(enSourceType.MySqlDatabase):
+                        return typeof(DbSource);
+                    case nameof(enSourceType.ODBC):
+                        return typeof(DbSource);
+                    case nameof(enSourceType.Oracle):
+                        return typeof(DbSource);
+                    case nameof(enSourceType.PostgreSQL):
+                        return typeof(DbSource);
+                    case nameof(enSourceType.SQLiteDatabase):
+                        return typeof(SqliteDBSource);
+                    case nameof(enSourceType.WebService):
+                        return typeof(WebService);
+                    case nameof(enSourceType.DynamicService):
+                        throw new Exception($"unexpected resource type: {legacyResourceType}");
+                    case nameof(enSourceType.ManagementDynamicService):
+                        throw new Exception($"unexpected resource type: {legacyResourceType}");
+                    case nameof(enSourceType.PluginSource):
+                        return typeof(PluginSource);
+                    case nameof(enSourceType.Unknown):
+                        //throw new Exception($"unexpected resource type: {legacyResourceType}");
+                        return typeof(WebService); // should it be WebService?
+                    case nameof(enSourceType.Dev2Server):
+                        return typeof(ServerSource);
+                    case nameof(enSourceType.EmailSource):
+                        return typeof(EmailSource);
+                    case nameof(enSourceType.WebSource):
+                        return typeof(WebSource);
+                    case nameof(enSourceType.OauthSource):
+                        return typeof(OauthSource);
+                    case nameof(enSourceType.SharepointServerSource):
+                        return typeof(SharepointSource);
+                    case nameof(enSourceType.RabbitMQSource):
+                        return typeof(RabbitMQSource);
+                    case nameof(enSourceType.ExchangeSource):
+                        return typeof(ExchangeSource);
+                    case nameof(enSourceType.WcfSource):
+                        return typeof(WcfSource);
+                    case nameof(enSourceType.ComPluginSource):
+                        return typeof(ComPluginSource);
+                    case "WorkflowService":
+                        return typeof(Workflow);
+                }
+                return typeof(IResource);
+            }
+        }
+
+        public T[] FindByType<T>()
+        {
+            return _typeCache.FindByType<T>(this);
+        }
+
+        private Type[] GetQueueSourceTypes()
+        {
+            var destinationType = typeof(IQueueSource);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                            .Where(o => o != null && !o.IsDynamic)
+                            .SelectMany(o => o.ExportedTypes)
+                            .Where(o => destinationType.IsAssignableFrom(o));
+            return types.ToArray();
         }
 
         public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID) where TServiceType : DynamicServiceObjectBase

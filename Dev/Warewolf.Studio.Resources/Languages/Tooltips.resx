@@ -633,6 +633,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="ServiceTestActionTooltip" xml:space="preserve">
     <value>Test the procedure or function</value>
   </data>
+  <data name="ServiceVerifyActionTooltip" xml:space="preserve">
+    <value>Verify the mapped data to the inputs of the selected workflow</value>
+  </data>
   <data name="ServerVersionTooltip" xml:space="preserve">
     <value>View the version of this server</value>
   </data>

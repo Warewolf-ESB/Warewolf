@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,7 +20,7 @@ using Dev2.Scheduler;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Resources.Languages;
 
-namespace Dev2.Settings.Scheduler
+namespace Dev2.Triggers.Scheduler
 {
     public class ClientScheduledResourceModel : IScheduledResourceModel
     {
@@ -31,7 +30,7 @@ namespace Dev2.Settings.Scheduler
        
         public ClientScheduledResourceModel(IServer model, Action createNewTask)
         {
-            _model = model ?? throw new ArgumentNullException("model");
+            _model = model ?? throw new ArgumentNullException(nameof(model));
             _createNewTask = createNewTask;
         }
 
@@ -54,7 +53,7 @@ namespace Dev2.Settings.Scheduler
 
         public ObservableCollection<IScheduledResource> GetScheduledResources()
         {
-            var controller = new CommunicationController { ServiceName = "GetScheduledResources" };
+            var controller = new CommunicationController { ServiceName = nameof(GetScheduledResources) };
             var resources =controller.ExecuteCommand<ObservableCollection<IScheduledResource>>(_model.Connection, _model.Connection.WorkspaceID);
             if(resources != null)
             {
