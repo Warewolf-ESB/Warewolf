@@ -243,10 +243,18 @@ namespace Dev2.Activities.Specs.Permissions
             var totalNumberOfResources = resourceModels.Count();
             Assert.IsTrue(totalNumberOfResources > 0, "Cannot load any resources from " + environmentModel.DisplayName);
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
-            var samplePerm = resourceModels.FirstOrDefault((resource) => { return resource.UserPermissions != resourcePermissions; }).UserPermissions;
-            var allMatchOfSample = resourceModels.Count(model => model.UserPermissions == samplePerm);
             var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
-            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, $"Total number of resources with \"{resourcePermissions}\" permission is {allMatch}. {allMatchOfSample} Resources do, however, have \"{samplePerm}\" permissions.");
+            var firstWrongPermissions = resourceModels.FirstOrDefault((resource) => { return resource != null && resource.UserPermissions != resourcePermissions; });
+            if (firstWrongPermissions != null)
+            {
+                var samplePerm = firstWrongPermissions.UserPermissions;
+                var allMatchOfSample = resourceModels.Count(model => model != null && model.UserPermissions == samplePerm);
+                Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, $"Total number of resources with \"{resourcePermissions}\" permission is {allMatch}. {allMatchOfSample} Resources do, however, have \"{samplePerm}\" permissions.");
+            }
+            else
+            {
+                Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, "Total number of resources with " + resourcePermissions + " permission is " + allMatch + ". There are " + totalNumberOfResources + " resources in total. Therefore " + totalNumberOfResourcesWithoutMatch + " total resources do not have that permission.");
+            }
         }
 
         [Then(@"resources should not have ""(.*)""")]
