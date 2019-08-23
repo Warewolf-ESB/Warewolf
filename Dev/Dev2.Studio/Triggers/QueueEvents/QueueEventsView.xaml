@@ -71,7 +71,7 @@
                          Style="{StaticResource ListBoxStyle}" 
                          BorderThickness="1,0,1,1"
                          ItemsSource="{Binding Queues}" 
-                         SelectedItem="{Binding SelectedQueueEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         SelectedItem="{Binding SelectedQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          SelectionMode="Single" 
                          x:Name="TriggerQueues">
                     <ListBox.ItemTemplate>
