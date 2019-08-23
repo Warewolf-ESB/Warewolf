@@ -209,6 +209,7 @@ namespace Dev2.Triggers.QueueEvents
             else
             {
                 _queues.Add(triggerQueueView);
+
             }
             SelectedQueue = triggerQueueView;
         }
