@@ -88,6 +88,54 @@ namespace Dev2.Core.Tests.Triggers
             Assert.AreEqual("Scheduler", triggersViewModel.SchedulerHeader);
         }
 
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersViewModel))]
+        public void TriggersViewModel_IsEventsSelected_WhenSetToTrue_ShouldSetIsSchedulerToFalse()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockPopupController = new Mock<IPopupController>();
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
+
+            var mockEnvironment = new Mock<IServer>();
+            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
+
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            {
+                return mockEnvironment.Object;
+            });
+            triggersViewModel.IsEventsSelected = true;
+
+            Assert.IsFalse(triggersViewModel.IsSchedulerSelected);
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersViewModel))]
+        public void TriggersViewModel_IsSchedulerSelected_WhenSetToTrue_ShouldSetIsSchedulerToFalse()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockPopupController = new Mock<IPopupController>();
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
+
+            var mockEnvironment = new Mock<IServer>();
+            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
+
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
+            {
+                return mockEnvironment.Object;
+            });
+            triggersViewModel.IsSchedulerSelected = true;
+
+            Assert.IsFalse(triggersViewModel.IsEventsSelected);
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
