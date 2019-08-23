@@ -11,7 +11,6 @@
 using System;
 using Warewolf.Common;
 using Warewolf.Data;
-using Warewolf.Driver.RabbitMQ;
 
 namespace QueueWorker
 {
@@ -19,26 +18,34 @@ namespace QueueWorker
     {
         public static void Main(string[] args)
         {
-            var processedArgs = new ProcessArgs(args);
+            var processArgs = CommandLine.ParseArguments(args);
+            var config = new Config(processArgs);
+            new Implementation(config).Run();
+        }
 
-            var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), processedArgs.WorkflowUrl, processedArgs.ValueKey);
+        private class Implementation
+        {
+            private readonly IConfig _config;
 
-            var queueSource = new RabbitMQSource();
-
-            Console.WriteLine($"Starting: {processedArgs.HostName} Queue: {processedArgs.QueueName}");
-            Console.WriteLine($"Workflow: {processedArgs.WorkflowUrl} ValueKey: {processedArgs.ValueKey}");
-
-            //TODO: Replace with fetchQueueFigures
-            var config = new RabbitConfig
+            public Implementation(IConfig config)
             {
-                QueueName = processedArgs.QueueName,
-                Exchange = "direct",
-                RoutingKey = "",
-            };
+                _config = config;
+            }
 
-            using (var connection = queueSource.NewConnection(config))
-            connection.StartConsuming(config, requestForwarder);
+            public void Run()
+            {
+                //var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), _config.WorkflowUrl, _config.ValueKey);
 
+                Console.WriteLine("Starting: {_config.HostName} Queue: {_config.QueueName}");
+                Console.WriteLine("Workflow: {_config.WorkflowUrl} ValueKey: {_config.ValueKey}");
+
+                //TODO: Replace with fetchQueueFigures
+                //var config
+
+                //using (var connection = queueSource.NewConnection(_config))
+                //    connection.StartConsuming(_config, requestForwarder);
+
+            }
         }
     }
 }

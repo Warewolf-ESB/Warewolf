@@ -2,7 +2,7 @@
   "profiles": {
     "Warewolf.QueueWorker": {
       "commandName": "Project",
-      "commandLineArgs": "-q queue1 -w http://t004157:3142/public/Hello%20World.json -h rsaklfsvrdev.dev2.local -u test -p test"
+      "commandLineArgs": "-f thefile.bite"
     }
   }
 }

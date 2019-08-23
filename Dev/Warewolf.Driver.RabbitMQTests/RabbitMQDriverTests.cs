@@ -23,7 +23,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
     {
 
         [TestMethod]
-        [Owner("Sphamandla Dube")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQSource))]
         public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
@@ -61,7 +61,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         }
 
         [TestMethod]
-        [Owner("Sphamandla Dube")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQSource))]
         public void RabbitMQSource_Publish_Success()
         {
@@ -111,7 +111,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             public BasicGetResult GetSentMessage(string queueName)
             {
                 _channel = NewConnection().CreateModel();
-                return _channel.BasicGet(queue: queueName, noAck: true);
+                return _channel.BasicGet(queue: queueName, autoAck:false);
             }
 
             private bool _isDisposed = false;

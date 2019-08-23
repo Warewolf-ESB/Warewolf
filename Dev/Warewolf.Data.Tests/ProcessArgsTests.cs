@@ -18,27 +18,17 @@ namespace Warewolf.Data.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(ProcessArgs))]
-        public void ProcessArgs_SetProperties_Success()
+        [TestCategory(nameof(CommandLine))]
+        public void CommandLine_ParseArguments_SetProperties_Success()
         {
             //-----------------------------Arrange-----------------------------
-            var hostName = "rsaklfsvrdev.dev2.local";
-            var workflowUrl = "http://t000420:1002/public/Hello%20World.json";
-            var valueKey = "testValueKey";
-            var queue = "testQueue";
-            var userName = "testUserName";
-            var password = "testPassword";
+            var filename = "rsaklfsvrdev.dev2.local";
 
-            var args = $"-q {queue} -w {workflowUrl} -v {valueKey} -h {hostName} -u {userName} -p {password}".Split(" ").ToArray();
+            var args = $"-f {filename}".Split(" ").ToArray();
             //-----------------------------Act---------------------------------
-            var processArgs = new ProcessArgs(args: args);
+            var processArgs = CommandLine.ParseArguments(args: args);
             //-----------------------------Assert------------------------------
-            Assert.AreEqual(hostName, processArgs.HostName);
-            Assert.AreEqual(workflowUrl, processArgs.WorkflowUrl);
-            Assert.AreEqual(valueKey, processArgs.ValueKey);
-            Assert.AreEqual(queue, processArgs.QueueName);
-            Assert.AreEqual(userName, processArgs.UserName);
-            Assert.AreEqual(password, processArgs.Password);
+            Assert.AreEqual(filename, processArgs.Filename);
         }
     }
 }
