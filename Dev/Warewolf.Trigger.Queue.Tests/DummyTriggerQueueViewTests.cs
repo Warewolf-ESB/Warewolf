@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
@@ -20,7 +22,8 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(DummyTriggerQueueView))]
         public void DummyTriggerQueueView_Default()
         {
-            var triggerQueueView = new DummyTriggerQueueView();
+            var mockServer = new Mock<IServer>();
+            var triggerQueueView = new DummyTriggerQueueView(mockServer.Object);
             Assert.AreEqual("'", triggerQueueView.NameForDisplay);
             Assert.IsTrue(triggerQueueView.IsNewQueue);
         }
