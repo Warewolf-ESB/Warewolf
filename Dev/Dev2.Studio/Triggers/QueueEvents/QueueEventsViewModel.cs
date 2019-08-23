@@ -247,9 +247,6 @@ namespace Dev2.Triggers.QueueEvents
             return res;
         }
 
-        Task<IResourcePickerDialog> GetResourcePickerDialog => ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
-
-
         private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
             var queueNames = new List<INameValue>();
@@ -445,6 +442,7 @@ namespace Dev2.Triggers.QueueEvents
             else
             {
                 _queues.Add(triggerQueueView);
+
             }
             SelectedQueue = triggerQueueView;
         }
