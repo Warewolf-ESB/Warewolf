@@ -83,13 +83,13 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             publisher.Publish(data);
 
             //------------------------Assert----------------------
-            using var testPublishSuccess = new TestPublishSuccess();
-            var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
-
-            Assert.AreEqual(config.Exchange, sentData.Exchange);
-            Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
-            Assert.AreEqual(message, Encoding.UTF8.GetString(sentData.Body));
-
+            using (var testPublishSuccess = new TestPublishSuccess())
+            {
+                var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
+                Assert.AreEqual(config.Exchange, sentData.Exchange);
+                Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
+                Assert.AreEqual(message, Encoding.UTF8.GetString(sentData.Body));
+            }
         }
 
         public class TestPublishSuccess : IDisposable
