@@ -135,8 +135,6 @@ namespace Dev2.Triggers.QueueEvents
             return res;
         }
 
-        Task<IResourcePickerDialog> GetResourcePickerDialog => ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
-
         public string PasteResponse
         {
             get => _pasteResponse;
