@@ -6,6 +6,7 @@ using Warewolf.Web.UI.Tests.ScreenRecording;
 namespace Warewolf.Web.UI.Tests
 {
     [TestClass]
+    [Ignore]
     public class Web_UITests_For_Opera
     {
         private BaseWebDriver driver;
