@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -47,9 +46,9 @@ using Dev2.Threading;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
-namespace Dev2.Settings.Scheduler
+namespace Dev2.Triggers.Scheduler
 {
-    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
+    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IStudioTab, IHelpSource
     {
         ICommand _saveCommand;
         ICommand _newCommand;
@@ -75,6 +74,7 @@ namespace Dev2.Settings.Scheduler
         bool _errorShown;
         DebugOutputViewModel _debugOutputViewModel;
         string _displayName;
+        bool _isDirty;
 
         public SchedulerViewModel()
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
@@ -96,13 +96,13 @@ namespace Dev2.Settings.Scheduler
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
 
-            VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
+            VerifyArgument.IsNotNull(nameof(directoryObjectPicker), directoryObjectPicker);
             var directoryObjectPicker1 = directoryObjectPicker;
 
-            VerifyArgument.IsNotNull("popupController", popupController);
+            VerifyArgument.IsNotNull(nameof(popupController), popupController);
             _popupController = popupController;
 
-            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
             _toEnvironmentModel = toEnvironmentModel ?? (a => a.ToEnvironmentModel());
             Errors = new ErrorResultTO();
@@ -124,17 +124,17 @@ namespace Dev2.Settings.Scheduler
             SetDisplayName(false);
         }
 
-        public override string DisplayName
+        public  string DisplayName
         {
             get => _displayName;
             set
             {
                 _displayName = value;
-                OnPropertyChanged("DisplayName");
+                OnPropertyChanged(nameof(DisplayName));
             }
         }
 
-        public override bool HasDebugOutput => true;
+        public  bool HasDebugOutput => true;
 
         public Func<IServer, IServer> ToEnvironmentModel
         {
@@ -151,7 +151,7 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 _hasConnectionError = value;
-                NotifyOfPropertyChange(() => HasConnectionError);
+                OnPropertyChanged(nameof(HasConnectionError));
             }
         }
 
@@ -172,7 +172,7 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 _connectionError = value;
-                NotifyOfPropertyChange(() => ConnectionError);
+                OnPropertyChanged(nameof(ConnectionError));
             }
         }
 
@@ -182,7 +182,7 @@ namespace Dev2.Settings.Scheduler
             private set
             {
                 _isLoading = value;
-                NotifyOfPropertyChange(() => IsLoading);
+                OnPropertyChanged(nameof(IsLoading));
             }
         }
 
@@ -196,8 +196,8 @@ namespace Dev2.Settings.Scheduler
                 if (SelectedTask != null)
                 {
                     SelectedTask.Trigger = value;
-                    NotifyOfPropertyChange(() => IsDirty);
-                    NotifyOfPropertyChange(() => Trigger);
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(Trigger));
                 }
             }
         }
@@ -214,8 +214,8 @@ namespace Dev2.Settings.Scheduler
                         return;
                     }
                     SelectedTask.Status = value;
-                    NotifyOfPropertyChange(() => IsDirty);
-                    NotifyOfPropertyChange(() => Status);
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(Status));
                 }
             }
         }
@@ -242,8 +242,8 @@ namespace Dev2.Settings.Scheduler
                     }
 
                     SelectedTask.WorkflowName = value;
-                    NotifyOfPropertyChange(() => IsDirty);
-                    NotifyOfPropertyChange(() => WorkflowName);
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(WorkflowName));
                 }
             }
         }
@@ -279,8 +279,8 @@ namespace Dev2.Settings.Scheduler
                     ClearError(Core.SchedulerDuplicateNameErrorMessage);
                 }
                 SelectedTask.Name = value;
-                NotifyOfPropertyChange(() => IsDirty);
-                NotifyOfPropertyChange(() => Name);
+                OnPropertyChanged(nameof(IsDirty));
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -296,8 +296,8 @@ namespace Dev2.Settings.Scheduler
                         return;
                     }
                     SelectedTask.RunAsapIfScheduleMissed = value;
-                    NotifyOfPropertyChange(() => IsDirty);
-                    NotifyOfPropertyChange(() => RunAsapIfScheduleMissed);
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(RunAsapIfScheduleMissed));
                 }
             }
         }
@@ -316,17 +316,17 @@ namespace Dev2.Settings.Scheduler
                     if (string.IsNullOrEmpty(value))
                     {
                         SelectedTask.NumberOfHistoryToKeep = 0;
-                        NotifyOfPropertyChange(() => IsDirty);
+                        OnPropertyChanged(nameof(IsDirty));
                     }
                     else
                     {
                         if (value.IsWholeNumber(out int val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
-                            NotifyOfPropertyChange(() => IsDirty);
+                            OnPropertyChanged(nameof(IsDirty));
                         }
                     }
-                    NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
+                    OnPropertyChanged(nameof(NumberOfRecordsToKeep));
                 }
             }
         }
@@ -347,7 +347,7 @@ namespace Dev2.Settings.Scheduler
                    {
                        IsHistoryTabVisible = true;
                        IsProgressBarVisible = false;
-                       NotifyOfPropertyChange(() => History);
+                       OnPropertyChanged(nameof(History));
                    });
                 }
                 var history = _history;
@@ -380,7 +380,7 @@ namespace Dev2.Settings.Scheduler
                         }
                     }
                 }
-                NotifyOfPropertyChange(() => SelectedHistory);
+                OnPropertyChanged(nameof(SelectedHistory));
             }
         }
 
@@ -396,7 +396,7 @@ namespace Dev2.Settings.Scheduler
                 if (value == null)
                 {
                     _selectedTask = null;
-                    NotifyOfPropertyChange(() => SelectedTask);
+                    OnPropertyChanged(nameof(SelectedTask));
                     return;
                 }
                 if (Equals(_selectedTask, value) || value.IsNewItem)
@@ -405,23 +405,23 @@ namespace Dev2.Settings.Scheduler
                 }
                 _selectedTask = value;
                 Item = _ser.Deserialize<IScheduledResource>(_ser.SerializeToBuilder(_selectedTask));
-                NotifyOfPropertyChange(() => SelectedTask);
+                OnPropertyChanged(nameof(SelectedTask));
                 if (_selectedTask != null)
                 {
-                    NotifyOfPropertyChange(() => Trigger);
-                    NotifyOfPropertyChange(() => Status);
-                    NotifyOfPropertyChange(() => WorkflowName);
-                    NotifyOfPropertyChange(() => Name);
-                    NotifyOfPropertyChange(() => RunAsapIfScheduleMissed);
-                    NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
-                    NotifyOfPropertyChange(() => TriggerText);
-                    NotifyOfPropertyChange(() => AccountName);
-                    NotifyOfPropertyChange(() => Password);
-                    NotifyOfPropertyChange(() => Errors);
-                    NotifyOfPropertyChange(() => Error);
-                    NotifyOfPropertyChange(() => SelectedHistory);
+                    OnPropertyChanged(nameof(Trigger));
+                    OnPropertyChanged(nameof(Status));
+                    OnPropertyChanged(nameof(WorkflowName));
+                    OnPropertyChanged(nameof(Name));
+                    OnPropertyChanged(nameof(RunAsapIfScheduleMissed));
+                    OnPropertyChanged(nameof(NumberOfRecordsToKeep));
+                    OnPropertyChanged(nameof(TriggerText));
+                    OnPropertyChanged(nameof(AccountName));
+                    OnPropertyChanged(nameof(Password));
+                    OnPropertyChanged(nameof(Errors));
+                    OnPropertyChanged(nameof(Error));
+                    OnPropertyChanged(nameof(SelectedHistory));
                     SelectedHistory = null;
-                    NotifyOfPropertyChange(() => History);
+                    OnPropertyChanged(nameof(History));
                 }
             }
         }
@@ -433,8 +433,8 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 _scheduledResourceModel = value;
-                NotifyOfPropertyChange(() => ScheduledResourceModel);
-                NotifyOfPropertyChange(() => TaskList);
+                OnPropertyChanged(nameof(ScheduledResourceModel));
+                OnPropertyChanged(nameof(TaskList));
             }
         }
 
@@ -451,8 +451,8 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.UserName = value;
-                    NotifyOfPropertyChange(() => IsDirty);
-                    NotifyOfPropertyChange(() => AccountName);
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(AccountName));
                 }
             }
         }
@@ -470,8 +470,8 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.Password = value;
-                    NotifyOfPropertyChange(() => IsDirty);
-                    NotifyOfPropertyChange(() => Password);
+                    OnPropertyChanged(nameof(IsDirty));
+                    OnPropertyChanged(nameof(Password));
                 }
             }
         }
@@ -482,7 +482,7 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 _currentEnvironment = value;
-                NotifyOfPropertyChange(() => CurrentEnvironment);
+                OnPropertyChanged(nameof(CurrentEnvironment));
             }
         }
 
@@ -498,7 +498,7 @@ namespace Dev2.Settings.Scheduler
                     _selectedTask.Errors = value;
                 }
 
-                NotifyOfPropertyChange(() => Errors);
+                OnPropertyChanged(nameof(Errors));
             }
         }
 
@@ -508,7 +508,7 @@ namespace Dev2.Settings.Scheduler
             private set
             {
                 _isHistoryTabVisible = value;
-                NotifyOfPropertyChange(() => IsHistoryTabVisible);
+                OnPropertyChanged(nameof(IsHistoryTabVisible));
             }
         }
 
@@ -518,7 +518,7 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 _isProgressBarVisible = value;
-                NotifyOfPropertyChange(() => IsProgressBarVisible);
+                OnPropertyChanged(nameof(IsProgressBarVisible));
             }
         }
 
@@ -536,7 +536,7 @@ namespace Dev2.Settings.Scheduler
                 _activeItem = value;
                 if (IsHistoryTab)
                 {
-                    NotifyOfPropertyChange(() => History);
+                    OnPropertyChanged(nameof(History));
                 }
             }
         }
@@ -547,7 +547,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if (ActiveItem != null)
                 {
-                    return (string)ActiveItem.Header == "History";
+                    return (string)ActiveItem.Header == nameof(History);
                 }
                 return false;
             }
@@ -588,7 +588,7 @@ namespace Dev2.Settings.Scheduler
 
         static ActivityDesignerToggle CreateHelpToggle()
         {
-            var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", "HelpToggle");
+            var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", nameof(HelpToggle));
 
             return toggle;
         }
@@ -615,7 +615,7 @@ namespace Dev2.Settings.Scheduler
                         scheduledResource.NextRunDate = scheduledResource.Trigger.Trigger.StartBoundary;
                         scheduledResource.OldName = scheduledResource.Name;
                     }
-                    NotifyOfPropertyChange(() => TaskList);
+                    OnPropertyChanged(nameof(TaskList));
                     if (TaskList.Count > 0)
                     {
                         SelectedTask = TaskList[0];
@@ -667,16 +667,16 @@ namespace Dev2.Settings.Scheduler
             NumberOfRecordsToKeep = string.Empty;
             Trigger = null;
             ScheduledResourceModel?.ScheduledResources.Clear();
-            NotifyOfPropertyChange(() => TaskList);
-            NotifyOfPropertyChange(() => History);
+            OnPropertyChanged(nameof(TaskList));
+            OnPropertyChanged(nameof(History));
             Errors.ClearErrors();
         }
 
         public void ClearError(string description)
         {
             Errors.RemoveError(description);
-            NotifyOfPropertyChange(() => Error);
-            NotifyOfPropertyChange(() => HasErrors);
+            OnPropertyChanged(nameof(Error));
+            OnPropertyChanged(nameof(HasErrors));
         }
 
         public void ShowError(string description)
@@ -684,8 +684,8 @@ namespace Dev2.Settings.Scheduler
             if (!string.IsNullOrEmpty(description))
             {
                 Errors.AddError(description, true);
-                NotifyOfPropertyChange(() => Error);
-                NotifyOfPropertyChange(() => HasErrors);
+                OnPropertyChanged(nameof(Error));
+                OnPropertyChanged(nameof(HasErrors));
             }
         }
 
@@ -716,11 +716,20 @@ namespace Dev2.Settings.Scheduler
                 }
                 return false;
             }
+            set
+            {
+                if (value.Equals(_isDirty))
+                {
+                    return;
+                }
+                _isDirty = value;
+                OnPropertyChanged(nameof(IsDirty));
+            }
         }
 
         void SetDisplayName(bool dirty)
         {
-            var baseName = "Scheduler";
+            var baseName = nameof(Scheduler);
             if (Server != null)
             {
                 baseName = baseName + " - " + Server.DisplayName;
@@ -784,13 +793,13 @@ namespace Dev2.Settings.Scheduler
                 }
 
                 _helpText = value;
-                NotifyOfPropertyChange(() => HelpText);
+                OnPropertyChanged(nameof(HelpText));
             }
         }
 
         public IServer Server { private get; set; }
 
-        public string ResourceType => "Scheduler";
+        public string ResourceType => nameof(Scheduler);
         internal SchedulerTaskManager SchedulerTaskManager { get; set; }
         public IPopupController PopupController => _popupController;
 
@@ -800,7 +809,7 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 _debugOutputViewModel = value;
-                NotifyOfPropertyChange(() => DebugOutputViewModel);
+                OnPropertyChanged(nameof(DebugOutputViewModel));
             }
         }
 
@@ -818,7 +827,7 @@ namespace Dev2.Settings.Scheduler
             {
                 return resource;
             }
-            throw new Exception();
+            return null;
         }
     }
 }

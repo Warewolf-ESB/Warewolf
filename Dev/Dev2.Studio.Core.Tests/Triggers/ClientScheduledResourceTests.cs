@@ -8,25 +8,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Communication;
+using Dev2.Studio.Interfaces;
+using Dev2.Triggers.Scheduler;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using Dev2.Common.Interfaces.Data.TO;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Dev2.Communication;
-using Dev2.Data.TO;
-using Dev2.Settings.Scheduler;
-using Dev2.Studio.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 
-namespace Dev2.Core.Tests.Settings
+namespace Dev2.Core.Tests.Triggers
 {
     [TestClass]
-    [TestCategory("Studio Settings Core")]
+    [TestCategory("Studio ViewModels Triggers")]
     public class ClientScheduledResourceTests
     {
         [TestMethod]
@@ -163,104 +160,6 @@ namespace Dev2.Core.Tests.Settings
         public void ClientScheduledResourceModel_Constructor_NullEnvironmentModel_ThrowsException()
         {
             new ClientScheduledResourceModel(null, () => { });
-        }
-    }
-
-    public class ResourceHistoryForTest : IResourceHistory
-    {
-        public string WorkflowOutput { get; private set; }
-        public IList<IDebugState> DebugOutput { get; private set; }
-        public IEventInfo TaskHistoryOutput { get; private set; }
-        public string UserName { get; set; }
-    }
-
-    class ScheduledResourceForTest : IScheduledResource
-    {
-        bool _isNewItem;
-        bool _isDirty;
-
-        public ScheduledResourceForTest()
-        {
-            Errors = new ErrorResultTO();
-        }
-
-        /// <summary>
-        /// Property to check if the scheduled resouce is saved
-        /// </summary>
-        public bool IsDirty
-        {
-            get
-            {
-                return _isDirty;
-            }
-            set
-            {
-                _isDirty = value;
-            }
-        }
-        /// <summary>
-        ///     Schedule Name
-        /// </summary>
-        public string Name { get; set; }
-        /// <summary>
-        /// Represents the old name of the task
-        /// </summary>
-        public string OldName { get; set; }
-        /// <summary>
-        ///     Schedule Status
-        /// </summary>
-        public SchedulerStatus Status { get; set; }
-        /// <summary>
-        ///     The next time that this schedule will run
-        /// </summary>
-        public DateTime NextRunDate { get; set; }
-        /// <summary>
-        ///     Trigger
-        /// </summary>
-        public IScheduleTrigger Trigger { get; set; }
-        /// <summary>
-        /// NumberOfHistoryToKeep
-        /// </summary>
-        public int NumberOfHistoryToKeep { get; set; }
-        /// <summary>
-        /// The workflow that we will run
-        /// </summary>
-        public string WorkflowName { get; set; }
-
-
-        /// <summary>
-        /// The workflow that we will run
-        /// </summary>
-        public Guid ResourceId { get; set; }
-        /// <summary>
-        /// If a schedule is missed execute as soon as possible
-        /// </summary>
-        public bool RunAsapIfScheduleMissed { get; set; }
-        public bool AllowMultipleIstances { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public IErrorResultTO Errors { get; set; }
-        public bool IsNew { get; set; }
-        public bool IsNewItem
-        {
-            get
-            {
-                return _isNewItem;
-            }
-            set
-            {
-                _isNewItem = value;
-            }
-        }
-        public string NameForDisplay { get; private set; }
-
-        public void SetItem(IScheduledResource item)
-        {
-        }
-
-        public bool Equals(IScheduledResource other)
-        {
-            return !IsDirty;
         }
     }
 }

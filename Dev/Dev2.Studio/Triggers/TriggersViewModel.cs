@@ -20,12 +20,12 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
-using Dev2.Settings.Scheduler;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Triggers.QueueEvents;
+using Dev2.Triggers.Scheduler;
 using Dev2.Threading;
 
 namespace Dev2.Triggers
@@ -38,8 +38,10 @@ namespace Dev2.Triggers
         string _errors;
         bool _isSaved;
         bool _isLoading;
-
+        bool _isSchedulerSelected;
+        bool _isEventsSelected;
         QueueEventsViewModel _queueEventsViewModel;
+        SchedulerViewModel _schedulerViewModel;
 
         readonly IPopupController _popupController;
         readonly IAsyncWorker _asyncWorker;
@@ -64,7 +66,7 @@ namespace Dev2.Triggers
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
 
-            SaveCommand = new RelayCommand(o => SaveTasks(), o => IsDirty);
+            SaveCommand = new RelayCommand(o => SaveTriggers(), o => IsDirty);
 
             ToEnvironmentModel = toEnvironmentModel ?? (a => a.ToEnvironmentModel());
             CurrentEnvironment = ToEnvironmentModel?.Invoke(server);
@@ -75,6 +77,8 @@ namespace Dev2.Triggers
         public string ResourceType => StringResources.TriggersHeader;
 
         public string QueueEventsHeader => QueueEventsViewModel != null && QueueEventsViewModel.IsDirty ? StringResources.QueueEventsHeader + " *" : StringResources.QueueEventsHeader;
+
+        public string SchedulerHeader => SchedulerViewModel != null && SchedulerViewModel.IsDirty ? StringResources.SchedulerHeader + " *" : StringResources.SchedulerHeader;
 
         public IServer Server { get; set; }
 
@@ -102,6 +106,19 @@ namespace Dev2.Triggers
             }
         }
 
+        public SchedulerViewModel SchedulerViewModel
+        {
+            get => _schedulerViewModel;
+            private set
+            {
+                if (Equals(value, _schedulerViewModel))
+                {
+                    return;
+                }
+                _schedulerViewModel = value;
+                NotifyOfPropertyChange(() => SchedulerViewModel);
+            }
+        }
         public RelayCommand SaveCommand { get; private set; }
 
         public ICommand NewQueueEventCommand => _newQueueEventCommand ??
@@ -117,8 +134,7 @@ namespace Dev2.Triggers
 
         private void CreateSchedule(object obj)
         {
-            //TODO: Call Scheduler NewCommand
-            QueueEventsViewModel.NewCommand.Execute(obj);
+            SchedulerViewModel.NewCommand.Execute(obj);
         }
 
         public Func<IServer, IServer> ToEnvironmentModel
@@ -133,10 +149,11 @@ namespace Dev2.Triggers
             set
             {
                 _currentEnvironment = value;
-                if (CurrentEnvironment.IsConnected)
+                if (_currentEnvironment != null && _currentEnvironment.IsConnected)
                 {
                     _currentEnvironment.AuthorizationService?.IsAuthorized(AuthorizationContext.Administrator, null);
                 }
+
             }
         }
 
@@ -222,6 +239,43 @@ namespace Dev2.Triggers
             }
         }
 
+        public bool IsSchedulerSelected
+        {
+            get => _isSchedulerSelected;
+            set
+            {
+                if (value.Equals(_isSchedulerSelected))
+                {
+                    return;
+                }
+                if (value)
+                {
+                    IsEventsSelected = false;
+                }
+                _isSchedulerSelected = value;
+                NotifyOfPropertyChange(() => IsSchedulerSelected);
+            }
+        }
+
+        public bool IsEventsSelected
+        {
+            get => _isEventsSelected;
+            set
+            {
+                
+                if (value.Equals(_isEventsSelected))
+                {
+                    return;
+                }
+                if (value)
+                {
+                    IsSchedulerSelected = false;
+                }
+                _isEventsSelected = value;
+                NotifyOfPropertyChange(() => IsEventsSelected);
+            }
+        }
+
         void SetDisplayName()
         {
             if (IsDirty)
@@ -263,7 +317,7 @@ namespace Dev2.Triggers
             }, () =>
             {
                 IsLoading = false;
-                //TODO: Add SchedulerViewModel
+                SchedulerViewModel = CreateSchedulerViewModel();
                 QueueEventsViewModel = CreateQueueEventsViewModel();
 
                 AddPropertyChangedHandlers();
@@ -279,7 +333,18 @@ namespace Dev2.Triggers
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(TasksItemViewModel.IsDirtyProperty, typeof(TasksItemViewModel));
-            //TODO: Add SchedulerViewModel
+            //TODO: I will come back to this, want to get the rest through code review
+            //if (SchedulerViewModel != null)
+            //{
+            //    isDirtyProperty.AddValueChanged(SchedulerViewModel, OnIsDirtyPropertyChanged);
+            //    SchedulerViewModel.PropertyChanged += (sender, args) =>
+            //    {
+            //        if (args.PropertyName == nameof(IsDirty))
+            //        {
+            //            OnIsDirtyPropertyChanged(null, new EventArgs());
+            //        }
+            //    };
+            //}
             if (QueueEventsViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(QueueEventsViewModel, OnIsDirtyPropertyChanged);
@@ -290,17 +355,21 @@ namespace Dev2.Triggers
                         OnIsDirtyPropertyChanged(null, new EventArgs());
                     }
                 };
-            }
+            }     
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            //TODO: Add SchedulerViewModel
+            if (SchedulerViewModel != null)
+            {
+                IsDirty = SchedulerViewModel.IsDirty;
+            }
             if (QueueEventsViewModel != null)
             {
                 IsDirty = QueueEventsViewModel.IsDirty;
             }
             NotifyOfPropertyChange(() => QueueEventsHeader);
+            NotifyOfPropertyChange(() => SchedulerHeader);
             ClearErrors();
         }
 
@@ -310,6 +379,11 @@ namespace Dev2.Triggers
             return queueEventsViewModel;
         }
 
+        private static SchedulerViewModel CreateSchedulerViewModel()
+        {
+            var schedulerViewModel = new SchedulerViewModel();
+            return schedulerViewModel;
+        }
         public bool DoDeactivate(bool showMessage)
         {
             if (showMessage)
@@ -321,7 +395,7 @@ namespace Dev2.Triggers
                 }
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    return SaveTasks();
+                    return SaveTriggers();
                 }
 
                 if (messageBoxResult == MessageBoxResult.No)
@@ -332,13 +406,13 @@ namespace Dev2.Triggers
             }
             else
             {
-                return SaveTasks();
+                return SaveTriggers();
             }
 
             return true;
         }
 
-        bool SaveTasks()
+        bool SaveTriggers()
         {
             if (CurrentEnvironment.IsConnected)
             {
@@ -368,12 +442,16 @@ namespace Dev2.Triggers
 
         void ResetIsDirtyForChildren()
         {
-            //TODO: Add SchedulerViewModel
+            if (SchedulerViewModel != null)
+            {
+                SchedulerViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => SchedulerHeader);
+            }
             if (QueueEventsViewModel != null)
             {
                 QueueEventsViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => QueueEventsHeader);
-            }
+            }        
         }
 
         protected virtual void ShowError(string header, string description)

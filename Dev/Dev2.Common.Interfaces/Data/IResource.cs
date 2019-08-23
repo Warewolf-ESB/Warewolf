@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 namespace Dev2.Common.Interfaces.Data
 {
     public interface IResource : IEquatable<IResource>
-    {        
+    {
         Guid ResourceID { get; set; }
         
         IVersionInfo VersionInfo { get; set; }

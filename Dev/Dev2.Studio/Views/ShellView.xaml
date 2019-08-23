@@ -367,7 +367,7 @@
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal" >
                                                                 <Image Source="{Binding ResourceType, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ResourceTypeToIconConverter}}" Height="16" Width="16"
-                                                                   AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2" />
+                                                                   AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,0,4,0" />
                                                                 <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="0,0,2,0" />
                                                                 <fa:FontAwesome Icon="Ban" 
                                                                                 Foreground="DarkRed" 

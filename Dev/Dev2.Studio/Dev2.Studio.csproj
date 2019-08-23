@@ -207,6 +207,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="AppResources\Converters\InverseQueueStatusConverter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ResourceExtensionHelper.cs" />
     <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
@@ -304,14 +305,14 @@
     </Compile>
     <Compile Include="Settings\Perfcounters\PerformanceCountersByMachine.cs" />
     <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
-    <Compile Include="Settings\Scheduler\CredentialUI.cs" />
-    <Compile Include="Settings\Scheduler\DummyResource.cs" />
-    <Compile Include="Settings\Scheduler\SchedulerTaskManager.cs" />
-    <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
+    <Compile Include="Triggers\Scheduler\CredentialUI.cs" />
+    <Compile Include="Triggers\Scheduler\DummyResource.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerTaskManager.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
-    <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerViewModel.cs" />
+    <Compile Include="Triggers\Scheduler\ClientScheduledResourceModel.cs" />
     <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
     <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
@@ -453,7 +454,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Scheduler\SchedulerView.xaml">
+    <Page Include="Triggers\Scheduler\SchedulerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -738,6 +739,10 @@
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
@@ -797,6 +802,10 @@
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
       <Project>{b7faa26b-ddcb-4967-9fcb-89afba92e726}</Project>

@@ -74,7 +74,7 @@ namespace Warewolf.Studio.Core
                     case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case "Triggers":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
+                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Play, _brush);
                     case "ServiceTestsViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
                     case "MergeConflicts":

@@ -19,16 +19,27 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Data.TO;
+using Dev2.Dialogs;
+using Dev2.Studio.Enums;
+using Dev2.Runtime.Triggers;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
+using Warewolf.Studio.ViewModels;
+using Warewolf.Trigger;
 using Warewolf.UI;
+using Dev2.Common.Interfaces.Studio.Controller;
+using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -43,97 +54,124 @@ namespace Dev2.Triggers.QueueEvents
         string _deadLetterQueue;
         string _workflowName;
         int _concurrency;
-        private IServer _server;
-        private IResourceRepository _resourceRepository;
-        IExternalProcessExecutor _externalProcessExecutor;
-        private IList<INameValue> _queueNames; 
+        private readonly IServer _server;
+        private readonly IResourceRepository _resourceRepository;
+        readonly IExternalProcessExecutor _externalProcessExecutor;
+        private IList<INameValue> _queueNames;
 
         private IList<INameValue> _deadLetterQueues;
         private ICollection<IServiceInput> _inputs;
-        private bool _pasteResponseVisible;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
-        private bool _isTesting;
-        private bool _testFailed;
-        private bool _testPassed;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private string _testResults;
+        private bool _isVerifying;
+        private bool _verifyFailed;
+        private bool _verifyPassed;
+        private bool _verifyResultsAvailable;
+        private bool _isVerifyResultsEmptyRows;
+        private bool _isHistoryExpanded;
+        private string _verifyResults;
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
+        private readonly EnvironmentViewModel _source;
+        IResourcePickerDialog _currentResourcePicker;
         string _connectionError;
         bool _hasConnectionError;
         bool _isProgressBarVisible;
         bool _isHistoryTabVisible;
-        IQueueResourceModel _queueResourceModel;
-        IQueueResource _selectedQueue;
+        ITriggerQueueResourceModel _queueResourceModel;
+        ITriggerQueueView _selectedQueue;
         bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         bool _isDirty;
         TabItem _activeItem;
         private List<OptionView> _options;
         private List<OptionView> _deadLetterOptions;
+        private ObservableCollection<ITriggerQueueView> _queues;
+
+        public IPopupController PopupController { get; }
 
         public QueueEventsViewModel(IServer server)
-            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker())
+            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(), null)
         {
 
         }
 
-        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker)
+        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker, IResourcePickerDialog resourcePickerDialog)
         {
+            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
             Inputs = new List<IServiceInput>();
-            PasteResponseCommand = new DelegateCommand(ExecutePaste);
-            TestCommand = new DelegateCommand(ExecuteTest);
-            IsTesting = false;
+            VerifyCommand = new DelegateCommand(ExecuteVerify);
+            AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
+            IsVerifying = false;
+            _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
-            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
-
             InitializeHelp();
             Options = new List<OptionView>();
             DeadLetterOptions = new List<OptionView>();
+            PopupController = CustomContainer.Get<IPopupController>();
+            Queues = new ObservableCollection<ITriggerQueueView>();
+            AddDummyTriggerQueueView();
         }
 
-
-        public void ExecutePaste()
+        private void AddDummyTriggerQueueView()
         {
-            PasteResponseVisible = true;
+            var dummyTriggerQueueView = new DummyTriggerQueueView();
+            Queues.Add(dummyTriggerQueueView);
         }
 
-        public void ExecuteTest()
+        private void OpenResourcePicker()
         {
-            TestResults = null;
-            IsTesting = true;
+            if (_currentResourcePicker.ShowDialog(_server))
+            {
+                var selectedResource = _currentResourcePicker.SelectedResource;
+                WorkflowName = selectedResource.ResourcePath;
+                SelectedQueue.ResourceId = selectedResource.ResourceId;
+                SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+            }
+        }
+
+        public void ExecuteVerify()
+        {
+            VerifyResults = null;
+            _isVerifying = true;
 
             try
             {
-                TestResults = "{some text}";
+                VerifyResults = "{some text}";
 
-                IsTestResultsEmptyRows = TestResults == null;
-                if (TestResults != null)
+                IsVerifyResultsEmptyRows = VerifyResults == null;
+                if (VerifyResults != null)
                 {
-                    TestResultsAvailable = true;
-                    IsTestResultsEmptyRows = TestResults == string.Empty;
-                    IsTesting = false;
-                    TestPassed = true;
-                    TestFailed = false;
+                    VerifyResultsAvailable = true;
+                    IsVerifyResultsEmptyRows = VerifyResults == string.Empty;
+                    _isVerifying = false;
+                    VerifyPassed = true;
+                    VerifyFailed = false;
                 }
             }
             catch (Exception ex)
             {
                 var msg = ex.Message;
-                IsTesting = false;
-                TestPassed = false;
-                TestFailed = true;
+                IsVerifying = false;
+                VerifyPassed = false;
+                VerifyFailed = true;
             }
-            PasteResponseVisible = false;
         }
 
-        public IList<string> QueueEvents { get; set; }
+        public ObservableCollection<ITriggerQueueView> Queues
+        {
+            get => _queues;
+            set
+            {
+                _queues = value;
+                OnPropertyChanged(nameof(Queues));
+            }
+        }
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
         public IResource SelectedQueueSource
         {
@@ -200,6 +238,16 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(SelectedDeadLetterQueueSource));
             }
         }
+
+        IResourcePickerDialog CreateResourcePickerDialog()
+        {
+            var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
+            return res;
+        }
+
+        Task<IResourcePickerDialog> GetResourcePickerDialog => ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
+
 
         private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
@@ -288,18 +336,6 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public ICommand PasteResponseCommand { get; private set; }
-
-        public bool PasteResponseVisible
-        {
-            get => _pasteResponseVisible;
-            set
-            {
-                _pasteResponseVisible = value;
-                OnPropertyChanged(nameof(PasteResponseVisible));
-            }
-        }
-
         public string PasteResponse
         {
             get => _pasteResponse;
@@ -310,37 +346,37 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public bool TestResultsAvailable
+        public bool VerifyResultsAvailable
         {
-            get => _testResultsAvailable;
+            get => _verifyResultsAvailable;
             set
             {
-                _testResultsAvailable = value;
-                OnPropertyChanged(nameof(TestResultsAvailable));
+                _verifyResultsAvailable = value;
+                OnPropertyChanged(nameof(VerifyResultsAvailable));
             }
         }
 
-        public bool IsTestResultsEmptyRows
+        public bool IsVerifyResultsEmptyRows
         {
-            get => _isTestResultsEmptyRows;
+            get => _isVerifyResultsEmptyRows;
             set
             {
-                _isTestResultsEmptyRows = value;
-                OnPropertyChanged(nameof(IsTestResultsEmptyRows));
+                _isVerifyResultsEmptyRows = value;
+                OnPropertyChanged(nameof(IsVerifyResultsEmptyRows));
             }
         }
 
-        public string TestResults
+        public string VerifyResults
         {
-            get => _testResults;
+            get => _verifyResults;
             set
             {
-                _testResults = value;
-                if (!string.IsNullOrEmpty(_testResults))
+                _verifyResults = value;
+                if (!string.IsNullOrEmpty(_verifyResults))
                 {
-                    //Model.Response = _testResults
+                    //Model.Response = _verifyResults
                 }
-                OnPropertyChanged(nameof(TestResults));
+                OnPropertyChanged(nameof(VerifyResults));
             }
         }
 
@@ -357,7 +393,33 @@ namespace Dev2.Triggers.QueueEvents
 
         private void CreateNewQueueEvent()
         {
-            QueueEvents.Add("");
+            SelectedQueue = null;
+            if (IsDirty)
+            {
+                PopupController?.Show(Core.TriggerQueueSaveEditedTestsMessage, Core.TriggerQueueSaveEditedQueueHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
+                return;
+            }
+
+            var queue = new TriggerQueueView
+            {
+                IsNewQueue = false
+            };
+
+            AddAndSelectQueue(queue);
+        }
+
+        void AddAndSelectQueue(ITriggerQueueView triggerQueueView)
+        {
+            var index = Queues.Count - 1;
+            if (index >= 0)
+            {
+                Queues.Insert(index, triggerQueueView);
+            }
+            else
+            {
+                Queues.Add(triggerQueueView);
+            }
+            SelectedQueue = triggerQueueView;
         }
 
         public ICommand DeleteCommand => _deleteCommand ??
@@ -365,38 +427,39 @@ namespace Dev2.Triggers.QueueEvents
 
         private void DeleteQueueEvent()
         {
-            QueueEvents.Remove("");
+            Queues.Remove(SelectedQueue);
         }
 
-        public ICommand TestCommand { get; private set; }
+        public ICommand VerifyCommand { get; private set; }
+        public ICommand AddWorkflowCommand { get; private set; }
 
-        public bool IsTesting
+        public bool IsVerifying
         {
-            get => _isTesting;
+            get => _isVerifying;
             set
             {
-                _isTesting = value;
-                OnPropertyChanged(nameof(IsTesting));
+                _isVerifying = value;
+                OnPropertyChanged(nameof(IsVerifying));
             }
         }
 
-        public bool TestFailed
+        public bool VerifyFailed
         {
-            get => _testFailed;
+            get => _verifyFailed;
             set
             {
-                _testFailed = value;
-                OnPropertyChanged(nameof(TestFailed));
+                _verifyFailed = value;
+                OnPropertyChanged(nameof(VerifyFailed));
             }
         }
 
-        public bool TestPassed
+        public bool VerifyPassed
         {
-            get => _testPassed;
+            get => _verifyPassed;
             set
             {
-                _testPassed = value;
-                OnPropertyChanged(nameof(TestPassed));
+                _verifyPassed = value;
+                OnPropertyChanged(nameof(VerifyPassed));
             }
         }
 
@@ -410,8 +473,34 @@ namespace Dev2.Triggers.QueueEvents
 
         }
 
-        public static bool Save()
+        public bool Save()
         {
+            ITriggerQueue triggerQueue = new TriggerQueue
+            {
+                QueueSourceId = SelectedQueueSource.ResourceID,
+                QueueName = QueueName,
+                WorkflowName = WorkflowName,
+                Concurrency = Concurrency,
+                UserName = AccountName,
+                Password = Password,
+                Options = new IOption[] { },
+                QueueSinkId = SelectedDeadLetterQueueSource.ResourceID,
+                DeadLetterQueue = DeadLetterQueue,
+                DeadLetterOptions = new IOption[] { },
+                Inputs = Inputs
+            };
+
+            foreach (var option in Options)
+            {
+                triggerQueue.Options = new IOption[] { option.DataContext };
+            }
+            foreach (var option in DeadLetterOptions)
+            {
+                triggerQueue.DeadLetterOptions = new IOption[] { option.DataContext };
+            }
+
+            TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
+
             return true;
         }
 
@@ -451,7 +540,7 @@ namespace Dev2.Triggers.QueueEvents
                 return false;
             }
         }
-        public IQueueResourceModel QueueResourceModel
+        public ITriggerQueueResourceModel QueueResourceModel
         {
             get => _queueResourceModel;
             set
@@ -461,11 +550,27 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(ExecutionHistory));
             }
         }
+
+        public bool IsHistoryExpanded
+        {
+            get => _isHistoryExpanded;
+            set
+            {
+                _isHistoryExpanded = value;
+                OnPropertyChanged(nameof(IsHistoryExpanded));
+                OnPropertyChanged(nameof(History));
+            }
+        }
+
         public IList<IExecutionHistory> History
         {
             get
             {
-                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewItem)
+                if (!IsHistoryExpanded)
+                {
+                    return new List<IExecutionHistory>();
+                }
+                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewQueue)
                 {
                     _asyncWorker.Start(() =>
                     {
@@ -522,7 +627,7 @@ namespace Dev2.Triggers.QueueEvents
                 }
             }
         }
-        public IQueueResource SelectedQueue
+        public ITriggerQueueView SelectedQueue
         {
             get => _selectedQueue;
             set
@@ -533,12 +638,12 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(SelectedQueue));
                     return;
                 }
-                if (Equals(_selectedQueue, value) || value.IsNewItem)
+                if (Equals(_selectedQueue, value) || value.IsNewQueue)
                 {
                     return;
                 }
                 _selectedQueue = value;
-                Item = _ser.Deserialize<IQueueResource>(_ser.SerializeToBuilder(_selectedQueue));
+                Item = _ser.Deserialize<ITriggerQueueView>(_ser.SerializeToBuilder(_selectedQueue));
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
@@ -624,9 +729,9 @@ namespace Dev2.Triggers.QueueEvents
                 QueueName = baseName;
             }
         }
-        public IList<IQueueResource> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<IQueueResource>();
+        public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 
-        public IQueueResource Item { get; set; }
+        public ITriggerQueueView Item { get; set; }
         public string Password
         {
             get => SelectedQueue != null ? SelectedQueue.Password : string.Empty;
@@ -678,7 +783,7 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(HasErrors));
             }
         }
-        public bool HasErrors => Errors.HasErrors();
+        public bool HasErrors => false;// Errors.HasErrors();
         public IErrorResultTO Errors
         {
             get => _selectedQueue != null ? _selectedQueue.Errors : new ErrorResultTO();

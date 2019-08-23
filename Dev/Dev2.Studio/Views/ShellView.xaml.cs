@@ -22,7 +22,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Xml;
 using Dev2.Common;
-using Dev2.Settings.Scheduler;
+using Dev2.Triggers.Scheduler;
 using Dev2.Studio.ViewModels;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
@@ -33,6 +33,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
+using Dev2.Triggers.Scheduler;
 
 namespace Dev2.Studio.Views
 {
