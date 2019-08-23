@@ -10,17 +10,19 @@
 
 namespace Warewolf.Data
 {
-    public class ProcessArgs
+    public interface IArgs
     {
-        public string QueueName { get; private set; }
-        public string WorkflowUrl { get; private set; }
-        public string ValueKey { get; private set; }
-        public string HostName { get; private set; }
-        public string UserName { get; private set; }
-        public string Password { get; private set; }
-
-        public ProcessArgs(string[] args)
+        string Filename { get; }
+    }
+    public class Args : IArgs
+    {
+        public string Filename { get; set; }
+    }
+    public static class CommandLine
+    {
+        public static IArgs ParseArguments(string[] args)
         {
+            var result = new Args();
             for (int i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
@@ -28,45 +30,20 @@ namespace Warewolf.Data
                 if (arg[0] == '-')
                 {
                     i++;
-                    ProcessArg(arg, args[i]);
+                    result.ParseArgument(arg, args[i]);
                 }
-            };
+            }
+            return result;
         }
 
-        private void ProcessArg(string arg, string value)
+        static private void ParseArgument(this Args args, string arg, string value)
         {
             arg = arg.Substring(1);
 
-            if (arg == "q")
+            if (arg == "f")
             {
-                QueueName = value;
-            }
-
-            if (arg == "w")
-            {
-                WorkflowUrl = value;
-            }
-
-            if (arg == "v")
-            {
-                ValueKey = value;
-            }
-
-            if (arg == "h")
-            {
-                HostName = value;
-            }
-
-            if (arg == "u")
-            {
-                UserName = value;
-            }
-
-            if (arg == "p")
-            {
-                Password = value;
+                args.Filename = value;
             }
         }
-
     }
 }
