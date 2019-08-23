@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
@@ -22,6 +23,7 @@ using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Dev2.Triggers;
@@ -34,6 +36,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text;
 using System.Windows.Controls;
 using Warewolf.Core;
 using Warewolf.Options;
@@ -45,6 +48,29 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
+        readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
+        readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
+        const string ResourceName = "TestWorkflow";
+
+        Mock<IContextualResourceModel> GetMockResource()
+        {
+            var mockResource = new Mock<IContextualResourceModel>();
+            mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
+            mockResource.SetupGet(r => r.ResourceName).Returns(ResourceName);
+            mockResource.SetupGet(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            mockResource.SetupGet(r => r.ID).Returns(_resourceID);
+            mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_XMLData);
+            return mockResource;
+        }
+        static Mock<IServiceDebugInfoModel> GetMockServiceDebugInfo(Mock<IContextualResourceModel> mockResouce)
+        {
+            var serviceDebugInfo = new Mock<IServiceDebugInfoModel>();
+            serviceDebugInfo.SetupGet(sd => sd.DebugModeSetting).Returns(DebugMode.DebugInteractive);
+            serviceDebugInfo.SetupGet(sd => sd.ResourceModel).Returns(mockResouce.Object);
+            serviceDebugInfo.SetupGet(sd => sd.RememberInputs).Returns(false);
+            serviceDebugInfo.SetupGet(sd => sd.ServiceInputData).Returns(mockResouce.Object.DataList);
+            return serviceDebugInfo;
+        }
         [TestInitialize]
         public void SetupForTest()
         {
@@ -443,30 +469,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.IsTrue(propertyChangedFired);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_Inputs()
-        {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsNotNull(queueEventsViewModel.Inputs);
-
-            var inputs = new ObservableCollection<IServiceInput>();
-            inputs.Add(new ServiceInput("name1", "value1"));
-            inputs.Add(new ServiceInput("name2", "value2"));
-
-            queueEventsViewModel.Inputs = inputs;
-
-            var inputsAsList = queueEventsViewModel.Inputs.ToList();
-
-            Assert.AreEqual(2, queueEventsViewModel.Inputs.Count);
-            Assert.AreEqual("name1", inputsAsList[0].Name);
-            Assert.AreEqual("value1", inputsAsList[0].Value);
-            Assert.AreEqual("name2", inputsAsList[1].Name);
-            Assert.AreEqual("value2", inputsAsList[1].Value);
-        }
+       
 
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
@@ -521,7 +524,44 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.IsTrue(queueEventsViewModel.VerifyPassed);
             Assert.IsFalse(queueEventsViewModel.VerifyFailed);
         }
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Candice Daniel")]
+        public void QueueEventsViewModel_GetInputs_Success()
+        {
+            var queueEventsViewModel = CreateViewModel();
+            var workflowName = "Workflow1";
+            queueEventsViewModel.WorkflowName = workflowName;
+            var mockResouce = GetMockResource();
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            
+            Assert.IsNotNull(queueEventsViewModel);
+        }
+      
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Inputs()
+        {
+            var mockServer = new Mock<IServer>();
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
+            Assert.IsNotNull(queueEventsViewModel.Inputs);
+
+            var inputs = new ObservableCollection<IServiceInput>();
+            inputs.Add(new ServiceInput("name1", "value1"));
+            inputs.Add(new ServiceInput("name2", "value2"));
+
+            queueEventsViewModel.Inputs = inputs;
+
+            var inputsAsList = queueEventsViewModel.Inputs.ToList();
+
+            Assert.AreEqual(2, queueEventsViewModel.Inputs.Count);
+            Assert.AreEqual("name1", inputsAsList[0].Name);
+            Assert.AreEqual("value1", inputsAsList[0].Value);
+            Assert.AreEqual("name2", inputsAsList[1].Name);
+            Assert.AreEqual("value2", inputsAsList[1].Value);
+        }
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Candice Daniel")]

@@ -7,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -16,30 +15,35 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
+using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
-using Dev2.Studio.Enums;
 using Dev2.Runtime.Triggers;
+using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
+using ServiceStack.Common.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml;
+using Warewolf.Core;
 using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger;
 using Warewolf.UI;
-using Dev2.Common.Interfaces.Studio.Controller;
-using System.Windows;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -53,14 +57,14 @@ namespace Dev2.Triggers.QueueEvents
         string _queueName;
         string _deadLetterQueue;
         string _workflowName;
+        Guid _resourceID;
         int _concurrency;
         private readonly IServer _server;
         private readonly IResourceRepository _resourceRepository;
         readonly IExternalProcessExecutor _externalProcessExecutor;
         private IList<INameValue> _queueNames;
-
         private IList<INameValue> _deadLetterQueues;
-        private ICollection<IServiceInput> _inputs;
+        private IList<IServiceInput> _inputs;
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
         private bool _isVerifying;
@@ -87,7 +91,9 @@ namespace Dev2.Triggers.QueueEvents
         private List<OptionView> _options;
         private List<OptionView> _deadLetterOptions;
         private ObservableCollection<ITriggerQueueView> _queues;
-
+        private DataListModel _dataList;
+        private DataListConversionUtils _dataListConversionUtils;
+        private IContextualResourceModel _contextualResourceModel;
         public IPopupController PopupController { get; }
 
         public QueueEventsViewModel(IServer server)
@@ -102,7 +108,6 @@ namespace Dev2.Triggers.QueueEvents
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
-            Inputs = new List<IServiceInput>();
             VerifyCommand = new DelegateCommand(ExecuteVerify);
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
             IsVerifying = false;
@@ -116,6 +121,7 @@ namespace Dev2.Triggers.QueueEvents
             PopupController = CustomContainer.Get<IPopupController>();
             Queues = new ObservableCollection<ITriggerQueueView>();
             AddDummyTriggerQueueView();
+            Inputs = new List<IServiceInput>();
         }
 
         private void AddDummyTriggerQueueView()
@@ -123,7 +129,7 @@ namespace Dev2.Triggers.QueueEvents
             var dummyTriggerQueueView = new DummyTriggerQueueView();
             Queues.Add(dummyTriggerQueueView);
         }
-
+        public IContextualResourceModel ResourceModel { get; set; }
         private void OpenResourcePicker()
         {
             if (_currentResourcePicker.ShowDialog(_server))
@@ -132,18 +138,40 @@ namespace Dev2.Triggers.QueueEvents
                 WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+                ResourceID = selectedResource.ResourceId;
+                GetInputsFromWorkflow();
             }
         }
+        private void GetInputsFromWorkflow()
+        {
+            Inputs = new List<IServiceInput>();
+            _contextualResourceModel = _server.ResourceRepository.LoadContextualResourceModel(ResourceID);
+            _dataList = new DataListModel();
+            _dataListConversionUtils = new DataListConversionUtils();
+            _dataList.Create(_contextualResourceModel.DataList, _contextualResourceModel.DataList);
+            var inputList = _dataListConversionUtils.GetInputs(_dataList);
+            Inputs = inputList.Select(sca =>
+            {
+                var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
+                return (IServiceInput)serviceTestInput;
 
+            }).ToList();
+        }
         public void ExecuteVerify()
         {
-            VerifyResults = null;
             _isVerifying = true;
 
             try
             {
-                VerifyResults = "{some text}";
+                _dataList = new DataListModel();
+                _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
+                var inputList = _dataListConversionUtils.GetInputs(_dataList);
+                Inputs = inputList.Select(sca =>
+                {
+                    var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
+                    return (IServiceInput)serviceTestInput;
 
+                }).ToList();
                 IsVerifyResultsEmptyRows = VerifyResults == null;
                 if (VerifyResults != null)
                 {
@@ -285,7 +313,15 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(QueueName));
             }
         }
-
+        public Guid ResourceID
+        {
+            get => _resourceID;
+            set
+            {
+                _resourceID = value;
+                OnPropertyChanged(nameof(ResourceID));
+            }
+        }
         public IList<INameValue> DeadLetterQueues
         {
             get => _deadLetterQueues;
@@ -326,7 +362,7 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        public ICollection<IServiceInput> Inputs
+        public IList<IServiceInput> Inputs
         {
             get => _inputs;
             set
@@ -374,7 +410,7 @@ namespace Dev2.Triggers.QueueEvents
                 _verifyResults = value;
                 if (!string.IsNullOrEmpty(_verifyResults))
                 {
-                    //Model.Response = _verifyResults
+                    //  Model.Response = _verifyResults
                 }
                 OnPropertyChanged(nameof(VerifyResults));
             }
@@ -548,6 +584,7 @@ namespace Dev2.Triggers.QueueEvents
                 _queueResourceModel = value;
                 OnPropertyChanged(nameof(QueueResourceModel));
                 OnPropertyChanged(nameof(ExecutionHistory));
+                OnPropertyChanged(nameof(Inputs));
             }
         }
 
@@ -655,6 +692,7 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(Errors));
                     OnPropertyChanged(nameof(Error));
                     OnPropertyChanged(nameof(History));
+                    OnPropertyChanged(nameof(Inputs));
                 }
             }
         }
