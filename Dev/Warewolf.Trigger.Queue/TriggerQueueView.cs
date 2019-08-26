@@ -20,7 +20,6 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Studio.Interfaces;
 using Dev2.Triggers;
 using Microsoft.Practices.Prism.Commands;
-using Warewolf.Options;
 using Warewolf.UI;
 
 namespace Warewolf.Trigger
@@ -52,7 +51,6 @@ namespace Warewolf.Trigger
         private bool _newQueue;
         private string _nameForDisplay;
         private TriggerQueueView _item;
-        private bool _isValidatingIsDirty;
         private IResourceRepository _resourceRepository;
         private IServer _server;
 
@@ -84,6 +82,7 @@ namespace Warewolf.Trigger
             {
                 _triggerQueueName = value;
                 RaisePropertyChanged(nameof(TriggerQueueName));
+                SetItem(this);
                 SetDisplayName(IsDirty);
             }
         }
@@ -242,19 +241,14 @@ namespace Warewolf.Trigger
         {
             get
             {
-                if (_isValidatingIsDirty)
-                {
-                    return false;
-                }
-                _isValidatingIsDirty = true;
                 var _isDirty = false;
-                var notEquals = !Equals(Item);
                 if (NewQueue)
                 {
                     _isDirty = true;
                 }
                 else
                 {
+                    var notEquals = !Equals(Item);
                     if (notEquals)
                     {
                         _isDirty = true;
@@ -262,7 +256,6 @@ namespace Warewolf.Trigger
                 }
 
                 SetDisplayName(_isDirty);
-                _isValidatingIsDirty = false;
                 return _isDirty;
             }
         }
@@ -456,6 +449,11 @@ namespace Warewolf.Trigger
                 optionViews.Add(optionView);
             }
             return optionViews;
+        }
+
+        public void SetItem(TriggerQueueView model)
+        {
+            Item = model;
         }
 
         void SetDisplayName(bool isDirty)
