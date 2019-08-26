@@ -34,6 +34,8 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using System.Windows;
 using System.Collections.ObjectModel;
 using Dev2.Common.Common;
+using Dev2.Data;
+using Warewolf.Core;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -41,15 +43,15 @@ namespace Dev2.Triggers.QueueEvents
     {
         ICommand _newCommand;
         ICommand _deleteCommand;
-        
+
         private IServer _server;
         private readonly IResourceRepository _resourceRepository;
         readonly IExternalProcessExecutor _externalProcessExecutor;
-        
+
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
         private bool _isHistoryExpanded;
-        
+
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
         private readonly EnvironmentViewModel _source;
@@ -65,9 +67,19 @@ namespace Dev2.Triggers.QueueEvents
         bool _isDirty;
         private bool _enabled;
         TabItem _activeItem;
-        
+
         private ObservableCollection<TriggerQueueView> _queues;
 
+        private DataListModel _dataList;
+        private DataListConversionUtils _dataListConversionUtils;
+        private IContextualResourceModel _contextualResourceModel;
+        private string _verifyResults;
+        private IList<IServiceInput> _inputs;
+        private bool _isVerifying;
+        private bool _verifyFailed;
+        private bool _verifyPassed;
+        private bool _verifyResultsAvailable;
+        private bool _isVerifyResultsEmptyRows;
         public IPopupController PopupController { get; }
 
         public QueueEventsViewModel(IServer server)
@@ -84,7 +96,7 @@ namespace Dev2.Triggers.QueueEvents
             _externalProcessExecutor = externalProcessExecutor;
             
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
-            
+
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
@@ -93,6 +105,9 @@ namespace Dev2.Triggers.QueueEvents
             PopupController = CustomContainer.Get<IPopupController>();
             Queues = new ObservableCollection<TriggerQueueView>();
             AddDummyTriggerQueueView();
+            Inputs = new List<IServiceInput>();
+            IsVerifying = false;
+            VerifyCommand = new DelegateCommand(ExecuteVerify);
         }
 
         private void AddDummyTriggerQueueView()
@@ -100,7 +115,7 @@ namespace Dev2.Triggers.QueueEvents
             var dummyTriggerQueueView = new DummyTriggerQueueView(_server);
             Queues.Add(dummyTriggerQueueView);
         }
-
+       
         private void OpenResourcePicker()
         {
             if (_currentResourcePicker.ShowDialog(_server))
@@ -109,9 +124,142 @@ namespace Dev2.Triggers.QueueEvents
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+                SelectedQueue.ResourceId = selectedResource.ResourceId;
+                GetInputsFromWorkflow();
+            }
+        }
+        public IContextualResourceModel ResourceModel { get; set; }
+        private void GetInputsFromWorkflow()
+        {
+            Inputs = new List<IServiceInput>();
+            _contextualResourceModel = _server.ResourceRepository.LoadContextualResourceModel(ResourceID);
+            _dataList = new DataListModel();
+            _dataListConversionUtils = new DataListConversionUtils();
+            _dataList.Create(_contextualResourceModel.DataList, _contextualResourceModel.DataList);
+            var inputList = _dataListConversionUtils.GetInputs(_dataList);
+            Inputs = inputList.Select(sca =>
+            {
+                var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
+                return (IServiceInput)serviceTestInput;
+
+            }).ToList();
+        }
+        Guid _resourceID;
+
+        public Guid ResourceID
+        {
+            get => _resourceID;
+            set
+            {
+                _resourceID = value;
+                OnPropertyChanged(nameof(ResourceID));
+            }
+        }
+        public bool VerifyResultsAvailable
+        {
+            get => _verifyResultsAvailable;
+            set
+            {
+                _verifyResultsAvailable = value;
+                OnPropertyChanged(nameof(VerifyResultsAvailable));
+            }
+        }
+        public bool IsVerifyResultsEmptyRows
+        {
+            get => _isVerifyResultsEmptyRows;
+            set
+            {
+                _isVerifyResultsEmptyRows = value;
+                OnPropertyChanged(nameof(IsVerifyResultsEmptyRows));
             }
         }
 
+        public string VerifyResults
+        {
+            get => _verifyResults;
+            set
+            {
+                _verifyResults = value;
+                if (!string.IsNullOrEmpty(_verifyResults))
+                {
+                    //  Model.Response = _verifyResults
+                }
+                OnPropertyChanged(nameof(VerifyResults));
+            }
+        }
+        public void ExecuteVerify()
+        {
+            _isVerifying = true;
+
+            try
+            {
+                _dataList = new DataListModel();
+                _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
+                var inputList = _dataListConversionUtils.GetInputs(_dataList);
+                Inputs = inputList.Select(sca =>
+                {
+                    var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
+                    return (IServiceInput)serviceTestInput;
+
+                }).ToList();
+                IsVerifyResultsEmptyRows = VerifyResults == null;
+                if (VerifyResults != null)
+                {
+                    VerifyResultsAvailable = true;
+                    IsVerifyResultsEmptyRows = VerifyResults == string.Empty;
+                    _isVerifying = false;
+                    VerifyPassed = true;
+                    VerifyFailed = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                IsVerifying = false;
+                VerifyPassed = false;
+                VerifyFailed = true;
+            }
+        }
+        public ICommand VerifyCommand { get; private set; }
+
+        public bool IsVerifying
+        {
+            get => _isVerifying;
+            set
+            {
+                _isVerifying = value;
+                OnPropertyChanged(nameof(IsVerifying));
+            }
+        }
+
+        public bool VerifyFailed
+        {
+            get => _verifyFailed;
+            set
+            {
+                _verifyFailed = value;
+                OnPropertyChanged(nameof(VerifyFailed));
+            }
+        }
+
+        public bool VerifyPassed
+        {
+            get => _verifyPassed;
+            set
+            {
+                _verifyPassed = value;
+                OnPropertyChanged(nameof(VerifyPassed));
+            }
+        }
+        public IList<IServiceInput> Inputs
+        {
+            get => _inputs;
+            set
+            {
+                _inputs = value;
+                OnPropertyChanged(nameof(Inputs));
+            }
+        }
         public ObservableCollection<TriggerQueueView> Queues
         {
             get => _queues;
@@ -121,7 +269,7 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(Queues));
             }
         }
-        
+
         IResourcePickerDialog CreateResourcePickerDialog()
         {
             var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
@@ -281,6 +429,7 @@ namespace Dev2.Triggers.QueueEvents
                 _queueResourceModel = value;
                 OnPropertyChanged(nameof(QueueResourceModel));
                 OnPropertyChanged(nameof(ExecutionHistory));
+                OnPropertyChanged(nameof(Inputs));
             }
         }
 
@@ -294,7 +443,6 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(History));
             }
         }
-
         public IList<IExecutionHistory> History
         {
             get
@@ -366,6 +514,7 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(Errors));
                     OnPropertyChanged(nameof(Error));
                     OnPropertyChanged(nameof(History));
+                    OnPropertyChanged(nameof(Inputs));
                 }
             }
         }
