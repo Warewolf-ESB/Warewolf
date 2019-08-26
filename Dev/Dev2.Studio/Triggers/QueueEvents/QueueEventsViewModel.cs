@@ -13,7 +13,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
