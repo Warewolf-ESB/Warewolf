@@ -19,6 +19,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
+             x:Name="QueuesUserControl"
              d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
              AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
 
@@ -265,7 +266,7 @@
                                             Margin="{StaticResource ControlBorderLeft}"
                                             Style="{StaticResource ButtonStyle}"
                                             ToolTip="Select a workflow to be triggered"
-                                            Command="{Binding AddWorkflowCommand}"
+                                            Command="{Binding ElementName=QueuesUserControl, Path=DataContext.AddWorkflowCommand}"
                                             AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
