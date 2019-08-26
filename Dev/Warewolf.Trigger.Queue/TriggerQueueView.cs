@@ -8,10 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -22,8 +18,11 @@ using Dev2.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.Triggers;
 using Microsoft.Practices.Prism.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using Warewolf.Core;
-using Warewolf.Options;
 using Warewolf.UI;
 
 namespace Warewolf.Trigger
