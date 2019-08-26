@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info("Find Resources By Type. " + typeName, GlobalConstants.WarewolfInfo);
 
-                var result = _resourceCatalog.Value.FindByType<IQueueSource>();
+                var result = _resourceCatalog.Value.FindByType(typeName);
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();

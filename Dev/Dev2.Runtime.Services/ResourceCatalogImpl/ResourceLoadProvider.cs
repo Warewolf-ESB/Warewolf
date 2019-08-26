@@ -198,6 +198,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             public (Type Type, IResource[] Result) Find<T>(IResourceProvider resourceProvider)
             {
                 var type = typeof(T);
+                return FindAndCache(resourceProvider, type);
+            }
+            public (Type Type, IResource[] Result) Find(IResourceProvider resourceProvider, string typeName)
+            {
+                var type = Type.GetType(typeName);
+                return FindAndCache(resourceProvider, type);
+            }
+
+            private (Type Type, IResource[] Result) FindAndCache(IResourceProvider resourceProvider, Type type)
+            {
                 var matchingTypes = _resourceTypes.Where(o => type.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract).ToArray();
 
                 var matchingResources = resourceProvider.GetResources(GlobalConstants.ServerWorkspaceID)
@@ -207,9 +217,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 _cache[type.FullName] = result;
                 return result;
             }
-            public T[] FindByType<T>(IResourceLoadProvider resourceLoadProvider)
+
+            public T[] FindResourceByType<T>(IResourceLoadProvider resourceLoadProvider)
             {
                 return Find<T>(resourceLoadProvider).Result.Cast<T>().ToArray();
+            }
+            public object[] FindResourceByType(IResourceLoadProvider resourceLoadProvider, string typeName)
+            {
+                return Find(resourceLoadProvider, typeName).Result.ToArray();
             }
 
             private static Type[] GetAllResourceTypes()
@@ -277,7 +292,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public T[] FindByType<T>()
         {
-            return _typeCache.FindByType<T>(this);
+            return _typeCache.FindResourceByType<T>(this);
+        }
+        public object[] FindByType(string typeName)
+        {
+            return _typeCache.FindResourceByType(this, typeName);
         }
 
         private Type[] GetQueueSourceTypes()
