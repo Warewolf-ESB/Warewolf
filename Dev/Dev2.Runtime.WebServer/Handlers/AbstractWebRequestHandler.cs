@@ -249,7 +249,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 var allErrors = new ErrorResultTO();
 
-                var currentErrors = executionDto.DataObject.Environment?.AllErrors;
+                var currentErrors = executionDto.DataObject.Environment?.Errors?.Union(executionDto.DataObject.Environment?.AllErrors);
                 if (currentErrors != null)
                 {
                     foreach (var error in currentErrors)
