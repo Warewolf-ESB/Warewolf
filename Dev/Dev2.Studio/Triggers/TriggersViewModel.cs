@@ -38,7 +38,8 @@ namespace Dev2.Triggers
         string _errors;
         bool _isSaved;
         bool _isLoading;
-
+        bool _isSchedulerSelected;
+        bool _isEventsSelected;
         QueueEventsViewModel _queueEventsViewModel;
         SchedulerViewModel _schedulerViewModel;
 
@@ -148,10 +149,11 @@ namespace Dev2.Triggers
             set
             {
                 _currentEnvironment = value;
-                if (CurrentEnvironment.IsConnected)
+                if (_currentEnvironment != null && _currentEnvironment.IsConnected)
                 {
                     _currentEnvironment.AuthorizationService?.IsAuthorized(AuthorizationContext.Administrator, null);
                 }
+
             }
         }
 
@@ -234,6 +236,43 @@ namespace Dev2.Triggers
                 }
                 _isLoading = value;
                 NotifyOfPropertyChange(() => IsLoading);
+            }
+        }
+
+        public bool IsSchedulerSelected
+        {
+            get => _isSchedulerSelected;
+            set
+            {
+                if (value.Equals(_isSchedulerSelected))
+                {
+                    return;
+                }
+                if (value)
+                {
+                    IsEventsSelected = false;
+                }
+                _isSchedulerSelected = value;
+                NotifyOfPropertyChange(() => IsSchedulerSelected);
+            }
+        }
+
+        public bool IsEventsSelected
+        {
+            get => _isEventsSelected;
+            set
+            {
+                
+                if (value.Equals(_isEventsSelected))
+                {
+                    return;
+                }
+                if (value)
+                {
+                    IsSchedulerSelected = false;
+                }
+                _isEventsSelected = value;
+                NotifyOfPropertyChange(() => IsEventsSelected);
             }
         }
 

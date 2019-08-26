@@ -941,8 +941,14 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
     <value>Create a new rabbitmq source</value>
   </data>
+  <data name="QueueNameTooltip" xml:space="preserve">
+    <value>Save the queue as</value>
+  </data>
   <data name="QueueSourceTooltip" xml:space="preserve">
     <value>Select the source message queue</value>
+  </data>
+  <data name="QueueConcurrencyTooltip" xml:space="preserve">
+    <value>QueueConcurrencyTooltip</value>
   </data>
   <data name="DeadLetterQueueSourceTooltip" xml:space="preserve">
     <value>Select the source message dead-letter queue</value>

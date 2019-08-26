@@ -294,15 +294,13 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        //TODO: Change to call into Tasks as Scheduler option to open by default
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
         }
-        //TODO: Change to call into Tasks as Queue Events option to open by default
         public IAuthorizeCommand QueueEventsCommand
         {
-            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTasksWorkSurface(), param => IsActiveServerConnected()));
+            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddEventsWorkSurface(), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand TasksCommand
         {
@@ -1843,15 +1841,6 @@ namespace Dev2.Studio.ViewModels
                 else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                 {
                     if (vm is SettingsViewModel settingsViewModel && settingsViewModel.IsDirty)
-                    {
-                        closeStudio = CallSaveDialog(closeStudio);
-                        break;
-                    }
-                }
-                //TODO: Remove
-                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
-                {
-                    if (vm is Triggers.Scheduler.SchedulerViewModel schedulerViewModel && schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
                     {
                         closeStudio = CallSaveDialog(closeStudio);
                         break;
