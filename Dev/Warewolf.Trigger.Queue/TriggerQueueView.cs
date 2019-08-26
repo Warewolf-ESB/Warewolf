@@ -10,47 +10,97 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Input;
+using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
-using Dev2.Studio.Interfaces.Trigger;
+using Dev2.Common.Interfaces.Resources;
+using Dev2.Studio.Interfaces;
 using Dev2.Triggers;
+using Microsoft.Practices.Prism.Commands;
 using Warewolf.Options;
+using Warewolf.UI;
 
 namespace Warewolf.Trigger
 {
-    public class TriggerQueueView : BindableBase, ITriggerQueueView
+    public class TriggerQueueView : BindableBase
     {
-        private string _name;
+        private string _triggerQueueName;
+        IResource _selectedQueueSource;
         private Guid _queueSourceId;
+        private IList<INameValue> _queueNames;
         private string _queueName;
         private string _workflowName;
         private int _concurrency;
         private string _userName;
         private string _password;
-        private IOption[] _options;
+        private List<OptionView> _options;
+        private IResource _selectedDeadLetterQueueSource;
         private Guid _queueSinkId;
+        private IList<INameValue> _deadLetterQueues;
         private string _deadLetterQueue;
-        private IOption[] _deadLetterOptions;
+        private List<OptionView> _deadLetterOptions;
         private ICollection<IServiceInput> _inputs;
 
         private bool _isDirty;
         private string _oldQueueName;
-        private QueueStatus _queueStatus;
+        private bool _enabled;
         private IErrorResultTO _errors;
         private bool _isNewQueue;
+        private bool _newQueue;
         private string _nameForDisplay;
         private TriggerQueueView _item;
+        private bool _isValidatingIsDirty;
+        private IResourceRepository _resourceRepository;
+        private IServer _server;
+
+        private bool _isVerifying;
+        private bool _verifyFailed;
+        private bool _verifyPassed;
+        private string _verifyResults;
+        private bool _verifyResultsAvailable;
+        private bool _isVerifyResultsEmptyRows;
+
+        public TriggerQueueView(IServer server)
+        {
+            var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
+            _server = server is null ? activeServer : server;
+            _resourceRepository = _server.ResourceRepository;
+            IsNewQueue = false;
+            NewQueue = true;
+            Options = new List<OptionView>();
+            DeadLetterOptions = new List<OptionView>();
+            IsVerifying = false;
+            VerifyCommand = new DelegateCommand(ExecuteVerify);
+        }
 
         public Guid TriggerId { get; set; }
-        public string Name
+        public string TriggerQueueName
         {
-            get => _name;
+            get => _triggerQueueName;
             set
             {
-                _name = value;
-                RaisePropertyChanged(nameof(Name));
+                _triggerQueueName = value;
+                RaisePropertyChanged(nameof(TriggerQueueName));
+                SetDisplayName(IsDirty);
+            }
+        }
+        public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
+        public IResource SelectedQueueSource
+        {
+            get => _selectedQueueSource;
+            set
+            {
+                _selectedQueueSource = value;
+                if (_selectedQueueSource != null)
+                {
+                    QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
+                    Options = FindOptions(_selectedQueueSource);
+                }
+
+                RaisePropertyChanged(nameof(SelectedQueueSource));
             }
         }
         public Guid QueueSourceId
@@ -60,6 +110,15 @@ namespace Warewolf.Trigger
             {
                 _queueSourceId = value;
                 RaisePropertyChanged(nameof(QueueSourceId));
+            }
+        }
+        public IList<INameValue> QueueNames
+        {
+            get => _queueNames;
+            set
+            {
+                _queueNames = value;
+                RaisePropertyChanged(nameof(QueueNames));
             }
         }
         public string QueueName
@@ -107,13 +166,29 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(Password));
             }
         }
-        public IOption[] Options
+        public List<OptionView> Options
         {
             get => _options;
             set
             {
                 _options = value;
                 RaisePropertyChanged(nameof(Options));
+            }
+        }
+        public List<IResource> DeadLetterQueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
+        public IResource SelectedDeadLetterQueueSource
+        {
+            get => _selectedDeadLetterQueueSource;
+            set
+            {
+                _selectedDeadLetterQueueSource = value;
+                if (_selectedDeadLetterQueueSource != null)
+                {
+                    DeadLetterQueues = GetQueueNamesFromSource(_selectedDeadLetterQueueSource);
+                    DeadLetterOptions = FindOptions(_selectedDeadLetterQueueSource);
+                }
+
+                RaisePropertyChanged(nameof(SelectedDeadLetterQueueSource));
             }
         }
         public Guid QueueSinkId
@@ -125,6 +200,15 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(QueueSinkId));
             }
         }
+        public IList<INameValue> DeadLetterQueues
+        {
+            get => _deadLetterQueues;
+            set
+            {
+                _deadLetterQueues = value;
+                RaisePropertyChanged(nameof(DeadLetterQueues));
+            }
+        }
         public string DeadLetterQueue
         {
             get => _deadLetterQueue;
@@ -134,7 +218,7 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(DeadLetterQueue));
             }
         }
-        public IOption[] DeadLetterOptions
+        public List<OptionView> DeadLetterOptions
         {
             get => _deadLetterOptions;
             set
@@ -156,11 +240,30 @@ namespace Warewolf.Trigger
 
         public bool IsDirty
         {
-            get => _isDirty;
-            set
+            get
             {
-                _isDirty = value;
-                RaisePropertyChanged(nameof(IsDirty));
+                if (_isValidatingIsDirty)
+                {
+                    return false;
+                }
+                _isValidatingIsDirty = true;
+                var _isDirty = false;
+                var notEquals = !Equals(Item);
+                if (NewQueue)
+                {
+                    _isDirty = true;
+                }
+                else
+                {
+                    if (notEquals)
+                    {
+                        _isDirty = true;
+                    }
+                }
+
+                SetDisplayName(_isDirty);
+                _isValidatingIsDirty = false;
+                return _isDirty;
             }
         }
         public string OldQueueName
@@ -172,13 +275,13 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(OldQueueName));
             }
         }
-        public QueueStatus Status
+        public bool Enabled
         {
-            get => _queueStatus;
+            get => _enabled;
             set
             {
-                _queueStatus = value;
-                RaisePropertyChanged(nameof(Status));
+                _enabled = value;
+                RaisePropertyChanged(nameof(Enabled));
             }
         }
         public IErrorResultTO Errors
@@ -199,6 +302,15 @@ namespace Warewolf.Trigger
                 RaisePropertyChanged(nameof(IsNewQueue));
             }
         }
+        public bool NewQueue
+        {
+            get => _newQueue;
+            set
+            {
+                _newQueue = value;
+                RaisePropertyChanged(nameof(NewQueue));
+            }
+        }
         public string NameForDisplay
         {
             get => _nameForDisplay;
@@ -206,6 +318,101 @@ namespace Warewolf.Trigger
             {
                 _nameForDisplay = value;
                 RaisePropertyChanged(nameof(NameForDisplay));
+            }
+        }
+
+        public bool IsVerifying
+        {
+            get => _isVerifying;
+            set
+            {
+                _isVerifying = value;
+                RaisePropertyChanged(nameof(IsVerifying));
+            }
+        }
+
+        public bool VerifyFailed
+        {
+            get => _verifyFailed;
+            set
+            {
+                _verifyFailed = value;
+                RaisePropertyChanged(nameof(VerifyFailed));
+            }
+        }
+
+        public bool VerifyPassed
+        {
+            get => _verifyPassed;
+            set
+            {
+                _verifyPassed = value;
+                RaisePropertyChanged(nameof(VerifyPassed));
+            }
+        }
+
+        public bool VerifyResultsAvailable
+        {
+            get => _verifyResultsAvailable;
+            set
+            {
+                _verifyResultsAvailable = value;
+                RaisePropertyChanged(nameof(VerifyResultsAvailable));
+            }
+        }
+
+        public bool IsVerifyResultsEmptyRows
+        {
+            get => _isVerifyResultsEmptyRows;
+            set
+            {
+                _isVerifyResultsEmptyRows = value;
+                RaisePropertyChanged(nameof(IsVerifyResultsEmptyRows));
+            }
+        }
+
+        public string VerifyResults
+        {
+            get => _verifyResults;
+            set
+            {
+                _verifyResults = value;
+                if (!string.IsNullOrEmpty(_verifyResults))
+                {
+                    //Model.Response = _verifyResults
+                }
+                RaisePropertyChanged(nameof(VerifyResults));
+            }
+        }
+
+        public ICommand AddWorkflowCommand { get; private set; }
+        public ICommand VerifyCommand { get; private set; }
+
+        public void ExecuteVerify()
+        {
+            VerifyResults = null;
+            _isVerifying = true;
+
+            try
+            {
+                VerifyResults = "{some text}";
+
+                IsVerifyResultsEmptyRows = VerifyResults == null;
+                if (VerifyResults != null)
+                {
+                    VerifyResultsAvailable = true;
+                    IsVerifyResultsEmptyRows = VerifyResults == string.Empty;
+                    _isVerifying = false;
+                    VerifyPassed = true;
+                    VerifyFailed = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                IsVerifying = false;
+                VerifyPassed = false;
+                VerifyFailed = true;
             }
         }
 
@@ -222,9 +429,38 @@ namespace Warewolf.Trigger
             }
         }
 
+        private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
+        {
+            var queueNames = new List<INameValue>();
+
+            var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
+
+#pragma warning disable CC0021 // Use nameof
+            foreach (var item in list["QueueNames"])
+#pragma warning restore CC0021 // Use nameof
+            {
+                var nameValue = new NameValue(item, item);
+                queueNames.Add(nameValue);
+            }
+
+            return queueNames;
+        }
+
+        private List<OptionView> FindOptions(IResource selectedQueueSource)
+        {
+            var optionViews = new List<OptionView>();
+            var options = _resourceRepository.FindOptions(_server, selectedQueueSource);
+            foreach (var option in options)
+            {
+                var optionView = new OptionView(option);
+                optionViews.Add(optionView);
+            }
+            return optionViews;
+        }
+
         void SetDisplayName(bool isDirty)
         {
-            NameForDisplay = isDirty ? QueueName + " *" : QueueName;
+            NameForDisplay = isDirty ? TriggerQueueName + " *" : TriggerQueueName;
         }
 
         public bool Equals(ITriggerQueue other)
@@ -246,10 +482,10 @@ namespace Warewolf.Trigger
             equals &= Concurrency == other.Concurrency;
             equals &= string.Equals(UserName, other.UserName);
             equals &= string.Equals(Password, other.Password);
-            equals &= Options == other.Options;
+            //equals &= Options == other.Options;
             equals &= QueueSinkId == other.QueueSinkId;
             equals &= string.Equals(DeadLetterQueue, other.DeadLetterQueue);
-            equals &= DeadLetterOptions == other.DeadLetterOptions;
+            //equals &= DeadLetterOptions == other.DeadLetterOptions;
             equals &= Inputs == other.Inputs;
 
             return equals;

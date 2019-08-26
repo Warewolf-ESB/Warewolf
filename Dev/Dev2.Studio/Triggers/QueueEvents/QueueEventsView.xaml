@@ -19,6 +19,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
+             x:Name="QueuesUserControl"
              d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
              AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
 
@@ -71,7 +72,7 @@
                          Style="{StaticResource ListBoxStyle}" 
                          BorderThickness="1,0,1,1"
                          ItemsSource="{Binding Queues}" 
-                         SelectedItem="{Binding SelectedQueueEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         SelectedItem="{Binding SelectedQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          SelectionMode="Single" 
                          x:Name="TriggerQueues">
                     <ListBox.ItemTemplate>
@@ -79,7 +80,7 @@
                             <Grid>
                                 <Grid HorizontalAlignment="Stretch" 
                                       VerticalAlignment="Stretch" 
-                                      Visibility="{Binding IsNewQueue,Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                      Visibility="{Binding IsNewQueue,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                       x:Name="ListBoxItemGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="25" />
@@ -94,7 +95,7 @@
                                               Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
                                               ToolTip="{x:Static languages:Tooltips.SchedulerStatusAltTooltipTrigger}"
-                                              >
+                                              IsChecked="{Binding Enabled}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerStatusAltHelpTextTrigger}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -102,7 +103,7 @@
                                     </CheckBox>
                                     <TextBlock Grid.Column="1"
                                                HorizontalAlignment="Left" 
-                                               Text="Queue" 
+                                               Text="{Binding NameForDisplay}" 
                                                TextTrimming="CharacterEllipsis" 
                                                MaxWidth="200" 
                                                FontSize="12" 
@@ -112,7 +113,7 @@
                                             VerticalAlignment="Stretch" 
                                             HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=TriggerQueues, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
-                                            
+                                            IsEnabled="{Binding Enabled}"
                                             Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>
@@ -153,7 +154,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <GridSplitter Grid.Column="1" Background="#C1C3C5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" />
-                <ContentControl Grid.Column="2" Visibility="{Binding SelectedQueue, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                <ContentControl Grid.Column="2" DataContext="{Binding SelectedQueue}" Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -192,11 +193,26 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="Queue Source" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                <TextBlock Text="Name" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+
+                                <TextBox Grid.Row="0" 
+                                         Grid.Column="1"
+                                         Margin="{StaticResource ControlBorderTop}"
+                                         ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
+                                         Text="{Binding TriggerQueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueConcurrencyHelp}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+
+                                <TextBlock Text="Queue Source" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                 <ComboBox x:Name="QueueSourcesComboBox"
                                           Grid.Column="1"
+                                          Grid.Row="1"
                                           DisplayMemberPath="ResourceName" 
                                           SelectedItem="{Binding SelectedQueueSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Margin="{StaticResource ControlBorderTop}"
@@ -208,12 +224,12 @@
                                     </i:Interaction.Behaviors>
                                 </ComboBox>
 
-                                <TextBlock Text="Queue" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
+                                <TextBlock Text="Queue" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                 <controls:AutoCompleteBox x:Name="QueueNameTextBox"
-                                                          Grid.Row="1"
+                                                          Grid.Row="2"
                                                           Grid.Column="1"
                                                           AllowUserInsertLine="False"
-                                                          DefaultText="Queue"
+                                                          customControls:WatermarkTextBox.Watermark="Queue"
                                                           FilterMode="Contains"
                                                           Margin="{StaticResource ControlBorderTop}"
                                                           ValueMemberPath="Value" 
@@ -227,8 +243,8 @@
                                     </i:Interaction.Behaviors>
                                 </controls:AutoCompleteBox>
 
-                                <TextBlock Text="Workflow" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                                <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                                <TextBlock Text="Workflow" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                                <Grid Grid.Row="3" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
@@ -250,7 +266,7 @@
                                             Margin="{StaticResource ControlBorderLeft}"
                                             Style="{StaticResource ButtonStyle}"
                                             ToolTip="Select a workflow to be triggered"
-                                            Command="{Binding AddWorkflowCommand}"
+                                            Command="{Binding ElementName=QueuesUserControl, Path=DataContext.AddWorkflowCommand}"
                                             AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
@@ -259,21 +275,24 @@
                                     </Button>
                                 </Grid>
 
-                                <TextBlock Text="Concurrency" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                                <TextBox Grid.Row="3" 
+                                <TextBlock Text="Concurrency" Grid.Row="4" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                                <TextBox Grid.Row="4" 
                                          Grid.Column="1"
                                          Margin="{StaticResource ControlBorderTop}"
-                                         Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                         ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
+                                         Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueConcurrencyHelp}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
 
-                                <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
+                                <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
                                     <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
                                 </StackPanel>
 
-                                <TextBlock Text="Username" 
-                                           x:Name="UsernameTextBlock" 
-                                           Grid.Row="5" 
-                                           Grid.Column="0"/>
-                                <TextBox Grid.Row="5"
+                                <TextBlock Text="Username" x:Name="UsernameTextBlock" Grid.Row="6" Grid.Column="0"/>
+                                <TextBox Grid.Row="6"
                                          Grid.Column="1"
                                          AutomationProperties.AutomationId="UI_UserNameTextBox"
                                          ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
@@ -285,13 +304,10 @@
                                     </i:Interaction.Behaviors>
                                 </TextBox>
 
-                                <TextBlock Text="Password" 
-                                           Margin="{StaticResource ControlBorderTop}" 
-                                           Grid.Row="6" 
-                                           Grid.Column="0"/>
+                                <TextBlock Text="Password" Grid.Row="7" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
                                 <PasswordBox Margin="{StaticResource ControlBorderTop}"
                                              AutomationProperties.AutomationId="UI_PasswordBox"
-                                             Grid.Row="6"
+                                             Grid.Row="7"
                                              Grid.Column="1"
                                              ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
                                              attachedProperties:PasswordBoxAssistant.BindPassword="true"
