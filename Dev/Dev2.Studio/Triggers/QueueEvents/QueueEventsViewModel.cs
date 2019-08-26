@@ -10,36 +10,30 @@
 
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Queue;
-using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
-using Dev2.Studio.Enums;
 using Dev2.Runtime.Triggers;
+using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Warewolf.Options;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger;
-using Warewolf.UI;
-using Dev2.Common.Interfaces.Studio.Controller;
-using System.Windows;
-using System.Collections.ObjectModel;
-using Dev2.Common.Common;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -47,15 +41,15 @@ namespace Dev2.Triggers.QueueEvents
     {
         ICommand _newCommand;
         ICommand _deleteCommand;
-        
+
         private IServer _server;
         private readonly IResourceRepository _resourceRepository;
         readonly IExternalProcessExecutor _externalProcessExecutor;
-        
+
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
         private bool _isHistoryExpanded;
-        
+
         IList<IExecutionHistory> _history;
         readonly IAsyncWorker _asyncWorker;
         private readonly EnvironmentViewModel _source;
@@ -71,7 +65,7 @@ namespace Dev2.Triggers.QueueEvents
         bool _isDirty;
         private bool _enabled;
         TabItem _activeItem;
-        
+
         private ObservableCollection<TriggerQueueView> _queues;
 
         public IPopupController PopupController { get; }
@@ -88,9 +82,9 @@ namespace Dev2.Triggers.QueueEvents
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
-            
+
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
-            
+
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
@@ -115,8 +109,11 @@ namespace Dev2.Triggers.QueueEvents
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+                SelectedQueue.ResourceId = selectedResource.ResourceId;
+                SelectedQueue.GetInputsFromWorkflow();
             }
         }
+        public IContextualResourceModel ResourceModel { get; set; }
 
         public ObservableCollection<TriggerQueueView> Queues
         {
@@ -127,7 +124,7 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(Queues));
             }
         }
-        
+
         IResourcePickerDialog CreateResourcePickerDialog()
         {
             var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
@@ -220,7 +217,7 @@ namespace Dev2.Triggers.QueueEvents
         {
             Queues.Remove(SelectedQueue);
         }
-        
+
         public ICommand AddWorkflowCommand { get; private set; }
 
         public void UpdateHelpDescriptor(string helpText)
@@ -288,6 +285,8 @@ namespace Dev2.Triggers.QueueEvents
                 _queueResourceModel = value;
                 OnPropertyChanged(nameof(QueueResourceModel));
                 OnPropertyChanged(nameof(ExecutionHistory));
+                OnPropertyChanged(nameof(SelectedQueue.Inputs));
+                OnPropertyChanged(nameof(SelectedQueue.VerifyResults));
             }
         }
 
@@ -301,7 +300,6 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(History));
             }
         }
-
         public IList<IExecutionHistory> History
         {
             get
@@ -373,6 +371,8 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(Errors));
                     OnPropertyChanged(nameof(Error));
                     OnPropertyChanged(nameof(History));
+                    OnPropertyChanged(nameof(SelectedQueue.Inputs));
+                    OnPropertyChanged(nameof(SelectedQueue.VerifyResults));
                 }
             }
         }
