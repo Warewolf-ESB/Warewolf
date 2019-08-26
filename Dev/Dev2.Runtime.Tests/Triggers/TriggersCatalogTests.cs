@@ -80,12 +80,8 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestCategory(nameof(TriggersCatalog))]
         public void TriggersCatalog_SaveTriggerQueue_ShouldSave()
         {
-            var source = "TestResource";
             var queue = "TestQueueName";
             var workflowName = "TestWorkflow";
-
-            var mockResource = new Mock<IResource>();
-            mockResource.Setup(resource => resource.ResourceName).Returns(source);
             
             var mockTriggerQueue = new Mock<ITriggerQueue>();
             mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
