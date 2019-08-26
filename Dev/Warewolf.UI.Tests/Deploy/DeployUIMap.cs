@@ -141,7 +141,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration.");
@@ -151,7 +151,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost.Exists, "Remote Container option does not exist in Destination server combobox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost.Exists, "Localhost option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhost, new Point(226, 13));
         }
         
@@ -184,14 +184,6 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         public void Click_Deploy_Tab_Destination_Server_New_Remote_Server_Item()
         {
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
-        }
-
-        [When(@"I Click Deploy Tab Destination Server Remote Container Item")]
-        [Then(@"I Click Deploy Tab Destination Server Remote Container Item")]
-        [Given(@"I Click Deploy Tab Destination Server Remote Container Item")]
-        public void Click_Deploy_Tab_Destination_Server_Remote_Container_Item()
-        {
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer, new Point(223, 10));
         }
 
         [When(@"I Click Deploy Tab Destination Server Remote Connection Integration Item")]
