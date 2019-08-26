@@ -325,7 +325,6 @@
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="Triggers\Queue\ITriggerQueueResourceModel.cs" />
-    <Compile Include="Triggers\Queue\QueueStatus.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />

@@ -2456,6 +2456,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QueueConcurrencyHelp.
+        /// </summary>
+        public static string QueueConcurrencyHelp {
+            get {
+                return ResourceManager.GetString("QueueConcurrencyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QueueNameHelp.
+        /// </summary>
+        public static string QueueNameHelp {
+            get {
+                return ResourceManager.GetString("QueueNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the source message queue.
         /// </summary>
         public static string QueueSourceHelp {
