@@ -8,8 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 using System.Text;
 using Warewolf.Web;
 
@@ -31,7 +33,7 @@ namespace Warewolf.Common.Tests
 
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, "testValueKey");
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, new List<IServiceInput>());//"testValueKey");
             //---------------------------------Act------------------------------------
             WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("this is a test message"));
 

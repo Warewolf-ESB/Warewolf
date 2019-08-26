@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.DB;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -20,18 +22,18 @@ namespace Warewolf.Common
     public class WarewolfWebRequestForwarder : IConsumer
     {
         readonly string _url;
-        readonly string _valueKey;
+        readonly ICollection<IServiceInput> _valueKeys;
         private readonly IHttpClientFactory _httpClientFactory;
 
         private WarewolfWebRequestForwarder()
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, string url, string valueKey)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, string url, ICollection<IServiceInput> valueKeys)
         {
             _httpClientFactory = httpClientFactory;
             _url = url;
-            _valueKey = valueKey;
+            _valueKeys = valueKeys;
         }
 
         public async void Consume(byte[] body)
@@ -66,7 +68,7 @@ namespace Warewolf.Common
         private string BuildQueryString(string data)
         {
             var encodedData = WebUtility.UrlEncode(data);
-            return $"{_valueKey}={encodedData}";
+            return $"{_valueKeys}={encodedData}";
         }
     }
 }

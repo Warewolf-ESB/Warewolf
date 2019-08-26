@@ -14,7 +14,7 @@ using Moq;
 using System.Text;
 using Warewolf.Triggers;
 
-namespace Dev2.Common.Tests.Queue
+namespace Warewolf.Trigger.Queue.Tests
 {
     [TestClass]
     public class QueueTests

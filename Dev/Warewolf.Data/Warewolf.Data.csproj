@@ -12,7 +12,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Link="AssemblyCommonInfo.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>
 
 </Project>

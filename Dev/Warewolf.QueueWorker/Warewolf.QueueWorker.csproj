@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj" />
   </ItemGroup>

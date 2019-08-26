@@ -19,7 +19,7 @@ using Moq;
 using Warewolf.Common;
 using Warewolf.Web;
 
-namespace Dev2.Common.Tests
+namespace Warewolf.Web.Tests
 {
     [TestClass]
     public class WebRequestForwarderTests

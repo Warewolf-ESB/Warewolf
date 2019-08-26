@@ -21,5 +21,6 @@ namespace Dev2.Common.Interfaces.Triggers
         void Load();
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
         void DeleteAllTriggerQueues();
+        ITriggerQueue LoadQueueTriggerFromFile(string filename);
     }
 }
