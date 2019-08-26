@@ -29,13 +29,13 @@ namespace Dev2.Diagnostics.Test
 
             }
             var mockCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter1 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter2 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter3 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter4 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter5 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter6 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter7 = new Mock<IBobsPerformanceCounter>();
+            var mockCounter1 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter2 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter3 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter4 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter5 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter6 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter7 = new Mock<IWarewolfPerformanceCounter>();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Concurrent requests currently executing", GlobalConstants.GlobalCounterName)).Returns(mockCounter1.Object).Verifiable();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Total Errors", GlobalConstants.GlobalCounterName)).Returns(mockCounter2.Object).Verifiable();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Request Per Second", GlobalConstants.GlobalCounterName)).Returns(mockCounter3.Object).Verifiable();
@@ -92,12 +92,12 @@ namespace Dev2.Diagnostics.Test
 
             }
             var mockCounterFactory = new Mock<PerformanceCounters.Counters.IRealPerformanceCounterFactory>();
-            var mockCounter1 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter2 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter3 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter4 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter5 = new Mock<IBobsPerformanceCounter>();
-            var mockCounter6 = new Mock<IBobsPerformanceCounter>();
+            var mockCounter1 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter2 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter3 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter4 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter5 = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter6 = new Mock<IWarewolfPerformanceCounter>();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Concurrent requests currently executing", GlobalConstants.GlobalCounterName)).Returns(mockCounter1.Object).Verifiable();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Total Errors", GlobalConstants.GlobalCounterName)).Returns(mockCounter2.Object).Verifiable();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Request Per Second", GlobalConstants.GlobalCounterName)).Returns(mockCounter3.Object).Verifiable();
@@ -148,7 +148,7 @@ namespace Dev2.Diagnostics.Test
 
 
 
-            var mockCounter7 = new Mock<IBobsPerformanceCounter>();
+            var mockCounter7 = new Mock<IWarewolfPerformanceCounter>();
             mockCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Count of requests for workflows which don't exist", GlobalConstants.GlobalCounterName)).Returns(mockCounter7.Object);
 
             lst.Add(new WarewolfServicesNotFoundCounter(counterFactory));
