@@ -173,7 +173,7 @@ namespace Warewolf.Trigger.Queue.Tests
             };
 
             Assert.IsNotNull(triggerQueueView.SelectedQueueSource);
-            Assert.AreEqual(queueSource1, triggerQueueView.SelectedQueueSource);
+            Assert.AreEqual(queueSource1.Object, triggerQueueView.SelectedQueueSource);
             Assert.IsNotNull(triggerQueueView.QueueNames);
             Assert.AreEqual(3, triggerQueueView.QueueNames.Count);
             Assert.AreEqual("value1", triggerQueueView.QueueNames[0].Value);
