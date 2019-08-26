@@ -9,18 +9,27 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RabbitMQ.Client;
+using System;
 using System.Text;
 using System.Threading;
-using RabbitMQ.Client;
-using IConnection = RabbitMQ.Client.IConnection;
-using System;
 using Warewolf.Triggers;
+using IConnection = RabbitMQ.Client.IConnection;
 
 namespace Warewolf.Driver.RabbitMQ.Tests
 {
     [TestClass]
     public class RabbitMQDriverTests
     {
+        private class TestQueueNameGenerator
+        {
+            private static readonly string _instance = Guid.NewGuid().ToString();
+
+            public static string GetName
+            {
+                get { return _instance; }
+            }
+        }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -29,14 +38,15 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         {
             //----------------------Arrange----------------------
             var queueSource = new RabbitMQSource();
+            var queueName = TestQueueNameGenerator.GetName;
 
             var testConsumer = new TestConsumer();
 
             var config = new RabbitConfig
             {
-                QueueName = "testQueueName",
+                QueueName = queueName,
                 Exchange = "",
-                RoutingKey = "testQueueName",
+                RoutingKey = queueName,
             };
 
             //----------------------Act--------------------------
@@ -67,28 +77,37 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         {
             //----------------------Arrange----------------------
             var queueSource = new RabbitMQSource();
+            var queueName = TestQueueNameGenerator.GetName;
 
             var config = new RabbitConfig
             {
-                QueueName = "testQueueName",
+                QueueName = queueName,
                 Exchange = "",
-                RoutingKey = "testQueueName",
+                RoutingKey = queueName,
             };
 
             //----------------------Act--------------------------
             var message = Guid.NewGuid().ToString();
             var data = Encoding.UTF8.GetBytes(message);
             var connection = queueSource.NewConnection(config);
-            var publisher = connection.NewPublisher(config);
-            publisher.Publish(data);
-
-            //------------------------Assert----------------------
-            using (var testPublishSuccess = new TestPublishSuccess())
+            try
             {
-                var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
-                Assert.AreEqual(config.Exchange, sentData.Exchange);
-                Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
-                Assert.AreEqual(message, Encoding.UTF8.GetString(sentData.Body));
+                var publisher = connection.NewPublisher(config);
+                publisher.Publish(data);
+            
+                using (var testPublishSuccess = new TestPublishSuccess())
+                {
+                    var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
+                    //------------------------Assert----------------------
+                    Assert.AreEqual(config.Exchange, sentData.Exchange);
+                    Assert.AreEqual(config.RoutingKey, sentData.RoutingKey);
+                    Assert.AreEqual(message, Encoding.UTF8.GetString(sentData.Body));
+                }
+            }
+            finally
+            {
+                connection.DeleteQueue(config);
+                connection.Dispose();
             }
         }
 
@@ -111,7 +130,8 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             public BasicGetResult GetSentMessage(string queueName)
             {
                 _channel = NewConnection().CreateModel();
-                return _channel.BasicGet(queue: queueName, autoAck:false);
+                var getResults = _channel.BasicGet(queue: queueName, autoAck: true);
+                return getResults;
             }
 
             private bool _isDisposed = false;
@@ -146,7 +166,10 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public void Consume(byte[] body)
             {
-                IsDataReceived = true;
+                if (body != null)
+                {
+                    IsDataReceived = true;
+                }
             }
         }
     }
