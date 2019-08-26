@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public interface IBobsPerformanceCounter : IDisposable
+    public interface IWarewolfPerformanceCounter : IDisposable
     {
         long RawValue { get; set; }
 
@@ -28,14 +28,14 @@ namespace Dev2.PerformanceCounters.Counters
     }
     public interface IRealPerformanceCounterFactory
     {
-        IBobsPerformanceCounter New(string categoryName, string counterName, string instanceName);
+        IWarewolfPerformanceCounter New(string categoryName, string counterName, string instanceName);
     }
 
 
     public class MyPerfCounter : IDisposable
     {
         protected readonly IRealPerformanceCounterFactory _counterFactory;
-        protected IBobsPerformanceCounter _counter;
+        protected IWarewolfPerformanceCounter _counter;
         public bool IsActive { get; set; }
 
         public MyPerfCounter()
@@ -63,10 +63,10 @@ namespace Dev2.PerformanceCounters.Counters
         }
     }
 
-    class RealBobsPerformanceCounter : IBobsPerformanceCounter
+    class RealWarewolfPerformanceCounter : IWarewolfPerformanceCounter
     {
         readonly PerformanceCounter _counter;
-        public RealBobsPerformanceCounter(string categoryName, string counterName, string instanceName)
+        public RealWarewolfPerformanceCounter(string categoryName, string counterName, string instanceName)
         {
             _counter = new PerformanceCounter(categoryName, counterName, instanceName);
             _counter.MachineName = ".";
@@ -103,9 +103,9 @@ namespace Dev2.PerformanceCounters.Counters
 
     public class PerformanceCounterFactory : IRealPerformanceCounterFactory
     {
-        public IBobsPerformanceCounter New(string categoryName, string counterName, string instanceName)
+        public IWarewolfPerformanceCounter New(string categoryName, string counterName, string instanceName)
         {
-            return new RealBobsPerformanceCounter(categoryName, counterName, instanceName);
+            return new RealWarewolfPerformanceCounter(categoryName, counterName, instanceName);
         }
     }
 }

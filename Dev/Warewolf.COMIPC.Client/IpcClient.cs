@@ -90,7 +90,20 @@ namespace WarewolfCOMIPC.Client
         protected void Close()
         {
             _pipeWrapper.Close();
-            _process?.Kill();
+            if (_process != null)
+            {
+                while (!_process.HasExited)
+                {
+                    if (!_process.WaitForExit(1000))
+                    {
+                        try
+                        {
+                            _process?.Kill();
+                        }
+                        catch { }
+                    }
+                }
+            }
         }
 
         ~IpcClientImpl()

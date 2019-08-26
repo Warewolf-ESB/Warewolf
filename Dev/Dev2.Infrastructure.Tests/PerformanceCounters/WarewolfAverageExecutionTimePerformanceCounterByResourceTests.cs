@@ -55,7 +55,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfAverageExecutionTimePerformanceCounterByResource_Reset_ClearsCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
@@ -70,8 +70,8 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfAverageExecutionTimePerformanceCounterByResource_Increment_CallsUnderlyingCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
-            var mockCounter2 = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter2 = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, "average time per operation base", GlobalConstants.GlobalCounterName)).Returns(mockCounter2.Object).Verifiable();
 
@@ -89,8 +89,8 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfAverageExecutionTimePerformanceCounterByResource_IncrementBy_CallsUnderlyingCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
-            var mockCounter2 = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter2 = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, "average time per operation base", GlobalConstants.GlobalCounterName)).Returns(mockCounter2.Object).Verifiable();
 
@@ -108,7 +108,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfAverageExecutionTimePerformanceCounterByResource_Setup_CreatesCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object);
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
@@ -121,8 +121,8 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
         public void WarewolfAverageExecutionTimePerformanceCounterByResource_Decrement_CallsUnderlyingCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var mockCounter = new Mock<IBobsPerformanceCounter>();
-            var mockCounter2 = new Mock<IBobsPerformanceCounter>();
+            var mockCounter = new Mock<IWarewolfPerformanceCounter>();
+            var mockCounter2 = new Mock<IWarewolfPerformanceCounter>();
             mockCounter.SetupGet(o => o.RawValue).Returns(1);
             mockCounter2.SetupGet(o => o.RawValue).Returns(1);
             mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.WarewolfServices, CounterName, GlobalConstants.GlobalCounterName)).Returns(mockCounter.Object).Verifiable();
