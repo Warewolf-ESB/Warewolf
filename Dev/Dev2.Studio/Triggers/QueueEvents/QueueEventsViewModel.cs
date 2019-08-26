@@ -175,6 +175,7 @@ namespace Dev2.Triggers.QueueEvents
             };
 
             AddAndSelectQueue(queue);
+            IsDirty = SelectedQueue.IsDirty;
         }
 
         int GetNewQueueNumber(string name)
@@ -388,42 +389,6 @@ namespace Dev2.Triggers.QueueEvents
             return toggle;
         }
 
-        public new bool IsDirty
-        {
-            get
-            {
-                try
-                {
-                    if (SelectedQueue == null)
-                    {
-                        return false;
-                    }
-                    var dirty = !SelectedQueue.Equals(Item);
-                    //SelectedQueue.IsDirty = dirty;
-                    return dirty;
-                }
-                catch (Exception ex)
-                {
-                    if (!_errorShown)
-                    {
-                        //TODO: Not sure if this is required
-                        // _popupController.ShowCorruptTaskResult(ex.Message);
-                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                        _errorShown = true;
-                    }
-                }
-                return false;
-            }
-            set
-            {
-                if (value.Equals(_isDirty))
-                {
-                    return;
-                }
-                _isDirty = value;
-                OnPropertyChanged(nameof(IsDirty));
-            }
-        }
         public IServer Server { private get; set; }
         public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 
