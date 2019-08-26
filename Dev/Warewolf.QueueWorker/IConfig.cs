@@ -8,9 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.DB;
+using System.Collections.Generic;
+
 namespace QueueWorker
 {
     internal interface IConfig
     {
+        string WorkflowUrl { get; }
+        ICollection<IServiceInput> ValueKeys { get; }
     }
 }

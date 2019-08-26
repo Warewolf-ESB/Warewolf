@@ -29,13 +29,13 @@ namespace Dev2.Runtime.Triggers
         readonly ISerializer _serializer;
         readonly IFile _fileWrapper;
         private readonly string _queueTriggersPath;
-        static readonly Lazy<TriggersCatalog> LazyCat = new Lazy<TriggersCatalog>(() =>
+        static readonly Lazy<TriggersCatalog> _lazyCat = new Lazy<TriggersCatalog>(() =>
         {
             var c = new TriggersCatalog();
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
-        public static ITriggersCatalog Instance => LazyCat.Value;
+        public static ITriggersCatalog Instance => _lazyCat.Value;
 
         public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer)
         {
@@ -75,21 +75,34 @@ namespace Dev2.Runtime.Triggers
 
         public void Load()
         {
-            Queues = new List<ITriggerQueue>();
-            var triggerQueueFileNames = _directoryWrapper.GetFiles(_queueTriggersPath);
-            foreach (var triggerQueueFileName in triggerQueueFileNames)
+            var newQueues = new List<ITriggerQueue>();
+            try
             {
-                try
+                var triggerQueueFileNames = _directoryWrapper.GetFiles(_queueTriggersPath);
+                foreach (var triggerQueueFileName in triggerQueueFileNames)
                 {
-                    var fileData = _fileWrapper.ReadAllText(triggerQueueFileName);
-                    var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
-                    var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
-                    Queues.Add(triggerQueue);
-                }catch(Exception ex)
-                {
-                    Dev2Logger.Error($"TriggersCatalog - Load - {triggerQueueFileName}", ex, GlobalConstants.WarewolfError);
+                    try
+                    {
+                        var triggerQueue = LoadQueueTriggerFromFile(triggerQueueFileName);
+                        newQueues.Add(triggerQueue);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Error($"TriggersCatalog - Load - {triggerQueueFileName}", ex, GlobalConstants.WarewolfError);
+                    }
                 }
+            } finally
+            {
+                Queues = newQueues;
             }
+        }
+
+        public ITriggerQueue LoadQueueTriggerFromFile(string triggerQueueFileName)
+        {
+            var fileData = _fileWrapper.ReadAllText(triggerQueueFileName);
+            var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
+            var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+            return triggerQueue;
         }
 
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)
