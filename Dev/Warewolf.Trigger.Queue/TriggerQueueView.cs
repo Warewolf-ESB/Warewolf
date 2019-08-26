@@ -8,18 +8,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.Triggers;
 using Microsoft.Practices.Prism.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
+using Warewolf.Core;
 using Warewolf.UI;
 
 namespace Warewolf.Trigger
@@ -61,6 +64,10 @@ namespace Warewolf.Trigger
         private bool _verifyResultsAvailable;
         private bool _isVerifyResultsEmptyRows;
 
+        private DataListModel _dataList;
+        private DataListConversionUtils _dataListConversionUtils;
+        private IContextualResourceModel _contextualResourceModel;
+
         public TriggerQueueView(IServer server)
         {
             var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
@@ -70,7 +77,7 @@ namespace Warewolf.Trigger
             NewQueue = true;
             Options = new List<OptionView>();
             DeadLetterOptions = new List<OptionView>();
-            IsVerifying = false;
+            Inputs = new List<IServiceInput>();
             VerifyCommand = new DelegateCommand(ExecuteVerify);
         }
 
@@ -370,10 +377,6 @@ namespace Warewolf.Trigger
             set
             {
                 _verifyResults = value;
-                if (!string.IsNullOrEmpty(_verifyResults))
-                {
-                    //Model.Response = _verifyResults
-                }
                 RaisePropertyChanged(nameof(VerifyResults));
             }
         }
@@ -383,19 +386,24 @@ namespace Warewolf.Trigger
 
         public void ExecuteVerify()
         {
-            VerifyResults = null;
             _isVerifying = true;
-
             try
             {
-                VerifyResults = "{some text}";
+                _dataList = new DataListModel();
+                _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
+                var inputList = _dataListConversionUtils.GetInputs(_dataList);
+                Inputs = inputList.Select(sca =>
+                {
+                    var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
+                    return (IServiceInput)serviceTestInput;
 
+                }).ToList();
                 IsVerifyResultsEmptyRows = VerifyResults == null;
                 if (VerifyResults != null)
                 {
                     VerifyResultsAvailable = true;
                     IsVerifyResultsEmptyRows = VerifyResults == string.Empty;
-                    _isVerifying = false;
+                    IsVerifying = false;
                     VerifyPassed = true;
                     VerifyFailed = false;
                 }
@@ -408,7 +416,21 @@ namespace Warewolf.Trigger
                 VerifyFailed = true;
             }
         }
+        public void GetInputsFromWorkflow()
+        {
+            Inputs = new List<IServiceInput>();
+            _contextualResourceModel = _server.ResourceRepository.LoadContextualResourceModel(ResourceId);
+            _dataList = new DataListModel();
+            _dataListConversionUtils = new DataListConversionUtils();
+            _dataList.Create(_contextualResourceModel.DataList, _contextualResourceModel.DataList);
+            var inputList = _dataListConversionUtils.GetInputs(_dataList);
+            Inputs = inputList.Select(sca =>
+            {
+                var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
+                return (IServiceInput)serviceTestInput;
 
+            }).ToList();
+        }
         public TriggerQueueView Item
         {
             private get => _item;

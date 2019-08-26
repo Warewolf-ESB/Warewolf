@@ -549,7 +549,7 @@
 
                                 <Button x:Name="VerifyActionButton" 
                                         HorizontalAlignment="Right" 
-                                        Command="{Binding VerifyCommand}" 
+                                        Command="{Binding VerifyCommand}"
                                         ToolTip="{x:Static languages:Tooltips.ServiceVerifyActionTooltip}"
                                         Content="Verify"
                                         Width="46">
@@ -582,7 +582,7 @@
                                     <TextBlock Text="Map data" FontWeight="Bold" />
 
                                     <TextBox Grid.Row="1"
-                                             Text="{Binding VerifyResults}" 
+                                             Text="{Binding VerifyResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              x:Name="ResponseTextbox"
                                              Style="{StaticResource StretchedTextBoxStyle}"
                                              customControls:WatermarkTextBox.Watermark="Paste data here"
@@ -597,7 +597,7 @@
                                     </TextBox>
                                 </Grid>
                             </Grid>
-                            
+
                             <!-- History -->
                             <Expander Grid.Row="7" 
                                       Grid.Column="0"
