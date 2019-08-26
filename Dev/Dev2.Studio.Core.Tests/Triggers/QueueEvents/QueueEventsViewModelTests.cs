@@ -9,12 +9,8 @@
 */
 
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
-using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -23,8 +19,6 @@ using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.Enums;
-using Dev2.Studio.Interfaces.Trigger;
 using Dev2.Threading;
 using Dev2.Triggers;
 using Dev2.Triggers.QueueEvents;
@@ -35,10 +29,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using Warewolf.Core;
 using Warewolf.Options;
 using Warewolf.Trigger;
 
@@ -48,29 +38,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
-        readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
-        readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
-        const string ResourceName = "TestWorkflow";
-
-        Mock<IContextualResourceModel> GetMockResource()
-        {
-            var mockResource = new Mock<IContextualResourceModel>();
-            mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
-            mockResource.SetupGet(r => r.ResourceName).Returns(ResourceName);
-            mockResource.SetupGet(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
-            mockResource.SetupGet(r => r.ID).Returns(_resourceID);
-            mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_XMLData);
-            return mockResource;
-        }
-        static Mock<IServiceDebugInfoModel> GetMockServiceDebugInfo(Mock<IContextualResourceModel> mockResouce)
-        {
-            var serviceDebugInfo = new Mock<IServiceDebugInfoModel>();
-            serviceDebugInfo.SetupGet(sd => sd.DebugModeSetting).Returns(DebugMode.DebugInteractive);
-            serviceDebugInfo.SetupGet(sd => sd.ResourceModel).Returns(mockResouce.Object);
-            serviceDebugInfo.SetupGet(sd => sd.RememberInputs).Returns(false);
-            serviceDebugInfo.SetupGet(sd => sd.ServiceInputData).Returns(mockResouce.Object.DataList);
-            return serviceDebugInfo;
-        }
         [TestInitialize]
         public void SetupForTest()
         {
@@ -93,319 +60,35 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             serverRepo.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
             CustomContainer.Register(serverRepo.Object);
         }
+
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents()
+        public void QueueEventsViewModel_Queues()
         {
             var mockServer = new Mock<IServer>();
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
-            Assert.IsNull(queueEventsViewModel.Queues
-                );
-            Assert.IsNull(queueEventsViewModel.SelectedQueueEvent);
+            Assert.IsNotNull(queueEventsViewModel.Queues);
+            Assert.AreEqual(1, queueEventsViewModel.Queues.Count);
+            Assert.IsNull(queueEventsViewModel.SelectedQueue);
 
-            var queue1 = "Queue1";
-            var queue2 = "Queue2";
+            var queue1 = new TriggerQueueViewForTesting(mockServer.Object);
+            var queue2 = new TriggerQueueViewForTesting(mockServer.Object);
 
-            var queueEvents = new System.Collections.ObjectModel.ObservableCollection<string>
+            queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>()
             {
                 queue1,
                 queue2
             };
 
-            //queueEventsViewModel.QueueEvents = queueEvents;
-            queueEventsViewModel.SelectedQueueEvent = queue2;
+            queueEventsViewModel.SelectedQueue = queue2;
 
             Assert.IsNotNull(queueEventsViewModel.Queues);
             Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
-            Assert.IsNotNull(queueEventsViewModel.SelectedQueueEvent);
-            Assert.AreEqual(queue2, queueEventsViewModel.SelectedQueueEvent);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueSources()
-        {
-            var queueSourceID1 = Guid.NewGuid();
-            var queueSourceName1 = "QueueSource1";
-
-            var queueSourceID2 = Guid.NewGuid();
-            var queueSourceName2 = "QueueSource2";
-
-            var queueSource1 = new Resource { ResourceID = queueSourceID1, ResourceName = queueSourceName1 };
-            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
-
-            var expectedList = new List<IResource>
-            {
-                queueSource1, queueSource2
-            };
-
-            var mockServer = new Mock<IServer>();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
-
-            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsNotNull(queueEventsViewModel.QueueSources);
-            Assert.IsNull(queueEventsViewModel.SelectedQueueSource);
-
-            Assert.IsNotNull(queueEventsViewModel.QueueSources);
-            Assert.AreEqual(2, queueEventsViewModel.QueueSources.Count);
-            Assert.AreEqual(queueSourceID1, queueEventsViewModel.QueueSources[0].ResourceID);
-            Assert.AreEqual(queueSourceName1, queueEventsViewModel.QueueSources[0].ResourceName);
-            Assert.AreEqual(queueSourceID2, queueEventsViewModel.QueueSources[1].ResourceID);
-            Assert.AreEqual(queueSourceName2, queueEventsViewModel.QueueSources[1].ResourceName);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_DeadLetterQueueSources()
-        {
-            var queueSourceID1 = Guid.NewGuid();
-            var queueSourceName1 = "QueueSource1";
-
-            var queueSourceID2 = Guid.NewGuid();
-            var queueSourceName2 = "QueueSource2";
-
-            var queueSource1 = new Resource { ResourceID = queueSourceID1, ResourceName = queueSourceName1 };
-            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
-
-            var expectedList = new List<IResource>
-            {
-                queueSource1, queueSource2
-            };
-
-            var mockServer = new Mock<IServer>();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
-
-            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueueSources);
-            Assert.IsNull(queueEventsViewModel.SelectedDeadLetterQueueSource);
-
-            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueueSources);
-            Assert.AreEqual(2, queueEventsViewModel.DeadLetterQueueSources.Count);
-            Assert.AreEqual(queueSourceID1, queueEventsViewModel.DeadLetterQueueSources[0].ResourceID);
-            Assert.AreEqual(queueSourceName1, queueEventsViewModel.DeadLetterQueueSources[0].ResourceName);
-            Assert.AreEqual(queueSourceID2, queueEventsViewModel.DeadLetterQueueSources[1].ResourceID);
-            Assert.AreEqual(queueSourceName2, queueEventsViewModel.DeadLetterQueueSources[1].ResourceName);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueNames()
-        {
-            var queueSourceID2 = Guid.NewGuid();
-            var queueSourceName2 = "QueueSource2";
-
-            var queueSource2 = new Resource
-            {
-                ResourceID = queueSourceID2,
-                ResourceName = queueSourceName2
-            };
-
-            string[] tempValues = new string[3];
-            tempValues[0] = "value1";
-            tempValues[1] = "value2";
-            tempValues[2] = "value3";
-
-            var expectedQueueNames = new Dictionary<string, string[]>
-            {
-                { "QueueNames", tempValues }
-            };
-
-            List<IOption> expectedOptions = SetupOptionsView();
-
-            var mockServer = new Mock<IServer>();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource2)).Returns(expectedOptions);
-
-            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object)
-            {
-                SelectedQueueSource = queueSource2
-            };
-
-            Assert.IsNotNull(queueEventsViewModel.SelectedQueueSource);
-            Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedQueueSource);
-            Assert.IsNotNull(queueEventsViewModel.QueueNames);
-            Assert.AreEqual(3, queueEventsViewModel.QueueNames.Count);
-            Assert.AreEqual("value1", queueEventsViewModel.QueueNames[0].Value);
-            Assert.AreEqual("value2", queueEventsViewModel.QueueNames[1].Value);
-            Assert.AreEqual("value3", queueEventsViewModel.QueueNames[2].Value);
-
-            Assert.AreEqual(3, queueEventsViewModel.Options.Count);
-
-            var optionOne = queueEventsViewModel.Options[0].DataContext as OptionBool;
-            Assert.IsNotNull(optionOne);
-            Assert.AreEqual("bool", optionOne.Name);
-            Assert.IsFalse(optionOne.Value);
-            Assert.IsTrue(optionOne.Default);
-
-            var optionTwo = queueEventsViewModel.Options[1].DataContext as OptionInt;
-            Assert.IsNotNull(optionTwo);
-            Assert.AreEqual("int", optionTwo.Name);
-            Assert.AreEqual(10, optionTwo.Value);
-            Assert.AreEqual(0, optionTwo.Default);
-
-            Assert.IsNull(queueEventsViewModel.QueueName);
-
-            queueEventsViewModel.QueueName = "value1";
-
-            Assert.IsNotNull(queueEventsViewModel.QueueName);
-            Assert.AreEqual("value1", queueEventsViewModel.QueueName);
-        }
-
-        private static List<IOption> SetupOptionsView()
-        {
-            var expectedOptionBool = new OptionBool
-            {
-                Name = "bool",
-                Value = false
-            };
-            var expectedOptionInt = new OptionInt
-            {
-                Name = "int",
-                Value = 10
-            };
-            var expectedOptionAutocompletebox = new OptionAutocomplete
-            {
-                Name = "auto",
-                Value = "new text"
-            };
-            var expectedOptions = new List<IOption>
-            {
-                expectedOptionBool,
-                expectedOptionInt,
-                expectedOptionAutocompletebox
-            };
-            return expectedOptions;
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_DeadLetterQueues()
-        {
-            var queueSourceID2 = Guid.NewGuid();
-            var queueSourceName2 = "QueueSource2";
-
-            var queueSource2 = new Resource { ResourceID = queueSourceID2, ResourceName = queueSourceName2 };
-
-            string[] tempValues = new string[3];
-            tempValues[0] = "value1";
-            tempValues[1] = "value2";
-            tempValues[2] = "value3";
-
-            var expectedQueueNames = new Dictionary<string, string[]>
-            {
-                { "QueueNames", tempValues }
-            };
-
-            List<IOption> expectedOptions = SetupOptionsView();
-
-            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
-            mockApplicationAdapter.Setup(p => p.TryFindResource(It.IsAny<string>())).Verifiable();
-            CustomContainer.Register(mockApplicationAdapter.Object);
-
-            var mockServer = new Mock<IServer>();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource2)).Returns(expectedQueueNames);
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource2)).Returns(expectedOptions);
-
-            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object)
-            {
-                SelectedDeadLetterQueueSource = queueSource2
-            };
-
-            Assert.IsNotNull(queueEventsViewModel.SelectedDeadLetterQueueSource);
-            Assert.AreEqual(queueSource2, queueEventsViewModel.SelectedDeadLetterQueueSource);
-            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueues);
-            Assert.AreEqual(3, queueEventsViewModel.DeadLetterQueues.Count);
-            Assert.AreEqual("value1", queueEventsViewModel.DeadLetterQueues[0].Value);
-            Assert.AreEqual("value2", queueEventsViewModel.DeadLetterQueues[1].Value);
-            Assert.AreEqual("value3", queueEventsViewModel.DeadLetterQueues[2].Value);
-
-            Assert.AreEqual(3, queueEventsViewModel.DeadLetterOptions.Count);
-
-            var optionOne = queueEventsViewModel.DeadLetterOptions[0].DataContext as OptionBool;
-            Assert.IsNotNull(optionOne);
-            Assert.AreEqual("bool", optionOne.Name);
-            Assert.IsFalse(optionOne.Value);
-            Assert.IsTrue(optionOne.Default);
-
-            var optionOneTemplate = queueEventsViewModel.DeadLetterOptions[0].DataTemplate;
-            mockApplicationAdapter.Verify(model => model.TryFindResource("OptionBoolStyle"), Times.Once());
-
-            var optionTwo = queueEventsViewModel.DeadLetterOptions[1].DataContext as OptionInt;
-            Assert.IsNotNull(optionTwo);
-            Assert.AreEqual("int", optionTwo.Name);
-            Assert.AreEqual(10, optionTwo.Value);
-            Assert.AreEqual(0, optionTwo.Default);
-
-            var optionTwoTemplate = queueEventsViewModel.DeadLetterOptions[1].DataTemplate;
-            mockApplicationAdapter.Verify(model => model.TryFindResource("OptionIntStyle"), Times.Once());
-
-            var optionThree = queueEventsViewModel.DeadLetterOptions[2].DataContext as OptionAutocomplete;
-            Assert.IsNotNull(optionThree);
-            Assert.AreEqual("auto", optionThree.Name);
-            Assert.AreEqual("new text", optionThree.Value);
-            Assert.IsNull( optionThree.Suggestions);
-            Assert.AreEqual("", optionThree.Default);
-
-            var optionThreeTemplate = queueEventsViewModel.DeadLetterOptions[2].DataTemplate;
-            mockApplicationAdapter.Verify(model => model.TryFindResource("OptionAutocompleteStyle"), Times.Once());
-
-            Assert.IsNull(queueEventsViewModel.DeadLetterQueue);
-
-            queueEventsViewModel.DeadLetterQueue = "value1";
-
-            Assert.IsNotNull(queueEventsViewModel.DeadLetterQueue);
-            Assert.AreEqual("value1", queueEventsViewModel.DeadLetterQueue);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_WorkflowName()
-        {
-            var queueEventsViewModel = CreateViewModel();
-
-            Assert.IsNull(queueEventsViewModel.WorkflowName);
-
-            var workflowName = "Workflow1";
-            queueEventsViewModel.WorkflowName = workflowName;
-
-            Assert.AreEqual(workflowName, queueEventsViewModel.WorkflowName);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_Concurrency()
-        {
-            var queueEventsViewModel = CreateViewModel();
-
-            Assert.AreEqual(0, queueEventsViewModel.Concurrency);
-
-            var concurrency = 5;
-            queueEventsViewModel.Concurrency = concurrency;
-
-            Assert.AreEqual(concurrency, queueEventsViewModel.Concurrency);
+            Assert.IsNotNull(queueEventsViewModel.SelectedQueue);
+            Assert.AreEqual(queue2, queueEventsViewModel.SelectedQueue);
         }
 
         QueueEventsViewModel CreateViewModel()
@@ -436,7 +119,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         public void QueueEventsViewModel_QueueEvents_Delete_ShouldDeleteSelectedItem()
         {
             var queueEventsViewModel = CreateViewModel();
-            var triggerQueueView = new TriggerQueueView();
+            var mockServer = new Mock<IServer>();
+            var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
 
             queueEventsViewModel.Queues.Add(triggerQueueView);
             queueEventsViewModel.SelectedQueue = triggerQueueView;
@@ -468,8 +152,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
             Assert.IsTrue(propertyChangedFired);
         }
-
-       
 
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
@@ -505,159 +187,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         }
 
         [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_VerifyCommand()
-        {
-            var mockServer = new Mock<IServer>();
-
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            Assert.IsNull(queueEventsViewModel.VerifyResults);
-            Assert.IsFalse(queueEventsViewModel.IsVerifying);
-            Assert.IsFalse(queueEventsViewModel.IsVerifyResultsEmptyRows);
-
-            queueEventsViewModel.VerifyCommand.Execute(null);
-
-            Assert.IsTrue(queueEventsViewModel.VerifyResultsAvailable);
-            Assert.IsFalse(queueEventsViewModel.IsVerifyResultsEmptyRows);
-            Assert.IsFalse(queueEventsViewModel.IsVerifying);
-            Assert.IsTrue(queueEventsViewModel.VerifyPassed);
-            Assert.IsFalse(queueEventsViewModel.VerifyFailed);
-        }
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Candice Daniel")]
-        public void QueueEventsViewModel_GetInputs_Success()
-        {
-            var queueEventsViewModel = CreateViewModel();
-            var workflowName = "Workflow1";
-            queueEventsViewModel.WorkflowName = workflowName;
-            var mockResouce = GetMockResource();
-            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            
-            Assert.IsNotNull(queueEventsViewModel);
-        }
-      
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_Inputs()
-        {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsNotNull(queueEventsViewModel.Inputs);
-
-            var inputs = new ObservableCollection<IServiceInput>();
-            inputs.Add(new ServiceInput("name1", "value1"));
-            inputs.Add(new ServiceInput("name2", "value2"));
-
-            queueEventsViewModel.Inputs = inputs;
-
-            var inputsAsList = queueEventsViewModel.Inputs.ToList();
-
-            Assert.AreEqual(2, queueEventsViewModel.Inputs.Count);
-            Assert.AreEqual("name1", inputsAsList[0].Name);
-            Assert.AreEqual("value1", inputsAsList[0].Value);
-            Assert.AreEqual("name2", inputsAsList[1].Name);
-            Assert.AreEqual("value2", inputsAsList[1].Value);
-        }
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Candice Daniel")]
-        public void QueueEventsViewModel_AccountName()
-        {
-            var _accountNameChanged = false;
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            var queuedResourceForTest = new QueuedResourceForTest();
-            queueEventsViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "AccountName")
-                {
-                    _accountNameChanged = true;
-                }
-            };
-            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
-            queueEventsViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage, queueEventsViewModel.Error);
-            //------------Execute Test-------------------------- -
-            queueEventsViewModel.AccountName = "someAccountName";
-            //------------Assert Results-------------------------
-            Assert.AreEqual("someAccountName", queueEventsViewModel.AccountName);
-            Assert.AreEqual("", queueEventsViewModel.Error);
-            Assert.AreEqual("someAccountName", queueEventsViewModel.SelectedQueue.UserName);
-            Assert.IsTrue(_accountNameChanged);
-
-            queueEventsViewModel.AccountName = "someAccountName";
-            Assert.AreEqual("someAccountName", queueEventsViewModel.AccountName);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Candice Daniel")]
-        public void QueueEventsViewModel_Password_SetPassword()
-        {
-            var _passwordChanged = false;
-            //------------Setup for test--------------------------
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            var queuedResourceForTest = new QueuedResourceForTest();
-            queueEventsViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "Password")
-                {
-                    _passwordChanged = true;
-                }
-            };
-            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
-            queueEventsViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage, queueEventsViewModel.Error);
-            //------------Execute Test---------------------------
-            queueEventsViewModel.Password = "somePassword";
-            //------------Assert Results-------------------------
-            Assert.AreEqual("somePassword", queueEventsViewModel.Password);
-            Assert.AreEqual("", queueEventsViewModel.Error);
-            Assert.IsTrue(_passwordChanged);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        public void QueueEventsViewModel_AccountName_SetAccountName_SelectedTaskNull_NothingChangedOnTask()
-        {
-            //------------Setup for test--------------------------
-            var _accountNameChanged = false;
-
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            var queuedResourceForTest = new QueuedResourceForTest();
-            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
-
-            queueEventsViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueEventsLoginErrorMessage, queueEventsViewModel.Error);
-            queueEventsViewModel.AccountName = "someAccountName";
-            queueEventsViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "AccountName")
-                {
-                    _accountNameChanged = true;
-                }
-            };
-            //--------------Assert Preconditions------------------
-            Assert.AreEqual("", queueEventsViewModel.Error);
-            var queueResource = queueEventsViewModel.SelectedQueue;
-            Assert.AreEqual("someAccountName", queueResource.UserName);
-            //------------Execute Test---------------------------
-            queueEventsViewModel.SelectedQueue = null;
-            queueEventsViewModel.AccountName = "another account name";
-            //------------Assert Results-------------------------
-            Assert.IsNull(queueEventsViewModel.SelectedQueue);
-            Assert.AreEqual("someAccountName", queueResource.UserName);
-            Assert.IsFalse(_accountNameChanged);
-        }
-
-        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(QueueEventsViewModel))]
         public void QueueEventsViewModel_ConnectionError_SetAndClearError_ValidErrorSetAndClear()
@@ -665,8 +194,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            var queuedResourceForTest = new QueuedResourceForTest();
-            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
+            var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
+            queueEventsViewModel.SelectedQueue = triggerQueueView;
             //------------Execute Test---------------------------
             queueEventsViewModel.SetConnectionError();
             //------------Assert Results-------------------------
@@ -679,101 +208,55 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.IsFalse(queueEventsViewModel.HasConnectionError);
         }
 
-        //[TestMethod]
-        //[Owner("Candice Daniel")]
-        //[TestCategory(nameof(QueueEventsViewModel))]
-        //public void QueueEventsViewModel_History_Get_ShouldCallCreateHistoryOnQueueResourceModel()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var queueEventsViewModel = new QueueEventsViewModel(new Mock<IServer>().Object);
-        //    var queuedResourceForTest = new QueuedResourceForTest();
-        //    queueEventsViewModel.SelectedQueue = queuedResourceForTest;
-
-        //    var activeItem = new TabItem { Header = "History" };
-        //    queueEventsViewModel.ActiveItem = activeItem;
-        //    var mockQueueResourceModel = new Mock<IQueueResourceModel>();
-        //    var histories = new List<IExecutionHistory> { new Mock<IExecutionHistory>().Object };
-        //    mockQueueResourceModel.Setup(model => model.CreateHistory(It.IsAny<ITriggerQueue>())).Returns(histories);
-        //    queueEventsViewModel.QueueResourceModel = mockQueueResourceModel.Object;
-        //    queueEventsViewModel.SelectedQueue = new Mock<ITriggerQueueView>().Object;
-        //    //------------Execute Test---------------------------
-        //    var resourceHistories = queueEventsViewModel.History;
-        //    //------------Assert Results-------------------------
-        //    //  mockQueueResourceModel.Verify(model => model.CreateHistory(It.IsAny<IQueueResource>()), Times.Once());
-        //    Assert.IsNotNull(resourceHistories);
-        //    Assert.IsTrue(queueEventsViewModel.IsHistoryTabVisible);
-        //    Assert.IsFalse(queueEventsViewModel.IsProgressBarVisible);
-        //}
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        public void QueueEventsViewModel_Status_SetStatus()
-        {
-            //------------Setup for test--------------------------
-            var queueEventsViewModel = new QueueEventsViewModel(new Mock<IServer>().Object);
-            var queuedResourceForTest = new QueuedResourceForTest();
-            queueEventsViewModel.SelectedQueue = queuedResourceForTest;
-            //------------Execute Test---------------------------
-            Assert.IsFalse(queueEventsViewModel.SelectedQueue.IsDirty);
-            queueEventsViewModel.Status = QueueStatus.Disabled;
-            //------------Assert Results-------------------------
-            Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
-
-            queueEventsViewModel.Status = QueueStatus.Disabled;
-            Assert.AreEqual(QueueStatus.Disabled, queueEventsViewModel.Status);
-        }
-        class QueuedResourceForTest : ITriggerQueueView
+        private class TriggerQueueViewForTesting : TriggerQueueView
         {
             bool _isNewItem;
             bool _isDirty;
             string _queueName;
 
-            public QueuedResourceForTest()
+            public TriggerQueueViewForTesting(IServer server)
+                : base(server)
             {
-                Errors = new ErrorResultTO();
             }
 
-            public bool IsDirty
+            public new bool IsDirty
             {
                 get => _isDirty;
                 set => _isDirty = value;
             }
-            public Guid TriggerId { get; set; }
-            public string Name { get; set; }
-            public string OldQueueName { get; set; }
-            public QueueStatus Status { get; set; }
-            public DateTime NextRunDate { get; set; }
-            public int NumberOfHistoryToKeep { get; set; }
-            public string WorkflowName { get; set; }
-            public Guid ResourceId { get; set; }
-            public string UserName { get; set; }
-            public string Password { get; set; }
-            public IErrorResultTO Errors { get; set; }
-            public bool IsNew { get; set; }
-            public bool IsNewQueue
+            public new Guid TriggerId { get; set; }
+            public new string TriggerQueueName { get; set; }
+            public new string OldQueueName { get; set; }
+            public new bool Enabled { get; set; }
+            public new string WorkflowName { get; set; }
+            public new Guid ResourceId { get; set; }
+            public new string UserName { get; set; }
+            public new string Password { get; set; }
+            public new IErrorResultTO Errors { get; set; }
+            public new bool IsNewQueue
             {
                 get => _isNewItem;
                 set => _isNewItem = value;
             }
-            public string NameForDisplay { get; set; }
-            public string QueueName
+            public new string NameForDisplay { get; set; }
+            public new string QueueName
             {
                 get => _queueName;
                 set => _queueName = value;
             }
 
-            public Guid QueueSourceId { get; set; }
-            public int Concurrency { get; set; }
-            public IOption[] Options { get; set; }
-            public Guid QueueSinkId { get; set; }
-            public string DeadLetterQueue { get; set; }
-            public IOption[] DeadLetterOptions { get; set; }
-            public ICollection<IServiceInput> Inputs { get; set; }
+            public new Guid QueueSourceId { get; set; }
+            public new int Concurrency { get; set; }
+            public new IOption[] Options { get; set; }
+            public new Guid QueueSinkId { get; set; }
+            public new string DeadLetterQueue { get; set; }
+            public new IOption[] DeadLetterOptions { get; set; }
+            public new ICollection<IServiceInput> Inputs { get; set; }
 
             public void SetItem(ITriggerQueue item)
             {
             }
-            public bool Equals(ITriggerQueue other)
+            public new bool Equals(ITriggerQueue other)
             {
                 return !IsDirty;
             }

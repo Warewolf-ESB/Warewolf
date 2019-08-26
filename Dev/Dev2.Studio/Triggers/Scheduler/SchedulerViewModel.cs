@@ -827,7 +827,7 @@ namespace Dev2.Triggers.Scheduler
             {
                 return resource;
             }
-            throw new Exception();
+            return null;
         }
     }
 }

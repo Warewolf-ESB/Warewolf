@@ -26,7 +26,7 @@
         <Border Grid.Row="1" BorderThickness="0,0,0,0" Margin="{StaticResource ElementBorderTop}">
             <Grid>
                 <TabControl Style="{StaticResource TabControlStyle}">
-                    <TabItem Style="{StaticResource TabItemStyle}">
+                    <TabItem Style="{StaticResource TabItemStyle}" IsSelected="{Binding IsEventsSelected}">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal" Cursor="Hand">
                                 <fa:FontAwesome Icon="Calendar" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
@@ -37,7 +37,7 @@
                             <StaticResource ResourceKey="QueueEventsView" />
                         </TabItem.Content>
                     </TabItem>
-                    <TabItem Style="{StaticResource TabItemStyle}">
+                    <TabItem Style="{StaticResource TabItemStyle}" IsSelected="{Binding IsSchedulerSelected}">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal" Cursor="Hand">
                                 <fa:FontAwesome Icon="History" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
