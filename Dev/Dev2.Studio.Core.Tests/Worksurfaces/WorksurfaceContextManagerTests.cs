@@ -1005,7 +1005,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(worksurfaceContextManager);
             //---------------Execute Test ----------------------
 
-            worksurfaceContextManager.AddEventsWorkSurface();
+            worksurfaceContextManager.AddQueuesWorkSurface();
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
@@ -1045,7 +1045,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(worksurfaceContextManager);
             //---------------Execute Test ----------------------
 
-            worksurfaceContextManager.AddTasksWorkSurface();
+            worksurfaceContextManager.AddTriggersWorkSurface();
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);

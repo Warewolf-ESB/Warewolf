@@ -409,7 +409,7 @@ You need Administrator permission.</value>
     <value>To save a resource persmission, you must have Resource Name and Windows group entered</value>
   </data>
   <data name="QueueEventsHeader" xml:space="preserve">
-    <value>Queue Events</value>
+    <value>Queues</value>
   </data>
   <data name="SchedulerHeader" xml:space="preserve">
     <value>Scheduler</value>
