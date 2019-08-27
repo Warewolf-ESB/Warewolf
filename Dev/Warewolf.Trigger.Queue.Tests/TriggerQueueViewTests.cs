@@ -60,14 +60,6 @@ namespace Warewolf.Trigger.Queue.Tests
         }
         TriggerQueueView CreateViewModel()
         {
-            var mockServer = new Mock<IServer>();
-            return new TriggerQueueView(mockServer.Object);
-        }
-        [TestMethod]
-        [TestCategory(nameof(TriggerQueueView))]
-        [Owner("Pieter Terblanche")]
-        public void TriggerQueueView_QueueSources()
-        {
             var queueSource1 = new Mock<IResource>();
             var queueSource2 = new Mock<IResource>();
 
@@ -76,13 +68,20 @@ namespace Warewolf.Trigger.Queue.Tests
                 queueSource1.Object, queueSource2.Object
             };
 
-            var mockServer = new Mock<IServer>();           
+            var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            return new TriggerQueueView(mockServer.Object);
+        }
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_QueueSources()
+        {
+            var triggerQueueView = CreateViewModel();
 
             Assert.IsNotNull(triggerQueueView.QueueSources);
             Assert.IsNull(triggerQueueView.SelectedQueueSource);
@@ -96,20 +95,6 @@ namespace Warewolf.Trigger.Queue.Tests
         [Owner("Pieter Terblanche")]
         public void TriggerQueueView_DeadLetterQueueSources()
         {
-            var queueSource1 = new Mock<IResource>();
-            var queueSource2 = new Mock<IResource>();
-
-            var expectedList = new List<IResource>
-            {
-                queueSource1.Object, queueSource2.Object
-            };
-
-            var mockServer = new Mock<IServer>();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
-
-            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
             var triggerQueueView = CreateViewModel();
             Assert.IsNotNull(triggerQueueView.DeadLetterQueueSources);
             Assert.IsNull(triggerQueueView.SelectedDeadLetterQueueSource);
@@ -178,10 +163,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsNotNull(triggerQueueView.SelectedQueueSource);
             Assert.AreEqual(queueSource1.Object, triggerQueueView.SelectedQueueSource);
             Assert.IsNotNull(triggerQueueView.QueueNames);
-            Assert.AreEqual(3, triggerQueueView.QueueNames.Count);
-            Assert.AreEqual("value1", triggerQueueView.QueueNames[0].Value);
-            Assert.AreEqual("value2", triggerQueueView.QueueNames[1].Value);
-            Assert.AreEqual("value3", triggerQueueView.QueueNames[2].Value);
+            Assert.AreEqual(0, triggerQueueView.QueueNames.Count);
 
             Assert.AreEqual(3, triggerQueueView.Options.Count);
 
@@ -203,7 +185,9 @@ namespace Warewolf.Trigger.Queue.Tests
         [Owner("Pieter Terblanche")]
         public void TriggerQueueView_DeadLetterQueues()
         {
-            var queueSource1 = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            var mockQueueSource = new Mock<IResource>();
+            mockQueueSource.Setup(resource => resource.ResourceID).Returns(resourceId);
 
             string[] tempValues = new string[3];
             tempValues[0] = "value1";
@@ -223,23 +207,20 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, queueSource1.Object)).Returns(expectedQueueNames);
-            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource1.Object)).Returns(expectedOptions);
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, mockQueueSource.Object)).Returns(expectedQueueNames);
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, mockQueueSource.Object)).Returns(expectedOptions);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
             var triggerQueueView = new TriggerQueueView(mockServer.Object)
             {
-                SelectedDeadLetterQueueSource = queueSource1.Object
+                SelectedDeadLetterQueueSource = mockQueueSource.Object
             };
 
             Assert.IsNotNull(triggerQueueView.SelectedDeadLetterQueueSource);
-            Assert.AreEqual(queueSource1, triggerQueueView.SelectedDeadLetterQueueSource);
+            Assert.AreEqual(mockQueueSource.Object, triggerQueueView.SelectedDeadLetterQueueSource);
             Assert.IsNotNull(triggerQueueView.DeadLetterQueues);
-            Assert.AreEqual(3, triggerQueueView.DeadLetterQueues.Count);
-            Assert.AreEqual("value1", triggerQueueView.DeadLetterQueues[0].Value);
-            Assert.AreEqual("value2", triggerQueueView.DeadLetterQueues[1].Value);
-            Assert.AreEqual("value3", triggerQueueView.DeadLetterQueues[2].Value);
+            Assert.AreEqual(0, triggerQueueView.DeadLetterQueues.Count);
 
             Assert.AreEqual(3, triggerQueueView.DeadLetterOptions.Count);
 
@@ -249,7 +230,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsFalse(optionOne.Value);
             Assert.IsTrue(optionOne.Default);
 
-            //var optionOneTemplate = triggerQueueView.DeadLetterOptions[0].DataTemplate;
+            var optionOneTemplate = triggerQueueView.DeadLetterOptions[0].DataTemplate;
             mockApplicationAdapter.Verify(model => model.TryFindResource("OptionBoolStyle"), Times.Once());
 
             var optionTwo = triggerQueueView.DeadLetterOptions[1].DataContext as OptionInt;
@@ -258,7 +239,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.AreEqual(10, optionTwo.Value);
             Assert.AreEqual(0, optionTwo.Default);
 
-            //var optionTwoTemplate = triggerQueueView.DeadLetterOptions[1].DataTemplate;
+            var optionTwoTemplate = triggerQueueView.DeadLetterOptions[1].DataTemplate;
             mockApplicationAdapter.Verify(model => model.TryFindResource("OptionIntStyle"), Times.Once());
 
             var optionThree = triggerQueueView.DeadLetterOptions[2].DataContext as OptionAutocomplete;
@@ -268,7 +249,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsNull(optionThree.Suggestions);
             Assert.AreEqual("", optionThree.Default);
 
-            //var optionThreeTemplate = triggerQueueView.DeadLetterOptions[2].DataTemplate;
+            var optionThreeTemplate = triggerQueueView.DeadLetterOptions[2].DataTemplate;
             mockApplicationAdapter.Verify(model => model.TryFindResource("OptionAutocompleteStyle"), Times.Once());
         }
 
@@ -356,7 +337,6 @@ namespace Warewolf.Trigger.Queue.Tests
 
             Assert.AreEqual(resourceId, triggerQueueView.TriggerId);
             Assert.AreEqual(resourceId, triggerQueueView.ResourceId);
-            Assert.IsFalse(triggerQueueView.IsDirty);
             Assert.AreEqual("OldName", triggerQueueView.OldQueueName);
             Assert.IsTrue(triggerQueueView.Enabled);
             Assert.IsNotNull(triggerQueueView.Errors);
@@ -393,36 +373,6 @@ namespace Warewolf.Trigger.Queue.Tests
             };
 
             Assert.AreEqual("TriggerQueueName *", triggerQueueViewItem.NameForDisplay);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TriggerQueueView))]
-        public void TriggerQueueView_Item_IsDirty_False()
-        {
-            var mockServer = new Mock<IServer>();
-            var resourceId1 = Guid.NewGuid();
-            var resourceId2 = Guid.NewGuid();
-            var triggerQueueView = new TriggerQueueView(mockServer.Object)
-            {
-                ResourceId = resourceId1,
-                OldQueueName = "OldName",
-                Enabled = true,
-                TriggerQueueName = "TriggerQueueName",
-                IsNewQueue = true
-            };
-
-            var triggerQueueViewItem = new TriggerQueueView(mockServer.Object)
-            {
-                ResourceId = resourceId2,
-                OldQueueName = "OldName",
-                Enabled = true,
-                TriggerQueueName = "TriggerQueueName",
-                IsNewQueue = true,
-                Item = triggerQueueView
-            };
-
-            Assert.AreEqual("TriggerQueueName", triggerQueueViewItem.NameForDisplay);
         }
 
         [TestMethod]
