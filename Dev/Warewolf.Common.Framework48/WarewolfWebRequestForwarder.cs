@@ -38,37 +38,26 @@ namespace Warewolf.Common
 
         public async void Consume(byte[] body)
         {
-            var builder = BuildUri(_url, body); 
+            var postBody = BuildPostBody(body); 
 
-            using (await SendEventToWarewolf(builder.ToString()))
+            using (await SendEventToWarewolf(_url, postBody))
             {
                 // empty block
             }
         }
 
-        private UriBuilder BuildUri(string url, byte[] body)
+        private string BuildPostBody(byte[] body)
         {
-            var queryStr = BuildQueryString(Encoding.UTF8.GetString(body));
-
-            var builder = new UriBuilder(url)
-            {
-                Query = queryStr
-            };
-            return builder;
+            var returnedQueueMessage = Encoding.UTF8.GetString(body);
+            return returnedQueueMessage;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData)
         {
             using (var client = _httpClientFactory.New(uri))
             {
-                return await client.GetAsync(uri);
+                return await client.PostAsync(uri,postData);
             }
-        }
-
-        private string BuildQueryString(string data)
-        {
-            var encodedData = WebUtility.UrlEncode(data);
-            return $"{_valueKeys}={encodedData}";
         }
     }
 }
