@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
                 string queueName = null;
-                values.TryGetValue("QueueName", out StringBuilder tmp);
+                values.TryGetValue("resourceID", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     queueName = tmp.ToString();
