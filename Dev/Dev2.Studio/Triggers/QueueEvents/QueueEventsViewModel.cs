@@ -15,21 +15,18 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Runtime.Triggers;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
-using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
@@ -43,42 +40,33 @@ namespace Dev2.Triggers.QueueEvents
         ICommand _deleteCommand;
 
         private IServer _server;
-        private readonly IResourceRepository _resourceRepository;
         readonly IExternalProcessExecutor _externalProcessExecutor;
 
         private string _pasteResponse;
         private ICommand _queueStatsCommand;
-        private bool _isHistoryExpanded;
 
-        IList<IExecutionHistory> _history;
-        readonly IAsyncWorker _asyncWorker;
         private readonly EnvironmentViewModel _source;
         IResourcePickerDialog _currentResourcePicker;
         string _connectionError;
         bool _hasConnectionError;
-        bool _isProgressBarVisible;
-        bool _isHistoryTabVisible;
-        ITriggerQueueResourceModel _queueResourceModel;
+
+        IResourceRepository _resourceRepository;
         TriggerQueueView _selectedQueue;
-        bool _errorShown;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
-        bool _isDirty;
         private bool _enabled;
-        TabItem _activeItem;
 
         private ObservableCollection<TriggerQueueView> _queues;
 
         public IPopupController PopupController { get; }
 
         public QueueEventsViewModel(IServer server)
-            : this(server, new ExternalProcessExecutor(), new SynchronousAsyncWorker(), null)
+            : this(server, new ExternalProcessExecutor(), null)
         {
 
         }
 
-        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IAsyncWorker asyncWorker, IResourcePickerDialog resourcePickerDialog)
+        public QueueEventsViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor, IResourcePickerDialog resourcePickerDialog)
         {
-            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _server = server;
             _resourceRepository = server.ResourceRepository;
             _externalProcessExecutor = externalProcessExecutor;
@@ -88,7 +76,6 @@ namespace Dev2.Triggers.QueueEvents
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             Errors = new ErrorResultTO();
-            _asyncWorker = asyncWorker;
             InitializeHelp();
             PopupController = CustomContainer.Get<IPopupController>();
             Queues = new ObservableCollection<TriggerQueueView>();
@@ -259,7 +246,7 @@ namespace Dev2.Triggers.QueueEvents
                     Inputs = SelectedQueue.Inputs
                 };
 
-                TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
+                _resourceRepository.SaveQueue(triggerQueue);
 
                 SelectedQueue.IsNewQueue = false;
                 IsDirty = SelectedQueue.IsDirty;
@@ -272,104 +259,7 @@ namespace Dev2.Triggers.QueueEvents
                 return false;
             }
         }
-
-        public TabItem ActiveItem
-        {
-            private get => _activeItem;
-            set
-            {
-                if (Equals(value, _activeItem))
-                {
-                    return;
-                }
-                _activeItem = value;
-                if (IsHistoryTab)
-                {
-                    OnPropertyChanged(nameof(History));
-                }
-            }
-        }
-        bool IsHistoryTab
-        {
-            get
-            {
-                if (ActiveItem != null)
-                {
-                    return (string)ActiveItem.Header == nameof(History);
-                }
-                return false;
-            }
-        }
-        public ITriggerQueueResourceModel QueueResourceModel
-        {
-            get => _queueResourceModel;
-            set
-            {
-                _queueResourceModel = value;
-                OnPropertyChanged(nameof(QueueResourceModel));
-                OnPropertyChanged(nameof(ExecutionHistory));
-                OnPropertyChanged(nameof(SelectedQueue.Inputs));
-                OnPropertyChanged(nameof(SelectedQueue.VerifyResults));
-            }
-        }
-
-        public bool IsHistoryExpanded
-        {
-            get => _isHistoryExpanded;
-            set
-            {
-                _isHistoryExpanded = value;
-                OnPropertyChanged(nameof(IsHistoryExpanded));
-                OnPropertyChanged(nameof(History));
-            }
-        }
-        public IList<IExecutionHistory> History
-        {
-            get
-            {
-                if (!IsHistoryExpanded)
-                {
-                    return new List<IExecutionHistory>();
-                }
-                if (QueueResourceModel != null && SelectedQueue != null && _history == null && !SelectedQueue.IsNewQueue)
-                {
-                    _asyncWorker.Start(() =>
-                    {
-                        IsHistoryTabVisible = false;
-                        IsProgressBarVisible = true;
-                        //_history = QueueResourceModel.CreateHistory(SelectedQueue).ToList()
-                    }
-                   , () =>
-                   {
-
-                       IsHistoryTabVisible = true;
-                       IsProgressBarVisible = false;
-                       OnPropertyChanged(nameof(History));
-                   });
-                }
-                var history = _history;
-                _history = null;
-                return history ?? new List<IExecutionHistory>();
-            }
-        }
-        public bool IsHistoryTabVisible
-        {
-            get => _isHistoryTabVisible;
-            private set
-            {
-                _isHistoryTabVisible = value;
-                OnPropertyChanged(nameof(IsHistoryTabVisible));
-            }
-        }
-        public bool IsProgressBarVisible
-        {
-            get => _isProgressBarVisible;
-            set
-            {
-                _isProgressBarVisible = value;
-                OnPropertyChanged(nameof(IsProgressBarVisible));
-            }
-        }
+        
         public TriggerQueueView SelectedQueue
         {
             get => _selectedQueue;
@@ -393,7 +283,7 @@ namespace Dev2.Triggers.QueueEvents
                     OnPropertyChanged(nameof(Enabled));
                     OnPropertyChanged(nameof(Errors));
                     OnPropertyChanged(nameof(Error));
-                    OnPropertyChanged(nameof(History));
+                    OnPropertyChanged(nameof(SelectedQueue.History));
                     OnPropertyChanged(nameof(SelectedQueue.Inputs));
                     OnPropertyChanged(nameof(SelectedQueue.VerifyResults));
                 }
@@ -413,7 +303,6 @@ namespace Dev2.Triggers.QueueEvents
         }
 
         public IServer Server { private get; set; }
-        public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 
         public TriggerQueueView Item { get; set; }
 
