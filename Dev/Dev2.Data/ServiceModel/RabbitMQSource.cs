@@ -12,15 +12,20 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.ServiceModel.Data;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Warewolf.Driver.RabbitMQ;
 using Warewolf.Security.Encryption;
+using Warewolf.Triggers;
 
 namespace Dev2.Data.ServiceModel
 {
+    //TODO: This class should be moved to Warewolf.Driver.RabbitMQ, hence the current class name duplicate
     public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ, IQueueSource
     {
+        readonly IConnectionFactory _factory; 
         const int DefaultPort = 5672;
         const string DefaultVirtualHost = "/";
 
@@ -63,6 +68,15 @@ namespace Dev2.Data.ServiceModel
 
             Port = Int32.TryParse(properties["Port"], out int port) ? port : DefaultPort;
             VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
+
+            _factory = new ConnectionFactory
+            {
+                HostName = HostName,
+                Port = Port,
+                UserName = UserName,
+                Password = Password,
+                VirtualHost = VirtualHost
+            };
         }
 
         public override XElement ToXml()
@@ -83,6 +97,11 @@ namespace Dev2.Data.ServiceModel
                 );
 
             return result;
+        }
+
+        public IQueueConnection NewConnection()
+        {
+            return new RabbitConnection(_factory.CreateConnection());
         }
 
         public override bool IsSource => true;
