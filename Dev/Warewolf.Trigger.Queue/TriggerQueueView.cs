@@ -447,17 +447,6 @@ namespace Warewolf.Trigger
         private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
             var queueNames = new List<INameValue>();
-
-            var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
-
-#pragma warning disable CC0021 // Use nameof
-            foreach (var item in list["QueueNames"])
-#pragma warning restore CC0021 // Use nameof
-            {
-                var nameValue = new NameValue(item, item);
-                queueNames.Add(nameValue);
-            }
-
             return queueNames;
         }
 
