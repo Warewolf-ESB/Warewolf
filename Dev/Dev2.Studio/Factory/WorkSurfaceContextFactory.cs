@@ -12,7 +12,6 @@ using System;
 using Dev2.Common.ExtMethods;
 using Dev2.Factory;
 using Dev2.Settings;
-using Dev2.Triggers.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
@@ -60,8 +59,7 @@ namespace Dev2.Studio.Factory
             {
                 key.ResourceID = Guid.Empty;
             }
-            //TODO: Remove Scheduler check
-            if (vm is TriggersViewModel || vm is SchedulerViewModel || vm is SettingsViewModel)
+            if (vm is TriggersViewModel || vm is SettingsViewModel)
             {
                 key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey;
             }
@@ -76,7 +74,7 @@ namespace Dev2.Studio.Factory
         {
             var context = new WorkSurfaceContextViewModel(key, vm);
 
-            if (!(vm is SchedulerViewModel) && !(vm is SettingsViewModel))
+            if (!(vm is TriggersViewModel) && !(vm is SettingsViewModel))
             {
                 vm.DisplayName = workSurfaceContext.GetDescription();
             }

@@ -52,7 +52,11 @@ namespace Dev2
             if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
             {
                 Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                new ServerLifecycleManager(new ServerEnvironmentPreparer()).Run(new LifeCycleInitializationList());
+                var manager = new ServerLifecycleManager(new ServerEnvironmentPreparer());
+                var runTask = manager.Run(new LifeCycleInitializationList());
+                runTask.Wait();
+
+                WaitForUserExit(manager);
             }
             else
             {
@@ -70,6 +74,22 @@ namespace Dev2
             return Result;
         }
 
+        static void WaitForUserExit(ServerLifecycleManager manager)
+        {
+
+            Console.Write("Press <ENTER> to terminate service and/or web server if started");
+            if (EnvironmentVariables.IsServerOnline)
+            {
+                Pause();
+            }
+            else
+            {
+                Console.Write("Failed to start Server");
+            }
+            manager.Stop(false, 0);
+        }
+
+        private static void Pause() => Console.ReadLine();
         static void SetWorkingDirectory()
         {
             try
