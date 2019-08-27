@@ -300,11 +300,11 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand QueueEventsCommand
         {
-            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddEventsWorkSurface(), param => IsActiveServerConnected()));
+            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddQueuesWorkSurface(), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand TasksCommand
         {
-            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTasksWorkSurface(), param => IsActiveServerConnected()));
+            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTriggersWorkSurface(), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewServiceCommand
         {

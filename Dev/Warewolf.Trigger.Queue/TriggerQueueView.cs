@@ -54,7 +54,6 @@ namespace Warewolf.Trigger
         private bool _newQueue;
         private string _nameForDisplay;
         private TriggerQueueView _item;
-        private bool _isValidatingIsDirty;
         private IResourceRepository _resourceRepository;
         private IServer _server;
 
@@ -90,6 +89,7 @@ namespace Warewolf.Trigger
             {
                 _triggerQueueName = value;
                 RaisePropertyChanged(nameof(TriggerQueueName));
+                SetItem(this);
                 SetDisplayName(IsDirty);
             }
         }
@@ -248,19 +248,14 @@ namespace Warewolf.Trigger
         {
             get
             {
-                if (_isValidatingIsDirty)
-                {
-                    return false;
-                }
-                _isValidatingIsDirty = true;
                 var _isDirty = false;
-                var notEquals = !Equals(Item);
                 if (NewQueue)
                 {
                     _isDirty = true;
                 }
                 else
                 {
+                    var notEquals = !Equals(Item);
                     if (notEquals)
                     {
                         _isDirty = true;
@@ -268,7 +263,6 @@ namespace Warewolf.Trigger
                 }
 
                 SetDisplayName(_isDirty);
-                _isValidatingIsDirty = false;
                 return _isDirty;
             }
         }
@@ -453,17 +447,6 @@ namespace Warewolf.Trigger
         private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
         {
             var queueNames = new List<INameValue>();
-
-            var list = _resourceRepository.FindAutocompleteOptions(_server, selectedQueueSource);
-
-#pragma warning disable CC0021 // Use nameof
-            foreach (var item in list["QueueNames"])
-#pragma warning restore CC0021 // Use nameof
-            {
-                var nameValue = new NameValue(item, item);
-                queueNames.Add(nameValue);
-            }
-
             return queueNames;
         }
 
@@ -477,6 +460,11 @@ namespace Warewolf.Trigger
                 optionViews.Add(optionView);
             }
             return optionViews;
+        }
+
+        public void SetItem(TriggerQueueView model)
+        {
+            Item = model;
         }
 
         void SetDisplayName(bool isDirty)
