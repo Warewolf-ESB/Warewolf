@@ -15,7 +15,7 @@ using IConnection = RabbitMQ.Client.IConnection;
 
 namespace Warewolf.Driver.RabbitMQ
 {
-    internal class RabbitConnection : IQueueConnection
+    public class RabbitConnection : IQueueConnection
     {
         readonly IConnection _connection;
 

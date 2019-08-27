@@ -9,6 +9,7 @@
 */
 
 using System;
+using Warewolf.Triggers;
 
 namespace Dev2.Common.Interfaces.Resources
 {
@@ -16,5 +17,6 @@ namespace Dev2.Common.Interfaces.Resources
     {
         Guid ResourceID { get; set; }
         string ResourceName { get; set; }
+        IQueueConnection NewConnection();
     }
 }
