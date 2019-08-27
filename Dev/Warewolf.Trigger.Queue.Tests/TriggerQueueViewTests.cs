@@ -13,8 +13,14 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.ConnectionHelpers;
+using Dev2.Core.Tests.Environments;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.ViewModels.DataList;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -30,6 +36,33 @@ namespace Warewolf.Trigger.Queue.Tests
     [TestClass]
     public class TriggerQueueViewTests
     {
+        [TestInitialize]
+        public void SetupForTest()
+        {
+            AppUsageStats.LocalHost = "http://localhost:3142";
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var lcl = new Mock<IServer>();
+            lcl.Setup(a => a.DisplayName).Returns("Localhost");
+            mockShellViewModel.Setup(x => x.LocalhostServer).Returns(lcl.Object);
+            mockShellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+
+            CustomContainer.Register(mockShellViewModel.Object);
+            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(connectControlSingleton.Object);
+            CustomContainer.Register(explorerTooltips.Object);
+
+            var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var serverRepo = new Mock<IServerRepository>();
+            serverRepo.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
+            CustomContainer.Register(serverRepo.Object);
+        }
+        TriggerQueueView CreateViewModel()
+        {
+            var mockServer = new Mock<IServer>();
+            return new TriggerQueueView(mockServer.Object);
+        }
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Pieter Terblanche")]
@@ -43,7 +76,7 @@ namespace Warewolf.Trigger.Queue.Tests
                 queueSource1.Object, queueSource2.Object
             };
 
-            var mockServer = new Mock<IServer>();
+            var mockServer = new Mock<IServer>();           
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
 
@@ -77,8 +110,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
-
+            var triggerQueueView = CreateViewModel();
             Assert.IsNotNull(triggerQueueView.DeadLetterQueueSources);
             Assert.IsNull(triggerQueueView.SelectedDeadLetterQueueSource);
 
@@ -144,7 +176,7 @@ namespace Warewolf.Trigger.Queue.Tests
             };
 
             Assert.IsNotNull(triggerQueueView.SelectedQueueSource);
-            Assert.AreEqual(queueSource1, triggerQueueView.SelectedQueueSource);
+            Assert.AreEqual(queueSource1.Object, triggerQueueView.SelectedQueueSource);
             Assert.IsNotNull(triggerQueueView.QueueNames);
             Assert.AreEqual(3, triggerQueueView.QueueNames.Count);
             Assert.AreEqual("value1", triggerQueueView.QueueNames[0].Value);
@@ -245,9 +277,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(TriggerQueueView))]
         public void TriggerQueueView_Equals_Other_IsNull_Expect_False()
         {
-            var mockServer = new Mock<IServer>();
-
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            var triggerQueueView = CreateViewModel();
             var equals = triggerQueueView.Equals(null);
             Assert.IsFalse(equals);
         }
@@ -400,8 +430,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [Owner("Pieter Terblanche")]
         public void TriggerQueueView_WorkflowName()
         {
-            var mockServer = new Mock<IServer>();
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            var triggerQueueView = CreateViewModel();
 
             Assert.IsNull(triggerQueueView.WorkflowName);
 
@@ -416,8 +445,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [Owner("Pieter Terblanche")]
         public void TriggerQueueView_Concurrency()
         {
-            var mockServer = new Mock<IServer>();
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            var triggerQueueView = CreateViewModel();
 
             Assert.AreEqual(0, triggerQueueView.Concurrency);
 
@@ -432,11 +460,10 @@ namespace Warewolf.Trigger.Queue.Tests
         [Owner("Pieter Terblanche")]
         public void TriggerQueueView_UserName()
         {
-            var mockServer = new Mock<IServer>();
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            var triggerQueueView = CreateViewModel();
 
             //------------Execute Test---------------------------
-            Assert.AreEqual("", triggerQueueView.UserName);
+            Assert.IsNull(triggerQueueView.UserName);
 
             triggerQueueView.UserName = "someAccountName";
             //------------Assert Results-------------------------
@@ -448,54 +475,70 @@ namespace Warewolf.Trigger.Queue.Tests
         [Owner("Pieter Terblanche")]
         public void TriggerQueueView_Password()
         {
-            var mockServer = new Mock<IServer>();
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            var triggerQueueView = CreateViewModel();
 
             //------------Execute Test---------------------------
-            Assert.AreEqual("", triggerQueueView.Password);
+            Assert.IsNull(triggerQueueView.Password);
             triggerQueueView.Password = "somePassword";
             //------------Assert Results-------------------------
             Assert.AreEqual("somePassword", triggerQueueView.Password);
         }
 
+        IContextualResourceModel CreateResourceModel(bool isConnected = true)
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(isConnected);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(isConnected);
+            moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(isConnected);
+            moqModel.Setup(model => model.ResourceName).Returns("My WF");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(moqModel.Object);
+            dataListViewModel.Add(new ScalarItemModel("Name", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.Add(new ScalarItemModel("Surname", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.WriteToResourceModel();
+            return moqModel.Object;
+        }
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Pieter Terblanche")]
-        public void TriggerQueueView_QueueEvents_Inputs()
+        public void TriggerQueueView_QueueEvents_GetInputsFromWorkflow_VerifyCommand()
         {
-            var mockServer = new Mock<IServer>();
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
+            var mockServer = new Mock<IServer>();           
+            var contextualResourceModel = CreateResourceModel();          
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(rr => rr.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel);         
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockInputs = new Mock<ICollection<IServiceInput>>();
 
-            var inputs = new ObservableCollection<IServiceInput>
+            var triggerQueueView = new TriggerQueueView(mockServer.Object)
             {
-                new ServiceInput("name1", "value1"),
-                new ServiceInput("name2", "value2")
+                TriggerId = Guid.NewGuid(),
+                ResourceId = contextualResourceModel.ID,
+                QueueSourceId = Guid.NewGuid(),
+                QueueName = "Queue",
+                WorkflowName = "Workflow"
             };
 
-            triggerQueueView.Inputs = inputs;
-
-            var inputsAsList = triggerQueueView.Inputs.ToList();
-
-            Assert.AreEqual(2, triggerQueueView.Inputs.Count);
-            Assert.AreEqual("name1", inputsAsList[0].Name);
-            Assert.AreEqual("value1", inputsAsList[0].Value);
-            Assert.AreEqual("name2", inputsAsList[1].Name);
-            Assert.AreEqual("value2", inputsAsList[1].Value);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(TriggerQueueView))]
-        [Owner("Pieter Terblanche")]
-        public void TriggerQueueView_QueueEvents_VerifyCommand()
-        {
-            var mockServer = new Mock<IServer>();
-
-            var triggerQueueView = new TriggerQueueView(mockServer.Object);
             Assert.IsNull(triggerQueueView.VerifyResults);
             Assert.IsFalse(triggerQueueView.IsVerifying);
             Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
 
+            triggerQueueView.VerifyResults = "<DataList><Name>Test</Name><Surname>test1</Surname></DataList>";
+            triggerQueueView.GetInputsFromWorkflow();
             triggerQueueView.VerifyCommand.Execute(null);
+
+            Assert.AreEqual(2, triggerQueueView.Inputs.Count);
+
+            var inputs = triggerQueueView.Inputs.ToList();
+            Assert.AreEqual("Name", inputs[0].Name);
+            Assert.AreEqual("Test", inputs[0].Value);
+
+            Assert.AreEqual("Surname", inputs[1].Name);
+            Assert.AreEqual("test1", inputs[1].Value);
 
             Assert.IsTrue(triggerQueueView.VerifyResultsAvailable);
             Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);

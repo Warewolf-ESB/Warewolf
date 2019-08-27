@@ -676,7 +676,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Queue Events.
+        ///   Looks up a localized string similar to Queues.
         /// </summary>
         public static string MenuDialogQueueEventsLabel {
             get {
@@ -1431,6 +1431,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TriggerQueueSaveEditedTestsMessage {
             get {
                 return ResourceManager.GetString("TriggerQueueSaveEditedTestsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed.
+        /// </summary>
+        public static string TriggerQueuesSaveErrorHeader {
+            get {
+                return ResourceManager.GetString("TriggerQueuesSaveErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed: Please select a Queue Source.
+        /// </summary>
+        public static string TriggerQueuesSaveQueueSourceNotSelected {
+            get {
+                return ResourceManager.GetString("TriggerQueuesSaveQueueSourceNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed: Please select a Workflow.
+        /// </summary>
+        public static string TriggerQueuesSaveWorkflowNotSelected {
+            get {
+                return ResourceManager.GetString("TriggerQueuesSaveWorkflowNotSelected", resourceCulture);
             }
         }
         

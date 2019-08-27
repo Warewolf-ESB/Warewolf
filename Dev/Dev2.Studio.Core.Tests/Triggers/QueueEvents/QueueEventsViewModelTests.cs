@@ -9,15 +9,15 @@
 */
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
-using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.Triggers;
@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows;
 using Warewolf.Options;
 using Warewolf.Trigger;
 
@@ -49,7 +50,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             var explorerTooltips = new Mock<IExplorerTooltips>();
-           
+
             CustomContainer.Register(shell.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
             CustomContainer.Register(connectControlSingleton.Object);
@@ -61,12 +62,68 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             CustomContainer.Register(serverRepo.Object);
         }
 
+        QueueEventsViewModel CreateViewModel()
+        {
+            var mockServer = SetupForTriggerQueueView(null);
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            return new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockAsyncWorker.Object, mockResourcePickerDialog.Object);
+        }
+
+        private static Mock<IServer> SetupForTriggerQueueView(Resource resource)
+        {
+            var mockServer = new Mock<IServer>();
+
+            List<IOption> expectedOptions = SetupOptionsView();
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            if (resource == null)
+            {
+                var queueSource = new Mock<IResource>();
+                mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource.Object)).Returns(expectedOptions);
+            }
+            else
+            {
+                mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, resource)).Returns(expectedOptions);
+            }
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+            return mockServer;
+        }
+
+        private static List<IOption> SetupOptionsView()
+        {
+            var expectedOptionBool = new OptionBool
+            {
+                Name = "bool",
+                Value = false
+            };
+            var expectedOptionInt = new OptionInt
+            {
+                Name = "int",
+                Value = 10
+            };
+            var expectedOptionAutocompletebox = new OptionAutocomplete
+            {
+                Name = "auto",
+                Value = "new text"
+            };
+            var expectedOptions = new List<IOption>
+            {
+                expectedOptionBool,
+                expectedOptionInt,
+                expectedOptionAutocompletebox
+            };
+            return expectedOptions;
+        }
+
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_Queues()
         {
-            var mockServer = new Mock<IServer>();
+            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNotNull(queueEventsViewModel.Queues);
@@ -91,15 +148,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             Assert.AreEqual(queue2, queueEventsViewModel.SelectedQueue);
         }
 
-        QueueEventsViewModel CreateViewModel()
-        {
-            var mockServer = new Mock<IServer>();
-            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
-            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            return new QueueEventsViewModel(mockServer.Object,mockExternalExecutor.Object,mockAsyncWorker.Object,mockResourcePickerDialog.Object);
-        }
-
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
@@ -118,8 +166,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents_Delete_ShouldDeleteSelectedItem()
         {
+            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
             var queueEventsViewModel = CreateViewModel();
-            var mockServer = new Mock<IServer>();
             var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
 
             queueEventsViewModel.Queues.Add(triggerQueueView);
@@ -192,7 +240,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         public void QueueEventsViewModel_ConnectionError_SetAndClearError_ValidErrorSetAndClear()
         {
             //------------Setup for test--------------------------
-            var mockServer = new Mock<IServer>();
+            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
             var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
             queueEventsViewModel.SelectedQueue = triggerQueueView;
@@ -206,6 +254,83 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
             Assert.AreEqual("", queueEventsViewModel.ConnectionError);
             Assert.IsFalse(queueEventsViewModel.HasConnectionError);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Save_Empty_QueueSource()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveQueueSourceNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.SelectedQueue = new TriggerQueueViewForTesting(mockServer.Object);
+
+            var isSaved = queueEventsViewModel.Save();
+            Assert.IsFalse(isSaved);
+
+            mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveQueueSourceNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Save_Empty_WorkflowName()
+        {
+            var resourceId = Guid.NewGuid();
+            var resource = new Resource
+            {
+                ResourceID = resourceId
+            };
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveWorkflowNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            Mock<IServer> mockServer = SetupForTriggerQueueView(resource);
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.SelectedQueue = new TriggerQueueViewForTesting(mockServer.Object)
+            {
+                SelectedQueueSource = resource
+            };
+            queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+
+            var isSaved = queueEventsViewModel.Save();
+            Assert.IsFalse(isSaved);
+
+            mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveWorkflowNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Save_Successful()
+        {
+            var resourceId = Guid.NewGuid();
+            var resource = new Resource
+            {
+                ResourceID = resourceId
+            };
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveWorkflowNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            Mock<IServer> mockServer = SetupForTriggerQueueView(resource);
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.SelectedQueue = new TriggerQueueViewForTesting(mockServer.Object)
+            {
+                SelectedQueueSource = resource
+            };
+            queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+            queueEventsViewModel.SelectedQueue.WorkflowName = "Workflow";
+
+            var isSaved = queueEventsViewModel.Save();
+            Assert.IsTrue(isSaved);
+            Assert.IsFalse(queueEventsViewModel.SelectedQueue.IsNewQueue);
         }
 
         private class TriggerQueueViewForTesting : TriggerQueueView
