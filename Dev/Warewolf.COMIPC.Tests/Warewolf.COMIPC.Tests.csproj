@@ -79,7 +79,8 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF EXIST "$(TargetDir)SQLite.Interop.dll" DEL /Q "$(TargetDir)SQLite.Interop.dll"</PostBuildEvent>
+    <PostBuildEvent>IF EXIST "$(TargetDir)SQLite.Interop.dll" DEL /Q "$(TargetDir)SQLite.Interop.dll"
+IF EXIST "%25userprofile%25\.nuget\packages\mstest.testadapter\1.4.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" COPY /Y "%25userprofile%25\.nuget\packages\mstest.testadapter\1.4.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" "$(TargetDir)Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
