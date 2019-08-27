@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,20 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Resources;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
