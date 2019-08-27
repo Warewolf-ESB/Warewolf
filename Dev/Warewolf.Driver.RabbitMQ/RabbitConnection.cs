@@ -76,5 +76,12 @@ namespace Warewolf.Driver.RabbitMQ
         {
             Dispose(true);
         }
+
+        public void DeleteQueue(IQueueConfig config)
+        {
+            var rabbitConfig = config as RabbitConfig;
+            var channel = _connection.CreateModel();
+            channel.QueueDelete(rabbitConfig.QueueName);
+        }
     }
 }

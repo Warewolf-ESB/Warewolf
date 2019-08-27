@@ -442,7 +442,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Queue Events.
+        ///   Looks up a localized string similar to Queues.
         /// </summary>
         public static string QueueEventsHeader {
             get {
