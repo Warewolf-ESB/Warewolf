@@ -106,7 +106,6 @@ namespace Dev2.Server.Tests
         public void ServerLifecycleManager_OpenCOMStream_Fails()
         {
             //------------------------Arrange------------------------
-            var mockWriter = new Mock<IWriter>();
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
 
@@ -134,7 +133,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
             var mockWriter = new Mock<IWriter>();
-            var mockPauseHelper = new Mock<IPauseHelper>();
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
@@ -146,7 +144,7 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             //------------------------Act----------------------------
@@ -159,14 +157,15 @@ namespace Dev2.Server.Tests
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
                 WebServerConfiguration = mockWebServerConfiguration.Object,
                 Writer = mockWriter.Object,
-                PauseHelper = mockPauseHelper.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
                 serverLifeCycleManager.Run(items).Wait();
+                serverLifeCycleManager.Stop(false, 0);
             }
+
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
@@ -174,7 +173,6 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Press <ENTER> to terminate service and/or web server if started"), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockSerLifeCycleWorker.Verify();
         }
@@ -192,7 +190,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
             var mockWriter = new Mock<IWriter>();
-            var mockPauseHelper = new Mock<IPauseHelper>();
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
@@ -205,7 +202,7 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             //------------------------Act----------------------------
@@ -218,14 +215,14 @@ namespace Dev2.Server.Tests
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
                 WebServerConfiguration = mockWebServerConfiguration.Object,
                 Writer = mockWriter.Object,
-                PauseHelper = mockPauseHelper.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
                 QueueProcessMonitor = mockQueueProcessMonitor.Object,
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
-                serverLifeCycleManager.Run(items);
+                serverLifeCycleManager.Run(items).Wait();
+                serverLifeCycleManager.Stop(false, 0);
             }
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
@@ -234,7 +231,6 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Press <ENTER> to terminate service and/or web server if started"), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
             mockQueueProcessMonitor.Verify(o => o.Start(), Times.Once);
@@ -255,7 +251,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
             var mockWriter = new Mock<IWriter>();
-            var mockPauseHelper = new Mock<IPauseHelper>();
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
@@ -267,7 +262,7 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             //------------------------Act----------------------------
@@ -280,7 +275,6 @@ namespace Dev2.Server.Tests
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
                 WebServerConfiguration = mockWebServerConfiguration.Object,
                 Writer = mockWriter.Object,
-                PauseHelper = mockPauseHelper.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
             };
@@ -295,8 +289,6 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Press <ENTER> to terminate service and/or web server if started"), Times.Once);
-            mockWriter.Verify(o => o.Write("Failed to start Server"), Times.Once);
             mockSerLifeCycleWorker.Verify();
         }
 
@@ -313,7 +305,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
             var mockWriter = new Mock<IWriter>();
-            var mockPauseHelper = new Mock<IPauseHelper>();
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
@@ -325,7 +316,7 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             //------------------------Act----------------------------
@@ -338,7 +329,6 @@ namespace Dev2.Server.Tests
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
                 WebServerConfiguration = mockWebServerConfiguration.Object,
                 Writer = mockWriter.Object,
-                PauseHelper = mockPauseHelper.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
             };

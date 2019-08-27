@@ -18,5 +18,6 @@ namespace Warewolf.Triggers
 
         IPublisher NewPublisher(IQueueConfig config);
         void StartConsuming(IQueueConfig config, IConsumer consumer);
+        void DeleteQueue(IQueueConfig config);
     }
 }

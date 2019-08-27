@@ -54,6 +54,7 @@ namespace Dev2.Runtime.Interfaces
         List<IResource> GetResources(Guid workspaceID);
         IEnumerable GetModels(Guid workspaceID, enSourceType sourceType);
         T[] FindByType<T>();
+        object[] FindByType(string typeName);
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID) where TServiceType : DynamicServiceObjectBase;
         ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; }
         ConcurrentDictionary<Guid, object> WorkspaceLocks { get; }

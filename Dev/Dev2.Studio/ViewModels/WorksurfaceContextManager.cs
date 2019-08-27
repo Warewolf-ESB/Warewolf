@@ -130,8 +130,8 @@ namespace Dev2.Studio.ViewModels
         void TryShowDependencies(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
         void AddSchedulerWorkSurface();
-        TriggersViewModel AddTasksWorkSurface();
-        void AddEventsWorkSurface();
+        TriggersViewModel AddTriggersWorkSurface();
+        void AddQueuesWorkSurface();
         void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
         void TryCreateNewQueueEventWorkSurface(IContextualResourceModel resourceModel);
 
@@ -1201,16 +1201,16 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSchedulerWorkSurface()
         {
-            var vm = AddTasksWorkSurface();
+            var vm = AddTriggersWorkSurface();
             vm.IsSchedulerSelected = true;
         }
 
-        public void AddEventsWorkSurface()
+        public void AddQueuesWorkSurface()
         {
-            var vm = AddTasksWorkSurface();
+            var vm = AddTriggersWorkSurface();
             vm.IsEventsSelected = true;
         }
-        public TriggersViewModel AddTasksWorkSurface()
+        public TriggersViewModel AddTriggersWorkSurface()
         {
             if (_applicationTracker != null)
             {
@@ -1232,7 +1232,7 @@ namespace Dev2.Studio.ViewModels
             if (resourceModel != null)
             {
                 //TODO: Open Tasks QueueEvent Tab with workflow populated
-                AddTasksWorkSurface();
+                AddTriggersWorkSurface();
             }
         }
 
@@ -1439,14 +1439,9 @@ namespace Dev2.Studio.ViewModels
                     {
                         return CloseSettings(vm, true);
                     }
-                    //TODO: Remove
-                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
-                    {
-                        return RemoveScheduler(vm, true);
-                    }
                     if (vm.WorkSurfaceContext == WorkSurfaceContext.Triggers)
                     {
-                        return CloseTasks(vm, true);
+                        return CloseTriggers(vm, true);
                     }
                 }
                 if (vm is IStudioTab tab)
@@ -1464,20 +1459,7 @@ namespace Dev2.Studio.ViewModels
             return remove;
         }
 
-        static bool RemoveScheduler(IWorkSurfaceViewModel vm, bool remove)
-        {
-            if (vm is SchedulerViewModel schedulerViewModel)
-            {
-                remove = schedulerViewModel.DoDeactivate(true);
-                if (remove)
-                {
-                    schedulerViewModel.Dispose();
-                }
-            }
-            return remove;
-        }
-
-        static bool CloseTasks(IWorkSurfaceViewModel vm, bool remove)
+        static bool CloseTriggers(IWorkSurfaceViewModel vm, bool remove)
         {
             if (vm is TriggersViewModel tasksViewModel)
             {

@@ -1,5 +1,15 @@
 #pragma warning disable
-﻿using System;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -198,6 +208,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             public (Type Type, IResource[] Result) Find<T>(IResourceProvider resourceProvider)
             {
                 var type = typeof(T);
+                return FindAndCache(resourceProvider, type);
+            }
+            public (Type Type, IResource[] Result) Find(IResourceProvider resourceProvider, string typeName)
+            {
+                var type = Type.GetType(typeName);
+                return FindAndCache(resourceProvider, type);
+            }
+
+            private (Type Type, IResource[] Result) FindAndCache(IResourceProvider resourceProvider, Type type)
+            {
                 var matchingTypes = _resourceTypes.Where(o => type.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract).ToArray();
 
                 var matchingResources = resourceProvider.GetResources(GlobalConstants.ServerWorkspaceID)
@@ -207,20 +227,35 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 _cache[type.FullName] = result;
                 return result;
             }
-            public T[] FindByType<T>(IResourceLoadProvider resourceLoadProvider)
+
+            public T[] FindResourceByType<T>(IResourceLoadProvider resourceLoadProvider)
             {
                 return Find<T>(resourceLoadProvider).Result.Cast<T>().ToArray();
+            }
+            public object[] FindResourceByType(IResourceLoadProvider resourceLoadProvider, string typeName)
+            {
+                return Find(resourceLoadProvider, typeName).Result.ToArray();
             }
 
             private static Type[] GetAllResourceTypes()
             {
                 var iresourceType = typeof(IResource);
-                var resourceTypes = AppDomain.CurrentDomain.GetAssemblies()
-                                        .Where(o => o != null && !o.IsDynamic)
-                                        .SelectMany(o => o.ExportedTypes)
-                                        .Where(o => iresourceType.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract)
-                                        .ToArray();
-                return resourceTypes;
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                                        .Where(o => o != null && !o.IsDynamic);
+                var resourceTypes = new List<Type>();
+                foreach (var assembly in assemblies)
+                {
+                    try
+                    {
+                        var classTypes = assembly.ExportedTypes.Where(o => iresourceType.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract);
+                        resourceTypes.AddRange(classTypes);
+                    }
+                    catch
+                    {
+                        Dev2Logger.Warn("failed loading export types for library: " + assembly.GetName(), GlobalConstants.WarewolfWarn);
+                    }
+                }
+                return resourceTypes.ToArray();
             }
 
             private Type MapType(string legacyResourceType)
@@ -277,7 +312,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public T[] FindByType<T>()
         {
-            return _typeCache.FindByType<T>(this);
+            return _typeCache.FindResourceByType<T>(this);
+        }
+        public object[] FindByType(string typeName)
+        {
+            return _typeCache.FindResourceByType(this, typeName);
         }
 
         private Type[] GetQueueSourceTypes()
