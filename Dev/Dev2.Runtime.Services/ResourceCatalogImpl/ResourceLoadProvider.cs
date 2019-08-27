@@ -230,12 +230,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             private static Type[] GetAllResourceTypes()
             {
                 var iresourceType = typeof(IResource);
-                var resourceTypes = AppDomain.CurrentDomain.GetAssemblies()
-                                        .Where(o => o != null && !o.IsDynamic)
-                                        .SelectMany(o => o.ExportedTypes)
-                                        .Where(o => iresourceType.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract)
-                                        .ToArray();
-                return resourceTypes;
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                                        .Where(o => o != null && !o.IsDynamic);
+                var resourceTypes = new List<Type>();
+                foreach (var assembly in assemblies)
+                {
+                    try
+                    {
+                        var classTypes = assembly.ExportedTypes.Where(o => iresourceType.IsAssignableFrom(o) && o.IsClass && !o.IsAbstract);
+                        resourceTypes.AddRange(classTypes);
+                    }
+                    catch
+                    {
+                        Dev2Logger.Warn("failed loading export types for library: " + assembly.GetName(), GlobalConstants.WarewolfWarn);
+                    }
+                }
+                return resourceTypes.ToArray();
             }
 
             private Type MapType(string legacyResourceType)
