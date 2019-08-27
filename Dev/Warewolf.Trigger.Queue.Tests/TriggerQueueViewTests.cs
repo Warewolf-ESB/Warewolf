@@ -29,9 +29,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using Warewolf.Core;
 using Warewolf.Options;
 using Warewolf.UI;
 
