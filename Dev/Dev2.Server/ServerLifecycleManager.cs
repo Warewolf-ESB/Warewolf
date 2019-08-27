@@ -59,7 +59,6 @@ namespace Dev2
         public IResourceCatalogFactory ResourceCatalogFactory { get; set; }
         public IWebServerConfiguration WebServerConfiguration { get; set; }
         public IWriter Writer { get; set; }
-        public IPauseHelper PauseHelper { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IQueueProcessorMonitor QueueProcessMonitor { get; set; } = new EmptyQueueProcessorMonitor();
@@ -77,7 +76,6 @@ namespace Dev2
                 ResourceCatalogFactory = new ResourceCatalogFactory(),
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
-                PauseHelper = new PauseHelper(),
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
             };
@@ -127,7 +125,6 @@ namespace Dev2
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             
-            _pauseHelper = startupConfiguration.PauseHelper;
             _queueProcessMonitor = startupConfiguration.QueueProcessMonitor;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
@@ -208,10 +205,6 @@ namespace Dev2
 #if DEBUG
                     SetAsStarted();
 #endif
-                    if (InteractiveMode)
-                    {
-                        WaitForUserExit();
-                    }
                 }
                 catch (Exception e)
                 {
@@ -242,21 +235,6 @@ namespace Dev2
             }
 
             _writer.Write($"Exiting with exitcode {result}");
-        }
-
-        void WaitForUserExit()
-        {
-
-            _writer.Write("Press <ENTER> to terminate service and/or web server if started");
-            if (EnvironmentVariables.IsServerOnline)
-            {
-                _pauseHelper.Pause();
-            }
-            else
-            {
-                _writer.Write("Failed to start Server");
-            }
-            Stop(false, 0);
         }
 
         internal void CleanupServer()
