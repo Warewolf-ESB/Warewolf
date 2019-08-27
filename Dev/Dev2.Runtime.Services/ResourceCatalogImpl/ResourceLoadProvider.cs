@@ -212,7 +212,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             public (Type Type, IResource[] Result) Find(IResourceProvider resourceProvider, string typeName)
             {
-                var type = Type.GetType(typeName);
+                var type = System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).First(x => x.FullName == typeName);
                 return FindAndCache(resourceProvider, type);
             }
 
@@ -255,7 +255,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         Dev2Logger.Warn("failed loading export types for library: " + assembly.GetName(), GlobalConstants.WarewolfWarn);
                     }
                 }
-                return resourceTypes.ToArray();
+                return resourceTypes.Where(o => o != null).ToArray();
             }
 
             private Type MapType(string legacyResourceType)
