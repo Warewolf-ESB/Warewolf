@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Text;
+using Warewolf.Core;
 using Warewolf.Web;
 
 namespace Warewolf.Common.Tests
@@ -33,12 +34,60 @@ namespace Warewolf.Common.Tests
 
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, new List<IServiceInput>());//"testValueKey");
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, new List<IServiceInput>());
             //---------------------------------Act------------------------------------
             WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("this is a test message"));
 
             //---------------------------------Assert---------------------------------
             mockHttpClientFactory.Verify(o => o.New(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(WarewolfWebRequestForwarder))]
+        public void WarewolfWebRequestForwarder_Consume_Should_CallPostAsync()
+        {
+            //---------------------------------Arrange--------------------------------
+            var mockHttpClient = new Mock<IHttpClient>();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
+
+            var testUrl = "http://warewolf.io:0420/test/url";
+
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, new List<IServiceInput>());
+            //---------------------------------Act------------------------------------
+            WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("this is a test message"));
+
+            //---------------------------------Assert---------------------------------
+            mockHttpClient.Verify(o => o.PostAsync(It.IsAny<string>(),It.IsAny<string>()), Times.Once);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(WarewolfWebRequestForwarder))]
+        public void WarewolfWebRequestForwarder_Consume_GivenMappableInputsAndData_ShouldCreateCorrectPostBody()
+        {
+            //---------------------------------Arrange--------------------------------
+            var mockHttpClient = new Mock<IHttpClient>();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            var postBody = "";
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; });
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
+
+            var testUrl = "http://warewolf.io:0420/test/url";
+            var inputs = new List<IServiceInput>
+            {
+                new ServiceInput("Name","FirstName")
+            };
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, inputs);
+            //---------------------------------Act------------------------------------
+            WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("<FirstName>My Name</FirstName>"));
+
+            //---------------------------------Assert---------------------------------
+            mockHttpClient.Verify(o => o.PostAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
     }
 }
