@@ -12,14 +12,18 @@ using Dev2;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -68,13 +72,16 @@ namespace Warewolf.Trigger.Queue.Tests
                 queueSource1.Object, queueSource2.Object
             };
 
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.GetTriggerQueueHistory(Guid.NewGuid())).Returns(new List<IExecutionHistory>());
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
-            return new TriggerQueueView(mockServer.Object);
+            //new SynchronousAsyncWorker()
+            return new TriggerQueueView(mockServer.Object, new SynchronousAsyncWorker());
         }
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
@@ -495,6 +502,49 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsFalse(triggerQueueView.IsVerifying);
             Assert.IsTrue(triggerQueueView.VerifyPassed);
             Assert.IsFalse(triggerQueueView.VerifyFailed);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_History_IsHistoryExpanded_False()
+        {
+            var triggerQueueView = CreateViewModel();
+
+            Assert.IsFalse(triggerQueueView.IsHistoryExpanded);
+            Assert.AreEqual(0, triggerQueueView.History.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_History_IsHistoryExpanded_True()
+        {
+            var resourceId = Guid.NewGuid();
+
+            var mockExecutionInfo = new Mock<IExecutionInfo>();
+
+            var history = new List<IExecutionHistory>
+            {
+                new ExecutionHistory("output", mockExecutionInfo.Object, "username")
+            };
+
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId)).Returns(history);
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var triggerQueueView = new TriggerQueueView(mockServer.Object, new SynchronousAsyncWorker())
+            {
+                ResourceId = resourceId,
+                IsHistoryExpanded = true
+            };
+
+            Assert.IsNotNull(triggerQueueView.History);
+            Assert.AreEqual(1, triggerQueueView.History.Count);
+            Assert.IsFalse(triggerQueueView.IsProgressBarVisible);
+            mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(2));
         }
     }
 
