@@ -224,7 +224,7 @@
                 </DockPanel>
             </Button>
 
-            <!--  TASK  -->
+            <!--  TRIGGERS  -->
             <Button x:Name="MenuTaskButton"
                     Grid.Row="8"
                     Grid.Column="1"
@@ -262,7 +262,7 @@
                 <Popup Width="Auto" x:Name="TasksPopup" Placement="Right" >
                     <ItemsControl Foreground="White">
                         <Button x:Name="MenuSchedulerButton"
-                                Width="{Binding ElementName=QueueEventsDockPanel, Path=ActualWidth}"
+                                Width="Auto"
                                 HorizontalAlignment="Left"
                                 PreviewMouseMove="MenuTaskButton_PreviewMouseMove"
                                 MouseLeave="MenuTaskButton_MouseLeave"
@@ -270,8 +270,9 @@
                                 Command="{Binding OpenSchedulerCommand}"
                                 Style="{StaticResource SideMenuButtonStyle}"
                                 ToolTip="{x:Static languages:Tooltips.MenuSchedulerToolTip}">
-                            <DockPanel Width="{Binding ElementName=QueueEventsDockPanel, Path=ActualWidth}"
+                            <DockPanel Width="Auto"
                                        Height="35"
+                                       x:Name="SchedulerDockPanel"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Stretch"
                                        Background="Transparent">
@@ -293,7 +294,7 @@
                             </i:Interaction.Behaviors>
                         </Button>
                         <Button x:Name="MenuQueueEventsButton"
-                                Width="Auto"
+                                Width="{Binding ElementName=MenuSchedulerButton, Path=ActualWidth}"
                                 PreviewMouseMove="MenuTaskButton_PreviewMouseMove"
                                 MouseLeave="MenuTaskButton_MouseLeave"
                                 HorizontalAlignment="Left"
@@ -301,7 +302,7 @@
                                 Command="{Binding OpenQueueEventsCommand}"
                                 Style="{StaticResource SideMenuButtonStyle}"
                                 ToolTip="{x:Static languages:Tooltips.MenuQueueEventsToolTip}">
-                            <DockPanel Width="Auto"
+                            <DockPanel Width="{Binding ElementName=MenuSchedulerButton, Path=ActualWidth}"
                                        Height="35"
                                        x:Name="QueueEventsDockPanel"
                                        HorizontalAlignment="Left"

@@ -172,6 +172,7 @@ namespace Dev2.Triggers.QueueEvents
             };
 
             AddAndSelectQueue(queue);
+            IsDirty = SelectedQueue.IsDirty;
         }
 
         int GetNewQueueNumber(string name)
@@ -215,6 +216,7 @@ namespace Dev2.Triggers.QueueEvents
         private void DeleteQueueEvent()
         {
             Queues.Remove(SelectedQueue);
+            IsDirty = false;
         }
 
         public ICommand AddWorkflowCommand { get; private set; }
@@ -231,22 +233,44 @@ namespace Dev2.Triggers.QueueEvents
 
         public bool Save()
         {
-            ITriggerQueue triggerQueue = new TriggerQueue
+            try
             {
-                QueueSourceId = SelectedQueue.QueueSourceId,
-                QueueName = SelectedQueue.QueueName,
-                WorkflowName = SelectedQueue.WorkflowName,
-                Concurrency = SelectedQueue.Concurrency,
-                UserName = SelectedQueue.UserName,
-                Password = SelectedQueue.Password,
-                QueueSinkId = SelectedQueue.QueueSinkId,
-                DeadLetterQueue = SelectedQueue.DeadLetterQueue,
-                Inputs = SelectedQueue.Inputs
-            };
+                if (SelectedQueue.QueueSourceId == Guid.Empty)
+                {
+                    PopupController.Show(Core.TriggerQueuesSaveQueueSourceNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                    return false;
+                }
+                if (string.IsNullOrEmpty(SelectedQueue.WorkflowName))
+                {
+                    PopupController.Show(Core.TriggerQueuesSaveWorkflowNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                    return false;
+                }
 
-            TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
+                ITriggerQueue triggerQueue = new TriggerQueue
+                {
+                    QueueSourceId = SelectedQueue.QueueSourceId,
+                    QueueName = SelectedQueue.QueueName,
+                    WorkflowName = SelectedQueue.WorkflowName,
+                    Concurrency = SelectedQueue.Concurrency,
+                    UserName = SelectedQueue.UserName,
+                    Password = SelectedQueue.Password,
+                    QueueSinkId = SelectedQueue.QueueSinkId,
+                    DeadLetterQueue = SelectedQueue.DeadLetterQueue,
+                    Inputs = SelectedQueue.Inputs
+                };
 
-            return true;
+                TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
+
+                SelectedQueue.IsNewQueue = false;
+                IsDirty = SelectedQueue.IsDirty;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PopupController.Show("Save failed: " + ex.Message, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                return false;
+            }
         }
 
         public TabItem ActiveItem
@@ -388,42 +412,6 @@ namespace Dev2.Triggers.QueueEvents
             return toggle;
         }
 
-        public new bool IsDirty
-        {
-            get
-            {
-                try
-                {
-                    if (SelectedQueue == null)
-                    {
-                        return false;
-                    }
-                    var dirty = !SelectedQueue.Equals(Item);
-                    //SelectedQueue.IsDirty = dirty;
-                    return dirty;
-                }
-                catch (Exception ex)
-                {
-                    if (!_errorShown)
-                    {
-                        //TODO: Not sure if this is required
-                        // _popupController.ShowCorruptTaskResult(ex.Message);
-                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                        _errorShown = true;
-                    }
-                }
-                return false;
-            }
-            set
-            {
-                if (value.Equals(_isDirty))
-                {
-                    return;
-                }
-                _isDirty = value;
-                OnPropertyChanged(nameof(IsDirty));
-            }
-        }
         public IServer Server { private get; set; }
         public IList<ITriggerQueue> ExecutionHistory => QueueResourceModel != null ? QueueResourceModel.QueueResources : new List<ITriggerQueue>();
 

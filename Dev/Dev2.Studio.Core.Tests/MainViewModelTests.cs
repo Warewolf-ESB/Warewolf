@@ -2851,10 +2851,10 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(canExecute);
 
             var mockWM = new Mock<IWorksurfaceContextManager>();
-            mockWM.Setup(manager => manager.AddTasksWorkSurface()).Verifiable();
+            mockWM.Setup(manager => manager.AddTriggersWorkSurface()).Verifiable();
             _shellViewModel.WorksurfaceContextManager = mockWM.Object;
             _shellViewModel.TasksCommand.Execute(null);
-            mockWM.Verify(manager => manager.AddTasksWorkSurface());
+            mockWM.Verify(manager => manager.AddTriggersWorkSurface());
         }
 
         [TestMethod]
@@ -2880,10 +2880,10 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(canExecute);
 
             var mockWM = new Mock<IWorksurfaceContextManager>();
-            mockWM.Setup(manager => manager.AddEventsWorkSurface()).Verifiable();
+            mockWM.Setup(manager => manager.AddQueuesWorkSurface()).Verifiable();
             _shellViewModel.WorksurfaceContextManager = mockWM.Object;
             _shellViewModel.QueueEventsCommand.Execute(null);
-            mockWM.Verify(manager => manager.AddEventsWorkSurface());
+            mockWM.Verify(manager => manager.AddQueuesWorkSurface());
         }
 
 

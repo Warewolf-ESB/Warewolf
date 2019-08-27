@@ -202,7 +202,7 @@
     <value>Scheduler</value>
   </data>
   <data name="MenuDialogQueueEventsLabel" xml:space="preserve">
-    <value>Queue Events</value>
+    <value>Queues</value>
   </data>
   <data name="MenuDialogUnLockLabel" xml:space="preserve">
     <value>Unlock Menu</value>
@@ -484,6 +484,15 @@ The window will be reloaded when you click OK.</value>
   </data>
   <data name="QueueEventsLoginErrorMessage" xml:space="preserve">
     <value>Error while saving: Logon failure: unknown user name or bad password</value>
+  </data>
+  <data name="TriggerQueuesSaveErrorHeader" xml:space="preserve">
+    <value>Save failed</value>
+  </data>
+  <data name="TriggerQueuesSaveQueueSourceNotSelected" xml:space="preserve">
+    <value>Save failed: Please select a Queue Source</value>
+  </data>
+  <data name="TriggerQueuesSaveWorkflowNotSelected" xml:space="preserve">
+    <value>Save failed: Please select a Workflow</value>
   </data>
   <data name="SchedulerDuplicateNameErrorMessage" xml:space="preserve">
     <value>There is already a task with the same name</value>
