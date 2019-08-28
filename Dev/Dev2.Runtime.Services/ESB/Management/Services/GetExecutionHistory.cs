@@ -10,16 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Queue;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Auditing;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
@@ -81,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
                 string queueName = null;
-                values.TryGetValue("QueueName", out StringBuilder tmp);
+                values.TryGetValue("resourceID", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     queueName = tmp.ToString();

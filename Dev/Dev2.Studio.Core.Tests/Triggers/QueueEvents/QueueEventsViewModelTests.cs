@@ -13,13 +13,11 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Dev2.Threading;
 using Dev2.Triggers;
 using Dev2.Triggers.QueueEvents;
 using Dev2.Util;
@@ -66,9 +64,9 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         {
             var mockServer = SetupForTriggerQueueView(null);
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            
             var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            return new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockAsyncWorker.Object, mockResourcePickerDialog.Object);
+            return new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockResourcePickerDialog.Object);
         }
 
         private static Mock<IServer> SetupForTriggerQueueView(Resource resource)
@@ -227,7 +225,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
             mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new SynchronousAsyncWorker(),new Mock<IResourcePickerDialog>().Object);
+            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new Mock<IResourcePickerDialog>().Object);
 
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
