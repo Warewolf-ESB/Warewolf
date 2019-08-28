@@ -28,9 +28,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Xml;
 using Warewolf.Core;
 using Warewolf.UI;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Warewolf.Trigger
 {
@@ -404,58 +405,64 @@ namespace Warewolf.Trigger
 
         public ICommand AddWorkflowCommand { get; private set; }
         public ICommand VerifyCommand { get; private set; }
-      
+
         public void ShowInvalidDataPopupMessage()
         {
             _popupController.Show(StringResources.DataInput_Error,
                                   StringResources.DataInput_Error_Title,
                                   MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
         }
-      
+
         public void ExecuteVerify()
         {
             _isVerifying = true;
             try
             {
-                _dataList = new DataListModel();
-                _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
-                var inputList = _dataListConversionUtils.GetInputs(_dataList);   
-                Inputs = inputList.Select(sca =>
+                if (_verifyResults != null)
                 {
-                    if (sca.IsObject)
+                    _dataList = new DataListModel();
+                    _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
+                    var inputList = _dataListConversionUtils.GetInputs(_dataList);
+                    Inputs = inputList.Select(sca =>
                     {
-                        var serviceTestInput = new ServiceInput(sca.DisplayValue, VerifyResults);
-                        return (IServiceInput)serviceTestInput;
-                    }
-                    else
-                    {
-                        var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
-                        return (IServiceInput)serviceTestInput;
-                    }
+                        if (sca.IsObject)
+                        {
+                            var value = "";
+                            if (JsonConvert.DeserializeObject(_verifyResults.Replace("@", "")) is JObject obj)
+                            {
+                                value = obj[sca.DisplayValue.Replace("@", "")].ToString();
+                            }
+                            var serviceTestInput = new ServiceInput(sca.DisplayValue, value);
+                            return (IServiceInput)serviceTestInput;
+                        }
+                        else
+                        {
+                            var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
+                            return (IServiceInput)serviceTestInput;
+                        }
 
-                }).ToList();
-                IsVerifyResultsEmptyRows = VerifyResults == null;
-                if (VerifyResults != null)
-                {
-                    VerifyResultsAvailable = true;
-                    IsVerifyResultsEmptyRows = VerifyResults == string.Empty;
-                    IsVerifying = false;
-                    VerifyPassed = true;
-                    VerifyFailed = false;
+                    }).ToList();
+                    _isVerifyResultsEmptyRows = VerifyResults == null;
+                    _verifyResultsAvailable = true;
+                    _isVerifyResultsEmptyRows = VerifyResults == string.Empty;
+                    _isVerifying = false;
+                    _verifyPassed = true;
+                    _verifyFailed = false;
                 }
                 else
                 {
-                    IsVerifying = false;
-                    VerifyPassed = false;
-                    VerifyFailed = true;
+                    _isVerifying = false;
+                    _verifyPassed = false;
+                    _verifyFailed = true;
                     ShowInvalidDataPopupMessage();
                 }
             }
-            catch (Exception)
-            {               
-                IsVerifying = false;
-                VerifyPassed = false;
-                VerifyFailed = true;
+            catch (Exception e)
+            {
+                var msg = e.Message;
+                _isVerifying = false;
+                _verifyPassed = false;
+                _verifyFailed = true;
                 ShowInvalidDataPopupMessage();
             }
         }
