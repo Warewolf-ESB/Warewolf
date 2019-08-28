@@ -241,6 +241,7 @@ namespace Dev2.Triggers.QueueEvents
                     Password = SelectedQueue.Password,
                     QueueSinkId = SelectedQueue.QueueSinkId,
                     DeadLetterQueue = SelectedQueue.DeadLetterQueue,
+                    MapEntireMessage = SelectedQueue.MapEntireMessage,
                     Inputs = SelectedQueue.Inputs
                 };
 
