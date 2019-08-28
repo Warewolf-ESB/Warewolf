@@ -77,6 +77,7 @@ namespace Dev2.Studio.Interfaces
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
         TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests);
         List<IExecutionHistory> GetTriggerQueueHistory(Guid resourceId);
+        List<ITriggerQueue> FetchTriggerQueues();
         ExecuteMessage SaveQueue(ITriggerQueue triggerQueue);
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
         List<IServiceTestModelTO> LoadAllTests();
