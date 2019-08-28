@@ -26,6 +26,8 @@ using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Options;
+using Dev2.Triggers;
+using Dev2.Common.Interfaces.Queue;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -74,6 +76,8 @@ namespace Dev2.Studio.Interfaces
         Task<ExecuteMessage> GetDependenciesXmlAsync(IContextualResourceModel resourceModel, bool getDependsOnMe);
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
         TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests);
+        List<IExecutionHistory> GetTriggerQueueHistory(Guid resourceId);
+        ExecuteMessage SaveQueue(ITriggerQueue triggerQueue);
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
         List<IServiceTestModelTO> LoadAllTests();
         void DeleteResourceTest(Guid resourceId, string testName);
