@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Triggers.Scheduler;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -78,6 +79,9 @@ namespace Dev2.Settings
             _parentWindow = parentWindow;
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
+
+            ToEnvironmentModel = toEnvironmentModel ?? (a => a.ToEnvironmentModel());
+            CurrentEnvironment = ToEnvironmentModel?.Invoke(server);
 
             LoadSettings();
             // ReSharper disable once VirtualMemberCallInContructor
@@ -345,6 +349,18 @@ namespace Dev2.Settings
 
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;
+
+        public Func<IServer, IServer> ToEnvironmentModel
+        {
+            get
+            {
+                return _toEnvironmentModel ?? (a => a.ToEnvironmentModel());
+            }
+            set
+            {
+                _toEnvironmentModel = value;
+            }
+        }
 
 
         void LoadSettings()

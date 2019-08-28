@@ -40,7 +40,6 @@ namespace Dev2.Triggers.QueueEvents
         private IServer _server;
         readonly IExternalProcessExecutor _externalProcessExecutor;
 
-        private string _pasteResponse;
         private ICommand _queueStatsCommand;
 
         private readonly EnvironmentViewModel _source;
@@ -115,16 +114,6 @@ namespace Dev2.Triggers.QueueEvents
             var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
             ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
             return res;
-        }
-
-        public string PasteResponse
-        {
-            get => _pasteResponse;
-            set
-            {
-                _pasteResponse = value;
-                OnPropertyChanged(nameof(PasteResponse));
-            }
         }
 
         public ICommand QueueStatsCommand => _queueStatsCommand ??
@@ -241,6 +230,7 @@ namespace Dev2.Triggers.QueueEvents
                     Password = SelectedQueue.Password,
                     QueueSinkId = SelectedQueue.QueueSinkId,
                     DeadLetterQueue = SelectedQueue.DeadLetterQueue,
+                    MapEntireMessage = SelectedQueue.MapEntireMessage,
                     Inputs = SelectedQueue.Inputs
                 };
 
