@@ -15,7 +15,7 @@ using IConnection = RabbitMQ.Client.IConnection;
 
 namespace Warewolf.Driver.RabbitMQ
 {
-    internal class RabbitConnection : IQueueConnection
+    public class RabbitConnection : IQueueConnection
     {
         readonly IConnection _connection;
 
@@ -48,7 +48,7 @@ namespace Warewolf.Driver.RabbitMQ
             };
 
             channel.BasicConsume(queue: rabbitConfig.QueueName,
-                                        autoAck: true,
+                                        noAck: false,
                                         consumer: eventConsumer);
         }
 

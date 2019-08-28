@@ -278,6 +278,27 @@ namespace Dev2.Tests.Runtime.Triggers
 
             Assert.AreEqual(2, triggerQueueEvents.Count);
         }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggerCatalog_LoadQueueTriggerFromFile()
+        {
+            var directoryWrapper = new Mock<IDirectory>().Object;
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText("somefile.bite")).Returns(expected);
+            var expectedTrigger = new TriggerQueue();
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(directoryWrapper, mockFileWrapper.Object, "some path", mockSerializer.Object);
+            var actual = catalog.LoadQueueTriggerFromFile("somefile.bite");
+
+            mockSerializer.Verify(o => o.Deserialize<ITriggerQueue>(decryptedTrigger), Times.Once);
+            Assert.AreEqual(expectedTrigger, actual);
+        }
 
         void SaveRandomTriggerQueue(ITriggersCatalog triggerCatalog)
         {

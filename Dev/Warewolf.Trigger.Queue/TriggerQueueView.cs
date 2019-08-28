@@ -13,15 +13,22 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
+using Dev2.Threading;
 using Dev2.Triggers;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using Warewolf.Core;
 using Warewolf.UI;
 
@@ -46,7 +53,6 @@ namespace Warewolf.Trigger
         private List<OptionView> _deadLetterOptions;
         private ICollection<IServiceInput> _inputs;
 
-        private bool _isDirty;
         private string _oldQueueName;
         private bool _enabled;
         private IErrorResultTO _errors;
@@ -54,8 +60,9 @@ namespace Warewolf.Trigger
         private bool _newQueue;
         private string _nameForDisplay;
         private TriggerQueueView _item;
-        private IResourceRepository _resourceRepository;
-        private IServer _server;
+        private readonly IResourceRepository _resourceRepository;
+        private readonly IServer _server;
+        readonly IAsyncWorker _asyncWorker;
 
         private bool _isVerifying;
         private bool _verifyFailed;
@@ -67,12 +74,26 @@ namespace Warewolf.Trigger
         private DataListModel _dataList;
         private DataListConversionUtils _dataListConversionUtils;
         private IContextualResourceModel _contextualResourceModel;
+        readonly IPopupController _popupController;
+        private bool _isHistoryExpanded;
+        private bool _isProgressBarVisible;
+        private IList<IExecutionHistory> _history;
 
         public TriggerQueueView(IServer server)
+            : this(server, new SynchronousAsyncWorker())
         {
+
+        }
+
+        public TriggerQueueView(IServer server, IAsyncWorker asyncWorker)
+        {
+            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
             _server = server is null ? activeServer : server;
             _resourceRepository = _server.ResourceRepository;
+            _asyncWorker = asyncWorker;
+            _popupController = CustomContainer.Get<IPopupController>();
+
             IsNewQueue = false;
             NewQueue = true;
             Options = new List<OptionView>();
@@ -102,7 +123,7 @@ namespace Warewolf.Trigger
                 _selectedQueueSource = value;
                 if (_selectedQueueSource != null)
                 {
-                    QueueNames = GetQueueNamesFromSource(_selectedQueueSource);
+                    QueueNames = GetQueueNamesFromSource();
                     Options = FindOptions(_selectedQueueSource);
                 }
 
@@ -190,7 +211,7 @@ namespace Warewolf.Trigger
                 _selectedDeadLetterQueueSource = value;
                 if (_selectedDeadLetterQueueSource != null)
                 {
-                    DeadLetterQueues = GetQueueNamesFromSource(_selectedDeadLetterQueueSource);
+                    DeadLetterQueues = GetQueueNamesFromSource();
                     DeadLetterOptions = FindOptions(_selectedDeadLetterQueueSource);
                 }
 
@@ -383,7 +404,14 @@ namespace Warewolf.Trigger
 
         public ICommand AddWorkflowCommand { get; private set; }
         public ICommand VerifyCommand { get; private set; }
-
+      
+        public void ShowInvalidDataPopupMessage()
+        {
+            _popupController.Show(StringResources.DataInput_Error,
+                                  StringResources.DataInput_Error_Title,
+                                  MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+        }
+      
         public void ExecuteVerify()
         {
             _isVerifying = true;
@@ -391,11 +419,19 @@ namespace Warewolf.Trigger
             {
                 _dataList = new DataListModel();
                 _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
-                var inputList = _dataListConversionUtils.GetInputs(_dataList);
+                var inputList = _dataListConversionUtils.GetInputs(_dataList);   
                 Inputs = inputList.Select(sca =>
                 {
-                    var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
-                    return (IServiceInput)serviceTestInput;
+                    if (sca.IsObject)
+                    {
+                        var serviceTestInput = new ServiceInput(sca.DisplayValue, VerifyResults);
+                        return (IServiceInput)serviceTestInput;
+                    }
+                    else
+                    {
+                        var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
+                        return (IServiceInput)serviceTestInput;
+                    }
 
                 }).ToList();
                 IsVerifyResultsEmptyRows = VerifyResults == null;
@@ -407,13 +443,20 @@ namespace Warewolf.Trigger
                     VerifyPassed = true;
                     VerifyFailed = false;
                 }
+                else
+                {
+                    IsVerifying = false;
+                    VerifyPassed = false;
+                    VerifyFailed = true;
+                    ShowInvalidDataPopupMessage();
+                }
             }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
+            catch (Exception)
+            {               
                 IsVerifying = false;
                 VerifyPassed = false;
                 VerifyFailed = true;
+                ShowInvalidDataPopupMessage();
             }
         }
         public void GetInputsFromWorkflow()
@@ -444,7 +487,7 @@ namespace Warewolf.Trigger
             }
         }
 
-        private IList<INameValue> GetQueueNamesFromSource(IResource selectedQueueSource)
+        private IList<INameValue> GetQueueNamesFromSource()
         {
             var queueNames = new List<INameValue>();
             return queueNames;
@@ -460,6 +503,54 @@ namespace Warewolf.Trigger
                 optionViews.Add(optionView);
             }
             return optionViews;
+        }
+
+        public bool IsHistoryExpanded
+        {
+            get => _isHistoryExpanded;
+            set
+            {
+                _isHistoryExpanded = value;
+                RaisePropertyChanged(nameof(IsHistoryExpanded));
+                RaisePropertyChanged(nameof(History));
+            }
+        }
+
+        public IList<IExecutionHistory> History
+        {
+            get
+            {
+                if (!IsHistoryExpanded)
+                {
+                    return new List<IExecutionHistory>();
+                }
+                if (_history == null && !IsNewQueue)
+                {
+                    _asyncWorker.Start(() =>
+                    {
+                        IsProgressBarVisible = true;
+                        _history = _resourceRepository.GetTriggerQueueHistory(ResourceId);
+                    }
+                   , () =>
+                   {
+                       IsProgressBarVisible = false;
+                       RaisePropertyChanged(nameof(History));
+                   });
+                }
+                var history = _history;
+                _history = null;
+                return history ?? new List<IExecutionHistory>();
+            }
+        }
+
+        public bool IsProgressBarVisible
+        {
+            get => _isProgressBarVisible;
+            set
+            {
+                _isProgressBarVisible = value;
+                RaisePropertyChanged(nameof(IsProgressBarVisible));
+            }
         }
 
         public void SetItem(TriggerQueueView model)

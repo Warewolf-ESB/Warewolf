@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>
             {
-                {"QueueName", "Queue1".ToStringBuilder()}
+                {"resourceID", resId.ToString().ToStringBuilder()}
             };
             var executeResults = getExecutionHistory.Execute(requestArgs, workspaceMock.Object);
             var jsonSerializer = new Dev2JsonSerializer();
