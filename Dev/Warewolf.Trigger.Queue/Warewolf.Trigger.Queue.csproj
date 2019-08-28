@@ -16,5 +16,8 @@
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
 
 </Project>

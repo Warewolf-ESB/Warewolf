@@ -14,14 +14,18 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Triggers;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using Warewolf.Core;
 using Warewolf.UI;
 
@@ -67,12 +71,15 @@ namespace Warewolf.Trigger
         private DataListModel _dataList;
         private DataListConversionUtils _dataListConversionUtils;
         private IContextualResourceModel _contextualResourceModel;
+        readonly IPopupController _popupController;
 
         public TriggerQueueView(IServer server)
         {
             var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
             _server = server is null ? activeServer : server;
             _resourceRepository = _server.ResourceRepository;
+            _popupController = CustomContainer.Get<IPopupController>();
+
             IsNewQueue = false;
             NewQueue = true;
             Options = new List<OptionView>();
@@ -383,7 +390,14 @@ namespace Warewolf.Trigger
 
         public ICommand AddWorkflowCommand { get; private set; }
         public ICommand VerifyCommand { get; private set; }
-
+      
+        public void ShowInvalidDataPopupMessage()
+        {
+            _popupController.Show(StringResources.DataInput_Error,
+                                  StringResources.DataInput_Error_Title,
+                                  MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+        }
+      
         public void ExecuteVerify()
         {
             _isVerifying = true;
@@ -391,11 +405,19 @@ namespace Warewolf.Trigger
             {
                 _dataList = new DataListModel();
                 _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
-                var inputList = _dataListConversionUtils.GetInputs(_dataList);
+                var inputList = _dataListConversionUtils.GetInputs(_dataList);   
                 Inputs = inputList.Select(sca =>
                 {
-                    var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
-                    return (IServiceInput)serviceTestInput;
+                    if (sca.IsObject)
+                    {
+                        var serviceTestInput = new ServiceInput(sca.DisplayValue, VerifyResults);
+                        return (IServiceInput)serviceTestInput;
+                    }
+                    else
+                    {
+                        var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
+                        return (IServiceInput)serviceTestInput;
+                    }
 
                 }).ToList();
                 IsVerifyResultsEmptyRows = VerifyResults == null;
@@ -407,13 +429,20 @@ namespace Warewolf.Trigger
                     VerifyPassed = true;
                     VerifyFailed = false;
                 }
+                else
+                {
+                    IsVerifying = false;
+                    VerifyPassed = false;
+                    VerifyFailed = true;
+                    ShowInvalidDataPopupMessage();
+                }
             }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
+            catch (Exception)
+            {               
                 IsVerifying = false;
                 VerifyPassed = false;
                 VerifyFailed = true;
+                ShowInvalidDataPopupMessage();
             }
         }
         public void GetInputsFromWorkflow()
