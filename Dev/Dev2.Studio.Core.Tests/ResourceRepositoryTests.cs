@@ -756,6 +756,32 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResourceRepository))]
+        public void ResourceModel_FetchTriggerQueues_ExecuteMessageIsSuccessful_NoException()
+        {
+            var mockEnvironmentModel = new Mock<IServer>();
+            var returnValue = new StringBuilder();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvironmentConnection.Setup(connection => connection.ServerEvents).Returns(new EventPublisher());
+            mockEnvironmentConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                returnValue = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            resourceRepository.FetchTriggerQueues();
+
+            var serializer = new Dev2JsonSerializer();
+            var returnMessage = serializer.Deserialize<EsbExecuteRequest>(returnValue.ToString());
+            Assert.IsNotNull(returnMessage);
+            Assert.AreEqual("FetchTriggerQueues", returnMessage.ServiceName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
         public void ResourceModel_GetTriggerQueueHistory_ExecuteMessageIsSuccessful_NoException()
         {
             var resourceId = Guid.NewGuid();
