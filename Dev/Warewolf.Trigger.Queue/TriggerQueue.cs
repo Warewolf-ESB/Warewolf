@@ -30,6 +30,7 @@ namespace Warewolf.Trigger
         public Guid QueueSinkId { get; set; }
         public string DeadLetterQueue { get; set; }
         public IOption[] DeadLetterOptions { get; set; }
+        public bool MapEntireMessage { get; set; }
         public ICollection<IServiceInput> Inputs { get; set; }
         public Guid ResourceId { get; set; }
 
@@ -57,6 +58,7 @@ namespace Warewolf.Trigger
             equals &= QueueSinkId == other.QueueSinkId;
             equals &= string.Equals(DeadLetterQueue, other.DeadLetterQueue);
             equals &= DeadLetterOptions == other.DeadLetterOptions;
+            equals &= MapEntireMessage == other.MapEntireMessage;
             equals &= Inputs == other.Inputs;
 
             return equals;
