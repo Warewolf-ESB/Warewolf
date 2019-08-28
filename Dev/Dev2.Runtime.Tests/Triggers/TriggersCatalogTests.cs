@@ -23,7 +23,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Warewolf.Security.Encryption;
-using Warewolf.Trigger;
+using Warewolf.Trigger.Queue;
 
 namespace Dev2.Tests.Runtime.Triggers
 {

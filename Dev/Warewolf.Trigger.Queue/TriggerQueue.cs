@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Triggers;
 using Warewolf.Options;
 
-namespace Warewolf.Trigger
+namespace Warewolf.Trigger.Queue
 {
     public class TriggerQueue : ITriggerQueue
     {
