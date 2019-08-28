@@ -28,6 +28,7 @@ namespace Dev2.Triggers
         Guid QueueSinkId { get; set; }
         string DeadLetterQueue { get; set; }
         IOption[] DeadLetterOptions { get; set; }
+        bool MapEntireMessage { get; set; }
         ICollection<IServiceInput> Inputs { get; set; }
         Guid ResourceId { get; set; }
     }
