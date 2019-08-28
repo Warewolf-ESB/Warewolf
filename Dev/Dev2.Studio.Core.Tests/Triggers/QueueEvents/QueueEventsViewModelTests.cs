@@ -29,7 +29,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using Warewolf.Options;
-using Warewolf.Trigger;
+using Warewolf.Trigger.Queue;
 
 namespace Dev2.Core.Tests.Triggers.QueueEvents
 {

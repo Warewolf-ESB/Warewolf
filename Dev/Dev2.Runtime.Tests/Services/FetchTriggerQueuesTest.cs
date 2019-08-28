@@ -19,7 +19,7 @@ using Dev2.Triggers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Trigger;
+using Warewolf.Trigger.Queue;
 
 namespace Dev2.Tests.Runtime.Services
 {
