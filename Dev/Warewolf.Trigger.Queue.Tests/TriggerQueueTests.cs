@@ -66,6 +66,7 @@ namespace Warewolf.Trigger.Queue.Tests
                 QueueSinkId = resourceId,
                 DeadLetterQueue = "DeadLetterQueue",
                 DeadLetterOptions = new IOption[] { mockOption.Object },
+                MapEntireMessage = true,
                 Inputs = mockInputs.Object,
                 ResourceId = resourceId
             };
