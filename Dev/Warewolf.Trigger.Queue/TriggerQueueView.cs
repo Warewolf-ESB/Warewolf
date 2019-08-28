@@ -125,6 +125,7 @@ namespace Warewolf.Trigger
                 _selectedQueueSource = value;
                 if (_selectedQueueSource != null)
                 {
+                    QueueSourceId = _selectedQueueSource.ResourceID;
                     QueueNames = GetQueueNamesFromSource();
                     Options = FindOptions(_selectedQueueSource);
                 }
@@ -213,6 +214,7 @@ namespace Warewolf.Trigger
                 _selectedDeadLetterQueueSource = value;
                 if (_selectedDeadLetterQueueSource != null)
                 {
+                    QueueSinkId = _selectedDeadLetterQueueSource.ResourceID;
                     DeadLetterQueues = GetQueueNamesFromSource();
                     DeadLetterOptions = FindOptions(_selectedDeadLetterQueueSource);
                 }
