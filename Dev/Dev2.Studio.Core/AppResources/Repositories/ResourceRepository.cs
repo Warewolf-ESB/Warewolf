@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -595,6 +596,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new NullReferenceException("Cannot save resource. Cannot get Communication Controller.");
             }
+        }
+
+        public List<IExecutionHistory> GetTriggerQueueHistory(Guid resourceId)
+        {
+            if (GetCommunicationController == null)
+            {
+                throw new NullReferenceException("Cannot get Queue history. Cannot get Communication Controller.");
+            }
+            var serializer = new Dev2JsonSerializer();
+            var comsController = GetCommunicationController.Invoke("GetExecutionHistoryService");
+            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(serializer.Serialize(resourceId.ToString()));
+            var result = comsController.ExecuteCommand<List<IExecutionHistory>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+            return result;
         }
 
         public ExecuteMessage SaveQueue(ITriggerQueue triggerQueue)

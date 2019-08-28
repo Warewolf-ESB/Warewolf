@@ -130,7 +130,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             public BasicGetResult GetSentMessage(string queueName)
             {
                 _channel = NewConnection().CreateModel();
-                var getResults = _channel.BasicGet(queue: queueName, autoAck: true);
+                var getResults = _channel.BasicGet(queue: queueName, noAck: false);
                 return getResults;
             }
 
