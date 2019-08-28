@@ -168,6 +168,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -421,38 +422,54 @@
 
                             <Separator Grid.Row="3" Margin="{StaticResource ControlBorderTop}" Style="{StaticResource Separator}" />
 
-                            <!-- Inputs -->
-                            <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}">
+                            <Grid Grid.Row="4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
+                                <CheckBox Grid.Column="0"
+                                          HorizontalAlignment="Left" 
+                                          Margin="0,0,0,0"
+                                          Content="Map Entire Message"
+                                          ToolTip="{x:Static languages:Tooltips.SchedulerStatusAltTooltipTrigger}"
+                                          IsChecked="{Binding MapEntireMessage}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerStatusAltHelpTextTrigger}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </CheckBox>
+
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <TextBlock Text="Queue Stats" />
+                                    <Button Content="..."
+                                            Margin="{StaticResource ControlBorderLeft}"
+                                            Style="{StaticResource ButtonStyle}"
+                                            ToolTip="Select to view Queue Stats"
+                                            Command="{Binding QueueStatsCommand}"
+                                            AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Inputs -->
+                            <Grid Grid.Row="5" 
+                                  Margin="{StaticResource ControlBorderTop}" 
+                                  IsEnabled="{Binding MapEntireMessage, Converter={StaticResource InverseBooleanConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Text="{x:Static languages:Core.InputsHeader}" Grid.Row="0" Grid.Column="0" FontWeight="Bold" />
 
-                                <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                                    <TextBlock Text="Queue Stats" />
-                                    <Button Content="..."
-                                        Margin="{StaticResource ControlBorderLeft}"
-                                        Style="{StaticResource ButtonStyle}"
-                                        ToolTip="Select to view Queue Stats"
-                                        Command="{Binding QueueStatsCommand}"
-                                        AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
-                                        <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
-                                    </Button>
-                                </StackPanel>
-
                                 <controls1:Dev2DataGrid x:Name="LargeDataGrid"
-                                                        Grid.Row="1"
-                                                        Grid.ColumnSpan="2"
                                                         ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource ActivityMappingDataGridStyle}"
                                                         Height="Auto"
@@ -525,7 +542,11 @@
                             </Grid>
 
                             <!-- Verify Data Button -->
-                            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                            <StackPanel Grid.Row="6" 
+                                        Orientation="Horizontal" 
+                                        HorizontalAlignment="Right" 
+                                        Margin="{StaticResource ControlBorderTop}"
+                                        IsEnabled="{Binding MapEntireMessage, Converter={StaticResource InverseBooleanConverter}}">
                                 <fa:ImageAwesome Width="14" 
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
@@ -561,7 +582,9 @@
                             </StackPanel>
 
                             <!-- Map Data Input -->
-                            <Grid Grid.Row="6" Margin="{StaticResource ControlBorderTop}">
+                            <Grid Grid.Row="7" 
+                                  Margin="{StaticResource ControlBorderTop}"
+                                  IsEnabled="{Binding MapEntireMessage, Converter={StaticResource InverseBooleanConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
@@ -599,7 +622,7 @@
                             </Grid>
 
                             <!-- History -->
-                            <Expander Grid.Row="7" 
+                            <Expander Grid.Row="8" 
                                       Grid.Column="0"
                                       Grid.ColumnSpan="2"
                                       Style="{StaticResource ServiceTestTestStepExpander}" 
