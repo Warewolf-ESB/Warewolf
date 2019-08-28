@@ -202,21 +202,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
-        public void QueueEventsViewModel_QueueEvents_PasteResponse()
-        {
-            var mockServer = new Mock<IServer>();
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-
-            Assert.IsNull(queueEventsViewModel.PasteResponse);
-
-            queueEventsViewModel.PasteResponse = "Paste Response";
-
-            Assert.AreEqual("Paste Response", queueEventsViewModel.PasteResponse);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(QueueEventsViewModel))]
-        [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents_ViewQueueStats()
         {
             Uri uri = new Uri("https://www.rabbitmq.com/blog/tag/statistics/");
