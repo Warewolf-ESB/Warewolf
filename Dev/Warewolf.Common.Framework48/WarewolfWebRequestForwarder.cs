@@ -16,6 +16,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Triggers;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
+using System.Linq;
 
 namespace Warewolf.Common
 {
@@ -23,6 +26,7 @@ namespace Warewolf.Common
     {
         readonly string _url;
         readonly ICollection<IServiceInput> _valueKeys;
+        private readonly MessageToInputsMapper _messageToInputsMapper;
         private readonly IHttpClientFactory _httpClientFactory;
 
         private WarewolfWebRequestForwarder()
@@ -34,41 +38,33 @@ namespace Warewolf.Common
             _httpClientFactory = httpClientFactory;
             _url = url;
             _valueKeys = valueKeys;
+            _messageToInputsMapper = new MessageToInputsMapper();
         }
 
         public async void Consume(byte[] body)
         {
-            var builder = BuildUri(_url, body); 
+            var postBody = BuildPostBody(body); 
 
-            using (await SendEventToWarewolf(builder.ToString()))
+            using (await SendEventToWarewolf(_url, postBody))
             {
                 // empty block
             }
         }
 
-        private UriBuilder BuildUri(string url, byte[] body)
+        private string BuildPostBody(byte[] body)
         {
-            var queryStr = BuildQueryString(Encoding.UTF8.GetString(body));
-
-            var builder = new UriBuilder(url)
-            {
-                Query = queryStr
-            };
-            return builder;
+            var returnedQueueMessage = Encoding.UTF8.GetString(body);
+            var inputs = _valueKeys.Select(v => (v.Name, v.Value)).ToList();
+            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), returnedQueueMessage.IsXml(),false);
+            return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData)
         {
             using (var client = _httpClientFactory.New(uri))
             {
-                return await client.GetAsync(uri);
+                return await client.PostAsync(uri,postData);
             }
-        }
-
-        private string BuildQueryString(string data)
-        {
-            var encodedData = WebUtility.UrlEncode(data);
-            return $"{_valueKeys}={encodedData}";
         }
     }
 }
