@@ -544,6 +544,20 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsFalse(triggerQueueView.IsProgressBarVisible);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(2));
         }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_MapEntireMessage()
+        {
+            var triggerQueueView = CreateViewModel();
+
+            Assert.IsTrue(triggerQueueView.MapEntireMessage);
+
+            triggerQueueView.MapEntireMessage = false;
+
+            Assert.IsFalse(triggerQueueView.MapEntireMessage);
+        }
     }
 
     public class OptionViewForTesting : OptionView
