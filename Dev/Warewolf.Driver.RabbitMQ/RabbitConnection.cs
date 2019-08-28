@@ -35,7 +35,7 @@ namespace Warewolf.Driver.RabbitMQ
         public void StartConsuming(IQueueConfig config, IConsumer consumer)
         {
             var rabbitConfig = config as RabbitConfig; 
-            IModel channel = CreateChannel(config as RabbitConfig);
+            var channel = CreateChannel(rabbitConfig);
 
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>

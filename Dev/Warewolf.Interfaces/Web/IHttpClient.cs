@@ -18,5 +18,6 @@ namespace Warewolf.Web
     public interface IHttpClient : IDisposable
     {
         Task<HttpResponseMessage> GetAsync(string url);
+        Task<HttpResponseMessage> PostAsync(string url,string postBody);
     }
 }
