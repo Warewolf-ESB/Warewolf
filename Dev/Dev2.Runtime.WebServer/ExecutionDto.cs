@@ -1,15 +1,5 @@
 #pragma warning disable
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
-using System;
+﻿using System;
 using System.Runtime;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -57,30 +47,37 @@ namespace Dev2.Runtime.WebServer
             var allErrors = dto.ErrorResultTO;
             bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
 
-            if (!wasInternalService)
+            if (true)//(dataObject.Environment.HasErrors())
             {
-                dataObject.DataListID = executionDlid;
-                dataObject.WorkspaceID = workspaceGuid;
-                dataObject.ServiceName = serviceName;
-                executePayload = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
+                if (!wasInternalService)
+                {
+                    dataObject.DataListID = executionDlid;
+                    dataObject.WorkspaceID = workspaceGuid;
+                    dataObject.ServiceName = serviceName;
+                    executePayload = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
+                }
+                else
+                {
+                    // internal service request we need to return data for it from the request object ;)
+
+                    executePayload = string.Empty;
+                    var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
+
+                    if (msg != null)
+                    {
+                        executePayload = msg.Message.ToString();
+                    }
+
+                    // out fail safe to return different types of data from services ;)
+                    if (string.IsNullOrEmpty(executePayload))
+                    {
+                        executePayload = esbExecuteRequest.ExecuteResult.ToString();
+                    }
+                }
             }
             else
             {
-                // internal service request we need to return data for it from the request object ;)
-
-                executePayload = string.Empty;
-                var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
-
-                if (msg != null)
-                {
-                    executePayload = msg.Message.ToString();
-                }
-
-                // out fail safe to return different types of data from services ;)
-                if (string.IsNullOrEmpty(executePayload))
-                {
-                    executePayload = esbExecuteRequest.ExecuteResult.ToString();
-                }
+                executePayload = SetupErrors(dataObject, allErrors);
             }
 
             if (dataObject.Environment.HasErrors())
@@ -148,6 +145,26 @@ namespace Dev2.Runtime.WebServer
             dto.ErrorResultTO.ClearErrors();
             GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             GC.Collect(3,GCCollectionMode.Forced,false);
+        }
+
+        static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
+        {
+            string executePayload;
+            if (dataObject.ReturnType == EmitionTypes.XML)
+            {
+                executePayload =
+                    "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
+                executePayload += allErrors.MakeDataListReady();
+                executePayload += "</FatalError>";
+            }
+            else
+            {
+                executePayload =
+                    "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
+                executePayload += allErrors.MakeDataListReady(false);
+                executePayload += "}";
+            }
+            return executePayload;
         }
 
     }
