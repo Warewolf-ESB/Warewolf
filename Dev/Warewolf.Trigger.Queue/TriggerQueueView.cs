@@ -60,6 +60,7 @@ namespace Warewolf.Trigger
         private readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
 
+        private bool _mapEntireMessage;
         private bool _isVerifying;
         private bool _verifyFailed;
         private bool _verifyPassed;
@@ -93,6 +94,7 @@ namespace Warewolf.Trigger
             DeadLetterOptions = new List<OptionView>();
             Inputs = new List<IServiceInput>();
             VerifyCommand = new DelegateCommand(ExecuteVerify);
+            MapEntireMessage = true;
         }
 
         public Guid TriggerId { get; set; }
@@ -332,6 +334,16 @@ namespace Warewolf.Trigger
             {
                 _nameForDisplay = value;
                 RaisePropertyChanged(nameof(NameForDisplay));
+            }
+        }
+
+        public bool MapEntireMessage
+        {
+            get => _mapEntireMessage;
+            set
+            {
+                _mapEntireMessage = value;
+                RaisePropertyChanged(nameof(MapEntireMessage));
             }
         }
 
