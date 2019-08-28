@@ -16,6 +16,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Triggers;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
+using System.Linq;
 
 namespace Warewolf.Common
 {
@@ -23,6 +26,7 @@ namespace Warewolf.Common
     {
         readonly string _url;
         readonly ICollection<IServiceInput> _valueKeys;
+        private readonly MessageToInputsMapper _messageToInputsMapper;
         private readonly IHttpClientFactory _httpClientFactory;
 
         private WarewolfWebRequestForwarder()
@@ -34,6 +38,7 @@ namespace Warewolf.Common
             _httpClientFactory = httpClientFactory;
             _url = url;
             _valueKeys = valueKeys;
+            _messageToInputsMapper = new MessageToInputsMapper();
         }
 
         public async void Consume(byte[] body)
@@ -49,7 +54,9 @@ namespace Warewolf.Common
         private string BuildPostBody(byte[] body)
         {
             var returnedQueueMessage = Encoding.UTF8.GetString(body);
-            return returnedQueueMessage;
+            var inputs = _valueKeys.Select(v => (v.Name, v.Value)).ToList();
+            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), returnedQueueMessage.IsXml(),false);
+            return mappedData;
         }
 
         private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData)
