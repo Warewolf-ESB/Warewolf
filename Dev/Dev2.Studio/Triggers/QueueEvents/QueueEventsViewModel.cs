@@ -28,7 +28,7 @@ using System.Windows;
 using System.Windows.Input;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
-using Warewolf.Trigger;
+using Warewolf.Trigger.Queue;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -75,8 +75,21 @@ namespace Dev2.Triggers.QueueEvents
             Errors = new ErrorResultTO();
             InitializeHelp();
             PopupController = CustomContainer.Get<IPopupController>();
-            Queues = new ObservableCollection<TriggerQueueView>();
+
+            PopulateQueues();
             AddDummyTriggerQueueView();
+        }
+
+        private void PopulateQueues()
+        {
+            Queues = new ObservableCollection<TriggerQueueView>();
+            var queues = _resourceRepository.FetchTriggerQueues();
+            foreach (var queue in queues)
+            {
+                var triggerQueueView = new TriggerQueueView(_server);
+                triggerQueueView.ToModel(queue);
+                Queues.Add(triggerQueueView);
+            }
         }
 
         private void AddDummyTriggerQueueView()
@@ -93,7 +106,6 @@ namespace Dev2.Triggers.QueueEvents
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
-                SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.GetInputsFromWorkflow();
             }
         }
@@ -222,6 +234,7 @@ namespace Dev2.Triggers.QueueEvents
 
                 ITriggerQueue triggerQueue = new TriggerQueue
                 {
+                    Name = SelectedQueue.TriggerQueueName,
                     QueueSourceId = SelectedQueue.QueueSourceId,
                     QueueName = SelectedQueue.QueueName,
                     WorkflowName = SelectedQueue.WorkflowName,
