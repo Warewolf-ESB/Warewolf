@@ -78,7 +78,7 @@ namespace Dev2.Studio.Interfaces
         TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests);
         List<IExecutionHistory> GetTriggerQueueHistory(Guid resourceId);
         List<ITriggerQueue> FetchTriggerQueues();
-        ExecuteMessage SaveQueue(ITriggerQueue triggerQueue);
+        Guid SaveQueue(ITriggerQueue triggerQueue);
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
         List<IServiceTestModelTO> LoadAllTests();
         void DeleteResourceTest(Guid resourceId, string testName);
@@ -87,6 +87,6 @@ namespace Dev2.Studio.Interfaces
 
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
         List<ISearchResult> Filter(ISearch searchValue);
-      
+        ExecuteMessage DeleteQueue(ITriggerQueue triggerQueue);
     }
 }

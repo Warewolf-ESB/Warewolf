@@ -621,9 +621,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public ExecuteMessage SaveQueue(ITriggerQueue triggerQueue)
+        public Guid SaveQueue(ITriggerQueue triggerQueue)
         {
-            var comsController = new CommunicationController { ServiceName = "SaveTriggerQueueService" };
+            if (GetCommunicationController == null)
+            {
+                throw new NullReferenceException("Cannot save Queue. Cannot get Communication Controller.");
+            }
+
+            var comsController = GetCommunicationController.Invoke("SaveTriggerQueueService");
+            var serializer = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("TriggerQueue", serializer.SerializeToBuilder(triggerQueue));
+            var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+            return Guid.Parse(result.Message.ToString());
+        }
+
+        public ExecuteMessage DeleteQueue(ITriggerQueue triggerQueue)
+        {
+            var comsController = new CommunicationController { ServiceName = "DeleteTriggerQueueService" };
             var serializer = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("TriggerQueue", serializer.SerializeToBuilder(triggerQueue));
             var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
