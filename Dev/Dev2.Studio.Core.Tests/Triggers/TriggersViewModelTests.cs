@@ -84,7 +84,7 @@ namespace Dev2.Core.Tests.Triggers
             Assert.AreEqual(mockServer.Object, triggersViewModel.Server);
             Assert.AreEqual(mockEnvironment.Object, triggersViewModel.CurrentEnvironment);
             Assert.AreEqual("Triggers - TestServer", triggersViewModel.DisplayName);
-            Assert.AreEqual("Queue Events", triggersViewModel.QueueEventsHeader);
+            Assert.AreEqual("Queues", triggersViewModel.QueueEventsHeader);
             Assert.AreEqual("Scheduler", triggersViewModel.SchedulerHeader);
         }
 
