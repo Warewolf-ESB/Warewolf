@@ -29,8 +29,8 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("GetResourceID")]
-        public void GetResourceID_ShouldReturnEmptyGuid()
+        [TestCategory(nameof(FetchTriggerQueues))]
+        public void FetchTriggerQueues_GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
             var fetchTriggerQueues = new FetchTriggerQueues();
@@ -43,8 +43,8 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("GetAuthorizationContextForService")]
-        public void GetAuthorizationContextForService_ShouldReturnContext()
+        [TestCategory(nameof(FetchTriggerQueues))]
+        public void FetchTriggerQueues_GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
             var fetchTriggerQueues = new FetchTriggerQueues();
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FetchTriggerQueues_HandlesType")]
+        [TestCategory(nameof(FetchTriggerQueues))]
         public void FetchTriggerQueues_HandlesType_ExpectName()
         {
             //------------Setup for test--------------------------
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FetchTriggerQueues_Execute")]
+        [TestCategory(nameof(FetchTriggerQueues))]
         public void FetchTriggerQueues_Execute_ExpectTestList()
         {
             //------------Setup for test--------------------------
