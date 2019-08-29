@@ -203,8 +203,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.NewCommand.Execute(null);
 
             Assert.AreEqual(3, queueEventsViewModel.Queues.Count);
-            Assert.AreEqual("TestTriggerQueueName *", queueEventsViewModel.Queues[0].NameForDisplay);
-            Assert.IsTrue(queueEventsViewModel.Queues[0].NewQueue);
+            Assert.AreEqual("TestTriggerQueueName", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[0].NewQueue);
 
             Assert.AreEqual("Queue 1 *", queueEventsViewModel.Queues[1].NameForDisplay);
             Assert.IsTrue(queueEventsViewModel.Queues[1].NewQueue);
@@ -229,8 +229,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.DeleteCommand.Execute(null);
             Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
-            Assert.AreEqual("TestTriggerQueueName *", queueEventsViewModel.Queues[0].NameForDisplay);
-            Assert.IsTrue(queueEventsViewModel.Queues[0].NewQueue);
+            Assert.AreEqual("TestTriggerQueueName", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[0].NewQueue);
         }
 
         [TestMethod]
