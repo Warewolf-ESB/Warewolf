@@ -201,8 +201,19 @@ namespace Dev2.Triggers.QueueEvents
 
         private void DeleteQueueEvent()
         {
-            Queues.Remove(SelectedQueue);
-            IsDirty = false;
+            try
+            {
+                var triggerQueue = AsTriggerQueueModel();
+                _resourceRepository.DeleteQueue(triggerQueue);
+                Queues.Remove(SelectedQueue);
+                SelectedQueue = null;
+                IsDirty = false;
+            }
+            catch (Exception ex)
+            {
+                PopupController.Show("Delete failed: " + ex.Message, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                IsDirty = true;
+            }
         }
 
         public ICommand AddWorkflowCommand { get; private set; }
@@ -232,23 +243,11 @@ namespace Dev2.Triggers.QueueEvents
                     return false;
                 }
 
-                ITriggerQueue triggerQueue = new TriggerQueue
-                {
-                    Name = SelectedQueue.TriggerQueueName,
-                    QueueSourceId = SelectedQueue.QueueSourceId,
-                    QueueName = SelectedQueue.QueueName,
-                    WorkflowName = SelectedQueue.WorkflowName,
-                    Concurrency = SelectedQueue.Concurrency,
-                    UserName = SelectedQueue.UserName,
-                    Password = SelectedQueue.Password,
-                    QueueSinkId = SelectedQueue.QueueSinkId,
-                    DeadLetterQueue = SelectedQueue.DeadLetterQueue,
-                    MapEntireMessage = SelectedQueue.MapEntireMessage,
-                    Inputs = SelectedQueue.Inputs
-                };
+                var triggerQueue = AsTriggerQueueModel();
 
-                _resourceRepository.SaveQueue(triggerQueue);
+                var triggerId = _resourceRepository.SaveQueue(triggerQueue);
 
+                SelectedQueue.TriggerId = triggerId;
                 SelectedQueue.IsNewQueue = false;
                 IsDirty = SelectedQueue.IsDirty;
 
@@ -260,7 +259,26 @@ namespace Dev2.Triggers.QueueEvents
                 return false;
             }
         }
-        
+
+        private ITriggerQueue AsTriggerQueueModel()
+        {
+            return new TriggerQueue
+            {
+                TriggerId = SelectedQueue.TriggerId,
+                Name = SelectedQueue.TriggerQueueName,
+                QueueSourceId = SelectedQueue.QueueSourceId,
+                QueueName = SelectedQueue.QueueName,
+                WorkflowName = SelectedQueue.WorkflowName,
+                Concurrency = SelectedQueue.Concurrency,
+                UserName = SelectedQueue.UserName,
+                Password = SelectedQueue.Password,
+                QueueSinkId = SelectedQueue.QueueSinkId,
+                DeadLetterQueue = SelectedQueue.DeadLetterQueue,
+                MapEntireMessage = SelectedQueue.MapEntireMessage,
+                Inputs = SelectedQueue.Inputs
+            };
+        }
+
         public TriggerQueueView SelectedQueue
         {
             get => _selectedQueue;
