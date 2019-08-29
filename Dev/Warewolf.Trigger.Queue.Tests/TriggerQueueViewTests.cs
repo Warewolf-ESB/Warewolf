@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Options;
 using Warewolf.UI;
+using System.Collections.ObjectModel;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
@@ -449,8 +451,8 @@ namespace Warewolf.Trigger.Queue.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("somePassword", triggerQueueView.Password);
         }
-
-        IContextualResourceModel CreateScalarItemModelResourceModel(bool isConnected = true)
+       
+        IContextualResourceModel CreateItemModelResourceModel(bool isConnected = true)
         {
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
@@ -461,10 +463,22 @@ namespace Warewolf.Trigger.Queue.Tests
             moqModel.Setup(model => model.Category).Returns("My WF");
             moqModel.Setup(model => model.Environment.IsLocalHost).Returns(isConnected);
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
+
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(moqModel.Object);
             dataListViewModel.Add(new ScalarItemModel("Name", enDev2ColumnArgumentDirection.Input));
             dataListViewModel.Add(new ScalarItemModel("Surname", enDev2ColumnArgumentDirection.Input));
+            
+            var recordSetItemModel = new RecordSetItemModel("Person", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+                new RecordSetFieldItemModel("Name", recordSetItemModel, enDev2ColumnArgumentDirection.Input),
+                new RecordSetFieldItemModel("Surname", recordSetItemModel, enDev2ColumnArgumentDirection.Input),
+            };
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+            DataListSingleton.SetDataList(dataListViewModel);
+
             dataListViewModel.WriteToResourceModel();
             return moqModel.Object;
         }
@@ -494,14 +508,14 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
-        public void TriggerQueueView_QueueEvents_Get_XML_InputsFromWorkflow_VerifyCommand_Success()
+        public void TriggerQueueView_QueueEvents_Get_Xml_Datalist_InputsFromWorkflow_VerifyCommand_Success()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
             CustomContainer.Register(popupController.Object);
             var mockServer = new Mock<IServer>();
             var mockErrorResultTO = new Mock<IErrorResultTO>();
-            var contextualResourceModel = CreateScalarItemModelResourceModel();
+            var contextualResourceModel = CreateItemModelResourceModel();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(rr => rr.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel);
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -520,11 +534,11 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsFalse(triggerQueueView.IsVerifying);
             Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
 
-            triggerQueueView.VerifyResults = "<DataList><Name>Test</Name><Surname>test1</Surname></DataList>";
+            triggerQueueView.VerifyResults = "<DataList><Name>Test</Name><Surname>test1</Surname><Person><Name>sdas</Name><Surname>asdsad</Surname></Person></DataList>";
             triggerQueueView.GetInputsFromWorkflow();
             triggerQueueView.VerifyCommand.Execute(null);
    
-            Assert.AreEqual(2, triggerQueueView.Inputs.Count);
+            Assert.AreEqual(4, triggerQueueView.Inputs.Count);
 
             var inputs = triggerQueueView.Inputs.ToList();
             Assert.AreEqual("Name", inputs[0].Name);
@@ -532,6 +546,12 @@ namespace Warewolf.Trigger.Queue.Tests
 
             Assert.AreEqual("Surname", inputs[1].Name);
             Assert.AreEqual("test1", inputs[1].Value);
+
+            Assert.AreEqual("Person(1).Name", inputs[2].Name);
+            Assert.AreEqual("sdas", inputs[2].Value);
+
+            Assert.AreEqual("Person(1).Surname", inputs[3].Name);
+            Assert.AreEqual("asdsad", inputs[3].Value);
 
             Assert.IsTrue(triggerQueueView.VerifyResultsAvailable);
             Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
@@ -545,7 +565,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
-        public void TriggerQueueView_QueueEvents_Get_XML_InputsFromWorkflow_VerifyCommand_InvalidData_ShowInvalidDataPopupMessage()
+        public void TriggerQueueView_QueueEvents_Get_Xml_DataList_InputsFromWorkflow_VerifyCommand_InvalidData_ShowInvalidDataPopupMessage()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
@@ -553,7 +573,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var mockServer = new Mock<IServer>();
             var mockErrorResultTO = new Mock<IErrorResultTO>();
-            var contextualResourceModel = CreateScalarItemModelResourceModel();
+            var contextualResourceModel = CreateItemModelResourceModel();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(rr => rr.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel);
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -570,7 +590,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsFalse(triggerQueueView.IsVerifying);
             Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
 
-            triggerQueueView.VerifyResults = "<DataList><Name>Test<Surname>test1<Surname></DataList>";
+            triggerQueueView.VerifyResults = "<DataList><Name>asdasd</Name>asdasdasd</Surname><bob><name>sdas</name><surname>asdsad</surname></bob><Person><Name></Name><Surname></Surname></Person></DataList>";
             triggerQueueView.GetInputsFromWorkflow();
             triggerQueueView.VerifyCommand.Execute(null);
 
@@ -585,13 +605,13 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
-        public void TriggerQueueView_QueueEvents_Get_Json_InputsFromWorkflow_VerifyCommand_Success()
+        public void TriggerQueueView_QueueEvents_Get_Json_Datalist_InputsFromWorkflow_VerifyCommand_Success()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
             CustomContainer.Register(popupController.Object);
             var mockServer = new Mock<IServer>();
-            var contextualResourceModel = CreateScalarItemModelResourceModel();
+            var contextualResourceModel = CreateItemModelResourceModel();
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(rr => rr.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel);
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -621,48 +641,6 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsFalse(triggerQueueView.IsVerifying);
             Assert.IsTrue(triggerQueueView.VerifyPassed);
             Assert.IsFalse(triggerQueueView.VerifyFailed);
-        }
-
-        [TestMethod]
-        [TestCategory(nameof(TriggerQueueView))]
-        [Owner("Candice Daniel")]
-        public void TriggerQueueView_QueueEvents_Get_Json_InputsFromWorkflow_VerifyCommand_InvalidData_ShowInvalidDataPopupMessage()
-        {
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
-            CustomContainer.Register(popupController.Object);
-
-            var mockServer = new Mock<IServer>();
-            var contextualResourceModel = CreateScalarItemModelResourceModel();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(rr => rr.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel);
-            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-
-            var triggerQueueView = new TriggerQueueView(mockServer.Object)
-            {
-                TriggerId = Guid.NewGuid(),
-                ResourceId = contextualResourceModel.ID,
-                QueueSourceId = Guid.NewGuid(),
-                QueueName = "Queue",
-                WorkflowName = "Workflow"
-            };
-
-            Assert.IsNull(triggerQueueView.VerifyResults);
-            Assert.IsFalse(triggerQueueView.IsVerifying);
-            Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
-
-            var json = "{\"Name\": \"test\",\"Surname: \"test\" }}}";
-            triggerQueueView.VerifyResults = json;
-            triggerQueueView.GetInputsFromWorkflow();
-            triggerQueueView.VerifyCommand.Execute(null);
-
-            popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
-
-            Assert.IsTrue(triggerQueueView.VerifyResultsAvailable);
-            Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
-            Assert.IsFalse(triggerQueueView.IsVerifying);
-            Assert.IsFalse(triggerQueueView.VerifyPassed);
-            Assert.IsTrue(triggerQueueView.VerifyFailed);
         }
 
         [TestMethod]
@@ -700,7 +678,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.AreEqual(1, triggerQueueView.Inputs.Count);
             var inputs = triggerQueueView.Inputs.ToList();
             Assert.AreEqual("@Person", inputs[0].Name);
-            Assert.AreEqual(json, inputs[0].Value);
+            Assert.AreEqual("{\r\n  \"Name\": \"test\",\r\n  \"Surname\": \"test\"\r\n}", inputs[0].Value);
 
             Assert.IsTrue(triggerQueueView.VerifyResultsAvailable);
             Assert.IsFalse(triggerQueueView.IsVerifyResultsEmptyRows);
