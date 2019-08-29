@@ -9,7 +9,6 @@
 */
 
 using Dev2.Triggers;
-using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Triggers
@@ -20,7 +19,6 @@ namespace Dev2.Common.Interfaces.Triggers
         void SaveTriggerQueue(ITriggerQueue triggerQueue);
         void Load();
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
-        void DeleteAllTriggerQueues();
         ITriggerQueue LoadQueueTriggerFromFile(string filename);
     }
 }
