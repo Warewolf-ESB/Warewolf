@@ -32,7 +32,7 @@ using System.Xml;
 using Warewolf.Core;
 using Warewolf.UI;
 
-namespace Warewolf.Trigger
+namespace Warewolf.Trigger.Queue
 {
     public class TriggerQueueView : BindableBase
     {
@@ -104,6 +104,30 @@ namespace Warewolf.Trigger
             MapEntireMessage = true;
         }
 
+        public void ToModel(ITriggerQueue queue)
+        {
+            TriggerQueueName = queue.Name;
+            SelectedQueueSource = QueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSourceId);
+            QueueName = queue.QueueName;
+            WorkflowName = queue.WorkflowName;
+            Concurrency = queue.Concurrency;
+            UserName = queue.UserName;
+            Password = queue.Password;
+            if (queue.Options != null)
+            {
+                Options = FindOptions(queue.Options.ToList());
+            }
+
+            SelectedDeadLetterQueueSource = DeadLetterQueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSinkId);
+            DeadLetterQueue = queue.DeadLetterQueue;
+            if (queue.DeadLetterOptions != null)
+            {
+                DeadLetterOptions = FindOptions(queue.DeadLetterOptions.ToList());
+            }
+
+            Inputs = queue.Inputs;
+        }
+
         public Guid TriggerId { get; set; }
         public string TriggerQueueName
         {
@@ -127,7 +151,9 @@ namespace Warewolf.Trigger
                 {
                     QueueSourceId = _selectedQueueSource.ResourceID;
                     QueueNames = GetQueueNamesFromSource();
-                    Options = FindOptions(_selectedQueueSource);
+
+                    var options = _resourceRepository.FindOptions(_server, _selectedQueueSource);
+                    Options = FindOptions(options);
                 }
 
                 RaisePropertyChanged(nameof(SelectedQueueSource));
@@ -216,7 +242,9 @@ namespace Warewolf.Trigger
                 {
                     QueueSinkId = _selectedDeadLetterQueueSource.ResourceID;
                     DeadLetterQueues = GetQueueNamesFromSource();
-                    DeadLetterOptions = FindOptions(_selectedDeadLetterQueueSource);
+
+                    var options = _resourceRepository.FindOptions(_server, _selectedDeadLetterQueueSource);
+                    DeadLetterOptions = FindOptions(options);
                 }
 
                 RaisePropertyChanged(nameof(SelectedDeadLetterQueueSource));
@@ -507,10 +535,10 @@ namespace Warewolf.Trigger
             return queueNames;
         }
 
-        private List<OptionView> FindOptions(IResource selectedQueueSource)
+        private List<OptionView> FindOptions(List<Options.IOption> options)
         {
             var optionViews = new List<OptionView>();
-            var options = _resourceRepository.FindOptions(_server, selectedQueueSource);
+            
             foreach (var option in options)
             {
                 var optionView = new OptionView(option);
