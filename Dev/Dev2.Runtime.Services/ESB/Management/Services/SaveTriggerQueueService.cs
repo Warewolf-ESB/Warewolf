@@ -29,25 +29,25 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            if (values == null)
+            {
+                throw new InvalidDataContractException(ErrorResource.NoParameter);
+            }
+
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
 
             try
             {
-                if (values == null)
-                {
-                    throw new InvalidDataContractException(ErrorResource.NoParameter);
-                }
-
                 Dev2Logger.Info("Save Trigger Queue Service", GlobalConstants.WarewolfInfo);
                 msg.HasError = false;
 
                 values.TryGetValue("TriggerQueue", out StringBuilder resourceDefinition);
 
                 var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
-
+                
                 TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
-
+                msg.SetMessage(triggerQueue.TriggerId.ToString());
                 return serializer.SerializeToBuilder(msg);
             }
             catch (Exception err)
