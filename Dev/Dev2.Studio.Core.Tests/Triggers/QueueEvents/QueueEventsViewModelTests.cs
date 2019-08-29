@@ -12,6 +12,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Queue;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -30,6 +32,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using Warewolf.Options;
 using Warewolf.Trigger.Queue;
+using Warewolf.UI;
 
 namespace Dev2.Core.Tests.Triggers.QueueEvents
 {
@@ -37,19 +40,22 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
+        Mock<IResource> _mockQueueSource;
+        Guid _queueResourceId = Guid.NewGuid();
+
         [TestInitialize]
         public void SetupForTest()
         {
             AppUsageStats.LocalHost = "http://localhost:3142";
-            var shell = new Mock<IShellViewModel>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
             var lcl = new Mock<IServer>();
             lcl.Setup(a => a.DisplayName).Returns("Localhost");
-            shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
-            shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            mockShellViewModel.Setup(x => x.LocalhostServer).Returns(lcl.Object);
+            mockShellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             var explorerTooltips = new Mock<IExplorerTooltips>();
 
-            CustomContainer.Register(shell.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
             CustomContainer.Register(connectControlSingleton.Object);
             CustomContainer.Register(explorerTooltips.Object);
@@ -64,20 +70,30 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         {
             var mockServer = SetupForTriggerQueueView(null);
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
-            
+
             var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
             return new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockResourcePickerDialog.Object);
         }
 
-        private static Mock<IServer> SetupForTriggerQueueView(Resource resource)
+        private Mock<IServer> SetupForTriggerQueueView(Resource resource)
         {
             var mockServer = new Mock<IServer>();
-
-            List<IOption> expectedOptions = SetupOptionsView();
-
+            var mockOption = new Mock<IOption>();
+            var mockInputs = new Mock<ICollection<IServiceInput>>();
             var triggerQueue = new TriggerQueue
             {
-                Name = "TestTriggerQueueName"
+                Name = "TestTriggerQueueName",
+                QueueSourceId = _queueResourceId,
+                QueueName = "TestQueue",
+                WorkflowName = "TestWorkflow",
+                Concurrency = 1000,
+                UserName = "Bob",
+                Password = "123456",
+                Options = new IOption[] { mockOption.Object },
+                QueueSinkId = _queueResourceId,
+                DeadLetterQueue = "TestDeadLetterQueue",
+                DeadLetterOptions = new IOption[] { mockOption.Object },
+                Inputs = mockInputs.Object
             };
 
             List<ITriggerQueue> expectedTriggers = new List<ITriggerQueue>
@@ -85,16 +101,36 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 triggerQueue
             };
 
+            string[] tempValues = new string[3];
+            tempValues[0] = "value1";
+            tempValues[1] = "value2";
+            tempValues[2] = "value3";
+
+            List<IOption> expectedOptions = SetupOptionsView();
+            var expectedQueueNames = new Dictionary<string, string[]>
+            {
+                { "QueueNames", tempValues }
+            };
+            var queueSource2 = new Mock<IResource>();
+            _mockQueueSource = new Mock<IResource>();
+            _mockQueueSource.Setup(source => source.ResourceID).Returns(_queueResourceId);
+            var expectedList = new List<IResource>
+            {
+                _mockQueueSource.Object, queueSource2.Object
+            };
             var mockResourceRepository = new Mock<IResourceRepository>();
             if (resource == null)
             {
-                var queueSource = new Mock<IResource>();
-                mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, queueSource.Object)).Returns(expectedOptions);
+                mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, _mockQueueSource.Object)).Returns(expectedOptions);
             }
             else
             {
                 mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, resource)).Returns(expectedOptions);
             }
+
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.GetTriggerQueueHistory(Guid.NewGuid())).Returns(new List<IExecutionHistory>());
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, _mockQueueSource.Object)).Returns(expectedQueueNames);            
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FetchTriggerQueues()).Returns(expectedTriggers);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -378,6 +414,13 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             public new bool Equals(ITriggerQueue other)
             {
                 return !IsDirty;
+            }
+        }
+        public class OptionViewForTesting : OptionView
+        {
+            public OptionViewForTesting(IOption option)
+                : base(option)
+            {
             }
         }
     }
