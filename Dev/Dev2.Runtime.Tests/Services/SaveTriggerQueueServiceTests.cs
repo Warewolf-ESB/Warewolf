@@ -112,6 +112,8 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = saveTriggerQueueService.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsFalse(result.HasError);
+            var triggerId = Guid.Parse(result.Message.ToString());
+            Assert.IsTrue(triggerId != Guid.Empty);
         }
     }
 
