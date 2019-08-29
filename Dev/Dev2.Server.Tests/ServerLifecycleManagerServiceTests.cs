@@ -173,6 +173,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockSerLifeCycleWorker.Verify();
         }
@@ -231,6 +232,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
             mockQueueProcessMonitor.Verify(o => o.Start(), Times.Once);
@@ -289,6 +291,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockSerLifeCycleWorker.Verify();
         }
 

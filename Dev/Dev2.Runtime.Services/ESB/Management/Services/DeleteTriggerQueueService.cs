@@ -8,10 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -19,11 +15,15 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SaveTriggerQueueService : IEsbManagementEndpoint
+    public class DeleteTriggerQueueService : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
@@ -39,22 +39,22 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Dev2Logger.Info("Save Trigger Queue Service", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Delete Trigger Queue Service", GlobalConstants.WarewolfInfo);
                 msg.HasError = false;
 
                 values.TryGetValue("TriggerQueue", out StringBuilder resourceDefinition);
 
                 var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
-                
-                TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
-                msg.SetMessage(triggerQueue.TriggerId.ToString());
+
+                TriggersCatalog.Instance.DeleteTriggerQueue(triggerQueue);
+
                 return serializer.SerializeToBuilder(msg);
             }
             catch (Exception err)
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error("Save Queue Service Failed: " + err.Message, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("Delete Queue Service Failed: " + err.Message, GlobalConstants.WarewolfError);
                 return serializer.SerializeToBuilder(msg);
             }
         }
@@ -63,6 +63,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => nameof(SaveTriggerQueueService);
+        public string HandlesType() => nameof(DeleteTriggerQueueService);
     }
 }
