@@ -75,6 +75,16 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
             List<IOption> expectedOptions = SetupOptionsView();
 
+            var triggerQueue = new TriggerQueue
+            {
+                Name = "TestTriggerQueueName"
+            };
+
+            List<ITriggerQueue> expectedTriggers = new List<ITriggerQueue>
+            {
+                triggerQueue
+            };
+
             var mockResourceRepository = new Mock<IResourceRepository>();
             if (resource == null)
             {
@@ -85,6 +95,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             {
                 mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, resource)).Returns(expectedOptions);
             }
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FetchTriggerQueues()).Returns(expectedTriggers);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
             return mockServer;
