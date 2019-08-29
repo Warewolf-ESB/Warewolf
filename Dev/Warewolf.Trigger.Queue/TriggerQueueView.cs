@@ -80,6 +80,7 @@ namespace Warewolf.Trigger.Queue
         private bool _isHistoryExpanded;
         private bool _isProgressBarVisible;
         private IList<IExecutionHistory> _history;
+        private bool _isDirty;
 
         public TriggerQueueView(IServer server)
             : this(server, new SynchronousAsyncWorker())
@@ -107,6 +108,7 @@ namespace Warewolf.Trigger.Queue
 
         public void ToModel(ITriggerQueue queue)
         {
+            NewQueue = false;
             TriggerId = queue.TriggerId;
             TriggerQueueName = queue.Name;
             SelectedQueueSource = QueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSourceId);
@@ -138,10 +140,22 @@ namespace Warewolf.Trigger.Queue
             {
                 _triggerQueueName = value;
                 RaisePropertyChanged(nameof(TriggerQueueName));
-                SetItem(this);
-                SetDisplayName(IsDirty);
+                IsDirtyPropertyChange();
             }
         }
+
+        private void IsDirtyPropertyChange()
+        {
+            if (NewQueue)
+            {
+                IsDirty = true;
+            }
+            else
+            {
+                IsDirty = !Equals(Item);
+            }
+        }
+
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
         public IResource SelectedQueueSource
         {
@@ -159,6 +173,7 @@ namespace Warewolf.Trigger.Queue
                 }
 
                 RaisePropertyChanged(nameof(SelectedQueueSource));
+                IsDirtyPropertyChange();
             }
         }
         public Guid QueueSourceId
@@ -186,6 +201,7 @@ namespace Warewolf.Trigger.Queue
             {
                 _queueName = value;
                 RaisePropertyChanged(nameof(QueueName));
+                IsDirtyPropertyChange();
             }
         }
         public string WorkflowName
@@ -195,6 +211,7 @@ namespace Warewolf.Trigger.Queue
             {
                 _workflowName = value;
                 RaisePropertyChanged(nameof(WorkflowName));
+                IsDirtyPropertyChange();
             }
         }
         public int Concurrency
@@ -204,6 +221,7 @@ namespace Warewolf.Trigger.Queue
             {
                 _concurrency = value;
                 RaisePropertyChanged(nameof(Concurrency));
+                IsDirtyPropertyChange();
             }
         }
         public string UserName
@@ -213,6 +231,7 @@ namespace Warewolf.Trigger.Queue
             {
                 _userName = value;
                 RaisePropertyChanged(nameof(UserName));
+                IsDirtyPropertyChange();
             }
         }
         public string Password
@@ -222,6 +241,7 @@ namespace Warewolf.Trigger.Queue
             {
                 _password = value;
                 RaisePropertyChanged(nameof(Password));
+                IsDirtyPropertyChange();
             }
         }
         public List<OptionView> Options
@@ -250,6 +270,7 @@ namespace Warewolf.Trigger.Queue
                 }
 
                 RaisePropertyChanged(nameof(SelectedDeadLetterQueueSource));
+                IsDirtyPropertyChange();
             }
         }
         public Guid QueueSinkId
@@ -277,6 +298,7 @@ namespace Warewolf.Trigger.Queue
             {
                 _deadLetterQueue = value;
                 RaisePropertyChanged(nameof(DeadLetterQueue));
+                IsDirtyPropertyChange();
             }
         }
         public List<OptionView> DeadLetterOptions
@@ -303,22 +325,16 @@ namespace Warewolf.Trigger.Queue
         {
             get
             {
-                var _isDirty = false;
-                if (NewQueue)
-                {
-                    _isDirty = true;
-                }
-                else
-                {
-                    var notEquals = !Equals(Item);
-                    if (notEquals)
-                    {
-                        _isDirty = true;
-                    }
-                }
-
-                SetDisplayName(_isDirty);
                 return _isDirty;
+            }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    SetDisplayName(_isDirty);
+                    RaisePropertyChanged(nameof(IsDirty));
+                }
             }
         }
         public string OldQueueName
@@ -530,10 +546,10 @@ namespace Warewolf.Trigger.Queue
             set
             {
                 _item = value;
-                RaisePropertyChanged(nameof(TriggerQueueView));
+                RaisePropertyChanged(nameof(Item));
                 var dirty = IsDirty;
                 SetDisplayName(dirty);
-                RaisePropertyChanged(nameof(IsDirty));
+                IsDirtyPropertyChange();
             }
         }
 
@@ -605,7 +621,7 @@ namespace Warewolf.Trigger.Queue
 
         public void SetItem(TriggerQueueView model)
         {
-            Item = model;
+            Item = model.MemberwiseClone() as TriggerQueueView;
         }
 
         void SetDisplayName(bool isDirty)
@@ -613,7 +629,7 @@ namespace Warewolf.Trigger.Queue
             NameForDisplay = isDirty ? TriggerQueueName + " *" : TriggerQueueName;
         }
 
-        public bool Equals(ITriggerQueue other)
+        public bool Equals(TriggerQueueView other)
         {
             if (other is null)
             {
@@ -626,17 +642,18 @@ namespace Warewolf.Trigger.Queue
             }
 
             var equals = true;
-            equals &= QueueSourceId == other.QueueSourceId;
-            equals &= string.Equals(QueueName, other.QueueName);
-            equals &= string.Equals(WorkflowName, other.WorkflowName);
-            equals &= Concurrency == other.Concurrency;
-            equals &= string.Equals(UserName, other.UserName);
-            equals &= string.Equals(Password, other.Password);
+            equals &= string.Equals(_triggerQueueName, other._triggerQueueName);
+            equals &= _queueSourceId == other._queueSourceId;
+            equals &= string.Equals(_queueName, other._queueName);
+            equals &= string.Equals(_workflowName, other._workflowName);
+            equals &= _concurrency == other._concurrency;
+            equals &= string.Equals(_userName, other._userName);
+            equals &= string.Equals(_password, other._password);
             //equals &= Options == other.Options;
-            equals &= QueueSinkId == other.QueueSinkId;
-            equals &= string.Equals(DeadLetterQueue, other.DeadLetterQueue);
+            equals &= _queueSinkId == other._queueSinkId;
+            equals &= string.Equals(_deadLetterQueue, other._deadLetterQueue);
             //equals &= DeadLetterOptions == other.DeadLetterOptions;
-            equals &= Inputs == other.Inputs;
+            equals &= _inputs == other._inputs;
 
             return equals;
         }
