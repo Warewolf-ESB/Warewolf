@@ -202,8 +202,14 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
             queueEventsViewModel.NewCommand.Execute(null);
 
-            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
-            //TODO: Verify that one item is a new item and the other is the "Create New" item
+            Assert.AreEqual(3, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual("TestTriggerQueueName *", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[0].NewQueue);
+
+            Assert.AreEqual("Queue 1 *", queueEventsViewModel.Queues[1].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[1].NewQueue);
+
+            Assert.IsTrue(queueEventsViewModel.Queues[2].NewQueue);
         }
 
         [TestMethod]
