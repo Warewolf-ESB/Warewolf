@@ -40,6 +40,9 @@ namespace Warewolf.Trigger.Queue.Tests
     [TestClass]
     public class TriggerQueueViewTests
     {
+        Mock<IResource> _mockQueueSource;
+        Guid _queueResourceId = Guid.NewGuid();
+
         [TestInitialize]
         public void SetupForTest()
         {
@@ -64,12 +67,13 @@ namespace Warewolf.Trigger.Queue.Tests
         }
         TriggerQueueView CreateViewModel()
         {
-            var queueSource1 = new Mock<IResource>();
+            _mockQueueSource = new Mock<IResource>();
+            _mockQueueSource.Setup(source => source.ResourceID).Returns(_queueResourceId);
             var queueSource2 = new Mock<IResource>();
 
             var expectedList = new List<IResource>
             {
-                queueSource1.Object, queueSource2.Object
+                _mockQueueSource.Object, queueSource2.Object
             };
 
             var mockAsyncWorker = new Mock<IAsyncWorker>();
@@ -78,6 +82,7 @@ namespace Warewolf.Trigger.Queue.Tests
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindResourcesByType<IQueueSource>(mockServer.Object)).Returns(expectedList);
             mockResourceRepository.Setup(resourceRepository => resourceRepository.GetTriggerQueueHistory(Guid.NewGuid())).Returns(new List<IExecutionHistory>());
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, _mockQueueSource.Object)).Returns(SetupOptionsView());
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
             //new SynchronousAsyncWorker()
@@ -761,6 +766,48 @@ namespace Warewolf.Trigger.Queue.Tests
             triggerQueueView.MapEntireMessage = false;
 
             Assert.IsFalse(triggerQueueView.MapEntireMessage);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_ToModel()
+        {
+            var mockOption = new Mock<IOption>();
+            var mockInputs = new Mock<ICollection<IServiceInput>>();
+
+            var triggerQueue = new TriggerQueue
+            {
+                Name = "TestTriggerQueueName",
+                QueueSourceId = _queueResourceId,
+                QueueName = "TestQueue",
+                WorkflowName = "TestWorkflow",
+                Concurrency = 1000,
+                UserName = "Bob",
+                Password = "123456",
+                Options = new IOption[] { mockOption.Object },
+                QueueSinkId = _queueResourceId,
+                DeadLetterQueue = "TestDeadLetterQueue",
+                DeadLetterOptions = new IOption[] { mockOption.Object },
+                Inputs = mockInputs.Object
+            };
+
+            var triggerQueueView = CreateViewModel();
+
+            triggerQueueView.ToModel(triggerQueue);
+
+            Assert.AreEqual(triggerQueue.Name, triggerQueueView.TriggerQueueName);
+            Assert.AreEqual(triggerQueue.QueueSourceId, triggerQueueView.SelectedQueueSource.ResourceID);
+            Assert.AreEqual(triggerQueue.QueueName, triggerQueueView.QueueName);
+            Assert.AreEqual(triggerQueue.WorkflowName, triggerQueueView.WorkflowName);
+            Assert.AreEqual(triggerQueue.Concurrency, triggerQueueView.Concurrency);
+            Assert.AreEqual(triggerQueue.UserName, triggerQueueView.UserName);
+            Assert.AreEqual(triggerQueue.Password, triggerQueueView.Password);
+            Assert.AreEqual(triggerQueue.Options.Count(), triggerQueueView.Options.Count);
+            Assert.AreEqual(triggerQueue.QueueSinkId, triggerQueueView.SelectedDeadLetterQueueSource.ResourceID);
+            Assert.AreEqual(triggerQueue.DeadLetterQueue, triggerQueueView.DeadLetterQueue);
+            Assert.AreEqual(triggerQueue.DeadLetterOptions.Count(), triggerQueueView.DeadLetterOptions.Count);
+            Assert.AreEqual(triggerQueue.Inputs.Count, triggerQueueView.Inputs.Count);
         }
     }
 
