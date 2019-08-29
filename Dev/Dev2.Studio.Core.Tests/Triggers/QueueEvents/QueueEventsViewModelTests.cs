@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNotNull(queueEventsViewModel.Queues);
-            Assert.AreEqual(1, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
             Assert.IsNull(queueEventsViewModel.SelectedQueue);
 
             var queue1 = new TriggerQueueViewForTesting(mockServer.Object);
@@ -224,12 +224,13 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.Queues.Add(triggerQueueView);
             queueEventsViewModel.SelectedQueue = triggerQueueView;
 
-            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual(3, queueEventsViewModel.Queues.Count);
 
             queueEventsViewModel.DeleteCommand.Execute(null);
-            Assert.AreEqual(1, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
-            //TODO: Verify that one item is the "Create New" item
+            Assert.AreEqual("TestTriggerQueueName *", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsTrue(queueEventsViewModel.Queues[0].NewQueue);
         }
 
         [TestMethod]
