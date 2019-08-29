@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Text;
 using Warewolf.Triggers;
+using Warewolf.Interfaces.Data;
+using System.Threading.Tasks;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
@@ -82,9 +84,10 @@ namespace Warewolf.Trigger.Queue.Tests
 
             public bool IsDataReceived { get; internal set; }
 
-            public void Consume(byte[] body)
+            public Task<ConsumerResult> Consume(byte[] body)
             {
                 IsDataReceived = true;
+                return Task.FromResult(ConsumerResult.Success);
             }
         }
     }

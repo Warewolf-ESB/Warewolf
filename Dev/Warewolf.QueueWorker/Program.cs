@@ -34,7 +34,7 @@ namespace QueueWorker
 
             public void Run()
             {
-                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), _config.WorkflowUrl, _config.ValueKeys);
+                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(),null, _config.WorkflowUrl, _config.ValueKeys);
 
                 Console.WriteLine("Starting: {_config.HostName} Queue: {_config.QueueName}");
                 Console.WriteLine("Workflow: {_config.WorkflowUrl} ValueKey: {_config.ValueKey}");

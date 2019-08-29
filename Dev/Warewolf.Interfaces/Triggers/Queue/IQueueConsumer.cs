@@ -9,11 +9,14 @@
 */
 
 
+using System.Threading.Tasks;
+using Warewolf.Interfaces.Data;
+
 namespace Warewolf.Triggers
 {
     public interface IConsumer
     {
-        void Consume(byte[] body);
+        Task<ConsumerResult> Consume(byte[] body);
     }
 
     public interface IQueueConsumer : IConsumer

@@ -12,8 +12,12 @@ using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Warewolf.Core;
+using Warewolf.Interfaces.Data;
+using Warewolf.Triggers;
 using Warewolf.Web;
 
 namespace Warewolf.Common.Tests
@@ -30,15 +34,17 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
 
-            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(new Mock<IHttpClient>().Object);
-
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
+            
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, new List<IServiceInput>());
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object,new Mock<IPublisher>().Object, testUrl, new List<IServiceInput>());
             //---------------------------------Act------------------------------------
-            WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("this is a test message"));
+            var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("This is a message")).Result;
 
             //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Success, result);
             mockHttpClientFactory.Verify(o => o.New(It.IsAny<string>()), Times.Once);
         }
 
@@ -51,16 +57,17 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
 
-            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, new List<IServiceInput>());
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, new List<IServiceInput>());
             //---------------------------------Act------------------------------------
-            WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("this is a test message"));
+            var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("This is a message")).Result;
 
             //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Success, result);
             mockHttpClient.Verify(o => o.PostAsync(It.IsAny<string>(),It.IsAny<string>()), Times.Once);
         }
 
@@ -74,7 +81,7 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             var postBody = "";
-            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; });
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; }).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
@@ -82,13 +89,14 @@ namespace Warewolf.Common.Tests
             {
                 new ServiceInput("Name","FirstName")
             };
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, inputs);
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, inputs);
             var expectedPostBody = "{\"Name\":\"My Name\"}";
             //---------------------------------Act------------------------------------
             string message = "<Root><FirstName>My Name</FirstName></Root>";
-            WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message));
+            var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message)).Result;
 
             //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Success, result);
             Assert.AreEqual(expectedPostBody, postBody);
         }
 
@@ -101,7 +109,7 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             var postBody = "";
-            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; });
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; }).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
@@ -109,14 +117,65 @@ namespace Warewolf.Common.Tests
             {
                 new ServiceInput("Name","FirstName")
             };
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, testUrl, inputs);
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, inputs);
             var expectedPostBody = "{\"Name\":\"My Name\"}";
             //---------------------------------Act------------------------------------
             string message = "{\"FirstName\":\"My Name\"}";
-            WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message));
+            var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message)).Result;
 
             //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Success, result);
             Assert.AreEqual(expectedPostBody, postBody);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(WarewolfWebRequestForwarder))]
+        public async Task WarewolfWebRequestForwarder_Consume_GivenNonSuccessResponse_ShouldPublishMessageToDeadLetterQueueAsync()
+        {
+            //---------------------------------Arrange--------------------------------
+            var mockHttpClient = new Mock<IHttpClient>();
+            var mockPublisher = new Mock<IPublisher>();
+            mockPublisher.Setup(p => p.Publish(It.IsAny<byte[]>())).Verifiable();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest)));
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
+
+            var testUrl = "http://warewolf.io:0420/test/url";
+            var inputs = new List<IServiceInput>();
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl, inputs);
+            //---------------------------------Act------------------------------------
+            string message = "{\"FirstName\":\"My Name\"}";
+            var result = await WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message));
+
+            //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Failed, result);
+            mockPublisher.Verify(p => p.Publish(It.IsAny<byte[]>()),Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(WarewolfWebRequestForwarder))]
+        public async Task WarewolfWebRequestForwarder_Consume_GivenSuccessResponse_ShouldNotPublishMessageToDeadLetterQueueAsync()
+        {
+            //---------------------------------Arrange--------------------------------
+            var mockHttpClient = new Mock<IHttpClient>();
+            var mockPublisher = new Mock<IPublisher>();
+            mockPublisher.Setup(p => p.Publish(It.IsAny<byte[]>())).Verifiable();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
+
+            var testUrl = "http://warewolf.io:0420/test/url";
+            var inputs = new List<IServiceInput>();
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl, inputs);
+            //---------------------------------Act------------------------------------
+            string message = "{\"FirstName\":\"My Name\"}";
+            var result = await WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message));
+
+            //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Success, result);
+            mockPublisher.Verify(p => p.Publish(It.IsAny<byte[]>()), Times.Never);
         }
     }
 }

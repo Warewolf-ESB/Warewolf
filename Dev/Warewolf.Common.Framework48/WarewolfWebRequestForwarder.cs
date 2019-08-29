@@ -19,6 +19,7 @@ using Warewolf.Triggers;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using System.Linq;
+using Warewolf.Interfaces.Data;
 
 namespace Warewolf.Common
 {
@@ -28,27 +29,34 @@ namespace Warewolf.Common
         readonly ICollection<IServiceInput> _valueKeys;
         private readonly MessageToInputsMapper _messageToInputsMapper;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IPublisher _publisher;
 
         private WarewolfWebRequestForwarder()
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, string url, ICollection<IServiceInput> valueKeys)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url, ICollection<IServiceInput> valueKeys)
         {
             _httpClientFactory = httpClientFactory;
+            _publisher = publisher;
             _url = url;
             _valueKeys = valueKeys;
             _messageToInputsMapper = new MessageToInputsMapper();
         }
 
-        public async void Consume(byte[] body)
+        public async Task<ConsumerResult> Consume(byte[] body)
         {
             var postBody = BuildPostBody(body); 
 
-            using (await SendEventToWarewolf(_url, postBody))
+            using (var execution = await SendEventToWarewolf(_url, postBody))
             {
-                // empty block
+                if (!execution.IsSuccessStatusCode)
+                {
+                    _publisher.Publish(Encoding.UTF8.GetBytes(postBody));
+                    return ConsumerResult.Failed;
+                }
             }
+            return ConsumerResult.Success;
         }
 
         private string BuildPostBody(byte[] body)
