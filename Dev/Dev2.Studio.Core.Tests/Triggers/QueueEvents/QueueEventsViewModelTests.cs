@@ -260,15 +260,14 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         {
             Uri uri = new Uri("https://www.rabbitmq.com/blog/tag/statistics/");
 
-            var mockServer = new Mock<IServer>();
-            var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
-            mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
+            var mockServer = SetupForTriggerQueueView(null);
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new Mock<IResourcePickerDialog>().Object);
-
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            var queueEventsViewModel =  new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockResourcePickerDialog.Object);
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
-            mockExternalProcessExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
+            mockExternalExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
         }
 
         [TestMethod]
