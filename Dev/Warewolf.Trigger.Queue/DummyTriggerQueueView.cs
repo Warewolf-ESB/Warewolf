@@ -10,7 +10,7 @@
 
 using Dev2.Studio.Interfaces;
 
-namespace Warewolf.Trigger
+namespace Warewolf.Trigger.Queue
 {
     public class DummyTriggerQueueView : TriggerQueueView
     {

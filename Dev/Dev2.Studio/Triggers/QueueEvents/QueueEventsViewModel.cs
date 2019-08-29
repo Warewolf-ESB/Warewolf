@@ -28,7 +28,7 @@ using System.Windows;
 using System.Windows.Input;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
-using Warewolf.Trigger;
+using Warewolf.Trigger.Queue;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -75,8 +75,21 @@ namespace Dev2.Triggers.QueueEvents
             Errors = new ErrorResultTO();
             InitializeHelp();
             PopupController = CustomContainer.Get<IPopupController>();
-            Queues = new ObservableCollection<TriggerQueueView>();
+
+            PopulateQueues();
             AddDummyTriggerQueueView();
+        }
+
+        private void PopulateQueues()
+        {
+            Queues = new ObservableCollection<TriggerQueueView>();
+            var queues = _resourceRepository.FetchTriggerQueues();
+            foreach (var queue in queues)
+            {
+                var triggerQueueView = new TriggerQueueView(_server);
+                triggerQueueView.ToModel(queue);
+                Queues.Add(triggerQueueView);
+            }
         }
 
         private void AddDummyTriggerQueueView()
@@ -93,7 +106,6 @@ namespace Dev2.Triggers.QueueEvents
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
-                SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.GetInputsFromWorkflow();
             }
         }
@@ -189,8 +201,19 @@ namespace Dev2.Triggers.QueueEvents
 
         private void DeleteQueueEvent()
         {
-            Queues.Remove(SelectedQueue);
-            IsDirty = false;
+            try
+            {
+                var triggerQueue = AsTriggerQueueModel();
+                _resourceRepository.DeleteQueue(triggerQueue);
+                Queues.Remove(SelectedQueue);
+                SelectedQueue = null;
+                IsDirty = false;
+            }
+            catch (Exception ex)
+            {
+                PopupController.Show("Delete failed: " + ex.Message, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                IsDirty = true;
+            }
         }
 
         public ICommand AddWorkflowCommand { get; private set; }
@@ -220,22 +243,11 @@ namespace Dev2.Triggers.QueueEvents
                     return false;
                 }
 
-                ITriggerQueue triggerQueue = new TriggerQueue
-                {
-                    QueueSourceId = SelectedQueue.QueueSourceId,
-                    QueueName = SelectedQueue.QueueName,
-                    WorkflowName = SelectedQueue.WorkflowName,
-                    Concurrency = SelectedQueue.Concurrency,
-                    UserName = SelectedQueue.UserName,
-                    Password = SelectedQueue.Password,
-                    QueueSinkId = SelectedQueue.QueueSinkId,
-                    DeadLetterQueue = SelectedQueue.DeadLetterQueue,
-                    MapEntireMessage = SelectedQueue.MapEntireMessage,
-                    Inputs = SelectedQueue.Inputs
-                };
+                var triggerQueue = AsTriggerQueueModel();
 
-                _resourceRepository.SaveQueue(triggerQueue);
+                var triggerId = _resourceRepository.SaveQueue(triggerQueue);
 
+                SelectedQueue.TriggerId = triggerId;
                 SelectedQueue.IsNewQueue = false;
                 IsDirty = SelectedQueue.IsDirty;
 
@@ -247,7 +259,26 @@ namespace Dev2.Triggers.QueueEvents
                 return false;
             }
         }
-        
+
+        private ITriggerQueue AsTriggerQueueModel()
+        {
+            return new TriggerQueue
+            {
+                TriggerId = SelectedQueue.TriggerId,
+                Name = SelectedQueue.TriggerQueueName,
+                QueueSourceId = SelectedQueue.QueueSourceId,
+                QueueName = SelectedQueue.QueueName,
+                WorkflowName = SelectedQueue.WorkflowName,
+                Concurrency = SelectedQueue.Concurrency,
+                UserName = SelectedQueue.UserName,
+                Password = SelectedQueue.Password,
+                QueueSinkId = SelectedQueue.QueueSinkId,
+                DeadLetterQueue = SelectedQueue.DeadLetterQueue,
+                MapEntireMessage = SelectedQueue.MapEntireMessage,
+                Inputs = SelectedQueue.Inputs
+            };
+        }
+
         public TriggerQueueView SelectedQueue
         {
             get => _selectedQueue;

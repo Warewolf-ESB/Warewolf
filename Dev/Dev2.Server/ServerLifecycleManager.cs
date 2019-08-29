@@ -39,6 +39,9 @@ using System.Security.Claims;
 using System.Reflection;
 using Dev2;
 using System.Threading.Tasks;
+using Dev2.Runtime.Triggers;
+using Dev2.Triggers;
+using Warewolf.Trigger.Queue;
 
 namespace Dev2
 {
@@ -199,6 +202,7 @@ namespace Dev2
                     _loadResources.LoadServerWorkspace();
                     _loadResources.LoadActivityCache(_assemblyLoader);
                     LoadTestCatalog();
+                    LoadTriggersCatalog();
                     StartTrackingUsage();
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
@@ -215,6 +219,14 @@ namespace Dev2
                     Stop(true, 0);
                 }
             });
+        }
+
+        private void LoadTriggersCatalog()
+        {
+            _writer.Write("Loading triggers catalog...  ");
+            _assemblyLoader.LoadAndReturn(typeof(TriggerQueue).Assembly.GetName());
+            TriggersCatalog.Instance.Load();
+            _writer.WriteLine("done.");
         }
 
         void StartTrackingUsage()

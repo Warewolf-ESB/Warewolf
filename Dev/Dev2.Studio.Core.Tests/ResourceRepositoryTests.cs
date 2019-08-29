@@ -46,6 +46,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
+using Dev2.Triggers;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -751,6 +752,92 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
             Assert.AreEqual(serviceTestModel.TestSteps.Count, serviceTestModelTos[0].TestSteps.Count);
             Assert.AreEqual(1, serviceTestModelTos[0].TestSteps.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceModel_FetchTriggerQueues_ExecuteMessageIsSuccessful_NoException()
+        {
+            var mockEnvironmentModel = new Mock<IServer>();
+            var returnValue = new StringBuilder();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvironmentConnection.Setup(connection => connection.ServerEvents).Returns(new EventPublisher());
+            mockEnvironmentConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                returnValue = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            resourceRepository.FetchTriggerQueues();
+
+            var serializer = new Dev2JsonSerializer();
+            var returnMessage = serializer.Deserialize<EsbExecuteRequest>(returnValue.ToString());
+            Assert.IsNotNull(returnMessage);
+            Assert.AreEqual("FetchTriggerQueues", returnMessage.ServiceName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceModel_SaveQueue_ExecuteMessageIsSuccessful_NoException()
+        {
+            var expectedTriggerId = Guid.NewGuid().ToString();
+            var commController = new Mock<ICommunicationController>();
+            commController.Setup(m => m.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
+                          .Returns(new ExecuteMessage { Message = new StringBuilder(expectedTriggerId) });
+
+            var mockEnvironmentModel = new Mock<IServer>();
+            var returnValue = new StringBuilder();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvironmentConnection.Setup(connection => connection.ServerEvents).Returns(new EventPublisher());
+            mockEnvironmentConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                returnValue = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var mockTriggerQueue = new Mock<ITriggerQueue>();
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            resourceRepository.GetCommunicationController = someName => commController.Object;
+
+            var triggerId = resourceRepository.SaveQueue(mockTriggerQueue.Object);
+
+            Assert.AreEqual(expectedTriggerId, triggerId.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceModel_DeleteQueue_ExecuteMessageIsSuccessful_NoException()
+        {
+            var mockEnvironmentModel = new Mock<IServer>();
+            var returnValue = new StringBuilder();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvironmentConnection.Setup(connection => connection.ServerEvents).Returns(new EventPublisher());
+            mockEnvironmentConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                returnValue = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var mockTriggerQueue = new Mock<ITriggerQueue>();
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            resourceRepository.DeleteQueue(mockTriggerQueue.Object);
+
+            var serializer = new Dev2JsonSerializer();
+            var returnMessage = serializer.Deserialize<EsbExecuteRequest>(returnValue.ToString());
+            Assert.IsNotNull(returnMessage);
+            Assert.AreEqual("DeleteTriggerQueueService", returnMessage.ServiceName);
         }
 
         [TestMethod]
