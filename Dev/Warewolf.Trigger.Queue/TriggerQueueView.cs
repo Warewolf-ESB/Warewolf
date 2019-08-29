@@ -107,6 +107,7 @@ namespace Warewolf.Trigger.Queue
 
         public void ToModel(ITriggerQueue queue)
         {
+            TriggerId = queue.TriggerId;
             TriggerQueueName = queue.Name;
             SelectedQueueSource = QueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSourceId);
             QueueName = queue.QueueName;
