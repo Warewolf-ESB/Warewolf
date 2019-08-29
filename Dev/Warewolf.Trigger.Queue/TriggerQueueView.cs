@@ -476,12 +476,12 @@ namespace Warewolf.Trigger.Queue
                                 value = obj[sca.DisplayValue.Replace("@", "")].ToString();
                             }
                             var serviceTestInput = new ServiceInput(sca.DisplayValue, value);
-                            return (IServiceInput)serviceTestInput;
+                            return serviceTestInput.As<IServiceInput>();
                         }
                         else
                         {
                             var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
-                            return (IServiceInput)serviceTestInput;
+                            return serviceTestInput.As<IServiceInput>();
                         }
 
                     }).ToList();
@@ -520,7 +520,7 @@ namespace Warewolf.Trigger.Queue
             Inputs = inputList.Select(sca =>
             {
                 var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
-                return (IServiceInput)serviceTestInput;
+                return serviceTestInput.As<IServiceInput>();
 
             }).ToList();
         }

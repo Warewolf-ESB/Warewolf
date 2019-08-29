@@ -177,5 +177,10 @@ namespace Warewolf.Core
             }
         }
         public string ActionName { get; set; }
+
+        public T As<T>() where T : class, IServiceInput
+        {
+            return this as T;
+        }
     }
 }

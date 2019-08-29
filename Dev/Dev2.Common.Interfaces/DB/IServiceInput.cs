@@ -13,5 +13,6 @@
         string ShortTypeName { get; set; }
         string FullName { get; }
         string ActionName { get; set; }
+        T As<T>() where T : class, IServiceInput;
     }
 }
