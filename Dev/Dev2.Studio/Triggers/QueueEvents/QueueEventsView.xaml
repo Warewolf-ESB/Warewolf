@@ -94,10 +94,10 @@
                                               HorizontalAlignment="Left" 
                                               Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
-                                              ToolTip="{x:Static languages:Tooltips.SchedulerStatusAltTooltipTrigger}"
+                                              ToolTip="{x:Static languages:Tooltips.QueueStatusAltTooltipTrigger}"
                                               IsChecked="{Binding Enabled}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerStatusAltHelpTextTrigger}"
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueStatusAltHelpTextTrigger}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </CheckBox>
@@ -119,7 +119,7 @@
                                             <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerDeleteHelpTextTrigger}"
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueDeleteHelpTextTrigger}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -132,7 +132,7 @@
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
                                             Command="{Binding ElementName=TriggerQueues, Path=DataContext.NewCommand}" 
-                                            ToolTip="{x:Static languages:Tooltips.SchedulerNewScheduleTooltipTrigger}"
+                                            ToolTip="{x:Static languages:Tooltips.QueueNewQueueTooltipTrigger}"
                                             AutomationProperties.AutomationId="UI_NewSchedule_AutoID">
                                         <Button.Content>
                                             <Grid>
@@ -202,10 +202,10 @@
                                 <TextBox Grid.Row="0" 
                                          Grid.Column="1"
                                          Margin="{StaticResource ControlBorderTop}"
-                                         ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
+                                         ToolTip="{x:Static languages:Tooltips.QueueNameTooltip}"
                                          Text="{Binding TriggerQueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueConcurrencyHelp}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueNameHelp}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
@@ -253,12 +253,12 @@
                                     <TextBox Grid.Column="0" 
                                              Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipWorkFlow}"
+                                             ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipWorkFlow}"
                                              HorizontalAlignment="Stretch"
                                              AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
                                              IsReadOnly="True">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextWorkFlow}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>
@@ -266,11 +266,11 @@
                                             Content="..."
                                             Margin="{StaticResource ControlBorderLeft}"
                                             Style="{StaticResource ButtonStyle}"
-                                            ToolTip="Select a workflow to be triggered"
+                                            ToolTip="{x:Static languages:Tooltips.QueueAddWorkflowCommandToolTip}"
                                             Command="{Binding ElementName=QueuesUserControl, Path=DataContext.AddWorkflowCommand}"
                                             AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueAddWorkflowCommandHelpText}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -296,11 +296,11 @@
                                 <TextBox Grid.Row="6"
                                          Grid.Column="1"
                                          AutomationProperties.AutomationId="UI_UserNameTextBox"
-                                         ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
+                                         ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipUsername}"
                                          customControls:WatermarkTextBox.Watermark="domain\username"
                                          Text="{Binding Path=UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextUsername}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
@@ -310,11 +310,11 @@
                                              AutomationProperties.AutomationId="UI_PasswordBox"
                                              Grid.Row="7"
                                              Grid.Column="1"
-                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
+                                             ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipPassword}"
                                              attachedProperties:PasswordBoxAssistant.BindPassword="true"
                                              attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextPassword}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </PasswordBox>
@@ -432,10 +432,10 @@
                                           HorizontalAlignment="Left" 
                                           Margin="0,0,0,0"
                                           Content="Map Entire Message"
-                                          ToolTip="{x:Static languages:Tooltips.SchedulerStatusAltTooltipTrigger}"
+                                          ToolTip="{x:Static languages:Tooltips.QueueMapEntireMessageTooltipTrigger}"
                                           IsChecked="{Binding MapEntireMessage}">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerStatusAltHelpTextTrigger}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueMapEntireMessageHelpTextTrigger}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
@@ -445,11 +445,11 @@
                                     <Button Content="..."
                                             Margin="{StaticResource ControlBorderLeft}"
                                             Style="{StaticResource ButtonStyle}"
-                                            ToolTip="Select to view Queue Stats"
+                                           ToolTip="{x:Static languages:Tooltips.QueueViewStatsToolTip}"
                                             Command="{Binding QueueStatsCommand}"
                                             AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextWorkFlow}"
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueViewStatsHelpText}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>

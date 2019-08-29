@@ -2770,7 +2770,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a queue event to run.
+        ///   Looks up a localized string similar to Create a Queue event to run.
         /// </summary>
         public static string MenuQueueEventsToolTip {
             get {
@@ -3269,7 +3269,16 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QueueConcurrencyTooltip.
+        ///   Looks up a localized string similar to Select the workflow to executed in the Queue.
+        /// </summary>
+        public static string QueueAddWorkflowCommandToolTip {
+            get {
+                return ResourceManager.GetString("QueueAddWorkflowCommandToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the concurrency of the queue.
         /// </summary>
         public static string QueueConcurrencyTooltip {
             get {
@@ -3278,11 +3287,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a queue event to run.
+        ///   Looks up a localized string similar to Create a Queue event to run.
         /// </summary>
         public static string QueueEventToolTip {
             get {
                 return ResourceManager.GetString("QueueEventToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map the entire message.
+        /// </summary>
+        public static string QueueMapEntireMessageTooltipTrigger {
+            get {
+                return ResourceManager.GetString("QueueMapEntireMessageTooltipTrigger", resourceCulture);
             }
         }
         
@@ -3296,11 +3314,65 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new Queue.
+        /// </summary>
+        public static string QueueNewQueueTooltipTrigger {
+            get {
+                return ResourceManager.GetString("QueueNewQueueTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue will use this password for the above username.
+        /// </summary>
+        public static string QueueSettingsToolTipPassword {
+            get {
+                return ResourceManager.GetString("QueueSettingsToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue should execute as this user.
+        /// </summary>
+        public static string QueueSettingsToolTipUsername {
+            get {
+                return ResourceManager.GetString("QueueSettingsToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Queue to be triggered.
+        /// </summary>
+        public static string QueueSettingsToolTipWorkFlow {
+            get {
+                return ResourceManager.GetString("QueueSettingsToolTipWorkFlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the source message queue.
         /// </summary>
         public static string QueueSourceTooltip {
             get {
                 return ResourceManager.GetString("QueueSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable or Disable the Queue.
+        /// </summary>
+        public static string QueueStatusAltTooltipTrigger {
+            get {
+                return ResourceManager.GetString("QueueStatusAltTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select to view Queue Stats.
+        /// </summary>
+        public static string QueueViewStatsToolTip {
+            get {
+                return ResourceManager.GetString("QueueViewStatsToolTip", resourceCulture);
             }
         }
         
