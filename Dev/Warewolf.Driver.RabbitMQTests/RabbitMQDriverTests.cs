@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
+using Warewolf.Interfaces.Data;
+using System.Threading.Tasks;
 
 namespace Warewolf.Driver.RabbitMQ.Tests
 {
@@ -164,12 +166,13 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public bool IsDataReceived { get; internal set; }
 
-            public void Consume(byte[] body)
+            public Task<ConsumerResult> Consume(byte[] body)
             {
                 if (body != null)
                 {
                     IsDataReceived = true;
                 }
+                return Task.FromResult(ConsumerResult.Success);
             }
         }
     }
