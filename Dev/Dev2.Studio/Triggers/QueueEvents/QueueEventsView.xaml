@@ -298,7 +298,7 @@
                                          AutomationProperties.AutomationId="UI_UserNameTextBox"
                                          ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipUsername}"
                                          customControls:WatermarkTextBox.Watermark="domain\username"
-                                         Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                         Text="{Binding Path=UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextUsername}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
