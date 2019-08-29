@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditResource_GivenIsSharepointSource_ShouldPassThrouh()
+        public void EditResource_GivenIsSharepointSource_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditResource_GivenIsOAuthSource_ShouldPassThrouh()
+        public void EditResource_GivenIsOAuthSource_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditWcfSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditWcfSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditRabbitMQSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditRabbitMQSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditDropBoxSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditDropBoxSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -196,7 +196,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditExchangeSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditExchangeSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -222,7 +222,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditEmailSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditEmailSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -248,7 +248,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditSharePointSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditSharePointSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -274,7 +274,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditWebSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditWebSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditComPluginSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditComPluginSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -327,7 +327,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditOdbcSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditOdbcSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -354,7 +354,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditOracleSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditOracleSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -380,7 +380,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditPostgreSqlSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditPostgreSqlSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -405,7 +405,7 @@ namespace Dev2.Core.Tests
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditMySqlSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditMySqlSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -431,7 +431,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EditSqlServerSource_GivenResourceModel_ShouldPassThrouh()
+        public void EditSqlServerSource_GivenResourceModel_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -994,7 +994,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        public void AddEventsWorkSurface_ShouldPassThrouh()
+        public void AddEventsWorkSurface_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -1014,7 +1014,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        public void AddSchedulerWorkSurface_ShouldPassThrouh()
+        public void AddSchedulerWorkSurface_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
@@ -1034,7 +1034,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        public void AddTasksSurface_ShouldPassThrouh()
+        public void AddTasksSurface_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
