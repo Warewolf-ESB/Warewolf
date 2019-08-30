@@ -9,24 +9,18 @@
 */
 
 using Dev2.Common.Interfaces.DB;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
+using Dev2.Common.Interfaces.Resources;
 using System.Collections.Generic;
-using Warewolf.Data;
+using Warewolf.Triggers;
 
 namespace QueueWorker
 {
-    internal class Config : IConfig
+    internal interface IWorkerContext
     {
-        ITriggerQueue _triggerQueue;
-
-        public Config(IArgs processArgs)
-        {
-            var catalog = TriggersCatalog.Instance;
-            _triggerQueue = catalog.LoadQueueTriggerFromFile(processArgs.Filename);
-        }
-
-        public string WorkflowUrl { get => _triggerQueue.WorkflowName; }
-        public ICollection<IServiceInput> ValueKeys { get => _triggerQueue.Inputs; }
+        string WorkflowUrl { get; }
+        ICollection<IServiceInput> ValueKeys { get; }
+        IQueueSource Source { get; }
+        IPublisher DeadLetterPublisher { get; }
+        IQueueConfig QueueConfig { get; }
     }
 }

@@ -319,6 +319,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return _typeCache.FindResourceByType(this, typeName);
         }
 
+
         private Type[] GetQueueSourceTypes()
         {
             var destinationType = typeof(IQueueSource);
