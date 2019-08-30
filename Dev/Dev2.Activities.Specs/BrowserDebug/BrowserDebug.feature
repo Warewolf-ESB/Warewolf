@@ -147,5 +147,9 @@ Scenario: Executing a workflow should not error for logging
 		When workflow "AssignedWF" is saved "1" time
 		And I Execute "http://localhost:3142/secure/Acceptance%20Tests/AssignedWF.json" in Browser
 		Then Browser content is not "FatalError"
-
+Scenario: Executing a workflow always returns outputs even when error
+		Given I have a workflow "ErrorWebResponse"
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/ErrorWebResponse.json" in Browser		
+		Then Browser content is ""Message": """
+		Then Browser content is not "FatalError"
 	
