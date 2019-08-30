@@ -25,7 +25,7 @@ using Moq;
 namespace Dev2.Runtime.WebServerTests
 {
     [TestClass]
-    public class ExecutionDtoTests
+    public class ExecutionDtoExtentionsTests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
