@@ -76,20 +76,6 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SchedulerViewModel_EmptyConstructor")]
-        [ExpectedException(typeof(Exception))]
-        public void SchedulerViewModel_EmptyConstructor_Nothing_Happens()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-
-            new SchedulerViewModel();
-
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SchedulerViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
