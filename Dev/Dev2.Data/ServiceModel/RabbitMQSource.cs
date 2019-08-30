@@ -25,7 +25,6 @@ namespace Dev2.Data.ServiceModel
     //TODO: This class should be moved to Warewolf.Driver.RabbitMQ, hence the current class name duplicate
     public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ, IQueueSource
     {
-        readonly IConnectionFactory _factory; 
         const int DefaultPort = 5672;
         const string DefaultVirtualHost = "/";
 
@@ -34,6 +33,23 @@ namespace Dev2.Data.ServiceModel
         public string UserName { get; set; }
         public string Password { get; set; }
         public string VirtualHost { get; set; }
+
+        IConnectionFactory _factory; 
+        private IConnectionFactory GetConnectionFactory()
+        {
+            if (_factory is null)
+            {
+                _factory = new ConnectionFactory
+                {
+                    HostName = HostName,
+                    Port = Port,
+                    UserName = UserName,
+                    Password = Password,
+                    VirtualHost = VirtualHost
+                };
+            }
+            return _factory;
+        }
 
         public RabbitMQSource()
         {
@@ -68,15 +84,6 @@ namespace Dev2.Data.ServiceModel
 
             Port = Int32.TryParse(properties["Port"], out int port) ? port : DefaultPort;
             VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
-
-            _factory = new ConnectionFactory
-            {
-                HostName = HostName,
-                Port = Port,
-                UserName = UserName,
-                Password = Password,
-                VirtualHost = VirtualHost
-            };
         }
 
         public override XElement ToXml()
@@ -101,7 +108,7 @@ namespace Dev2.Data.ServiceModel
 
         public IQueueConnection NewConnection()
         {
-            return new RabbitConnection(_factory.CreateConnection());
+            return new RabbitConnection(GetConnectionFactory().CreateConnection());
         }
 
         public override bool IsSource => true;

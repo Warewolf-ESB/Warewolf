@@ -17,8 +17,11 @@ using Dev2.Triggers;
 using System.Collections.Generic;
 using Warewolf.Common;
 using Warewolf.Data;
+using Warewolf.Driver.RabbitMQ;
 using Warewolf.Options;
 using Warewolf.Triggers;
+
+using RabbitMQSource = Dev2.Data.ServiceModel.RabbitMQSource;
 
 namespace QueueWorker
 {
@@ -71,7 +74,8 @@ namespace QueueWorker
             get
             {
                 var options = _triggerQueue.Options;
-                var result = OptionTo<RabbitMqOptions>(options);
+                var result = OptionTo<RabbitConfig>(options);
+                result.QueueName = _triggerQueue.QueueName;
                 return result;
             }
         }
@@ -79,6 +83,12 @@ namespace QueueWorker
         private static T OptionTo<T>(IOption[] options) where T : new()
         {
             var result = new T();
+
+            if (options is null)
+            {
+                return result;
+            }
+
             foreach (var p in result.GetType().GetProperties())
             {
                 foreach (var option in options)
