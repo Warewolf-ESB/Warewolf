@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
@@ -23,6 +25,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindOptions : DefaultEsbManagementEndpoint
     {
+        private IResourceCatalog _resourceCatalog;
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -31,26 +35,27 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
-                string typeName = null;
-                values.TryGetValue("SelectedSource", out StringBuilder tmp);
+                string selectedSourceId = null;
+                values.TryGetValue("SelectedSourceId", out StringBuilder tmp);
                 if (tmp != null)
                 {
-                    typeName = tmp.ToString();
+                    selectedSourceId = tmp.ToString();
                 }
 
-                if (string.IsNullOrEmpty(typeName))
+                if (string.IsNullOrEmpty(selectedSourceId))
                 {
-                    throw new ArgumentNullException("SelectedSource");
+                    throw new ArgumentNullException("SelectedSourceId");
                 }
-                Dev2Logger.Info("Find Options. " + typeName, GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Find Options. " + selectedSourceId, GlobalConstants.WarewolfInfo);
 
-                var result = new List<IOption>
+                var source = ResourceCatalog.GetResource(theWorkspace.ID, Guid.Parse(selectedSourceId));
+                var result = new List<IOption>();
+                if (source.ResourceType == enSourceType.RabbitMQSource.ToString())
                 {
-                    new OptionBool { Name = "Item check 1" },
-                    new OptionInt { Name = "Number 1" },
-                    new OptionAutocomplete { Name = "Suggestion 1" }
-                };
-
+                    var options = OptionConvertor.Convert(new RabbitMqOptions());
+                    result.AddRange(options);
+                }
+                
                 if (result != null)
                 {
                     var serializer = new Dev2JsonSerializer();
@@ -63,6 +68,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
+            }
+        }
+
+        public IResourceCatalog ResourceCatalog
+        {
+            get
+            {
+                return _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
+            }
+            set
+            {
+                _resourceCatalog = value;
             }
         }
 
