@@ -40,7 +40,7 @@ namespace Warewolf.Data
         {
             arg = arg.Substring(1);
 
-            if (arg == "f")
+            if (arg == "c")
             {
                 args.Filename = value;
             }
