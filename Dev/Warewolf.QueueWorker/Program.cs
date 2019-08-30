@@ -8,15 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
-using Dev2.Common.Interfaces.Resources;
-using Dev2.Controller;
-using Dev2.Data.ServiceModel;
 using Dev2.Network;
-using Dev2.Studio.Core;
 using Dev2.Util;
 using System;
-using System.Collections.Generic;
 using Warewolf.Common;
 using Warewolf.Data;
 using Warewolf.Triggers;

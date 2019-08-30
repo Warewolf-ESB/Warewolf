@@ -35,6 +35,8 @@ namespace Dev2.Runtime.Triggers
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
+        public static string PathFromResourceId(string triggerId) => Path.Combine(EnvironmentVariables.QueueTriggersPath, triggerId +".bite");
+
         public static ITriggersCatalog Instance => _lazyCat.Value;
 
         public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer)
