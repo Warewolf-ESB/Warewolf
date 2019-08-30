@@ -12,10 +12,8 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Serializers;
-using Dev2.Data.TO;
 using Dev2.Dialogs;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
@@ -23,6 +21,7 @@ using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -71,7 +70,6 @@ namespace Dev2.Triggers.QueueEvents
 
             _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
-            Errors = new ErrorResultTO();
             InitializeHelp();
             PopupController = CustomContainer.Get<IPopupController>();
 
@@ -221,6 +219,7 @@ namespace Dev2.Triggers.QueueEvents
             HelpText = helpText;
         }
 
+        [ExcludeFromCodeCoverage]
         protected override void CloseHelp()
         {
 
@@ -228,6 +227,10 @@ namespace Dev2.Triggers.QueueEvents
 
         public bool Save()
         {
+            if (SelectedQueue == null)
+            {
+                return true;
+            }
             try
             {
                 if (SelectedQueue.QueueSourceId == Guid.Empty)
@@ -286,7 +289,10 @@ namespace Dev2.Triggers.QueueEvents
             {
                 if (value == null)
                 {
-                    _selectedQueue.PropertyChanged -= UpdateParentIsDirty;
+                    if (_selectedQueue != null)
+                    {
+                        _selectedQueue.PropertyChanged -= UpdateParentIsDirty;
+                    }
                     _selectedQueue = null;
                     OnPropertyChanged(nameof(SelectedQueue));
                     return;
@@ -305,8 +311,6 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
-                    OnPropertyChanged(nameof(Errors));
-                    OnPropertyChanged(nameof(Error));
                     OnPropertyChanged(nameof(SelectedQueue.History));
                     OnPropertyChanged(nameof(SelectedQueue.Inputs));
                     OnPropertyChanged(nameof(SelectedQueue.VerifyResults));
@@ -337,38 +341,6 @@ namespace Dev2.Triggers.QueueEvents
 
         public TriggerQueueView Item { get; set; }
 
-        public void ClearError(string description)
-        {
-            Errors.RemoveError(description);
-            OnPropertyChanged(nameof(Error));
-            OnPropertyChanged(nameof(HasErrors));
-        }
-
-        public void ShowError(string description)
-        {
-            if (!string.IsNullOrEmpty(description))
-            {
-                Errors.AddError(description, true);
-                OnPropertyChanged(nameof(Error));
-                OnPropertyChanged(nameof(HasErrors));
-            }
-        }
-        public bool HasErrors => Errors.HasErrors();
-        public IErrorResultTO Errors
-        {
-            get => _selectedQueue != null ? _selectedQueue.Errors : new ErrorResultTO();
-            private set
-            {
-                if (_selectedQueue != null)
-                {
-                    _selectedQueue.Errors = value;
-                }
-
-                OnPropertyChanged(nameof(Errors));
-            }
-        }
-
-        public string Error => HasErrors ? Errors.FetchErrors()[0] : string.Empty;
         public void ClearConnectionError()
         {
             ConnectionError = string.Empty;
