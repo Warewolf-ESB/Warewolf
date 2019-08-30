@@ -64,7 +64,7 @@ namespace Dev2
         public IWriter Writer { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
-        public IQueueProcessorMonitor QueueProcessMonitor { get; set; } = new EmptyQueueProcessorMonitor();
+        public IQueueProcessorMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -81,7 +81,7 @@ namespace Dev2
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
-                QueueProcessMonitor = new QueueProcessorMonitor(new ProcessWrapperFactory(), new QueueConfigLoader(), writer)
+                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), writer)
             };
         }
     }
@@ -129,7 +129,7 @@ namespace Dev2
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             
-            _queueProcessMonitor = startupConfiguration.QueueProcessMonitor;
+            _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }

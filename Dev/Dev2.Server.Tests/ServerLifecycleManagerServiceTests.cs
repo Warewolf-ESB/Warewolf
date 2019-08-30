@@ -218,7 +218,7 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
-                QueueProcessMonitor = mockQueueProcessMonitor.Object,
+                QueueWorkerMonitor = mockQueueProcessMonitor.Object,
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
