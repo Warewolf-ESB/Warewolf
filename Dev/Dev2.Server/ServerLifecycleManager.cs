@@ -81,6 +81,7 @@ namespace Dev2
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
+                QueueProcessMonitor = new QueueProcessorMonitor(new ProcessWrapperFactory(), new QueueConfigLoader(), writer)
             };
         }
     }
