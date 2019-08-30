@@ -772,10 +772,10 @@
     <value>Edit RabbitMQ Source</value>
   </data>
   <data name="QueueSourceHelp" xml:space="preserve">
-    <value>Select the source message queue</value>
+    <value>Select the source message Queue</value>
   </data>
   <data name="DeadLetterQueueSourceHelp" xml:space="preserve">
-    <value>Select the source message dead-letter queue</value>
+    <value>Select the source message dead-letter Queue</value>
   </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
@@ -1090,7 +1090,7 @@
     <value>Schedule workflow executions</value>
   </data>
   <data name="MenuQueueEventsHelp" xml:space="preserve">
-    <value>Create queue events</value>
+    <value>Create Queue events</value>
   </data>
   <data name="MenuTasksHelp" xml:space="preserve">
     <value>Open to Schedule workflow executions or create events</value>
@@ -1132,7 +1132,7 @@
     <value>QueueNameHelp</value>
   </data>
   <data name="QueueConcurrencyHelp" xml:space="preserve">
-    <value>QueueConcurrencyHelp</value>
+    <value>Set the concurrency of the Queue</value>
   </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
@@ -1207,7 +1207,7 @@
     <value>Aknowledge will send back result from the consumer to tell 	RabbitMQ that a particular message has been received, 	processed and that RabbitMQ is free to delete it.&lt;br/&gt;</value>
   </data>
   <data name="RabbitMQHelpIsAutoDelete" xml:space="preserve">
-    <value>If set, the queue is deleted when all consumers have 	finished using it. The last consumer can be cancelled either 	explicitly or because its channel is closed. If there was no 	consumer ever on the queue, it won't be deleted. Applications 	can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;</value>
+    <value>If set, the Queue is deleted when all consumers have 	finished using it. The last consumer can be cancelled either 	explicitly or because its channel is closed. If there was no 	consumer ever on the queue, it won't be deleted. Applications 	can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;</value>
   </data>
   <data name="RabbitMQHelpIsDurable" xml:space="preserve">
     <value>When RabbitMQ source quits or crashes it will forget the queues.	Durable will prevent queues getting lost after the source is up again.&lt;br/&gt;</value>
@@ -1225,7 +1225,7 @@
     <value>Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpRequeue" xml:space="preserve">
-    <value>Marking this as True will leave the	message you consumed in the queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;</value>
+    <value>Marking this as True will leave the	message you consumed in the Queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;</value>
   </data>
   <data name="RabbitMQHelpResponse" xml:space="preserve">
     <value>Only variables go in here.	This will be the response of what you have Consumed from your Queue&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;          	&lt;ol&gt;	&lt;li&gt;[[@Scalar]]&lt;/li&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          	&lt;/ol&gt;</value>
@@ -1234,7 +1234,7 @@
     <value>Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;	&lt;br /&gt;	Allowed:	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpTimeOut" xml:space="preserve">
-    <value> The Queue might be empty when the 	Consumer makes the initial attempt to Consume the message.	Put the number of seconds you want the consumer to delay when attempting to 	consume messages from the queue.	After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;            	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value> The Queue might be empty when the Consumer makes the initial attempt to Consume the message.	Put the number of seconds you want the consumer to delay when attempting to 	consume messages from the Queue.	After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;            	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQSourceHelp" xml:space="preserve">
     <value>Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;</value>
@@ -1332,11 +1332,17 @@
   <data name="SchedulerDeleteHelpTextTrigger" xml:space="preserve">
     <value>Delete this scheduled task</value>
   </data>
+  <data name="QueueDeleteHelpTextTrigger" xml:space="preserve">
+    <value>Delete this Queue</value>
+  </data>
   <data name="SchedulerSettingsDisabledHelpTextStatus" xml:space="preserve">
     <value>Disable this scheduled task</value>
   </data>
   <data name="SchedulerSettingsEnabledHelpTextStatus" xml:space="preserve">
     <value>Enable this scheduled task</value>
+  </data>
+  <data name="QueueViewStatsHelpText" xml:space="preserve">
+    <value>Select to view Queue Stats</value>
   </data>
   <data name="SchedulerSettingsHelpTextHistoryRecords" xml:space="preserve">
     <value>To prevent redundant data being kept the system will clean up old schedule results. To specify how many results to keep, put a whole number in here.</value>
@@ -1345,6 +1351,9 @@
     <value>The name of the schedule that will appear in the list of Schedules in the left hand column.	Renaming a Schedule will lose its History.</value>
   </data>
   <data name="SchedulerSettingsHelpTextPassword" xml:space="preserve">
+    <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
+  </data>
+  <data name="QueueSettingsHelpTextPassword" xml:space="preserve">
     <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
   </data>
   <data name="SchedulerSettingsHelpTextRun" xml:space="preserve">
@@ -1362,11 +1371,29 @@
   <data name="SchedulerSettingsHelpTextUsername" xml:space="preserve">
     <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
   </data>
+  <data name="QueueSettingsHelpTextUsername" xml:space="preserve">
+    <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
+  </data>
   <data name="SchedulerSettingsHelpTextWorkFlow" xml:space="preserve">
     <value>To run a workflow on a schedule select the Trigger above and then click … to choose the workflow you want to execute.</value>
   </data>
+  <data name="QueueSettingsHelpTextWorkFlow" xml:space="preserve">
+    <value>To run a workflow in a queue select the Trigger above and then click … to choose the workflow you want to execute.</value>
+  </data>
+  <data name="QueueAddWorkflowCommandHelpText" xml:space="preserve">
+    <value>Select the workflow you want to execute.</value>
+  </data>
   <data name="SchedulerStatusAltHelpTextTrigger" xml:space="preserve">
     <value>Enables or Disables the scheduled task. Disabled schedules will not execute when their trigger is valid.</value>
+  </data>
+  <data name="QueueNameHelp" xml:space="preserve">
+    <value>Provide a name of the Queue</value>
+  </data>
+  <data name="QueueStatusAltHelpTextTrigger" xml:space="preserve">
+    <value>Enables or Disables the Queue. Disabled queues will not execute when their trigger is valid.</value>
+  </data>
+  <data name="QueueMapEntireMessageHelpTextTrigger" xml:space="preserve">
+    <value>Map the entire message</value>
   </data>
   <data name="ScriptingHelpEscapeScript" xml:space="preserve">
     <value>Your variables might contain values like '\t' or '\n' etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences.</value>
@@ -1921,10 +1948,10 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Use the Random tool to generate random numbers, letters, both or GUIDs.</value>
   </data>
   <data name="Tool_Utility_Rabbit_MQ_Publish" xml:space="preserve">
-    <value>Use the Rabbit MQ Publish tool to publish messages to a Rabbit MQ queue. The queue will be created if it does not exist.</value>
+    <value>Use the Rabbit MQ Publish tool to publish messages to a Rabbit MQ Queue. The Queue will be created if it does not exist.</value>
   </data>
   <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
-    <value>Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s queue.</value>
+    <value>Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s Queue.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">
     <value>Use the format number tool for rounding and showing decimals.</value>

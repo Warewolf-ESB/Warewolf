@@ -689,22 +689,43 @@ Returns the output of the script, if any.</value>
     <value>Schedule a service to run</value>
   </data>
   <data name="QueueEventToolTip" xml:space="preserve">
-    <value>Create a queue event to run</value>
+    <value>Create a Queue event to run</value>
   </data>
   <data name="SchedulerStatusAltTooltipTrigger" xml:space="preserve">
     <value>Enable or Disable the schedule</value>
   </data>
+  <data name="QueueStatusAltTooltipTrigger" xml:space="preserve">
+    <value>Enable or Disable the Queue</value>
+  </data>
   <data name="SchedulerSettingsToolTipWorkFlow" xml:space="preserve">
     <value>Select a workflow to be triggered</value>
+  </data>
+  <data name="QueueSettingsToolTipWorkFlow" xml:space="preserve">
+    <value>Select a Queue to be triggered</value>
   </data>
   <data name="SchedulerSettingsToolTipUsername" xml:space="preserve">
     <value>Schedule should execute as this user</value>
   </data>
+  <data name="QueueSettingsToolTipUsername" xml:space="preserve">
+    <value>Queue should execute as this user</value>
+  </data>
+  <data name="QueueAddWorkflowCommandToolTip" xml:space="preserve">
+    <value>Select the workflow to executed in the Queue</value>
+  </data>
   <data name="SchedulerSettingsToolTipRun" xml:space="preserve">
     <value>Allows a missed trigger to be executed</value>
   </data>
+  <data name="QueueMapEntireMessageTooltipTrigger" xml:space="preserve">
+    <value>Map the entire message</value>
+  </data>
+  <data name="QueueNameTooltip" xml:space="preserve">
+    <value>Provide a name of the Queue</value>
+  </data>
   <data name="SchedulerSettingsToolTipPassword" xml:space="preserve">
     <value>Schedule will use this password for the above username</value>
+  </data>
+  <data name="QueueSettingsToolTipPassword" xml:space="preserve">
+    <value>Queue will use this password for the above username</value>
   </data>
   <data name="SchedulerSettingsToolTipName" xml:space="preserve">
     <value>What name do you want to give this Schedule?</value>
@@ -714,6 +735,9 @@ Returns the output of the script, if any.</value>
   </data>
   <data name="SchedulerNewScheduleTooltipTrigger" xml:space="preserve">
     <value>Create a new scheduled task</value>
+  </data>
+  <data name="QueueNewQueueTooltipTrigger" xml:space="preserve">
+    <value>Create a new Queue</value>
   </data>
   <data name="SchedulerDeleteTooltipTrigger" xml:space="preserve">
     <value>Delete this scheduled task</value>
@@ -848,6 +872,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RandomToolTipLength" xml:space="preserve">
     <value>Determines the character length to generate.</value>
   </data>
+  <data name="QueueViewStatsToolTip" xml:space="preserve">
+    <value>Select to view Queue Stats</value>
+  </data>
   <data name="RabbitMQToolTipTimeOut" xml:space="preserve">
     <value>How long you want the Consumer to delay when checking for messages in the queue.</value>
   </data>
@@ -948,7 +975,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Select the source message queue</value>
   </data>
   <data name="QueueConcurrencyTooltip" xml:space="preserve">
-    <value>QueueConcurrencyTooltip</value>
+    <value>Set the concurrency of the queue</value>
   </data>
   <data name="DeadLetterQueueSourceTooltip" xml:space="preserve">
     <value>Select the source message dead-letter queue</value>
@@ -1039,7 +1066,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Schedule a service to run</value>
   </data>
   <data name="MenuQueueEventsToolTip" xml:space="preserve">
-    <value>Create a queue event to run</value>
+    <value>Create a Queue event to run</value>
   </data>
   <data name="MenuTasksToolTip" xml:space="preserve">
     <value>View schedules and events</value>
