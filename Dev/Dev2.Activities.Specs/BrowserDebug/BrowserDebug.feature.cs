@@ -583,6 +583,27 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a workflow always returns outputs even when error")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingAWorkflowAlwaysReturnsOutputsEvenWhenError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a workflow always returns outputs even when error", ((string[])(null)));
+#line 150
+this.ScenarioSetup(scenarioInfo);
+#line 151
+  testRunner.Given("I have a workflow \"ErrorWebResponse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 152
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ErrorWebResponse.json\" i" +
+                    "n Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 153
+  testRunner.Then("Browser content is \"\"Message\": \"\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 154
+  testRunner.Then("Browser content is not \"FatalError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
