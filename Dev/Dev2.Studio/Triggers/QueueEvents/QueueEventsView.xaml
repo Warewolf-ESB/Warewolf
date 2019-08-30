@@ -440,20 +440,7 @@
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
 
-                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                                    <TextBlock Text="Queue Stats" />
-                                    <Button Content="..."
-                                            Margin="{StaticResource ControlBorderLeft}"
-                                            Style="{StaticResource ButtonStyle}"
-                                           ToolTip="{x:Static languages:Tooltips.QueueViewStatsToolTip}"
-                                            Command="{Binding QueueStatsCommand}"
-                                            AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
-                                        <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueViewStatsHelpText}"
-                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
-                                    </Button>
-                                </StackPanel>
+                                <!-- Queue Stats -->
                             </Grid>
                             <!-- Inputs -->
                             <Grid Grid.Row="5" 
