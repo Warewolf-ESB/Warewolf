@@ -40,9 +40,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
-        Mock<IResource> _mockQueueSource;
-        Guid _queueResourceId = Guid.NewGuid();
-
         [TestInitialize]
         public void SetupForTest()
         {
@@ -77,6 +74,10 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
         private Mock<IServer> SetupForTriggerQueueView(Resource resource)
         {
+            Mock<IResource> _mockQueueSource;
+            Guid _queueResourceId = Guid.NewGuid();
+
+
             var mockServer = new Mock<IServer>();
             var mockOption = new Mock<IOption>();
             var mockInputs = new Mock<ICollection<IServiceInput>>();
@@ -178,7 +179,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var queue1 = new TriggerQueueViewForTesting(mockServer.Object);
             var queue2 = new TriggerQueueViewForTesting(mockServer.Object);
 
-            queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>()
+            queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>
             {
                 queue1,
                 queue2
