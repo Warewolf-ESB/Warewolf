@@ -50,7 +50,6 @@ namespace Dev2.Triggers.QueueEvents
         IResourceRepository _resourceRepository;
         TriggerQueueView _selectedQueue;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
-        private bool _enabled;
 
         private ObservableCollection<TriggerQueueView> _queues;
 
@@ -287,6 +286,7 @@ namespace Dev2.Triggers.QueueEvents
             {
                 if (value == null)
                 {
+                    _selectedQueue.PropertyChanged -= UpdateParentIsDirty;
                     _selectedQueue = null;
                     OnPropertyChanged(nameof(SelectedQueue));
                     return;
@@ -295,7 +295,12 @@ namespace Dev2.Triggers.QueueEvents
                 {
                     return;
                 }
+                if (_selectedQueue != null)
+                {
+                    _selectedQueue.PropertyChanged -= UpdateParentIsDirty;
+                }
                 _selectedQueue = value;
+                _selectedQueue.PropertyChanged += UpdateParentIsDirty;
                 Item = _ser.Deserialize<TriggerQueueView>(_ser.SerializeToBuilder(_selectedQueue));
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
@@ -308,6 +313,15 @@ namespace Dev2.Triggers.QueueEvents
                 }
             }
         }
+
+        private void UpdateParentIsDirty(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(IsDirty))
+            {
+                IsDirty = _selectedQueue.IsDirty;
+            }
+        }
+
         void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
@@ -339,7 +353,7 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(HasErrors));
             }
         }
-        public bool HasErrors => false;// Errors.HasErrors();
+        public bool HasErrors => Errors.HasErrors();
         public IErrorResultTO Errors
         {
             get => _selectedQueue != null ? _selectedQueue.Errors : new ErrorResultTO();

@@ -649,11 +649,8 @@ namespace Warewolf.Trigger.Queue
             equals &= _concurrency == other._concurrency;
             equals &= string.Equals(_userName, other._userName);
             equals &= string.Equals(_password, other._password);
-            //equals &= Options == other.Options;
             equals &= _queueSinkId == other._queueSinkId;
             equals &= string.Equals(_deadLetterQueue, other._deadLetterQueue);
-            //equals &= DeadLetterOptions == other.DeadLetterOptions;
-            equals &= _inputs == other._inputs;
 
             return equals;
         }
