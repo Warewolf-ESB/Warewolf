@@ -554,23 +554,16 @@
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
-                                            <MenuItem Header="Triggers"
-                                                      Style="{StaticResource MenuItemStyle}"
-                                                      Visibility="{Binding IsTriggersVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
-                                                </MenuItem.Icon>
-                                                <MenuItem Name="Schedule"
+                                            <MenuItem Name="Schedule"
 								                      Command="{Binding ScheduleCommand}"
 								                      Header="Schedule"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanCreateSchedule}"
 								                      ToolTip="{Binding ExplorerTooltips.ScheduleTooltip}"
 								                      Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <MenuItem.Icon>
-                                                        <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                </MenuItem.Icon>
                                             </MenuItem>
 
                                             <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>

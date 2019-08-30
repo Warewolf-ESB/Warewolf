@@ -317,7 +317,6 @@ namespace Dev2.Triggers
             }, () =>
             {
                 IsLoading = false;
-                SchedulerViewModel = CreateSchedulerViewModel();
                 QueueEventsViewModel = CreateQueueEventsViewModel();
 
                 AddPropertyChangedHandlers();
@@ -333,18 +332,6 @@ namespace Dev2.Triggers
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(TasksItemViewModel.IsDirtyProperty, typeof(TasksItemViewModel));
-            //TODO: I will come back to this, want to get the rest through code review
-            //if (SchedulerViewModel != null)
-            //{
-            //    isDirtyProperty.AddValueChanged(SchedulerViewModel, OnIsDirtyPropertyChanged);
-            //    SchedulerViewModel.PropertyChanged += (sender, args) =>
-            //    {
-            //        if (args.PropertyName == nameof(IsDirty))
-            //        {
-            //            OnIsDirtyPropertyChanged(null, new EventArgs());
-            //        }
-            //    };
-            //}
             if (QueueEventsViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(QueueEventsViewModel, OnIsDirtyPropertyChanged);
@@ -379,11 +366,6 @@ namespace Dev2.Triggers
             return queueEventsViewModel;
         }
 
-        private static SchedulerViewModel CreateSchedulerViewModel()
-        {
-            var schedulerViewModel = new SchedulerViewModel();
-            return schedulerViewModel;
-        }
         public bool DoDeactivate(bool showMessage)
         {
             if (showMessage)
@@ -427,8 +409,6 @@ namespace Dev2.Triggers
                         IsSaved = false;
                         IsDirty = true;
                     }
-                    //TODO: Call Scheduler Save
-                    //IsDirty = false;
                     return IsSaved;
                 }
                 ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);

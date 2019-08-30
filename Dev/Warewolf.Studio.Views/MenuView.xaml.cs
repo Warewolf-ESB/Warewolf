@@ -47,7 +47,6 @@ namespace Warewolf.Studio.Views
         private void MenuTaskButton_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (MenuTaskButton is Button menuTaskButton && !menuTaskButton.IsMouseOver ||
-                MenuSchedulerButton is Button menuSchedulerButton && !menuSchedulerButton.IsMouseOver ||
                 MenuQueueEventsButton is Button menuQueueEventsButton && !menuQueueEventsButton.IsMouseOver)
             {
                 TasksPopup.IsOpen = true;
@@ -57,7 +56,6 @@ namespace Warewolf.Studio.Views
         private void MenuTaskButton_MouseLeave(object sender, MouseEventArgs e)
         {
             if (MenuTaskButton is Button menuTaskButton && !menuTaskButton.IsMouseOver &&
-                MenuSchedulerButton is Button menuSchedulerButton && !menuSchedulerButton.IsMouseOver &&
                 MenuQueueEventsButton is Button menuQueueEventsButton && !menuQueueEventsButton.IsMouseOver)
             {
                 TasksPopup.IsOpen = false;
