@@ -428,7 +428,7 @@ namespace Dev2.Triggers
                         IsDirty = true;
                     }
                     //TODO: Call Scheduler Save
-                    IsDirty = false;
+                    //IsDirty = false;
                     return IsSaved;
                 }
                 ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);

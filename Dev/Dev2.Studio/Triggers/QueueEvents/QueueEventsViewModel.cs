@@ -88,6 +88,7 @@ namespace Dev2.Triggers.QueueEvents
             {
                 var triggerQueueView = new TriggerQueueView(_server);
                 triggerQueueView.ToModel(queue);
+                triggerQueueView.SetItem(triggerQueueView);
                 Queues.Add(triggerQueueView);
             }
         }
@@ -103,13 +104,11 @@ namespace Dev2.Triggers.QueueEvents
             if (_currentResourcePicker.ShowDialog(_server))
             {
                 var selectedResource = _currentResourcePicker.SelectedResource;
-                SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.ResourceId = selectedResource.ResourceId;
                 SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 SelectedQueue.GetInputsFromWorkflow();
             }
         }
-        public IContextualResourceModel ResourceModel { get; set; }
 
         public ObservableCollection<TriggerQueueView> Queues
         {
@@ -249,6 +248,8 @@ namespace Dev2.Triggers.QueueEvents
 
                 SelectedQueue.TriggerId = triggerId;
                 SelectedQueue.IsNewQueue = false;
+                SelectedQueue.NewQueue = false;
+                SelectedQueue.SetItem(SelectedQueue);
                 IsDirty = SelectedQueue.IsDirty;
 
                 return true;
@@ -299,7 +300,6 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
-                    OnPropertyChanged(nameof(Enabled));
                     OnPropertyChanged(nameof(Errors));
                     OnPropertyChanged(nameof(Error));
                     OnPropertyChanged(nameof(SelectedQueue.History));
@@ -321,8 +321,6 @@ namespace Dev2.Triggers.QueueEvents
             return toggle;
         }
 
-        public IServer Server { private get; set; }
-
         public TriggerQueueView Item { get; set; }
 
         public void ClearError(string description)
@@ -330,17 +328,6 @@ namespace Dev2.Triggers.QueueEvents
             Errors.RemoveError(description);
             OnPropertyChanged(nameof(Error));
             OnPropertyChanged(nameof(HasErrors));
-        }
-
-        public bool Enabled
-        {
-            get => _enabled;
-            set
-            {
-                _enabled = value;
-                OnPropertyChanged(nameof(Enabled));
-                OnPropertyChanged(nameof(IsDirty));
-            }
         }
 
         public void ShowError(string description)

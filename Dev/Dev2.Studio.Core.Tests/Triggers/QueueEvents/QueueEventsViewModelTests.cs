@@ -42,6 +42,8 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     {
         Mock<IResource> _mockQueueSource;
         Guid _queueResourceId = Guid.NewGuid();
+        Guid _workflowResourceId = Guid.NewGuid();
+        Mock<IResourcePickerDialog> _mockResourcePickerDialog;
 
         [TestInitialize]
         public void SetupForTest()
@@ -71,12 +73,23 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var mockServer = SetupForTriggerQueueView(null);
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
 
-            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            return new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockResourcePickerDialog.Object);
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(_workflowResourceId);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns("ResourcePath");
+
+            _mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            _mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+            _mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(mockServer.Object)).Returns(true);
+
+            return new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, _mockResourcePickerDialog.Object);
         }
 
         private Mock<IServer> SetupForTriggerQueueView(Resource resource)
         {
+            Mock<IResource> _mockQueueSource;
+            Guid _queueResourceId = Guid.NewGuid();
+
+
             var mockServer = new Mock<IServer>();
             var mockOption = new Mock<IOption>();
             var mockInputs = new Mock<ICollection<IServiceInput>>();
@@ -133,6 +146,12 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindAutocompleteOptions(mockServer.Object, _mockQueueSource.Object)).Returns(expectedQueueNames);            
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FetchTriggerQueues()).Returns(expectedTriggers);
 
+            var dataList = "<DataList><Name>Test</Name><Surname>test1</Surname><Person><Name>sdas</Name><Surname>asdsad</Surname></Person></DataList>";
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(resourceModel => resourceModel.DataList).Returns(dataList);
+
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.LoadContextualResourceModel(_workflowResourceId)).Returns(mockResourceModel.Object);
+
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
             return mockServer;
         }
@@ -172,13 +191,13 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
             Assert.IsNotNull(queueEventsViewModel.Queues);
-            Assert.AreEqual(1, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
             Assert.IsNull(queueEventsViewModel.SelectedQueue);
 
             var queue1 = new TriggerQueueViewForTesting(mockServer.Object);
             var queue2 = new TriggerQueueViewForTesting(mockServer.Object);
 
-            queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>()
+            queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>
             {
                 queue1,
                 queue2
@@ -202,8 +221,41 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
             queueEventsViewModel.NewCommand.Execute(null);
 
-            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
-            //TODO: Verify that one item is a new item and the other is the "Create New" item
+            Assert.AreEqual(3, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual("TestTriggerQueueName", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[0].NewQueue);
+
+            Assert.AreEqual("Queue 1 *", queueEventsViewModel.Queues[1].NameForDisplay);
+            Assert.IsTrue(queueEventsViewModel.Queues[1].NewQueue);
+
+            Assert.IsTrue(queueEventsViewModel.Queues[2].NewQueue);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_AddNew_ShouldNotAddNewItem()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueueSaveEditedTestsMessage, Warewolf.Studio.Resources.Languages.Core.TriggerQueueSaveEditedQueueHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            var queueEventsViewModel = CreateViewModel();
+
+            queueEventsViewModel.NewCommand.Execute(null);
+
+            Assert.AreEqual(3, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual("TestTriggerQueueName", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[0].NewQueue);
+
+            Assert.AreEqual("Queue 1 *", queueEventsViewModel.Queues[1].NameForDisplay);
+            Assert.IsTrue(queueEventsViewModel.Queues[1].NewQueue);
+
+            Assert.IsTrue(queueEventsViewModel.Queues[2].NewQueue);
+
+            queueEventsViewModel.NewCommand.Execute(null);
+
+            mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueueSaveEditedTestsMessage, Warewolf.Studio.Resources.Languages.Core.TriggerQueueSaveEditedQueueHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -218,12 +270,42 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             queueEventsViewModel.Queues.Add(triggerQueueView);
             queueEventsViewModel.SelectedQueue = triggerQueueView;
 
-            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual(3, queueEventsViewModel.Queues.Count);
 
             queueEventsViewModel.DeleteCommand.Execute(null);
-            Assert.AreEqual(1, queueEventsViewModel.Queues.Count);
+            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
-            //TODO: Verify that one item is the "Create New" item
+            Assert.AreEqual("TestTriggerQueueName", queueEventsViewModel.Queues[0].NameForDisplay);
+            Assert.IsFalse(queueEventsViewModel.Queues[0].NewQueue);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_AddWorkflow_ShouldDeleteSelectedItem()
+        {
+            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
+            var queueEventsViewModel = CreateViewModel();
+            var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
+
+            queueEventsViewModel.Queues.Add(triggerQueueView);
+            queueEventsViewModel.SelectedQueue = triggerQueueView;
+
+            queueEventsViewModel.AddWorkflowCommand.Execute(null);
+            Assert.AreEqual(_workflowResourceId, queueEventsViewModel.SelectedQueue.ResourceId);
+            Assert.AreEqual("ResourcePath", queueEventsViewModel.SelectedQueue.WorkflowName);
+            Assert.IsNotNull(queueEventsViewModel.SelectedQueue.Inputs);
+            Assert.AreEqual(0, queueEventsViewModel.SelectedQueue.Inputs.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_UpdateHelpDescriptor()
+        {
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.UpdateHelpDescriptor("This is a help text");
+            Assert.AreEqual("This is a help text", queueEventsViewModel.HelpText);
         }
 
         [TestMethod]
@@ -253,15 +335,14 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         {
             Uri uri = new Uri("https://www.rabbitmq.com/blog/tag/statistics/");
 
-            var mockServer = new Mock<IServer>();
-            var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
-            mockExternalProcessExecutor.Setup(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri)).Verifiable();
+            var mockServer = SetupForTriggerQueueView(null);
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
 
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object, mockExternalProcessExecutor.Object, new Mock<IResourcePickerDialog>().Object);
-
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            var queueEventsViewModel =  new QueueEventsViewModel(mockServer.Object, mockExternalExecutor.Object, mockResourcePickerDialog.Object);
             queueEventsViewModel.QueueStatsCommand.Execute(null);
 
-            mockExternalProcessExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
+            mockExternalExecutor.Verify(externalProcessExecutor => externalProcessExecutor.OpenInBrowser(uri), Times.Once);
         }
 
         [TestMethod]
