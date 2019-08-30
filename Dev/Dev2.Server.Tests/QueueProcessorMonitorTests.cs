@@ -24,7 +24,7 @@ namespace Dev2.Server.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(QueueProcessorMonitor))]
+        [TestCategory(nameof(QueueWorkerMonitor))]
         public void QueueProcessorMonitor_Start_Success()
         {
             //----------------------------Arrange-----------------------------
@@ -43,7 +43,7 @@ namespace Dev2.Server.Tests
             var worker = GlobalConstants.QueueWorkerExe;
 
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueProcessorMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object);
+            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
                         .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)

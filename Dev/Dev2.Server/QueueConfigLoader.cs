@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Dev2
 {
-    internal class QueueConfigLoader : IQueueConfigLoader
+    internal class QueueWorkerConfigLoader : IQueueConfigLoader
     {
         public IEnumerable<string> Configs
         {

@@ -18,7 +18,7 @@ using System.Threading;
 
 namespace Dev2
 {
-    public class QueueProcessorMonitor : IQueueProcessorMonitor
+    public class QueueWorkerMonitor : IQueueProcessorMonitor
     {
         private readonly IQueueConfigLoader _queueConfigLoader;
         private readonly IProcessFactory _processFactory;
@@ -27,7 +27,7 @@ namespace Dev2
         private readonly IWriter _writer;
         private bool _running;
 
-        public QueueProcessorMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, IWriter writer)
+        public QueueWorkerMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, IWriter writer)
         {
             _processFactory = processFactory;
             _queueConfigLoader = queueConfigLoader;
