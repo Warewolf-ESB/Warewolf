@@ -265,7 +265,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 executionDto.ErrorResultTO = allErrors;
 
-                return executionDto.CreateResponseWriter();
+                var executionDtoExtentions = new ExecutionDtoExtentions(executionDto);
+                return executionDtoExtentions.CreateResponseWriter(new StringResponseWriterFactory());
             }
 
             private static EsbExecuteRequest CreateEsbExecuteRequestFromWebRequest(WebRequestTO webRequest, string serviceName)

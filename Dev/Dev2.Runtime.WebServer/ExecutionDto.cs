@@ -9,13 +9,29 @@ using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
+using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
 
 namespace Dev2.Runtime.WebServer
 {
-    class ExecutionDto
+    public interface IExecutionDto
+    {
+        DataListFormat DataListFormat { get; set; }
+        Guid DataListIdGuid { get; set; }
+        IDSFDataObject DataObject { get; set; }
+        ErrorResultTO ErrorResultTO { get; set; }
+        string PayLoad { get; set; }
+        EsbExecuteRequest Request { get; set; }
+        IResource Resource { get; set; }
+        Dev2JsonSerializer Serializer { get; set; }
+        string ServiceName { get; set; }
+        WebRequestTO WebRequestTO { get; set; }
+        Guid WorkspaceID { get; set; }
+    }
+
+    public class ExecutionDto : IExecutionDto
     {
         public WebRequestTO WebRequestTO { get; set; }
         public string ServiceName { get; set; }
@@ -28,23 +44,31 @@ namespace Dev2.Runtime.WebServer
         public DataListFormat DataListFormat { get; set; }
         public Dev2JsonSerializer Serializer { get; set; }
         public ErrorResultTO ErrorResultTO { get; set; }
+
     }
 
-    static class ExecutionDtoExtentions
+    public class ExecutionDtoExtentions
     {
-        public static IResponseWriter CreateResponseWriter(this ExecutionDto dto)
+        readonly IExecutionDto _executionDto;
+
+        public ExecutionDtoExtentions(IExecutionDto executionDto)
         {
-            var dataObject = dto.DataObject;
-            var esbExecuteRequest = dto.Request;
-            var executionDlid = dto.DataListIdGuid;
-            var workspaceGuid = dto.WorkspaceID;
-            var serviceName = dto.ServiceName;
-            var resource = dto.Resource;
-            var formatter = dto.DataListFormat;
-            var executePayload = "";
-            var webRequest = dto.WebRequestTO;
-            var serializer = dto.Serializer;
-            var allErrors = dto.ErrorResultTO;
+
+            _executionDto = executionDto;
+        }
+
+        public IResponseWriter CreateResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
+        {
+            var dataObject = _executionDto.DataObject;
+            var esbExecuteRequest = _executionDto.Request;
+            var executionDlid = _executionDto.DataListIdGuid;
+            var workspaceGuid = _executionDto.WorkspaceID;
+            var serviceName = _executionDto.ServiceName;
+            var resource = _executionDto.Resource;
+            var formatter = _executionDto.DataListFormat;
+            var webRequest = _executionDto.WebRequestTO;
+            var serializer = _executionDto.Serializer;
+            var allErrors = _executionDto.ErrorResultTO;
             bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
 
             if (!dataObject.Environment.HasErrors())
@@ -54,66 +78,66 @@ namespace Dev2.Runtime.WebServer
                     dataObject.DataListID = executionDlid;
                     dataObject.WorkspaceID = workspaceGuid;
                     dataObject.ServiceName = serviceName;
-                    executePayload = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
+                    _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
                 }
                 else
                 {
-                    // internal service request we need to return data for it from the request object ;)
+                    // internal service request we need to return data for it from the request object
 
-                    executePayload = string.Empty;
+                    _executionDto.PayLoad = string.Empty;
                     var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
 
                     if (msg != null)
                     {
-                        executePayload = msg.Message.ToString();
+                        _executionDto.PayLoad = msg.Message.ToString();
                     }
 
-                    // out fail safe to return different types of data from services ;)
-                    if (string.IsNullOrEmpty(executePayload))
+                    // out fail safe to return different types of data from services
+                    if (string.IsNullOrEmpty(_executionDto.PayLoad))
                     {
-                        executePayload = esbExecuteRequest.ExecuteResult.ToString();
+                        _executionDto.PayLoad = esbExecuteRequest.ExecuteResult.ToString();
                     }
                 }
             }
             else
             {
-                executePayload = SetupErrors(dataObject, allErrors);
+                _executionDto.PayLoad = SetupErrors(dataObject, allErrors);
             }
 
             if (dataObject.Environment.HasErrors())
             {
-                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
             else
             {
-                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
             if (!dataObject.Environment.HasErrors() && wasInternalService)
             {
-                TryGetFormatter(executePayload, ref formatter);
+                TryGetFormatter(ref formatter);
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             
-            CleanUp(dto);
-            return new StringResponseWriter(executePayload, formatter.ContentType);
+            CleanUp(_executionDto);
+            return stringResponseWriterFactory.New(_executionDto.PayLoad, formatter.ContentType);
         }
 
-        static void TryGetFormatter(string executePayload, ref DataListFormat formatter)
+        void TryGetFormatter(ref DataListFormat formatter)
         {
-            if (executePayload.IsJSON())
+            if (_executionDto.PayLoad.IsJSON())
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             }
             else
             {
-                if (executePayload.IsXml())
+                if (_executionDto.PayLoad.IsXml())
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
                 }
             }
         }
 
-        static string GetExecutePayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        string GetExecutePayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug && resource?.DataList != null)
@@ -139,7 +163,7 @@ namespace Dev2.Runtime.WebServer
             return string.Empty;
         }
 
-        private static void CleanUp(ExecutionDto dto)
+        private void CleanUp(IExecutionDto dto)
         {
             dto.DataObject = null;
             dto.ErrorResultTO.ClearErrors();
@@ -147,24 +171,23 @@ namespace Dev2.Runtime.WebServer
             GC.Collect(3,GCCollectionMode.Forced,false);
         }
 
-        static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
+        string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
         {
-            string executePayload;
             if (dataObject.ReturnType == EmitionTypes.XML)
             {
-                executePayload =
+                _executionDto.PayLoad =
                     "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
-                executePayload += allErrors.MakeDataListReady();
-                executePayload += "</FatalError>";
+                _executionDto.PayLoad += allErrors.MakeDataListReady();
+                _executionDto.PayLoad += "</FatalError>"; 
             }
             else
             {
-                executePayload =
-                    "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
-                executePayload += allErrors.MakeDataListReady(false);
-                executePayload += "}";
+                _executionDto.PayLoad =
+                    "{ \"FataasdflError\": \"An internal error occurred while executing the service request\",";
+                _executionDto.PayLoad += allErrors.MakeDataListReady(false);
+                _executionDto.PayLoad += "}";
             }
-            return executePayload;
+            return _executionDto.PayLoad;
         }
 
     }

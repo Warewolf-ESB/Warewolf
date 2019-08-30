@@ -16,6 +16,7 @@ using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.WebServer;
+using Dev2.Runtime.WebServer.Responses;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -46,7 +47,8 @@ namespace Dev2.Tests.Runtime.WebServer
             executionDto.Request = new Communication.EsbExecuteRequest();
             executionDto.Request.WasInternalService = false;
 
-            executionDto.CreateResponseWriter();
+            var executionDtoExtentions = new ExecutionDtoExtentions(executionDto);
+            executionDtoExtentions.CreateResponseWriter(new StringResponseWriterFactory());
         }
 
 
