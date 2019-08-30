@@ -312,13 +312,12 @@ namespace Dev2.Triggers
 
             _asyncWorker.Start(() =>
             {
-               
+                
 
             }, () =>
             {
-                IsLoading = false;
                 QueueEventsViewModel = CreateQueueEventsViewModel();
-
+                IsLoading = false;
                 AddPropertyChangedHandlers();
             });
         }
@@ -347,16 +346,11 @@ namespace Dev2.Triggers
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            if (SchedulerViewModel != null)
-            {
-                IsDirty = SchedulerViewModel.IsDirty;
-            }
             if (QueueEventsViewModel != null)
             {
                 IsDirty = QueueEventsViewModel.IsDirty;
             }
             NotifyOfPropertyChange(() => QueueEventsHeader);
-            NotifyOfPropertyChange(() => SchedulerHeader);
             ClearErrors();
         }
 
