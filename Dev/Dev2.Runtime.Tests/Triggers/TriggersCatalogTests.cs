@@ -203,44 +203,6 @@ namespace Dev2.Tests.Runtime.Triggers
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TriggersCatalog))]
-        public void TriggersCatalog_DeleteAllTriggerQueues()
-        {
-            var source = "TestResource";
-            var queue = "TestQueueName";
-            var workflowName = "TestWorkflow";
-
-            var mockResource = new Mock<IResource>();
-            mockResource.Setup(resource => resource.ResourceName).Returns(source);
-
-            var mockTriggerQueue = new Mock<ITriggerQueue>();
-            mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
-            mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueName).Returns(queue);
-            mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
-
-            var triggerCatalog = GetTriggersCatalog();
-            var triggerQueueEvent = mockTriggerQueue.Object;
-            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
-
-
-            var path = QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
-
-            var triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
-
-            Assert.AreEqual(1, triggerQueueFiles.Count);
-            Assert.AreEqual(path, triggerQueueFiles[0]);
-
-            triggerCatalog.DeleteAllTriggerQueues();
-
-            Assert.IsFalse(Directory.Exists(QueueTriggersPath));
-
-            var newTriggerCatalog = GetTriggersCatalog();
-
-            Assert.IsTrue(Directory.Exists(QueueTriggersPath));
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
         public void TriggerCatalog_Load_ShouldLoadAllTriggerQueuesInDirectory()

@@ -53,15 +53,6 @@ namespace Dev2.Runtime.Triggers
 
         public IList<ITriggerQueue> Queues { get; set; }
 
-        public void DeleteAllTriggerQueues()
-        {
-            if (_directoryWrapper.Exists(_queueTriggersPath))
-            {
-                _directoryWrapper.Delete(_queueTriggersPath, true);
-                Queues.Clear();
-            }
-        }
-
         public void DeleteTriggerQueue(ITriggerQueue triggerQueue)
         {
             var queueFilePath = GetQueueFilePath(triggerQueue);

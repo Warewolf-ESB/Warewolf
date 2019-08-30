@@ -904,7 +904,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the source message dead-letter queue.
+        ///   Looks up a localized string similar to Select the source message dead-letter Queue.
         /// </summary>
         public static string DeadLetterQueueSourceHelp {
             get {
@@ -2057,7 +2057,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create queue events.
+        ///   Looks up a localized string similar to Create Queue events.
         /// </summary>
         public static string MenuQueueEventsHelp {
             get {
@@ -2456,7 +2456,16 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QueueConcurrencyHelp.
+        ///   Looks up a localized string similar to Select the workflow you want to execute..
+        /// </summary>
+        public static string QueueAddWorkflowCommandHelpText {
+            get {
+                return ResourceManager.GetString("QueueAddWorkflowCommandHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the concurrency of the Queue.
         /// </summary>
         public static string QueueConcurrencyHelp {
             get {
@@ -2465,7 +2474,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QueueNameHelp.
+        ///   Looks up a localized string similar to Delete this Queue.
+        /// </summary>
+        public static string QueueDeleteHelpTextTrigger {
+            get {
+                return ResourceManager.GetString("QueueDeleteHelpTextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map the entire message.
+        /// </summary>
+        public static string QueueMapEntireMessageHelpTextTrigger {
+            get {
+                return ResourceManager.GetString("QueueMapEntireMessageHelpTextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a name of the Queue.
         /// </summary>
         public static string QueueNameHelp {
             get {
@@ -2474,11 +2501,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the source message queue.
+        ///   Looks up a localized string similar to Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user..
+        /// </summary>
+        public static string QueueSettingsHelpTextPassword {
+            get {
+                return ResourceManager.GetString("QueueSettingsHelpTextPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user..
+        /// </summary>
+        public static string QueueSettingsHelpTextUsername {
+            get {
+                return ResourceManager.GetString("QueueSettingsHelpTextUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To run a workflow in a queue select the Trigger above and then click … to choose the workflow you want to execute..
+        /// </summary>
+        public static string QueueSettingsHelpTextWorkFlow {
+            get {
+                return ResourceManager.GetString("QueueSettingsHelpTextWorkFlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the source message Queue.
         /// </summary>
         public static string QueueSourceHelp {
             get {
                 return ResourceManager.GetString("QueueSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables or Disables the Queue. Disabled queues will not execute when their trigger is valid..
+        /// </summary>
+        public static string QueueStatusAltHelpTextTrigger {
+            get {
+                return ResourceManager.GetString("QueueStatusAltHelpTextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select to view Queue Stats.
+        /// </summary>
+        public static string QueueViewStatsHelpText {
+            get {
+                return ResourceManager.GetString("QueueViewStatsHelpText", resourceCulture);
             }
         }
         
@@ -2546,7 +2618,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If set, the queue is deleted when all consumers have 	finished using it. The last consumer can be cancelled either 	explicitly or because its channel is closed. If there was no 	consumer ever on the queue, it won&apos;t be deleted. Applications 	can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;.
+        ///   Looks up a localized string similar to If set, the Queue is deleted when all consumers have 	finished using it. The last consumer can be cancelled either 	explicitly or because its channel is closed. If there was no 	consumer ever on the queue, it won&apos;t be deleted. Applications 	can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpIsAutoDelete {
             get {
@@ -2600,7 +2672,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Marking this as True will leave the	message you consumed in the queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;.
+        ///   Looks up a localized string similar to Marking this as True will leave the	message you consumed in the Queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpRequeue {
             get {
@@ -2627,7 +2699,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  The Queue might be empty when the 	Consumer makes the initial attempt to Consume the message.	Put the number of seconds you want the consumer to delay when attempting to 	consume messages from the queue.	After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;            	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to  The Queue might be empty when the Consumer makes the initial attempt to Consume the message.	Put the number of seconds you want the consumer to delay when attempting to 	consume messages from the Queue.	After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;            	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpTimeOut {
             get {
@@ -4796,7 +4868,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s queue..
+        ///   Looks up a localized string similar to Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s Queue..
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Consume {
             get {
@@ -4805,7 +4877,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Rabbit MQ Publish tool to publish messages to a Rabbit MQ queue. The queue will be created if it does not exist..
+        ///   Looks up a localized string similar to Use the Rabbit MQ Publish tool to publish messages to a Rabbit MQ Queue. The Queue will be created if it does not exist..
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Publish {
             get {
