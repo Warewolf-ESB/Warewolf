@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
@@ -18,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using Warewolf.Common;
 using Warewolf.Data;
+using Warewolf.Triggers;
 
 namespace QueueWorker
 {
@@ -38,7 +40,6 @@ namespace QueueWorker
 
             var config = new WorkerContext(processArgs, resourceCatalogProxy);
 
-
             new Implementation(config).Run();
         }
 
@@ -53,7 +54,7 @@ namespace QueueWorker
 
             public void Run()
             {
-                var deadletterPublisher = _config.DeadLetterPublisher;
+                var deadletterPublisher = CreateDeadLetterPublisher();
 
                 var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.ValueKeys);
 
@@ -63,6 +64,30 @@ namespace QueueWorker
                 var queue = _config.Source;
                 var connection = queue.NewConnection();
                 connection.StartConsuming(_config.QueueConfig, requestForwarder);
+            }
+
+            private IPublisher CreateDeadLetterPublisher()
+            {
+                var deadletterPublisher = new DeadLetterPublisher(_config);
+                return deadletterPublisher;
+            }
+
+            class DeadLetterPublisher : IPublisher
+            {
+                private readonly IWorkerContext _config;
+
+                public DeadLetterPublisher(IWorkerContext config)
+                {
+                    _config = config;
+                }
+
+                public void Publish(byte[] value)
+                {
+                    var deadLetterSource = _config.DeadLetterSink;
+                    var deadLetterConnection = deadLetterSource.NewConnection();
+                    var publisher = deadLetterConnection.NewPublisher(_config.QueueConfig);
+                    publisher.Publish(value);
+                }
             }
         }
     }

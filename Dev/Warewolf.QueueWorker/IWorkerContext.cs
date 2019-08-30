@@ -20,7 +20,7 @@ namespace QueueWorker
         string WorkflowUrl { get; }
         ICollection<IServiceInput> ValueKeys { get; }
         IQueueSource Source { get; }
-        IPublisher DeadLetterPublisher { get; }
+        IQueueSource DeadLetterSink { get; }
         IQueueConfig QueueConfig { get; }
     }
 }

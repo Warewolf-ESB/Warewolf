@@ -8,9 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Triggers;
+
 namespace Warewolf.Options
 {
-    public class RabbitMqOptions
+    public class RabbitMqOptions : IQueueConfig
     {
         public RabbitMqOptions()
         {

@@ -34,19 +34,17 @@ namespace Warewolf.Common.Framework48.Tests
             Assert.AreEqual("test", resource.Password);
         }
 
-
-
-
         private static ResourceCatalogProxy GetResourceCatalog()
         {
             var environmentConnection = GetConnection(ServerURI);
             var proxy = new ResourceCatalogProxy(environmentConnection);
             return proxy;
         }
+
         private static ServerProxy GetConnection(string serverUri)
         {
             var applicationServerUri = serverUri;
-            var actualWebServerUri = new Uri(applicationServerUri);// applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+            var actualWebServerUri = new Uri(applicationServerUri);
             var environmentConnection = new ServerProxy(actualWebServerUri);
 
             Console.Write("connecting to server: " + actualWebServerUri + "...");
