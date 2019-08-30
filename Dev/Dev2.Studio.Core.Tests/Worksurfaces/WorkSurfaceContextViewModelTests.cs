@@ -59,6 +59,7 @@ namespace Dev2.Core.Tests
         public static void ClassInitialize(TestContext context)
         {
             AppUsageStats.LocalHost = "http://localhost:3142";
+            CustomContainer.Register<IServerRepository>(new Mock<IServerRepository>().Object);
         }
 
         [TestMethod]
