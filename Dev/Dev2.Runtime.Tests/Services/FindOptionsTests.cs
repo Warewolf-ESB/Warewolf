@@ -9,8 +9,11 @@
 */
 
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Serializers;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -71,15 +74,20 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(FindOptions))]
-        public void FindOptions_Execute_SelectedSource_HasResult()
+        public void FindOptions_Execute_SelectedSourceId_RabbitMq_ShouldHaveOptions()
         {
             //------------Setup for test-------------------------
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockRabbitMqSource = new Mock<IResource>();
+            mockRabbitMqSource.Setup(rr => rr.ResourceType).Returns(enSourceType.RabbitMQSource.ToString());
+            mockResourceCatalog.Setup(r => r.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockRabbitMqSource.Object);
             var findOptions = new FindOptions();
+            findOptions.ResourceCatalog = mockResourceCatalog.Object;
             var workspaceMock = new Mock<IWorkspace>();
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>
             {
-                {"SelectedSource", "Source".ToStringBuilder()}
+                {"SelectedSourceId", Guid.NewGuid().ToString().ToStringBuilder()}
             };
             var executeResults = findOptions.Execute(requestArgs, workspaceMock.Object);
             var jsonSerializer = new Dev2JsonSerializer();
@@ -87,7 +95,36 @@ namespace Dev2.Tests.Runtime.Services
             var deserializedResults = jsonSerializer.Deserialize<List<IOption>>(executeResults);
             //------------Assert Results-------------------------
             Assert.IsNotNull(deserializedResults);
-            Assert.IsTrue(deserializedResults.Count > 0);
+            Assert.AreEqual(1,deserializedResults.Count);
+            Assert.AreEqual("Durable", deserializedResults[0].Name);
+            Assert.IsInstanceOfType(deserializedResults[0], typeof(OptionBool));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(FindOptions))]
+        public void FindOptions_Execute_SelectedSourceId_NotRabbitMq_ShouldHaveEmptyResult()
+        {
+            //------------Setup for test-------------------------
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockRabbitMqSource = new Mock<IResource>();
+            mockRabbitMqSource.Setup(rr => rr.ResourceType).Returns(enSourceType.SqlDatabase.ToString());
+            mockResourceCatalog.Setup(r => r.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockRabbitMqSource.Object);
+            var findOptions = new FindOptions();
+            findOptions.ResourceCatalog = mockResourceCatalog.Object;
+            var workspaceMock = new Mock<IWorkspace>();
+            //------------Execute Test---------------------------
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                {"SelectedSourceId", Guid.NewGuid().ToString().ToStringBuilder()}
+            };
+            var executeResults = findOptions.Execute(requestArgs, workspaceMock.Object);
+            var jsonSerializer = new Dev2JsonSerializer();
+            Assert.IsNotNull(executeResults);
+            var deserializedResults = jsonSerializer.Deserialize<List<IOption>>(executeResults);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(deserializedResults);
+            Assert.AreEqual(0, deserializedResults.Count);
         }
     }
 }

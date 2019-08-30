@@ -1078,7 +1078,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return result;
             }
             var comsController = new CommunicationController { ServiceName = "FindOptions" };
-            comsController.AddPayloadArgument("SelectedSource", selectedSource.ToString());
+            comsController.AddPayloadArgument("SelectedSourceId", selectedSource.ResourceID.ToString());
             result = comsController.ExecuteCommand<List<IOption>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
