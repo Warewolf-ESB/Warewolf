@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Triggers;
 using Warewolf.Trigger.Queue;
+using System.Collections.Generic;
 
 namespace Dev2.Core.Tests.Triggers
 {
@@ -29,13 +30,19 @@ namespace Dev2.Core.Tests.Triggers
         [TestInitialize]
         public void SetupForTest()
         {
+            var mockExplorerToolTips = new Mock<IExplorerTooltips>();
             var mockShellViewModel = new Mock<IShellViewModel>();
             var mockServer = new Mock<IServer>();
+            var mockServerRepository = new Mock<IServerRepository>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
             mockServer.Setup(a => a.DisplayName).Returns("Localhost");
             mockShellViewModel.Setup(x => x.LocalhostServer).Returns(mockServer.Object);
-
+            mockServerRepository.Setup(sr => sr.All()).Returns(new List<IServer>());
+            mockServer.Setup(s => s.ResourceRepository).Returns(mockResourceRepository.Object);
+            CustomContainer.Register(mockServerRepository.Object);
             CustomContainer.Register(mockShellViewModel.Object);
             CustomContainer.Register(new Mock<IEventAggregator>().Object);
+            CustomContainer.Register(mockExplorerToolTips.Object);
         }
 
         [TestMethod]
@@ -141,54 +148,13 @@ namespace Dev2.Core.Tests.Triggers
         [TestCategory(nameof(TriggersViewModel))]
         public void TriggersViewModel_NewQueueEventCommand()
         {
-            var foregroundWorkWasCalled = false;
 
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockPopupController = new Mock<IPopupController>();
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
-            var asyncWorker = new SynchronousAsyncWorker();
-            asyncWorker.Start(() => { },
-                () =>
-                {
-                    foregroundWorkWasCalled = true;
-                });
+            var triggersViewModel = CreateTriggerViewModel();
+            triggersViewModel.NewQueueEventCommand.Execute(null);
 
-            var mockServer = new Mock<IServer>();
-
-            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
-            triggersViewModel.QueueEventsViewModel.Queues = new System.Collections.ObjectModel.ObservableCollection<TriggerQueueView>();
-            triggersViewModel.NewScheduleCommand.Execute(null);
-
-            Assert.IsTrue(foregroundWorkWasCalled);
-            Assert.AreEqual(1, triggersViewModel.QueueEventsViewModel.Queues.Count);
+            Assert.AreEqual(2, triggersViewModel.QueueEventsViewModel.Queues.Count); // The other item is the 'New Queue' item
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(TriggersViewModel))]
-        public void TriggersViewModel_NewScheduleCommand()
-        {
-            var foregroundWorkWasCalled = false;
-
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockPopupController = new Mock<IPopupController>();
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
-            var asyncWorker = new SynchronousAsyncWorker();
-            asyncWorker.Start(() => { },
-                () =>
-                {
-                    foregroundWorkWasCalled = true;
-                });
-
-            var mockServer = new Mock<IServer>();
-
-            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a => new Mock<IServer>().Object);
-            //  tasksViewModel.SchedulerViewModel.SelectedTask = new System.Collections.ObjectModel.ObservableCollection<string>();
-            triggersViewModel.NewScheduleCommand.Execute(null);
-
-            Assert.IsTrue(foregroundWorkWasCalled);
-            Assert.AreEqual(1, triggersViewModel.QueueEventsViewModel.Queues.Count);
-        }
-
+       
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
@@ -248,13 +214,12 @@ namespace Dev2.Core.Tests.Triggers
             mockPopupController.Verify(popupController => popupController.ShowSaveSettingsPermissionsErrorMsg(), Times.Once);
         }
 
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TriggersViewModel))]
-        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Expect_True()
+        public TriggersViewModel CreateTriggerViewModel()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(r => r.FetchTriggerQueues()).Returns(new List<ITriggerQueue>());
             var mockAsyncWorker = new Mock<IAsyncWorker>();
             var mockServer = new Mock<IServer>();
             mockServer.Setup(server => server.DisplayName).Returns("TestServer");
@@ -266,26 +231,61 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
+            mockEnvironment.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironment.Object);
             CustomContainer.Register(mockShellViewModel.Object);
 
-            var mockServerRepository = new Mock<IServerRepository>();
-            CustomContainer.Register(mockServerRepository.Object);
+
 
             var asyncWorker = new SynchronousAsyncWorker();
-            asyncWorker.Start(() => { },
-                () =>
-                {
-                    
-                });
-
             var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
             {
                 return mockEnvironment.Object;
             });
+            return triggersViewModel;
+        }
 
+        public TriggersViewModel CreateTriggerViewModel(IPopupController popupController)
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(r => r.FetchTriggerQueues()).Returns(new List<ITriggerQueue>());
+            var mockAsyncWorker = new Mock<IAsyncWorker>();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
+
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
+
+            var mockEnvironment = new Mock<IServer>();
+            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
+            mockEnvironment.Setup(server => server.IsConnected).Returns(true);
+            mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
+            mockEnvironment.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironment.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+
+
+            var asyncWorker = new SynchronousAsyncWorker();
+            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, popupController, asyncWorker, mockServer.Object, a =>
+            {
+                return mockEnvironment.Object;
+            });
+            return triggersViewModel;
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersViewModel))]
+        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Expect_True()
+        {
+
+            var triggersViewModel = CreateTriggerViewModel();
             var value = triggersViewModel.DoDeactivate(false);
             Assert.IsTrue(value);
         }
@@ -295,28 +295,9 @@ namespace Dev2.Core.Tests.Triggers
         [TestCategory(nameof(TriggersViewModel))]
         public void TriggersViewModel_DoDeactivate_ShowMessage_True_Cancel_MessageBox_Expect_False()
         {
-            var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(popupController => popupController.ShowTasksCloseConfirmation()).Returns(System.Windows.MessageBoxResult.Cancel);
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
-            var mockServer = new Mock<IServer>();
-            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
-
-            var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
-
-            var mockEnvironment = new Mock<IServer>();
-            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
-            mockEnvironment.Setup(server => server.IsConnected).Returns(true);
-            mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
-
-            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
-            {
-                return mockEnvironment.Object;
-            })
-            {
-                IsDirty = true
-            };
+            var triggersViewModel = CreateTriggerViewModel(mockPopupController.Object);
+            triggersViewModel.IsDirty = true;
 
             var value = triggersViewModel.DoDeactivate(true);
             Assert.IsFalse(value);
@@ -328,107 +309,15 @@ namespace Dev2.Core.Tests.Triggers
         [TestCategory(nameof(TriggersViewModel))]
         public void TriggersViewModel_DoDeactivate_ShowMessage_True_None_MessageBox_Expect_False()
         {
-            var mockEventAggregator = new Mock<IEventAggregator>();
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(popupController => popupController.ShowTasksCloseConfirmation()).Returns(System.Windows.MessageBoxResult.None);
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
-            var mockServer = new Mock<IServer>();
-            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
-
-            var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
-
-            var mockEnvironment = new Mock<IServer>();
-            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
-            mockEnvironment.Setup(server => server.IsConnected).Returns(true);
-            mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
-
-            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
-            {
-                return mockEnvironment.Object;
-            })
-            {
-                IsDirty = true
-            };
+            var triggersViewModel = CreateTriggerViewModel(mockPopupController.Object);
+            triggersViewModel.IsDirty = true;
 
             var value = triggersViewModel.DoDeactivate(true);
             Assert.IsFalse(value);
             mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
         }
 
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TriggersViewModel))]
-        public void TriggersViewModel_DoDeactivate_ShowMessage_True_No_MessageBox_Expect_False()
-        {
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(popupController => popupController.ShowTasksCloseConfirmation()).Returns(System.Windows.MessageBoxResult.No);
 
-            var asyncWorker = new SynchronousAsyncWorker();
-            asyncWorker.Start(() => { }, () => { });
-
-            var mockServer = new Mock<IServer>();
-            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
-
-            var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
-
-            var mockEnvironment = new Mock<IServer>();
-            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
-            mockEnvironment.Setup(server => server.IsConnected).Returns(true);
-            mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
-
-            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, asyncWorker, mockServer.Object, a =>
-            {
-                return mockEnvironment.Object;
-            })
-            {
-                IsDirty = true
-            };
-
-            var value = triggersViewModel.DoDeactivate(true);
-            Assert.IsTrue(value);
-            Assert.IsFalse(triggersViewModel.IsDirty);
-            Assert.IsFalse(triggersViewModel.QueueEventsViewModel.IsDirty);
-            mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TriggersViewModel))]
-        public void TriggersViewModel_DoDeactivate_ShowMessage_True_Yes_MessageBox_Expect_False()
-        {
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(popupController => popupController.ShowTasksCloseConfirmation()).Returns(System.Windows.MessageBoxResult.Yes);
-            var mockAsyncWorker = new Mock<IAsyncWorker>();
-            var mockServer = new Mock<IServer>();
-            mockServer.Setup(server => server.DisplayName).Returns("TestServer");
-
-            var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
-
-            var mockEnvironment = new Mock<IServer>();
-            mockEnvironment.Setup(server => server.DisplayName).Returns("TestEnvironment");
-            mockEnvironment.Setup(server => server.IsConnected).Returns(true);
-            mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
-
-            var triggersViewModel = new TriggersViewModel(mockEventAggregator.Object, mockPopupController.Object, mockAsyncWorker.Object, mockServer.Object, a =>
-            {
-                return mockEnvironment.Object;
-            })
-            {
-                IsDirty = true
-            };
-
-            var value = triggersViewModel.DoDeactivate(true);
-            Assert.IsTrue(value);
-            Assert.IsFalse(triggersViewModel.IsDirty);
-            Assert.IsTrue(triggersViewModel.IsSaved);
-            Assert.IsTrue(triggersViewModel.IsSavedSuccessVisible);
-            Assert.IsFalse(triggersViewModel.IsErrorsVisible);
-            mockPopupController.Verify(popupController => popupController.ShowTasksCloseConfirmation(), Times.Once);
-        }
     }
 }

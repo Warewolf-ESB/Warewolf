@@ -228,6 +228,10 @@ namespace Dev2.Triggers.QueueEvents
 
         public bool Save()
         {
+            if (SelectedQueue == null)
+            {
+                return true;
+            }
             try
             {
                 if (SelectedQueue.QueueSourceId == Guid.Empty)
@@ -286,7 +290,10 @@ namespace Dev2.Triggers.QueueEvents
             {
                 if (value == null)
                 {
-                    _selectedQueue.PropertyChanged -= UpdateParentIsDirty;
+                    if (_selectedQueue != null)
+                    {
+                        _selectedQueue.PropertyChanged -= UpdateParentIsDirty;
+                    }
                     _selectedQueue = null;
                     OnPropertyChanged(nameof(SelectedQueue));
                     return;
