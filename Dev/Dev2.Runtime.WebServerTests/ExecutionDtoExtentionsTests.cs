@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Net.Http;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -260,6 +259,39 @@ namespace Dev2.Runtime.WebServerTests
 
             //-------------------------------Assert-----------------------------------
             Assert.AreEqual(expected: esbExecuteRequest, actual: executionDto.PayLoad);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionDtoExtentions))]
+        public void ExecutionDtoExtentions_CreateResponseWriter_WasInternalService_And_ExecuteMessageXML_PayLoadIsNullOrEmpty_Success()
+        {
+            //-------------------------------Arrange----------------------------------
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+
+            mockDSFDataObject.Setup(o => o.Environment.HasErrors()).Returns(false);
+
+            var esbExecuteRequestMessage = "<xml>test message</xml>";
+
+            var jsonSerializer = new Dev2JsonSerializer();
+            var serExecuteMessage = jsonSerializer.Serialize(esbExecuteRequestMessage);
+
+            var executionDto = new ExecutionDto
+            {
+                DataObject = mockDSFDataObject.Object,
+                DataListFormat = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "application/xml"),
+                ErrorResultTO = new ErrorResultTO(),
+                Request = new EsbExecuteRequest { WasInternalService = true, ExecuteResult = new StringBuilder(serExecuteMessage) },
+                Serializer = jsonSerializer,
+            };
+
+            var executionDtoExtentions = new ExecutionDtoExtentions(executionDto);
+
+            //-------------------------------Act--------------------------------------
+            executionDtoExtentions.CreateResponseWriter(new StringResponseWriterFactory());
+
+            //-------------------------------Assert-----------------------------------
+            Assert.AreEqual(expected: "\"<xml>test message</xml>\"", actual: executionDto.PayLoad);
         }
 
     }

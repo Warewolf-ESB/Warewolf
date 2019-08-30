@@ -1,5 +1,15 @@
 #pragma warning disable
-﻿using System;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Runtime;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -53,7 +63,6 @@ namespace Dev2.Runtime.WebServer
 
         public ExecutionDtoExtentions(IExecutionDto executionDto)
         {
-
             _executionDto = executionDto;
         }
 
@@ -71,37 +80,29 @@ namespace Dev2.Runtime.WebServer
             var allErrors = _executionDto.ErrorResultTO;
             bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
 
-            if (!dataObject.Environment.HasErrors())
+            if (!wasInternalService)
             {
-                if (!wasInternalService)
-                {
-                    dataObject.DataListID = executionDlid;
-                    dataObject.WorkspaceID = workspaceGuid;
-                    dataObject.ServiceName = serviceName;
-                    _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
-                }
-                else
-                {
-                    // internal service request we need to return data for it from the request object
-
-                    _executionDto.PayLoad = string.Empty;
-                    var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
-
-                    if (msg != null)
-                    {
-                        _executionDto.PayLoad = msg.Message.ToString();
-                    }
-
-                    // out fail safe to return different types of data from services
-                    if (string.IsNullOrEmpty(_executionDto.PayLoad))
-                    {
-                        _executionDto.PayLoad = esbExecuteRequest.ExecuteResult.ToString();
-                    }
-                }
+                dataObject.DataListID = executionDlid;
+                dataObject.WorkspaceID = workspaceGuid;
+                dataObject.ServiceName = serviceName;
+                _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
             }
             else
             {
-                _executionDto.PayLoad = SetupErrors(dataObject, allErrors);
+                // internal service request we need to return data for it from the request object
+                _executionDto.PayLoad = string.Empty;
+                var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
+
+                if (msg != null)
+                {
+                    _executionDto.PayLoad = msg.Message.ToString();
+                }
+
+                // out fail safe to return different types of data from services
+                if (string.IsNullOrEmpty(_executionDto.PayLoad))
+                {
+                    _executionDto.PayLoad = esbExecuteRequest.ExecuteResult.ToString();
+                }
             }
 
             if (dataObject.Environment.HasErrors())
@@ -169,25 +170,6 @@ namespace Dev2.Runtime.WebServer
             dto.ErrorResultTO.ClearErrors();
             GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             GC.Collect(3,GCCollectionMode.Forced,false);
-        }
-
-        string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
-        {
-            if (dataObject.ReturnType == EmitionTypes.XML)
-            {
-                _executionDto.PayLoad =
-                    "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
-                _executionDto.PayLoad += allErrors.MakeDataListReady();
-                _executionDto.PayLoad += "</FatalError>"; 
-            }
-            else
-            {
-                _executionDto.PayLoad =
-                    "{ \"FataasdflError\": \"An internal error occurred while executing the service request\",";
-                _executionDto.PayLoad += allErrors.MakeDataListReady(false);
-                _executionDto.PayLoad += "}";
-            }
-            return _executionDto.PayLoad;
         }
 
     }
