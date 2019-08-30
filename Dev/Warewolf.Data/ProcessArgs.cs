@@ -12,11 +12,11 @@ namespace Warewolf.Data
 {
     public interface IArgs
     {
-        string Filename { get; }
+        string TriggerId { get; }
     }
     public class Args : IArgs
     {
-        public string Filename { get; set; }
+        public string TriggerId { get; set; }
     }
     public static class CommandLine
     {
@@ -42,7 +42,14 @@ namespace Warewolf.Data
 
             if (arg == "c")
             {
-                args.Filename = value;
+                if (value.Length >= 3 && value[0] == '\'')
+                {
+                    args.TriggerId = value.Substring(1, value.Length-2);
+                }
+                else
+                {
+                    args.TriggerId = value;
+                }
             }
         }
     }

@@ -30,7 +30,8 @@ namespace QueueWorker
         public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy)
         {
             var catalog = TriggersCatalog.Instance;
-            _triggerQueue = catalog.LoadQueueTriggerFromFile(processArgs.Filename);
+            var path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
+            _triggerQueue = catalog.LoadQueueTriggerFromFile(path);
             _resourceCatalogProxy = resourceCatalogProxy;
         }
 

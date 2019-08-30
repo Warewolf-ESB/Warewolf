@@ -28,7 +28,7 @@ namespace Warewolf.Data.Tests
             //-----------------------------Act---------------------------------
             var processArgs = CommandLine.ParseArguments(args: args);
             //-----------------------------Assert------------------------------
-            Assert.AreEqual(filename, processArgs.Filename);
+            Assert.AreEqual(filename, processArgs.TriggerId);
         }
     }
 }
