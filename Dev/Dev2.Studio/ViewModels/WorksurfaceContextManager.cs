@@ -1201,8 +1201,12 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSchedulerWorkSurface()
         {
-            var vm = AddTriggersWorkSurface();
-            vm.IsSchedulerSelected = true;
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
+            }
+            ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
         public void AddQueuesWorkSurface()
