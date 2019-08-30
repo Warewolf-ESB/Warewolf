@@ -39,7 +39,14 @@ namespace Dev2
             _running = true;
             foreach (var config in _queueConfigLoader.Configs)
             {
-                var thread = new Thread(()=> Start(config));
+                var thread = new Thread(() =>
+                {
+                    try
+                    {
+                        Start(config);
+                    }
+                    catch { }
+                    });
                 thread.Start();
                 _processes.Add((thread, config));
             }
@@ -75,7 +82,12 @@ namespace Dev2
                 {
                     if (!process.Thread.IsAlive)
                     {
-                        var thread = new Thread(() => Start(process.Name));
+                        var thread = new Thread(() => {
+                            try
+                            {
+                                Start(process.Name);
+                            } catch { }
+                        });
                         thread.Start();
 
                         _processes.Remove(process);
