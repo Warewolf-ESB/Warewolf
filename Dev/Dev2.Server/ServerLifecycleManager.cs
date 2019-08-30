@@ -150,9 +150,9 @@ namespace Dev2
         /// </summary>
         /// <param name="initWorkers">Initilization Workers</param>
         /// <returns>A Task that starts up the Warewolf Server.</returns>
-        public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
+        public async Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            return Task.Run(() =>
+            await Task.Run(() =>
             {
                 LoadPerformanceCounters();
 
