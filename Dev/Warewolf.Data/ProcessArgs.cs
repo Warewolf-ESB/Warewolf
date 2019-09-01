@@ -13,10 +13,12 @@ namespace Warewolf.Data
     public interface IArgs
     {
         string TriggerId { get; }
+        bool ShowConsole { get; }
     }
     public class Args : IArgs
     {
         public string TriggerId { get; set; }
+        public bool ShowConsole { get; set; } = true; // TODO: remove default to true
     }
     public static class CommandLine
     {
@@ -50,6 +52,11 @@ namespace Warewolf.Data
                 {
                     args.TriggerId = value;
                 }
+            }
+
+            if (arg == "v")
+            {
+                args.ShowConsole = true;
             }
         }
     }
