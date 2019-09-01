@@ -22,14 +22,17 @@ namespace QueueWorker
         public static void Main(string[] args)
         {
             var processArgs = CommandLine.ParseArguments(args);
-
+            if (processArgs.ShowConsole)
+            {
+                _ = new ConsoleWindow();
+            }
             var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
             var actualWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
             var environmentConnection = new ServerProxy(actualWebServerUri);
 
             Console.Write("connecting to server: " + actualWebServerUri + "...");
             environmentConnection.Connect(Guid.Empty);
-
+            Console.WriteLine("done.");
             var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
 
             var config = new WorkerContext(processArgs, resourceCatalogProxy);
@@ -52,10 +55,11 @@ namespace QueueWorker
 
                 var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.ValueKeys);
 
-                Console.WriteLine("Starting: {_config.HostName} Queue: {_config.QueueName}");
-                Console.WriteLine("Workflow: {_config.WorkflowUrl} ValueKey: {_config.ValueKey}");
-
                 var queue = _config.Source;
+
+                Console.WriteLine($"Starting listening: {queue.ResourceName} Queue: {_config.QueueName}");
+                Console.WriteLine($"Workflow: {_config.WorkflowUrl} Inputs: {_config.Inputs}");
+
                 var connection = queue.NewConnection();
                 connection.StartConsuming(_config.QueueConfig, requestForwarder);
             }

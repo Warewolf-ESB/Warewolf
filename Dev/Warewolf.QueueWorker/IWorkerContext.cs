@@ -22,5 +22,8 @@ namespace QueueWorker
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
         IQueueConfig QueueConfig { get; }
+        string HostName { get; }
+        string QueueName { get; }
+        string Inputs { get; }
     }
 }

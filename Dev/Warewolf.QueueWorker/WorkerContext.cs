@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using Warewolf.Common;
 using Warewolf.Data;
@@ -79,6 +80,10 @@ namespace QueueWorker
                 return result;
             }
         }
+
+        public string HostName { get => Source.ResourceName; }
+        public string QueueName { get => _triggerQueue.QueueName; }
+        public string Inputs { get => JsonConvert.SerializeObject(_triggerQueue.Inputs); }
 
         private static T OptionTo<T>(IOption[] options) where T : new()
         {
