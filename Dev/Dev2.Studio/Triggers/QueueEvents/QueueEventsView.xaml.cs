@@ -8,6 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Windows.Controls;
+using Warewolf.Trigger.Queue;
+
 namespace Dev2.Triggers.QueueEvents
 {
     /// <summary>
@@ -18,6 +21,24 @@ namespace Dev2.Triggers.QueueEvents
         public QueueEventsView()
         {
             InitializeComponent();
+        }
+
+        private void DeleteQueueButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                var queueEventsViewModel = DataContext as QueueEventsViewModel;
+                queueEventsViewModel.SelectedQueue = button.DataContext as TriggerQueueView;
+            }
+        }
+
+        private void CheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox)
+            {
+                var queueEventsViewModel = DataContext as QueueEventsViewModel;
+                queueEventsViewModel.SelectedQueue = checkBox.DataContext as TriggerQueueView;
+            }
         }
     }
 }
