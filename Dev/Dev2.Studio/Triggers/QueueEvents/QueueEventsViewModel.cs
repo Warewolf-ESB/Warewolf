@@ -199,8 +199,12 @@ namespace Dev2.Triggers.QueueEvents
         {
             try
             {
-                var triggerQueue = AsTriggerQueueModel();
-                _resourceRepository.DeleteQueue(triggerQueue);
+                if (!SelectedQueue.IsNewQueue)
+                {
+                    var triggerQueue = AsTriggerQueueModel();
+                    _resourceRepository.DeleteQueue(triggerQueue);
+                }
+                
                 Queues.Remove(SelectedQueue);
                 SelectedQueue = null;
                 IsDirty = false;

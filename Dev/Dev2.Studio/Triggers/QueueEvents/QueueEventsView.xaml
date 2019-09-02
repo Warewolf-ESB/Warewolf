@@ -95,6 +95,7 @@
                                               Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
                                               ToolTip="{x:Static languages:Tooltips.QueueStatusAltTooltipTrigger}"
+                                              Checked="CheckBox_Checked"
                                               IsChecked="{Binding Enabled}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.QueueStatusAltHelpTextTrigger}"
@@ -110,8 +111,10 @@
                                                Margin="0,0,0,-4" 
                                                FontWeight="Bold" />
                                     <Button Grid.Column="2" 
+                                            x:Name="DeleteQueueButton"
                                             VerticalAlignment="Stretch" 
-                                            HorizontalAlignment="Right" 
+                                            HorizontalAlignment="Right"
+                                            Click="DeleteQueueButton_Click"
                                             Command="{Binding ElementName=TriggerQueues, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
                                             IsEnabled="{Binding Enabled}"
                                             Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
