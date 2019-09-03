@@ -45,7 +45,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	And First Remote Server has loaded
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	And I Refresh Explorer
-	Then First remote Item should be "ResourceToDeployInADifferentPath"
+	Then First remote Item should exist
 
 Scenario: Changing Selected Server On Deploy Source While Connected To Remote Server On the Explorer
 	Given The Warewolf Studio is running

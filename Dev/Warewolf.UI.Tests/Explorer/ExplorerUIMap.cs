@@ -67,12 +67,17 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Filter_Explorer("Hello World");
         }
 
-        [Given(@"First remote Item should be ""(.*)""")]
-        [When(@"First remote Item should be ""(.*)""")]
-        [Then(@"First remote Item should be ""(.*)""")]
-        public void FirstRemoteItemShouldBe(string resource)
+        [Given(@"First remote Item should exist")]
+        [When(@"First remote Item should exist")]
+        [Then(@"First remote Item should exist")]
+        public void FirstRemoteItemShouldBe()
         {
-            Assert.AreEqual(resource, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text);
+            if (!MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Exists)
+            {
+                Click_Explorer_Refresh_Button();
+                MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.WaitForControlExist(10000);
+            }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Exists, "No first item on remote server.");
         }
 
         public void Select_Source_From_ExplorerContextMenu(String sourceName)
