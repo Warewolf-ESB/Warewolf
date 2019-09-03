@@ -166,5 +166,50 @@ namespace Dev2.Data.Tests.ServiceModel
                 Assert.IsTrue(rabbitConnection.IsOpen);
             }
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RabbitMQSource))]
+        public void RabbitMQSource_NewConnection_GivenNoArgConstructor_ConnectionSuccess()
+        {
+            //-------------------------------Arrange-----------------------------
+            //const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Rabbit MQ Source"" ResourceType=""RabbitMQSource"" IsValid=""false"" 
+            //                                   ConnectionString=""HostName=rsaklfsvrdev.dev2.local;Port=;UserName=test;Password=test;VirtualHost=/"" Type=""RabbitMQSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
+            //                              <DisplayName>Example Rabbit MQ Source</DisplayName>
+            //                              <AuthorRoles>
+            //                              </AuthorRoles>
+            //                              <ErrorMessages />
+            //                              <TypeOf>RabbitMQSource</TypeOf>
+            //                              <VersionInfo DateTimeStamp=""2017-05-26T14:21:24.3247847+02:00"" Reason="""" User=""NT AUTHORITY\SYSTEM"" VersionNumber=""3"" ResourceId=""1a82a341-b678-4992-a25a-39cdd57198d4"" VersionId=""b1a6de00-3cac-41cd-b0ed-9fac9bb61266"" />
+            //                            </Source>";
+            var port = 5672;
+            var hostName = "rsaklfsvrdev.dev2.local";
+            var userName = "test";
+            var password = "test";
+            var virtualHost = "/";
+
+            var rabbitMqSource = new RabbitMQSource
+            {
+                HostName = hostName,
+                UserName = userName,
+                Password = password,
+                Port = port,
+                VirtualHost = virtualHost,
+            };
+            //----------------------Pre-Assert---------------------------------
+            Assert.AreEqual(nameof(RabbitMQSource), rabbitMqSource.ResourceType);
+            Assert.AreEqual(5672, rabbitMqSource.Port);
+            Assert.AreEqual("rsaklfsvrdev.dev2.local", rabbitMqSource.HostName);
+            Assert.AreEqual("test", rabbitMqSource.UserName);
+            Assert.AreEqual("test", rabbitMqSource.Password);
+            Assert.AreEqual("/", rabbitMqSource.VirtualHost);
+
+            //-------------------------------Act---------------------------------
+            using (var rabbitConnection = rabbitMqSource.NewConnection())
+            {
+                //-------------------------------Assert------------------------------
+                Assert.IsTrue(rabbitConnection.IsOpen);
+            }
+        }
     }
 }
