@@ -84,7 +84,7 @@ namespace QueueWorker
         public string HostName { get => Source.ResourceName; }
         public string QueueName { get => _triggerQueue.QueueName; }
         public string Inputs { get => JsonConvert.SerializeObject(_triggerQueue.Inputs); }
-
+        
         private static T OptionTo<T>(IOption[] options) where T : new()
         {
             var result = new T();
@@ -106,11 +106,11 @@ namespace QueueWorker
                     }
                     else if (option is IOptionAutocomplete optionAutocomplete)
                     {
-                        p.SetValue(result, optionAutocomplete);
+                        p.SetValue(result, optionAutocomplete.Value);
                     }
                     else if (option is IOptionBool optionBool)
                     {
-                        p.SetValue(result, optionBool);
+                        p.SetValue(result, optionBool.Value);
                     }
                 }
             }
