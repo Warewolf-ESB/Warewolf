@@ -59,7 +59,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
-            <CheckBox Grid.Column="1" IsChecked="{Binding Path=Value}" Margin="-6,0,0,0" >
+            <CheckBox Grid.Column="1" IsChecked="{Binding Path=DataContext.Value}" Margin="-6,0,0,0" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -96,7 +96,7 @@
                                       FilterMode="Contains"
                                       ValueMemberPath="Value" 
                                       ItemsSource="{Binding Path=Suggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource AutoCompleteBoxStyle}" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
