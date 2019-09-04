@@ -9,13 +9,13 @@
 */
 
 
-using System;
-
 namespace Warewolf.Common.Framework48
 {
-    public interface ILogConnection : IDisposable
+    public interface ILoggerPublisher
     {
-        IWarewolfLogConfig WriteTo { get; }
-        bool IsSuccessful { get; }
+        void Info(string outputTemplate);
+        void Warn(string outputTemplate);
+        void Error(string outputTemplate);
+        void Fatal(string outputTemplate);
     }
 }

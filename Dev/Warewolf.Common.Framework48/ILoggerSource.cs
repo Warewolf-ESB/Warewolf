@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+
 namespace Warewolf.Common.Framework48
 {
-    public interface IWarewolfLogConfig
+    public interface ILoggerSource
     {
-        void File(string fileName);
+        ILoggerConnection NewConnection(ILoggerConfig loggerConfig);
     }
-
 }
