@@ -27,9 +27,10 @@ namespace Warewolf.Logger
         public bool Verbose { get; set; }
         public LoggerContext(string[] args)
         {
+            Errors = new List<Error>();
             var processArgs = Parser.Default.ParseArguments<Options>(args)
-                    .WithParsed<Options>(opts => IsVerbose(opts))
-                    .WithNotParsed<Options>((errs) => HandleParseError(errs));
+                 .WithParsed<Options>(opts => IsVerbose(opts))
+                 .WithNotParsed<Options>((errs) => HandleParseError(errs));
 
         }
 
@@ -51,8 +52,6 @@ namespace Warewolf.Logger
         {
             Console.WriteLine("Command Line parameters provided were not valid!");
             Errors = errs;
-
-            //Environment.Exit(1); //TODO: Removed for now as I am not sure how test just yet
         }
     }
 }
