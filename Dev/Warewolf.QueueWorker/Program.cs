@@ -8,43 +8,61 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using CommandLine;
 using Dev2.Network;
 using Dev2.Util;
 using System;
 using Warewolf.Common;
-using Warewolf.Data;
 using Warewolf.Triggers;
 
 namespace QueueWorker
 {
-    public class Program
+    public static class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            var processArgs = CommandLineParser.ParseArguments<Args>(args);
-            if (processArgs.ShowConsole)
-            {
-                _ = new ConsoleWindow();
-            }
-            var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
-            var actualWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
-            var environmentConnection = new ServerProxy(actualWebServerUri);
-
-            Console.Write("connecting to server: " + actualWebServerUri + "...");
-            environmentConnection.Connect(Guid.Empty);
-            Console.WriteLine("done.");
-            var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
-
-            var config = new WorkerContext(processArgs, resourceCatalogProxy);
-
-            new Implementation(config).Run();
+            var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
+            return result.MapResult(
+                options => new Implementation(options).Run(),
+                _ => 1);
         }
 
-        private class Implementation
+        internal class Implementation
+        {
+            private readonly Args _options;
+
+            public Implementation(Args options)
+            {
+                this._options = options;
+            }
+            public int Run()
+            {
+                if (_options.ShowConsole)
+                {
+                    _ = new ConsoleWindow();
+                }
+                var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
+                var actualWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+                var environmentConnection = new ServerProxy(actualWebServerUri);
+
+                Console.Write("connecting to server: " + actualWebServerUri + "...");
+                environmentConnection.Connect(Guid.Empty);
+                Console.WriteLine("done.");
+                var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
+
+                var config = new WorkerContext(_options, resourceCatalogProxy);
+
+                new QueueWorkerImplementation(config).Run();
+
+                return 0;
+            }
+        }
+
+        private class QueueWorkerImplementation
         {
             private readonly IWorkerContext _config;
 
-            public Implementation(IWorkerContext config)
+            public QueueWorkerImplementation(IWorkerContext config)
             {
                 _config = config;
             }
