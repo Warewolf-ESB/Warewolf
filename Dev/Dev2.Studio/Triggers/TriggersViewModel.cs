@@ -27,6 +27,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Triggers.QueueEvents;
 using Dev2.Triggers.Scheduler;
 using Dev2.Threading;
+using System.Linq;
 
 namespace Dev2.Triggers
 {
@@ -66,17 +67,39 @@ namespace Dev2.Triggers
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
 
-            SaveCommand = new RelayCommand(o => SaveTriggers(), o => IsDirty);
+            SaveCommand = new RelayCommand(o => SaveTriggers(), o =>
+            {
+                return IsSaveEnabled();
+            });
 
             ToEnvironmentModel = toEnvironmentModel ?? (a => a.ToEnvironmentModel());
             CurrentEnvironment = ToEnvironmentModel?.Invoke(server);
-            LoadTasks();
             DisplayName = StringResources.TriggersHeader + " - " + Server.DisplayName;
+            LoadTasks();
+        }
+
+        private bool IsSaveEnabled()
+        {
+            if (QueueEventsViewModel?.SelectedQueue != null)
+            {
+                return QueueEventsViewModel.SelectedQueue.IsDirty;
+            }
+            return false;
         }
 
         public string ResourceType => StringResources.TriggersHeader;
 
-        public string QueueEventsHeader => QueueEventsViewModel != null && QueueEventsViewModel.IsDirty ? StringResources.QueueEventsHeader + " *" : StringResources.QueueEventsHeader;
+        public string QueueEventsHeader
+        {
+            get
+            {
+                var isDirty = QueueEventsViewModel != null && QueueEventsViewModel.IsDirty;
+                isDirty |= IsQueuesDirty();
+
+                var displayName = isDirty ? StringResources.QueueEventsHeader + " *" : StringResources.QueueEventsHeader;
+                return displayName;
+            }
+        }
 
         public string SchedulerHeader => SchedulerViewModel != null && SchedulerViewModel.IsDirty ? StringResources.SchedulerHeader + " *" : StringResources.SchedulerHeader;
 
@@ -171,6 +194,7 @@ namespace Dev2.Triggers
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
                 NotifyOfPropertyChange(() => IsErrorsVisible);
                 SetDisplayName();
+                SaveCommand.CanExecute(IsDirty);
                 SaveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -278,7 +302,9 @@ namespace Dev2.Triggers
 
         void SetDisplayName()
         {
-            if (IsDirty)
+            var isDirty = IsQueuesDirty();
+
+            if (IsDirty || isDirty)
             {
                 if (!DisplayName.EndsWith(" *"))
                 {
@@ -289,6 +315,11 @@ namespace Dev2.Triggers
             {
                 DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
             }
+        }
+
+        private bool IsQueuesDirty()
+        {
+            return QueueEventsViewModel?.Queues != null && QueueEventsViewModel.Queues.Any(o => o.IsDirty);
         }
 
         void ServerNetworkStateChanged(INetworkStateChangedEventArgs args, IServer server)

@@ -121,6 +121,7 @@ namespace Warewolf.Trigger.Queue
             {
                 Options = FindOptions(queue.Options.ToList());
             }
+            MapEntireMessage = queue.MapEntireMessage;
 
             SelectedDeadLetterQueueSource = DeadLetterQueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSinkId);
             DeadLetterQueue = queue.DeadLetterQueue;

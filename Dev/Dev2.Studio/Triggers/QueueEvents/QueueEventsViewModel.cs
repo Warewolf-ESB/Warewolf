@@ -269,7 +269,7 @@ namespace Dev2.Triggers.QueueEvents
 
         private ITriggerQueue AsTriggerQueueModel()
         {
-            return new TriggerQueue
+            var triggerQueue = new TriggerQueue
             {
                 TriggerId = SelectedQueue.TriggerId,
                 Name = SelectedQueue.TriggerQueueName,
@@ -279,11 +279,15 @@ namespace Dev2.Triggers.QueueEvents
                 Concurrency = SelectedQueue.Concurrency,
                 UserName = SelectedQueue.UserName,
                 Password = SelectedQueue.Password,
+                Options = SelectedQueue.Options.Select(o => o.DataContext).ToArray(),
                 QueueSinkId = SelectedQueue.QueueSinkId,
                 DeadLetterQueue = SelectedQueue.DeadLetterQueue,
+                DeadLetterOptions = SelectedQueue.DeadLetterOptions.Select(o => o.DataContext).ToArray(),
                 MapEntireMessage = SelectedQueue.MapEntireMessage,
                 Inputs = SelectedQueue.Inputs
             };
+
+            return triggerQueue;
         }
 
         public TriggerQueueView SelectedQueue
@@ -315,6 +319,7 @@ namespace Dev2.Triggers.QueueEvents
                 OnPropertyChanged(nameof(SelectedQueue));
                 if (_selectedQueue != null)
                 {
+                    IsDirty = _selectedQueue.IsDirty;
                     OnPropertyChanged(nameof(SelectedQueue.History));
                     OnPropertyChanged(nameof(SelectedQueue.Inputs));
                     OnPropertyChanged(nameof(SelectedQueue.VerifyResults));
@@ -326,7 +331,7 @@ namespace Dev2.Triggers.QueueEvents
         {
             if (e.PropertyName == nameof(IsDirty))
             {
-                IsDirty = _selectedQueue.IsDirty;
+                IsDirty = _queues.Any(q=>q.IsDirty);
             }
         }
 
