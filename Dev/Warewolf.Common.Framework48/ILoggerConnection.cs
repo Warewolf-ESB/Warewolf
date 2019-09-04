@@ -8,10 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+
+using System;
+
 namespace Warewolf.Common.Framework48
 {
-    public interface IWarewolfLogging
+    public interface ILoggerConnection : ILoggerPublisher, IDisposable
     {
-        IWarewolfLogger CreateLogger();
+        bool IsSuccessful { get; }
+        ILoggerConfig WriteTo { get; }
+        ILoggerPublisher NewPublisher();
+    }
+
+    public interface ILoggerConfig
+    {
     }
 }
