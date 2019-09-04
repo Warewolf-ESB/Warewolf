@@ -11,7 +11,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Serilog;
 
 namespace Warewolf.Common.Framework48.Tests
 {
@@ -24,15 +23,15 @@ namespace Warewolf.Common.Framework48.Tests
         public void IWarewolfLogging_NewConnection_IsSuccessfull()
         {
             //--------------------------Arrange--------------------------
-            var mockLogger = new Mock<IWarewolfLogging>();
-            var mockLogConnection = new Mock<ILogConnection>();
+            var mockWarewolfLogging = new Mock<IWarewolfLogging>();
+            var mockWarewolfLogger = new Mock<IWarewolfLogger>();
 
             //--------------------------Act------------------------------
-            mockLogConnection.Setup(o => o.IsSuccessful).Returns(true);
-            mockLogger.Setup(o => o.NewConnection()).Returns(mockLogConnection.Object);
+            mockWarewolfLogger.Setup(o => o.IsSuccessful).Returns(true);
+            mockWarewolfLogging.Setup(o => o.CreateLogger()).Returns(mockWarewolfLogger.Object);
 
             //--------------------------Assert---------------------------
-            Assert.IsTrue(mockLogConnection.Object.IsSuccessful);
+            Assert.IsTrue(mockWarewolfLogger.Object.IsSuccessful);
         }
 
         [TestMethod]
@@ -41,21 +40,43 @@ namespace Warewolf.Common.Framework48.Tests
         public void IWarewolfLogging_File_PathConfiguration_IsSuccessfull()
         {
             //--------------------------Arrange--------------------------
-            var mockLogger = new Mock<IWarewolfLogging>();
-            var mockLogConnection = new Mock<ILogConnection>();
-            var mockWarewolfLogConfig = new Mock<IWarewolfLogConfig>();
+            var mockWarewolfLogging = new Mock<IWarewolfLogging>();
+            var mockWarewolfLogger = new Mock<IWarewolfLogger>();
+            var mockWarewolfLoggerConfig = new Mock<IWarewolfLoggerConfig>();
 
-            mockLogConnection.Setup(o => o.IsSuccessful).Returns(true);
-            mockLogConnection.Setup(o => o.WriteTo.File(It.IsAny<string>()));
-            mockLogger.Setup(o => o.NewConnection()).Returns(mockLogConnection.Object);
+            mockWarewolfLogger.Setup(o => o.IsSuccessful).Returns(true);
+            mockWarewolfLogger.Setup(o => o.WriteTo.File(It.IsAny<string>()));
+            mockWarewolfLogging.Setup(o => o.CreateLogger()).Returns(mockWarewolfLogger.Object);
+
+            //--------------------------Act------------------------------
+            var logConfig = mockWarewolfLoggerConfig.Object;
+            logConfig.File(fileName: "testfile.txt");
+
+            //--------------------------Assert---------------------------
+            Assert.IsTrue(mockWarewolfLogger.Object.IsSuccessful);
+            mockWarewolfLoggerConfig.Verify(o => o.File(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(IWarewolfLogging))]
+        public void IWarewolfLogging_File_PathConfiguration_With_OutputTemplate_IsSuccessfull()
+        {
+            //--------------------------Arrange--------------------------
+            var mockWarewolfLogging = new Mock<IWarewolfLogging>();
+            var mockWarewolfLogger = new Mock<IWarewolfLogger>();
+            var mockWarewolfLogConfig = new Mock<IWarewolfLoggerConfig>();
+
+            mockWarewolfLogger.Setup(o => o.IsSuccessful).Returns(true);
+            mockWarewolfLogging.Setup(o => o.CreateLogger()).Returns(mockWarewolfLogger.Object);
 
             //--------------------------Act------------------------------
             var logConfig = mockWarewolfLogConfig.Object;
-            logConfig.File("file");
+            logConfig.File(fileName: "testfile.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
 
             //--------------------------Assert---------------------------
-            Assert.IsTrue(mockLogConnection.Object.IsSuccessful);
-            mockWarewolfLogConfig.Verify(o => o.File(It.IsAny<string>()), Times.Once);
+            Assert.IsTrue(mockWarewolfLogger.Object.IsSuccessful);
+            mockWarewolfLogConfig.Verify(o => o.File(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
     }
 }
