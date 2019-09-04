@@ -20,15 +20,15 @@ using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetResourceByType : DefaultEsbManagementEndpoint
+    public class GetResourceById : DefaultEsbManagementEndpoint
     {
         private readonly Lazy<IResourceCatalog> _resourceCatalog;
 
-        public GetResourceByType()
+        public GetResourceById()
             : this(new Lazy<IResourceCatalog>(() => ResourceCatalog.Instance))
         {
         }
-        public GetResourceByType(Lazy<IResourceCatalog> resourceCatalog)
+        public GetResourceById(Lazy<IResourceCatalog> resourceCatalog)
         {
             _resourceCatalog = resourceCatalog;
         }
@@ -75,6 +75,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType() => nameof(GetResourceByType);
+        public override string HandlesType() => nameof(GetResourceById);
     }
 }

@@ -26,7 +26,7 @@ namespace Warewolf.Common
         {
             var communicationController = new CommunicationController
             {
-                ServiceName = @"GetResourceByType"
+                ServiceName = @"GetResourceById"
             };
             communicationController.AddPayloadArgument("WorkspaceId", workspaceId.ToString());
             communicationController.AddPayloadArgument("ResourceId", resourceId.ToString());
