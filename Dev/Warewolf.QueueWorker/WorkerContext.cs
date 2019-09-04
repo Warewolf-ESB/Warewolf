@@ -11,13 +11,11 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
-using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Warewolf.Common;
-using Warewolf.Data;
 using Warewolf.Driver.RabbitMQ;
 using Warewolf.Options;
 using Warewolf.Triggers;

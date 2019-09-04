@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />

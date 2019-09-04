@@ -8,26 +8,38 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using CommandLine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QueueWorker;
 using System;
 using System.Linq;
 
-namespace Warewolf.Data.Tests
+namespace Warewolf.QueueWorker.Tests
 {
     [TestClass]
-    public class ProcessArgsTests
+    public class QueueWorkerArgsTests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(CommandLineParser))]
-        public void CommandLine_ParseArguments_SetProperties_Success()
+        [TestCategory(nameof(QueueWorker))]
+        public void QueueWorker_Args_ParseSuccess()
         {
+            var processArgs = new Args();
+
             //-----------------------------Arrange-----------------------------
             var id = Guid.NewGuid().ToString();
 
-            var args = $"-c {id} -v".Split(" ").ToArray();
+            var args = $"-c {id} -v".Split(' ').ToArray();
+
             //-----------------------------Act---------------------------------
-            var processArgs = CommandLineParser.ParseArguments<Args>(args: args);
+            var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
+            result.MapResult(
+                options => {
+                    processArgs = options;
+                    return 0;
+                },
+                _ => 1);
+
             //-----------------------------Assert------------------------------
             Assert.AreEqual(id, processArgs.TriggerId);
             Assert.AreEqual(true, processArgs.ShowConsole);
