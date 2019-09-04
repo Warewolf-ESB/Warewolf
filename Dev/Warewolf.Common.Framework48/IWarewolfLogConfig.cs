@@ -8,14 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
-
 namespace Warewolf.Common.Framework48
 {
-    public interface ILogConnection : IDisposable
+    public interface IWarewolfLogConfig
     {
-        IWarewolfLogConfig WriteTo { get; }
-        bool IsSuccessful { get; }
+        void File(string fileName);
     }
+
 }
