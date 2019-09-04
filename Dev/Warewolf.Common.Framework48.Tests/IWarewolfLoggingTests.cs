@@ -11,6 +11,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Serilog;
 
 namespace Warewolf.Common.Framework48.Tests
 {
@@ -32,6 +33,29 @@ namespace Warewolf.Common.Framework48.Tests
 
             //--------------------------Assert---------------------------
             Assert.IsTrue(mockLogConnection.Object.IsSuccessful);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(IWarewolfLogging))]
+        public void IWarewolfLogging_File_PathConfiguration_IsSuccessfull()
+        {
+            //--------------------------Arrange--------------------------
+            var mockLogger = new Mock<IWarewolfLogging>();
+            var mockLogConnection = new Mock<ILogConnection>();
+            var mockWarewolfLogConfig = new Mock<IWarewolfLogConfig>();
+
+            mockLogConnection.Setup(o => o.IsSuccessful).Returns(true);
+            mockLogConnection.Setup(o => o.WriteTo.File(It.IsAny<string>()));
+            mockLogger.Setup(o => o.NewConnection()).Returns(mockLogConnection.Object);
+
+            //--------------------------Act------------------------------
+            var logConfig = mockWarewolfLogConfig.Object;
+            logConfig.File("file");
+
+            //--------------------------Assert---------------------------
+            Assert.IsTrue(mockLogConnection.Object.IsSuccessful);
+            mockWarewolfLogConfig.Verify(o => o.File(It.IsAny<string>()), Times.Once);
         }
     }
 }
