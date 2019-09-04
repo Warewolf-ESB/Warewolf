@@ -23,7 +23,7 @@ namespace Warewolf.Common
             IntPtr stdHandle = Interop.GetStdHandle(Interop.STDOUT_HANDLE);
             Microsoft.Win32.SafeHandles.SafeFileHandle safeFileHandle = new Microsoft.Win32.SafeHandles.SafeFileHandle(stdHandle, true);
             FileStream fileStream = new FileStream(safeFileHandle, FileAccess.Write);
-            Encoding encoding = UTF8Encoding.UTF8;
+            Encoding encoding = Encoding.Default;
             StreamWriter standardOutput = new StreamWriter(fileStream, encoding);
             standardOutput.AutoFlush = true;
             Console.SetOut(standardOutput);

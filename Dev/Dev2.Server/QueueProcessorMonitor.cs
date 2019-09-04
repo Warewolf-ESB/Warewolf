@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -57,6 +57,10 @@ namespace Dev2
         public void Stop()
         {
             _running = false;
+            //foreach (var process in _processes)
+            //{
+            //    process.Thread
+            //}
         }
 
         private void Start(string config)
