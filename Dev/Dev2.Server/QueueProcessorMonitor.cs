@@ -57,10 +57,6 @@ namespace Dev2
         public void Stop()
         {
             _running = false;
-            //foreach (var process in _processes)
-            //{
-            //    process.Thread
-            //}
         }
 
         private void Start(string config)

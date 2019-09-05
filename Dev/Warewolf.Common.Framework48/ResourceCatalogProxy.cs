@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Controller;
 using Dev2.Network;
+using Warewolf.Service;
 
 namespace Warewolf.Common
 {
@@ -16,7 +17,7 @@ namespace Warewolf.Common
     }
     public class ResourceCatalogProxy : IResourceCatalogProxy
     {
-        ServerProxy _environmentConnection;
+        readonly ServerProxy _environmentConnection;
         public ResourceCatalogProxy(ServerProxy environmentConnection)
         {
             _environmentConnection = environmentConnection;
@@ -26,29 +27,13 @@ namespace Warewolf.Common
         {
             var communicationController = new CommunicationController
             {
-                ServiceName = @"GetResourceById"
+                ServiceName = nameof(Service.GetResourceById)
             };
-            communicationController.AddPayloadArgument("WorkspaceId", workspaceId.ToString());
-            communicationController.AddPayloadArgument("ResourceId", resourceId.ToString());
+            communicationController.AddPayloadArgument(Service.GetResourceById.WorkspaceId, workspaceId.ToString());
+            communicationController.AddPayloadArgument(Service.GetResourceById.ResourceId, resourceId.ToString());
             var result = communicationController.ExecuteCommand<T>(_environmentConnection, workspaceId);
 
             return result;
         }
-
-        //public IResource GetResourceById(Guid resourceId, Guid workspaceId)
-        //{
-        //    var communicationController = new CommunicationController
-        //    {
-        //        ServiceName = @"FetchResourceDefinitionService"
-        //    };
-        //    communicationController.AddPayloadArgument("ResourceID", resourceId.ToString());
-        //    var result =  communicationController.ExecuteCommand<ExecuteMessage> (_environmentConnection, workspaceId);
-
-        //    var xml = XElement.Parse(result.Message.ToString());
-        //    var r = new Dev2.Runtime.ServiceModel.Data.Resource(xml);
-
-
-        //    return null;
-        //}
     }
 }
