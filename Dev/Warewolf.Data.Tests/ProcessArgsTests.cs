@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,6 +9,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace Warewolf.Data.Tests
@@ -18,17 +19,18 @@ namespace Warewolf.Data.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(CommandLine))]
+        [TestCategory(nameof(CommandLineParser))]
         public void CommandLine_ParseArguments_SetProperties_Success()
         {
             //-----------------------------Arrange-----------------------------
-            var filename = "rsaklfsvrdev.dev2.local";
+            var id = Guid.NewGuid().ToString();
 
-            var args = $"-f {filename}".Split(" ").ToArray();
+            var args = $"-c {id} -v".Split(" ").ToArray();
             //-----------------------------Act---------------------------------
-            var processArgs = CommandLine.ParseArguments(args: args);
+            var processArgs = CommandLineParser.ParseArguments<Args>(args: args);
             //-----------------------------Assert------------------------------
-            Assert.AreEqual(filename, processArgs.TriggerId);
+            Assert.AreEqual(id, processArgs.TriggerId);
+            Assert.AreEqual(true, processArgs.ShowConsole);
         }
     }
 }
