@@ -41,11 +41,10 @@ namespace QueueWorker
                 {
                     _ = new ConsoleWindow();
                 }
-                var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
-                var actualWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
-                var environmentConnection = new ServerProxy(actualWebServerUri);
+                var serverEndpoint = _options.ServerEndpoint;
+                var environmentConnection = new ServerProxy(serverEndpoint);
 
-                Console.Write("connecting to server: " + actualWebServerUri + "...");
+                Console.Write("connecting to server: " + serverEndpoint + "...");
                 environmentConnection.Connect(Guid.Empty);
                 Console.WriteLine("done.");
                 var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
