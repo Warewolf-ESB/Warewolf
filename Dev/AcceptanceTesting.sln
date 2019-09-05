@@ -335,7 +335,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Framework48
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.QueueWorker.Tests", "Warewolf.QueueWorker.Tests\Warewolf.QueueWorker.Tests.csproj", "{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Logger", "Warewolf.Logger\Warewolf.Logger.csproj", "{A44298CD-2E74-4B81-A115-CF9497C982F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Logger", "Warewolf.Logger\Warewolf.Logger.csproj", "{A44298CD-2E74-4B81-A115-CF9497C982F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Logger.Tests", "Warewolf.Logger.Tests\Warewolf.Logger.Tests.csproj", "{67F054F3-5094-464D-862C-13F8D8EA9475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1338,6 +1340,14 @@ Global
 		{A44298CD-2E74-4B81-A115-CF9497C982F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A44298CD-2E74-4B81-A115-CF9497C982F2}.Release|x86.ActiveCfg = Release|Any CPU
 		{A44298CD-2E74-4B81-A115-CF9497C982F2}.Release|x86.Build.0 = Release|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Debug|x86.Build.0 = Debug|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|x86.ActiveCfg = Release|Any CPU
+		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

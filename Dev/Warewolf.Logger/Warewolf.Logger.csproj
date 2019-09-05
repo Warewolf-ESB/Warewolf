@@ -11,4 +11,10 @@
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj" />
+  </ItemGroup>
+
 </Project>

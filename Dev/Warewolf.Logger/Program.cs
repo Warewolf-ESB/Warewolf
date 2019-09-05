@@ -1,31 +1,31 @@
 ﻿using System;
-using CommandLine;
+using System.Linq;
+
 namespace Warewolf.Logger
 {
-    class Program
+    public class Program
     {
-        public class Options
-        {
-            [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
-            public bool Verbose { get; set; }
-        }
         static void Main(string[] args)
-        {
-            Parser.Default.ParseArguments<Options>(args)
-                   .WithParsed<Options>(o =>
-                   {
-                       if (o.Verbose)
-                       {
-                           Console.WriteLine($"Verbose output enabled. Current Arguments: -v {o.Verbose}");
-                           Console.WriteLine("Warewolf.Logger is in Verbose mode!");
-                       }
-                       else
-                       {
-                           Console.WriteLine($"Current Arguments: -v {o.Verbose}");
-                           Console.WriteLine("Warewolf.Logger");
-                       }
-                   });
+        {           
+            var config = new LoggerContext(args);
+            if(config.Errors.Count() > 0)
+            {
+                Environment.Exit(1);
+            };
+            new Implementation(config).Run();
+        }
 
+        private class Implementation
+        {
+            private readonly ILoggerContext _config;
+            public Implementation(ILoggerContext config)
+            {
+                _config = config;
+            }
+            public void Run()
+            {
+                Console.WriteLine($"Starting listening: Warewolf.Logger");
+            }
         }
     }
 }

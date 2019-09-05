@@ -1,12 +1,18 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using CommandLine;
 
 namespace Warewolf.Data
 {
@@ -17,47 +23,33 @@ namespace Warewolf.Data
     }
     public class Args : IArgs
     {
+        [Option('c', "config", Required = true, HelpText = "The id of the queue trigger")]
         public string TriggerId { get; set; }
-        public bool ShowConsole { get; set; } = true; // TODO: remove default to true
-    }
-    public static class CommandLine
-    {
-        public static IArgs ParseArguments(string[] args)
-        {
-            var result = new Args();
-            for (int i = 0; i < args.Length; i++)
-            {
-                var arg = args[i];
 
-                if (arg[0] == '-')
-                {
-                    i++;
-                    result.ParseArgument(arg, args[i]);
-                }
-            }
+        [Option('v', "verbose", Required = false, HelpText = "Show the console window")]
+        public bool ShowConsole { get; set; } = false;
+    }
+    public static class CommandLineParser
+    {
+        public static T ParseArguments<T>(string[] args)
+        {
+            T result = default;
+            Parser.Default.ParseArguments<T>(args)
+                .WithParsed(o => result = o)
+                .WithNotParsed<T>((errs) => HandleParseError(errs));
             return result;
         }
 
-        static private void ParseArgument(this Args args, string arg, string value)
+        private static void HandleParseError(IEnumerable<Error> errs)
         {
-            arg = arg.Substring(1);
+            throw new CommandLineParseException("error: " + errs.First());
+        }
+    }
 
-            if (arg == "c")
-            {
-                if (value.Length >= 3 && value[0] == '\'')
-                {
-                    args.TriggerId = value.Substring(1, value.Length-2);
-                }
-                else
-                {
-                    args.TriggerId = value;
-                }
-            }
-
-            if (arg == "v")
-            {
-                args.ShowConsole = true;
-            }
+    public class CommandLineParseException : Exception
+    {
+        public CommandLineParseException(string message) : base(message)
+        {
         }
     }
 }
