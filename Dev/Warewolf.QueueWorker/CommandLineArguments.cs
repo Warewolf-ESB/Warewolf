@@ -9,6 +9,8 @@
 */
 
 using CommandLine;
+using Dev2.Util;
+using System;
 
 namespace QueueWorker
 {
@@ -16,6 +18,7 @@ namespace QueueWorker
     {
         string TriggerId { get; }
         bool ShowConsole { get; }
+        Uri ServerEndpoint { get; }
     }
     public class Args : IArgs
     {
@@ -24,5 +27,24 @@ namespace QueueWorker
 
         [Option('v', "verbose", Required = false, HelpText = "Show the console window")]
         public bool ShowConsole { get; set; } = false;
+
+        private Uri _serverEndpoint;
+        [Option('s', "server", Required = false, HelpText = "Warewolf server url")]
+        public Uri ServerEndpoint
+        {
+            get
+            {
+                if (_serverEndpoint is null)
+                {
+                    var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
+                    _serverEndpoint = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+                }
+                return _serverEndpoint;
+            }
+            set
+            {
+                _serverEndpoint = value;
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using Warewolf.Common;
 using Warewolf.Driver.RabbitMQ;
@@ -26,6 +27,7 @@ namespace QueueWorker
 {
     internal class WorkerContext : IWorkerContext
     {
+        readonly Uri _serverUri;
         readonly ITriggerQueue _triggerQueue;
         readonly IResourceCatalogProxy _resourceCatalogProxy;
 
@@ -33,11 +35,12 @@ namespace QueueWorker
         {
             var catalog = TriggersCatalog.Instance;
             var path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
+            _serverUri = processArgs.ServerEndpoint;
             _triggerQueue = catalog.LoadQueueTriggerFromFile(path);
             _resourceCatalogProxy = resourceCatalogProxy;
         }
 
-        public string WorkflowUrl { get => _triggerQueue.WorkflowName; }
+        public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
         public ICollection<IServiceInput> ValueKeys { get => _triggerQueue.Inputs; }
 
         IQueueSource _queueSource;
