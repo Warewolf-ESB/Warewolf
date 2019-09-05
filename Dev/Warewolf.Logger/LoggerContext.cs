@@ -17,7 +17,7 @@ namespace Warewolf.Logger
 {
     public class LoggerContext : ILoggerContext
     {
-        public IEnumerable<Error> Errors { get; set; }
+        public IEnumerable<Error> Errors { get; private set; }
         public class Options
         {
             [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
