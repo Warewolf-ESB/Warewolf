@@ -76,14 +76,31 @@ namespace Warewolf.UI.Tests.Scheduler
         public void Delete_SchedulerTask_Removes_Task_From_List_UITests()
         {
             UIMap.Click_Scheduler_RibbonButton();
-            Keyboard.SendKeys(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, "N", ModifierKeys.Control);
-            Assert.AreEqual(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.NameTextbox.Text, "New Task1", "A new item was not added correctly.");
-            Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton);
-            var findDeleteButton = new System.Drawing.Point(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewAssignWfSchedule.Delete.Left, SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewAssignWfSchedule.Delete.Top);
-            findDeleteButton.Y += 70;
-            Mouse.Click(findDeleteButton);
-            DialogsUIMap.Click_MessageBox_Yes();
-            Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem), "A new item was not deleted correctly.");
+            try
+            {
+                Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton);
+                Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewAssignWfSchedule.Delete);
+                DialogsUIMap.Click_MessageBox_Yes();
+                Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewAssignWfSchedule), "Scheduled task was not deleted correctly.");
+            }
+            finally
+            {
+                if (ts.GetTask($"{taskFolderName}\\{newassignwf}") == null)
+                {
+                    SchedulerUIMap.Click_Scheduler_NewTaskButton();
+                    SchedulerUIMap.Click_Scheduler_ResourcePickerButton();
+                    DialogsUIMap.Filter_ServicePicker_Explorer("NewAssignWF");
+                    DialogsUIMap.Click_Service_Picker_Dialog_First_Service_In_Explorer();
+                    DialogsUIMap.Click_Service_Picker_Dialog_OK();
+                    SchedulerUIMap.Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab();
+                    UIMap.Click_Save_RibbonButton();
+                }
+                else
+                {
+                    Assert.Fail("Secheduled task was not actually deleted after clicking delete and confirming in the task scheduler tab.");
+                }
+                ts.Dispose();
+            }
         }
 
         [TestMethod]
@@ -96,6 +113,7 @@ namespace Warewolf.UI.Tests.Scheduler
             var ts = new TaskService();
             var taskFolder = ts.GetFolder(taskFolderName);
             taskFolder.DeleteTask(newassignwf, false);
+            ts.Dispose();
 
             UIMap.Click_Settings_RibbonButton();
             SettingsUIMap.Set_FirstResource_ResourcePermissions("NewAssignWf", "Public", true, true, true);
