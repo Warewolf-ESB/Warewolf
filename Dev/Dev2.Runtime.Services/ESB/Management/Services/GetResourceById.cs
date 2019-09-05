@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                values.TryGetValue("ResourceId", out StringBuilder tmpResourceId);
+                values.TryGetValue(Warewolf.Service.GetResourceById.ResourceId, out StringBuilder tmpResourceId);
                 var resourceId = Guid.Empty;
                 if (tmpResourceId != null)
                 {
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException("resourceid");
                 }
-                values.TryGetValue("WorkspaceId", out StringBuilder tmpWorkspaceId);
+                values.TryGetValue(Warewolf.Service.GetResourceById.WorkspaceId, out StringBuilder tmpWorkspaceId);
                 var workspaceId = Guid.Empty;
                 if (tmpWorkspaceId != null)
                 {
@@ -75,6 +75,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType() => nameof(GetResourceById);
+        public override string HandlesType() => nameof(Warewolf.Service.GetResourceById);
     }
 }
