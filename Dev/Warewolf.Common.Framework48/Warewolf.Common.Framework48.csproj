@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj" />
   </ItemGroup>
 
 </Project>
