@@ -10,6 +10,7 @@
 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using System.Collections.Generic;
@@ -27,15 +28,17 @@ namespace Warewolf.Common.Framework48.Tests
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
 
-            var seriConfig = new SeriLogConfig(testEventSink);
+            var seriConfig = new TestSeriLogSinkConfig(testEventSink);
 
             var loggerSource = new SeriLoggerSource();
 
             var loggerConnection = loggerSource.NewConnection(seriConfig);
             var loggerPublisher = loggerConnection.NewPublisher();
 
+            var error = new { ServerName = "testServer", Error = "testError" };
+
             var expectedTestWarnMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-            var expectedTestErrorMsg = "this is A error TEST!";
+            var expectedTestErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
 
             //-------------------------Act----------------------------------
             loggerPublisher.Warn(expectedTestWarnMsgTemplate);
@@ -61,5 +64,25 @@ namespace Warewolf.Common.Framework48.Tests
                LogData.Add(logEvent);
             }
         }
+
+        class TestSeriLogSinkConfig : ISeriLogConfig
+        {
+            readonly LoggerConfiguration _loggerConfiguration;
+            readonly ILogEventSink _logEventSink;
+
+            public Logger Logger { get => CreateLogger(); }
+
+            public TestSeriLogSinkConfig(ILogEventSink logEventSink)
+            {
+                _loggerConfiguration = new LoggerConfiguration();
+                _logEventSink = logEventSink;
+            }
+
+            public Logger CreateLogger()
+            {
+                return _loggerConfiguration.WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
+            }
+        }
+
     }
 }
