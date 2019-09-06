@@ -85,6 +85,7 @@ namespace Warewolf.UI.Tests.Scheduler
             }
             finally
             {
+				var ts = new TaskService();
                 if (ts.GetTask($"{taskFolderName}\\{newassignwf}") == null)
                 {
                     SchedulerUIMap.Click_Scheduler_NewTaskButton();
