@@ -67,20 +67,18 @@ namespace Warewolf.Common.Framework48.Tests
 
         class TestSeriLogSinkConfig : ISeriLogConfig
         {
-            readonly LoggerConfiguration _loggerConfiguration;
             readonly ILogEventSink _logEventSink;
 
             public Logger Logger { get => CreateLogger(); }
 
             public TestSeriLogSinkConfig(ILogEventSink logEventSink)
             {
-                _loggerConfiguration = new LoggerConfiguration();
                 _logEventSink = logEventSink;
             }
 
             public Logger CreateLogger()
             {
-                return _loggerConfiguration.WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
+                return new LoggerConfiguration().WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
             }
         }
 
