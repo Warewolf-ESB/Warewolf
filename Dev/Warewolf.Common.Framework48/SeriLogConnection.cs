@@ -17,7 +17,7 @@ namespace Warewolf.Common.Framework48
     {
         private readonly Logger _logger;
 
-        public SeriLogConnection(SeriLogConfig loggerConfig)
+        public SeriLogConnection(ISeriLogConfig loggerConfig)
         {
             _logger = loggerConfig.Logger;
         }
