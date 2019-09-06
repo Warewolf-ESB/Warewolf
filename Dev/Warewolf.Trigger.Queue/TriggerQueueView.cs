@@ -32,9 +32,12 @@ using Warewolf.Core;
 using Warewolf.UI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
+using Dev2.Communication;
 
 namespace Warewolf.Trigger.Queue
 {
+    [Serializable]
     public class TriggerQueueView : BindableBase
     {
         private string _triggerQueueName;
@@ -46,12 +49,12 @@ namespace Warewolf.Trigger.Queue
         private int _concurrency;
         private string _userName;
         private string _password;
-        private List<OptionView> _options;
+        private ObservableCollection<OptionView> _options;
         private IResource _selectedDeadLetterQueueSource;
         private Guid _queueSinkId;
         private IList<INameValue> _deadLetterQueues;
         private string _deadLetterQueue;
-        private List<OptionView> _deadLetterOptions;
+        private ObservableCollection<OptionView> _deadLetterOptions;
         private ICollection<IServiceInput> _inputs;
 
         private string _oldQueueName;
@@ -82,6 +85,10 @@ namespace Warewolf.Trigger.Queue
         private IList<IExecutionHistory> _history;
         private bool _isDirty;
 
+        /// <summary>
+        /// This constructor is used for Deserialization
+        /// </summary>
+        public TriggerQueueView() { }
         public TriggerQueueView(IServer server)
             : this(server, new SynchronousAsyncWorker())
         {
@@ -99,8 +106,8 @@ namespace Warewolf.Trigger.Queue
 
             IsNewQueue = false;
             NewQueue = true;
-            Options = new List<OptionView>();
-            DeadLetterOptions = new List<OptionView>();
+            Options = new ObservableCollection<OptionView>();
+            DeadLetterOptions = new ObservableCollection<OptionView>();
             Inputs = new List<IServiceInput>();
             VerifyCommand = new DelegateCommand(ExecuteVerify);
             MapEntireMessage = true;
@@ -157,7 +164,9 @@ namespace Warewolf.Trigger.Queue
             }
         }
 
+        [JsonIgnore]
         public List<IResource> QueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
+        [JsonIgnore]
         public IResource SelectedQueueSource
         {
             get => _selectedQueueSource;
@@ -245,7 +254,7 @@ namespace Warewolf.Trigger.Queue
                 IsDirtyPropertyChange();
             }
         }
-        public List<OptionView> Options
+        public ObservableCollection<OptionView> Options
         {
             get => _options;
             set
@@ -254,7 +263,10 @@ namespace Warewolf.Trigger.Queue
                 RaisePropertyChanged(nameof(Options));
             }
         }
+
+        [JsonIgnore]
         public List<IResource> DeadLetterQueueSources => _resourceRepository.FindResourcesByType<IQueueSource>(_server);
+        [JsonIgnore]
         public IResource SelectedDeadLetterQueueSource
         {
             get => _selectedDeadLetterQueueSource;
@@ -302,7 +314,7 @@ namespace Warewolf.Trigger.Queue
                 IsDirtyPropertyChange();
             }
         }
-        public List<OptionView> DeadLetterOptions
+        public ObservableCollection<OptionView> DeadLetterOptions
         {
             get => _deadLetterOptions;
             set
@@ -543,7 +555,7 @@ namespace Warewolf.Trigger.Queue
         }
         public TriggerQueueView Item
         {
-            private get => _item;
+            get => _item;
             set
             {
                 _item = value;
@@ -560,13 +572,13 @@ namespace Warewolf.Trigger.Queue
             return queueNames;
         }
 
-        private List<OptionView> FindOptions(List<Options.IOption> options)
+        private ObservableCollection<OptionView> FindOptions(List<Options.IOption> options)
         {
-            var optionViews = new List<OptionView>();
-            
+            var optionViews = new ObservableCollection<OptionView>();
+
             foreach (var option in options)
             {
-                var optionView = new OptionView(option);
+                var optionView = new OptionView(option, () => IsDirtyPropertyChange());
                 optionViews.Add(optionView);
             }
             return optionViews;
@@ -583,6 +595,7 @@ namespace Warewolf.Trigger.Queue
             }
         }
 
+        [JsonIgnore]
         public IList<IExecutionHistory> History
         {
             get
@@ -620,11 +633,33 @@ namespace Warewolf.Trigger.Queue
             }
         }
 
-        public void SetItem(TriggerQueueView model)
+        public void SetItem()
         {
-            Item = model.MemberwiseClone() as TriggerQueueView;
+            Item = Clone();
         }
 
+        public TriggerQueueView Clone()
+        {
+            var clone = MemberwiseClone() as TriggerQueueView;
+
+            clone.Options = null;
+            clone.DeadLetterOptions = null;
+
+            clone.Options = GetClonedOptionsView(Options);
+            clone.DeadLetterOptions = GetClonedOptionsView(DeadLetterOptions);
+
+            return clone;
+        }
+
+        public ObservableCollection<OptionView> GetClonedOptionsView(ObservableCollection<OptionView> options)
+        {
+            var clonedOptions = new ObservableCollection<OptionView>();
+            foreach (var item in options)
+            {
+                clonedOptions.Add(item.GetClone());
+            }
+            return clonedOptions;
+        }
         void SetDisplayName(bool isDirty)
         {
             NameForDisplay = isDirty ? TriggerQueueName + " *" : TriggerQueueName;
@@ -642,8 +677,15 @@ namespace Warewolf.Trigger.Queue
                 return true;
             }
 
-            var equals = true;
-            equals &= string.Equals(_triggerQueueName, other._triggerQueueName);
+            bool equals = EqualsSeq(other);
+            var optionsCompare = OptionsCompare(other);
+
+            return equals & optionsCompare;
+        }
+
+        private bool EqualsSeq(TriggerQueueView other)
+        {
+            var equals = string.Equals(_triggerQueueName, other._triggerQueueName);
             equals &= _queueSourceId == other._queueSourceId;
             equals &= string.Equals(_queueName, other._queueName);
             equals &= string.Equals(_workflowName, other._workflowName);
@@ -652,8 +694,29 @@ namespace Warewolf.Trigger.Queue
             equals &= string.Equals(_password, other._password);
             equals &= _queueSinkId == other._queueSinkId;
             equals &= string.Equals(_deadLetterQueue, other._deadLetterQueue);
-
             return equals;
+        }
+
+        bool OptionsCompare(TriggerQueueView other)
+        {
+            if (_options == null)
+            {
+                return true;
+            }
+            if (_options.Count != other._options.Count)
+            {
+                return false;
+            }
+            var optionsCompare = true;
+            for (int i = 0; i < _options.Count; i++)
+            {
+                optionsCompare &= Options[i].DataContext.CompareTo(other.Options[i].DataContext) == 0;
+                if (!optionsCompare)
+                {
+                    return optionsCompare;
+                }
+            }
+            return optionsCompare;
         }
     }
 }
