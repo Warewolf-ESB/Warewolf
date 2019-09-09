@@ -9,13 +9,12 @@
 */
 
 
-namespace Warewolf.Common.Framework48
+using Serilog.Core;
+
+namespace Warewolf.Logging.SeriLog
 {
-    public interface ILoggerPublisher
+    internal interface ISeriLogConfig : ILoggerConfig
     {
-        void Info(string outputTemplate);
-        void Warn(string outputTemplate);
-        void Error(string outputTemplate);
-        void Fatal(string outputTemplate);
+        Logger Logger { get; }
     }
 }

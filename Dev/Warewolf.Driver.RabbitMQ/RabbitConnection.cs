@@ -10,6 +10,7 @@
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Warewolf.Streams;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
 

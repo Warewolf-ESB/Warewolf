@@ -9,7 +9,7 @@
 */
 
 
-namespace Warewolf.Common.Framework48
+namespace Warewolf.Logging
 {
     public interface ILoggerSource
     {

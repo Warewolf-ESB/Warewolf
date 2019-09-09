@@ -8,11 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Warewolf.Data
+namespace Warewolf.Logging.SeriLog
 {
-    public enum ConsumerResult
+    internal class SeriLoggerSource : ILoggerSource
     {
-        Success,
-        Failed
+        public SeriLoggerSource()
+        {
+        }
+
+        public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
+        {
+            return new SeriLogConnection(loggerConfig as ISeriLogConfig);
+        }
     }
 }

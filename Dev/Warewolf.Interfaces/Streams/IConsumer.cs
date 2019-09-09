@@ -8,17 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading.Tasks;
+using Warewolf.Data;
 
-using System;
-
-namespace Warewolf.Common.Framework48
+namespace Warewolf.Streams
 {
-    public interface ILoggerConnection : IDisposable
+    public interface IConsumer
     {
-        ILoggerPublisher NewPublisher();
-    }
-
-    public interface ILoggerConfig
-    {
+        Task<ConsumerResult> Consume(byte[] body);
     }
 }
