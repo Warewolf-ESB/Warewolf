@@ -13,7 +13,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Warewolf.Logging.SeriLog;
 
 namespace Warewolf.Common.Framework48.Tests
@@ -54,6 +56,62 @@ namespace Warewolf.Common.Framework48.Tests
 
             Assert.AreEqual(expected: LogEventLevel.Error, actual: actualLogEventList[1].Level);
             Assert.AreEqual(expected: expectedTestErrorMsg, actual: actualLogEventList[1].MessageTemplate.Text);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("SeriLogPublish")]
+        public void SeriLogPublish_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_WithOutputTemplateFormat_Test_Success()
+        {
+            //-------------------------Arrange------------------------------
+            var testEventSink = new TestLogEventSink();
+
+            var seriConfig = new TestSeriLogSinkConfig(testEventSink);
+
+            var loggerSource = new SeriLoggerSource();
+
+            var loggerConnection = loggerSource.NewConnection(seriConfig);
+            var loggerPublisher = loggerConnection.NewPublisher();
+
+            var error = new { ServerName = "testServer", Error = "testError" };
+            var fatal = new { ServerName = "testServer", Error = "testFatalError" };
+
+            var expectedTestInfoMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}";
+            var expectedTestErrorMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+            var expectedTestFatalMsg = "test infomation {testFatalKey}";
+
+            var expectedTestErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
+            //-------------------------Act----------------------------------
+
+            loggerPublisher.Info(expectedTestInfoMsgTemplate, DateTime.Now, LogEventLevel.Information, "test message");
+            loggerPublisher.Error(expectedTestErrorMsgTemplate , DateTime.Now, LogEventLevel.Error, expectedTestErrorMsg, Environment.NewLine, "test exception");
+            loggerPublisher.Fatal(expectedTestFatalMsg, @fatal);
+
+            var actualLogEventList = testEventSink.LogData;
+
+            var item1 = actualLogEventList[0].Properties.FirstOrDefault(o => o.Key == "Message");
+            var item2 = actualLogEventList[1].Properties.First(o => o.Key == "Message");
+
+            //-------------------------Assert-------------------------------
+            Assert.IsTrue(actualLogEventList.Count == 3);
+
+            Assert.AreEqual(expected: LogEventLevel.Information, actual: actualLogEventList[0].Level);
+            Assert.AreEqual(expected: expectedTestInfoMsgTemplate, actual: actualLogEventList[0].MessageTemplate.Text);
+
+            Assert.AreEqual(expected: "Message", actual: item1.Key);
+            Assert.AreEqual(expected: "\"test message\"".ToString(), actual: item1.Value.ToString());
+
+            Assert.AreEqual(expected: LogEventLevel.Error, actual: actualLogEventList[1].Level);
+            Assert.AreEqual(expected: expectedTestErrorMsgTemplate, actual: actualLogEventList[1].MessageTemplate.Text);
+            Assert.AreEqual(expected: "\"Error From: testServer : testError \"", actual: item2.Value.ToString());
+
+            Assert.AreEqual(expected: LogEventLevel.Fatal, actual: actualLogEventList[2].Level);
+            Assert.AreEqual(expected: 1, actual: actualLogEventList[2].Properties.Count);
+            Assert.IsTrue(actualLogEventList[2].Properties.ContainsKey("testFatalKey"));
+
+            Assert.AreEqual(1, actualLogEventList[2].Properties.Values.Count());
+            Assert.AreEqual(expected: expectedTestFatalMsg, actual: actualLogEventList[2].MessageTemplate.Text);
 
         }
 
