@@ -11,6 +11,7 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Triggers;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
 using Newtonsoft.Json;
@@ -31,9 +32,9 @@ namespace QueueWorker
         readonly ITriggerQueue _triggerQueue;
         readonly IResourceCatalogProxy _resourceCatalogProxy;
 
-        public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy)
+        public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggerCatalog)
         {
-            var catalog = TriggersCatalog.Instance;
+            var catalog = triggerCatalog;
             var path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
             _serverUri = processArgs.ServerEndpoint;
             _triggerQueue = catalog.LoadQueueTriggerFromFile(path);
@@ -82,7 +83,6 @@ namespace QueueWorker
             }
         }
 
-        public string HostName { get => Source.ResourceName; }
         public string QueueName { get => _triggerQueue.QueueName; }
         public string Inputs { get => JsonConvert.SerializeObject(_triggerQueue.Inputs); }
         
