@@ -15,9 +15,9 @@ namespace Warewolf.Logging
 {
     public interface ILoggerPublisher : IPublisher
     {
-        void Info(string outputTemplate);
-        void Warn(string outputTemplate);
-        void Error(string outputTemplate);
-        void Fatal(string outputTemplate);
+        void Info(string outputTemplate, params object[] args);
+        void Warn(string outputTemplate, params object[] args);
+        void Error(string outputTemplate, params object[] args);
+        void Fatal(string outputTemplate, params object[] args);
     }
 }

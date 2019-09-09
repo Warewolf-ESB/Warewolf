@@ -10,6 +10,7 @@
 
 
 using Serilog.Core;
+using System.Text;
 
 namespace Warewolf.Logging.SeriLog
 {
@@ -22,26 +23,26 @@ namespace Warewolf.Logging.SeriLog
             _logger = logger;
         }
 
-        public void Error(string outputTemplate)
+        public void Error(string outputTemplate, params object[] args)
         {
-            _logger.Error(outputTemplate);
+            _logger.Error(outputTemplate, args);
         }
 
-        public void Fatal(string outputTemplate)
+        public void Fatal(string outputTemplate, params object[] args)
         {
-            _logger.Fatal(outputTemplate);
+            _logger.Fatal(outputTemplate, args);
         }
 
-        public void Info(string outputTemplate)
+        public void Info(string outputTemplate, params object[] args)
         {
-            _logger.Information(outputTemplate);
+            _logger.Information(outputTemplate, args);
         }
 
-        public void Publish(byte[] value) => throw new System.NotImplementedException();
+        public void Publish(byte[] value) => Info(Encoding.UTF8.GetString(value), null);
 
-        public void Warn(string outputTemplate)
+        public void Warn(string outputTemplate, params object[] args)
         {
-            _logger.Warning(outputTemplate);
+            _logger.Warning(outputTemplate, args);
         }
     }
 }
