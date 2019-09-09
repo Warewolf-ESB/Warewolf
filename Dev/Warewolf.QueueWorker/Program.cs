@@ -10,6 +10,7 @@
 
 using CommandLine;
 using Dev2.Network;
+using Dev2.Runtime.Triggers;
 using Dev2.Util;
 using System;
 using Warewolf.Common;
@@ -49,7 +50,7 @@ namespace QueueWorker
                 Console.WriteLine("done.");
                 var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
 
-                var config = new WorkerContext(_options, resourceCatalogProxy);
+                var config = new WorkerContext(_options, resourceCatalogProxy, TriggersCatalog.Instance);
 
                 new QueueWorkerImplementation(config).Run();
 
