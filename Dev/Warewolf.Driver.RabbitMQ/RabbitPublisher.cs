@@ -9,7 +9,7 @@
 */
 
 using RabbitMQ.Client;
-using Warewolf.Triggers;
+using Warewolf.Streams;
 
 namespace Warewolf.Driver.RabbitMQ
 {

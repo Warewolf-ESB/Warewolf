@@ -11,9 +11,9 @@
 
 using Serilog.Core;
 
-namespace Warewolf.Common.Framework48
+namespace Warewolf.Logging.SeriLog
 {
-    public class SeriLogPublisher : ILoggerPublisher
+    internal class SeriLogPublisher : ILoggerPublisher
     {
         private readonly Logger _logger;
 
@@ -36,6 +36,8 @@ namespace Warewolf.Common.Framework48
         {
             _logger.Information(outputTemplate);
         }
+
+        public void Publish(byte[] value) => throw new System.NotImplementedException();
 
         public void Warn(string outputTemplate)
         {

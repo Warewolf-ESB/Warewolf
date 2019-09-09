@@ -11,9 +11,9 @@
 
 using Serilog.Core;
 
-namespace Warewolf.Common.Framework48
+namespace Warewolf.Logging.SeriLog
 {
-    public class SeriLogConnection : ILoggerConnection
+    internal class SeriLogConnection : ILoggerConnection
     {
         private readonly Logger _logger;
 
@@ -27,18 +27,18 @@ namespace Warewolf.Common.Framework48
             return new SeriLogPublisher(_logger);
         }
 
-        private bool disposedValue = false; 
+        private bool _disposedValue = false; 
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     _logger.Dispose();
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

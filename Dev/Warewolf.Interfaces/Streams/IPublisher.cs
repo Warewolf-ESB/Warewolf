@@ -8,17 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Warewolf.Common.Framework48
-{
-    public class SeriLoggerSource : ILoggerSource
-    {
-        public SeriLoggerSource()
-        {
-        }
 
-        public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
-        {
-            return new SeriLogConnection(loggerConfig as ISeriLogConfig);
-        }
+namespace Warewolf.Streams
+{
+    public interface IPublisher
+    {
+        void Publish(byte[] value);
     }
 }

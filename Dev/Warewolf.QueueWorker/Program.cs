@@ -13,7 +13,7 @@ using Dev2.Util;
 using System;
 using Warewolf.Common;
 using Warewolf.Data;
-using Warewolf.Triggers;
+using Warewolf.Streams;
 
 namespace QueueWorker
 {

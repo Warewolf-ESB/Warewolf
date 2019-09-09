@@ -9,10 +9,15 @@
 */
 
 
-namespace Warewolf.Triggers
+using Warewolf.Streams;
+
+namespace Warewolf.Logging
 {
-    public interface IPublisher
+    public interface ILoggerPublisher : IPublisher
     {
-        void Publish(byte[] value);
+        void Info(string outputTemplate);
+        void Warn(string outputTemplate);
+        void Error(string outputTemplate);
+        void Fatal(string outputTemplate);
     }
 }

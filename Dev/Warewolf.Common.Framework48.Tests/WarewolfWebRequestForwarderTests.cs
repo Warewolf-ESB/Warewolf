@@ -16,8 +16,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Core;
-using Warewolf.Interfaces.Data;
-using Warewolf.Triggers;
+using Warewolf.Data;
+using Warewolf.Streams;
 using Warewolf.Web;
 
 namespace Warewolf.Common.Tests

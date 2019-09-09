@@ -9,6 +9,7 @@
 */
 
 using System;
+using Warewolf.Streams;
 
 namespace Warewolf.Triggers
 {

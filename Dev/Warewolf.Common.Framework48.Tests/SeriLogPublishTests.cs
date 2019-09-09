@@ -14,6 +14,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using System.Collections.Generic;
+using Warewolf.Logging.SeriLog;
 
 namespace Warewolf.Common.Framework48.Tests
 {

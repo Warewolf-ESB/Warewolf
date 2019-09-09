@@ -13,8 +13,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Text;
 using Warewolf.Triggers;
-using Warewolf.Interfaces.Data;
+using Warewolf.Data;
 using System.Threading.Tasks;
+using Warewolf.Streams;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
