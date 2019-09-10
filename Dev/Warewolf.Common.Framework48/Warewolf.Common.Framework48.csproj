@@ -13,7 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
-    <PackageReference Include="Serilog.Sinks.SQLite" Version="3.8.3" />
+    <PackageReference Include="Serilog.Sinks.SQLite" Version="5.0.0-dev-00086" />
   </ItemGroup>
 
   <ItemGroup>

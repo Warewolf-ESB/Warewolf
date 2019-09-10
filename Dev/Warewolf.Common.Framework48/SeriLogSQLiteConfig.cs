@@ -10,7 +10,6 @@
 
 
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
 using System;
 using Warewolf.Logging.SeriLog;
@@ -27,9 +26,9 @@ namespace Warewolf.Common.Framework48
             _config = config;
         } 
 
-        public Logger Logger => CreateLogger();
+        public ILogger Logger => CreateLogger();
 
-        private Logger CreateLogger()
+        private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
                 .WriteTo
@@ -39,7 +38,7 @@ namespace Warewolf.Common.Framework48
 
         public class Config
         {
-            public string SqliteDbPath { get; }
+            public string SqliteDbPath { get; set; }
             public string TableName { get; set; } = "Logs"; 
             public LogEventLevel RestrictedToMinimumLevel { get; set; } = LogEventLevel.Verbose;
             public IFormatProvider FormatProvider { get; set; } = null;
