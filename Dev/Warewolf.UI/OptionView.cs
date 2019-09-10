@@ -34,9 +34,12 @@ namespace Warewolf.UI
 
     public class OptionView
     {
-        public OptionView(IOption option)
+        private readonly System.Action _valueUpdatedAction;
+
+        public OptionView(IOption option, System.Action valueUpdatedAction)
         {
             DataContext = option;
+            _valueUpdatedAction = valueUpdatedAction;
         }
 
         public IOption DataContext { get; set; }
@@ -48,6 +51,8 @@ namespace Warewolf.UI
                 if (DataContext is IOptionBool)
                 {
                     dataTemplateName = "OptionBoolStyle";
+                    var item = DataContext as IOptionBool;
+                    item.ValueUpdated += Item_ValueUpdated;
                 }
                 if (DataContext is IOptionInt)
                 {
@@ -62,6 +67,16 @@ namespace Warewolf.UI
 
                 return application?.TryFindResource(dataTemplateName) as DataTemplate;
             }
+        }
+
+        private void Item_ValueUpdated(object sender, OptionValueChangedArgs<bool> e)
+        {
+            _valueUpdatedAction();
+        }
+
+        public OptionView GetClone()
+        {
+            return new OptionView(DataContext.Clone() as IOption, () => { });
         }
     }
 }

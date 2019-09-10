@@ -8,14 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+
 namespace Warewolf.Options
 {
-    public interface IOption
+    public interface IOption : ICloneable, IComparable
     {
         string Name { get; set; }
     }
 
-    public interface IOptionBasic<T> : IOption
+    public interface IOptionBasic<T> : IOption, IOptionNotifyUpdate<T>
     {
         T Value { get; set; }
         T Default { get; }
@@ -34,5 +36,24 @@ namespace Warewolf.Options
     public interface IOptionBool : IOptionBasic<bool>
     {
 
+    }
+
+    public interface IOptionNotifyUpdate<T>
+    {
+        event EventHandler<OptionValueChangedArgs<T>> ValueUpdated;
+    }
+
+    public class OptionValueChangedArgs<T>
+    {
+        public OptionValueChangedArgs(string name, T oldValue, T newValue)
+        {
+            Name = name;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+
+        public string Name { get; }
+        public T OldValue { get; }
+        public T NewValue { get; }
     }
 }

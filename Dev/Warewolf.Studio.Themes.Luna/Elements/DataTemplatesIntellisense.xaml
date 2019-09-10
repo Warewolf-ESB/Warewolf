@@ -59,7 +59,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
-            <CheckBox Grid.Column="1" IsChecked="{Binding Path=DataContext.Value}" Margin="-6,0,0,0" >
+            <CheckBox Grid.Column="1" IsChecked="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="-6,0,0,0" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -75,7 +75,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
-            <TextBox Grid.Column="1" Text="{Binding Path=Value}" >
+            <TextBox Grid.Column="1" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

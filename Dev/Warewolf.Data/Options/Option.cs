@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+
 namespace Warewolf.Options
 {
     public class OptionAutocomplete : BindableBase, IOptionAutocomplete
@@ -20,6 +22,9 @@ namespace Warewolf.Options
         }
 
         private string _value;
+
+        public event EventHandler<OptionValueChangedArgs<string>> ValueUpdated;
+
         public string Value
         {
             get => _value;
@@ -29,6 +34,30 @@ namespace Warewolf.Options
         public string Default => string.Empty;
 
         public string[] Suggestions { get; set; }
+
+        public object Clone()
+        {
+            return new OptionAutocomplete
+            {
+                Name = _name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionAutocomplete;
+            if (item is null)
+            {
+                return -1;
+            }
+
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | string.Compare(item.Value, Value);
+        }
     }
 
     public class OptionInt : BindableBase, IOptionInt
@@ -41,16 +70,39 @@ namespace Warewolf.Options
         }
 
         private int _value;
+
+        public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
+
         public int Value
         {
             get => _value;
-            set
-            {
-                SetProperty(ref _value, value);
-            }
+            set => SetProperty(ref _value, value);
         }
 
         public int Default => 0;
+
+        public object Clone()
+        {
+            return new OptionInt
+            {
+                Name = _name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionInt;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
+        }
     }
 
     public class OptionBool : BindableBase, IOptionBool
@@ -63,12 +115,44 @@ namespace Warewolf.Options
         }
 
         private bool _value;
+
+        public event EventHandler<OptionValueChangedArgs<bool>> ValueUpdated;
+
         public bool Value
         {
             get => _value;
-            set => SetProperty(ref _value, value);
+            set
+            {
+                var eventArgs = new OptionValueChangedArgs<bool>(_name, _value, value);
+                _value = value;
+                RaisePropertyChanged(nameof(Value));
+                ValueUpdated?.Invoke(this, eventArgs);
+            }
         }
 
         public bool Default => true;
+
+        public object Clone()
+        {
+            return new OptionBool
+            {
+                Name = _name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionBool;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
+        }
     }
 }
