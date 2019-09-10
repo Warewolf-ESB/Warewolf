@@ -11,13 +11,13 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Triggers;
 using Dev2.Runtime.Triggers;
 using Dev2.Triggers;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using Warewolf.Common;
-using Warewolf.Data;
 using Warewolf.Driver.RabbitMQ;
 using Warewolf.Options;
 using Warewolf.Triggers;
@@ -28,18 +28,20 @@ namespace QueueWorker
 {
     internal class WorkerContext : IWorkerContext
     {
+        readonly Uri _serverUri;
         readonly ITriggerQueue _triggerQueue;
         readonly IResourceCatalogProxy _resourceCatalogProxy;
 
-        public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy)
+        public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggerCatalog)
         {
-            var catalog = TriggersCatalog.Instance;
+            var catalog = triggerCatalog;
             var path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
+            _serverUri = processArgs.ServerEndpoint;
             _triggerQueue = catalog.LoadQueueTriggerFromFile(path);
             _resourceCatalogProxy = resourceCatalogProxy;
         }
 
-        public string WorkflowUrl { get => _triggerQueue.WorkflowName; }
+        public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
         public ICollection<IServiceInput> ValueKeys { get => _triggerQueue.Inputs; }
 
         IQueueSource _queueSource;
@@ -81,7 +83,6 @@ namespace QueueWorker
             }
         }
 
-        public string HostName { get => Source.ResourceName; }
         public string QueueName { get => _triggerQueue.QueueName; }
         public string Inputs { get => JsonConvert.SerializeObject(_triggerQueue.Inputs); }
         

@@ -85,7 +85,7 @@ namespace Dev2.Triggers.QueueEvents
             {
                 var triggerQueueView = new TriggerQueueView(_server);
                 triggerQueueView.ToModel(queue);
-                triggerQueueView.SetItem(triggerQueueView);
+                triggerQueueView.SetItem();
                 Queues.Add(triggerQueueView);
             }
         }
@@ -255,7 +255,7 @@ namespace Dev2.Triggers.QueueEvents
                 SelectedQueue.TriggerId = triggerId;
                 SelectedQueue.IsNewQueue = false;
                 SelectedQueue.NewQueue = false;
-                SelectedQueue.SetItem(SelectedQueue);
+                SelectedQueue.SetItem();
                 IsDirty = SelectedQueue.IsDirty;
 
                 return true;

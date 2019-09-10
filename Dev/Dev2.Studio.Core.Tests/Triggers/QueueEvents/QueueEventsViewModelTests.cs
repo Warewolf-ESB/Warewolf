@@ -500,7 +500,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         public class OptionViewForTesting : OptionView
         {
             public OptionViewForTesting(IOption option)
-                : base(option)
+                : base(option, () => { })
             {
             }
         }
