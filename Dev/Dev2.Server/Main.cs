@@ -18,12 +18,13 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime;
 using System.ServiceProcess;
+using System.Threading.Tasks;
 
 namespace Dev2
 {
     static class EntryPoint
     {
-        static int Main(string[] arguments)
+        static async Task<int> Main(string[] arguments)
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
@@ -34,16 +35,16 @@ namespace Dev2
             {
                 using (new MemoryFailPoint(2048))
                 {
-                    return RunMain(arguments);
+                    return await RunMain(arguments);
                 }
             }
             catch (InsufficientMemoryException)
             {
-                return RunMain(arguments);
+                return await RunMain(arguments);
             }
         }
 
-        internal static int RunMain(string[] arguments)
+        internal static async Task<int> RunMain(string[] arguments)
         {
             SetWorkingDirectory();
 
@@ -52,7 +53,7 @@ namespace Dev2
             if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
             {
                 Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                new ServerLifecycleManager(new ServerEnvironmentPreparer()).Run(new LifeCycleInitializationList());
+                await new ServerLifecycleManager(new ServerEnvironmentPreparer()).Run(new LifeCycleInitializationList());
             }
             else
             {
