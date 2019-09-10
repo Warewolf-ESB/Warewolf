@@ -9,6 +9,7 @@
 */
 
 
+using Castle.Core.Logging;
 using Serilog.Core;
 
 namespace Warewolf.Logging.SeriLog
