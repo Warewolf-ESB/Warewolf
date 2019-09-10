@@ -87,7 +87,6 @@ namespace Warewolf.Trigger.Queue.Tests
             mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptions(mockServer.Object, _mockQueueSource.Object)).Returns(SetupOptionsView());
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-            //new SynchronousAsyncWorker()
             return new TriggerQueueView(mockServer.Object, new SynchronousAsyncWorker());
         }
         [TestMethod]
@@ -318,10 +317,10 @@ namespace Warewolf.Trigger.Queue.Tests
                 Concurrency = 100,
                 UserName = "Bob",
                 Password = "123456",
-                Options = new List<OptionView> { option },
+                Options = new ObservableCollection<OptionView> { option },
                 QueueSinkId = queueSinkResourceId,
                 DeadLetterQueue = "DeadLetterQueue",
-                DeadLetterOptions = new List<OptionView> { option },
+                DeadLetterOptions = new ObservableCollection<OptionView> { option },
                 Inputs = mockInputs.Object
             };
 
@@ -787,12 +786,56 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.AreEqual(triggerQueue.DeadLetterOptions.Count(), triggerQueueView.DeadLetterOptions.Count);
             Assert.AreEqual(triggerQueue.Inputs.Count, triggerQueueView.Inputs.Count);
         }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_SetItem()
+        {
+            var mockServer = new Mock<IServer>();
+
+            var resourceId = Guid.NewGuid();
+            var queueSinkResourceId = Guid.NewGuid();
+
+            var mockOption = new Mock<IOption>();
+            var option = new OptionViewForTesting(mockOption.Object);
+            var mockInputs = new Mock<ICollection<IServiceInput>>();
+
+            var triggerQueueView = new TriggerQueueView(mockServer.Object)
+            {
+                QueueSourceId = resourceId,
+                QueueName = "Queue",
+                WorkflowName = "Workflow",
+                Concurrency = 100,
+                UserName = "Bob",
+                Password = "123456",
+                Options = new ObservableCollection<OptionView> { option },
+                QueueSinkId = queueSinkResourceId,
+                DeadLetterQueue = "DeadLetterQueue",
+                DeadLetterOptions = new ObservableCollection<OptionView> { option },
+                Inputs = mockInputs.Object
+            };
+
+            triggerQueueView.SetItem();
+
+            Assert.AreEqual(triggerQueueView.QueueSourceId, triggerQueueView.Item.QueueSourceId);
+            Assert.AreEqual(triggerQueueView.QueueName, triggerQueueView.Item.QueueName);
+            Assert.AreEqual(triggerQueueView.WorkflowName, triggerQueueView.Item.WorkflowName);
+            Assert.AreEqual(triggerQueueView.Concurrency, triggerQueueView.Item.Concurrency);
+            Assert.AreEqual(triggerQueueView.UserName, triggerQueueView.Item.UserName);
+            Assert.AreEqual(triggerQueueView.Password, triggerQueueView.Item.Password);
+            Assert.AreEqual(triggerQueueView.Options.Count, triggerQueueView.Item.Options.Count);
+            Assert.AreEqual(triggerQueueView.QueueSinkId, triggerQueueView.Item.QueueSinkId);
+            Assert.AreEqual(triggerQueueView.DeadLetterQueue, triggerQueueView.Item.DeadLetterQueue);
+            Assert.AreEqual(triggerQueueView.DeadLetterOptions.Count, triggerQueueView.Item.DeadLetterOptions.Count);
+            Assert.AreEqual(triggerQueueView.Inputs.Count, triggerQueueView.Item.Inputs.Count);
+        }
     }
 
     public class OptionViewForTesting : OptionView
     {
         public OptionViewForTesting(IOption option)
-            : base(option)
+            : base(option, () => { })
         {
         }
     }

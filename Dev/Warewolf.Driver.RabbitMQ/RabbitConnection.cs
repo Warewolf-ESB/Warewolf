@@ -43,9 +43,13 @@ namespace Warewolf.Driver.RabbitMQ
             {
                 var body = eventArgs.Body;
 
-                consumer.Consume(body);
+                var resultTask = consumer.Consume(body);
+                resultTask.Wait();
+                if (resultTask.Result == Data.ConsumerResult.Success)
+                {
+                    channel.BasicAck(eventArgs.DeliveryTag, false);
+                }
 
-                channel.BasicAck(eventArgs.DeliveryTag, false);
             };
 
             channel.BasicConsume(queue: rabbitConfig.QueueName,
