@@ -8,18 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using CommandLine;
+using Dev2.Util;
+using System;
 
-namespace Warewolf.Data
+namespace QueueWorker
 {
     public interface IArgs
     {
         string TriggerId { get; }
         bool ShowConsole { get; }
+        Uri ServerEndpoint { get; }
     }
     public class Args : IArgs
     {
@@ -28,28 +27,24 @@ namespace Warewolf.Data
 
         [Option('v', "verbose", Required = false, HelpText = "Show the console window")]
         public bool ShowConsole { get; set; } = false;
-    }
-    public static class CommandLineParser
-    {
-        public static T ParseArguments<T>(string[] args)
-        {
-            T result = default;
-            Parser.Default.ParseArguments<T>(args)
-                .WithParsed(o => result = o)
-                .WithNotParsed<T>((errs) => HandleParseError(errs));
-            return result;
-        }
 
-        private static void HandleParseError(IEnumerable<Error> errs)
+        private Uri _serverEndpoint;
+        [Option('s', "server", Required = false, HelpText = "Warewolf server url")]
+        public Uri ServerEndpoint
         {
-            throw new CommandLineParseException("error: " + errs.First());
-        }
-    }
-
-    public class CommandLineParseException : Exception
-    {
-        public CommandLineParseException(string message) : base(message)
-        {
+            get
+            {
+                if (_serverEndpoint is null)
+                {
+                    var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
+                    _serverEndpoint = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+                }
+                return _serverEndpoint;
+            }
+            set
+            {
+                _serverEndpoint = value;
+            }
         }
     }
 }
