@@ -15,6 +15,7 @@ namespace Warewolf.Logging
     public interface ILoggerConnection : IDisposable
     {
         ILoggerPublisher NewPublisher();
+        ILoggerConsumer NewConsumer();
     }
 
     public interface ILoggerConfig

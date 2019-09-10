@@ -9,40 +9,38 @@
 */
 
 
-using Serilog.Core;
+using Serilog;
 using System.Text;
 
 namespace Warewolf.Logging.SeriLog
 {
     internal class SeriLogPublisher : ILoggerPublisher
     {
-        private readonly Logger _logger;
-
-        public SeriLogPublisher(Logger logger)
+        public SeriLogPublisher(ILogger logger)
         {
-            _logger = logger;
+            Log.Logger = logger;
         }
 
         public void Error(string outputTemplate, params object[] args)
         {
-            _logger.Error(outputTemplate, args);
+            Log.Logger.Error(outputTemplate, args);
         }
 
         public void Fatal(string outputTemplate, params object[] args)
         {
-            _logger.Fatal(outputTemplate, args);
+            Log.Logger.Fatal(outputTemplate, args);
         }
 
         public void Info(string outputTemplate, params object[] args)
         {
-            _logger.Information(outputTemplate, args);
+            Log.Logger.Information(outputTemplate, args);
         }
 
         public void Publish(byte[] value) => Info(Encoding.UTF8.GetString(value), null);
 
         public void Warn(string outputTemplate, params object[] args)
         {
-            _logger.Warning(outputTemplate, args);
+            Log.Logger.Warning(outputTemplate, args);
         }
     }
 }

@@ -8,14 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
+using Warewolf.Streams;
 
-using Serilog;
-
-namespace Warewolf.Logging.SeriLog
+namespace Warewolf.Logging
 {
-    internal interface ISeriLogConfig : ILoggerConfig
+    public interface ILoggerConsumer : IConsumer
     {
-        ILogger Logger { get; }
-
+        List<string[]> GetData(string connectionString, string tableName);
     }
 }
