@@ -145,6 +145,9 @@
     <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
+    <Compile Include="Wrappers\FileSystemWatcherWrapper.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />

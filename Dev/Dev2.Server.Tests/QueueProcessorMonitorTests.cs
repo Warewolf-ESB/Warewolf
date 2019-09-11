@@ -10,9 +10,13 @@
 
 
 using Dev2.Common;
+using Dev2.Common.Interfaces.Triggers;
 using Dev2.Common.Wrappers;
+using Dev2.Runtime.Triggers;
+using Dev2.Triggers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -31,6 +35,7 @@ namespace Dev2.Server.Tests
             var mockProcessFactory = new Mock<IProcessFactory>();
             var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
             var mockProcess = new Mock<IProcess>();
+            var mockTriggerCatalog = new Mock<ITriggersCatalog>();
 
             mockQueueConfigLoader.Setup(o => o.Configs).Returns(new List<string> { "test config string1" });
 
@@ -43,11 +48,11 @@ namespace Dev2.Server.Tests
             var worker = GlobalConstants.QueueWorkerExe;
 
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object);
+            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object, mockTriggerCatalog.Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
                         .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)
-                        .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(()=> { processMonitor.Stop(); return true; });
+                        .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(()=> { processMonitor.Shutdown(); return true; });
 
             new Thread(()=> processMonitor.Start()).Start();
             Thread.Sleep(5000);
@@ -56,6 +61,66 @@ namespace Dev2.Server.Tests
             mockProcessFactory.Verify(o => o.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(2));
 
             Assert.IsTrue(pass, "Queue worker exe incorrect");
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(QueueWorkerMonitor))]
+        public void QueueProcessorMonitor_WorkerCreated()
+        {
+            var mockProcessFactory = new Mock<IProcessFactory>();
+            var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
+            var mockWriter = new Mock<IWriter>();
+
+            var triggersCatalogForTesting = new TriggersCatalogForTesting();
+
+            var queueWorkerMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockWriter.Object, triggersCatalogForTesting);
+
+            triggersCatalogForTesting.CallOnChanged(Guid.NewGuid().ToString());
+            triggersCatalogForTesting.CallOnDeleted(Guid.NewGuid().ToString());
+            triggersCatalogForTesting.CallOnCreated(Guid.NewGuid().ToString());
+        }
+    }
+
+    public class TriggersCatalogForTesting : ITriggersCatalog
+    {
+        public event TriggerChangeEvent OnChanged;
+        public event TriggerChangeEvent OnDeleted;
+        public event TriggerChangeEvent OnCreated;
+
+        public void CallOnChanged(string guid)
+        {
+            OnChanged?.Invoke(guid);
+        }
+        public void CallOnDeleted(string guid)
+        {
+            OnDeleted?.Invoke(guid);
+        }
+        public void CallOnCreated(string guid)
+        {
+            OnCreated?.Invoke(guid);
+        }
+
+        public IList<ITriggerQueue> Queues { get; set; }
+
+        public void DeleteTriggerQueue(ITriggerQueue triggerQueue)
+        {
+            
+        }
+
+        public void Load()
+        {
+            
+        }
+
+        public ITriggerQueue LoadQueueTriggerFromFile(string filename)
+        {
+            return null;
+        }
+
+        public void SaveTriggerQueue(ITriggerQueue triggerQueue)
+        {
+            
         }
     }
 }

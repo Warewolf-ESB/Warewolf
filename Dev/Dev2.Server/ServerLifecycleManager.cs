@@ -81,7 +81,7 @@ namespace Dev2
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
-                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), writer)
+                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), writer, TriggersCatalog.Instance)
             };
         }
     }
@@ -254,6 +254,7 @@ namespace Dev2
         {
             try
             {
+                _queueProcessMonitor.Shutdown();
                 if (_startWebServer != null)
                 {
                     _startWebServer.Dispose();

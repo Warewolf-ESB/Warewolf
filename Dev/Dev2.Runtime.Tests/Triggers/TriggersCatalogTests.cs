@@ -45,9 +45,14 @@ namespace Dev2.Tests.Runtime.Triggers
             return new Dev2JsonSerializer();
         }
 
+        public static IFileSystemWatcherWrapper FileSystemWatcherWrapperInstance()
+        {
+            return new FileSystemWatcherWrapper();
+        }
+
         string QueueTriggersPath
         {
-            get;set;
+            get; set;
         }
 
         [TestInitialize]
@@ -70,7 +75,7 @@ namespace Dev2.Tests.Runtime.Triggers
             //------------Assert Preconditions-------------------
             Assert.IsFalse(Directory.Exists(QueueTriggersPath));
             //------------Execute Test---------------------------
-            new TriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), QueueTriggersPath, SerializerInstance());
+            new TriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), QueueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
             //------------Assert Results-------------------------
             Assert.IsTrue(Directory.Exists(QueueTriggersPath));
         }
@@ -82,7 +87,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             var queue = "TestQueueName";
             var workflowName = "TestWorkflow";
-            
+
             var mockTriggerQueue = new Mock<ITriggerQueue>();
             mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
             mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueName).Returns(queue);
@@ -168,13 +173,13 @@ namespace Dev2.Tests.Runtime.Triggers
             mockResource.Setup(resource => resource.ResourceName).Returns(source);
             mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
 
-            var triggerQueueEvent =  new TriggerQueue();
-            triggerQueueEvent.QueueSourceId= mockResource.Object.ResourceID;
-            triggerQueueEvent.QueueName= queue;
-            triggerQueueEvent.WorkflowName= workflowName;
+            var triggerQueueEvent = new TriggerQueue();
+            triggerQueueEvent.QueueSourceId = mockResource.Object.ResourceID;
+            triggerQueueEvent.QueueName = queue;
+            triggerQueueEvent.WorkflowName = workflowName;
 
             var triggerCatalog = GetTriggersCatalog();
-            
+
             triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
             var path = QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
@@ -248,6 +253,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var directoryWrapper = new Mock<IDirectory>().Object;
             var mockFileWrapper = new Mock<IFile>();
             var mockSerializer = new Mock<ISerializer>();
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcherWrapper>();
 
             var decryptedTrigger = "serialized queue data";
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
@@ -255,7 +261,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var expectedTrigger = new TriggerQueue();
             mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
 
-            var catalog = GetTriggersCatalog(directoryWrapper, mockFileWrapper.Object, "some path", mockSerializer.Object);
+            var catalog = GetTriggersCatalog(directoryWrapper, mockFileWrapper.Object, "some path", mockSerializer.Object, mockFileSystemWatcher.Object);
             var actual = catalog.LoadQueueTriggerFromFile("somefile.bite");
 
             mockSerializer.Verify(o => o.Deserialize<ITriggerQueue>(decryptedTrigger), Times.Once);
@@ -265,7 +271,7 @@ namespace Dev2.Tests.Runtime.Triggers
         void SaveRandomTriggerQueue(ITriggersCatalog triggerCatalog)
         {
             var randomizer = new Random();
-            var source = "TestResource"+randomizer.Next(1,10000);
+            var source = "TestResource" + randomizer.Next(1, 10000);
             var queue = "TestQueueName" + randomizer.Next(1, 10000);
             var workflowName = "TestWorkflow" + randomizer.Next(1, 10000);
 
@@ -283,12 +289,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
         ITriggersCatalog GetTriggersCatalog()
         {
-            return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), EnvironmentVariables.QueueTriggersPath, SerializerInstance());
+            return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), EnvironmentVariables.QueueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
         }
 
-        ITriggersCatalog GetTriggersCatalog(IDirectory directory,IFile file,string queueTriggersPath,ISerializer serializer)
+        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcherWrapper fileSystemWatcherWrapper)
         {
-            return new TriggersCatalog(directory, file, queueTriggersPath, serializer);
+            return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcherWrapper);
         }
     }
 }

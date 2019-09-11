@@ -14,5 +14,6 @@ namespace Dev2
     public interface IQueueProcessorMonitor
     {
         void Start();
+        void Shutdown();
     }
 }

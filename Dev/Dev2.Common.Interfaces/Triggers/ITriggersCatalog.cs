@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Triggers
 {
+    public delegate void TriggerChangeEvent(string guid);
     public interface ITriggersCatalog
     {
         IList<ITriggerQueue> Queues { get; set; }
@@ -20,5 +21,8 @@ namespace Dev2.Common.Interfaces.Triggers
         void Load();
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
         ITriggerQueue LoadQueueTriggerFromFile(string filename);
+        event TriggerChangeEvent OnChanged;
+        event TriggerChangeEvent OnDeleted;
+        event TriggerChangeEvent OnCreated;
     }
 }

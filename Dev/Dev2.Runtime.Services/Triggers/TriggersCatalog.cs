@@ -35,11 +35,17 @@ namespace Dev2.Runtime.Triggers
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
+        public event TriggerChangeEvent OnChanged;
+        public event TriggerChangeEvent OnDeleted;
+        public event TriggerChangeEvent OnCreated;
+
         public static string PathFromResourceId(string triggerId) => Path.Combine(EnvironmentVariables.QueueTriggersPath, triggerId +".bite");
 
         public static ITriggersCatalog Instance => _lazyCat.Value;
 
-        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer)
+        readonly IFileSystemWatcherWrapper _watcherWrapper;
+
+        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer, IFileSystemWatcherWrapper watcherWrapper)
         {
             _directoryWrapper = directoryWrapper;
             _fileWrapper = fileWrapper;
@@ -47,10 +53,73 @@ namespace Dev2.Runtime.Triggers
             _directoryWrapper.CreateIfNotExists(_queueTriggersPath);
             Queues = new List<ITriggerQueue>();
             _serializer = serializer;
+            _watcherWrapper = watcherWrapper;
+
+            SetupFileSystemWatcher();
         }
 
-        private TriggersCatalog():this(new DirectoryWrapper(), new FileWrapper(), EnvironmentVariables.QueueTriggersPath, new Dev2JsonSerializer())
+        private void SetupFileSystemWatcher()
         {
+            _watcherWrapper.Path = _queueTriggersPath;
+            _watcherWrapper.Filter = "*.bite";
+            _watcherWrapper.EnableRaisingEvents = true;
+            _watcherWrapper.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite |
+                               NotifyFilters.FileName | NotifyFilters.DirectoryName;
+
+            _watcherWrapper.Created += FileSystemWatcher_Created;
+            _watcherWrapper.Changed += FileSystemWatcher_Changed;
+            _watcherWrapper.Deleted += FileSystemWatcher_Deleted;
+            _watcherWrapper.Renamed += FileSystemWatcher_Renamed;
+            _watcherWrapper.Error += FileSystemWatcher_Error;
+        }
+
+        private TriggersCatalog() : this(new DirectoryWrapper(), new FileWrapper(), EnvironmentVariables.QueueTriggersPath, new Dev2JsonSerializer(), new FileSystemWatcherWrapper())
+        {
+        }
+
+        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            //start
+            var guid = Path.GetFileNameWithoutExtension(e.Name);
+            if (Guid.TryParse(guid, out var result))
+            {
+                Dev2Logger.Info($"Trigger created '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
+                OnCreated?.Invoke(guid);
+            }
+        }
+
+        private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            //restart
+            var guid = Path.GetFileNameWithoutExtension(e.Name);
+            if (Guid.TryParse(guid, out var result))
+            {
+                Dev2Logger.Info($"Trigger restarting '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
+                OnChanged?.Invoke(guid);
+            }
+        }
+
+        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            //kill
+            var guid = Path.GetFileNameWithoutExtension(e.Name);
+            if (Guid.TryParse(guid, out var result))
+            {
+                Dev2Logger.Info($"Trigger deleted '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
+                OnDeleted?.Invoke(guid);
+            }
+        }
+
+        private static void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            var message = $"Trigger '{e.OldName}' renamed to '{e.Name}'";
+            Dev2Logger.Warn(message, GlobalConstants.ServerWorkspaceID.ToString());
+        }
+
+        private static void FileSystemWatcher_Error(object sender, ErrorEventArgs e)
+        {
+            var exception = e.GetException();
+            Dev2Logger.Error(exception.Message, GlobalConstants.ServerWorkspaceID.ToString());
         }
 
         public IList<ITriggerQueue> Queues { get; set; }
@@ -104,7 +173,7 @@ namespace Dev2.Runtime.Triggers
             {
                 triggerQueue.TriggerId = Guid.NewGuid();
             }
-            
+
             var serializedData = _serializer.Serialize(triggerQueue);
             var saveData = DpapiWrapper.Encrypt(serializedData);
 
