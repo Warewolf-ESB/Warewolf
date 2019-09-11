@@ -8,14 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Logging;
 
-using Serilog;
-
-namespace Warewolf.Logging.SeriLog
+namespace Warewolf.Driver.Serilog
 {
-    internal interface ISeriLogConfig : ILoggerConfig
+    public class SeriLoggerSource : ILoggerSource
     {
-        ILogger Logger { get; }
+        public SeriLoggerSource()
+        {
+        }
 
+        public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
+        {
+            return new SeriLogConnection(loggerConfig as ISeriLogConfig);
+        }
     }
 }

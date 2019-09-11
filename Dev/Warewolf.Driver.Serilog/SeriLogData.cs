@@ -9,7 +9,7 @@
 */
 
 
-namespace Warewolf.Logging.Serilog
+namespace Warewolf.Driver.Serilog
 {
     public class SeriLogData
     {
