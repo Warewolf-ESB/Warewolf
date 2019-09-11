@@ -47,10 +47,9 @@ namespace Warewolf.Common.Framework48.Tests
             var actualWebServerUri = new Uri(applicationServerUri);
             var environmentConnection = new ServerProxy(actualWebServerUri);
 
-            Console.Write("connecting to server: " + actualWebServerUri + "...");
             environmentConnection.Connect(Guid.Empty);
 
-            Assert.IsTrue(environmentConnection.IsConnected);
+            Assert.IsTrue(environmentConnection.IsConnected, "unable to connect to warewolf server");
             return environmentConnection;
         }
     }
