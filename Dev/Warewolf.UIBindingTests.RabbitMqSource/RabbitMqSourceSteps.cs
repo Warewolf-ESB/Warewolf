@@ -24,7 +24,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
     public class RabbitMqSourceSteps
     {
         string failedNoneOfTheSpecifiedEndpointsWereReachable = "Failed: None of the specified endpoints were reachable";
-        public static ContainerLauncher _containerOps;
+        public static StartContainer _containerOps;
 
         [BeforeFeature("RabbitMqSource")]
         public static void SetupForSystem()
@@ -100,7 +100,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         {
             if (hostname == "test-rabbitmq")
             {
-                _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.RabbitMQ, "SVRDEV.premier.local");
             }
             var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.EnterHostName(hostname);

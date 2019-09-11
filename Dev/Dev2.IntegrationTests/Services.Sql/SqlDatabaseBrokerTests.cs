@@ -33,13 +33,16 @@ namespace Dev2.Integration.Tests.Services.Sql
     [TestClass]
     public class SqlDatabaseBrokerTests
     {
-        static ContainerLauncher _containerOps;
+        static StartContainer _containerOps;
 
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _containerOps = TestLauncher.StartLocalMSSQLContainer(testContext.ResultsDirectory);
-            Thread.Sleep(10000);
+            _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
+            if (_containerOps != null)
+            {
+                Thread.Sleep(10000);
+            }
         }
 
         [ClassCleanup]

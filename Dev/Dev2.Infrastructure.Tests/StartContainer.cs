@@ -10,7 +10,9 @@ public class StartContainer: System.Attribute, IDisposable
         MySQL = 0,
         MSSQL = 1,
         Oracle = 2,
-        PostGreSQL = 3
+        PostGreSQL = 3,
+        Warewolf = 4,
+        RabbitMQ = 5
     }
 
     string ConvertToString(ContainerType containerType)
@@ -25,6 +27,10 @@ public class StartContainer: System.Attribute, IDisposable
                 return "Oracle";
             case ContainerType.PostGreSQL:
                 return "PostGreSQL";
+            case ContainerType.Warewolf:
+                return "Warewolf";
+            case ContainerType.RabbitMQ:
+                return "RabbitMQ";
         }
         throw new ArgumentOutOfRangeException();
     }

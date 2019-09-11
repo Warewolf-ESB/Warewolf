@@ -1743,7 +1743,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             if (workflowName == "RabbitTestWf")
             {
-                WorkflowExecutionSteps._containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                WorkflowExecutionSteps._containerOps = new StartContainer(StartContainer.ContainerType.RabbitMQ, "SVRDEV.premier.local");
             }
             var env = ServerRepository.Instance.Source;
             env.ForceLoadResources();
