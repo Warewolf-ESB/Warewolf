@@ -31,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     public class DataSplitSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
-        static ContainerLauncher _containerOps;
+        static StartContainer _containerOps;
 
         public DataSplitSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"remote server container has started")]
-        public void GivenRemoteServerContainerHasStarted() => _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        public void GivenRemoteServerContainerHasStarted() => _containerOps = new StartContainer(StartContainer.ContainerType.Warewolf, "tst-ci-remote.premier.local");
 
         [AfterScenario]
         public void CleanUp() => _containerOps?.Dispose();

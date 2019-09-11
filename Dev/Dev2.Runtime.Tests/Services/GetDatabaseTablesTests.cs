@@ -133,7 +133,7 @@ namespace Dev2.Tests.Runtime.Services
             parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
             CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
-            GetDatabaseColumnsForTableTests._containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            GetDatabaseColumnsForTableTests._containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             var someJsonData = JsonConvert.SerializeObject(dbSource);

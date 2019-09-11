@@ -36,7 +36,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
     public class SqlBulkInsertSteps : BaseActivityUnitTest
     {
         readonly ScenarioContext scenarioContext;
-        public static ContainerLauncher _containerOps;
+        public static StartContainer _containerOps;
 
         public SqlBulkInsertSteps(ScenarioContext scenarioContext)
         {
@@ -50,7 +50,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
         public void SetupScenerio()
         {
-            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            try
+            {
+                _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
+            }
+            catch
+            {
+                
+            }
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             scenarioContext.Add("dbSource", dbSource);
