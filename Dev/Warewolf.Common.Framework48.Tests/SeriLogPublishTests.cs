@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Warewolf.Logging.Serilog;
 using Warewolf.Logging.SeriLog;
 
 namespace Warewolf.Common.Framework48.Tests
@@ -27,8 +28,8 @@ namespace Warewolf.Common.Framework48.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("SeriLogPublish")]
-        public void SeriLogPublish_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_Success()
+        [TestCategory(nameof(SeriLogPublisher))]
+        public void SeriLogPublisher_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_Success()
         {
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
@@ -63,8 +64,8 @@ namespace Warewolf.Common.Framework48.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("SeriLogPublish")]
-        public void SeriLogPublish_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_WithOutputTemplateFormat_Test_Success()
+        [TestCategory(nameof(SeriLogPublisher))]
+        public void SeriLogPublisher_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_WithOutputTemplateFormat_Test_Success()
         {
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
@@ -119,8 +120,8 @@ namespace Warewolf.Common.Framework48.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("SeriLogPublish")]
-        public void SeriLogPublish_NewConsumer_Reading_LogData_From_SQLite_Success()
+        [TestCategory(nameof(SeriLogPublisher))]
+        public void SeriLogPublisher_NewConsumer_Reading_LogData_From_SQLite_Success()
         {
             //-------------------------Arrange------------------------------
             var testSqlitePath = @"C:\Test\Warewolf\db\testAudits.db";
@@ -166,9 +167,9 @@ namespace Warewolf.Common.Framework48.Tests
                 var loggerConsumer = loggerConnection.NewConsumer();
                 var dataList = loggerConsumer.GetData(connectionString: testSqlitePath, config.TableName);
 
-                var actItem1 = JsonConvert.DeserializeObject<LogData>(dataList[0][0]);
-                var actItem2 = JsonConvert.DeserializeObject<LogData>(dataList[1][0]);
-                var actItem3 = JsonConvert.DeserializeObject<LogData>(dataList[2][0]);
+                var actItem1 = JsonConvert.DeserializeObject<SeriLogData>(dataList[0][0]);
+                var actItem2 = JsonConvert.DeserializeObject<SeriLogData>(dataList[1][0]);
+                var actItem3 = JsonConvert.DeserializeObject<SeriLogData>(dataList[2][0]);
                 
                 Assert.AreEqual(expected: 3, actual: dataList.Count);
 
@@ -177,14 +178,6 @@ namespace Warewolf.Common.Framework48.Tests
                 Assert.AreEqual(expected: null, actual: actItem3.Message);
             }
 
-        }
-
-        class LogData
-        {
-            public string Timestamp { get; set; }
-            public string Message { get; set; }
-            public string NewLine { get; set; }
-            public string Exception { get; set; }
         }
 
         class TestLogEventSink : ILogEventSink
@@ -212,10 +205,9 @@ namespace Warewolf.Common.Framework48.Tests
                return new LoggerConfiguration().WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
             }
         }
-
     }
 
-    internal class TestSeriLogSQLiteConfig : ISeriLogConfig
+    class TestSeriLogSQLiteConfig : ISeriLogConfig
     {
         readonly SeriLogSQLiteConfig.Config _config;
 
