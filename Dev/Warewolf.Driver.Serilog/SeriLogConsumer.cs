@@ -13,10 +13,12 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Threading.Tasks;
 using Warewolf.Data;
+using Warewolf.Logging;
 
-namespace Warewolf.Logging.SeriLog
+namespace Warewolf.Driver.Serilog
 {
-    internal class SeriLogConsumer : ILoggerConsumer
+
+    public class SeriLogConsumer : ILoggerConsumer
     {
         public SeriLogConsumer()
         {
@@ -26,9 +28,9 @@ namespace Warewolf.Logging.SeriLog
         {
             var properties = new List<string[]>();
 
-            using (var sqlConn = new SQLiteConnection(connectionString: "Data Source="+ connectionString +";"))
+            using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + connectionString + ";"))
             {
-                var command = new SQLiteCommand("SELECT * FROM "+tableName, sqlConn);
+                var command = new SQLiteCommand("SELECT * FROM " + tableName, sqlConn);
                 sqlConn.Open();
 
                 var reader = command.ExecuteReader();

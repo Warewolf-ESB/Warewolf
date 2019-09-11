@@ -13,7 +13,7 @@ using Dev2.Common;
 using Serilog;
 using Serilog.Events;
 using System;
-using Warewolf.Logging.SeriLog;
+using Warewolf.Driver.Serilog;
 
 namespace Warewolf.Common.Framework48
 {

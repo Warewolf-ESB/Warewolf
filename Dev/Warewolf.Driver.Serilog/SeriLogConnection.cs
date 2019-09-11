@@ -10,10 +10,11 @@
 
 
 using Serilog;
+using Warewolf.Logging;
 
-namespace Warewolf.Logging.SeriLog
+namespace Warewolf.Driver.Serilog
 {
-    internal class SeriLogConnection : ILoggerConnection
+    public class SeriLogConnection : ILoggerConnection
     {
         private readonly ILogger _logger;
 

@@ -11,10 +11,11 @@
 
 using Serilog;
 using System.Text;
+using Warewolf.Logging;
 
-namespace Warewolf.Logging.SeriLog
+namespace Warewolf.Driver.Serilog
 {
-    internal class SeriLogPublisher : ILoggerPublisher
+    public class SeriLogPublisher : ILoggerPublisher
     {
         public SeriLogPublisher(ILogger logger)
         {

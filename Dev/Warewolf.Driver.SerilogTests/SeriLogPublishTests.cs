@@ -18,10 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Warewolf.Logging.Serilog;
-using Warewolf.Logging.SeriLog;
+using Warewolf.Common.Framework48;
+using Warewolf.Driver.Serilog;
 
-namespace Warewolf.Common.Framework48.Tests
+namespace Warewolf.Driver.Serilog.Tests
 {
     [TestClass]
     public class SeriLogPublishTests
