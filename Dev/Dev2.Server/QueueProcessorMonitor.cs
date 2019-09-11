@@ -86,10 +86,14 @@ namespace Dev2
         {
             _running = true;
             AddMissingMonitors();
-            new Thread(() =>
+            var monitor = new Thread(() =>
             {
                 MonitorProcesses();
-            }).Start();
+            })
+            {
+                IsBackground = true
+            };
+            monitor.Start();
         }
 
         public void Shutdown()
@@ -149,7 +153,10 @@ namespace Dev2
                         }
                     }
                     catch { }
-                });
+                })
+                {
+                    IsBackground = true
+                };
                 _thread.Start();
             }
 
