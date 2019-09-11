@@ -335,11 +335,32 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Framework48
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.QueueWorker.Tests", "Warewolf.QueueWorker.Tests\Warewolf.QueueWorker.Tests.csproj", "{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ServiceDefinitions", "Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj", "{76F7A7F3-1153-49C0-BE56-77973867F974}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.ServiceDefinitions", "Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj", "{76F7A7F3-1153-49C0-BE56-77973867F974}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Logger", "Warewolf.Logger\Warewolf.Logger.csproj", "{A44298CD-2E74-4B81-A115-CF9497C982F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Logger.Tests", "Warewolf.Logger.Tests\Warewolf.Logger.Tests.csproj", "{67F054F3-5094-464D-862C-13F8D8EA9475}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Logger.Tests", "Warewolf.Logger.Tests\Warewolf.Logger.Tests.csproj", "{67F054F3-5094-464D-862C-13F8D8EA9475}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "warewolfBI", "warewolfBI\", "{994301C3-CB7D-4F15-A3FE-27C4A944173E}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_58043"
+		Debug.AspNetCompiler.PhysicalPath = "warewolfBI\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_58043\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_58043"
+		Release.AspNetCompiler.PhysicalPath = "warewolfBI\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_58043\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "58043"
+		SlnRelativePath = "warewolfBI\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1358,6 +1379,14 @@ Global
 		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|x86.ActiveCfg = Release|Any CPU
 		{67F054F3-5094-464D-862C-13F8D8EA9475}.Release|x86.Build.0 = Release|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|x86.Build.0 = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|x86.ActiveCfg = Debug|Any CPU
+		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
