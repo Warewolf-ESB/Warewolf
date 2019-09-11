@@ -73,6 +73,7 @@ Scenario: Creating New DB Source General Testing
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@StartContainer:PostGreSQL:SVRDEV.premier.local
 Scenario: Creating New DB Source as User Auth
     Given I open New Database Source
     And I type Server as "SVRDEV.premier.local"
