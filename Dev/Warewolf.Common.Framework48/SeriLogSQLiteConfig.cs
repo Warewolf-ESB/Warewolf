@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Common;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -19,9 +20,9 @@ namespace Warewolf.Common.Framework48
     public class SeriLogSQLiteConfig : ISeriLogConfig
     {
 
-        readonly Config _config;
+        readonly Settings _config;
 
-        public SeriLogSQLiteConfig(Config config)
+        public SeriLogSQLiteConfig(Settings config)
         {
             _config = config;
         } 
@@ -32,13 +33,14 @@ namespace Warewolf.Common.Framework48
         {
             return new LoggerConfiguration()
                 .WriteTo
-                .SQLite(sqliteDbPath:_config.SqliteDbPath, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, retentionPeriod: _config.RetentionPeriod, storeTimestampInUtc: _config.StoreTimestampInUtc, formatProvider: _config.FormatProvider)
+                .SQLite(sqliteDbPath:_config.Path, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, retentionPeriod: _config.RetentionPeriod, storeTimestampInUtc: _config.StoreTimestampInUtc, formatProvider: _config.FormatProvider)
                 .CreateLogger();
         }
 
-        public class Config
+        //TODO: This is the options that should be controlled by the Studio using IOptions
+        public class Settings
         {
-            public string SqliteDbPath { get; set; }
+            public string Path { get; set; } = Config.Server.AuditFilePath;
             public string TableName { get; set; } = "Logs"; 
             public LogEventLevel RestrictedToMinimumLevel { get; set; } = LogEventLevel.Verbose;
             public IFormatProvider FormatProvider { get; set; } = null;
