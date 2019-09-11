@@ -103,7 +103,7 @@ namespace Dev2.Activities.Specs.Composition
     {
         readonly ScenarioContext _scenarioContext;
         IDirectory _dirHelper;
-        public static ContainerLauncher _containerOps;
+        public static StartContainer _containerOps;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -330,7 +330,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowName == "TestMySqlWFWithMySqlStarIndex" ||
                 workflowName == "TestMySqlWFWithMySqlIntIndex")
             {
-                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.MySQL, "SVRDEV.premier.local");
             }
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -782,15 +782,15 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (server == "Remote Container")
             {
-                _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.Warewolf, "tst-ci-remote.premier.local");
             }
             else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
             {
-                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
             }
             else if (remoteWf == "RabbitMQTest")
             {
-                _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.RabbitMQ, "SVRDEV.premier.local");
             }
 
             var localHostEnv = LocalEnvModel;
@@ -799,7 +799,7 @@ namespace Dev2.Activities.Specs.Composition
 
             if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
             {
-                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.MySQL, "SVRDEV.premier.local");
             }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
@@ -1618,7 +1618,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (dbSrcName == "NewSqlServerSource" || dbSrcName == "NewSqlBulkInsertSource")
             {
-                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
             }
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
@@ -3962,7 +3962,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
         {
-            _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.RabbitMQ, "SVRDEV.premier.local");
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4003,7 +4003,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
         {
-            _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.RabbitMQ, "SVRDEV.premier.local");
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4237,7 +4237,7 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
-            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.MySQL, "SVRDEV.premier.local");
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
@@ -4424,7 +4424,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings for testing as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
-            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
             var inputs = GetServiceInputs(table);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
@@ -4498,7 +4498,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
@@ -4882,7 +4882,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"I startup the mysql container")]
         public void WhenIStartupTheContainer()
         {
-            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.MySQL, "SVRDEV.premier.local");
         }
 
         ResourceCatalog ResourceCat { get; set; }

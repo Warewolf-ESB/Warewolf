@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]    
     public class GetDatabaseColumnsForTableTests
     {
-        public static ContainerLauncher _containerOps;
+        public static StartContainer _containerOps;
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Runtime.Services
 
         static DbSource CreateDev2TestingDbSource()
         {
-            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),

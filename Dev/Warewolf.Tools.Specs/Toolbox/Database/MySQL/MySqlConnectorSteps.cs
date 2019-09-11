@@ -38,7 +38,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         Mock<IServiceOutputMapping> _outputMapping;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        static ContainerLauncher _containerOps;
+        static StartContainer _containerOps;
 
         public MySqlConnectorSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -526,7 +526,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             var environmentModel = _scenarioContext.Get<IServer>("server");
             environmentModel.Connect();
-            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new StartContainer(StartContainer.ContainerType.MySQL, "SVRDEV.premier.local");
             CreateNewResourceModel(workflowName, environmentModel);
             CreateDBServiceModel(environmentModel);
 
