@@ -18,11 +18,10 @@ namespace QueueWorker
     internal interface IWorkerContext
     {
         string WorkflowUrl { get; }
-        ICollection<IServiceInput> ValueKeys { get; }
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
         IQueueConfig QueueConfig { get; }
         string QueueName { get; }
-        string Inputs { get; }
+        IServiceInput[] Inputs { get; }
     }
 }
