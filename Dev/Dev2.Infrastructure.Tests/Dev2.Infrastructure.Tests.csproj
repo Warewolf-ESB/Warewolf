@@ -85,6 +85,7 @@
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
     <Compile Include="SharedModels\CompileMessageListTests.cs" />
+    <Compile Include="StartContainer.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
