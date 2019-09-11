@@ -18,6 +18,7 @@ namespace Dev2.Common.Wrappers
         void Kill();
         Process Unwrap();
         bool WaitForExit(int milliseconds);
+        int Id { get; }
     }
     public interface IProcessFactory
     {
@@ -28,6 +29,9 @@ namespace Dev2.Common.Wrappers
     public class ProcessWrapper : IProcess
     {
         private readonly Process _process;
+
+        public int Id => _process.Id;
+
         public ProcessWrapper(Process process)
         {
             _process = process;
