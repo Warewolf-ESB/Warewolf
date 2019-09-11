@@ -129,10 +129,11 @@ namespace Warewolf.Common.Framework48.Tests
 
             Assert.IsFalse(File.Exists(testSqlitePath));
 
-            var config = new SeriLogSQLiteConfig.Config
+            var config = new SeriLogSQLiteConfig.Settings
             {
                 TableName = "testLogs",
-                SqliteDbPath = testSqlitePath,
+                Path = testSqlitePath
+                
             };
 
             var seriConfig = new TestSeriLogSQLiteConfig(sqlConfig: config);
@@ -209,9 +210,9 @@ namespace Warewolf.Common.Framework48.Tests
 
     class TestSeriLogSQLiteConfig : ISeriLogConfig
     {
-        readonly SeriLogSQLiteConfig.Config _config;
+        readonly SeriLogSQLiteConfig.Settings _config;
 
-        public TestSeriLogSQLiteConfig(SeriLogSQLiteConfig.Config sqlConfig)
+        public TestSeriLogSQLiteConfig(SeriLogSQLiteConfig.Settings sqlConfig)
         {
             _config = sqlConfig;
         }
@@ -222,7 +223,7 @@ namespace Warewolf.Common.Framework48.Tests
         {
             return new LoggerConfiguration()
                 .WriteTo
-                .SQLite(sqliteDbPath: _config.SqliteDbPath, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
+                .SQLite(sqliteDbPath: _config.Path, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
                 .CreateLogger();
         }
     }
