@@ -71,7 +71,7 @@ namespace QueueWorker
             {
                 var deadletterPublisher = CreateDeadLetterPublisher();
 
-                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.ValueKeys);
+                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.Inputs);
 
                 var queue = _config.Source;
 

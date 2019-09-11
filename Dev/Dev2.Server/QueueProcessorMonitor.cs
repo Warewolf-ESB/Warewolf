@@ -36,22 +36,32 @@ namespace Dev2
 
         public void Start()
         {
-            _running = true;
-            foreach (var config in _queueConfigLoader.Configs)
+            var t = new Thread(() =>
             {
-                var thread = new Thread(() =>
+                _running = true;
+                foreach (var config in _queueConfigLoader.Configs)
                 {
-                    try
+                    var thread = new Thread(() =>
                     {
-                        Start(config);
-                    }
-                    catch { }
-                    });
-                thread.Start();
-                _processes.Add((thread, config));
-            }
+                        try
+                        {
+                            Start(config);
+                        }
+                        catch { }
+                    })
+                    {
+                        IsBackground = true
+                    };
+                    thread.Start();
+                    _processes.Add((thread, config));
+                }
 
-            ProcessMonitor();
+                ProcessMonitor();
+            })
+            {
+                IsBackground = true
+            };
+            t.Start();
         }
 
         public void Stop()
@@ -62,7 +72,7 @@ namespace Dev2
         private void Start(string config)
         {
             var worker = GlobalConstants.QueueWorkerExe;
-            var startInfo = new ProcessStartInfo(worker, $"-c '{config}'"); 
+            var startInfo = new ProcessStartInfo(worker, $"-c \"{config}\"");
             using (var process = _processFactory.Start(startInfo))
             {
                 while (!process.WaitForExit(1000))
@@ -82,12 +92,17 @@ namespace Dev2
                 {
                     if (!process.Thread.IsAlive)
                     {
-                        var thread = new Thread(() => {
+                        var thread = new Thread(() =>
+                        {
                             try
                             {
                                 Start(process.Name);
-                            } catch { }
-                        });
+                            }
+                            catch { }
+                        })
+                        {
+                            IsBackground = true
+                        };
                         thread.Start();
 
                         _processes.Remove(process);
