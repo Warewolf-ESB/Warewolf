@@ -24,22 +24,20 @@ namespace Warewolf.Driver.Serilog
         public SeriLogSQLiteConfig()
         {
             _config = new Settings();
-            Logger = CreateLogger();
         }
 
-        public SeriLogSQLiteConfig(Settings config)
+        public SeriLogSQLiteConfig(Settings sqlConfig)
         {
-            _config = config;
-            Logger = CreateLogger();
+            _config = sqlConfig;
         }
 
-        public ILogger Logger { get; private set; }
+        public ILogger Logger { get => CreateLogger(); }
 
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
                 .WriteTo
-                .SQLite(sqliteDbPath: _config.ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, retentionPeriod: _config.RetentionPeriod, storeTimestampInUtc: _config.StoreTimestampInUtc, formatProvider: _config.FormatProvider)
+                .SQLite(sqliteDbPath: _config.ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
                 .CreateLogger();
         }
 
