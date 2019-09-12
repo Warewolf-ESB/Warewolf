@@ -30,17 +30,19 @@ namespace Warewolf.Driver.Serilog
 
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + connectionString + ";"))
             {
-                var command = new SQLiteCommand("SELECT * FROM " + tableName, sqlConn);
-                sqlConn.Open();
-
-                var reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (var command = new SQLiteCommand("SELECT * FROM " + tableName, sqlConn))
                 {
-                    while (reader.Read())
+                    sqlConn.Open();
+
+                    var reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        var values = reader.GetValues();
-                        properties.Add(values.GetValues("Properties"));
+                        while (reader.Read())
+                        {
+                            var values = reader.GetValues();
+                            properties.Add(values.GetValues("Properties"));
+                        }
                     }
                 }
             }
