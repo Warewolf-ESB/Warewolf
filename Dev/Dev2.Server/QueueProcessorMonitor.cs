@@ -161,10 +161,22 @@ namespace Dev2
             {
                 var expectedNumProcesses = Concurrency;
                 var numProcesses = _processThreads.Count;
-                for (int i = numProcesses; i < expectedNumProcesses; i++)
+                if (numProcesses > expectedNumProcesses)
                 {
-                    var processThread = new ProcessThread(_childProcessTracker, _processFactory, _writer, TriggerId);
-                    _processThreads.Add(processThread);
+                    var processThreads = _processThreads.ToArray();
+                    for (int i = expectedNumProcesses; i < expectedNumProcesses; i++)
+                    {
+                        processThreads[i].Kill();
+                        _processThreads.Remove(processThreads[i]);
+                    }
+                }
+                else
+                {
+                    for (int i = numProcesses; i < expectedNumProcesses; i++)
+                    {
+                        var processThread = new ProcessThread(_childProcessTracker, _processFactory, _writer, TriggerId);
+                        _processThreads.Add(processThread);
+                    }
                 }
                 foreach (var processThread in _processThreads)
                 {
@@ -196,6 +208,10 @@ namespace Dev2
             }
             public void Start()
             {
+                if (IsAlive)
+                {
+                    return;
+                }
                 _thread = new Thread(() =>
                 {
                     try
