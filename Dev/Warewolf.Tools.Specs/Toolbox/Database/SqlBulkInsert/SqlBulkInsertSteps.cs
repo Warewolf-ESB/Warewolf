@@ -35,7 +35,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
     public class SqlBulkInsertSteps : BaseActivityUnitTest
     {
         readonly ScenarioContext scenarioContext;
-        public static StartContainer _containerOps;
+        public static Depends _containerOps;
 
         public SqlBulkInsertSteps(ScenarioContext scenarioContext)
         {
@@ -51,7 +51,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         {
             try
             {
-                _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
             }
             catch
             {

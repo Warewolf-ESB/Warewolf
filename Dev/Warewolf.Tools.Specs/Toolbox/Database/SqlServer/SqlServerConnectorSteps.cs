@@ -40,7 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         DbAction _getCountriesAction;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        static StartContainer _containerOps;
+        static Depends _containerOps;
 
         public SQLServerConnectorSteps(ScenarioContext scenarioContext)
            : base(scenarioContext)
@@ -216,7 +216,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             if (sourceName == "NewSqlServerSource")
             {
-                _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
             }
             var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
             var vm = GetViewModel();
