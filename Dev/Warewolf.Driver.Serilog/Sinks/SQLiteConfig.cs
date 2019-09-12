@@ -31,7 +31,7 @@ namespace Warewolf.Driver.Serilog
         {
             _config = config;
             Logger = CreateLogger();
-        } 
+        }
 
         public ILogger Logger { get; private set; }
 
@@ -39,19 +39,36 @@ namespace Warewolf.Driver.Serilog
         {
             return new LoggerConfiguration()
                 .WriteTo
-                .SQLite(sqliteDbPath:_config.Path, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, retentionPeriod: _config.RetentionPeriod, storeTimestampInUtc: _config.StoreTimestampInUtc, formatProvider: _config.FormatProvider)
+                .SQLite(sqliteDbPath: _config.ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, retentionPeriod: _config.RetentionPeriod, storeTimestampInUtc: _config.StoreTimestampInUtc, formatProvider: _config.FormatProvider)
                 .CreateLogger();
         }
 
         //TODO: This is the options that should be controlled by the Studio using IOptions
         public class Settings
         {
-            public string Path { get; set; } = System.IO.Path.Combine(Config.Server.AuditFilePath, "auditDB.db");
-            public string TableName { get; set; } = "Logs"; 
-            public LogEventLevel RestrictedToMinimumLevel { get; set; } = LogEventLevel.Verbose;
-            public IFormatProvider FormatProvider { get; set; } = null;
-            public bool StoreTimestampInUtc { get; set; } = false;
-            public TimeSpan? RetentionPeriod { get; set; } = null;
+            public Settings()
+            {
+                Path = Config.Server.AuditFilePath;
+                Database = "auditDB.db";
+                TableName = "Logs";
+                RestrictedToMinimumLevel = LogEventLevel.Verbose;
+                FormatProvider = null;
+                StoreTimestampInUtc = false;
+            }
+            public string ConnectionString
+            {
+                get
+                {
+                    return System.IO.Path.Combine(Path, Database);
+                }
+            }
+            public string Database { get; set; }
+            public string Path { get; set; }
+            public string TableName { get; set; }
+            public LogEventLevel RestrictedToMinimumLevel { get; set; }
+            public IFormatProvider FormatProvider { get; set; }
+            public bool StoreTimestampInUtc { get; set; }
+            public TimeSpan? RetentionPeriod { get; set; }
         }
     }
 }
