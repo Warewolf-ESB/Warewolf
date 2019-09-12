@@ -12,27 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Container;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Logging;
 using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Management.Services;
 using Moq;
 using Newtonsoft.Json;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using System.IO;
-using System.Linq;
-using Warewolf.Driver.Serilog;
 using Warewolf.Storage;
 using Dev2;
 using Warewolf.Logger;
-using System.Net.Http;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
@@ -62,7 +50,7 @@ namespace Warewolf.Driver.Serilog.Tests
             var result = new Audit();
             var Content = JsonConvert.SerializeObject(result);
 
-            var seriConfig = new TestSeriLogSQLiteConfig();
+            var seriConfig = new SeriLogSQLiteConfig();
             var loggerSource = new SeriLoggerSource();
             using (var loggerConnection = loggerSource.NewConnection(seriConfig))
             {
