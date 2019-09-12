@@ -1444,6 +1444,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save failed: Please enter an OnError Queue.
+        /// </summary>
+        public static string TriggerQueuesSaveOnErrorQueueNameEmpty {
+            get {
+                return ResourceManager.GetString("TriggerQueuesSaveOnErrorQueueNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed: Please enter a Queue.
+        /// </summary>
+        public static string TriggerQueuesSaveQueueNameEmpty {
+            get {
+                return ResourceManager.GetString("TriggerQueuesSaveQueueNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed: Please select an OnError Queue Source.
+        /// </summary>
+        public static string TriggerQueuesSaveQueueSinkNotSelected {
+            get {
+                return ResourceManager.GetString("TriggerQueuesSaveQueueSinkNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save failed: Please select a Queue Source.
         /// </summary>
         public static string TriggerQueuesSaveQueueSourceNotSelected {
