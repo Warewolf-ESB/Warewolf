@@ -27,7 +27,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
     [TestClass]
     public class DatabaseServiceInputChangeTests
     {
-        public static StartContainer _containerOps;
+        public static Depends _containerOps;
         private ManageDbServiceModel _dbServiceModel;
         private DsfSqlServerDatabaseActivity _sqlActivity;
         private DbActionRegion _dbActionRegion;
@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             var aggr = new Mock<IEventAggregator>();
             DataListSingleton.SetDataList(new DataListViewModel(aggr.Object));
-            _containerOps = new StartContainer(StartContainer.ContainerType.MSSQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
         }
 
         [ClassCleanup]
