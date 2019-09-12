@@ -24,7 +24,8 @@ namespace Warewolf.Logger
             }
             public void Run()
             {
-                Console.WriteLine($"Starting listening: Warewolf.Logger");
+                var logger = _config.Source;
+                logger.NewConnection(_config.LoggerConfig);
             }
         }
     }

@@ -12,9 +12,13 @@ using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
-    internal interface ILoggerContext
+    public class LoggerConnection : ILoggerConnection
     {
-         ILoggerSource Source { get; }
-         ILoggerConfig LoggerConfig { get; set; }
+        public void Dispose() => throw new System.NotImplementedException();
+        public ILoggerConsumer NewConsumer()
+        {
+            return new LoggerConsumer();
+        }
+        public ILoggerPublisher NewPublisher() => throw new System.NotImplementedException();
     }
 }
