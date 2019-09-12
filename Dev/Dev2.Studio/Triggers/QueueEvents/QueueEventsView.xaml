@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Queue;assembly=Dev2.Common.Interfaces"
+             xmlns:interfaces="clr-namespace:Warewolf.Triggers;assembly=Warewolf.Interfaces"
              xmlns:queueEvents="clr-namespace:Dev2.Triggers.QueueEvents"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"

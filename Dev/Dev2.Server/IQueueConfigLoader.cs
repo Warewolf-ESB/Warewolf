@@ -9,8 +9,8 @@
 */
 
 
-using Dev2.Triggers;
 using System.Collections.Generic;
+using Warewolf.Triggers;
 
 namespace Dev2
 {
