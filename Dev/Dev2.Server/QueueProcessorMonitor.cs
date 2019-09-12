@@ -55,8 +55,7 @@ namespace Dev2
             }
             foreach (var process in processList)
             {
-                var p = Process.GetProcessById(process.Pid);
-                p.Kill();
+                process.Kill();
             }
         }
         private void WorkerDeleted(Guid guid)
@@ -83,7 +82,7 @@ namespace Dev2
                 {
                     continue;
                 }
-                var list = new ProcessThreadList(_childProcessTracker, _processFactory, _writer, config);
+                var list = new ProcessThreadList(_queueConfigLoader, _childProcessTracker, _processFactory, _writer, config);
                 _processLists.Add(list);
             }
         }
@@ -137,15 +136,19 @@ namespace Dev2
             readonly List<ProcessThread> _processThreads = new List<ProcessThread>();
             private readonly IChildProcessTracker _childProcessTracker;
             private readonly IProcessFactory _processFactory;
+            private readonly IQueueConfigLoader _queueConfigLoader;
             private readonly IWriter _writer;
-            private readonly ITrigger _config;
+            private ITrigger _config;
+            private bool _running;
 
-            public ProcessThreadList(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IWriter writer, ITrigger config)
+            public ProcessThreadList(IQueueConfigLoader queueConfigLoader,IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IWriter writer, ITrigger config)
             {
+                _queueConfigLoader = queueConfigLoader;
                 _childProcessTracker = childProcessTracker;
                 _processFactory = processFactory;
                 _writer = writer;
                 _config = config;
+                _running = true;
             }
 
             public Guid TriggerId { get => _config.TriggerId; }
@@ -159,12 +162,18 @@ namespace Dev2
             // check that the number of processes matches Concurrency
             public void Start()
             {
+                if (!_running)
+                {
+                    return;
+                }
+                UpdateConfig();
+
                 var expectedNumProcesses = Concurrency;
                 var numProcesses = _processThreads.Count;
                 if (numProcesses > expectedNumProcesses)
                 {
                     var processThreads = _processThreads.ToArray();
-                    for (int i = expectedNumProcesses; i < expectedNumProcesses; i++)
+                    for (int i = expectedNumProcesses; i < numProcesses; i++)
                     {
                         processThreads[i].Kill();
                         _processThreads.Remove(processThreads[i]);
@@ -183,6 +192,20 @@ namespace Dev2
                     processThread.Start();
                 }
             }
+
+            private void UpdateConfig()
+            {
+                var newConfig = _queueConfigLoader.Configs.First(o => o.TriggerId == TriggerId);
+                if (newConfig is null)
+                {
+                    Stop();
+                }
+                _config = newConfig;
+            }
+
+            private void Stop() {
+                _running = false;
+            }
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
@@ -192,8 +215,9 @@ namespace Dev2
             private readonly IProcessFactory _processFactory;
             private readonly IWriter _writer;
 
-            public int Pid { get; private set; }
+            public int Pid => _process.Id;
 
+            private IProcess _process;
             private readonly IChildProcessTracker _childProcessTracker;
 
             public Guid TriggerId { get; private set; }
@@ -221,7 +245,7 @@ namespace Dev2
                         using (var process = _processFactory.Start(startInfo))
                         {
                             _childProcessTracker.Add(process);
-                            Pid = process.Id;
+                            _process = process;
                             while (!process.WaitForExit(1000))
                             {
                                 //TODO: check queue progress, kill if necessary
@@ -239,6 +263,10 @@ namespace Dev2
 
             internal void Kill()
             {
+                if (_process.HasExited)
+                {
+                    return;
+                }
                 var p = Process.GetProcessById(Pid);
                 p.Kill();
             }
