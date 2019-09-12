@@ -28,7 +28,7 @@ namespace Warewolf.Logger
         public LoggerContext(string[] args)
         {
             Errors = new List<Error>();
-            var processArgs = Parser.Default.ParseArguments<Options>(args)
+            var processArgs = CommandLine.Parser.Default.ParseArguments<Options>(args)
                  .WithParsed<Options>(opts => IsVerbose(opts))
                  .WithNotParsed<Options>((errs) => HandleParseError(errs));
 

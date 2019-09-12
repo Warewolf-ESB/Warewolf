@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Text;
 using Warewolf.Streams;
 
 namespace Warewolf.Logging
@@ -16,5 +17,6 @@ namespace Warewolf.Logging
     public interface ILoggerConsumer : IConsumer
     {
         List<string[]> GetData(string connectionString, string tableName);
+        List<string[]> QueryLogData(Dictionary<string, StringBuilder> values);
     }
 }
