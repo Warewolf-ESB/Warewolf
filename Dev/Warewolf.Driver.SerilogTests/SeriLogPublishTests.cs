@@ -120,7 +120,7 @@ namespace Warewolf.Driver.Serilog.Tests
             var defaultSqlitePath = @"C:\ProgramData\Warewolf\Audits\auditDB.db";
             File.Delete(defaultSqlitePath);
             //-------------------------Arrange------------------------------
-            var seriConfig = new TestSeriLogSQLiteConfig();
+            var seriConfig = new SeriLogSQLiteConfig();
             var loggerSource = new SeriLoggerSource();
 
             using (var loggerConnection = loggerSource.NewConnection(seriConfig))
@@ -167,8 +167,6 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestCategory(nameof(SeriLogPublisher))]
         public void SeriLogPublisher_NewConsumer_Reading_LogData_From_SQLite_WithParamCTOR_Success()
         {
-            var testSqlitePath = @"C:\Test\Warewolf\db\testAudits.db";
-            File.Delete(testSqlitePath);
             //-------------------------Arrange------------------------------
             var settings = new SeriLogSQLiteConfig.Settings
             {
@@ -177,7 +175,9 @@ namespace Warewolf.Driver.Serilog.Tests
                 Database = "testAudits.db"
             };
 
-            var seriConfig = new TestSeriLogSQLiteConfig(settings);
+            File.Delete(settings.ConnectionString);
+
+            var seriConfig = new SeriLogSQLiteConfig(settings);
             var loggerSource = new SeriLoggerSource();
 
             using (var loggerConnection = loggerSource.NewConnection(seriConfig))
@@ -241,33 +241,5 @@ namespace Warewolf.Driver.Serilog.Tests
                 return new LoggerConfiguration().WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
             }
         }
-
-       
     }
-
-    class TestSeriLogSQLiteConfig : ISeriLogConfig
-    {
-        readonly SeriLogSQLiteConfig.Settings _config;
-
-        public TestSeriLogSQLiteConfig()
-        {
-            _config = new SeriLogSQLiteConfig.Settings();
-        }
-
-        public TestSeriLogSQLiteConfig(SeriLogSQLiteConfig.Settings sqlConfig)
-        {
-            _config = sqlConfig;
-        }
-
-        public ILogger Logger { get => CreateLogger(); }
-
-        private ILogger CreateLogger()
-        {
-            return new LoggerConfiguration()
-                .WriteTo
-                .SQLite(sqliteDbPath: _config.ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
-                .CreateLogger();
-        }
-    }
-
 }
