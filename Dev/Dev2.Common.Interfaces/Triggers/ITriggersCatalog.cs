@@ -9,11 +9,12 @@
 */
 
 using Dev2.Triggers;
+using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.Triggers
 {
-    public delegate void TriggerChangeEvent(string guid);
+    public delegate void TriggerChangeEvent(Guid guid);
     public interface ITriggersCatalog
     {
         IList<ITriggerQueue> Queues { get; set; }
