@@ -34,7 +34,7 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
-            WorkflowExecutionSteps._containerOps = new StartContainer(StartContainer.ContainerType.Warewolf, "tst-ci-remote.premier.local");
+            WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, "tst-ci-remote.premier.local");
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
