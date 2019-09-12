@@ -17,7 +17,8 @@ using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
-using Dev2.Runtime.Auditing;
+using Warewolf.Driver.Serilog;
+using Warewolf.Logging;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -29,9 +30,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var results = BuildTempObjects(values);
-                LogDataCache.CurrentResults = results;
-                return serializer.SerializeToBuilder(results);
+                var loggerSource = new SeriLoggerSource();
+                using (var loggerConnection = loggerSource.NewConnection(new SeriLogSQLiteConfig()))
+                {
+                    var loggerConsumer = loggerConnection.NewConsumer();
+                    var dataList = loggerConsumer.QueryLogData(values);
+                    LogDataCache.CurrentResults = dataList;
+                    return serializer.SerializeToBuilder(dataList);
+                }
             }
             catch (Exception e)
             {
@@ -39,12 +45,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return serializer.SerializeToBuilder("");
         }
-              
+
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "GetLogDataService";
-
-       
     }
 
     public static class LogDataCache

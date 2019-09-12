@@ -22,5 +22,6 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj" />
   </ItemGroup>
 </Project>
