@@ -389,6 +389,35 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestMethod]
         [TestCategory(nameof(QueueEventsViewModel))]
         [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Save_Empty_Queue()
+        {
+            var resourceId = Guid.NewGuid();
+            var resource = new Resource
+            {
+                ResourceID = resourceId
+            };
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveQueueNameEmpty, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            Mock<IServer> mockServer = SetupForTriggerQueueView(resource);
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.SelectedQueue = new TriggerQueueViewForTesting(mockServer.Object)
+            {
+                SelectedQueueSource = resource
+            };
+            queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+
+            var isSaved = queueEventsViewModel.Save();
+            Assert.IsFalse(isSaved);
+
+            mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveQueueNameEmpty, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_QueueEvents_Save_Empty_WorkflowName()
         {
             var resourceId = Guid.NewGuid();
@@ -408,11 +437,75 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 SelectedQueueSource = resource
             };
             queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+            queueEventsViewModel.SelectedQueue.QueueName = "QueueName";
 
             var isSaved = queueEventsViewModel.Save();
             Assert.IsFalse(isSaved);
 
             mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveWorkflowNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Save_Empty_OnError_QueueSource()
+        {
+            var resourceId = Guid.NewGuid();
+            var resource = new Resource
+            {
+                ResourceID = resourceId
+            };
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveQueueSinkNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            Mock<IServer> mockServer = SetupForTriggerQueueView(resource);
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.SelectedQueue = new TriggerQueueViewForTesting(mockServer.Object)
+            {
+                SelectedQueueSource = resource
+            };
+            queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+            queueEventsViewModel.SelectedQueue.QueueName = "QueueName";
+            queueEventsViewModel.SelectedQueue.WorkflowName = "WorkflowName";
+
+            var isSaved = queueEventsViewModel.Save();
+            Assert.IsFalse(isSaved);
+
+            mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveQueueSinkNotSelected, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(QueueEventsViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void QueueEventsViewModel_QueueEvents_Save_Empty_OnError_Queue()
+        {
+            var resourceId = Guid.NewGuid();
+            var resource = new Resource
+            {
+                ResourceID = resourceId
+            };
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveOnErrorQueueNameEmpty, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(mockPopupController.Object);
+
+            Mock<IServer> mockServer = SetupForTriggerQueueView(resource);
+            var queueEventsViewModel = CreateViewModel();
+            queueEventsViewModel.SelectedQueue = new TriggerQueueViewForTesting(mockServer.Object)
+            {
+                SelectedQueueSource = resource
+            };
+            queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+            queueEventsViewModel.SelectedQueue.QueueName = "QueueName";
+            queueEventsViewModel.SelectedQueue.WorkflowName = "WorkflowName";
+            queueEventsViewModel.SelectedQueue.QueueSinkId = resourceId;
+
+            var isSaved = queueEventsViewModel.Save();
+            Assert.IsFalse(isSaved);
+
+            mockPopupController.Verify(popupController => popupController.Show(Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveOnErrorQueueNameEmpty, Warewolf.Studio.Resources.Languages.Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -437,7 +530,10 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 SelectedQueueSource = resource
             };
             queueEventsViewModel.SelectedQueue.QueueSourceId = resourceId;
+            queueEventsViewModel.SelectedQueue.QueueName = "QueueName";
             queueEventsViewModel.SelectedQueue.WorkflowName = "Workflow";
+            queueEventsViewModel.SelectedQueue.QueueSinkId = resourceId;
+            queueEventsViewModel.SelectedQueue.DeadLetterQueue = "DeadLetterQueue";
 
             var isSaved = queueEventsViewModel.Save();
             Assert.IsTrue(isSaved);
