@@ -121,7 +121,60 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogPublisher))]
-        public void SeriLogPublisher_NewConsumer_Reading_LogData_From_SQLite_Success()
+        public void SeriLogPublisher_NewConsumer_Reading_LogData_From_SQLite_NoParamCTOR_Success()
+        {
+            //-------------------------Arrange------------------------------
+            var settings = new SeriLogSQLiteConfig.Settings();
+
+            File.Delete(settings.Path);
+
+            Assert.IsFalse(File.Exists(settings.Path));
+
+            var seriConfig = new TestSeriLogSQLiteConfig();
+
+            var loggerSource = new SeriLoggerSource();
+
+            using (var loggerConnection = loggerSource.NewConnection(seriConfig))
+            {
+                Assert.IsTrue(File.Exists(settings.Path));
+
+                var loggerPublisher = loggerConnection.NewPublisher();
+
+                var error = new { ServerName = "testServer", Error = "testError" };
+                var fatal = new { ServerName = "testServer", Error = "testFatalError" };
+
+                var expectedTestErrorMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+                var expectedTestFatalMsg = "test infomation {testFatalKey}";
+
+                var testErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
+
+                //-------------------------Act----------------------------------
+
+                loggerPublisher.Info("test message");
+                loggerPublisher.Error(expectedTestErrorMsgTemplate, DateTime.Now, LogEventLevel.Error, testErrorMsg, Environment.NewLine, "test exception");
+                loggerPublisher.Fatal(expectedTestFatalMsg, @fatal);
+            };
+
+            using (var loggerConnection = loggerSource.NewConnection(seriConfig))
+            {
+                
+                var loggerConsumer = loggerConnection.NewConsumer();
+                var dataList = loggerConsumer.GetData(connectionString: settings.Path, settings.TableName);
+
+                var actItem1 = JsonConvert.DeserializeObject<SeriLogData>(dataList[0][0]);
+                var actItem2 = JsonConvert.DeserializeObject<SeriLogData>(dataList[1][0]);
+                var actItem3 = JsonConvert.DeserializeObject<SeriLogData>(dataList[2][0]);
+                
+                Assert.AreEqual(expected: 3, actual: dataList.Count);
+
+                Assert.AreEqual(expected: null, actual: actItem1);
+                Assert.AreEqual(expected: "Error From: testServer : testError ", actual: actItem2.Message);
+                Assert.AreEqual(expected: null, actual: actItem3.Message);
+            }
+
+        }
+
+        public void SeriLogPublisher_NewConsumer_Reading_LogData_From_SQLite_WithParamCTOR_Success()
         {
             //-------------------------Arrange------------------------------
             var testSqlitePath = @"C:\Test\Warewolf\db\testAudits.db";
@@ -133,14 +186,11 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 TableName = "testLogs",
                 Path = testSqlitePath
-                
             };
 
-            var seriConfig = new TestSeriLogSQLiteConfig(sqlConfig: config);
+            var seriConfig = new TestSeriLogSQLiteConfig(config);
 
             var loggerSource = new SeriLoggerSource();
-
-            var timeStamp = DateTime.Now;
 
             using (var loggerConnection = loggerSource.NewConnection(seriConfig))
             {
@@ -159,19 +209,20 @@ namespace Warewolf.Driver.Serilog.Tests
                 //-------------------------Act----------------------------------
 
                 loggerPublisher.Info("test message");
-                loggerPublisher.Error(expectedTestErrorMsgTemplate, timeStamp, LogEventLevel.Error, testErrorMsg, Environment.NewLine, "test exception");
+                loggerPublisher.Error(expectedTestErrorMsgTemplate, DateTime.Now, LogEventLevel.Error, testErrorMsg, Environment.NewLine, "test exception");
                 loggerPublisher.Fatal(expectedTestFatalMsg, @fatal);
             };
 
             using (var loggerConnection = loggerSource.NewConnection(seriConfig))
             {
+                var settings = new SeriLogSQLiteConfig.Settings();
                 var loggerConsumer = loggerConnection.NewConsumer();
-                var dataList = loggerConsumer.GetData(connectionString: testSqlitePath, config.TableName);
+                var dataList = loggerConsumer.GetData(connectionString: settings.Path, settings.TableName);
 
                 var actItem1 = JsonConvert.DeserializeObject<SeriLogData>(dataList[0][0]);
                 var actItem2 = JsonConvert.DeserializeObject<SeriLogData>(dataList[1][0]);
                 var actItem3 = JsonConvert.DeserializeObject<SeriLogData>(dataList[2][0]);
-                
+
                 Assert.AreEqual(expected: 3, actual: dataList.Count);
 
                 Assert.AreEqual(expected: null, actual: actItem1);
@@ -211,6 +262,11 @@ namespace Warewolf.Driver.Serilog.Tests
     class TestSeriLogSQLiteConfig : ISeriLogConfig
     {
         readonly SeriLogSQLiteConfig.Settings _config;
+
+        public TestSeriLogSQLiteConfig()
+        {
+            _config = new SeriLogSQLiteConfig.Settings();
+        }
 
         public TestSeriLogSQLiteConfig(SeriLogSQLiteConfig.Settings sqlConfig)
         {

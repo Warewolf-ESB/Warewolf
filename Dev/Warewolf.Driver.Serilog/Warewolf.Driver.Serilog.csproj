@@ -9,6 +9,7 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
 </Project>
