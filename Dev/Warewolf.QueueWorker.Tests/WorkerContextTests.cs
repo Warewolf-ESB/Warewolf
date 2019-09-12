@@ -12,7 +12,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Triggers;
 using Dev2.Data.ServiceModel;
-using Dev2.Triggers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using QueueWorker;
@@ -39,7 +38,7 @@ namespace Warewolf.QueueWorker.Tests
         [TestCategory(nameof(QueueWorker))]
         public void WorkerContext_GivenValidConstruct_ExpectValidSource()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var rabbitSink);
+            var context = ConstructWorkerContext(out var rabbitSource, out _);
 
             Assert.AreEqual(rabbitSource, context.Source);
         }
@@ -49,7 +48,7 @@ namespace Warewolf.QueueWorker.Tests
         [TestCategory(nameof(QueueWorker))]
         public void WorkerContext_GivenValidConstruct_ExpectValidDeadLetterSink()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var rabbitSink);
+            var context = ConstructWorkerContext(out var rabbitSource, out var _);
 
             Assert.AreEqual(rabbitSource, context.DeadLetterSink);
         }
@@ -59,7 +58,7 @@ namespace Warewolf.QueueWorker.Tests
         [TestCategory(nameof(QueueWorker))]
         public void WorkerContext_GivenValidConstruct_ExpectQueueName()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var rabbitSink);
+            var context = ConstructWorkerContext(out var _, out var _);
 
             Assert.AreEqual(_queueName, context.QueueName);
         }
@@ -69,7 +68,7 @@ namespace Warewolf.QueueWorker.Tests
         [TestCategory(nameof(QueueWorker))]
         public void WorkerContext_GivenValidConstruct_ExpectValidInputs()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var rabbitSink);
+            var context = ConstructWorkerContext(out var _, out var _);
 
             Assert.AreEqual(1, context.Inputs.Length);
             Assert.AreEqual(_expectedIServiceInput, context.Inputs[0]);
@@ -80,7 +79,7 @@ namespace Warewolf.QueueWorker.Tests
         [TestCategory(nameof(QueueWorker))]
         public void WorkerContext_GivenValidConstruct_ExpectQueueConfig()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var rabbitSink);
+            var context = ConstructWorkerContext(out var _, out var _);
 
             var config = context.QueueConfig;
             var queueName = config.GetType().GetProperty("QueueName");
@@ -94,7 +93,7 @@ namespace Warewolf.QueueWorker.Tests
         [TestCategory(nameof(QueueWorker))]
         public void WorkerContext_GivenValidConstruct_ExpectValidWorkflowUrl()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var rabbitSink);
+            var context = ConstructWorkerContext(out var _, out var _);
 
             var url = context.WorkflowUrl;
             var expected = "http://somehost:1234//secure/Some Workflow.json";
