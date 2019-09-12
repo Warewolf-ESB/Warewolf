@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -40,10 +39,10 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Dev2.Triggers;
 using Dev2.Utils;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
+using Warewolf.Triggers;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
 {

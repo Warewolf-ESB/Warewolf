@@ -8,12 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.DB;
 using System;
 using System.Collections.Generic;
+using Warewolf.Data;
 using Warewolf.Options;
 
-namespace Dev2.Triggers
+namespace Warewolf.Triggers
 {
     public interface ITriggerQueue : ITrigger, IEquatable<ITriggerQueue>
     {
@@ -27,7 +27,7 @@ namespace Dev2.Triggers
         string DeadLetterQueue { get; set; }
         IOption[] DeadLetterOptions { get; set; }
         bool MapEntireMessage { get; set; }
-        ICollection<IServiceInput> Inputs { get; set; }
+        ICollection<IServiceInputBase> Inputs { get; set; }
         Guid ResourceId { get; set; }
     }
 }

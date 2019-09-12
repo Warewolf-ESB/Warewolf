@@ -11,7 +11,7 @@
 
 namespace Dev2
 {
-    internal class EmptyQueueWorkerMonitor : IQueueProcessorMonitor
+    internal class EmptyQueueWorkerMonitor : IProcessorMonitor
     {
         public void Shutdown()
         {

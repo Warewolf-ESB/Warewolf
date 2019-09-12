@@ -10,17 +10,17 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Triggers;
 using Dev2.Data.ServiceModel;
-using Dev2.Triggers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using QueueWorker;
 using System;
 using System.Collections.Generic;
 using Warewolf.Common;
+using Warewolf.Data;
 using Warewolf.Options;
 using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Warewolf.QueueWorker.Tests
 {
@@ -132,7 +132,7 @@ namespace Warewolf.QueueWorker.Tests
                 ResourceId = _resourceId,
                 QueueName = _queueName,
                 WorkflowName = _workflowName,
-                Inputs = new List<IServiceInput> { _expectedIServiceInput },
+                Inputs = new List<IServiceInputBase> { _expectedIServiceInput },
             };
 
             mockTriggerCatalog.Setup(o => o.LoadQueueTriggerFromFile(It.IsAny<string>())).Returns(triggerQueue);

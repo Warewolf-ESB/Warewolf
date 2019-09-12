@@ -212,7 +212,6 @@
     <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
     <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
-    <Compile Include="Wrappers\ProcessWrapper.cs" />
     <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
@@ -221,6 +220,14 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+      <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
+      <Name>Warewolf.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>

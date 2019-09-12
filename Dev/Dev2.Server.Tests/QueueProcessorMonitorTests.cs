@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,16 +10,14 @@
 
 
 using Dev2.Common;
-using Dev2.Common.Interfaces.Triggers;
-using Dev2.Common.Wrappers;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using Warewolf.OS;
+using Warewolf.Triggers;
 
 namespace Dev2.Server.Tests
 {

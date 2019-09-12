@@ -10,18 +10,17 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
-using Dev2.Common.Interfaces.Triggers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
-using Dev2.Triggers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Warewolf.Security.Encryption;
+using Warewolf.Triggers;
 
-namespace Dev2.Runtime.Triggers
+namespace Dev2.Runtime.Hosting
 {
     public class TriggersCatalog : ITriggersCatalog
     {
@@ -159,9 +158,9 @@ namespace Dev2.Runtime.Triggers
             }
         }
 
-        public ITriggerQueue LoadQueueTriggerFromFile(string triggerQueueFileName)
+        public ITriggerQueue LoadQueueTriggerFromFile(string filename)
         {
-            var fileData = _fileWrapper.ReadAllText(triggerQueueFileName);
+            var fileData = _fileWrapper.ReadAllText(filename);
             var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
             var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
             return triggerQueue;

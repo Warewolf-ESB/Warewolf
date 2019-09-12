@@ -10,20 +10,19 @@
 
 
 using Dev2.Common;
-using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Dev2.Common.Interfaces.Triggers;
-using Dev2.Triggers;
 using System;
 using System.Collections;
+using Warewolf.OS;
+using Warewolf.Triggers;
 
 namespace Dev2
 {
-    public class QueueWorkerMonitor : IQueueProcessorMonitor
+    public class QueueWorkerMonitor : IProcessorMonitor
     {
         private readonly IQueueConfigLoader _queueConfigLoader;
         private readonly IChildProcessTracker _childProcessTracker;

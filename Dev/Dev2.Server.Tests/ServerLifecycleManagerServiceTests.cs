@@ -195,7 +195,7 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
-            var mockQueueProcessMonitor = new Mock<IQueueProcessorMonitor>();
+            var mockQueueProcessMonitor = new Mock<IProcessorMonitor>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 

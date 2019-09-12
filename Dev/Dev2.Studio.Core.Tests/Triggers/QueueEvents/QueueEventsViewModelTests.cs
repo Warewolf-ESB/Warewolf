@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
@@ -20,7 +19,6 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Dev2.Triggers;
 using Dev2.Triggers.QueueEvents;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,8 +28,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
+using Warewolf.Data;
 using Warewolf.Options;
 using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 using Warewolf.UI;
 
 namespace Dev2.Core.Tests.Triggers.QueueEvents
@@ -92,7 +92,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 
             var mockServer = new Mock<IServer>();
             var mockOption = new Mock<IOption>();
-            var mockInputs = new Mock<ICollection<IServiceInput>>();
+            var mockInputs = new Mock<ICollection<IServiceInputBase>>();
             var triggerQueue = new TriggerQueue
             {
                 Name = "TestTriggerQueueName",

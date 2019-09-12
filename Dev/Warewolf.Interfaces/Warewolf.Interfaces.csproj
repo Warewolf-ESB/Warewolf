@@ -7,6 +7,12 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Triggers\Triggers\**" />
+    <EmbeddedResource Remove="Triggers\Triggers\**" />
+    <None Remove="Triggers\Triggers\**" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Link="AssemblyCommonInfo.cs" />
  </ItemGroup>

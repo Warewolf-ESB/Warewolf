@@ -8,12 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 
-namespace Dev2
+namespace Warewolf.Triggers
 {
-    public interface IProcessorMonitor
+    public interface ITrigger
     {
-        void Start();
-        void Shutdown();
+        string Name { get; set; }
+        Guid TriggerId { get; set; }
+        int Concurrency { get; set; }
     }
 }

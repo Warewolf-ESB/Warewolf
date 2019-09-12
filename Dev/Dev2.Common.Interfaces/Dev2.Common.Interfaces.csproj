@@ -194,12 +194,6 @@
     <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
-    <Compile Include="Triggers\ITrigger.cs" />
-    <Compile Include="Triggers\ITriggersCatalog.cs" />
-    <Compile Include="Triggers\Queue\ITriggerQueue.cs" />
-    <Compile Include="Triggers\Queue\QueueRunStatus.cs" />
-    <Compile Include="Triggers\Queue\IExecutionHistory.cs" />
-    <Compile Include="Triggers\Queue\IExecutionInfo.cs" />
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerUpdateManager.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />

@@ -1,21 +1,23 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+// This code is from: https://stackoverflow.com/questions/3342941/kill-child-process-when-parent-process-is-killed/4657392#4657392
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Dev2.Common.Wrappers;
 
-namespace Dev2
+namespace Warewolf.OS
 {
-    public interface IChildProcessTracker
-    {
-        void Add(IProcess process);
-    }
-    internal class ChildProcessTrackerWrapper : IChildProcessTracker
-    {
-        public void Add(IProcess process) => ChildProcessTracker.AddProcess(process.Unwrap());
-    }
-
-#pragma warning disable
+    #pragma warning disable
     /// <summary>
     /// Allows processes to be automatically killed if this parent process unexpectedly quits.
     /// This feature requires Windows 8 or greater. On Windows 7, nothing is done.</summary>
