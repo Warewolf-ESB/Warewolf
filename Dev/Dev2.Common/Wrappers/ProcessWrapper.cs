@@ -19,6 +19,7 @@ namespace Dev2.Common.Wrappers
         Process Unwrap();
         bool WaitForExit(int milliseconds);
         int Id { get; }
+        bool HasExited { get; }
     }
     public interface IProcessFactory
     {
@@ -31,6 +32,20 @@ namespace Dev2.Common.Wrappers
         private readonly Process _process;
 
         public int Id => _process.Id;
+        public bool HasExited
+        {
+            get
+            {
+                try
+                {
+                    return _process.HasExited;
+                } catch (InvalidOperationException)
+                {
+                    return true;
+                }
+            }
+        }
+
 
         public ProcessWrapper(Process process)
         {
