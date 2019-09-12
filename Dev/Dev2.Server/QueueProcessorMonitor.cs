@@ -17,68 +17,74 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Dev2.Common.Interfaces.Triggers;
+using Dev2.Triggers;
+using System;
+using System.Collections;
 
 namespace Dev2
 {
     public class QueueWorkerMonitor : IQueueProcessorMonitor
     {
         private readonly IQueueConfigLoader _queueConfigLoader;
+        private readonly IChildProcessTracker _childProcessTracker;
         private readonly IProcessFactory _processFactory;
-        private readonly ITriggersCatalog _triggersCatalog;
 
-        private readonly List<ProcessThread> _processes = new List<ProcessThread>();
+        private readonly List<IProcessThreadList> _processLists = new List<IProcessThreadList>();
         private readonly IWriter _writer;
         private bool _running;
 
-        public QueueWorkerMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, IWriter writer, ITriggersCatalog triggersCatalog)
+        public QueueWorkerMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, IWriter writer, ITriggersCatalog triggersCatalog, IChildProcessTracker childProcessTracker)
         {
+            _childProcessTracker = childProcessTracker;
             _processFactory = processFactory;
             _queueConfigLoader = queueConfigLoader;
             _writer = writer;
 
-            _triggersCatalog = triggersCatalog;
-            _triggersCatalog.OnChanged += WorkerRestart;
-            _triggersCatalog.OnDeleted += WorkerDeleted;
-            _triggersCatalog.OnCreated += WorkerCreated;
+            triggersCatalog.OnChanged += WorkerRestart;
+            triggersCatalog.OnDeleted += WorkerDeleted;
+            triggersCatalog.OnCreated += WorkerCreated;
         }
 
-        private void WorkerRestart(string guid)
+        private void WorkerRestart(Guid guid)
         {
-            var process = _processes.FirstOrDefault(o => o.TriggerId == guid);
-            if (process is null)
+            var processList = _processLists.FirstOrDefault(o => o.TriggerId == guid);
+            if (processList is null)
             {
                 AddMissingMonitors();
                 return;
             }
-            var p = Process.GetProcessById(process.Pid);
-            p.Kill();
+            foreach (var process in processList)
+            {
+                var p = Process.GetProcessById(process.Pid);
+                p.Kill();
+            }
         }
-        private void WorkerDeleted(string guid)
+        private void WorkerDeleted(Guid guid)
         {
-            var process = _processes.FirstOrDefault(o => o.TriggerId == guid);
+            var process = _processLists.FirstOrDefault(o => o.TriggerId == guid);
             if (process is null)
             {
                 return;
             }
             process.Kill();
-            _processes.Remove(process);
+            _processLists.Remove(process);
         }
 
-        private void WorkerCreated(string guid)
+        private void WorkerCreated(Guid guid)
         {
             AddMissingMonitors();
         }
 
         private void AddMissingMonitors()
         {
-            foreach (var guid in _queueConfigLoader.Configs)
+            foreach (var config in _queueConfigLoader.Configs)
             {
-                if (_processes.Exists(o => o.TriggerId == guid))
+                if (_processLists.Exists(o => o.TriggerId == config.TriggerId))
                 {
                     continue;
                 }
-                var t = new ProcessThread(_processFactory, _writer, guid);
-                _processes.Add(t);
+                var list = new ProcessThreadList(_childProcessTracker, _processFactory, _writer, config);
+                _processLists.Add(list);
             }
         }
 
@@ -105,17 +111,67 @@ namespace Dev2
         {
             while (_running)
             {
-                var items = _processes.ToArray();
-                foreach (var process in items)
+                var lists = _processLists.ToArray();
+                foreach (var processList in lists)
                 {
-                    if (!process.IsAlive)
+                    if (!processList.IsAlive)
                     {
-                        process.Start();
+                        processList.Start();
                     }
-                };
+                }
 
                 Thread.Sleep(1000);
             }
+        }
+
+        interface IProcessThreadList : IEnumerable<ProcessThread>
+        {
+            Guid TriggerId { get; }
+            bool IsAlive { get; }
+
+            void Kill();
+            void Start();
+        }
+        class ProcessThreadList : IProcessThreadList
+        {
+            readonly List<ProcessThread> _processThreads = new List<ProcessThread>();
+            private readonly IChildProcessTracker _childProcessTracker;
+            private readonly IProcessFactory _processFactory;
+            private readonly IWriter _writer;
+            private readonly ITrigger _config;
+
+            public ProcessThreadList(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IWriter writer, ITrigger config)
+            {
+                _childProcessTracker = childProcessTracker;
+                _processFactory = processFactory;
+                _writer = writer;
+                _config = config;
+            }
+
+            public Guid TriggerId { get => _config.TriggerId; }
+            public bool IsAlive { get => _processThreads.Count >= Concurrency && _processThreads.All(o => o.IsAlive); }
+            private int Concurrency => _config.Concurrency;
+
+            public IEnumerator<ProcessThread> GetEnumerator() => _processThreads.GetEnumerator();
+            public void Kill() => _processThreads.ForEach(o => { o.Kill(); });
+
+            // check that each process in list is running otherwise start it
+            // check that the number of processes matches Concurrency
+            public void Start()
+            {
+                var expectedNumProcesses = Concurrency;
+                var numProcesses = _processThreads.Count;
+                for (int i = numProcesses; i < expectedNumProcesses; i++)
+                {
+                    var processThread = new ProcessThread(_childProcessTracker, _processFactory, _writer, TriggerId);
+                    _processThreads.Add(processThread);
+                }
+                foreach (var processThread in _processThreads)
+                {
+                    processThread.Start();
+                }
+            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
         class ProcessThread
@@ -125,11 +181,15 @@ namespace Dev2
             private readonly IWriter _writer;
 
             public int Pid { get; private set; }
-            public string TriggerId { get; private set; }
-            public bool IsAlive { get => _thread?.IsAlive ?? false; }
 
-            public ProcessThread(IProcessFactory processFactory, IWriter writer, string guid)
+            private readonly IChildProcessTracker _childProcessTracker;
+
+            public Guid TriggerId { get; private set; }
+            public bool IsAlive => _thread?.IsAlive ?? false;
+
+            public ProcessThread(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IWriter writer, Guid guid)
             {
+                _childProcessTracker = childProcessTracker;
                 TriggerId = guid;
                 _processFactory = processFactory;
                 _writer = writer;
@@ -144,6 +204,7 @@ namespace Dev2
                         var startInfo = new ProcessStartInfo(worker, $"-c \"{TriggerId}\"");
                         using (var process = _processFactory.Start(startInfo))
                         {
+                            _childProcessTracker.Add(process);
                             Pid = process.Id;
                             while (!process.WaitForExit(1000))
                             {

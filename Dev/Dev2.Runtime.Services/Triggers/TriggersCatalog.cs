@@ -84,7 +84,7 @@ namespace Dev2.Runtime.Triggers
             if (Guid.TryParse(guid, out var result))
             {
                 Dev2Logger.Info($"Trigger created '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
-                OnCreated?.Invoke(guid);
+                OnCreated?.Invoke(result);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.Triggers
             if (Guid.TryParse(guid, out var result))
             {
                 Dev2Logger.Info($"Trigger restarting '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
-                OnChanged?.Invoke(guid);
+                OnChanged?.Invoke(result);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Dev2.Runtime.Triggers
             if (Guid.TryParse(guid, out var result))
             {
                 Dev2Logger.Info($"Trigger deleted '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
-                OnDeleted?.Invoke(guid);
+                OnDeleted?.Invoke(result);
             }
         }
 

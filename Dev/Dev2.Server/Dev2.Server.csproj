@@ -219,6 +219,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="ChildProcessTracker.cs" />
     <Compile Include="EmptyQueueProcessorMonitor.cs" />
     <Compile Include="IQueueConfigLoader.cs" />
     <Compile Include="IQueueProcessorMonitor.cs" />

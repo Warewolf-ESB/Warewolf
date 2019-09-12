@@ -9,12 +9,13 @@
 */
 
 
+using Dev2.Triggers;
 using System.Collections.Generic;
 
 namespace Dev2
 {
     public interface IQueueConfigLoader
     {
-        IEnumerable<string> Configs { get; }
+        IEnumerable<ITrigger> Configs { get; }
     }
 }

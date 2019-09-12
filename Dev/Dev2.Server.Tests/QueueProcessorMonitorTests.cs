@@ -36,8 +36,9 @@ namespace Dev2.Server.Tests
             var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
             var mockProcess = new Mock<IProcess>();
             var mockTriggerCatalog = new Mock<ITriggersCatalog>();
+            var mockChildProcessTracker = new Mock<IChildProcessTracker>();
 
-            mockQueueConfigLoader.Setup(o => o.Configs).Returns(new List<string> { "test config string1" });
+            mockQueueConfigLoader.Setup(o => o.Configs).Returns(new List<ITrigger> { new Mock<ITrigger>().Object });
 
             var pass = true;
 
@@ -45,10 +46,8 @@ namespace Dev2.Server.Tests
                                 .Callback<ProcessStartInfo>((startInfo)=> { if (pass) pass = (GlobalConstants.QueueWorkerExe == startInfo.FileName); })
                                 .Returns(mockProcess.Object);
 
-            var worker = GlobalConstants.QueueWorkerExe;
-
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object, mockTriggerCatalog.Object);
+            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object, mockTriggerCatalog.Object, mockChildProcessTracker.Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
                         .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)
@@ -71,14 +70,16 @@ namespace Dev2.Server.Tests
             var mockProcessFactory = new Mock<IProcessFactory>();
             var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
             var mockWriter = new Mock<IWriter>();
+            var mockChildProcessTracker = new Mock<IChildProcessTracker>();
 
             var triggersCatalogForTesting = new TriggersCatalogForTesting();
 
-            var queueWorkerMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockWriter.Object, triggersCatalogForTesting);
+            _ = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockWriter.Object, triggersCatalogForTesting, mockChildProcessTracker.Object);
 
-            triggersCatalogForTesting.CallOnChanged(Guid.NewGuid().ToString());
-            triggersCatalogForTesting.CallOnDeleted(Guid.NewGuid().ToString());
-            triggersCatalogForTesting.CallOnCreated(Guid.NewGuid().ToString());
+            triggersCatalogForTesting.CallOnChanged(Guid.NewGuid());
+            triggersCatalogForTesting.CallOnDeleted(Guid.NewGuid());
+            triggersCatalogForTesting.CallOnCreated(Guid.NewGuid());
+
         }
     }
 
@@ -88,15 +89,15 @@ namespace Dev2.Server.Tests
         public event TriggerChangeEvent OnDeleted;
         public event TriggerChangeEvent OnCreated;
 
-        public void CallOnChanged(string guid)
+        public void CallOnChanged(Guid guid)
         {
             OnChanged?.Invoke(guid);
         }
-        public void CallOnDeleted(string guid)
+        public void CallOnDeleted(Guid guid)
         {
             OnDeleted?.Invoke(guid);
         }
-        public void CallOnCreated(string guid)
+        public void CallOnCreated(Guid guid)
         {
             OnCreated?.Invoke(guid);
         }
