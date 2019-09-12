@@ -8,13 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Warewolf.Data;
 using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
-    internal interface ILoggerContext
+    public class LoggerConsumer : ILoggerConsumer
     {
-         ILoggerSource Source { get; }
-         ILoggerConfig LoggerConfig { get; set; }
+        public Task<ConsumerResult> Consume(byte[] body) => throw new System.NotImplementedException();
+        public List<string[]> GetData(string connectionString, string tableName) => throw new System.NotImplementedException();
     }
 }

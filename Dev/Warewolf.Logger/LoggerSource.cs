@@ -12,9 +12,8 @@ using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
-    internal interface ILoggerContext
+    public class LoggerSource : ILoggerSource
     {
-         ILoggerSource Source { get; }
-         ILoggerConfig LoggerConfig { get; set; }
+        public ILoggerConnection NewConnection(ILoggerConfig loggerConfig) =>new LoggerConnection();
     }
 }

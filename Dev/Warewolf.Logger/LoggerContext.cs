@@ -12,6 +12,7 @@ using CommandLine;
 using System;
 using System.Collections.Generic;
 using Warewolf.Common;
+using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
@@ -22,9 +23,18 @@ namespace Warewolf.Logger
         {
             [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
             public bool Verbose { get; set; }
+
         }
 
         public bool Verbose { get; set; }
+        public ILoggerSource Source {
+            get
+            {
+                return new LoggerSource();
+            }
+        }
+        public ILoggerConfig LoggerConfig { get; set; }
+
         public LoggerContext(string[] args)
         {
             Errors = new List<Error>();
