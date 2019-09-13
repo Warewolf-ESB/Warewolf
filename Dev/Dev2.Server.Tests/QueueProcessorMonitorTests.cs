@@ -45,7 +45,7 @@ namespace Dev2.Server.Tests
                                 .Returns(mockProcess.Object);
 
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object, mockTriggerCatalog.Object, mockChildProcessTracker.Object);
+            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockTriggerCatalog.Object, mockChildProcessTracker.Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
                         .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)
@@ -67,12 +67,11 @@ namespace Dev2.Server.Tests
         {
             var mockProcessFactory = new Mock<IProcessFactory>();
             var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
-            var mockWriter = new Mock<IWriter>();
             var mockChildProcessTracker = new Mock<IChildProcessTracker>();
 
             var triggersCatalogForTesting = new TriggersCatalogForTesting();
 
-            _ = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockWriter.Object, triggersCatalogForTesting, mockChildProcessTracker.Object);
+            _ = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, triggersCatalogForTesting, mockChildProcessTracker.Object);
 
             triggersCatalogForTesting.CallOnChanged(Guid.NewGuid());
             triggersCatalogForTesting.CallOnDeleted(Guid.NewGuid());

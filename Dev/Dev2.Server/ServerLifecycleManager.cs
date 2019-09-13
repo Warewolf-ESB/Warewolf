@@ -80,7 +80,7 @@ namespace Dev2
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
-                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), writer, TriggersCatalog.Instance, new ChildProcessTrackerWrapper())
+                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), TriggersCatalog.Instance, new ChildProcessTrackerWrapper())
             };
         }
     }
@@ -129,6 +129,7 @@ namespace Dev2
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
+            _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
