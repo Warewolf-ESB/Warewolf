@@ -9,12 +9,13 @@
 */
 
 using System;
-using Warewolf.OS;
 
-namespace Warewolf.Triggers
+namespace Warewolf.OS
 {
-    public interface ITrigger : IJobConfig
+    public interface IJobConfig
     {
-        Guid TriggerId { get; set; }
+        Guid Id { get; }
+        string Name { get; set; }
+        int Concurrency { get; set; }
     }
 }
