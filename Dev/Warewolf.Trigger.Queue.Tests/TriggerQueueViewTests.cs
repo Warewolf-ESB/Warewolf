@@ -425,6 +425,20 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Pieter Terblanche")]
+        public void TriggerQueueView_Concurrency_Negative_NotAllowed()
+        {
+            var triggerQueueView = CreateViewModel();
+
+            Assert.AreEqual(0, triggerQueueView.Concurrency);
+
+            triggerQueueView.Concurrency = -5;
+
+            Assert.AreEqual(0, triggerQueueView.Concurrency);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Pieter Terblanche")]
         public void TriggerQueueView_UserName()
         {
             var triggerQueueView = CreateViewModel();
