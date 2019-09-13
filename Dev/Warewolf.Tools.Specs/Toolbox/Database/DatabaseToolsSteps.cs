@@ -11,7 +11,6 @@ using ActivityUnitTests;
 using Dev2.Activities.Specs.BaseTypes;
 using System;
 using System.Xml.Linq;
-using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Models.DataList;

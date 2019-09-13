@@ -52,6 +52,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
+using Warewolf.Triggers;
 
 namespace BusinessDesignStudio.Unit.Tests
 {

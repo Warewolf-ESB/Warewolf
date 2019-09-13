@@ -11,12 +11,10 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Triggers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Serializers;
 using Dev2.Common.Wrappers;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
+using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -24,6 +22,7 @@ using System.IO;
 using System.Linq;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Dev2.Tests.Runtime.Triggers
 {

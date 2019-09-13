@@ -39,9 +39,8 @@ using System.Security.Claims;
 using System.Reflection;
 using Dev2;
 using System.Threading.Tasks;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
 using Warewolf.Trigger.Queue;
+using Warewolf.OS;
 
 namespace Dev2
 {
@@ -64,7 +63,7 @@ namespace Dev2
         public IWriter Writer { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
-        public IQueueProcessorMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
+        public IProcessorMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -81,7 +80,7 @@ namespace Dev2
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
-                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), writer, TriggersCatalog.Instance, new ChildProcessTrackerWrapper())
+                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), TriggersCatalog.Instance, new ChildProcessTrackerWrapper())
             };
         }
     }
@@ -105,7 +104,7 @@ namespace Dev2
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
         private readonly IPauseHelper _pauseHelper;
-        private readonly IQueueProcessorMonitor _queueProcessMonitor;
+        private readonly IProcessorMonitor _queueProcessMonitor;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -130,6 +129,7 @@ namespace Dev2
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
+            _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }

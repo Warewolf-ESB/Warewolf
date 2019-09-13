@@ -8,23 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Runtime.Hosting;
-using System.Collections.Generic;
-using Warewolf.Triggers;
-
-namespace Dev2
+namespace Warewolf.OS
 {
-    internal class QueueWorkerConfigLoader : IQueueConfigLoader
+    public class ChildProcessTrackerWrapper : IChildProcessTracker
     {
-        public IEnumerable<ITrigger> Configs
-        {
-            get
-            {
-                foreach (var queueTrigger in TriggersCatalog.Instance.Queues)
-                {
-                    yield return queueTrigger;
-                }
-            }
-        }
+        public void Add(IProcess process) => ChildProcessTracker.AddProcess(process.Unwrap());
     }
 }
