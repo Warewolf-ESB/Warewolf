@@ -21,7 +21,7 @@ namespace Warewolf.OS
 
         public event ProcessDiedEvent OnProcessDied;
 
-        public int Pid => _process.Id;
+        public int Pid => _process?.Id ?? 0;
 
         private IProcess _process;
         private readonly IChildProcessTracker _childProcessTracker;
