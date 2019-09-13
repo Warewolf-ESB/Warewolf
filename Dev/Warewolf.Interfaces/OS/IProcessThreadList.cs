@@ -19,6 +19,7 @@ namespace Warewolf.OS
         IJobConfig Config { get; }
 
         void Kill();
+
         void UpdateConfig(IJobConfig config);
         void Monitor();
     }

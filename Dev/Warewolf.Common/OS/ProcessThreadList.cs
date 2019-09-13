@@ -23,7 +23,7 @@ namespace Warewolf.OS
         private bool _running;
         protected ProcessThreadList(IJobConfig config)
         {
-            Config = config;
+            UpdateConfig(config);
             _running = true;
         }
 
@@ -66,7 +66,6 @@ namespace Warewolf.OS
         // check that the number of processes matches Concurrency
         public void Monitor()
         {
-            _expectedNumProcesses = CalculateProcessCount();
             if (!_running || !NeedUpdate)
             {
                 return;
@@ -100,29 +99,31 @@ namespace Warewolf.OS
 
         private int CalculateProcessCount()
         {
-            var expectedNumProcesses = _config.Concurrency;
+            _expectedNumProcesses = _config.Concurrency;
             var logicalProcessors = System.Environment.ProcessorCount;
-            if (expectedNumProcesses < 1)
+            if (_expectedNumProcesses < 1)
             {
-                expectedNumProcesses = 1;
+                _expectedNumProcesses = 1;
             }
-            else if (expectedNumProcesses > logicalProcessors)
+            else if (_expectedNumProcesses > logicalProcessors)
             {
-                expectedNumProcesses = logicalProcessors;
+                _expectedNumProcesses = logicalProcessors;
             }
 
-            return expectedNumProcesses;
+            return _expectedNumProcesses;
         }
 
-        protected abstract ProcessThread GetProcessThread();
+        protected abstract IProcessThread GetProcessThread();
 
         public void UpdateConfig(IJobConfig config)
         {
             if (config is null)
             {
                 Stop();
+                return;
             }
-            _config = config;
+            Config = config;
+            _expectedNumProcesses = CalculateProcessCount();
         }
 
         private void Stop()
