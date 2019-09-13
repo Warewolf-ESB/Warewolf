@@ -66,12 +66,12 @@ namespace Warewolf.OS
         // check that the number of processes matches Concurrency
         public void Monitor()
         {
+            _expectedNumProcesses = CalculateProcessCount();
             if (!_running || !NeedUpdate)
             {
                 return;
             }
 
-            _expectedNumProcesses = CalculateProcessCount();
 
             var numProcesses = _processThreads.Count;
             if (numProcesses > _expectedNumProcesses)
