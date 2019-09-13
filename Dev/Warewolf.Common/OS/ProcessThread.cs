@@ -10,7 +10,6 @@
 
 using System.Diagnostics;
 using System.Threading;
-using Warewolf.Triggers;
 
 namespace Warewolf.OS
 {

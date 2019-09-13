@@ -78,6 +78,7 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
+            Load();
             //start
             var guid = Path.GetFileNameWithoutExtension(e.Name);
             if (Guid.TryParse(guid, out var result))
@@ -89,6 +90,7 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            Load();
             //restart
             var guid = Path.GetFileNameWithoutExtension(e.Name);
             if (Guid.TryParse(guid, out var result))
@@ -100,6 +102,7 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
+            Load();
             //kill
             var guid = Path.GetFileNameWithoutExtension(e.Name);
             if (Guid.TryParse(guid, out var result))
@@ -109,8 +112,9 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private static void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
+        private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
+            Load();
             var message = $"Trigger '{e.OldName}' renamed to '{e.Name}'";
             Dev2Logger.Warn(message, GlobalConstants.ServerWorkspaceID.ToString());
         }
@@ -121,7 +125,7 @@ namespace Dev2.Runtime.Hosting
             Dev2Logger.Error(exception.Message, GlobalConstants.ServerWorkspaceID.ToString());
         }
 
-        public IList<ITriggerQueue> Queues { get; set; }
+        public IList<ITriggerQueue> Queues { get; private set; }
 
         public void DeleteTriggerQueue(ITriggerQueue triggerQueue)
         {

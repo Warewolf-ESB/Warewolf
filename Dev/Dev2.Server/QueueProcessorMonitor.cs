@@ -8,9 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Linq;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using System.Threading;
 using System;
 using Warewolf.OS;
@@ -33,7 +32,21 @@ namespace Dev2
             _processFactory = processFactory;
             _queueConfigLoader = queueConfigLoader;
 
-            triggersCatalog.OnChanged += WorkerRestart;
+            triggersCatalog.OnChanged += (triggerId) =>
+            {
+                try
+                {
+                    var configs = _queueConfigLoader.Configs;
+                var config = configs.First(o => o.Id == triggerId);
+                    WorkerRestart(config);
+
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn(e.Message, "");
+                }
+
+            };
             triggersCatalog.OnDeleted += WorkerDeleted;
             triggersCatalog.OnCreated += WorkerCreated;
         }
@@ -78,18 +91,15 @@ namespace Dev2
 
         public event ProcessDiedEvent OnProcessDied;
 
-        protected void WorkerRestart(Guid guid)
+        protected void WorkerRestart(IJobConfig config)
         {
-            var processList = _processLists.FirstOrDefault(o => o.Config.Id == guid);
+            var processList = _processLists.FirstOrDefault(o => o.Config.Id == config.Id);
             if (processList is null)
             {
                 AddMissingMonitors();
                 return;
             }
-            foreach (var process in processList)
-            {
-                process.Kill();
-            }
+            processList.UpdateConfig(config);
         }
         protected void WorkerDeleted(Guid guid)
         {
@@ -150,10 +160,7 @@ namespace Dev2
                 var lists = _processLists.ToArray();
                 foreach (var processList in lists)
                 {
-                    if (!processList.IsAlive)
-                    {
-                        processList.Start();
-                    }
+                    processList.Monitor();
                 }
 
                 Thread.Sleep(1000);

@@ -11,7 +11,6 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using Warewolf.Triggers;
 using System.Threading;
 
 namespace Warewolf.OS
@@ -30,6 +29,8 @@ namespace Warewolf.OS
 
         private readonly ReaderWriterLockSlim _configLock = new ReaderWriterLockSlim();
         private IJobConfig _config;
+        private int _expectedNumProcesses;
+
         public IJobConfig Config
         {
             get
@@ -56,26 +57,27 @@ namespace Warewolf.OS
             }
         }
 
-        public bool IsAlive { get => _processThreads.Count >= _config.Concurrency && _processThreads.All(o => o.IsAlive); }
+        public bool NeedUpdate { get => _expectedNumProcesses < 1 || _processThreads.Count != _expectedNumProcesses || _processThreads.Any(o => !o.IsAlive); }
 
         public IEnumerator<IProcessThread> GetEnumerator() => _processThreads.GetEnumerator();
         public void Kill() => _processThreads.ForEach(o => { o.Kill(); });
 
         // check that each process in list is running otherwise start it
         // check that the number of processes matches Concurrency
-        public void Start()
+        public void Monitor()
         {
-            if (!_running)
+            if (!_running || !NeedUpdate)
             {
                 return;
             }
 
-            var expectedNumProcesses = _config.Concurrency;
+            _expectedNumProcesses = CalculateProcessCount();
+
             var numProcesses = _processThreads.Count;
-            if (numProcesses > expectedNumProcesses)
+            if (numProcesses > _expectedNumProcesses)
             {
                 var processThreads = _processThreads.ToArray();
-                for (int i = expectedNumProcesses; i < numProcesses; i++)
+                for (int i = _expectedNumProcesses; i < numProcesses; i++)
                 {
                     processThreads[i].Kill();
                     _processThreads.Remove(processThreads[i]);
@@ -83,7 +85,7 @@ namespace Warewolf.OS
             }
             else
             {
-                for (int i = numProcesses; i < expectedNumProcesses; i++)
+                for (int i = numProcesses; i < _expectedNumProcesses; i++)
                 {
                     var processThread = GetProcessThread();
                     processThread.OnProcessDied += (config) => OnProcessDied?.Invoke(config);
@@ -96,15 +98,31 @@ namespace Warewolf.OS
             }
         }
 
+        private int CalculateProcessCount()
+        {
+            var expectedNumProcesses = _config.Concurrency;
+            var logicalProcessors = System.Environment.ProcessorCount;
+            if (expectedNumProcesses < 1)
+            {
+                expectedNumProcesses = 1;
+            }
+            else if (expectedNumProcesses > logicalProcessors)
+            {
+                expectedNumProcesses = logicalProcessors;
+            }
+
+            return expectedNumProcesses;
+        }
+
         protected abstract ProcessThread GetProcessThread();
 
-        public void UpdateConfig(IJobConfig newConfig)
+        public void UpdateConfig(IJobConfig config)
         {
-            if (newConfig is null)
+            if (config is null)
             {
                 Stop();
             }
-            _config = newConfig;
+            _config = config;
         }
 
         private void Stop()
