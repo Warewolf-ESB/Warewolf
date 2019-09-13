@@ -17,6 +17,6 @@ namespace Warewolf.Logging
     public interface ILoggerConsumer : IConsumer
     {
         List<string[]> GetData(string connectionString, string tableName);
-        List<string[]> QueryLogData(Dictionary<string, StringBuilder> values);
+        IEnumerable<dynamic> QueryLogData(Dictionary<string, StringBuilder> values);
     }
 }

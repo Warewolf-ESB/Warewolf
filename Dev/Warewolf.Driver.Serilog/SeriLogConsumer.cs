@@ -17,61 +17,75 @@ using System.Threading.Tasks;
 using Warewolf.Data;
 using Warewolf.Logging;
 using Dev2.Common;
+using System.IO;
+using Warewolf.Logger;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace Warewolf.Driver.Serilog
 {
 
     public class SeriLogConsumer : ILoggerConsumer
     {
-        string _connectionString;
+        readonly string _connectionString;
 
         public SeriLogConsumer()
         {
-            _connectionString = Config.Server.AuditFilePath;
+            _connectionString = Path.Combine(Config.Server.AuditFilePath, "auditDB.db");
         }
-        public SeriLogConsumer(string connectionString)
+        public SeriLogConsumer(string connectionString, string database)
         {
-            _connectionString = connectionString;
+            _connectionString = Path.Combine(connectionString, database);
         }
-        public List<string[]> QueryLogData(Dictionary<string, StringBuilder> values)
+        public IEnumerable<dynamic> QueryLogData(Dictionary<string, StringBuilder> values)
         {
-            var properties = new List<string[]>();
+            var tableName = "Logs"; //TODO: should be dynamic?
+            var audits = new List<Audit>();
 
             var executionID = GetValue<string>("ExecutionID", values);
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
-           
+
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
             {
-                var sql = new StringBuilder("SELECT * FROM Logs  ");
-                if (executionID.Length > 0)
-                {
-                    sql.Append("@").Append(" WHERE ExecutionID = '" + executionID + "'");
-                }
-                if (executionID.Length > 0 && startTime.Length > 0 && endTime.Length > 0)
-                {
-                    sql.Append("@").Append(" AND (Timestamp >= '" + startTime + "' AND ");
-                    sql.Append("@").Append(" Timestamp <= '" + endTime + "') ");
-                }
-                if (executionID.Length <= 0 && startTime.Length > 0 && endTime.Length > 0)
-                {
-                    sql.Append("@").Append(" WHERE (Timestamp >= '" + startTime + "' AND ");
-                    sql.Append("@").Append(" Timestamp <= '" + endTime + "') ");
-                }
-                var command = new SQLiteCommand(sql.ToString(), sqlConn);
-                sqlConn.Open();
-                var reader = command.ExecuteReader();
+                var sql = new StringBuilder($"SELECT * FROM {tableName}  ");
+                //if (executionID.Length > 0)
+                //{
+                //    sql.Append(" WHERE ExecutionID = '" + executionID + "'");
+                //}
+                //if (executionID.Length > 0 && startTime.Length > 0 && endTime.Length > 0)
+                //{
+                //    sql.Append(" AND (Timestamp >= '" + startTime + "' AND ");
+                //    sql.Append(" Timestamp <= '" + endTime + "') ");
+                //}
+                //if (executionID.Length <= 0 && startTime.Length > 0 && endTime.Length > 0)
+                //{
+                    sql.Append(" WHERE Timestamp >= '" + startTime + "' AND ");
+                    sql.Append(" Timestamp <= '" + endTime + "' ");
+                //}
 
-                if (reader.HasRows)
+                using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
                 {
-                    while (reader.Read())
+                    sqlConn.Open();
+                    var reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        var results = reader.GetValues();
-                        properties.Add(results.GetValues("Properties"));
+                        while (reader.Read())
+                        {
+                            var results = reader.GetValues();
+                            var value = results.GetValues("Properties");
+
+                            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
+                            var auditJson = JsonConvert.DeserializeObject<Audit>(serilogData.Message);
+                            
+                            audits.Add(auditJson);
+                        }
                     }
-                }
+                };
+
             }
-            return properties;
+            return audits;
         }
 
         public List<string[]> GetData(string connectionString, string tableName)
