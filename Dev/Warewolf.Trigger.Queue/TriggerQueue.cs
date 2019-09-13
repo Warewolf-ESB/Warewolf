@@ -19,6 +19,7 @@ namespace Warewolf.Trigger.Queue
 {
     public class TriggerQueue : ITriggerQueue
     {
+        public Guid Id { get => TriggerId; }
         public Guid TriggerId { get; set; }
         public string Name { get; set; }
         public Guid QueueSourceId { get; set; }

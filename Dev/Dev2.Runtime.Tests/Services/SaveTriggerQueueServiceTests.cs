@@ -119,6 +119,7 @@ namespace Dev2.Tests.Runtime.Services
 
     internal class TriggerQueueForTest : ITriggerQueue
     {
+        public Guid Id { get => TriggerId; }
         public Guid TriggerId { get; set; }
         public IResource QueueSource { get; set; }
         public string QueueName { get; set; }
