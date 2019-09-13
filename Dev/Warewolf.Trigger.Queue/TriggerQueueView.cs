@@ -228,6 +228,10 @@ namespace Warewolf.Trigger.Queue
             get => _concurrency;
             set
             {
+                if (value < 0)
+                {
+                    value = 0;
+                }
                 _concurrency = value;
                 RaisePropertyChanged(nameof(Concurrency));
                 IsDirtyPropertyChange();
