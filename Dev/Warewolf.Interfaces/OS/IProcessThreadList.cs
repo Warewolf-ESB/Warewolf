@@ -9,8 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System;
-using Warewolf.Triggers;
 
 namespace Warewolf.OS
 {
@@ -19,9 +17,9 @@ namespace Warewolf.OS
         event ProcessDiedEvent OnProcessDied;
 
         IJobConfig Config { get; }
-        bool IsAlive { get; }
 
         void Kill();
-        void Start();
+        void UpdateConfig(IJobConfig config);
+        void Monitor();
     }
 }
