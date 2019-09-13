@@ -10,18 +10,11 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Common;
 using Warewolf.OS;
-using Warewolf.Web;
 
-namespace Warewolf.Web.Tests
+namespace Warewolf.OS.Tests
 {
     [TestClass]
     public class ProcessThreadListTests
@@ -284,28 +277,31 @@ namespace Warewolf.Web.Tests
             list.Monitor();
             mockProcessThread3.Verify(o => o.Kill(), Times.Once);
         }
+
+
+        internal class ProcessThreadForTesting : IProcessThread
+        {
+            private IJobConfig _config;
+
+            public ProcessThreadForTesting(IJobConfig config)
+            {
+                _config = config;
+            }
+
+            public bool IsAlive { get; }
+
+            public event ProcessDiedEvent OnProcessDied;
+
+            public void ForceProcessDiedEvent()
+            {
+                OnProcessDied(_config);
+            }
+
+            public void Kill() { }
+            public void Start() { }
+        }
     }
 
-    internal class ProcessThreadForTesting : IProcessThread
-    {
-        private IJobConfig _config;
-
-        public ProcessThreadForTesting(IJobConfig config)
-        {
-            _config = config;
-        }
-        public bool IsAlive { get; }
-
-        public event ProcessDiedEvent OnProcessDied;
-
-        public void ForceProcessDiedEvent()
-        {
-            OnProcessDied(_config);
-        }
-
-        public void Kill() { }
-        public void Start() { }
-    }
 
     public interface ITestProcessFactory
     {

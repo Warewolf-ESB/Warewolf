@@ -45,8 +45,8 @@ namespace Dev2
                 {
                     Dev2Logger.Warn(e.Message, "");
                 }
-
             };
+
             triggersCatalog.OnDeleted += WorkerDeleted;
             triggersCatalog.OnCreated += WorkerCreated;
         }
@@ -67,7 +67,7 @@ namespace Dev2
             _processFactory = processFactory;
         }
 
-        protected override ProcessThread GetProcessThread() => new QueueProcessThread(_childProcessTracker, _processFactory, Config);
+        protected override IProcessThread GetProcessThread() => new QueueProcessThread(_childProcessTracker, _processFactory, Config);
     }
     class QueueProcessThread : ProcessThread
     {
