@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -23,6 +22,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return string.IsNullOrEmpty(inputValue) ? true : false;
         }
 
+#pragma warning disable CC0044 // You should use a class
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
+#pragma warning restore CC0044 // You should use a class
     }
 }
