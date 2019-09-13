@@ -28,6 +28,7 @@ using System.Windows.Input;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Dev2.Triggers.QueueEvents
 {

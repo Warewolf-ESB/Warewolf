@@ -8,23 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Runtime.Hosting;
-using System.Collections.Generic;
-using Warewolf.Triggers;
-
-namespace Dev2
+namespace Warewolf.Data
 {
-    internal class QueueWorkerConfigLoader : IQueueConfigLoader
+    public interface IServiceInputBase
     {
-        public IEnumerable<ITrigger> Configs
-        {
-            get
-            {
-                foreach (var queueTrigger in TriggersCatalog.Instance.Queues)
-                {
-                    yield return queueTrigger;
-                }
-            }
-        }
+        string Name { get; set; }
+        string Value { get; set; }
+        T As<T>() where T : class, IServiceInputBase;
     }
 }

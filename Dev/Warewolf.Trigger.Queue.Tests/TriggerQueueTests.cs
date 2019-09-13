@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Warewolf.Data;
 using Warewolf.Options;
 
 namespace Warewolf.Trigger.Queue.Tests
@@ -51,7 +52,7 @@ namespace Warewolf.Trigger.Queue.Tests
             mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
 
             var mockOption = new Mock<IOption>();
-            var mockInputs = new Mock<ICollection<IServiceInput>>();
+            var mockInputs = new Mock<ICollection<IServiceInputBase>>();
             var resourceId = Guid.NewGuid();
 
             var triggerQueue = new TriggerQueue

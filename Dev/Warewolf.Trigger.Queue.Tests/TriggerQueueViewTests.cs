@@ -12,7 +12,6 @@ using Dev2;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -36,6 +35,8 @@ using Warewolf.Options;
 using Warewolf.UI;
 using System.Collections.ObjectModel;
 using Dev2.Studio.Interfaces.DataList;
+using Warewolf.Triggers;
+using Warewolf.Data;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
@@ -307,7 +308,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var mockOption = new Mock<IOption>();
             var option = new OptionViewForTesting(mockOption.Object);
-            var mockInputs = new Mock<ICollection<IServiceInput>>();
+            var mockInputs = new Mock<ICollection<IServiceInputBase>>();
 
             var triggerQueueView = new TriggerQueueView(mockServer.Object)
             {
@@ -765,7 +766,7 @@ namespace Warewolf.Trigger.Queue.Tests
         public void TriggerQueueView_ToModel()
         {
             var mockOption = new Mock<IOption>();
-            var mockInputs = new Mock<ICollection<IServiceInput>>();
+            var mockInputs = new Mock<ICollection<IServiceInputBase>>();
 
             var triggerQueue = new TriggerQueue
             {
@@ -813,7 +814,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var mockOption = new Mock<IOption>();
             var option = new OptionViewForTesting(mockOption.Object);
-            var mockInputs = new Mock<ICollection<IServiceInput>>();
+            var mockInputs = new Mock<ICollection<IServiceInputBase>>();
 
             var triggerQueueView = new TriggerQueueView(mockServer.Object)
             {

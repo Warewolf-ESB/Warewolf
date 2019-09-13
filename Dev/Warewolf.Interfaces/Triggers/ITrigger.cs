@@ -8,15 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using System.Collections.Generic;
+using System;
+using Warewolf.OS;
 
-namespace Dev2.Common.Interfaces.Queue
+namespace Warewolf.Triggers
 {
-    public interface IExecutionHistory
+    public interface ITrigger : IJobConfig
     {
-        string WorkflowOutput { get; }
-        IExecutionInfo ExecutionInfo { get; }
-        string UserName { get; set; }
+        Guid TriggerId { get; set; }
     }
 }

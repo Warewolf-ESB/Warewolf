@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,16 +10,14 @@
 
 
 using Dev2.Common;
-using Dev2.Common.Interfaces.Triggers;
-using Dev2.Common.Wrappers;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using Warewolf.OS;
+using Warewolf.Triggers;
 
 namespace Dev2.Server.Tests
 {
@@ -47,7 +45,7 @@ namespace Dev2.Server.Tests
                                 .Returns(mockProcess.Object);
 
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, new Mock<IWriter>().Object, mockTriggerCatalog.Object, mockChildProcessTracker.Object);
+            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockTriggerCatalog.Object, mockChildProcessTracker.Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
                         .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)
@@ -69,12 +67,11 @@ namespace Dev2.Server.Tests
         {
             var mockProcessFactory = new Mock<IProcessFactory>();
             var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
-            var mockWriter = new Mock<IWriter>();
             var mockChildProcessTracker = new Mock<IChildProcessTracker>();
 
             var triggersCatalogForTesting = new TriggersCatalogForTesting();
 
-            _ = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockWriter.Object, triggersCatalogForTesting, mockChildProcessTracker.Object);
+            _ = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, triggersCatalogForTesting, mockChildProcessTracker.Object);
 
             triggersCatalogForTesting.CallOnChanged(Guid.NewGuid());
             triggersCatalogForTesting.CallOnDeleted(Guid.NewGuid());

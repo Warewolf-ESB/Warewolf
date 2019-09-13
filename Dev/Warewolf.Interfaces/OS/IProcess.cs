@@ -8,23 +8,23 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Runtime.Hosting;
-using System.Collections.Generic;
-using Warewolf.Triggers;
+using System;
+using System.Diagnostics;
 
-namespace Dev2
+namespace Warewolf.OS
 {
-    internal class QueueWorkerConfigLoader : IQueueConfigLoader
+    public interface IProcess : IDisposable
     {
-        public IEnumerable<ITrigger> Configs
-        {
-            get
-            {
-                foreach (var queueTrigger in TriggersCatalog.Instance.Queues)
-                {
-                    yield return queueTrigger;
-                }
-            }
-        }
+        void Kill();
+        Process Unwrap();
+        bool WaitForExit(int milliseconds);
+        int Id { get; }
+        bool HasExited { get; }
     }
+    public interface IProcessFactory
+    {
+        IProcess Start(string fileName);
+        IProcess Start(ProcessStartInfo startInfo);
+    }
+
 }
