@@ -24,6 +24,17 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
     {
+        private readonly ISeriLogConfig _seriLogSQLiteConfig;
+        public GetLogDataService()
+        {
+            _seriLogSQLiteConfig = new SeriLogSQLiteConfig();
+        }
+
+        public GetLogDataService(SeriLogSQLiteConfig seriLogSQLiteConfig)
+        {
+            _seriLogSQLiteConfig = seriLogSQLiteConfig;
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
@@ -31,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var loggerSource = new SeriLoggerSource();
-                using (var loggerConnection = loggerSource.NewConnection(new SeriLogSQLiteConfig()))
+                using (var loggerConnection = loggerSource.NewConnection(_seriLogSQLiteConfig))
                 {
                     var loggerConsumer = loggerConnection.NewConsumer();
                     var dataList = loggerConsumer.QueryLogData(values);

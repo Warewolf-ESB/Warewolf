@@ -29,14 +29,11 @@ namespace Warewolf.Driver.Serilog
     {
         readonly string _connectionString;
 
-        public SeriLogConsumer()
+        public SeriLogConsumer(string connectionString)
         {
-            _connectionString = Path.Combine(Config.Server.AuditFilePath, "auditDB.db");
+            _connectionString = connectionString;
         }
-        public SeriLogConsumer(string connectionString, string database)
-        {
-            _connectionString = Path.Combine(connectionString, database);
-        }
+
         public IEnumerable<dynamic> QueryLogData(Dictionary<string, StringBuilder> values)
         {
             var tableName = "Logs"; //TODO: should be dynamic?
@@ -45,24 +42,43 @@ namespace Warewolf.Driver.Serilog
             var executionID = GetValue<string>("ExecutionID", values);
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
+            var eventLevel = GetValue<string>("EventLevel", values);
 
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
             {
-                var sql = new StringBuilder($"SELECT * FROM {tableName}  ");
-                //if (executionID.Length > 0)
-                //{
-                //    sql.Append(" WHERE ExecutionID = '" + executionID + "'");
-                //}
-                //if (executionID.Length > 0 && startTime.Length > 0 && endTime.Length > 0)
-                //{
-                //    sql.Append(" AND (Timestamp >= '" + startTime + "' AND ");
-                //    sql.Append(" Timestamp <= '" + endTime + "') ");
-                //}
-                //if (executionID.Length <= 0 && startTime.Length > 0 && endTime.Length > 0)
-                //{
+                var sql = new StringBuilder($"SELECT * FROM {tableName} ");
+
+                if (eventLevel != null)
+                {
+                    switch (eventLevel)
+                    {
+                        case "Information":
+                            sql.Append("WHERE Level = 'Information'");
+                            break;
+                        case "Warning":
+                            sql.Append("WHERE Level = 'Warning'");
+                            break;
+                        case "Error":
+                            sql.Append("WHERE Level = 'Error'");
+                            break;
+                        case "Fatal":
+                            sql.Append("WHERE Level = 'Fatal'");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (eventLevel != null && startTime != null && endTime != null)
+                {
+                    sql.Append(" AND (Timestamp >= '" + startTime + "' AND ");
+                    sql.Append(" Timestamp <= '" + endTime + "') ");
+                }
+                if (eventLevel == null && startTime != null && endTime != null)
+                {
                     sql.Append(" WHERE Timestamp >= '" + startTime + "' AND ");
                     sql.Append(" Timestamp <= '" + endTime + "' ");
-                //}
+                }
 
                 using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
                 {
@@ -78,9 +94,15 @@ namespace Warewolf.Driver.Serilog
 
                             var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
                             var auditJson = JsonConvert.DeserializeObject<Audit>(serilogData.Message);
-                            
+
                             audits.Add(auditJson);
                         }
+
+                        if (executionID != null)
+                        {
+                            audits = audits.Where(o => o.ExecutionID == executionID).ToList();
+                        }
+
                     }
                 };
 
