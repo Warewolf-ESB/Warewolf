@@ -209,7 +209,7 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
-        public void TriggerCatalog_Load_ShouldLoadAllTriggerQueuesInDirectory()
+        public void TriggersCatalog_Load_ShouldLoadAllTriggerQueuesInDirectory()
         {
             var triggerCatalog = GetTriggersCatalog();
 
@@ -229,7 +229,7 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
-        public void TriggerCatalog_DeleteTrigger_ShouldOnlyDeleteRequestedTrigger()
+        public void TriggersCatalog_DeleteTrigger_ShouldOnlyDeleteRequestedTrigger()
         {
             var triggerCatalog = GetTriggersCatalog();
 
@@ -247,7 +247,7 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
-        public void TriggerCatalog_LoadQueueTriggerFromFile()
+        public void TriggersCatalog_LoadQueueTriggerFromFile()
         {
             var directoryWrapper = new Mock<IDirectory>().Object;
             var mockFileWrapper = new Mock<IFile>();
