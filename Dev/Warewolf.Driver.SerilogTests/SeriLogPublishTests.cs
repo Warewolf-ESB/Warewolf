@@ -231,6 +231,8 @@ namespace Warewolf.Driver.Serilog.Tests
 
             public ILogger Logger { get => CreateLogger(); }
 
+            public string ConnectionString => throw new NotImplementedException();
+
             public TestSeriLogSinkConfig(ILogEventSink logEventSink)
             {
                 _logEventSink = logEventSink;

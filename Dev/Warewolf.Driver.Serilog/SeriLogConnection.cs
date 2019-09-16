@@ -17,10 +17,12 @@ namespace Warewolf.Driver.Serilog
     public class SeriLogConnection : ILoggerConnection
     {
         private readonly ILogger _logger;
+        private readonly ISeriLogConfig _seriLogConfig;
 
         public SeriLogConnection(ISeriLogConfig loggerConfig)
         {
             _logger = loggerConfig.Logger;
+            _seriLogConfig = loggerConfig;
         }
 
         public ILoggerPublisher NewPublisher()
@@ -30,7 +32,7 @@ namespace Warewolf.Driver.Serilog
 
         public ILoggerConsumer NewConsumer()
         {
-            return new SeriLogConsumer();
+            return new SeriLogConsumer(_seriLogConfig.ConnectionString);
         }
 
         private bool _disposedValue = false; 

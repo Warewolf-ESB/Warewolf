@@ -17,6 +17,6 @@ namespace Warewolf.Driver.Serilog
     public interface ISeriLogConfig : ILoggerConfig
     {
         ILogger Logger { get; }
-
+        string ConnectionString { get; }
     }
 }

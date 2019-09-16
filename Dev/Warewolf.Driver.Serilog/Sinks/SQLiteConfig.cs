@@ -33,6 +33,8 @@ namespace Warewolf.Driver.Serilog
 
         public ILogger Logger { get => CreateLogger(); }
 
+        public string ConnectionString => _config.ConnectionString;
+
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
