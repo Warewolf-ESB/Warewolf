@@ -681,6 +681,9 @@ namespace Dev2.Core.Tests
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             //------------Execute Test---------------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
         }
 
@@ -722,7 +725,9 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
@@ -766,7 +771,9 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
@@ -825,7 +832,9 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
