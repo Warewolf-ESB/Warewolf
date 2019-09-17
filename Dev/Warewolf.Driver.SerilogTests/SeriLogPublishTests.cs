@@ -261,6 +261,7 @@ namespace Warewolf.Driver.Serilog.Tests
 
         public ILogger Logger { get => CreateLogger(); }
         public string ServerLoggingAddress { get; set; }
+        public string ConnectionString { get; }
 
         private ILogger CreateLogger()
         {

@@ -22,6 +22,5 @@ namespace Warewolf.Logger
 
         }
         public Task<ConsumerResult> Consume(byte[] body) => throw new System.NotImplementedException();
-        public List<string[]> GetData(string connectionString, string tableName) => throw new System.NotImplementedException();
     }
 }
