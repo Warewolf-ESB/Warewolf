@@ -302,6 +302,7 @@ namespace Dev2.Triggers.QueueEvents
                 QueueSourceId = SelectedQueue.QueueSourceId,
                 QueueName = SelectedQueue.QueueName,
                 WorkflowName = SelectedQueue.WorkflowName,
+                ResourceId = SelectedQueue.ResourceId,
                 Concurrency = SelectedQueue.Concurrency,
                 UserName = SelectedQueue.UserName,
                 Password = SelectedQueue.Password,
