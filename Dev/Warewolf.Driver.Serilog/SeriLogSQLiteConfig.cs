@@ -9,7 +9,6 @@
 */
 
 
-using Dev2.Common;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -19,7 +18,7 @@ namespace Warewolf.Driver.Serilog
     public class SeriLogSQLiteConfig : ISeriLogConfig
     {
 
-        readonly Settings _config;
+        Settings _config;
 
         public SeriLogSQLiteConfig()
         {
@@ -34,6 +33,7 @@ namespace Warewolf.Driver.Serilog
         } 
 
         public ILogger Logger { get; private set; }
+        public string ServerLoggingAddress { get; set; }
 
         private ILogger CreateLogger()
         {
@@ -46,7 +46,8 @@ namespace Warewolf.Driver.Serilog
         //TODO: This is the options that should be controlled by the Studio using IOptions
         public class Settings
         {
-            public string Path { get; set; } = System.IO.Path.Combine(Config.Server.AuditFilePath, "auditDB.db");
+            //TODO: _config.Server.AuditFilePath - where is this suppose to come from????
+            public string Path { get; set; } = System.IO.Path.Combine("", "auditDB.db");
             public string TableName { get; set; } = "Logs"; 
             public LogEventLevel RestrictedToMinimumLevel { get; set; } = LogEventLevel.Verbose;
             public IFormatProvider FormatProvider { get; set; } = null;
