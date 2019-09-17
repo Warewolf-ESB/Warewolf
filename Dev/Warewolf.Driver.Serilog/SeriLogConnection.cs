@@ -11,6 +11,7 @@
 
 using Serilog;
 using Warewolf.Logging;
+using Warewolf.Streams;
 
 namespace Warewolf.Driver.Serilog
 {
@@ -53,5 +54,6 @@ namespace Warewolf.Driver.Serilog
             Dispose(true);
         }
 
+        public void StartConsuming(ILoggerConfig config, IConsumer consumer) => throw new System.NotImplementedException();
     }
 }

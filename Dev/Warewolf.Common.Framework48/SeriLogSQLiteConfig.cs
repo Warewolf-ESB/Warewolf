@@ -29,6 +29,8 @@ namespace Warewolf.Common.Framework48
 
         public ILogger Logger => CreateLogger();
 
+        public string ServerLoggingAddress { get; set; }
+
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()

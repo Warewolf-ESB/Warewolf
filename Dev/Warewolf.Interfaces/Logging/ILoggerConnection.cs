@@ -9,16 +9,18 @@
 */
 
 using System;
+using Warewolf.Streams;
 
 namespace Warewolf.Logging
 {
     public interface ILoggerConnection : IDisposable
     {
         ILoggerPublisher NewPublisher();
-        ILoggerConsumer NewConsumer();
+        void StartConsuming(ILoggerConfig config, IConsumer consumer);
     }
 
     public interface ILoggerConfig
     {
+        string ServerLoggingAddress { get; set; }
     }
 }
