@@ -20,7 +20,6 @@ using Moq;
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
@@ -30,7 +29,16 @@ namespace Dev2.Tests.Runtime.Triggers
     [TestClass]
     public class TriggersCatalogTests
     {
-        
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+            var resourcePath = Path.Combine(@"C:\ProgramData\Warewolf\Triggers");
+
+            if (Directory.Exists(resourcePath))
+            {
+                DirectoryWrapperInstance().CleanUp(resourcePath);
+            }
+        }
         public static IDirectory DirectoryWrapperInstance()
         {
             return new DirectoryWrapper();
@@ -51,7 +59,7 @@ namespace Dev2.Tests.Runtime.Triggers
             return new FileSystemWatcherWrapper();
         }
 
-       
+
         public void CleanupTestDirectory(string queueTriggersPath)
         {
             if (Directory.Exists(queueTriggersPath))
@@ -100,7 +108,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var triggerQueueEvent = mockTriggerQueue.Object;
             triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-          
+
             var path = queueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
 
             var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
@@ -113,8 +121,15 @@ namespace Dev2.Tests.Runtime.Triggers
             triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
             Assert.AreEqual(0, triggerQueueFiles.Count);
-          
-            CleanupTestDirectory(queueTriggersPath);
+
+            try
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
+            catch
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
@@ -139,7 +154,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var queueTriggersPath = QueueTriggersPath;
             var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
             triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
-           
+
             var path = queueTriggersPath + "\\" + triggerId + ".bite";
 
             var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
@@ -189,7 +204,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
 
             triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
-           
+
             var path = queueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
 
             var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
@@ -236,7 +251,14 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerQueueEvents = triggerCatalog.Queues;
             Assert.AreEqual(3, triggerQueueEvents.Count);
-            CleanupTestDirectory(queueTriggersPath);
+            try
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
+            catch
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
@@ -253,11 +275,21 @@ namespace Dev2.Tests.Runtime.Triggers
 
             triggerCatalog.Load();
             var triggerQueueEvents = triggerCatalog.Queues;
-          
+
             triggerCatalog.DeleteTriggerQueue(triggerQueueEvents[1]);
+            triggerQueueEvents = triggerCatalog.Queues;
             Assert.AreEqual(2, triggerQueueEvents.Count);
-            CleanupTestDirectory(queueTriggersPath);
+            try
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
+            catch
+            {
+
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
