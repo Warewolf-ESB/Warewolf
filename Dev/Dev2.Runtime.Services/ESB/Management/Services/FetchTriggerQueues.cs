@@ -33,7 +33,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Fetch Trigger Queue Service", GlobalConstants.WarewolfInfo);
 
-                TriggersCatalog.Load();
                 var triggerQueues = TriggersCatalog.Queues;
                 var message = new CompressedExecuteMessage
                 {
