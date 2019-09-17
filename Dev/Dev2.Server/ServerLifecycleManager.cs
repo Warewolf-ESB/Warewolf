@@ -226,7 +226,6 @@ namespace Dev2
         {
             _writer.Write("Loading triggers catalog...  ");
             _assemblyLoader.LoadAndReturn(typeof(TriggerQueue).Assembly.GetName());
-            TriggersCatalog.Instance.Load();
             _writer.WriteLine("done.");
         }
 

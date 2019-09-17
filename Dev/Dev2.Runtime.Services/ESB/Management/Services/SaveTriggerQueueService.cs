@@ -47,7 +47,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
                 
                 TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
-                TriggersCatalog.Instance.Load();
                 msg.SetMessage(triggerQueue.TriggerId.ToString());
                 return serializer.SerializeToBuilder(msg);
             }

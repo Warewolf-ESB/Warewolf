@@ -54,11 +54,12 @@ namespace Dev2.Runtime.Hosting
             _serializer = serializer;
             _watcherWrapper = watcherWrapper;
 
-            SetupFileSystemWatcher();
+            MonitorTriggerFolder();
         }
 
-        private void SetupFileSystemWatcher()
+        private void MonitorTriggerFolder()
         {
+            Load();
             _watcherWrapper.Path = _queueTriggersPath;
             _watcherWrapper.Filter = "*.bite";
             _watcherWrapper.EnableRaisingEvents = true;
@@ -125,7 +126,35 @@ namespace Dev2.Runtime.Hosting
             Dev2Logger.Error(exception.Message, GlobalConstants.ServerWorkspaceID.ToString());
         }
 
-        public IList<ITriggerQueue> Queues { get; private set; }
+        private IList<ITriggerQueue> _queues;
+        private readonly ReaderWriterLock _queuesLock = new ReaderWriterLock();
+        public IList<ITriggerQueue> Queues
+        {
+            get
+            {
+                _queuesLock.AcquireReaderLock(TimeSpan.FromMinutes(1));
+                try
+                {
+                    return _queues;
+                }
+                finally
+                {
+                    _queuesLock.ReleaseReaderLock();
+                }
+            }
+            private set
+            {
+                _queuesLock.AcquireWriterLock(TimeSpan.FromMinutes(1));
+                try
+                {
+                    _queues = value;
+                }
+                finally
+                {
+                    _queuesLock.ReleaseWriterLock();
+                }
+            }
+        }
 
         public void DeleteTriggerQueue(ITriggerQueue triggerQueue)
         {
@@ -138,7 +167,7 @@ namespace Dev2.Runtime.Hosting
             Queues.Remove(triggerQueue);
         }
 
-        public void Load()
+        private void Load()
         {
             var newQueues = new List<ITriggerQueue>();
             try

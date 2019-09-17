@@ -18,7 +18,6 @@ namespace Warewolf.Triggers
     {
         IList<ITriggerQueue> Queues { get; }
         void SaveTriggerQueue(ITriggerQueue triggerQueue);
-        void Load();
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
         ITriggerQueue LoadQueueTriggerFromFile(string filename);
         event TriggerChangeEvent OnChanged;
