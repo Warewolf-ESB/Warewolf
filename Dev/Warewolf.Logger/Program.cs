@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Warewolf.Driver.Serilog;
 
 namespace Warewolf.Logger
 {
@@ -26,7 +27,7 @@ namespace Warewolf.Logger
             {
                 var logger = _config.Source;
                 var connection = logger.NewConnection(_config.LoggerConfig);
-                connection.StartConsuming(_config.LoggerConfig, new LoggerConsumer());
+                connection.StartConsuming(_config.LoggerConfig, new SeriLogConsumer(""));
             }
         }
     }

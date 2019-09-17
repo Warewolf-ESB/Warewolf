@@ -12,6 +12,7 @@ using CommandLine;
 using System;
 using System.Collections.Generic;
 using Warewolf.Common;
+using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
 
 namespace Warewolf.Logger
@@ -30,7 +31,7 @@ namespace Warewolf.Logger
         public ILoggerSource Source {
             get
             {
-                return new LoggerSource();
+                return new SeriLoggerSource();
             }
         }
         public ILoggerConfig LoggerConfig { get; set; }

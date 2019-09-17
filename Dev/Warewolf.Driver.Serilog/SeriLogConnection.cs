@@ -9,7 +9,9 @@
 */
 
 
+using Fleck;
 using Serilog;
+using System.Text;
 using Warewolf.Logging;
 using Warewolf.Streams;
 
@@ -24,6 +26,21 @@ namespace Warewolf.Driver.Serilog
         {
             _logger = loggerConfig.Logger;
             _seriLogConfig = loggerConfig;
+        }
+
+        private WebSocketServer _server;
+
+        public void StartConsuming(ILoggerConfig config, IConsumer consumer)
+        {
+            _server = new WebSocketServer(config.ServerLoggingAddress);
+            _server.RestartAfterListenError = true;
+            _server.Start(socket =>
+            {
+                //socket.OnOpen = () => Console.WriteLine("Open!");
+                //socket.OnClose = () => Console.WriteLine("Close!");
+                socket.OnMessage = message => consumer.Consume(Encoding.Default.GetBytes(message));
+            });
+
         }
 
         public ILoggerPublisher NewPublisher()
@@ -45,6 +62,7 @@ namespace Warewolf.Driver.Serilog
                 if (disposing)
                 {
                     Log.CloseAndFlush();
+                    _server.Dispose();
                 }
 
                 _disposedValue = true;
@@ -56,6 +74,5 @@ namespace Warewolf.Driver.Serilog
             Dispose(true);
         }
 
-        public void StartConsuming(ILoggerConfig config, IConsumer consumer) => throw new System.NotImplementedException();
     }
 }
