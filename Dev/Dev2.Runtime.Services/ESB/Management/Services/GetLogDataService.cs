@@ -44,10 +44,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var loggerSource = new SeriLoggerSource();
                 using (var loggerConnection = loggerSource.NewConnection(_seriLogSQLiteConfig))
                 {
-                    var loggerConsumer = loggerConnection.NewConsumer();
-                    var dataList = loggerConsumer.QueryLogData(values);
-                    LogDataCache.CurrentResults = dataList;
-                    return serializer.SerializeToBuilder(dataList);
+                    //TODO: Implement correct query service
+                    //var loggerConsumer = loggerConnection.NewConsumer();
+                    //var dataList = null; //loggerConsumer.QueryLogData(values);
+                   // LogDataCache.CurrentResults = dataList;
+                    return serializer.SerializeToBuilder(null);
                 }
             }
             catch (Exception e)

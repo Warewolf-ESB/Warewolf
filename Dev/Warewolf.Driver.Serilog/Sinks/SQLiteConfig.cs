@@ -9,7 +9,6 @@
 */
 
 
-using Dev2.Common;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -35,6 +34,8 @@ namespace Warewolf.Driver.Serilog
 
         public string ConnectionString => _config.ConnectionString;
 
+        public string ServerLoggingAddress { get; set; }
+
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
@@ -48,7 +49,7 @@ namespace Warewolf.Driver.Serilog
         {
             public Settings()
             {
-                Path = Config.Server.AuditFilePath;
+                Path = ""; //TODO: Config.Server.AuditFilePath;
                 Database = "auditDB.db";
                 TableName = "Logs";
                 RestrictedToMinimumLevel = LogEventLevel.Verbose;
