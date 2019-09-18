@@ -47,11 +47,14 @@ namespace Warewolf.QueueWorker.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(QueueWorker))]
-        public void WorkerContext_GivenValidConstruct_ExpectValidDeadLetterSink()
+        public void WorkerContext_GivenValidConstruct_ExpectValidSourceAndDeadLetterSink()
         {
-            var context = ConstructWorkerContext(out var rabbitSource, out var _);
+            var context = ConstructWorkerContext(out var expectedSource, out var expectedDeadLetterSink);
 
-            Assert.AreEqual(rabbitSource, context.DeadLetterSink);
+            Assert.AreEqual(_sinkId, context.DeadLetterSink.ResourceID);
+            Assert.AreEqual(_sourceId, context.Source.ResourceID);
+            Assert.AreEqual(expectedSource, context.Source);
+            Assert.AreEqual(expectedDeadLetterSink, context.DeadLetterSink);
         }
 
         [TestMethod]
@@ -116,7 +119,7 @@ namespace Warewolf.QueueWorker.Tests
             };
             rabbitSink = new RabbitMQSource
             {
-                ResourceID = _sourceId,
+                ResourceID = _sinkId,
                 HostName = "somehost",
                 ResourceName = "my somehost resource",
             };
