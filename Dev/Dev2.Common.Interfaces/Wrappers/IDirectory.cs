@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
@@ -18,12 +19,11 @@ namespace Dev2.Common.Interfaces.Wrappers
     {
         string FullName { get; }
     }
-    public interface IDirectory
+    public interface IDirectory : IDirectoryBase
     {
         DirectoryInfo GetParent(string path);
         string[] GetFiles(string path);
         IEnumerable<IFileInfo> GetFileInfos(string path);
-        string CreateIfNotExists(string path);
         string[] GetLogicalDrives();
         bool Exists(string path);
         string[] GetFileSystemEntries(string path);

@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
@@ -18,15 +19,9 @@ namespace Dev2.Common.Interfaces.Wrappers
         Yes
     }
 
-    public interface IFile
+    public interface IFile : IFileBase
     {
-        string ReadAllText(string fileName);
         void Move(string source, string destination);
-
-        bool Exists(string path);
-        void Delete(string tmpFileName);
-        void WriteAllText(string path, string contents);
-        void Copy(string source, string destination);
 
         void WriteAllBytes(string path, byte[] contents);
         void AppendAllText(string path, string contents);
