@@ -8,12 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Warewolf.OS;
-
-namespace Dev2
+namespace Warewolf.OS
 {
-    public interface IProcessorMonitor
+    public interface IProcessMonitor
     {
         void Start();
         void Shutdown();

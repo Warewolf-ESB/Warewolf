@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using Warewolf.OS;
 using WarewolfCOMIPC.Client;
 
 namespace Dev2.Server.Tests
@@ -195,7 +196,7 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
-            var mockQueueProcessMonitor = new Mock<IProcessorMonitor>();
+            var mockQueueProcessMonitor = new Mock<IProcessMonitor>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 

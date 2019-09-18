@@ -221,7 +221,6 @@
     <Compile Include="AssemblyLoader.cs" />
     <Compile Include="EmptyQueueProcessorMonitor.cs" />
     <Compile Include="IQueueConfigLoader.cs" />
-    <Compile Include="IQueueProcessorMonitor.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="LifeCycleInitializationList.cs" />
     <Compile Include="LoadResources.cs" />
