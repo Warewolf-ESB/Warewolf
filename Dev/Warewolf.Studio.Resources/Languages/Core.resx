@@ -491,8 +491,17 @@ The window will be reloaded when you click OK.</value>
   <data name="TriggerQueuesSaveQueueSourceNotSelected" xml:space="preserve">
     <value>Save failed: Please select a Queue Source</value>
   </data>
+  <data name="TriggerQueuesSaveQueueNameEmpty" xml:space="preserve">
+    <value>Save failed: Please enter a Queue</value>
+  </data>
   <data name="TriggerQueuesSaveWorkflowNotSelected" xml:space="preserve">
     <value>Save failed: Please select a Workflow</value>
+  </data>
+  <data name="TriggerQueuesSaveQueueSinkNotSelected" xml:space="preserve">
+    <value>Save failed: Please select an OnError Queue Source</value>
+  </data>
+  <data name="TriggerQueuesSaveOnErrorQueueNameEmpty" xml:space="preserve">
+    <value>Save failed: Please enter an OnError Queue</value>
   </data>
   <data name="SchedulerDuplicateNameErrorMessage" xml:space="preserve">
     <value>There is already a task with the same name</value>

@@ -16,10 +16,10 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+using Warewolf.Triggers;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -47,7 +47,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
                 
                 TriggersCatalog.Instance.SaveTriggerQueue(triggerQueue);
-                TriggersCatalog.Instance.Load();
                 msg.SetMessage(triggerQueue.TriggerId.ToString());
                 return serializer.SerializeToBuilder(msg);
             }

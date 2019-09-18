@@ -8,9 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
-using System.Collections.Generic;
+using Warewolf.Data;
 using Warewolf.Triggers;
 
 namespace QueueWorker
@@ -18,11 +17,10 @@ namespace QueueWorker
     internal interface IWorkerContext
     {
         string WorkflowUrl { get; }
-        ICollection<IServiceInput> ValueKeys { get; }
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
         IQueueConfig QueueConfig { get; }
         string QueueName { get; }
-        string Inputs { get; }
+        IServiceInputBase[] Inputs { get; }
     }
 }

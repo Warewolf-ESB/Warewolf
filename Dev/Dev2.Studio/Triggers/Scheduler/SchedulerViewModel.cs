@@ -73,7 +73,6 @@ namespace Dev2.Triggers.Scheduler
         Func<IServer, IServer> _toEnvironmentModel;
         bool _errorShown;
         DebugOutputViewModel _debugOutputViewModel;
-        string _displayName;
         bool _isDirty;
 
         public SchedulerViewModel()
@@ -124,17 +123,7 @@ namespace Dev2.Triggers.Scheduler
             SetDisplayName(false);
         }
 
-        public  string DisplayName
-        {
-            get => _displayName;
-            set
-            {
-                _displayName = value;
-                OnPropertyChanged(nameof(DisplayName));
-            }
-        }
-
-        public  bool HasDebugOutput => true;
+        public new bool HasDebugOutput => true;
 
         public Func<IServer, IServer> ToEnvironmentModel
         {

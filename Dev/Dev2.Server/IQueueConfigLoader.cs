@@ -10,11 +10,12 @@
 
 
 using System.Collections.Generic;
+using Warewolf.Triggers;
 
 namespace Dev2
 {
     public interface IQueueConfigLoader
     {
-        IEnumerable<string> Configs { get; }
+        IEnumerable<ITrigger> Configs { get; }
     }
 }

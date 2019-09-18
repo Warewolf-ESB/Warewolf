@@ -28,6 +28,7 @@ using System.Windows.Input;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Dev2.Triggers.QueueEvents
 {
@@ -237,14 +238,8 @@ namespace Dev2.Triggers.QueueEvents
             }
             try
             {
-                if (SelectedQueue.QueueSourceId == Guid.Empty)
+                if (!PassedValidation())
                 {
-                    PopupController.Show(Core.TriggerQueuesSaveQueueSourceNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
-                    return false;
-                }
-                if (string.IsNullOrEmpty(SelectedQueue.WorkflowName))
-                {
-                    PopupController.Show(Core.TriggerQueuesSaveWorkflowNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
                     return false;
                 }
 
@@ -267,6 +262,37 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
+        private bool PassedValidation()
+        {
+            if (SelectedQueue.QueueSourceId == Guid.Empty)
+            {
+                PopupController.Show(Core.TriggerQueuesSaveQueueSourceNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                return false;
+            }
+            if (string.IsNullOrEmpty(SelectedQueue.QueueName))
+            {
+                PopupController.Show(Core.TriggerQueuesSaveQueueNameEmpty, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                return false;
+            }
+            if (string.IsNullOrEmpty(SelectedQueue.WorkflowName))
+            {
+                PopupController.Show(Core.TriggerQueuesSaveWorkflowNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                return false;
+            }
+            if (SelectedQueue.QueueSinkId == Guid.Empty)
+            {
+                PopupController.Show(Core.TriggerQueuesSaveQueueSinkNotSelected, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                return false;
+            }
+            if (string.IsNullOrEmpty(SelectedQueue.DeadLetterQueue))
+            {
+                PopupController.Show(Core.TriggerQueuesSaveOnErrorQueueNameEmpty, Core.TriggerQueuesSaveErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                return false;
+            }
+
+            return true;
+        }
+
         private ITriggerQueue AsTriggerQueueModel()
         {
             var triggerQueue = new TriggerQueue
@@ -276,6 +302,7 @@ namespace Dev2.Triggers.QueueEvents
                 QueueSourceId = SelectedQueue.QueueSourceId,
                 QueueName = SelectedQueue.QueueName,
                 WorkflowName = SelectedQueue.WorkflowName,
+                ResourceId = SelectedQueue.ResourceId,
                 Concurrency = SelectedQueue.Concurrency,
                 UserName = SelectedQueue.UserName,
                 Password = SelectedQueue.Password,

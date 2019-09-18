@@ -14,6 +14,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Util;
+using Warewolf.Data;
 
 namespace Warewolf.Core
 {
@@ -178,7 +179,7 @@ namespace Warewolf.Core
         }
         public string ActionName { get; set; }
 
-        public T As<T>() where T : class, IServiceInput
+        public T As<T>() where T : class, IServiceInputBase
         {
             return this as T;
         }

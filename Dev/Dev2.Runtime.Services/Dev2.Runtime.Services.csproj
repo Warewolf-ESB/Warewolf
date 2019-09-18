@@ -126,6 +126,7 @@
     <Compile Include="ESB\Management\Services\TestSqliteService.cs" />
     <Compile Include="ESB\Management\WorkflowManagementEndpointAbstract.cs" />
     <Compile Include="Hosting\ResourceCatalogFactory.cs" />
+    <Compile Include="Hosting\TriggersCatalog.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
     <Compile Include="Interfaces\IHubFactory.cs" />
@@ -385,7 +386,6 @@
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="TestCatalog.cs" />
-    <Compile Include="Triggers\TriggersCatalog.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceItem.cs" />
@@ -582,6 +582,9 @@
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Triggers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
