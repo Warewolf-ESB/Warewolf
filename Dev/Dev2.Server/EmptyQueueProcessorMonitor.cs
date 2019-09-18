@@ -13,7 +13,7 @@ using Warewolf.OS;
 
 namespace Dev2
 {
-    internal class EmptyQueueWorkerMonitor : IProcessorMonitor
+    internal class EmptyQueueWorkerMonitor : IProcessMonitor
     {
 #pragma warning disable CS0067
         public event ProcessDiedEvent OnProcessDied;

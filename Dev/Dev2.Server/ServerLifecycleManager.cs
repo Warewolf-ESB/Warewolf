@@ -63,7 +63,7 @@ namespace Dev2
         public IWriter Writer { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
-        public IProcessorMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
+        public IProcessMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -104,7 +104,7 @@ namespace Dev2
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
         private readonly IPauseHelper _pauseHelper;
-        private readonly IProcessorMonitor _queueProcessMonitor;
+        private readonly IProcessMonitor _queueProcessMonitor;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
