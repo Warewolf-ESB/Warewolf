@@ -6,6 +6,7 @@ using Moq;
 using System.Collections.Generic;
 using System.IO;
 using Warewolf.Configuration;
+using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common.Tests
 {
@@ -44,7 +45,7 @@ namespace Dev2.Common.Tests
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
 
             var settings = new ServerSettings();
-            Assert.AreEqual(8, settings.GetType().GetProperties().Length);
+            Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort)0, settings.WebServerPort);
             Assert.AreEqual((ushort)0, settings.WebServerSslPort);
@@ -67,7 +68,6 @@ namespace Dev2.Common.Tests
         [TestCategory("Logging Paths")]
         public void ServerSettings_SaveIfNotExists()
         {
-            var serverSettings = new ServerSettings();
 
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false).Verifiable();
@@ -76,6 +76,7 @@ namespace Dev2.Common.Tests
             mockDirectory.Setup(o => o.CreateIfNotExists(Path.GetDirectoryName(ServerSettings.SettingsPath))).Returns(ServerSettings.SettingsPath);
 
             //act
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
             serverSettings.SaveIfNotExists();
 
             //assert
