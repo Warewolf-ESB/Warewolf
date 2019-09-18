@@ -30,7 +30,7 @@ namespace Warewolf.Logger
             }
             public void Run()
             {
-                var loggerConfig = _config as ILoggerConfig;
+                var loggerConfig = _config.LoggerConfig as ILoggerConfig;
                 _server = new WebSocketServer(loggerConfig.ServerLoggingAddress)
                 {
                     RestartAfterListenError = true
@@ -42,11 +42,8 @@ namespace Warewolf.Logger
 
                 _server.Start(socket =>
                 {
-                    //socket.OnOpen = () => Console.WriteLine("Open!");
-                    //socket.OnClose = () => Console.WriteLine("Close!");
                     socket.OnMessage = message =>  publisher.Info(message);
                 });
-                connection.StartConsuming(_config.LoggerConfig, new SeriLogConsumer(_config.LoggerConfig as ISeriLogConfig));
             }
         }
     }
