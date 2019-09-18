@@ -25,6 +25,7 @@ using System.Threading;
 using Dev2.Common;
 using Serilog;
 using System.IO;
+using Warewolf.Auditing;
 
 namespace Warewolf.Driver.Serilog.Tests
 {

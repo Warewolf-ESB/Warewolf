@@ -17,6 +17,7 @@
     <PackageReference Include="Moq" Version="4.8.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj" />
     <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />

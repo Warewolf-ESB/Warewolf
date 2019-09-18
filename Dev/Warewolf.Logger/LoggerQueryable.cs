@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
+using Warewolf.Auditing;
 using Warewolf.Driver.Serilog;
 
 namespace Warewolf.Logger

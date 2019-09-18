@@ -12,15 +12,16 @@
 using System;
 using Dev2.Common.Container;
 using Dev2.Interfaces;
-using Dev2.Runtime.Auditing;
 using Dev2.Common.Interfaces.Logging;
+using Warewolf.Logger;
+using Warewolf.Auditing;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    public class LogManagerImplementation : ILogManager, IDisposable
+    public class LogManagerImplementation : IDisposable
     {
-        readonly Dev2StateAuditLogger _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
-
+        readonly IStateAuditLogger _logger = new StateAuditLogger();
+      
         public IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {
             var stateNotifier = new StateNotifier();
@@ -30,11 +31,6 @@ namespace Dev2.Runtime.ESB.Execution
                 stateNotifier.Subscribe(_logger.NewStateListener(dsfDataObject));
             }
             return stateNotifier;
-        }
-
-        public void FlushLogs()
-        {
-            _logger.Flush();
         }
 
         private bool _isDisposed = false;
@@ -59,8 +55,8 @@ namespace Dev2.Runtime.ESB.Execution
     public class LogManager : IDisposable
     {
         private static LogManagerImplementation _instance;
-        private static readonly object _lock = new object();
 
+        private static readonly object _lock = new object();
 
         private static LogManagerImplementation Instance
         {
@@ -80,16 +76,9 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-
         internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
             return Instance.CreateStateNotifierImpl(dsfDataObject);
-        }
-
-
-        public static void FlushLogs()
-        {
-            Instance.FlushLogs();
         }
 
         public void Dispose()
