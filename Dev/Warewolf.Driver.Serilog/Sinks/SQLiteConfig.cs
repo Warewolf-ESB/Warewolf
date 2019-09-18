@@ -49,7 +49,7 @@ namespace Warewolf.Driver.Serilog
         {
             public Settings()
             {
-                Path = ""; //TODO: Config.Server.AuditFilePath;
+                Path = "c:\\temp\\db"; //TODO: Config.Server.AuditFilePath;
                 Database = "auditDB.db";
                 TableName = "Logs";
                 RestrictedToMinimumLevel = LogEventLevel.Verbose;
