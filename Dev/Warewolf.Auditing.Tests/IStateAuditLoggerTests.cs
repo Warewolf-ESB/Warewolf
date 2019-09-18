@@ -67,7 +67,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
-        public void Dev2StateAuditLogger_LogExecuteCompleteState_Tests()
+        public void IStateAuditLogger_LogExecuteCompleteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
