@@ -39,7 +39,7 @@ namespace Warewolf.Logger
         public LoggerContext(string[] args)
         {
             LoggerConfig = new SeriLogSQLiteConfig();
-            LoggerConfig.ServerLoggingAddress = "ws://localhost:5000/ws";
+            LoggerConfig.ServerLoggingAddress = "ws://127.0.0.1:5000/ws";
             Errors = new List<Error>();
             var processArgs = CommandLine.Parser.Default.ParseArguments<Options>(args)
                  .WithParsed<Options>(opts => IsVerbose(opts))

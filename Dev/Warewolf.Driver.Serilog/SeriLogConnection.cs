@@ -30,8 +30,6 @@ namespace Warewolf.Driver.Serilog
             _server.RestartAfterListenError = true;
             _server.Start(socket =>
             {
-                //socket.OnOpen = () => Console.WriteLine("Open!");
-                //socket.OnClose = () => Console.WriteLine("Close!");
                 socket.OnMessage = message => consumer.Consume(Encoding.Default.GetBytes(message));
             });
 
