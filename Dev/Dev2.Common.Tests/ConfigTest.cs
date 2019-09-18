@@ -1,12 +1,18 @@
-﻿using Dev2.Common.Interfaces.Core;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
 using System.IO;
 using Warewolf.Configuration;
-using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common.Tests
 {
@@ -83,7 +89,7 @@ namespace Dev2.Common.Tests
             mockIFile.Verify();
             mockDirectory.Verify();
 
-        }/*
+        }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -92,23 +98,22 @@ namespace Dev2.Common.Tests
         {
             var newAuditsFilePath = "falsepath7";
 
-            mockConfigurationManager.SetupSet(o => o["AuditFilePath"] = newAuditsFilePath).Verifiable();
             //arrange
             ServerSettings serverSettings;
 
             var sourceFilePath = Config.Server.AuditFilePath;
 
-            var source = Path.Combine(sourceFilePath, "auditDB.db");
-            var destination = Path.Combine(newAuditsFilePath, "auditDB.db");
+            //var source = Path.Combine(sourceFilePath, "auditDB.db");
+            //var destination = Path.Combine(newAuditsFilePath, "auditDB.db");
 
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(true).Verifiable();
             mockIFile.Setup(c=> c.Copy(It.IsAny<string>() , It.IsAny<string>())).Verifiable();
-
+            mockIFile.Setup(o => o.ReadAllText("some path")).Returns("{}");
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(d => d.CreateIfNotExists(It.IsAny<string>())).Returns(newAuditsFilePath).Verifiable();
 
-            serverSettings = new ServerSettings(mockConfigurationManager.Object, mockIFile.Object, mockDirectory.Object);
+            serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
 
             //act
             var actual = serverSettings.SaveLoggingPath(sourceFilePath);
@@ -119,6 +124,6 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(actual);
             mockIFile.Verify();
             mockDirectory.Verify();
-        }*/
+        }
     }
 }
