@@ -9,16 +9,12 @@
 */
 
 using System;
+using Warewolf.OS;
 
-namespace Dev2.Common.Interfaces.Queue
+namespace Warewolf.Triggers
 {
-    public interface IExecutionInfo
-    { 
-        DateTime StartDate { get; }      
-        TimeSpan Duration { get; }       
-        DateTime EndDate { get; }      
-        QueueRunStatus Success { get; }       
-        string ExecutionId { get; }
-        string FailureReason { get; }
+    public interface ITrigger : IJobConfig
+    {
+        Guid TriggerId { get; set; }
     }
 }

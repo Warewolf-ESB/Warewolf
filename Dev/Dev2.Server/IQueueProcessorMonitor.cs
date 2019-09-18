@@ -9,10 +9,14 @@
 */
 
 
+using Warewolf.OS;
+
 namespace Dev2
 {
-    public interface IQueueProcessorMonitor
+    public interface IProcessorMonitor
     {
         void Start();
+        void Shutdown();
+        event ProcessDiedEvent OnProcessDied;
     }
 }

@@ -11,13 +11,15 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Triggers;
+using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.Triggers;
 
 namespace Warewolf.Trigger.Queue
 {
     public class TriggerQueue : ITriggerQueue
     {
+        public Guid Id { get => TriggerId; }
         public Guid TriggerId { get; set; }
         public string Name { get; set; }
         public Guid QueueSourceId { get; set; }
@@ -31,7 +33,7 @@ namespace Warewolf.Trigger.Queue
         public string DeadLetterQueue { get; set; }
         public IOption[] DeadLetterOptions { get; set; }
         public bool MapEntireMessage { get; set; }
-        public ICollection<IServiceInput> Inputs { get; set; }
+        public ICollection<IServiceInputBase> Inputs { get; set; }
         public Guid ResourceId { get; set; }
 
         public bool Equals(ITriggerQueue other)

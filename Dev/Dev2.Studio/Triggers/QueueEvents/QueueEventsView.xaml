@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Queue;assembly=Dev2.Common.Interfaces"
+             xmlns:interfaces="clr-namespace:Warewolf.Triggers;assembly=Warewolf.Interfaces"
              xmlns:queueEvents="clr-namespace:Dev2.Triggers.QueueEvents"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
@@ -188,6 +188,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -201,9 +202,9 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Text="Name" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
-
                                 <TextBox Grid.Row="0" 
                                          Grid.Column="1"
+                                         x:Name="NameTextBox"
                                          Margin="{StaticResource ControlBorderTop}"
                                          ToolTip="{x:Static languages:Tooltips.QueueNameTooltip}"
                                          Text="{Binding TriggerQueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -212,6 +213,21 @@
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
+                                <TextBlock Text="*" Grid.Row="0" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Foreground" Value="Black" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TriggerQueueName, Converter={StaticResource StringToBoolConverter}}" Value="true" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <TextBlock Text="Queue Source" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                 <ComboBox x:Name="QueueSourcesComboBox"
@@ -227,6 +243,21 @@
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </ComboBox>
+                                <TextBlock Text="*" Grid.Row="1" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Foreground" Value="Black" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding SelectedQueueSource}" Value="{x:Null}" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <TextBlock Text="Queue" Grid.Row="2" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
                                 <controls:AutoCompleteBox x:Name="QueueNameTextBox"
@@ -246,6 +277,21 @@
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </controls:AutoCompleteBox>
+                                <TextBlock Text="*" Grid.Row="2" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Foreground" Value="Black" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding QueueName, Converter={StaticResource StringToBoolConverter}}" Value="true" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <TextBlock Text="Workflow" Grid.Row="3" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
                                 <Grid Grid.Row="3" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
@@ -254,6 +300,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Column="0" 
+                                             x:Name="WorkflowTextBox"
                                              Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource ReadOnlyTextBoxStyle}"
                                              ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipWorkFlow}"
@@ -278,6 +325,21 @@
                                         </i:Interaction.Behaviors>
                                     </Button>
                                 </Grid>
+                                <TextBlock Text="*" Grid.Row="3" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Foreground" Value="Black" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding WorkflowName, Converter={StaticResource StringToBoolConverter}}" Value="true" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <TextBlock Text="Concurrency" Grid.Row="4" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
                                 <TextBox Grid.Row="4" 
@@ -363,6 +425,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
                                     <Grid.RowDefinitions>
@@ -384,6 +447,21 @@
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </ComboBox>
+                                    <TextBlock Text="*" Grid.Row="0" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                                <Setter Property="Foreground" Value="Black" />
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding SelectedDeadLetterQueueSource}" Value="{x:Null}" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Foreground" Value="Red" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Queue" />
                                     <controls:AutoCompleteBox x:Name="DeadLetterQueueTextBox"
@@ -403,6 +481,21 @@
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </controls:AutoCompleteBox>
+                                    <TextBlock Text="*" Grid.Row="1" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                                <Setter Property="Foreground" Value="Black" />
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding DeadLetterQueue, Converter={StaticResource StringToBoolConverter}}" Value="true" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Foreground" Value="Red" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
                                     <Expander Grid.Row="2" 
                                               Grid.Column="0"

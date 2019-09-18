@@ -14,12 +14,12 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
+using Warewolf.Triggers;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

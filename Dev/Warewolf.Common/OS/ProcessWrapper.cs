@@ -11,23 +11,27 @@
 using System;
 using System.Diagnostics;
 
-namespace Dev2.Common.Wrappers
+namespace Warewolf.OS
 {
-    public interface IProcess : IDisposable
-    {
-        void Kill();
-        Process Unwrap();
-        bool WaitForExit(int milliseconds);
-    }
-    public interface IProcessFactory
-    {
-        IProcess Start(string fileName);
-        IProcess Start(ProcessStartInfo startInfo);
-    }
-
     public class ProcessWrapper : IProcess
     {
         private readonly Process _process;
+
+        public int Id => _process.Id;
+        public bool HasExited
+        {
+            get
+            {
+                try
+                {
+                    return _process.HasExited;
+                } catch (InvalidOperationException)
+                {
+                    return true;
+                }
+            }
+        }
+
         public ProcessWrapper(Process process)
         {
             _process = process;

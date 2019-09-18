@@ -101,6 +101,10 @@
       <Project>{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}</Project>
       <Name>Warewolf.COMIPC.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServerLifeCycleWorkers\" />

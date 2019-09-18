@@ -20,7 +20,6 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -119,7 +118,7 @@ namespace Dev2.ScheduleExecutor
                             if (response.StatusCode != HttpStatusCode.OK || result.StartsWith("<FatalError>"))
                             {
                                 Log("Error", $"Error from execution: {result}");
-								CreateDebugState(result, workflowName, taskName);
+                                CreateDebugState(result, workflowName, taskName);
                                 Environment.Exit(1);
                             }
                             else

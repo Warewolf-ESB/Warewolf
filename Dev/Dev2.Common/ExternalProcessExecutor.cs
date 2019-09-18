@@ -14,6 +14,7 @@ using Dev2.Common.Wrappers;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Warewolf.OS;
 
 namespace Dev2.Common
 {

@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -39,7 +38,7 @@ namespace Warewolf.Common.Tests
             
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object,new Mock<IPublisher>().Object, testUrl, new List<IServiceInput>());
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object,new Mock<IPublisher>().Object, testUrl, new List<IServiceInputBase>());
             //---------------------------------Act------------------------------------
             var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("This is a message")).Result;
 
@@ -62,7 +61,7 @@ namespace Warewolf.Common.Tests
 
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, new List<IServiceInput>());
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, new List<IServiceInputBase>());
             //---------------------------------Act------------------------------------
             var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("This is a message")).Result;
 
@@ -85,7 +84,7 @@ namespace Warewolf.Common.Tests
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
-            var inputs = new List<IServiceInput>
+            var inputs = new List<IServiceInputBase>
             {
                 new ServiceInput("Name","FirstName")
             };
@@ -113,7 +112,7 @@ namespace Warewolf.Common.Tests
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
-            var inputs = new List<IServiceInput>
+            var inputs = new List<IServiceInputBase>
             {
                 new ServiceInput("Name","FirstName")
             };
@@ -142,7 +141,7 @@ namespace Warewolf.Common.Tests
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
-            var inputs = new List<IServiceInput>();
+            var inputs = new List<IServiceInputBase>();
             var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl, inputs);
             //---------------------------------Act------------------------------------
             string message = "{\"FirstName\":\"My Name\"}";
@@ -167,7 +166,7 @@ namespace Warewolf.Common.Tests
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>())).Returns(mockHttpClient.Object);
 
             var testUrl = "http://warewolf.io:0420/test/url";
-            var inputs = new List<IServiceInput>();
+            var inputs = new List<IServiceInputBase>();
             var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl, inputs);
             //---------------------------------Act------------------------------------
             string message = "{\"FirstName\":\"My Name\"}";

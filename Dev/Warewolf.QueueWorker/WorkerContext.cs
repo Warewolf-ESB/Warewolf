@@ -9,15 +9,12 @@
 */
 
 using Dev2.Common;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Resources;
-using Dev2.Common.Interfaces.Triggers;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
-using Newtonsoft.Json;
+using Dev2.Runtime.Hosting;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Warewolf.Common;
+using Warewolf.Data;
 using Warewolf.Driver.RabbitMQ;
 using Warewolf.Options;
 using Warewolf.Triggers;
@@ -42,7 +39,6 @@ namespace QueueWorker
         }
 
         public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
-        public ICollection<IServiceInput> ValueKeys { get => _triggerQueue.Inputs; }
 
         IQueueSource _queueSource;
         public IQueueSource Source
@@ -84,7 +80,7 @@ namespace QueueWorker
         }
 
         public string QueueName { get => _triggerQueue.QueueName; }
-        public string Inputs { get => JsonConvert.SerializeObject(_triggerQueue.Inputs); }
+        public IServiceInputBase[] Inputs => _triggerQueue.Inputs.ToArray();
         
         private static T OptionTo<T>(IOption[] options) where T : new()
         {

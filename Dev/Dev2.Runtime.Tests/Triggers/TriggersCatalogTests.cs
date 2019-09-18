@@ -8,28 +8,37 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Triggers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Serializers;
 using Dev2.Common.Wrappers;
-using Dev2.Runtime.Triggers;
-using Dev2.Triggers;
+using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Dev2.Tests.Runtime.Triggers
 {
     [TestClass]
     public class TriggersCatalogTests
     {
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+            var resourcePath = Path.Combine(@"C:\ProgramData\Warewolf\Triggers");
+
+            if (Directory.Exists(resourcePath))
+            {
+                DirectoryWrapperInstance().CleanUp(resourcePath);
+            }
+        }
         public static IDirectory DirectoryWrapperInstance()
         {
             return new DirectoryWrapper();
@@ -45,34 +54,47 @@ namespace Dev2.Tests.Runtime.Triggers
             return new Dev2JsonSerializer();
         }
 
-        string QueueTriggersPath
+        public static IFileSystemWatcherWrapper FileSystemWatcherWrapperInstance()
         {
-            get;set;
+            return new FileSystemWatcherWrapper();
         }
 
-        [TestInitialize]
-        public void CleanupTestDirectory()
+
+        public void CleanupTestDirectory(string queueTriggersPath)
         {
-            QueueTriggersPath = EnvironmentVariables.QueueTriggersPath;
-            if (Directory.Exists(QueueTriggersPath))
+            if (Directory.Exists(queueTriggersPath))
             {
-                DirectoryWrapperInstance().CleanUp(QueueTriggersPath);
+                DirectoryWrapperInstance().CleanUp(queueTriggersPath);
             }
         }
-
+        public static string QueueTriggersPath
+        {
+            get
+            {
+                var resourcePath = Path.Combine(@"C:\ProgramData\Warewolf\Triggers", Guid.NewGuid().ToString());
+                return resourcePath;
+            }
+        }
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersCatalog))]
         public void TriggersCatalog_Constructor_TestPathDoesNotExist_ShouldCreateIt()
         {
             //------------Setup for test--------------------------
-            QueueTriggersPath = EnvironmentVariables.QueueTriggersPath;
-            //------------Assert Preconditions-------------------
-            Assert.IsFalse(Directory.Exists(QueueTriggersPath));
-            //------------Execute Test---------------------------
-            new TriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), QueueTriggersPath, SerializerInstance());
-            //------------Assert Results-------------------------
-            Assert.IsTrue(Directory.Exists(QueueTriggersPath));
+            var queueTriggersPath = QueueTriggersPath;
+            try
+            {
+                //------------Assert Preconditions-------------------
+                Assert.IsFalse(Directory.Exists(queueTriggersPath));
+                //------------Execute Test---------------------------
+                new TriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), queueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
+                //------------Assert Results-------------------------
+                Assert.IsTrue(Directory.Exists(queueTriggersPath));
+            }
+            finally
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
@@ -80,30 +102,38 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestCategory(nameof(TriggersCatalog))]
         public void TriggersCatalog_SaveTriggerQueue_ShouldSave()
         {
-            var queue = "TestQueueName";
-            var workflowName = "TestWorkflow";
-            
-            var mockTriggerQueue = new Mock<ITriggerQueue>();
-            mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
-            mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueName).Returns(queue);
-            mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
+            var queueTriggersPath = QueueTriggersPath;
+            try
+            {
+                var queue = "TestQueueName";
+                var workflowName = "TestWorkflow";
 
-            var triggerCatalog = GetTriggersCatalog();
-            var triggerQueueEvent = mockTriggerQueue.Object;
-            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+                var mockTriggerQueue = new Mock<ITriggerQueue>();
+                mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
+                mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueName).Returns(queue);
+                mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
 
-            var path = QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
+                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
+                var triggerQueueEvent = mockTriggerQueue.Object;
+                triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-            var triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
+                var path = queueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
 
-            Assert.AreEqual(1, triggerQueueFiles.Count);
-            Assert.AreEqual(path, triggerQueueFiles[0]);
+                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
-            triggerCatalog.DeleteTriggerQueue(mockTriggerQueue.Object);
+                Assert.AreEqual(1, triggerQueueFiles.Count);
+                Assert.AreEqual(path, triggerQueueFiles[0]);
 
-            triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
+                triggerCatalog.DeleteTriggerQueue(mockTriggerQueue.Object);
 
-            Assert.AreEqual(0, triggerQueueFiles.Count);
+                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
+
+                Assert.AreEqual(0, triggerQueueFiles.Count);
+            }
+            finally
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
@@ -111,48 +141,58 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestCategory(nameof(TriggersCatalog))]
         public void TriggersCatalog_SaveTriggerQueue_WhenHasTriggerId_ShouldSave_NotUpdateTriggerId()
         {
-            var source = "TestResource";
-            var queue = "TestQueueName";
-            var workflowName = "TestWorkflow";
-            var triggerId = Guid.NewGuid();
+            var queueTriggersPath = QueueTriggersPath;
+            try
+            {
+                var source = "TestResource";
+                var queue = "TestQueueName";
+                var workflowName = "TestWorkflow";
+                var triggerId = Guid.NewGuid();
 
-            var mockResource = new Mock<IResource>();
-            mockResource.Setup(resource => resource.ResourceName).Returns(source);
-            mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
+                var mockResource = new Mock<IResource>();
+                mockResource.Setup(resource => resource.ResourceName).Returns(source);
+                mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
 
-            var triggerQueueEvent = new TriggerQueue();
-            triggerQueueEvent.QueueSourceId = mockResource.Object.ResourceID;
-            triggerQueueEvent.QueueName = queue;
-            triggerQueueEvent.WorkflowName = workflowName;
-            triggerQueueEvent.TriggerId = triggerId;
+                var triggerQueueEvent = new TriggerQueue
+                {
+                    QueueSourceId = mockResource.Object.ResourceID,
+                    QueueName = queue,
+                    WorkflowName = workflowName,
+                    TriggerId = triggerId
+                };
 
-            var triggerCatalog = GetTriggersCatalog();
-            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
+                triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-            var path = QueueTriggersPath + "\\" + triggerId + ".bite";
+                var path = queueTriggersPath + "\\" + triggerId + ".bite";
 
-            var triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
+                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
-            Assert.AreEqual(1, triggerQueueFiles.Count);
-            Assert.AreEqual(path, triggerQueueFiles[0]);
+                Assert.AreEqual(1, triggerQueueFiles.Count);
+                Assert.AreEqual(path, triggerQueueFiles[0]);
 
-            var savedData = File.ReadAllText(path);
-            var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
-            Assert.IsTrue(isEncrypted);
+                var savedData = File.ReadAllText(path);
+                var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
+                Assert.IsTrue(isEncrypted);
 
-            var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
-            var serializer = new Dev2JsonSerializer();
+                var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
+                var serializer = new Dev2JsonSerializer();
 
-            var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
-            Assert.IsNotNull(theSavedTrigger);
-            Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
-            Assert.AreEqual(triggerId, theSavedTrigger.TriggerId);
+                var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+                Assert.IsNotNull(theSavedTrigger);
+                Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
+                Assert.AreEqual(triggerId, theSavedTrigger.TriggerId);
 
-            triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+                triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
 
-            triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
+                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
-            Assert.AreEqual(0, triggerQueueFiles.Count);
+                Assert.AreEqual(0, triggerQueueFiles.Count);
+            }
+            finally
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
@@ -160,94 +200,121 @@ namespace Dev2.Tests.Runtime.Triggers
         [TestCategory(nameof(TriggersCatalog))]
         public void TriggersCatalog_SaveTriggerQueue_ShouldSaveEncrypted()
         {
-            var source = "TestResource";
-            var queue = "TestQueueName";
-            var workflowName = "TestWorkflow";
+            var queueTriggersPath = QueueTriggersPath;
 
-            var mockResource = new Mock<IResource>();
-            mockResource.Setup(resource => resource.ResourceName).Returns(source);
-            mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
+            try
+            {
+                var source = "TestResource";
+                var queue = "TestQueueName";
+                var workflowName = "TestWorkflow";
 
-            var triggerQueueEvent =  new TriggerQueue();
-            triggerQueueEvent.QueueSourceId= mockResource.Object.ResourceID;
-            triggerQueueEvent.QueueName= queue;
-            triggerQueueEvent.WorkflowName= workflowName;
+                var mockResource = new Mock<IResource>();
+                mockResource.Setup(resource => resource.ResourceName).Returns(source);
+                mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
 
-            var triggerCatalog = GetTriggersCatalog();
-            
-            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+                var triggerQueueEvent = new TriggerQueue
+                {
+                    QueueSourceId = mockResource.Object.ResourceID,
+                    QueueName = queue,
+                    WorkflowName = workflowName
+                };
 
-            var path = QueueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
+                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
 
-            var triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
+                triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-            Assert.AreEqual(1, triggerQueueFiles.Count);
-            Assert.AreEqual(path, triggerQueueFiles[0]);
+                var path = queueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
 
-            var savedData = File.ReadAllText(path);
-            var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
-            Assert.IsTrue(isEncrypted);
+                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
-            var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
-            var serializer = new Dev2JsonSerializer();
+                Assert.AreEqual(1, triggerQueueFiles.Count);
+                Assert.AreEqual(path, triggerQueueFiles[0]);
 
-            var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
-            Assert.IsNotNull(theSavedTrigger);
-            Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
+                var savedData = File.ReadAllText(path);
+                var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
+                Assert.IsTrue(isEncrypted);
 
-            triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+                var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
+                var serializer = new Dev2JsonSerializer();
 
-            triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
+                var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+                Assert.IsNotNull(theSavedTrigger);
+                Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
 
-            Assert.AreEqual(0, triggerQueueFiles.Count);
+                triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+
+                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
+
+                Assert.AreEqual(0, triggerQueueFiles.Count);
+            }
+            finally
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
-        public void TriggerCatalog_Load_ShouldLoadAllTriggerQueuesInDirectory()
+        public void TriggersCatalog_Load_ShouldLoadAllTriggerQueuesInDirectory()
         {
-            var triggerCatalog = GetTriggersCatalog();
+            var queueTriggersPath = QueueTriggersPath;
+            try
+            {
+                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
 
-            SaveRandomTriggerQueue(triggerCatalog);
-            SaveRandomTriggerQueue(triggerCatalog);
-            SaveRandomTriggerQueue(triggerCatalog);
+                SaveRandomTriggerQueue(triggerCatalog);
+                SaveRandomTriggerQueue(triggerCatalog);
+                SaveRandomTriggerQueue(triggerCatalog);
 
-            var triggerQueueFiles = Directory.EnumerateFiles(QueueTriggersPath).ToList();
-            Assert.AreEqual(3, triggerQueueFiles.Count);
+                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
+                Assert.AreEqual(3, triggerQueueFiles.Count);
 
-            triggerCatalog.Load();
-
-            var triggerQueueEvents = triggerCatalog.Queues;
-            Assert.AreEqual(3, triggerQueueEvents.Count);
+                Thread.Sleep(100);
+                var triggerQueueEvents = triggerCatalog.Queues;
+                Assert.AreEqual(3, triggerQueueEvents.Count);
+            }
+            finally
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
-        public void TriggerCatalog_DeleteTrigger_ShouldOnlyDeleteRequestedTrigger()
+        public void TriggersCatalog_DeleteTrigger_ShouldOnlyDeleteRequestedTrigger()
         {
-            var triggerCatalog = GetTriggersCatalog();
+            var queueTriggersPath = QueueTriggersPath;
+            try
+            {
+                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
 
-            SaveRandomTriggerQueue(triggerCatalog);
-            SaveRandomTriggerQueue(triggerCatalog);
-            SaveRandomTriggerQueue(triggerCatalog);
+                SaveRandomTriggerQueue(triggerCatalog);
+                SaveRandomTriggerQueue(triggerCatalog);
+                SaveRandomTriggerQueue(triggerCatalog);
 
-            triggerCatalog.Load();
-            var triggerQueueEvents = triggerCatalog.Queues;
+                var triggerQueueEvents = triggerCatalog.Queues;
 
-            triggerCatalog.DeleteTriggerQueue(triggerQueueEvents[1]);
-
-            Assert.AreEqual(2, triggerQueueEvents.Count);
+                triggerCatalog.DeleteTriggerQueue(triggerQueueEvents[1]);
+                triggerQueueEvents = triggerCatalog.Queues;
+                Assert.AreEqual(2, triggerQueueEvents.Count);
+            }
+            catch
+            {
+                CleanupTestDirectory(queueTriggersPath);
+            }
         }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(TriggersCatalog))]
-        public void TriggerCatalog_LoadQueueTriggerFromFile()
+        public void TriggersCatalog_LoadQueueTriggerFromFile()
         {
             var directoryWrapper = new Mock<IDirectory>().Object;
             var mockFileWrapper = new Mock<IFile>();
             var mockSerializer = new Mock<ISerializer>();
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcherWrapper>();
 
             var decryptedTrigger = "serialized queue data";
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
@@ -255,7 +322,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var expectedTrigger = new TriggerQueue();
             mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
 
-            var catalog = GetTriggersCatalog(directoryWrapper, mockFileWrapper.Object, "some path", mockSerializer.Object);
+            var catalog = GetTriggersCatalog(directoryWrapper, mockFileWrapper.Object, "some path", mockSerializer.Object, mockFileSystemWatcher.Object);
             var actual = catalog.LoadQueueTriggerFromFile("somefile.bite");
 
             mockSerializer.Verify(o => o.Deserialize<ITriggerQueue>(decryptedTrigger), Times.Once);
@@ -265,7 +332,7 @@ namespace Dev2.Tests.Runtime.Triggers
         void SaveRandomTriggerQueue(ITriggersCatalog triggerCatalog)
         {
             var randomizer = new Random();
-            var source = "TestResource"+randomizer.Next(1,10000);
+            var source = "TestResource" + randomizer.Next(1, 10000);
             var queue = "TestQueueName" + randomizer.Next(1, 10000);
             var workflowName = "TestWorkflow" + randomizer.Next(1, 10000);
 
@@ -273,22 +340,24 @@ namespace Dev2.Tests.Runtime.Triggers
             mockResource.Setup(resource => resource.ResourceName).Returns(source);
             mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
 
-            var triggerQueueEvent = new TriggerQueue();
-            triggerQueueEvent.QueueSourceId = mockResource.Object.ResourceID;
-            triggerQueueEvent.QueueName = queue;
-            triggerQueueEvent.WorkflowName = workflowName;
+            var triggerQueueEvent = new TriggerQueue
+            {
+                QueueSourceId = mockResource.Object.ResourceID,
+                QueueName = queue,
+                WorkflowName = workflowName
+            };
 
             triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
         }
 
-        ITriggersCatalog GetTriggersCatalog()
+        ITriggersCatalog GetTriggersCatalog(string queueTriggersPath)
         {
-            return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), EnvironmentVariables.QueueTriggersPath, SerializerInstance());
+            return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), queueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
         }
 
-        ITriggersCatalog GetTriggersCatalog(IDirectory directory,IFile file,string queueTriggersPath,ISerializer serializer)
+        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcherWrapper fileSystemWatcherWrapper)
         {
-            return new TriggersCatalog(directory, file, queueTriggersPath, serializer);
+            return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcherWrapper);
         }
     }
 }
