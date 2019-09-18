@@ -22,13 +22,7 @@ namespace Warewolf.Driver.Serilog
 
         public void StartConsuming(ILoggerConfig config, IConsumer consumer)
         {
-            _server = new WebSocketServer(config.ServerLoggingAddress);
-            _server.RestartAfterListenError = true;
-            _server.Start(socket =>
-            {
-                socket.OnMessage = message => consumer.Consume(Encoding.Default.GetBytes(message));
-            });
-
+            throw new NotSupportedException("SeriLog not supported in this mode");
         }
 
         public ILoggerPublisher NewPublisher()
