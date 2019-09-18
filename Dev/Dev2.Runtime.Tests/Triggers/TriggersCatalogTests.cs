@@ -17,6 +17,7 @@ using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -270,7 +271,7 @@ namespace Dev2.Tests.Runtime.Triggers
                 var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
                 Assert.AreEqual(3, triggerQueueFiles.Count);
 
-                Thread.Sleep(100);
+                Thread.Sleep(500);
                 var triggerQueueEvents = triggerCatalog.Queues;
                 Assert.AreEqual(3, triggerQueueEvents.Count);
             }
