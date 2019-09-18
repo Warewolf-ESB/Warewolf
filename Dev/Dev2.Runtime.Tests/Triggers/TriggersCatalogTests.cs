@@ -65,20 +65,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             if (Directory.Exists(queueTriggersPath))
             {
-                try
-                {
-                    DirectoryWrapperInstance().CleanUp(queueTriggersPath);
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.Contains("The process cannot access the file"))
-                    {
-                        using (var proc = Process.GetCurrentProcess())
-                        {
-
-                        }
-                    }
-                }
+                DirectoryWrapperInstance().CleanUp(queueTriggersPath);
             }
         }
         public static string QueueTriggersPath
