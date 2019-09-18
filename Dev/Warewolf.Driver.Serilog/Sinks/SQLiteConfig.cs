@@ -31,8 +31,8 @@ namespace Warewolf.Driver.Serilog
         }
 
         public ILogger Logger { get => CreateLogger(); }
-
-        public string ConnectionString => _config.ConnectionString;
+        //TODO: this path needs to come the Config.Server.AuditPath which is still tobe moved to project Framework48
+        public string ConnectionString => @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
 
         public string ServerLoggingAddress { get; set; }
 
@@ -40,7 +40,7 @@ namespace Warewolf.Driver.Serilog
         {
             return new LoggerConfiguration()
                 .WriteTo
-                .SQLite(sqliteDbPath: _config.ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
+                .SQLite(sqliteDbPath: ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
                 .CreateLogger();
         }
 

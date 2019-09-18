@@ -9,9 +9,8 @@
 */
 
 
-using Fleck;
 using Serilog;
-using System.Text;
+using System;
 using Warewolf.Logging;
 using Warewolf.Streams;
 
@@ -20,21 +19,10 @@ namespace Warewolf.Driver.Serilog
     public class SeriLogConnection : ILoggerConnection
     {
         private readonly ILogger _logger;
-        private readonly ISeriLogConfig _seriLogConfig;
-
-             private WebSocketServer _server;
 
         public void StartConsuming(ILoggerConfig config, IConsumer consumer)
         {
-            _server = new WebSocketServer(config.ServerLoggingAddress);
-            _server.RestartAfterListenError = true;
-            _server.Start(socket =>
-            {
-                //socket.OnOpen = () => Console.WriteLine("Open!");
-                //socket.OnClose = () => Console.WriteLine("Close!");
-                socket.OnMessage = message => consumer.Consume(Encoding.Default.GetBytes(message));
-            });
-
+            throw new NotImplementedException();
         }
 
         public ILoggerPublisher NewPublisher()
@@ -42,7 +30,13 @@ namespace Warewolf.Driver.Serilog
             return new SeriLogPublisher(_logger);
         }
 
-        private bool _disposedValue = false; 
+        private bool _disposedValue = false;
+
+        public SeriLogConnection(ILoggerConfig loggerConfig )
+        {
+            var serilogConfig = loggerConfig as ISeriLogConfig;
+            _logger = serilogConfig.Logger;
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -51,7 +45,6 @@ namespace Warewolf.Driver.Serilog
                 if (disposing)
                 {
                     Log.CloseAndFlush();
-                    _server.Dispose();
                 }
 
                 _disposedValue = true;
