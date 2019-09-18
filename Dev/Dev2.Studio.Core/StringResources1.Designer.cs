@@ -659,6 +659,24 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Workflow_HasQueue_Title {
+            get {
+                return ResourceManager.GetString("Workflow_HasQueue_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This resource is linked to Queue: {0}. Do you want to continue?.
+        /// </summary>
+        public static string Workflow_HasQueue_Warning {
+            get {
+                return ResourceManager.GetString("Workflow_HasQueue_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
         ///  &lt;contentPanes&gt;

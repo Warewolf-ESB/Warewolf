@@ -165,6 +165,12 @@
   <data name="Debugging_Error" xml:space="preserve">
     <value>Please resolve all variable errors, before debugging.</value>
   </data>
+  <data name="Workflow_HasQueue_Title" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Workflow_HasQueue_Warning" xml:space="preserve">
+    <value>This resource is linked to Queue: {0}. Do you want to continue?</value>
+  </data>
   <data name="Saving_Error_Title" xml:space="preserve">
     <value>Error Saving</value>
   </data>

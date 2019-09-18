@@ -10,7 +10,6 @@
 
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
@@ -20,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Warewolf.Triggers;
 
 namespace Dev2.Tests.Runtime.Services
 {

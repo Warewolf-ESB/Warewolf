@@ -41,6 +41,7 @@
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
     <converters1:PaddingThicknessConverter x:Key="PaddingThicknessConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />

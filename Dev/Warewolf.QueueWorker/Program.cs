@@ -10,7 +10,7 @@
 
 using CommandLine;
 using Dev2.Network;
-using Dev2.Runtime.Triggers;
+using Dev2.Runtime.Hosting;
 using Dev2.Util;
 using System;
 using Warewolf.Common;
@@ -72,7 +72,7 @@ namespace QueueWorker
             {
                 var deadletterPublisher = CreateDeadLetterPublisher();
 
-                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.ValueKeys);
+                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.Inputs);
 
                 var queue = _config.Source;
 

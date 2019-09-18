@@ -9,10 +9,20 @@
 */
 
 
+using Warewolf.OS;
+
 namespace Dev2
 {
-    internal class EmptyQueueWorkerMonitor : IQueueProcessorMonitor
+    internal class EmptyQueueWorkerMonitor : IProcessorMonitor
     {
+#pragma warning disable CS0067
+        public event ProcessDiedEvent OnProcessDied;
+#pragma warning restore CS0067
+
+        public void Shutdown()
+        {
+        }
+
         public void Start()
         {
         }

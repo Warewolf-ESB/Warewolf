@@ -11,9 +11,9 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.OS;
 
 namespace Dev2.Common.Tests
 {

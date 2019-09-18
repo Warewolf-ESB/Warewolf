@@ -8,10 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Triggers
+using System;
+
+namespace Warewolf.OS
 {
-    public interface ITrigger
+    public interface IJobConfig
     {
+        Guid Id { get; }
         string Name { get; set; }
+        int Concurrency { get; set; }
     }
 }

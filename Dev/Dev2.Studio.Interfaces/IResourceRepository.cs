@@ -26,8 +26,7 @@ using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Options;
-using Dev2.Triggers;
-using Dev2.Common.Interfaces.Queue;
+using Warewolf.Triggers;
 
 namespace Dev2.Studio.Interfaces
 {

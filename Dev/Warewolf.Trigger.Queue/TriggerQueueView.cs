@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Queue;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -21,7 +20,6 @@ using Dev2.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
-using Dev2.Triggers;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -33,7 +31,8 @@ using Warewolf.UI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
-using Dev2.Communication;
+using Warewolf.Triggers;
+using Warewolf.Data;
 
 namespace Warewolf.Trigger.Queue
 {
@@ -55,7 +54,7 @@ namespace Warewolf.Trigger.Queue
         private IList<INameValue> _deadLetterQueues;
         private string _deadLetterQueue;
         private ObservableCollection<OptionView> _deadLetterOptions;
-        private ICollection<IServiceInput> _inputs;
+        private ICollection<IServiceInputBase> _inputs;
 
         private string _oldQueueName;
         private bool _enabled;
@@ -108,7 +107,7 @@ namespace Warewolf.Trigger.Queue
             NewQueue = true;
             Options = new ObservableCollection<OptionView>();
             DeadLetterOptions = new ObservableCollection<OptionView>();
-            Inputs = new List<IServiceInput>();
+            Inputs = new List<IServiceInputBase>();
             VerifyCommand = new DelegateCommand(ExecuteVerify);
             MapEntireMessage = true;
         }
@@ -229,6 +228,10 @@ namespace Warewolf.Trigger.Queue
             get => _concurrency;
             set
             {
+                if (value < 0)
+                {
+                    value = 0;
+                }
                 _concurrency = value;
                 RaisePropertyChanged(nameof(Concurrency));
                 IsDirtyPropertyChange();
@@ -323,7 +326,7 @@ namespace Warewolf.Trigger.Queue
                 RaisePropertyChanged(nameof(DeadLetterOptions));
             }
         }
-        public ICollection<IServiceInput> Inputs
+        public ICollection<IServiceInputBase> Inputs
         {
             get => _inputs;
             set
@@ -505,12 +508,12 @@ namespace Warewolf.Trigger.Queue
                                 value = obj[sca.DisplayValue.Replace("@", "")].ToString();
                             }
                             var serviceTestInput = new ServiceInput(sca.DisplayValue, value);
-                            return serviceTestInput.As<IServiceInput>();
+                            return serviceTestInput.As<IServiceInputBase>();
                         }
                         else
                         {
                             var serviceTestInput = new ServiceInput(sca.DisplayValue, sca.Value);
-                            return serviceTestInput.As<IServiceInput>();
+                            return serviceTestInput.As<IServiceInputBase>();
                         }
 
                     }).ToList();
@@ -540,7 +543,7 @@ namespace Warewolf.Trigger.Queue
         }
         public void GetInputsFromWorkflow()
         {
-            Inputs = new List<IServiceInput>();
+            Inputs = new List<IServiceInputBase>();
             _contextualResourceModel = _server.ResourceRepository.LoadContextualResourceModel(ResourceId);
             _dataList = new DataListModel();
             _dataListConversionUtils = new DataListConversionUtils();
@@ -549,10 +552,11 @@ namespace Warewolf.Trigger.Queue
             Inputs = inputList.Select(sca =>
             {
                 var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
-                return serviceTestInput.As<IServiceInput>();
+                return serviceTestInput.As<IServiceInputBase>();
 
             }).ToList();
         }
+
         public TriggerQueueView Item
         {
             get => _item;

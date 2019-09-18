@@ -162,6 +162,10 @@
       <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
       <Name>Warewolf.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>

@@ -127,6 +127,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ApplicationAdaptor.cs" />
+    <Compile Include="AppResources\Converters\StringToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\StringToIntInRangeConverter.cs" />
     <Compile Include="DependencyGraph\DependencyGraphGenerator.cs" />
     <Compile Include="DependencyGraph\DependencyVisualization\CircularDependency.cs" />
