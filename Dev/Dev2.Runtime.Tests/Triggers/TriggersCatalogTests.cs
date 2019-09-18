@@ -17,6 +17,7 @@ using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -64,7 +65,20 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             if (Directory.Exists(queueTriggersPath))
             {
-                DirectoryWrapperInstance().CleanUp(queueTriggersPath);
+                try
+                {
+                    DirectoryWrapperInstance().CleanUp(queueTriggersPath);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("The process cannot access the file"))
+                    {
+                        using (var proc = Process.GetCurrentProcess())
+                        {
+
+                        }
+                    }
+                }
             }
         }
         public static string QueueTriggersPath
@@ -270,7 +284,7 @@ namespace Dev2.Tests.Runtime.Triggers
                 var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
                 Assert.AreEqual(3, triggerQueueFiles.Count);
 
-                Thread.Sleep(100);
+                Thread.Sleep(500);
                 var triggerQueueEvents = triggerCatalog.Queues;
                 Assert.AreEqual(3, triggerQueueEvents.Count);
             }
