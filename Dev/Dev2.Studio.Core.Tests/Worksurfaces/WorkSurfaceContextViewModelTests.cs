@@ -681,6 +681,9 @@ namespace Dev2.Core.Tests
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             //------------Execute Test---------------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
         }
 
@@ -722,7 +725,9 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
@@ -766,7 +771,9 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
@@ -825,7 +832,9 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironmentModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
@@ -1238,6 +1247,31 @@ namespace Dev2.Core.Tests
             workSurfaceContextViewModel.QuickDebug();
 
             popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkSurfaceContextViewModel))]
+        public void WorkSurfaceContextViewModel_Save_Expected_HasTrigger_Popup()
+        {
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(Permissions.Contribute);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, "", false, false, false, true, false, false)).Returns(MessageBoxResult.No);
+            var pvt = new PrivateObject(workSurfaceContextViewModel);
+            pvt.SetField("_popupController", mockPopupController.Object);
+
+            var mockTriggerQueue = new Mock<Warewolf.Triggers.ITriggerQueue>();
+            mockTriggerQueue.Setup(triggerQueue => triggerQueue.ResourceId).Returns(workSurfaceContextViewModel.ContextualResourceModel.ID);
+
+            Runtime.Hosting.TriggersCatalog.Instance.Queues.Add(mockTriggerQueue.Object);
+
+            var isSaved = workSurfaceContextViewModel.Save(false, false);
+            Assert.IsFalse(isSaved);
+
+            Runtime.Hosting.TriggersCatalog.Instance.Queues.Clear();
+
+            mockPopupController.Verify(a => a.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, "", false, false, false, true, false, false));
         }
     }
 

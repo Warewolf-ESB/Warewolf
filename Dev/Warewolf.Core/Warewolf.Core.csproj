@@ -92,6 +92,10 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>

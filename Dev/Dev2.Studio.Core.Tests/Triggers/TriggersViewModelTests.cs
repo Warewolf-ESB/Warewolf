@@ -21,6 +21,7 @@ using Moq;
 using Dev2.Triggers;
 using Warewolf.Trigger.Queue;
 using System.Collections.Generic;
+using Warewolf.Triggers;
 
 namespace Dev2.Core.Tests.Triggers
 {

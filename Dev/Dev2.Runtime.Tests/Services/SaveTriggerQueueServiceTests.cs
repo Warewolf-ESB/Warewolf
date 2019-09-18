@@ -14,15 +14,15 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Triggers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.Triggers;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -119,6 +119,7 @@ namespace Dev2.Tests.Runtime.Services
 
     internal class TriggerQueueForTest : ITriggerQueue
     {
+        public Guid Id { get => TriggerId; }
         public Guid TriggerId { get; set; }
         public IResource QueueSource { get; set; }
         public string QueueName { get; set; }
@@ -131,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
         public string DeadLetterQueue { get; set; }
         public IOption[] DeadLetterOptions { get; set; }
         public bool MapEntireMessage { get; set; }
-        public ICollection<IServiceInput> Inputs { get; set; }
+        public ICollection<IServiceInputBase> Inputs { get; set; }
         public Guid ResourceId { get; set; }
         public Guid QueueSourceId { get; set; }
         public Guid QueueSinkId { get; set; }

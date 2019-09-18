@@ -8,92 +8,160 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Common;
-using Dev2.Common.Wrappers;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
+using System.Collections.Generic; 
 using System.Threading;
+using System;
+using Warewolf.OS;
+using Warewolf.Triggers;
+using Dev2.Common;
+
+using ProcessStartInfo = System.Diagnostics.ProcessStartInfo;
 
 namespace Dev2
 {
-    public class QueueWorkerMonitor : IQueueProcessorMonitor
+    public class QueueWorkerMonitor : WorkerMonitor
     {
         private readonly IQueueConfigLoader _queueConfigLoader;
+        private readonly IChildProcessTracker _childProcessTracker;
         private readonly IProcessFactory _processFactory;
 
-        private readonly List<(Thread Thread, string Name)> _processes = new List<(Thread Thread, string Name)>();
-        private readonly IWriter _writer;
-        private bool _running;
-
-        public QueueWorkerMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, IWriter writer)
+        public QueueWorkerMonitor(IProcessFactory processFactory, IQueueConfigLoader queueConfigLoader, ITriggersCatalog triggersCatalog, IChildProcessTracker childProcessTracker)
         {
+            _childProcessTracker = childProcessTracker;
             _processFactory = processFactory;
             _queueConfigLoader = queueConfigLoader;
-            _writer = writer;
+
+            triggersCatalog.OnChanged += (triggerId) =>
+            {
+                try
+                {
+                    var configs = _queueConfigLoader.Configs;
+                var config = configs.First(o => o.Id == triggerId);
+                    WorkerRestart(config);
+
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn(e.Message, "");
+                }
+            };
+
+            triggersCatalog.OnDeleted += WorkerDeleted;
+            triggersCatalog.OnCreated += WorkerCreated;
         }
+
+        protected override IEnumerable<IJobConfig> GetConfigs() => _queueConfigLoader.Configs;
+        protected override ProcessThreadList NewThreadList(IJobConfig config) => new QueueProcessThreadList(_childProcessTracker, _processFactory, config);
+    }
+
+    class QueueProcessThreadList : ProcessThreadList
+    {
+        private readonly IChildProcessTracker _childProcessTracker;
+        private readonly IProcessFactory _processFactory;
+
+        public QueueProcessThreadList(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IJobConfig config)
+            : base(config)
+        {
+            _childProcessTracker = childProcessTracker;
+            _processFactory = processFactory;
+        }
+
+        protected override IProcessThread GetProcessThread() => new QueueProcessThread(_childProcessTracker, _processFactory, Config);
+    }
+    class QueueProcessThread : ProcessThread
+    {
+        public QueueProcessThread(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IJobConfig config)
+            : base(childProcessTracker, processFactory, config)
+        {
+        }
+
+        protected override ProcessStartInfo GetProcessStartInfo()
+        {
+            var worker = GlobalConstants.QueueWorkerExe;
+            return new ProcessStartInfo(worker, $"-c \"{Config.Id}\"");
+        }
+    }
+
+    public abstract class WorkerMonitor : IProcessorMonitor
+    {
+        private readonly List<IProcessThreadList> _processLists = new List<IProcessThreadList>();
+
+        private bool _running;
+
+        public event ProcessDiedEvent OnProcessDied;
+
+        protected void WorkerRestart(IJobConfig config)
+        {
+            var processList = _processLists.FirstOrDefault(o => o.Config.Id == config.Id);
+            if (processList is null)
+            {
+                AddMissingMonitors();
+                return;
+            }
+            processList.UpdateConfig(config);
+        }
+        protected void WorkerDeleted(Guid guid)
+        {
+            var process = _processLists.FirstOrDefault(o => o.Config.Id == guid);
+            if (process is null)
+            {
+                return;
+            }
+            process.Kill();
+            _processLists.Remove(process);
+        }
+
+        protected void WorkerCreated(Guid guid)
+        {
+            AddMissingMonitors();
+        }
+
+        private void AddMissingMonitors()
+        {
+            foreach (var config in GetConfigs())
+            {
+                if (_processLists.Exists(o => o.Config.Id == config.Id))
+                {
+                    continue;
+                }
+                var list = NewThreadList(config);
+                list.OnProcessDied += (processDiedConfig) => OnProcessDied?.Invoke(processDiedConfig);
+                _processLists.Add(list);
+            }
+        }
+
+        protected abstract ProcessThreadList NewThreadList(IJobConfig config);
+        protected abstract IEnumerable<IJobConfig> GetConfigs();
 
         public void Start()
         {
             _running = true;
-            foreach (var config in _queueConfigLoader.Configs)
+            AddMissingMonitors();
+            var monitor = new Thread(() =>
             {
-                var thread = new Thread(() =>
-                {
-                    try
-                    {
-                        Start(config);
-                    }
-                    catch { }
-                    });
-                thread.Start();
-                _processes.Add((thread, config));
-            }
-
-            ProcessMonitor();
+                MonitorProcesses();
+            })
+            {
+                IsBackground = true
+            };
+            monitor.Start();
         }
 
-        public void Stop()
+        public void Shutdown()
         {
             _running = false;
         }
 
-        private void Start(string config)
-        {
-            var worker = GlobalConstants.QueueWorkerExe;
-            var startInfo = new ProcessStartInfo(worker, $"-c '{config}'"); 
-            using (var process = _processFactory.Start(startInfo))
-            {
-                while (!process.WaitForExit(1000))
-                {
-                    //TODO: check queue progress, kill if necessary
-                }
-                _writer.WriteLine($"{worker} has died, Error:" + JsonConvert.SerializeObject(config));
-            }
-        }
-
-        private void ProcessMonitor()
+        private void MonitorProcesses()
         {
             while (_running)
             {
-                var items = _processes.ToArray();
-                foreach (var process in items)
+                var lists = _processLists.ToArray();
+                foreach (var processList in lists)
                 {
-                    if (!process.Thread.IsAlive)
-                    {
-                        var thread = new Thread(() => {
-                            try
-                            {
-                                Start(process.Name);
-                            } catch { }
-                        });
-                        thread.Start();
-
-                        _processes.Remove(process);
-                        _processes.Add((thread, process.Name));
-                    }
-                };
+                    processList.Monitor();
+                }
 
                 Thread.Sleep(1000);
             }

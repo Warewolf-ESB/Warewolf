@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.DB;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Warewolf.Triggers;
 using Dev2.Common.ExtMethods;
 using System.Linq;
 using Warewolf.Data;
@@ -23,7 +23,7 @@ namespace Warewolf.Common
     public class WarewolfWebRequestForwarder : IConsumer
     {
         readonly string _url;
-        readonly ICollection<IServiceInput> _valueKeys;
+        readonly ICollection<IServiceInputBase> _valueKeys;
         private readonly MessageToInputsMapper _messageToInputsMapper;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IPublisher _publisher;
@@ -32,7 +32,7 @@ namespace Warewolf.Common
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url, ICollection<IServiceInput> valueKeys)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url, ICollection<IServiceInputBase> valueKeys)
         {
             _httpClientFactory = httpClientFactory;
             _publisher = publisher;

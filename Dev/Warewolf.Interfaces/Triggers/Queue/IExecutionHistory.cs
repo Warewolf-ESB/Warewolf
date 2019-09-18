@@ -8,17 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Triggers;
-using System.Collections.Generic;
-
-namespace Dev2.Common.Interfaces.Triggers
+namespace Warewolf.Triggers
 {
-    public interface ITriggersCatalog
+    public interface IExecutionHistory
     {
-        IList<ITriggerQueue> Queues { get; set; }
-        void SaveTriggerQueue(ITriggerQueue triggerQueue);
-        void Load();
-        void DeleteTriggerQueue(ITriggerQueue triggerQueue);
-        ITriggerQueue LoadQueueTriggerFromFile(string filename);
+        string WorkflowOutput { get; }
+        IExecutionInfo ExecutionInfo { get; }
+        string UserName { get; set; }
     }
 }
