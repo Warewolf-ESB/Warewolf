@@ -16,8 +16,10 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Driver.Serilog;
+using Warewolf.Logger;
 using Warewolf.Logging;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -30,32 +32,47 @@ namespace Dev2.Runtime.ESB.Management.Services
             _seriLogSQLiteConfig = new SeriLogSQLiteConfig();
         }
 
-        public GetLogDataService(SeriLogSQLiteConfig seriLogSQLiteConfig)
+        public GetLogDataService(ISeriLogConfig seriLogSQLiteConfig)
         {
             _seriLogSQLiteConfig = seriLogSQLiteConfig;
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            var resourceId = GetValue<string>("ResourceID", values);
+            SeriLoggerSource seriLoggerSource = null;
+
+            //get resource using resourceId to get connectionString and tableName
+            if (resourceId == GlobalConstants.DefaultLoggingSourceId)
+            {
+                seriLoggerSource = new SeriLoggerSource();
+            }
+
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var loggerSource = new SeriLoggerSource();
-                using (var loggerConnection = loggerSource.NewConnection(_seriLogSQLiteConfig))
-                {
-                    //TODO: Implement correct query service
-                    //var loggerConsumer = loggerConnection.NewConsumer();
-                    //var dataList = null; //loggerConsumer.QueryLogData(values);
-                   // LogDataCache.CurrentResults = dataList;
-                    return serializer.SerializeToBuilder(null);
-                }
+                var logg = new LoggerQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+                var audits = logg.QueryLogData(values);
+                LogDataCache.CurrentResults = audits;
+                return serializer.SerializeToBuilder(audits);
             }
             catch (Exception e)
             {
                 Dev2Logger.Info("Get Log Data ServiceError", e, GlobalConstants.WarewolfInfo);
             }
             return serializer.SerializeToBuilder("");
+        }
+
+        T GetValue<T>(string key, Dictionary<string, StringBuilder> values)
+        {
+            var toReturn = default(T);
+            if (values.TryGetValue(key, out StringBuilder value))
+            {
+                var item = value.ToString();
+                return (T)Convert.ChangeType(item, typeof(T));
+            }
+            return toReturn;
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");

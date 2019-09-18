@@ -17,9 +17,8 @@ using Dev2.Common.Serializers;
 using Dev2;
 using System.Data.Linq.Mapping;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
-namespace Warewolf.Logger
+namespace Warewolf.Auditing
 {
     [Table(Name = "Audit")]
     [DataContract(Name = "Audit", Namespace = "")]
