@@ -100,6 +100,7 @@
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="ComPluginServiceDefinition.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Container\WarewolfQueue.cs" />
     <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DataNode.cs" />
@@ -164,7 +165,6 @@
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
     <Compile Include="SaveDialogue\ResourceName.cs" />
     <Compile Include="Search\Search.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="Serializers\Dev2JsonSerializer.cs" />
     <Compile Include="State\StateVariable.cs" />
     <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
@@ -204,7 +204,6 @@
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
     <Compile Include="WorkflowExecutionWatcher.cs" />
-    <Compile Include="Wrappers\ConfigurationManagerWrapper.cs" />
     <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\DomainWrapper.cs" />

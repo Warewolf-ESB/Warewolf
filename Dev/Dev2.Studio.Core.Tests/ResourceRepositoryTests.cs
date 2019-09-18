@@ -51,6 +51,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Warewolf.Configuration;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Triggers;
 

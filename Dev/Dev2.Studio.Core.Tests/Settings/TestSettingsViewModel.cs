@@ -24,6 +24,7 @@ using Dev2.Settings.Security;
 using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Moq;
+using Warewolf.Configuration;
 
 namespace Dev2.Core.Tests.Settings
 {

@@ -23,6 +23,7 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 using Newtonsoft.Json;
+using Warewolf.Configuration;
 
 namespace Dev2.Settings.Logging
 {

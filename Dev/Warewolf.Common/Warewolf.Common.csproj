@@ -10,6 +10,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Microsoft.VisualBasic.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

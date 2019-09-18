@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dev2.Common.Interfaces.Core
+namespace Warewolf.Configuration
 {
     public class ServerSettingsData : IEquatable<ServerSettingsData>
     {

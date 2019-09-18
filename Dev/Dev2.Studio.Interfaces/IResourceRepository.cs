@@ -27,6 +27,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Options;
 using Warewolf.Triggers;
+using Warewolf.Configuration;
 
 namespace Dev2.Studio.Interfaces
 {
