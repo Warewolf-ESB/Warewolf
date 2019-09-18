@@ -213,6 +213,10 @@
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>

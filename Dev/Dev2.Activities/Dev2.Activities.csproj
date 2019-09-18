@@ -346,11 +346,6 @@
     <Compile Include="TO\DataMergeDTO.cs" />
     <Compile Include="TO\DataSplitDTO.cs" />
     <Compile Include="ImageConverter.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="TO\DataColumnMapping.cs" />
     <Compile Include="TO\DecisionTO.cs" />
     <Compile Include="TO\JsonMappingCompoundTo.cs" />
@@ -381,10 +376,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Dev2.Activities.ruleset" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

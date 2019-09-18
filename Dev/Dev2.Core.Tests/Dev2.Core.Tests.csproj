@@ -218,6 +218,10 @@
       <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
       <Name>Warewolf.Exchange.Email.Wrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
       <Name>Warewolf.Resource</Name>

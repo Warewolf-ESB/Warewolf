@@ -105,11 +105,6 @@
     <Compile Include="Helper\NetworkShareInformation.cs" />
     <Compile Include="IntellisenseStringResultBuilder.cs" />
     <Compile Include="IntellisenseTextBox.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Provider\BlankIntellisenseProvider.cs" />
     <Compile Include="Provider\CalculateIntellisenseProvider.cs" />
     <Compile Include="Provider\CompositeIntellisenseProvider.cs" />
@@ -119,10 +114,6 @@
     <Compile Include="Provider\ProviderExtensions.cs" />
     <None Include="app.config" />
     <None Include="Dev2.Intellisense.ruleset" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +190,10 @@
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
