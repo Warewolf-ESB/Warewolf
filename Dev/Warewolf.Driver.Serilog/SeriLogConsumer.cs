@@ -18,22 +18,25 @@ using Warewolf.Data;
 using Warewolf.Logging;
 using Newtonsoft.Json;
 using System.Linq;
+using Serilog;
 
 namespace Warewolf.Driver.Serilog
 {
 
     public class SeriLogConsumer : ILoggerConsumer
     {
-        readonly string _connectionString;
+        private ILogger _logger;
 
-        public SeriLogConsumer(string connectionString)
+        public SeriLogConsumer(ISeriLogConfig loggerConfig)
         {
-            _connectionString = connectionString;
+            _logger = loggerConfig.Logger;
         }
 
         public Task<ConsumerResult> Consume(byte[] body)
         {
-            throw new System.NotImplementedException();
+            var message = Encoding.Default.GetString(body);
+            _logger.Debug(message);
+            return Task.FromResult(ConsumerResult.Success);
         }
 
     }

@@ -20,7 +20,7 @@ namespace Warewolf.Driver.Serilog
 
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
         {
-            return new SeriLogConnection(loggerConfig as ISeriLogConfig);
+            return new SeriLogConnection();
         }
     }
 }

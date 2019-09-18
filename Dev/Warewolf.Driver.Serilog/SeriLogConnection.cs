@@ -22,13 +22,7 @@ namespace Warewolf.Driver.Serilog
         private readonly ILogger _logger;
         private readonly ISeriLogConfig _seriLogConfig;
 
-        public SeriLogConnection(ISeriLogConfig loggerConfig)
-        {
-            _logger = loggerConfig.Logger;
-            _seriLogConfig = loggerConfig;
-        }
-
-        private WebSocketServer _server;
+             private WebSocketServer _server;
 
         public void StartConsuming(ILoggerConfig config, IConsumer consumer)
         {
@@ -46,11 +40,6 @@ namespace Warewolf.Driver.Serilog
         public ILoggerPublisher NewPublisher()
         { 
             return new SeriLogPublisher(_logger);
-        }
-
-        public ILoggerConsumer NewConsumer()
-        {
-            return new SeriLogConsumer(_seriLogConfig.ConnectionString);
         }
 
         private bool _disposedValue = false; 

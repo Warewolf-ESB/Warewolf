@@ -27,7 +27,7 @@ namespace Warewolf.Logger
             {
                 var logger = _config.Source;
                 var connection = logger.NewConnection(_config.LoggerConfig);
-                connection.StartConsuming(_config.LoggerConfig, new SeriLogConsumer(""));
+                connection.StartConsuming(_config.LoggerConfig, new SeriLogConsumer(_config.LoggerConfig as ISeriLogConfig));
             }
         }
     }
