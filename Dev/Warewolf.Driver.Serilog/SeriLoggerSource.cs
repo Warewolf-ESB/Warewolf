@@ -18,9 +18,13 @@ namespace Warewolf.Driver.Serilog
         {
         }
 
+        //TODO: this path needs to come the Config.Server.AuditPath which is still tobe moved to project Framework48
+        public string ConnectionString { get; set; } = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+        public string TableName { get; set; } = "Logs";
+
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
         {
-            return new SeriLogConnection();
+            return new SeriLogConnection(loggerConfig);
         }
     }
 }
