@@ -18,6 +18,7 @@ using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Warewolf.Configuration;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

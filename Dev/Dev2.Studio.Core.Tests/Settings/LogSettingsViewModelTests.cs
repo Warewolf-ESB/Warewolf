@@ -8,6 +8,7 @@ using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Configuration;
 
 namespace Dev2.Core.Tests.Settings
 {

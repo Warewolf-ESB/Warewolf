@@ -110,6 +110,10 @@
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
       <Name>Dev2.Server</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net">

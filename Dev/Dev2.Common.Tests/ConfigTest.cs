@@ -5,50 +5,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.IO;
+using Warewolf.Configuration;
+using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common.Tests
 {
     [TestClass]
     public class ConfigTest
     {
-        class MockConfigurationManager : IConfigurationManager
-        {
-            readonly Dictionary<string, string> _store = new Dictionary<string, string>();
-            public string this[string settingName]
-            {
-                get
-                {
-                    return _store.ContainsKey(settingName) ? _store[settingName] : null;
-                }
-                set
-                {
-                    _store[settingName] = value;
-                }
-            }
-        }
-
-        [TestMethod]
-        public void Constructor_Setup_ServerSettings_NotNull_Expected()
-        {
-            var mockConfigurationManager = new Mock<IConfigurationManager>();
-            Config.ConfigureSettings(mockConfigurationManager.Object);
-            const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
-            Assert.IsNotNull(Config.Server);
-            Assert.AreEqual(expectedPath, Config.Server.AuditFilePath);
-        }
-
-        [TestMethod]
-        public void Update_AppConfig_AuditFilePath_Default_Not_Expected()
-        {
-            const string expectedPath2 = "SomeOtherPath";
-
-            var mockConfig = new MockConfigurationManager();
-            Config.ConfigureSettings(mockConfig);
-
-            Config.Server.AuditFilePath = expectedPath2;
-            Assert.AreEqual(expectedPath2, Config.Server.AuditFilePath);
-        }
-
         [TestMethod]
         public void ServerSettingsData_Equals_Valid_Expected()
         {
@@ -79,11 +43,9 @@ namespace Dev2.Common.Tests
         public void Get_AppConfig_Configuration()
         {
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
-            var mockConfig = new MockConfigurationManager();
-            Config.ConfigureSettings(mockConfig);
 
-            var settings = Config.Server.Get();
-            Assert.AreEqual(8, settings.GetType().GetProperties().Length);
+            var settings = new ServerSettings();
+            Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort)0, settings.WebServerPort);
             Assert.AreEqual((ushort)0, settings.WebServerSslPort);
@@ -98,7 +60,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void GetServerSettings_Constants()
         {
-            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", Config.Server.DefaultAuditPath);
+            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", ServerSettings.DefaultAuditPath);
         }
 
         [TestMethod]
@@ -106,31 +68,22 @@ namespace Dev2.Common.Tests
         [TestCategory("Logging Paths")]
         public void ServerSettings_SaveIfNotExists()
         {
-            var mockConfigurationManager = new Mock<IConfigurationManager>();
-            Config.ConfigureSettings(mockConfigurationManager.Object);
-            //arrange
-            ServerSettings serverSettings;
-
-            var sourceFilePath = Config.Server.AuditFilePath;
-
-            var source = Path.Combine(sourceFilePath, "auditDB.db");
 
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false).Verifiable();
-
+            mockIFile.Setup(o => o.WriteAllText(ServerSettings.SettingsPath, It.IsAny<string>()));
             var mockDirectory = new Mock<IDirectory>();
-
-            serverSettings = new ServerSettings(mockConfigurationManager.Object, mockIFile.Object, mockDirectory.Object);
+            mockDirectory.Setup(o => o.CreateIfNotExists(Path.GetDirectoryName(ServerSettings.SettingsPath))).Returns(ServerSettings.SettingsPath);
 
             //act
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
             serverSettings.SaveIfNotExists();
 
             //assert
             mockIFile.Verify();
             mockDirectory.Verify();
-            mockConfigurationManager.Verify();
 
-        }
+        }/*
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -139,9 +92,7 @@ namespace Dev2.Common.Tests
         {
             var newAuditsFilePath = "falsepath7";
 
-            var mockConfigurationManager = new Mock<IConfigurationManager>();
             mockConfigurationManager.SetupSet(o => o["AuditFilePath"] = newAuditsFilePath).Verifiable();
-            Config.ConfigureSettings(mockConfigurationManager.Object);
             //arrange
             ServerSettings serverSettings;
 
@@ -168,7 +119,6 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(actual);
             mockIFile.Verify();
             mockDirectory.Verify();
-            mockConfigurationManager.Verify();
-        }
+        }*/
     }
 }

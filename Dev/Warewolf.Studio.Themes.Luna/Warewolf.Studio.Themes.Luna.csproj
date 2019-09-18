@@ -157,11 +157,6 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="SharedResourceDictionary.cs" />
     <None Include="app.config" />
     <None Include="Warewolf.Studio.Themes.Luna.ruleset" />
@@ -173,10 +168,6 @@
     <Resource Include="Fonts\grabbing.cur" />
     <Resource Include="Fonts\Copy.cur" />
     <Content Include="Fonts\SourceSansPro-Regular.ttf" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
