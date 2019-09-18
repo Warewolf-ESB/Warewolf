@@ -9,6 +9,8 @@
 */
 
 
+using Serilog.Events;
+
 namespace Warewolf.Driver.Serilog
 {
     public class SeriLogData
@@ -17,5 +19,6 @@ namespace Warewolf.Driver.Serilog
         public string Message { get; set; }
         public string NewLine { get; set; }
         public string Exception { get; set; }
+        public LogEventLevel Level { get; set; }
     }
 }
