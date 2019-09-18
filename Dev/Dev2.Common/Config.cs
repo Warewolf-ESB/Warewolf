@@ -102,6 +102,9 @@ namespace Dev2.Common
                     }
                     
                     return true;
+                } else
+                {
+                    this.AuditFilePath = auditsFilePath;
                 }
             }
 
