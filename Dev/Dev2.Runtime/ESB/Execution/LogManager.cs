@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class LogManagerImplementation : IDisposable
     {
-        readonly IStateAuditLogger _logger = new StateAuditLogger();
+        readonly IStateAuditLogger _logger = new StateAuditLogger(new WebSocketFactory());
       
         public IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {

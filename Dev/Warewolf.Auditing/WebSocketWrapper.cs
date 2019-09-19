@@ -6,7 +6,29 @@ using System.Threading.Tasks;
 
 namespace Warewolf.Auditing
 {
-    public class WebSocketWrapper
+    public interface IWebSocketFactory
+    {
+        IWebSocketWrapper New();
+    }
+
+    public class WebSocketFactory : IWebSocketFactory
+    {
+        public IWebSocketWrapper New()
+        {
+            return WebSocketWrapper.Create("ws://localhost:5000/ws");
+        }
+    }
+
+    public interface IWebSocketWrapper
+    {
+        WebSocketWrapper Connect();
+        WebSocketWrapper OnConnect(Action<WebSocketWrapper> onConnect);
+        WebSocketWrapper OnDisconnect(Action<WebSocketWrapper> onDisconnect);
+        WebSocketWrapper OnMessage(Action<string, WebSocketWrapper> onMessage);
+        void SendMessage(string message);
+    }
+
+    public class WebSocketWrapper : IWebSocketWrapper
     {
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
