@@ -14,6 +14,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Security.Principal;
@@ -88,36 +89,28 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(IStateAuditLogger))]
-        public void IStateAuditLogger_LogExecuteException_Tests()
+        public void IStateAuditLogger_LogExecuteException_LogsTheGivenException_Success()
         {
             //------------------------------Arrange--------------------------------
             var expectedWorkflowId = Guid.NewGuid();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
             var expectedException = new Exception("this is a test exception message");
 
+            var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             var mockNextActivity = new Mock<IDev2Activity>();
             var mockWebSocketFactory = new Mock<IWebSocketFactory>();
 
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object);
+            mockWebSocketFactory.Setup(o => o.New()).Returns(mockWebSocketWrapper.Object);
 
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
             
             //------------------------------Act------------------------------------
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteException(expectedException, mockNextActivity.Object);
+            var expectedJsonAudit = "{\"Id\":0,\"WorkflowID\":\"4b412ed9-dac0-47ce-bd04-f8f55826b835\",\"ExecutionID\":\"f15124b5-df69-47c2-b1c8-af6629b05e5c\",\"ExecutionOrigin\":0,\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"WorkflowName\":\"LogExecuteCompleteState_Workflow\",\"AuditType\":\"LogExecuteException\",\"PreviousActivity\":null,\"PreviousActivityType\":\"Castle.Proxies.IDev2ActivityProxy\",\"PreviousActivityID\":null,\"NextActivity\":null,\"NextActivityType\":null,\"NextActivityID\":null,\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<IPrincipal:1>.Object\",\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"null\",\"AdditionalDetail\":\"this is a test exception message\",\"Environment\":\"{\\\"Environment\\\":{\\\"scalars\\\":{},\\\"record_sets\\\":{},\\\"json_objects\\\":{}},\\\"Errors\\\":[],\\\"AllErrors\\\":[]}\",\"VersionNumber\":\"0\",\"AuditDate\":\"2019-09-19T11:49:15.7016208+02:00\",\"Exception\":{\"ClassName\":\"System.Exception\",\"Message\":\"this is a test exception message\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}}";
+            var actualAudit = JsonConvert.DeserializeObject<Audit>(expectedJsonAudit);
+
             //------------------------------Assert---------------------------------
-            //Assert.AreEqual();
-            // test
-
-
-            //verify
-           var str = expectedWorkflowId.ToString();
-            var results = StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
-                || a.WorkflowName.Equals("LogExecuteCompleteState")
-                || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
-            _stateAuditLogger.Dispose();
-
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(expected: expectedException.Message, actual: actualAudit.Exception.Message);
         }
 
         private IStateAuditLogger GetIAuditStateLogger(IWebSocketFactory webSocketFactory)
