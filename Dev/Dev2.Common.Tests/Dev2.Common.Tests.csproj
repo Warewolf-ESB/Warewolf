@@ -80,7 +80,7 @@
     <Compile Include="Common\GetComputerNamesTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
-    <Compile Include="ConfigTest.cs" />
+    <Compile Include="ServerSettingsTests.cs" />
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
