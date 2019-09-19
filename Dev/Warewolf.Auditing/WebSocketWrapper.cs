@@ -33,7 +33,7 @@ namespace Warewolf.Auditing
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
 
-        private readonly ClientWebSocket _ws;
+        private readonly System.Net.WebSockets.Managed.ClientWebSocket _ws;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
@@ -44,7 +44,7 @@ namespace Warewolf.Auditing
 
         protected WebSocketWrapper(string uri)
         {
-            _ws = new System.Net.WebSockets.Managed.ClientWebSocket(();
+            _ws = new System.Net.WebSockets.Managed.ClientWebSocket();
             _ws.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
