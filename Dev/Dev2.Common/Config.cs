@@ -50,11 +50,11 @@ namespace Dev2.Common
             }
         }
         public bool EnableDetailedLogging => _settings.EnableDetailedLogging ?? true;
-        public ushort WebServerPort         => _settings.WebServerPort ?? 0;
-        public ushort WebServerSslPort      => _settings.WebServerSslPort ?? 0;
-        public string SslCertificateName    => _settings.SslCertificateName;
-        public bool   CollectUsageStats     => _settings.CollectUsageStats ?? false;
-        public int    DaysToKeepTempFiles   => _settings.DaysToKeepTempFiles ?? 0;
+        public ushort WebServerPort => _settings.WebServerPort ?? 0;
+        public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
+        public string SslCertificateName => _settings.SslCertificateName;
+        public bool CollectUsageStats => _settings.CollectUsageStats ?? false;
+        public int DaysToKeepTempFiles => _settings.DaysToKeepTempFiles ?? 0;
         public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
 
         public ServerSettings()
@@ -100,9 +100,10 @@ namespace Dev2.Common
                     {
                         OnLogFlushResumeRequested?.Invoke();
                     }
-                    
+
                     return true;
-                } else
+                }
+                else
                 {
                     this.AuditFilePath = auditsFilePath;
                 }
@@ -158,14 +159,6 @@ namespace Dev2.Common
         public static string SettingsPath => Path.Combine(Config.UserDataPath, "Studio", "studio_settings.json");
 
         public int ConnectTimeout => _settings.ConnectTimeout ?? 10000;
-
-        /*public void SaveIfNotExists()
-        {
-            if (!_fileWrapper.Exists(SettingsPath))
-            {
-                Save();
-            }
-        }*/
 
         public StudioSettingsData Get()
         {
