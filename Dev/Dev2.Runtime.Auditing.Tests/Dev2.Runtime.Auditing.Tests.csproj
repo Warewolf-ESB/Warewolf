@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dev2StateLoggerTests.cs" />
-    <Compile Include="GetLogDataServiceTest.cs" />
     <Compile Include="StateNotifierTests.cs" />
   </ItemGroup>
   <ItemGroup>
