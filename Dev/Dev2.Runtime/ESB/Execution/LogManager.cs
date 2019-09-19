@@ -30,6 +30,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 stateNotifier.Subscribe(_logger.NewStateListener(dsfDataObject));
             }
+
             return stateNotifier;
         }
 
