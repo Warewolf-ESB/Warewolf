@@ -19,7 +19,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Driver.Serilog;
-using Warewolf.Logger;
+using Warewolf.Auditing;
 using Warewolf.Logging;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var logg = new LoggerQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+                var logg = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
                 var audits = logg.QueryLogData(values);
                 LogDataCache.CurrentResults = audits;
                 return serializer.SerializeToBuilder(audits);
