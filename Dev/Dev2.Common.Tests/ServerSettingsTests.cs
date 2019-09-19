@@ -17,7 +17,7 @@ using Warewolf.Configuration;
 namespace Dev2.Common.Tests
 {
     [TestClass]
-    public class ConfigTest
+    public class ServerSettingsTests
     {
         [TestMethod]
         public void ServerSettingsData_Equals_Valid_Expected()
@@ -74,7 +74,6 @@ namespace Dev2.Common.Tests
         [TestCategory("Logging Paths")]
         public void ServerSettings_SaveIfNotExists()
         {
-
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false).Verifiable();
             mockIFile.Setup(o => o.WriteAllText(ServerSettings.SettingsPath, It.IsAny<string>()));
@@ -88,13 +87,12 @@ namespace Dev2.Common.Tests
             //assert
             mockIFile.Verify();
             mockDirectory.Verify();
-
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("Logging Paths")]
-        public void ServerSettings_SaveLoggingPath()
+        public void ServerSettings_SaveLoggingPath_Exists()
         {
             var newAuditsFilePath = "falsepath7";
 
@@ -103,12 +101,9 @@ namespace Dev2.Common.Tests
 
             var sourceFilePath = Config.Server.AuditFilePath;
 
-            //var source = Path.Combine(sourceFilePath, "auditDB.db");
-            //var destination = Path.Combine(newAuditsFilePath, "auditDB.db");
-
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(true).Verifiable();
-            mockIFile.Setup(c=> c.Copy(It.IsAny<string>() , It.IsAny<string>())).Verifiable();
+            mockIFile.Setup(c => c.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             mockIFile.Setup(o => o.ReadAllText("some path")).Returns("{}");
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(d => d.CreateIfNotExists(It.IsAny<string>())).Returns(newAuditsFilePath).Verifiable();
@@ -124,6 +119,58 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(actual);
             mockIFile.Verify();
             mockDirectory.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("Logging Paths")]
+        public void ServerSettings_SaveLoggingPath_DoesNot_Exist()
+        {
+            var newAuditsFilePath = "falsepath7";
+
+            //arrange
+            var sourceFilePath = Config.Server.AuditFilePath;
+
+            var mockIFile = new Mock<IFile>();
+            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
+            var mockDirectory = new Mock<IDirectory>();
+
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+
+            //act
+            var actual = serverSettings.SaveLoggingPath(sourceFilePath);
+            Assert.IsFalse(actual);
+
+            actual = serverSettings.SaveLoggingPath(newAuditsFilePath);
+            //assert
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("Logging Paths")]
+        public void ServerSettings_SaveLoggingPath_Get()
+        {
+            //arrange
+            var sourceFilePath = Config.Server.AuditFilePath;
+
+            var mockIFile = new Mock<IFile>();
+            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
+            var mockDirectory = new Mock<IDirectory>();
+
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+
+            var result = serverSettings.Get();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", result.AuditFilePath);
+            Assert.IsFalse(result.CollectUsageStats.Value);
+            Assert.AreEqual(0, result.DaysToKeepTempFiles);
+            Assert.IsTrue(result.EnableDetailedLogging.Value);
+            Assert.AreEqual(200, result.LogFlushInterval);
+            Assert.IsNull(result.SslCertificateName);
+            Assert.AreEqual(0, result.WebServerPort.Value);
+            Assert.AreEqual(0, result.WebServerSslPort.Value);
         }
     }
 }
