@@ -72,15 +72,17 @@ namespace Warewolf.Auditing.Tests
         {
             var expectedWorkflowId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
-            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var expectedWorkflowName = "LogExecuteCompleteState";
+
             var mockWebSocketFactory = new Mock<IWebSocketFactory>();
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object);
+            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
             //------------------------------Act------------------------------------
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
 
-
+            mockWebSocketFactory.VerifyAll();
+            
         }
 
         [TestMethod]

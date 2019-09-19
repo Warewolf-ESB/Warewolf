@@ -1,6 +1,7 @@
 ﻿using Fleck;
 using System;
 using System.Linq;
+using Warewolf.Common;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
 
@@ -17,9 +18,11 @@ namespace Warewolf.Logger
             {
                 Environment.Exit(1);
             };
+
             new Implementation(config).Run();
         }
-
+        private static void Pause() => Console.ReadLine();
+       
         private class Implementation
         {
             private WebSocketServer _server;
@@ -30,20 +33,22 @@ namespace Warewolf.Logger
             }
             public void Run()
             {
+                _ = new ConsoleWindow();
                 var loggerConfig = _config.LoggerConfig as ILoggerConfig;
+                
                 _server = new WebSocketServer(loggerConfig.ServerLoggingAddress)
                 {
                     RestartAfterListenError = true
                 };
-
+               
                 var logger = _config.Source;
                 var connection = logger.NewConnection(_config.LoggerConfig);
                 var publisher = connection.NewPublisher();
-
                 _server.Start(socket =>
                 {
                     socket.OnMessage = message =>  publisher.Info(message);
                 });
+                Pause();
             }
         }
     }
