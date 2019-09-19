@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Net.WebSockets;
+using System.Net.WebSockets.Managed;
 namespace Warewolf.Auditing
 {
     public interface IWebSocketFactory
@@ -44,7 +44,7 @@ namespace Warewolf.Auditing
 
         protected WebSocketWrapper(string uri)
         {
-            _ws = new ClientWebSocket();
+            _ws = new System.Net.WebSockets.Managed.ClientWebSocket(();
             _ws.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
