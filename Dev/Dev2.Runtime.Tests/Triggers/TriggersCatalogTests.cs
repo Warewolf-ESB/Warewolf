@@ -110,6 +110,7 @@ namespace Dev2.Tests.Runtime.Triggers
                 var workflowName = "TestWorkflow";
 
                 var mockTriggerQueue = new Mock<ITriggerQueue>();
+                mockTriggerQueue.Setup(triggerQueue => triggerQueue.TriggerId).Returns(Guid.NewGuid());
                 mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
                 mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueName).Returns(queue);
                 mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
@@ -215,6 +216,7 @@ namespace Dev2.Tests.Runtime.Triggers
 
                 var triggerQueueEvent = new TriggerQueue
                 {
+                    TriggerId = Guid.NewGuid(),
                     QueueSourceId = mockResource.Object.ResourceID,
                     QueueName = queue,
                     WorkflowName = workflowName
