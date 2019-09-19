@@ -15,6 +15,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Linq;
 using System.Security.Principal;
 using Warewolf.Storage;
 
@@ -72,7 +73,7 @@ namespace Warewolf.Auditing.Tests
             var expectedWorkflowId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, new WebSocketFactory());
             // test
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
      
@@ -88,9 +89,44 @@ namespace Warewolf.Auditing.Tests
             //Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
-        private IStateAuditLogger GetIAuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_LogExecuteException_Tests()
         {
-            return new StateAuditLogger();
+            //------------------------------Arrange--------------------------------
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var expectedException = new Exception("this is a test exception message");
+
+            var mockNextActivity = new Mock<IDev2Activity>();
+            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
+
+            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object);
+
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
+            
+            //------------------------------Act------------------------------------
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteException(expectedException, mockNextActivity.Object);
+            //------------------------------Assert---------------------------------
+            //Assert.AreEqual();
+            // test
+
+
+            //verify
+           var str = expectedWorkflowId.ToString();
+            var results = StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
+                || a.WorkflowName.Equals("LogExecuteCompleteState")
+                || a.ExecutionID.Equals("")
+                || a.AuditType.Equals("")));
+            _stateAuditLogger.Dispose();
+
+            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+        }
+
+        private IStateAuditLogger GetIAuditStateLogger(IWebSocketFactory webSocketFactory)
+        {
+            return new StateAuditLogger(webSocketFactory);
         }
         private void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
         {
@@ -130,10 +166,10 @@ namespace Warewolf.Auditing.Tests
 
             return mockedDataObject;
         }
-        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity)
+        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketFactory webSocketFactory)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            auditStateLogger = GetIAuditStateLogger(mockedDataObject);
+            auditStateLogger = GetIAuditStateLogger(webSocketFactory);
         }
         private void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
         {

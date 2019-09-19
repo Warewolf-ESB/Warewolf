@@ -92,8 +92,7 @@ namespace Warewolf.Auditing
         [JsonProperty("NextActivityID")]
         [DataMember]
         public string NextActivityId { get; set; }
-
-        [Column(Name = "ServerID", CanBeNull = true)]
+        
         [JsonProperty("ServerID")]
         [DataMember]
         public string ServerID { get; set; }
@@ -138,6 +137,11 @@ namespace Warewolf.Auditing
         [DataMember]
         public DateTime AuditDate { get; set; }
 
+        [Column(Name = "Exception", CanBeNull = true)]
+        [JsonProperty("Exception")]
+        [DataMember]
+        public Exception Exception { get; set; }
+
         public static Expression<Func<Audit, bool>> EqualsAuditType(string searchTerm)
         {
             return p => (string.IsNullOrEmpty(searchTerm) || p.AuditType == searchTerm);
@@ -150,6 +154,12 @@ namespace Warewolf.Auditing
         }
         public Audit() { }
         public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity)
+            : this(dsfDataObject, auditType, detail, previousActivity, nextActivity, null)
+        {
+            
+        }
+
+        public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity, Exception exception) 
         {
             var dev2Serializer = new Dev2JsonSerializer();
             WorkflowID = dsfDataObject.ResourceID.ToString();
@@ -168,6 +178,7 @@ namespace Warewolf.Auditing
             AuditDate = DateTime.Now;
             AuditType = auditType;
             AdditionalDetail = detail;
+            Exception = exception;
             if (previousActivity != null)
             {
                 PreviousActivity = previousActivity.GetDisplayName();

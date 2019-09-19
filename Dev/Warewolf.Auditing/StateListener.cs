@@ -40,9 +40,9 @@ namespace Warewolf.Auditing
             LogAuditState(auditLog);
         }
 
-        public void LogExecuteException(Exception e, IDev2Activity activity)
+        public void LogExecuteException(Exception exception, IDev2Activity activity)
         {
-            var auditLog = new Audit(_dsfDataObject, "LogExecuteException", e.Message, activity, null);
+            var auditLog = new Audit(_dsfDataObject, "LogExecuteException", exception.Message, activity, null, exception);
             LogAuditState(auditLog);
         }
 
