@@ -34,7 +34,7 @@ namespace Warewolf.Logger
         private class Implementation
         {
             private IWebSocketServerWrapper _server;
-            private WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
+            private readonly WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
             private readonly ILoggerContext _config;
 
             public Implementation(ILoggerContext config, WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory)
