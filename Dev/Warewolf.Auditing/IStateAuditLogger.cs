@@ -12,8 +12,6 @@ using Dev2.Common.Interfaces.Logging;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace Warewolf.Auditing
 {
@@ -49,18 +47,5 @@ namespace Warewolf.Auditing
         {
         }
 
-        public static IEnumerable<Audit> Query(Expression<Func<Audit, bool>> queryExpression)
-        {
-            var audits = default(IEnumerable<Audit>);
-
-            //Still working on thi
-
-            //var logData = new LoggerQueryable
-
-            //var db = new DatabaseContext();
-            //audits = db.Audits.Where(queryExpression).AsEnumerable();
-
-            return audits;
-        }
     }
 }
