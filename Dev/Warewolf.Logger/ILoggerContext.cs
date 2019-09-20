@@ -12,7 +12,7 @@ using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
-    internal interface ILoggerContext
+    public interface ILoggerContext
     {
          ILoggerSource Source { get; }
          ILoggerConfig LoggerConfig { get; set; }
