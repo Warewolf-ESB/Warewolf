@@ -30,7 +30,6 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Auditing;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Factories;

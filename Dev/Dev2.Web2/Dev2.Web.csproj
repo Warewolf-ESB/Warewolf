@@ -333,9 +333,9 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
-      <Project>{a398a8f3-a7ca-44f4-8a5f-03b2ba7e1c84}</Project>
-      <Name>Dev2.Runtime.Auditing</Name>
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
+      <Project>{2c4e3dc6-2195-4486-894d-8351b066d8ca}</Project>
+      <Name>Warewolf.Auditing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>

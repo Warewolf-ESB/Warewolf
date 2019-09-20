@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -163,19 +173,25 @@ namespace Warewolf.Auditing
         private void CallOnMessage(StringBuilder stringResult)
         {
             if (_onMessage != null)
+            {
                 RunInTask(() => _onMessage(stringResult.ToString(), this));
+            }
         }
 
         private void CallOnDisconnected()
         {
             if (_onDisconnected != null)
+            {
                 RunInTask(() => _onDisconnected(this));
+            }
         }
 
         private void CallOnConnected()
         {
             if (_onConnected != null)
+            {
                 RunInTask(() => _onConnected(this));
+            }
         }
 
         private static void RunInTask(Action action)

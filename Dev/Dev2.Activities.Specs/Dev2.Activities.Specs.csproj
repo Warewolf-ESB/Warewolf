@@ -438,10 +438,6 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
-      <Project>{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}</Project>
-      <Name>Dev2.Runtime.Auditing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
