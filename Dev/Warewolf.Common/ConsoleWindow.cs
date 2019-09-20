@@ -34,8 +34,10 @@ namespace Warewolf.Common
             Microsoft.Win32.SafeHandles.SafeFileHandle safeFileHandle = new Microsoft.Win32.SafeHandles.SafeFileHandle(stdHandle, true);
             FileStream fileStream = new FileStream(safeFileHandle, FileAccess.Write);
             Encoding encoding = Encoding.Default;
-            StreamWriter standardOutput = new StreamWriter(fileStream, encoding);
-            standardOutput.AutoFlush = true;
+            StreamWriter standardOutput = new StreamWriter(fileStream, encoding)
+            {
+                AutoFlush = true
+            };
             Console.SetOut(standardOutput);
         }
     }
