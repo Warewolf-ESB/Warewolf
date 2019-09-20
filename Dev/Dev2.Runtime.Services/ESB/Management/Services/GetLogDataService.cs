@@ -21,41 +21,50 @@ using Dev2.Workspaces;
 using Warewolf.Driver.Serilog;
 using Warewolf.Auditing;
 using Warewolf.Logging;
+using System.Threading;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
     {
-        private readonly ISeriLogConfig _seriLogSQLiteConfig;
+
+        private readonly WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
+        private readonly IWebSocketFactory _webSocketFactory;
         public GetLogDataService()
         {
-            _seriLogSQLiteConfig = new SeriLogSQLiteConfig();
-        }
 
-        public GetLogDataService(ISeriLogConfig seriLogSQLiteConfig)
-        {
-            _seriLogSQLiteConfig = seriLogSQLiteConfig;
+
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var resourceId = GetValue<string>("ResourceID", values);
-            SeriLoggerSource seriLoggerSource = null;
-
-            //get resource using resourceId to get connectionString and tableName
-            if (resourceId == GlobalConstants.DefaultLoggingSourceId)
-            {
-                seriLoggerSource = new SeriLoggerSource();
-            }
+            var _client = WebSocketWrapper.Create("ws://localhost:5000/ws");
+            _client.Connect();                  
 
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
             var serializer = new Dev2JsonSerializer();
+            var result = new List<Audit>();
+            var response = "";
+            var message = new AuditCommand()
+            {
+                Type = "LogQuery",
+                Query = values
+            };
             try
             {
-                var logg = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
-                var audits = logg.QueryLogData(values);
-                LogDataCache.CurrentResults = audits;
-                return serializer.SerializeToBuilder(audits);
+                var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
+
+                _client.SendMessage(serializer.Serialize(message));
+                _client.OnMessage((msgResponse, socket) =>
+                {
+                    ewh.Set();
+                    response = msgResponse;
+                    socket.Close();
+                });
+
+                ewh.WaitOne();
+                LogDataCache.CurrentResults = result;
+                return serializer.SerializeToBuilder(result);
             }
             catch (Exception e)
             {

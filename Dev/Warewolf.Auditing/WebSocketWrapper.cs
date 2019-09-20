@@ -77,6 +77,12 @@ namespace Warewolf.Auditing
             return this;
         }
 
+        public WebSocketWrapper Close()
+        {
+            _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            return this;
+        }
+
         public WebSocketWrapper OnDisconnect(Action<WebSocketWrapper> onDisconnect)
         {
             _onDisconnected = onDisconnect;
