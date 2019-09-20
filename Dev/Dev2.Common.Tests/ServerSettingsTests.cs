@@ -152,8 +152,6 @@ namespace Dev2.Common.Tests
         public void ServerSettings_SaveLoggingPath_Get()
         {
             //arrange
-            var sourceFilePath = Config.Server.AuditFilePath;
-
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             var mockDirectory = new Mock<IDirectory>();
