@@ -26,22 +26,25 @@ namespace Warewolf.Logger
             {
                 Environment.Exit(1);
             };
-            new Implementation(config, new WebSocketServerWrapper.WebSocketServerFactory(), new ConsoleWindowFactory()).Run();
+            var impl = new Implementation(config, new WebSocketServerWrapper.WebSocketServerFactory(), new ConsoleWindowFactory(), new Writer());
+            impl.Run();
+            impl.Pause();
         }
-        private static void Pause() => Console.ReadLine();
 
-        private class Implementation
+        public class Implementation
         {
             private IWebSocketServerWrapper _server;
             private readonly IConsoleWindowFactory _consoleWindowFactory;
             private readonly WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
             private readonly ILoggerContext _config;
+            private readonly IWriter _writer;
 
-            public Implementation(ILoggerContext config, WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory)
+            public Implementation(ILoggerContext config, WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, IWriter writer)
             {
                 _config = config;
                 _webSocketServerFactory = webSocketServerFactory;
                 _consoleWindowFactory = consoleWindowFactory;
+                _writer = writer;
             }
 
             public void Run()
@@ -60,6 +63,11 @@ namespace Warewolf.Logger
                     socket.OnMessage = message =>  publisher.Info(message);
                 });
                 Pause();
+            }
+
+            public void Pause()
+            {
+                _writer.ReadLine();
             }
         }
     }

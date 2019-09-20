@@ -8,13 +8,23 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Logging;
 
-namespace Warewolf.Logger
+using System;
+
+namespace Warewolf
 {
-    public interface ILoggerContext
+    public interface IWriter
     {
-         ILoggerSource Source { get; }
-         ILoggerConfig LoggerConfig { get; set; }
+        void ReadLine();
     }
+
+    public class Writer : IWriter
+    {
+        public void ReadLine()
+        {
+            Console.ReadLine();
+        }
+    }
+
+
 }
