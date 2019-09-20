@@ -9,15 +9,10 @@
 */
 
 
-using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Data;
 using Warewolf.Logging;
-using Newtonsoft.Json;
-using System.Linq;
 using Serilog;
 
 namespace Warewolf.Driver.Serilog
@@ -25,7 +20,7 @@ namespace Warewolf.Driver.Serilog
 
     public class SeriLogConsumer : ILoggerConsumer
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public SeriLogConsumer(ISeriLogConfig loggerConfig)
         {
