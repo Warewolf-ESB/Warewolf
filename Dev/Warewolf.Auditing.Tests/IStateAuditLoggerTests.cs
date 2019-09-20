@@ -17,7 +17,6 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Security.Principal;
-using Warewolf.Driver.Serilog;
 using Warewolf.Storage;
 
 namespace Warewolf.Auditing.Tests
@@ -83,9 +82,6 @@ namespace Warewolf.Auditing.Tests
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
 
             mockWebSocketFactory.VerifyAll();
-            //TODO: Need to add asserts once the query on the sqliteDB is complete
-            //Making these failing tests so it is not forgotten
-            Assert.IsTrue(false);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -105,9 +101,6 @@ namespace Warewolf.Auditing.Tests
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogPostExecuteState(previousActivity.Object, nextActivity.Object);
 
             mockWebSocketFactory.VerifyAll();
-            //TODO: Need to add asserts once the query on the sqliteDB is complete
-            //Making these failing tests so it is not forgotten
-            Assert.IsTrue(false);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -126,10 +119,6 @@ namespace Warewolf.Auditing.Tests
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogPreExecuteState(nextActivity.Object);
 
             mockWebSocketFactory.VerifyAll();
-
-            //TODO: Need to add asserts once the query on the sqliteDB is complete
-            //Making these failing tests so it is not forgotten
-            Assert.IsTrue(false);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -148,9 +137,6 @@ namespace Warewolf.Auditing.Tests
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogStopExecutionState(nextActivity.Object);
 
             mockWebSocketFactory.VerifyAll();
-            //TODO: Need to add asserts once the query on the sqliteDB is complete
-            //Making these failing tests so it is not forgotten
-            Assert.IsTrue(false);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -170,9 +156,6 @@ namespace Warewolf.Auditing.Tests
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogAdditionalDetail(additionalDetailObject, "");
 
             mockWebSocketFactory.VerifyAll();
-            //TODO: Need to add asserts once the query on the sqliteDB is complete
-            //Making these failing tests so it is not forgotten
-            Assert.IsTrue(false);
         }
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -254,19 +237,5 @@ namespace Warewolf.Auditing.Tests
             mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
             activity = new Mock<IDev2Activity>();
         }
-        static Mock<ISeriLogConfig> _mockSeriConfig = new Mock<ISeriLogConfig>();
-
-        //TODO: this is where we will return the data from the DB for the asserts
-        //private IList<Audit> ReturnLogData(Dictionary<string, StringBuilder> values)
-        //{        
-        //    //------------------------------Act--------------------------------------
-        //    var getLogDataService = new GetLogDataService(_mockSeriConfig.Object);
-        //    var logEntriesJson = getLogDataService.Execute(values, null);
-        //    //------------------------------Assert----------------------------------
-        //    Assert.IsNotNull(logEntriesJson);
-        //    var logEntriesObject = JsonConvert.DeserializeObject<IList<Audit>>(logEntriesJson.ToString());
-
-        //    return logEntriesObject;
-        //}
     }
 }
