@@ -210,10 +210,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.TestingDotnetDllCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement.Tests", "Warewolf.ResourceManagement.Tests\Warewolf.ResourceManagement.Tests.csproj", "{54724E72-4953-4CED-B4EA-532F9596A88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj", "{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing.Tests", "Dev2.Runtime.Auditing.Tests\Dev2.Runtime.Auditing.Tests.csproj", "{5345796F-4EFB-4E8E-8308-0C26420333E4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server.Tests", "Dev2.Server.Tests\Dev2.Server.Tests.csproj", "{80BDDE97-6513-4309-9EAE-0730ED5685D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Utils.Tests", "Dev2.Utils.Tests\Dev2.Utils.Tests.csproj", "{B54EBAEE-0018-4F66-8B22-9F384694FB62}"
@@ -226,7 +222,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources", "Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
@@ -366,9 +362,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.SerilogTests", "Warewolf.Driver.SerilogTests\Warewolf.Driver.SerilogTests.csproj", "{199C97CF-1256-4D9A-BDE3-0A547C600B56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{2C4E3DC6-2195-4486-894D-8351B066D8CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{2C4E3DC6-2195-4486-894D-8351B066D8CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Auditing.Tests", "Warewolf.Auditing.Tests\Warewolf.Auditing.Tests.csproj", "{CB78B4CF-9B54-4491-9B17-B35199A95970}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing.Tests", "Warewolf.Auditing.Tests\Warewolf.Auditing.Tests.csproj", "{CB78B4CF-9B54-4491-9B17-B35199A95970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -897,21 +893,6 @@ Global
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.ActiveCfg = Debug|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|x86.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|x86.ActiveCfg = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|x86.Build.0 = Release|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Debug|x86.Build.0 = Debug|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Release|x86.ActiveCfg = Debug|Any CPU
-		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Release|x86.Build.0 = Debug|Any CPU
 		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|x86.ActiveCfg = Debug|Any CPU
