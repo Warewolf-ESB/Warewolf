@@ -16,8 +16,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Security.Principal;
+using Warewolf.Driver.Serilog;
 using Warewolf.Storage;
 
 namespace Warewolf.Auditing.Tests
@@ -83,9 +83,97 @@ namespace Warewolf.Auditing.Tests
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
 
             mockWebSocketFactory.VerifyAll();
-            
+            //TODO: Need to add asserts once the query on the sqliteDB is complete
+            //Making these failing tests so it is not forgotten
+            Assert.IsTrue(false);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_LogPostExecuteState_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var previousActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogPostExecuteState";
 
+            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
+            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
+
+            //------------------------------Act------------------------------------
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogPostExecuteState(previousActivity.Object, nextActivity.Object);
+
+            mockWebSocketFactory.VerifyAll();
+            //TODO: Need to add asserts once the query on the sqliteDB is complete
+            //Making these failing tests so it is not forgotten
+            Assert.IsTrue(false);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_LogPreExecuteState_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogPreExecuteState";
+
+            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
+            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
+
+            //------------------------------Act------------------------------------
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogPreExecuteState(nextActivity.Object);
+
+            mockWebSocketFactory.VerifyAll();
+
+            //TODO: Need to add asserts once the query on the sqliteDB is complete
+            //Making these failing tests so it is not forgotten
+            Assert.IsTrue(false);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_LogStopExecutionState_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogStopExecutionState";
+
+            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
+            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
+
+            //------------------------------Act------------------------------------
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogStopExecutionState(nextActivity.Object);
+
+            mockWebSocketFactory.VerifyAll();
+            //TODO: Need to add asserts once the query on the sqliteDB is complete
+            //Making these failing tests so it is not forgotten
+            Assert.IsTrue(false);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_LogAdditionalDetail_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogAdditionalDetail";
+
+            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
+            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
+
+            //------------------------------Act------------------------------------
+            var additionalDetailObject = new { Message = "Some Message" };
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogAdditionalDetail(additionalDetailObject, "");
+
+            mockWebSocketFactory.VerifyAll();
+            //TODO: Need to add asserts once the query on the sqliteDB is complete
+            //Making these failing tests so it is not forgotten
+            Assert.IsTrue(false);
+        }
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -103,7 +191,7 @@ namespace Warewolf.Auditing.Tests
             mockWebSocketFactory.Setup(o => o.New()).Returns(mockWebSocketWrapper.Object);
 
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
-            
+
             //------------------------------Act------------------------------------
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteException(expectedException, mockNextActivity.Object);
             var expectedJsonAudit = "{\"Id\":0,\"WorkflowID\":\"4b412ed9-dac0-47ce-bd04-f8f55826b835\",\"ExecutionID\":\"f15124b5-df69-47c2-b1c8-af6629b05e5c\",\"ExecutionOrigin\":0,\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"WorkflowName\":\"LogExecuteCompleteState_Workflow\",\"AuditType\":\"LogExecuteException\",\"PreviousActivity\":null,\"PreviousActivityType\":\"Castle.Proxies.IDev2ActivityProxy\",\"PreviousActivityID\":null,\"NextActivity\":null,\"NextActivityType\":null,\"NextActivityID\":null,\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<IPrincipal:1>.Object\",\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"null\",\"AdditionalDetail\":\"this is a test exception message\",\"Environment\":\"{\\\"Environment\\\":{\\\"scalars\\\":{},\\\"record_sets\\\":{},\\\"json_objects\\\":{}},\\\"Errors\\\":[],\\\"AllErrors\\\":[]}\",\"VersionNumber\":\"0\",\"AuditDate\":\"2019-09-19T11:49:15.7016208+02:00\",\"Exception\":{\"ClassName\":\"System.Exception\",\"Message\":\"this is a test exception message\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}}";
@@ -166,5 +254,19 @@ namespace Warewolf.Auditing.Tests
             mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
             activity = new Mock<IDev2Activity>();
         }
+        static Mock<ISeriLogConfig> _mockSeriConfig = new Mock<ISeriLogConfig>();
+
+        //TODO: this is where we will return the data from the DB for the asserts
+        //private IList<Audit> ReturnLogData(Dictionary<string, StringBuilder> values)
+        //{        
+        //    //------------------------------Act--------------------------------------
+        //    var getLogDataService = new GetLogDataService(_mockSeriConfig.Object);
+        //    var logEntriesJson = getLogDataService.Execute(values, null);
+        //    //------------------------------Assert----------------------------------
+        //    Assert.IsNotNull(logEntriesJson);
+        //    var logEntriesObject = JsonConvert.DeserializeObject<IList<Audit>>(logEntriesJson.ToString());
+
+        //    return logEntriesObject;
+        //}
     }
 }
