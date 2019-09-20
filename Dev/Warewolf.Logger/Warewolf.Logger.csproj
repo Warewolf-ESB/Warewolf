@@ -26,6 +26,7 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
 
 </Project>

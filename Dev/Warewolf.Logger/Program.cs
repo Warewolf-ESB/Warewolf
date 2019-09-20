@@ -9,11 +9,16 @@
 */
 
 
-using Newtonsoft.Json;
+using Dev2.Common;
+using Dev2.Common.Serializers;
+using Fleck;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Warewolf.Auditing;
+using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
 
 namespace Warewolf.Logger
@@ -22,9 +27,9 @@ namespace Warewolf.Logger
     {
 
         static void Main(string[] args)
-        {           
+        {
             var config = new LoggerContext(args);
-            if(config.Errors.Count() > 0)
+            if (config.Errors.Count() > 0)
             {
                 Environment.Exit(1);
             };
@@ -52,20 +57,71 @@ namespace Warewolf.Logger
             public void Run()
             {
                 _ = _consoleWindowFactory.New();
+              
+                StartLogServer();
+                Pause();
+            }
+
+            private void StartLogServer()
+            {
+                var clients = new List<IWebSocketConnection>();
                 var loggerConfig = _config.LoggerConfig as ILoggerConfig;
 
-                _server = _webSocketServerFactory.New(loggerConfig.ServerLoggingAddress); 
-
+                _server = _webSocketServerFactory.New(loggerConfig.ServerLoggingAddress);
                 var logger = _config.Source;
                 var connection = logger.NewConnection(_config.LoggerConfig);
                 var publisher = connection.NewPublisher();
 
                 _server.Start(socket =>
                 {
-                    //TODO: JsonConvert should be wrapped?
-                    socket.OnMessage = message =>  LogMessage(publisher: publisher, audit: JsonConvert.DeserializeObject<Audit>(message));
+                    socket.OnOpen = () =>
+                    {
+                        Console.Write("Logging Server OnOpen...");
+                        clients.Add(socket);
+                    };
+                    socket.OnClose = () =>
+                    {
+                        Console.Write("Logging Server OnClose...");
+                        clients.Remove(socket);
+                    };
+                    socket.OnMessage = message =>
+                    {
+                        var serializer = new Dev2JsonSerializer();
+                        var msg = serializer.Deserialize<AuditCommand>(message);
+                        Console.Write("Logging Server OnMessage: Type:" + msg.Type);
+
+                        switch (msg.Type)
+                        {
+                            case "LogEntry":
+                                Console.Write("Logging Server LogMessage" + message);
+                                LogMessage(publisher: publisher, audit: msg.Audit);
+                                break;
+                            case "LogQuery":
+                                Console.Write("Logging Server LogQuery" + message);
+                                QueryLog(query: msg.Query, socket: socket);
+                                break;
+                            default:
+                                Console.Write("Logging Server Invalid Message Type");
+                                Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
+                                break;
+                        }
+                    };
+
                 });
-                Pause();
+            }
+
+            private void QueryLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket)
+            {
+                var serializer = new Dev2JsonSerializer();
+                var seriLoggerSource = new SeriLoggerSource();
+                var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+                var results = auditQueryable.QueryLogData(query);
+
+                if (results.Count() > 0)
+                {
+                    Console.Write("sending QueryLog to server: " + results + "...");
+                    socket.Send(serializer.Serialize(results));
+                }
             }
 
             private void LogMessage(ILoggerPublisher publisher, Audit audit)

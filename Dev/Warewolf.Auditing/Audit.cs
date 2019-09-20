@@ -8,18 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using Dev2.Interfaces;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using System.Linq.Expressions;
-using Dev2.Common.Serializers;
 using Dev2;
-using System.Data.Linq.Mapping;
+using Dev2.Common.Serializers;
+using Dev2.Interfaces;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Linq.Mapping;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 
 namespace Warewolf.Auditing
 {
+
+
     [Table(Name = "Audit")]
     [DataContract(Name = "Audit", Namespace = "")]
     public class Audit
@@ -92,7 +94,7 @@ namespace Warewolf.Auditing
         [JsonProperty("NextActivityID")]
         [DataMember]
         public string NextActivityId { get; set; }
-        
+
         [JsonProperty("ServerID")]
         [DataMember]
         public string ServerID { get; set; }
@@ -156,10 +158,10 @@ namespace Warewolf.Auditing
         public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity)
             : this(dsfDataObject, auditType, detail, previousActivity, nextActivity, null)
         {
-            
+
         }
 
-        public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity, Exception exception) 
+        public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity, Exception exception)
         {
             var dev2Serializer = new Dev2JsonSerializer();
             WorkflowID = dsfDataObject.ResourceID.ToString();
