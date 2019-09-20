@@ -59,7 +59,6 @@ namespace Warewolf.Logger
                 _ = _consoleWindowFactory.New();
               
                 StartLogServer();
-                Pause();
             }
 
             private void StartLogServer()
