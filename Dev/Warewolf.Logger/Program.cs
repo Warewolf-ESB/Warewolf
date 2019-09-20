@@ -9,6 +9,8 @@
 */
 
 
+using Newtonsoft.Json;
+using Serilog.Events;
 using System;
 using System.Linq;
 using Warewolf.Auditing;
@@ -60,9 +62,34 @@ namespace Warewolf.Logger
 
                 _server.Start(socket =>
                 {
-                    socket.OnMessage = message =>  publisher.Info(message);
+                    //TODO: JsonConvert should be wrapped?
+                    socket.OnMessage = message =>  LogMessage(publisher: publisher, audit: JsonConvert.DeserializeObject<Audit>(message));
                 });
                 Pause();
+            }
+
+            private void LogMessage(ILoggerPublisher publisher, Audit audit)
+            {
+                var logTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+
+                switch (audit.AuditType)
+                {
+                    case "Information":
+                        publisher.Info(logTemplate, DateTime.Now, LogEventLevel.Information, audit);
+                        break;
+                    case "Warning":
+                        publisher.Warn(logTemplate, DateTime.Now, LogEventLevel.Warning, audit);
+                        break;
+                    case "Error":
+                        publisher.Error(logTemplate, DateTime.Now, LogEventLevel.Error, audit, Environment.NewLine, audit.Exception);
+                        break;
+                    case "Fatal":
+                        publisher.Fatal(logTemplate, DateTime.Now, LogEventLevel.Fatal, audit, Environment.NewLine, audit.Exception);
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             public void Pause()
