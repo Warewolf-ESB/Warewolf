@@ -8,14 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Newtonsoft.Json;
-using Serilog.Events;
-using System;
-using System.Linq;
-using Warewolf.Auditing;
-using Warewolf.Logging;
-
 namespace Warewolf.Logger
 {
     public class Program
@@ -28,9 +20,7 @@ namespace Warewolf.Logger
             {
                 Environment.Exit(1);
             };
-            var impl = new Implementation(config, new WebSocketServerWrapper.WebSocketServerFactory(), new ConsoleWindowFactory(), new Writer());
-            impl.Run();
-            impl.Pause();
+            var impl = new Implementation(config, new WebSocketServerWrapper.WebSocketServerFactory(), new ConsoleWindowFactory(), new Writer()).Run();
         }
 
         public class Implementation
