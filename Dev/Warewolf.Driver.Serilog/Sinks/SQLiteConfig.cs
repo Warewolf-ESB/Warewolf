@@ -32,7 +32,7 @@ namespace Warewolf.Driver.Serilog
 
         public ILogger Logger { get => CreateLogger(); }
         //TODO: this path needs to come the Config.Server.AuditPath which is still tobe moved to project Framework48
-        public string ConnectionString => @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+        public string ConnectionString { get => _config.ConnectionString; }  
 
         public string ServerLoggingAddress { get; set; }
 
@@ -49,8 +49,8 @@ namespace Warewolf.Driver.Serilog
         {
             public Settings()
             {
-                Path = "c:\\temp\\db"; //TODO: Config.Server.AuditFilePath;
-                Database = "auditDB.db";
+                Path = @"C:\ProgramData\Warewolf\Audits\"; //TODO: Config.Server.AuditFilePath;
+                Database = "AuditDB.db";
                 TableName = "Logs";
                 RestrictedToMinimumLevel = LogEventLevel.Verbose;
                 FormatProvider = null;
