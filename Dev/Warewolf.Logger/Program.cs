@@ -75,32 +75,32 @@ namespace Warewolf.Logger
                 {
                     socket.OnOpen = () =>
                     {
-                        Console.Write("Logging Server OnOpen...");
+                        _writer.Write("Logging Server OnOpen...");
                         clients.Add(socket);
                     };
                     socket.OnClose = () =>
                     {
-                        Console.Write("Logging Server OnClose...");
+                        _writer.Write("Logging Server OnClose...");
                         clients.Remove(socket);
                     };
                     socket.OnMessage = message =>
                     {
                         var serializer = new Dev2JsonSerializer();
                         var msg = serializer.Deserialize<AuditCommand>(message);
-                        Console.Write("Logging Server OnMessage: Type:" + msg.Type);
+                        _writer.Write("Logging Server OnMessage: Type:" + msg.Type);
 
                         switch (msg.Type)
                         {
                             case "LogEntry":
-                                Console.Write("Logging Server LogMessage" + message);
+                                _writer.Write("Logging Server LogMessage" + message);
                                 LogMessage(publisher: publisher, audit: msg.Audit);
                                 break;
                             case "LogQuery":
-                                Console.Write("Logging Server LogQuery" + message);
+                                _writer.Write("Logging Server LogQuery" + message);
                                 QueryLog(query: msg.Query, socket: socket);
                                 break;
                             default:
-                                Console.Write("Logging Server Invalid Message Type");
+                                _writer.Write("Logging Server Invalid Message Type");
                                 Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
                                 break;
                         }
@@ -118,7 +118,7 @@ namespace Warewolf.Logger
 
                 if (results.Count() > 0)
                 {
-                    Console.Write("sending QueryLog to server: " + results + "...");
+                    _writer.Write("sending QueryLog to server: " + results + "...");
                     socket.Send(serializer.Serialize(results));
                 }
             }
