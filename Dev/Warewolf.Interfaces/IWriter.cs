@@ -16,6 +16,7 @@ namespace Warewolf
     public interface IWriter
     {
         void ReadLine();
+        void Write(string value);
     }
 
     public class Writer : IWriter
@@ -23,6 +24,11 @@ namespace Warewolf
         public void ReadLine()
         {
             Console.ReadLine();
+        }
+
+        public void Write(string value)
+        {
+            Console.Write(value);
         }
     }
 
