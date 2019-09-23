@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
@@ -55,7 +56,7 @@ namespace Dev2.Tests.Runtime.Triggers
             return new Dev2JsonSerializer();
         }
 
-        public static IFileSystemWatcherWrapper FileSystemWatcherWrapperInstance()
+        public static IFileSystemWatcher FileSystemWatcherWrapperInstance()
         {
             return new FileSystemWatcherWrapper();
         }
@@ -317,7 +318,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var directoryWrapper = new Mock<IDirectory>().Object;
             var mockFileWrapper = new Mock<IFile>();
             var mockSerializer = new Mock<ISerializer>();
-            var mockFileSystemWatcher = new Mock<IFileSystemWatcherWrapper>();
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
 
             var decryptedTrigger = "serialized queue data";
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
@@ -358,7 +359,7 @@ namespace Dev2.Tests.Runtime.Triggers
             return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), queueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
         }
 
-        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcherWrapper fileSystemWatcherWrapper)
+        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher fileSystemWatcherWrapper)
         {
             return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcherWrapper);
         }
