@@ -19,9 +19,10 @@ namespace Warewolf
     {
         readonly HttpClient _httpClient;
 
-        public HttpClientWrapper(HttpClient client)
+        public HttpClientWrapper(HttpClient client, bool hasCredentials)
         {
             _httpClient = client;
+            HasCredentials = hasCredentials;
         }
 
         public void Dispose() => _httpClient.Dispose();
@@ -36,6 +37,6 @@ namespace Warewolf
             return _httpClient.PostAsync(url,new StringContent(postData));
         }
 
-        public bool HasCredentials { get; set; }
+        public bool HasCredentials { get; private set; }
     }
 }

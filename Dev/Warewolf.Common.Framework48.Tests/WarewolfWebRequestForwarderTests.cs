@@ -40,7 +40,7 @@ namespace Warewolf.Common.Tests
             
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object,new Mock<IPublisher>().Object, testUrl,"","", new List<IServiceInputBase>());
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object,new Mock<IPublisher>().Object, testUrl, "","", new List<IServiceInputBase>());
             //---------------------------------Act------------------------------------
             var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("This is a message")).Result;
 
@@ -63,7 +63,7 @@ namespace Warewolf.Common.Tests
 
             var testUrl = "http://warewolf.io:0420/test/url";
 
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl,"","", new List<IServiceInputBase>());
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, "","", new List<IServiceInputBase>());
             //---------------------------------Act------------------------------------
             var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("This is a message")).Result;
 
@@ -90,7 +90,7 @@ namespace Warewolf.Common.Tests
             {
                 new ServiceInput("Name","FirstName")
             };
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl,"","", inputs);
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, "","", inputs);
             var expectedPostBody = "{\"Name\":\"My Name\"}";
             //---------------------------------Act------------------------------------
             string message = "<Root><FirstName>My Name</FirstName></Root>";
@@ -118,7 +118,7 @@ namespace Warewolf.Common.Tests
             {
                 new ServiceInput("Name","FirstName")
             };
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl,"","", inputs);
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, "","", inputs);
             var expectedPostBody = "{\"Name\":\"My Name\"}";
             //---------------------------------Act------------------------------------
             string message = "{\"FirstName\":\"My Name\"}";
@@ -144,7 +144,7 @@ namespace Warewolf.Common.Tests
 
             var testUrl = "http://warewolf.io:0420/test/url";
             var inputs = new List<IServiceInputBase>();
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl,"","", inputs);
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl, "","", inputs);
             //---------------------------------Act------------------------------------
             string message = "{\"FirstName\":\"My Name\"}";
             var result = await WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message));
@@ -169,7 +169,7 @@ namespace Warewolf.Common.Tests
 
             var testUrl = "http://warewolf.io:0420/test/url";
             var inputs = new List<IServiceInputBase>();
-            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl,"","", inputs);
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, mockPublisher.Object, testUrl, "","", inputs);
             //---------------------------------Act------------------------------------
             string message = "{\"FirstName\":\"My Name\"}";
             var result = await WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes(message));
