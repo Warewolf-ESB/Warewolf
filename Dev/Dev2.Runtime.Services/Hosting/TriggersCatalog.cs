@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Triggers;
 
@@ -42,9 +43,9 @@ namespace Dev2.Runtime.Hosting
 
         public static ITriggersCatalog Instance => _lazyCat.Value;
 
-        readonly IFileSystemWatcherWrapper _watcherWrapper;
+        readonly IFileSystemWatcher _watcherWrapper;
 
-        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer, IFileSystemWatcherWrapper watcherWrapper)
+        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher watcherWrapper)
         {
             _directoryWrapper = directoryWrapper;
             _fileWrapper = fileWrapper;

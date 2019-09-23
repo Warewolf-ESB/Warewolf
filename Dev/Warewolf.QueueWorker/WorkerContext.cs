@@ -10,13 +10,16 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Wrappers;
 using Dev2.Runtime.Hosting;
 using System;
+using System.IO;
 using System.Linq;
 using Warewolf.Common;
 using Warewolf.Data;
 using Warewolf.Driver.RabbitMQ;
 using Warewolf.Options;
+using Warewolf.OS.IO;
 using Warewolf.Triggers;
 
 using RabbitMQSource = Dev2.Data.ServiceModel.RabbitMQSource;
@@ -28,14 +31,31 @@ namespace QueueWorker
         readonly Uri _serverUri;
         readonly ITriggerQueue _triggerQueue;
         readonly IResourceCatalogProxy _resourceCatalogProxy;
+        readonly string _path;
 
         public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggerCatalog)
         {
             var catalog = triggerCatalog;
-            var path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
+            _path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
             _serverUri = processArgs.ServerEndpoint;
-            _triggerQueue = catalog.LoadQueueTriggerFromFile(path);
+            _triggerQueue = catalog.LoadQueueTriggerFromFile(_path);
             _resourceCatalogProxy = resourceCatalogProxy;
+        }
+
+        public void WatchTriggerResource(IFileSystemWatcher watcher)
+        {
+            var path = Path.GetDirectoryName(_path);
+            var filename = Path.GetFileName(_path);
+
+            watcher.EnableRaisingEvents = false;
+
+            watcher.Path = path;
+            watcher.Filter = filename;
+            watcher.NotifyFilter = NotifyFilters.LastWrite
+                    | NotifyFilters.FileName
+                    | NotifyFilters.DirectoryName;
+
+            watcher.EnableRaisingEvents = true;
         }
 
         public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
