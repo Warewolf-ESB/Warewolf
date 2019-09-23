@@ -10,9 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Wrappers;
 using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.OS.IO;
 using Warewolf.Triggers;
 
 namespace Warewolf.Trigger.Queue

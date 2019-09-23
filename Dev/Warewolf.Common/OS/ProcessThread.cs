@@ -21,9 +21,35 @@ namespace Warewolf.OS
 
         public event ProcessDiedEvent OnProcessDied;
 
-        public int Pid => _process?.Id ?? 0;
+        public int Pid => Process?.Id ?? 0;
 
         private IProcess _process;
+        private IProcess Process
+        {
+            get {
+                _processLock.EnterReadLock();
+                try
+                {
+                    return _process;
+                } finally
+                {
+                    _processLock.ExitReadLock();
+                }
+            }
+            set
+            {
+                _processLock.EnterWriteLock();
+                try
+                {
+                    _process = value;
+                } finally
+                {
+                    _processLock.ExitWriteLock();
+                }
+            }
+        }
+        private readonly ReaderWriterLockSlim _processLock = new ReaderWriterLockSlim();
+
         private readonly IChildProcessTracker _childProcessTracker;
 
         public bool IsAlive => _thread?.IsAlive ?? false;
@@ -48,7 +74,7 @@ namespace Warewolf.OS
                     using (var process = _processFactory.Start(startInfo))
                     {
                         _childProcessTracker.Add(process);
-                        _process = process;
+                        Process = process;
                         while (!process.WaitForExit(1000))
                         {
                             //TODO: check queue progress, kill if necessary
@@ -67,12 +93,19 @@ namespace Warewolf.OS
 
         public void Kill()
         {
-            if (_process.HasExited)
+            if (Process?.HasExited ?? true)
             {
                 return;
             }
-            var p = Process.GetProcessById(Pid);
-            p.Kill();
+            try
+            {
+                var p = System.Diagnostics.Process.GetProcessById(Pid);
+                p.Kill();
+            }
+            catch
+            {
+                // ignore exception (most likely caused by process already killed)
+            }
         }
     }
 }

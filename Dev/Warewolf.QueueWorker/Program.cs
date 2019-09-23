@@ -9,9 +9,9 @@
 */
 
 using CommandLine;
+using Dev2.Common.Wrappers;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
-using Dev2.Util;
 using System;
 using Warewolf.Common;
 using Warewolf.Triggers;
@@ -52,7 +52,16 @@ namespace QueueWorker
 
                 var config = new WorkerContext(_options, resourceCatalogProxy, TriggersCatalog.Instance);
 
-                new QueueWorkerImplementation(config).Run();
+                using (var watcher = new FileSystemWatcherWrapper())
+                {
+                    config.WatchTriggerResource(watcher);
+                    watcher.Created += (o, t) => Environment.Exit(1);
+                    watcher.Changed += (o, t) => Environment.Exit(0);
+                    watcher.Deleted += (o, t) => Environment.Exit(0);
+                    watcher.Renamed += (o, t) => Environment.Exit(0);
+
+                    new QueueWorkerImplementation(config).Run();
+                }
 
                 return 0;
             }
