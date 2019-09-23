@@ -23,12 +23,12 @@ namespace Warewolf.Logger
 
         static void Main(string[] args)
         {
-            var config = new LoggerContext(args);
-            if (config.Errors.Count() > 0)
+            var context = new LoggerContext(args);
+            if (context.Errors.Count() > 0)
             {
                 Environment.Exit(1);
             };
-            var impl = new Implementation(config, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer());
+            var impl = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
             impl.Run();
             impl.Pause();
         }
@@ -37,31 +37,36 @@ namespace Warewolf.Logger
         {
             private readonly IConsoleWindowFactory _consoleWindowFactory;
             private readonly IWebSocketServerFactory _webSocketServerFactory;
-            private readonly ILoggerContext _loggerContext;
+            private readonly ILoggerContext _context;
             private readonly IWriter _writer;
+            private readonly IPauseHelper _pause;
             private readonly ILogServerFactory _logServerFactory;
 
-            public Implementation(ILoggerContext loggerContext, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer)
+            public Implementation(ILoggerContext context, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer, IPauseHelper pause)
             {
                 _consoleWindowFactory = consoleWindowFactory;
 
-                _loggerContext = loggerContext;
+                _context = context;
                 _webSocketServerFactory = webSocketServerFactory;
                 _writer = writer;
+                _pause = pause;
                 _logServerFactory = logServerFactory;
             }
 
             public void Run()
             {
-                _ = _consoleWindowFactory.New();
+                if (_context.Verbose)
+                {
+                    _ = _consoleWindowFactory.New();
+                }
 
-                var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _loggerContext);
+                var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
                 logServer.Start(new List<IWebSocketConnection>()); 
             }
 
             public void Pause()
             {
-                _writer.ReadLine();
+                _pause.Pause();
             }
         }
     }

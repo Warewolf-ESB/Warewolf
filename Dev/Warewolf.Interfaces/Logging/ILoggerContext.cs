@@ -14,5 +14,6 @@ namespace Warewolf.Logging
     {
          ILoggerSource Source { get; }
          ILoggerConfig LoggerConfig { get; set; }
+         bool Verbose { get; }
     }
 }

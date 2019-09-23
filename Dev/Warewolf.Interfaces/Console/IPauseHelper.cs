@@ -8,23 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
-
 namespace Warewolf
 {
-    public interface IWriter
+    public interface IPauseHelper
     {
-        void Write(string value);
+        void Pause();
     }
-
-    public class Writer : IWriter
-    {
-        public void Write(string value)
-        {
-            Console.Write(value);
-        }
-    }
-
-
 }
