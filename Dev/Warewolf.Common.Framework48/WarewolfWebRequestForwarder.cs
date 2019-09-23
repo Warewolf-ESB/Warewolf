@@ -70,7 +70,7 @@ namespace Warewolf.Common
 
         private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData)
         {
-            using (var client = _httpClientFactory.New(uri,_username,_password))
+            using (var client = _httpClientFactory.New(uri, _username, _password))
             {
                 return await client.PostAsync(uri,postData);
             }

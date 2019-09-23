@@ -24,7 +24,7 @@ namespace Warewolf.Common
 
     public class HttpClientFactory : IHttpClientFactory
     {
-        public IHttpClient New(Uri uri,string userName,string password)
+        public IHttpClient New(Uri uri, string userName, string password)
         {
             var baseAddress = uri.GetLeftPart(UriPartial.Authority);
             var httpClientHandler = new HttpClientHandler();
@@ -52,8 +52,8 @@ namespace Warewolf.Common
             {
                 BaseAddress = new Uri(baseAddress)
             };
-            
-            return new HttpClientWrapper(client) { HasCredentials = hasCredentials };
+
+            return new HttpClientWrapper(client, hasCredentials);
         }
 
         public IHttpClient New(string url, string userName, string password)
