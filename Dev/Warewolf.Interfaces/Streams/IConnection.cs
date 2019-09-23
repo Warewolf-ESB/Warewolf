@@ -8,12 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Streams;
-
-namespace Warewolf.Triggers
+namespace Warewolf.Streams
 {
-    public interface IQueueConnectionFactory
+    public interface IConnection
     {
-        IQueueConnection NewConnection(IStreamConfig config);
+        IPublisher NewPublisher(IStreamConfig config);
+        void StartConsuming(IStreamConfig config, IConsumer consumer);
     }
 }

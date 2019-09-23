@@ -23,7 +23,7 @@ using Warewolf.Configuration;
 using Warewolf.VirtualFileSystem;
 using Warewolf.Web;
 
-namespace Warewolf.Web.Tests
+namespace Warewolf.Configuration
 {
     [TestClass]
     public class ConfigSettingsBaseTests

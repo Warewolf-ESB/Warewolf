@@ -9,6 +9,7 @@
 */
 
 using RabbitMQ.Client;
+using Warewolf.Streams;
 using Warewolf.Triggers;
 
 namespace Warewolf.Driver.RabbitMQ
@@ -23,7 +24,7 @@ namespace Warewolf.Driver.RabbitMQ
             _factory = new ConnectionFactory() { HostName = "rsaklfsvrdev.dev2.local", UserName = "test", Password = "test" };
         }
 
-        public IQueueConnection NewConnection(IQueueConfig config)
+        public IQueueConnection NewConnection(IStreamConfig config)
         {
             return new RabbitConnection(_factory.CreateConnection());
         }

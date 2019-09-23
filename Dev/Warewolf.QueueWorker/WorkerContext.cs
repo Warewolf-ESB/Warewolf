@@ -10,7 +10,6 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Resources;
-using Dev2.Common.Wrappers;
 using Dev2.Runtime.Hosting;
 using System;
 using System.IO;
@@ -20,6 +19,7 @@ using Warewolf.Data;
 using Warewolf.Driver.RabbitMQ;
 using Warewolf.Options;
 using Warewolf.OS.IO;
+using Warewolf.Streams;
 using Warewolf.Triggers;
 
 using RabbitMQSource = Dev2.Data.ServiceModel.RabbitMQSource;
@@ -91,7 +91,7 @@ namespace QueueWorker
                 return _deadLetterSink;
             }
         }
-        public IQueueConfig QueueConfig
+        public IStreamConfig QueueConfig
         {
             get
             {
