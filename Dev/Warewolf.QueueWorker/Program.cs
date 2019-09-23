@@ -52,6 +52,13 @@ namespace QueueWorker
 
                 var config = new WorkerContext(_options, resourceCatalogProxy, TriggersCatalog.Instance);
 
+                var watcher = config.WatchTriggerResource();
+                watcher.Created += (o, t) => Environment.Exit(1);
+                watcher.Changed += (o, t) => Environment.Exit(0);
+                watcher.Deleted += (o, t) => Environment.Exit(0);
+                watcher.Renamed += (o, t) => Environment.Exit(0);
+
+
                 new QueueWorkerImplementation(config).Run();
 
                 return 0;
