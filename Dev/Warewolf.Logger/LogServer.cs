@@ -8,17 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using Fleck;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Warewolf.Auditing;
+using Warewolf.Data;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Warewolf.Streams;
 
 namespace Warewolf.Logger
 {
@@ -76,35 +78,48 @@ namespace Warewolf.Logger
                     _writer.Write("Logging Server OnClose...");
                     clients.Remove(socket);
                 };
-                socket.OnMessage = message =>
-                {
-                    var serializer = new Dev2JsonSerializer();
-                    var msg = serializer.Deserialize<AuditCommand>(message);
-                    _writer.Write("Logging Server OnMessage: Type:" + msg.Type);
-
-                    switch (msg.Type)
-                    {
-                        case "LogEntry":
-                            _writer.Write("Logging Server LogMessage" + message);
-                            var jsonAudit = serializer.Serialize<IAudit>(msg.Audit);
-                            new SeriLogConsumer(loggerContext: _loggerContext).Consume(Encoding.UTF8.GetBytes(jsonAudit));
-                            break;
-                        case "LogQuery":
-                            _writer.Write("Logging Server LogQuery" + message);
-                            QueryLog(query: msg.Query, socket: socket);
-                            break;
-                        default:
-                            _writer.Write("Logging Server Invalid Message Type");
-                            Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
-                            break;
-                    }
-                };
-
+                socket.StartConsuming<AuditCommand>(new MyLogConsumer(_loggerContext, socket, _writer));
             });
         }
 
+        class MyLogConsumer : IConsumer<AuditCommand>
+        {
+            private ILoggerContext _loggerContext;
+            private IWebSocketConnection _socket;
+            private IWriter _writer;
 
-        private void QueryLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket)
+            public MyLogConsumer(ILoggerContext loggerContext, IWebSocketConnection socket, IWriter writer)
+            {
+                _loggerContext = loggerContext;
+                _socket = socket;
+                _writer = writer;
+            }
+
+            public Task<ConsumerResult> Consume(AuditCommand msg)
+            {
+                
+                _writer.Write("Logging Server OnMessage: Type:" + msg.Type);
+
+                switch (msg.Type)
+                {
+                    case "LogEntry":
+                        new SeriLogConsumer(_loggerContext).Consume(msg.Audit);
+                        break;
+                    case "LogQuery":
+                        _writer.Write("Logging Server LogQuery " + msg.Query);
+                        QueryLog(msg.Query, _socket, _writer);
+                        break;
+                    default:
+                        _writer.Write("Logging Server Invalid Message Type");
+                        Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
+                        break;
+                }
+
+                return Task.FromResult(ConsumerResult.Success);
+            }
+        }
+
+        private static void QueryLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
             var serializer = new Dev2JsonSerializer();
             var seriLoggerSource = new SeriLoggerSource();
@@ -113,10 +128,21 @@ namespace Warewolf.Logger
 
             if (results.Count() > 0)
             {
-                _writer.Write("sending QueryLog to server: " + results + "...");
+                writer.Write("sending QueryLog to server: " + results + "...");
                 socket.Send(serializer.Serialize(results));
             }
         }
     }
-
+    public static class Ext
+    {
+        public static void StartConsuming<T>(this IWebSocketConnection socket, IConsumer<T> consumer)
+        {
+            socket.OnMessage = message =>
+            {
+                var serializer = new Dev2JsonSerializer();
+                var msg = serializer.Deserialize<T>(message);
+                consumer.Consume(msg);
+            };
+        }
+    }
 }

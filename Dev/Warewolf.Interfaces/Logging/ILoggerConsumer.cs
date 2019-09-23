@@ -8,13 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
-using System.Text;
 using Warewolf.Streams;
 
 namespace Warewolf.Logging
 {
-    public interface ILoggerConsumer : IConsumer
+    public interface ILoggerConsumer<in T> : IConsumer<T>
     {
     }
 }
