@@ -22,18 +22,17 @@ using Warewolf.Driver.Serilog;
 using Warewolf.Auditing;
 using Warewolf.Logging;
 using System.Threading;
+using Warewolf.Interfaces.Auditing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
     {
-
-        private readonly WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
+        private readonly IWebSocketServerFactory _webSocketServerFactory;
         private readonly IWebSocketFactory _webSocketFactory;
+
         public GetLogDataService()
         {
-
-
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

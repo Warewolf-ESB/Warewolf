@@ -19,13 +19,14 @@ using System.Linq;
 using System.Text;
 using Warewolf.Auditing;
 using Warewolf.Driver.Serilog;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
     public interface ILogServerFactory
     {
-        ILogServer New(WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext);
+        ILogServer New(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext);
     }
 
     public class LogServerFactory : ILogServerFactory
@@ -35,7 +36,7 @@ namespace Warewolf.Logger
 
         }
 
-        public ILogServer New(WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
+        public ILogServer New(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
         {
             return new LogServer(webSocketServerFactory, writer, loggerContext);
         }
@@ -48,12 +49,12 @@ namespace Warewolf.Logger
 
     public class LogServer : ILogServer
     {
-        private readonly WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
+        private readonly IWebSocketServerFactory _webSocketServerFactory;
         private readonly IWriter _writer;
         private IWebSocketServerWrapper _server;
         private readonly ILoggerContext _loggerContext;
 
-        public LogServer(WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
+        public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
         {
             _webSocketServerFactory = webSocketServerFactory;
             _writer = writer;
