@@ -17,14 +17,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Linq.Mapping;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Auditing
 {
-
-
     [Table(Name = "Audit")]
     [DataContract(Name = "Audit", Namespace = "")]
-    public class Audit
+    public class Audit : IAudit
     {
         [Column(Name = "Id", IsDbGenerated = true, DbType = "Integer", IsPrimaryKey = true)]
         [Key]

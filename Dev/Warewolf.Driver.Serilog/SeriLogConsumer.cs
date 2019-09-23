@@ -9,30 +9,64 @@
 */
 
 
-using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Data;
 using Warewolf.Logging;
-using Serilog;
+using System;
+using Serilog.Events;
+using System.Text;
+using Newtonsoft.Json;
+using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Driver.Serilog
 {
-
     public class SeriLogConsumer : ILoggerConsumer
     {
-        private readonly ILogger _logger;
+        private readonly ILoggerPublisher _loggerPublisher;
 
-        public SeriLogConsumer(ISeriLogConfig loggerConfig)
+        public SeriLogConsumer(ILoggerPublisher loggerPublisher)
         {
-            _logger = loggerConfig.Logger;
+            _loggerPublisher = loggerPublisher;
         }
 
         public Task<ConsumerResult> Consume(byte[] body)
         {
-            var message = Encoding.Default.GetString(body);
-            _logger.Debug(message);
-            return Task.FromResult(ConsumerResult.Success);
+            try
+            {
+                var audit = JsonConvert.DeserializeObject<IAudit>(Encoding.UTF8.GetString(body));
+                LogMessage(_loggerPublisher, audit);
+
+                return Task.FromResult(ConsumerResult.Success);
+            }
+            catch (Exception)
+            {
+                return Task.FromResult(ConsumerResult.Failed);
+            }
         }
 
+
+        private void LogMessage(ILoggerPublisher publisher, IAudit audit)
+        {
+            var logTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+
+            switch (audit.AuditType)
+            {
+                case "Information":
+                    publisher.Info(logTemplate, DateTime.Now, LogEventLevel.Information, audit);
+                    break;
+                case "Warning":
+                    publisher.Warn(logTemplate, DateTime.Now, LogEventLevel.Warning, audit);
+                    break;
+                case "Error":
+                    publisher.Error(logTemplate, DateTime.Now, LogEventLevel.Error, audit, Environment.NewLine, audit.Exception);
+                    break;
+                case "Fatal":
+                    publisher.Fatal(logTemplate, DateTime.Now, LogEventLevel.Fatal, audit, Environment.NewLine, audit.Exception);
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 }
