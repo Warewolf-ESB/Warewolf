@@ -27,7 +27,7 @@ namespace Warewolf.Web.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(IHttpClientFactory))]
-        public void WebRequestForwarder_ProcessMessage_Success()
+        public void HttpClientFactory_ProcessMessage_Success()
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
@@ -38,14 +38,82 @@ namespace Warewolf.Web.Tests
 
             mockHttpClient.Setup(o => o.GetAsync(It.IsAny<string>())).Returns(Task.Run(() => response));
 
-            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>())).Returns(mockHttpClient.Object);
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>())).Returns(mockHttpClient.Object);
             //-----------------------------Act----------------------------------
             var factory = mockHttpClientFactory.Object;
-            var client = factory.New(new Uri("http://warewolf.io"));
+            var client = factory.New(new Uri("http://warewolf.io"),"","");
             client.GetAsync("/person/1");
             //-----------------------------Assert-------------------------------
             mockHttpClient.Verify(o => o.GetAsync(It.IsAny<string>()), Times.Once);
-            mockHttpClientFactory.Verify(o => o.New(It.IsAny<Uri>()), Times.Once);
+            mockHttpClientFactory.Verify(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(IHttpClientFactory))]
+        public void HttpClientFactory_New_String_With_Username_Password_Success()
+        {
+            //-----------------------------Arrange------------------------------
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            var factory = mockHttpClientFactory.Object;
+            //-----------------------------Act----------------------------------
+
+            var client = factory.New("http://warewolf.io", "Bob", "TheBuilder");
+            //-----------------------------Assert-------------------------------
+            mockHttpClientFactory.Verify(o => o.New("http://warewolf.io", "Bob", "TheBuilder"), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(IHttpClientFactory))]
+        public void HttpClientFactory_New_Uri_With_Username_Password_Success()
+        {
+            //-----------------------------Arrange------------------------------
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>()));
+            var factory = mockHttpClientFactory.Object;
+            var uri = new Uri("http://warewolf.io");
+            //-----------------------------Act----------------------------------
+
+            var client = factory.New(uri, "Bob", "TheBuilder");
+            //-----------------------------Assert-------------------------------
+            mockHttpClientFactory.Verify(o => o.New(uri, "Bob", "TheBuilder"), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(IHttpClientFactory))]
+        public void HttpClientFactory_New_String_With_Username_Password_HasCredentails_True()
+        {
+            //-----------------------------Arrange------------------------------
+            var mockHttpClient = new Mock<IHttpClient>();
+            mockHttpClient.SetupAllProperties();
+            var factory = new HttpClientFactory();
+
+           //-----------------------------Act----------------------------------
+
+            var client = factory.New("http://warewolf.io", "Bob", "TheBuilder");
+            //-----------------------------Assert-------------------------------
+            Assert.IsTrue(client.HasCredentials);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(IHttpClientFactory))]
+        public void HttpClientFactory_New_Uri_With_Username_Password_HasCredentails_True()
+        {
+            //-----------------------------Arrange------------------------------
+            var factory = new HttpClientFactory();
+
+            var uri = new Uri("http://warewolf.io");
+            //-----------------------------Act----------------------------------
+
+            var client = factory.New(uri, "Bob", "TheBuilder");
+            //-----------------------------Assert-------------------------------
+            Assert.IsTrue(client.HasCredentials);
         }
     }
 }
