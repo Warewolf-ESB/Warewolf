@@ -9,18 +9,8 @@
 */
 
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Common;
-using Warewolf.OS;
-using Warewolf.Web;
 
 using ProcessStartInfo = System.Diagnostics.ProcessStartInfo;
 
@@ -36,7 +26,7 @@ namespace Warewolf.OS.Tests
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(MessageToInputsMapper))]
+        [TestCategory(nameof(ProcessThread))]
         public void ProcessThread_Constructor()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -51,7 +41,7 @@ namespace Warewolf.OS.Tests
         }
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(MessageToInputsMapper))]
+        [TestCategory(nameof(ProcessThread))]
         public void ProcessThread_Start_GivenValid_ExpectNewProcessCreated()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -76,6 +66,62 @@ namespace Warewolf.OS.Tests
             mockChildProcessTracker.Verify(o => o.Add(process), Times.Once);
             mockProcessFactory.Verify(o => o.Start(_startInfo), Times.Once); // also need to verify a restart
             mockProcess.Verify(o => o.WaitForExit(It.IsAny<int>()));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ProcessThread))]
+        public void ProcessThread_Kill_GivenUnstartedProcess_DoNotThrow()
+        {
+            var mockConfig = new Mock<IJobConfig>();
+            var mockChildProcessTracker = new Mock<IChildProcessTracker>();
+            var mockProcessFactory = new Mock<IProcessFactory>();
+            var mockProcess = new Mock<IProcess>();
+            mockProcess.Setup(o => o.WaitForExit(It.IsAny<int>())).Returns(true);
+            var process = mockProcess.Object;
+            mockProcessFactory.Setup(o => o.Start(_startInfo)).Returns(process);
+            var expectedConfig = mockConfig.Object;
+            var processThread = new ProcessThreadForTesting(_startInfo, mockChildProcessTracker.Object, mockProcessFactory.Object, expectedConfig);
+
+            try
+            {
+                processThread.Kill();
+            }
+            catch
+            {
+                Assert.Fail("kill throws exception when it should not");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ProcessThread))]
+        public void ProcessThread_Kill_GivenDeadProcess_DoNotThrow()
+        {
+            var mockConfig = new Mock<IJobConfig>();
+            var mockChildProcessTracker = new Mock<IChildProcessTracker>();
+            var mockProcessFactory = new Mock<IProcessFactory>();
+            var mockProcess = new Mock<IProcess>();
+            mockProcess.Setup(o => o.WaitForExit(It.IsAny<int>())).Returns(true);
+            var process = mockProcess.Object;
+            mockProcessFactory.Setup(o => o.Start(_startInfo)).Returns(process);
+            var expectedConfig = mockConfig.Object;
+            var processThread = new ProcessThreadForTesting(_startInfo, mockChildProcessTracker.Object, mockProcessFactory.Object, expectedConfig);
+            var done = false;
+            processThread.OnProcessDied += (config) => done = true;
+
+            processThread.Start();
+            
+            while (!done) { }
+
+            try
+            {
+                processThread.Kill();
+            }
+            catch
+            {
+                Assert.Fail("kill throws exception when it should not");
+            }
         }
     }
 
