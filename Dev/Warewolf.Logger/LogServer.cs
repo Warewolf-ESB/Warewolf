@@ -11,6 +11,7 @@
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using Fleck;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace Warewolf.Logger
         void Start(IList<IWebSocketConnection> clients);
     }
 
-    public class LogServer : ILogServer
+    public class LogServer : ILogServer, IDisposable
     {
         private readonly IWebSocketServerFactory _webSocketServerFactory;
         private readonly IWriter _writer;
@@ -86,9 +87,9 @@ namespace Warewolf.Logger
 
         class MyLogConsumer : IConsumer<AuditCommand>
         {
-            private IWebSocketConnection _socket;
-            private IWriter _writer;
-            private ILoggerConsumer<IAudit>  _logger;
+            private readonly IWebSocketConnection _socket;
+            private readonly IWriter _writer;
+            private readonly ILoggerConsumer<IAudit>  _logger;
 
             public MyLogConsumer(ILoggerConsumer<IAudit> loggerConsumer, IWebSocketConnection socket, IWriter writer)
             {
@@ -128,11 +129,28 @@ namespace Warewolf.Logger
             var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryLogData(query);
 
-            if (results.Count() > 0)
+            writer.Write("sending QueryLog to server: " + results + "...");
+            socket.Send(serializer.Serialize(results));
+        }
+
+        private bool _disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
-                writer.Write("sending QueryLog to server: " + results + "...");
-                socket.Send(serializer.Serialize(results));
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                _disposed = true;
+                _server.Dispose();
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
     public static class Ext
