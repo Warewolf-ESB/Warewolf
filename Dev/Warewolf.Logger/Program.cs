@@ -28,7 +28,7 @@ namespace Warewolf.Logger
             {
                 Environment.Exit(1);
             };
-            var impl = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer());
+            var impl = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
             impl.Run();
             impl.Pause();
         }
@@ -39,15 +39,17 @@ namespace Warewolf.Logger
             private readonly IWebSocketServerFactory _webSocketServerFactory;
             private readonly ILoggerContext _context;
             private readonly IWriter _writer;
+            private readonly IPauseHelper _pause;
             private readonly ILogServerFactory _logServerFactory;
 
-            public Implementation(ILoggerContext context, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer)
+            public Implementation(ILoggerContext context, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer, IPauseHelper pause)
             {
                 _consoleWindowFactory = consoleWindowFactory;
 
                 _context = context;
                 _webSocketServerFactory = webSocketServerFactory;
                 _writer = writer;
+                _pause = pause;
                 _logServerFactory = logServerFactory;
             }
 
@@ -64,7 +66,7 @@ namespace Warewolf.Logger
 
             public void Pause()
             {
-                _writer.ReadLine();
+                _pause.Pause();
             }
         }
     }
