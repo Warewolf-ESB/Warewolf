@@ -15,7 +15,7 @@ using System;
 using Serilog.Events;
 using System.Text;
 using Warewolf.Interfaces.Auditing;
-using Dev2.Common.Serializers;
+using Newtonsoft.Json;
 
 namespace Warewolf.Driver.Serilog
 {
@@ -36,8 +36,11 @@ namespace Warewolf.Driver.Serilog
 
             try
             {
-                var serializer = new Dev2JsonSerializer();
-                var audit = serializer.Deserialize<IAudit>(Encoding.UTF8.GetString(body));
+                var audit = JsonConvert.DeserializeObject<IAudit>(Encoding.UTF8.GetString(body),
+                                                                    new JsonSerializerSettings()
+                                                                        {
+                                                                            TypeNameHandling = TypeNameHandling.All
+                                                                        });
                 LogMessage(publisher, audit);
 
                 return Task.FromResult(ConsumerResult.Success);
