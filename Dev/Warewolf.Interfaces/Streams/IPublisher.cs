@@ -8,11 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 namespace Warewolf.Streams
 {
     public interface IPublisher
     {
         void Publish(byte[] value);
+    }
+
+    public interface IPublisher<in T>
+    {
+        void Publish(T value);
     }
 }

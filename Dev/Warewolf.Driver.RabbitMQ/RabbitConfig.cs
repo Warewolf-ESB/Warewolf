@@ -10,12 +10,12 @@
 
 using RabbitMQ.Client;
 using System.Collections.Generic;
-using Warewolf.Triggers;
+using Warewolf.Streams;
 using IConnection = RabbitMQ.Client.IConnection;
 
 namespace Warewolf.Driver.RabbitMQ
 {
-    public class RabbitConfig : IQueueConfig
+    public class RabbitConfig : IStreamConfig
     {
         public string Exchange { get; set; }
         public string RoutingKey { get; set; }

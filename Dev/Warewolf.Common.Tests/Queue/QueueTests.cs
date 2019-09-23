@@ -30,11 +30,11 @@ namespace Warewolf.Trigger.Queue.Tests
             //----------------------Arrange----------------------
             var mockQueueSource = new Mock<IQueueConnectionFactory>();
             var mockQueueConnection = new Mock<IQueueConnection>();
-            var mockConfig = new Mock<IQueueConfig>();
+            var mockConfig = new Mock<IStreamConfig>();
 
             var testConsumer = new TestConsumer();
             
-            mockQueueSource.Setup(o => o.NewConnection(It.IsAny<IQueueConfig>())).Returns(mockQueueConnection.Object);
+            mockQueueSource.Setup(o => o.NewConnection(It.IsAny<IStreamConfig>())).Returns(mockQueueConnection.Object);
 
             var queueSource = mockQueueSource.Object;
             var config = mockConfig.Object;
@@ -56,7 +56,7 @@ namespace Warewolf.Trigger.Queue.Tests
             //----------------------Arrange----------------------
             var mockQueueSource = new Mock<IQueueConnectionFactory>();
             var mockQueueConnection = new Mock<IQueueConnection>();
-            var mockConfig = new Mock<IQueueConfig>();
+            var mockConfig = new Mock<IStreamConfig>();
             var mockPublisher = new Mock<IPublisher>();
 
             var config = mockConfig.Object;
