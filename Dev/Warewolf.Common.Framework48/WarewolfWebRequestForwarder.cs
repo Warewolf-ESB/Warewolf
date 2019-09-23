@@ -23,6 +23,8 @@ namespace Warewolf.Common
     public class WarewolfWebRequestForwarder : IConsumer
     {
         readonly string _url;
+        private readonly string _username;
+        private readonly string _password;
         readonly ICollection<IServiceInputBase> _valueKeys;
         private readonly MessageToInputsMapper _messageToInputsMapper;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -32,11 +34,13 @@ namespace Warewolf.Common
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url, ICollection<IServiceInputBase> valueKeys)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url,string username,string password, ICollection<IServiceInputBase> valueKeys)
         {
             _httpClientFactory = httpClientFactory;
             _publisher = publisher;
             _url = url;
+            _username = username;
+            _password = password;
             _valueKeys = valueKeys;
             _messageToInputsMapper = new MessageToInputsMapper();
         }
@@ -66,7 +70,7 @@ namespace Warewolf.Common
 
         private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData)
         {
-            using (var client = _httpClientFactory.New(uri))
+            using (var client = _httpClientFactory.New(uri,_username,_password))
             {
                 return await client.PostAsync(uri,postData);
             }
