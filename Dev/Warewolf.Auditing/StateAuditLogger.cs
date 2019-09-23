@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Logging;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
 using System;
+using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Auditing
 {

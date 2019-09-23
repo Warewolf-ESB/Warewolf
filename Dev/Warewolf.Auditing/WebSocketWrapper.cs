@@ -14,28 +14,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
 using System.Net.WebSockets.Managed;
+using Warewolf.Interfaces.Auditing;
+
 namespace Warewolf.Auditing
 {
-    public interface IWebSocketFactory
-    {
-        IWebSocketWrapper New();
-    }
-
     public class WebSocketFactory : IWebSocketFactory
     {
         public IWebSocketWrapper New()
         {
             return WebSocketWrapper.Create("ws://localhost:5000/ws");
         }
-    }
-
-    public interface IWebSocketWrapper
-    {
-        WebSocketWrapper Connect();
-        WebSocketWrapper OnConnect(Action<WebSocketWrapper> onConnect);
-        WebSocketWrapper OnDisconnect(Action<WebSocketWrapper> onDisconnect);
-        WebSocketWrapper OnMessage(Action<string, WebSocketWrapper> onMessage);
-        void SendMessage(string message);
     }
 
     public class WebSocketWrapper : IWebSocketWrapper
@@ -60,36 +48,36 @@ namespace Warewolf.Auditing
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
-        public static WebSocketWrapper Create(string uri)
+        public static IWebSocketWrapper Create(string uri)
         {
             return new WebSocketWrapper(uri);
         }
 
-        public WebSocketWrapper Connect()
+        public IWebSocketWrapper Connect()
         {
             ConnectAsync();
             return this;
         }
 
-        public WebSocketWrapper OnConnect(Action<WebSocketWrapper> onConnect)
+        public IWebSocketWrapper OnConnect(Action<IWebSocketWrapper> onConnect)
         {
             _onConnected = onConnect;
             return this;
         }
 
-        public WebSocketWrapper Close()
+        public IWebSocketWrapper Close()
         {
             _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
             return this;
         }
 
-        public WebSocketWrapper OnDisconnect(Action<WebSocketWrapper> onDisconnect)
+        public IWebSocketWrapper OnDisconnect(Action<IWebSocketWrapper> onDisconnect)
         {
             _onDisconnected = onDisconnect;
             return this;
         }
 
-        public WebSocketWrapper OnMessage(Action<string, WebSocketWrapper> onMessage)
+        public IWebSocketWrapper OnMessage(Action<string, IWebSocketWrapper> onMessage)
         {
             _onMessage = onMessage;
             return this;
