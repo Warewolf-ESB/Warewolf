@@ -78,21 +78,23 @@ namespace Warewolf.Logger
                     _writer.Write("Logging Server OnClose...");
                     clients.Remove(socket);
                 };
-                socket.StartConsuming<AuditCommand>(new MyLogConsumer(_loggerContext, socket, _writer));
+
+                var consumer = new SeriLogConsumer(_loggerContext);
+                socket.StartConsuming<AuditCommand>(new MyLogConsumer(consumer, socket, _writer));
             });
         }
 
         class MyLogConsumer : IConsumer<AuditCommand>
         {
-            private ILoggerContext _loggerContext;
             private IWebSocketConnection _socket;
             private IWriter _writer;
+            private ILoggerConsumer<IAudit>  _logger;
 
-            public MyLogConsumer(ILoggerContext loggerContext, IWebSocketConnection socket, IWriter writer)
+            public MyLogConsumer(ILoggerConsumer<IAudit> loggerConsumer, IWebSocketConnection socket, IWriter writer)
             {
-                _loggerContext = loggerContext;
                 _socket = socket;
                 _writer = writer;
+                _logger = loggerConsumer;
             }
 
             public Task<ConsumerResult> Consume(AuditCommand msg)
@@ -103,7 +105,7 @@ namespace Warewolf.Logger
                 switch (msg.Type)
                 {
                     case "LogEntry":
-                        new SeriLogConsumer(_loggerContext).Consume(msg.Audit);
+                        _logger.Consume(msg.Audit);
                         break;
                     case "LogQuery":
                         _writer.Write("Logging Server LogQuery " + msg.Query);
