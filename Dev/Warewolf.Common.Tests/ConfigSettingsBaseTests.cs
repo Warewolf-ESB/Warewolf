@@ -63,8 +63,6 @@ namespace Warewolf.Web.Tests
 
             var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object);
 
-            var expectedData = JsonConvert.SerializeObject(new TestData { SomeInt = DefaultSomeInt, SomeString = DefaultSomeString });
-
             mockFile.Verify(o => o.Exists(path), Times.Once);
             mockFile.Verify(o => o.ReadAllText(path), Times.Never);
 
@@ -75,7 +73,8 @@ namespace Warewolf.Web.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ConfigSettingsBaseForTesting))]
-        public void ConfigSettingsBase_Load_GivenInvalidConfigFile_ExpectDefaults()
+        [ExpectedException(typeof(JsonReaderException))]
+        public void ConfigSettingsBase_Load_GivenInvalidConfigFile_ExpectException()
         {
             var path = "somepath.json";
             var mockFile = new Mock<IFileBase>();
