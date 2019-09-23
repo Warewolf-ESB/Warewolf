@@ -41,6 +41,7 @@ using Dev2;
 using System.Threading.Tasks;
 using Warewolf.Trigger.Queue;
 using Warewolf.OS;
+using Warewolf;
 
 namespace Dev2
 {

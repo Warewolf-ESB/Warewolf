@@ -230,7 +230,6 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
-    <Compile Include="PauseHelper.cs" />
     <Compile Include="LoadRuntimeConfigurations.cs" />
     <Compile Include="QueueConfigLoader.cs" />
     <Compile Include="QueueProcessorMonitor.cs" />
