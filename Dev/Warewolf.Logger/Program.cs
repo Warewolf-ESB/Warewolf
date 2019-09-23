@@ -9,7 +9,9 @@
 */
 
 
+using Fleck;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
@@ -54,7 +56,7 @@ namespace Warewolf.Logger
                 _ = _consoleWindowFactory.New();
 
                 var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _loggerContext);
-                logServer.Start(); 
+                logServer.Start(new List<IWebSocketConnection>()); 
             }
 
             public void Pause()

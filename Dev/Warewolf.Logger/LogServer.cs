@@ -42,7 +42,7 @@ namespace Warewolf.Logger
 
     public interface ILogServer
     {
-        void Start();
+        void Start(IList<IWebSocketConnection> clients);
     }
 
     public class LogServer : ILogServer
@@ -59,9 +59,8 @@ namespace Warewolf.Logger
             _loggerContext = loggerContext;
         }
 
-        public void Start()
+        public void Start(IList<IWebSocketConnection> clients)
         {
-            var clients = new List<IWebSocketConnection>();
             var loggerConfig = _loggerContext.LoggerConfig as ILoggerConfig;
 
             _server = _webSocketServerFactory.New(loggerConfig.ServerLoggingAddress);
