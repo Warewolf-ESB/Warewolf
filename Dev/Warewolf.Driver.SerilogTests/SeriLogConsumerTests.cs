@@ -92,7 +92,6 @@ namespace Warewolf.Tests
             mockLoggerPublisher.Verify(p => p.Info(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SeriLogConsumer))]
