@@ -8,33 +8,37 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Threading.Tasks;
 using Warewolf.Data;
 using Warewolf.Logging;
 using System;
 using Serilog.Events;
 using System.Text;
-using Newtonsoft.Json;
 using Warewolf.Interfaces.Auditing;
+using Dev2.Common.Serializers;
 
 namespace Warewolf.Driver.Serilog
 {
     public class SeriLogConsumer : ILoggerConsumer
     {
-        private readonly ILoggerPublisher _loggerPublisher;
+        private readonly ILoggerContext _loggerContext;
 
-        public SeriLogConsumer(ILoggerPublisher loggerPublisher)
+        public SeriLogConsumer(ILoggerContext loggerContext)
         {
-            _loggerPublisher = loggerPublisher;
+            _loggerContext = loggerContext;
         }
 
         public Task<ConsumerResult> Consume(byte[] body)
         {
+            var logger = _loggerContext.Source;
+            var connection = logger.NewConnection(_loggerContext.LoggerConfig);
+            var publisher = connection.NewPublisher();
+
             try
             {
-                var audit = JsonConvert.DeserializeObject<IAudit>(Encoding.UTF8.GetString(body));
-                LogMessage(_loggerPublisher, audit);
+                var serializer = new Dev2JsonSerializer();
+                var audit = serializer.Deserialize<IAudit>(Encoding.UTF8.GetString(body));
+                LogMessage(publisher, audit);
 
                 return Task.FromResult(ConsumerResult.Success);
             }
@@ -43,7 +47,6 @@ namespace Warewolf.Driver.Serilog
                 return Task.FromResult(ConsumerResult.Failed);
             }
         }
-
 
         private void LogMessage(ILoggerPublisher publisher, IAudit audit)
         {
