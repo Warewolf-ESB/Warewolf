@@ -11,7 +11,6 @@
 using CommandLine;
 using System;
 using System.Collections.Generic;
-using Warewolf.Common;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
 
@@ -27,7 +26,7 @@ namespace Warewolf.Logger
 
         }
 
-        public bool Verbose { get; set; }
+        public bool Verbose { get; private set; }
         public ILoggerSource Source {
             get
             {
@@ -38,8 +37,10 @@ namespace Warewolf.Logger
 
         public LoggerContext(string[] args)
         {
-            LoggerConfig = new SeriLogSQLiteConfig();
-            LoggerConfig.ServerLoggingAddress = "ws://127.0.0.1:5000/ws";
+            LoggerConfig = new SeriLogSQLiteConfig
+            {
+                ServerLoggingAddress = "ws://127.0.0.1:5000/ws"
+            };
             Errors = new List<Error>();
             var processArgs = CommandLine.Parser.Default.ParseArguments<Options>(args)
                  .WithParsed<Options>(opts => IsVerbose(opts))
@@ -52,8 +53,6 @@ namespace Warewolf.Logger
             if (opts.Verbose)
             {
                 Verbose = true;
-                Console.WriteLine("Warewolf.Logger is in Verbose mode!");
-                _ = new ConsoleWindow();
             }
             else
             {
