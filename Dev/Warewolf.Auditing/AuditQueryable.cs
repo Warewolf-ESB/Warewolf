@@ -8,15 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
 using Warewolf.Driver.Serilog;
-using Warewolf.Logging;
-using static Warewolf.Auditing.WebSocketServerWrapper;
 
 namespace Warewolf.Auditing
 {
@@ -24,7 +21,7 @@ namespace Warewolf.Auditing
     {
         private string _connectionString;
         private string _tableName;
-
+        
         public AuditQueryable()
         { 
         }

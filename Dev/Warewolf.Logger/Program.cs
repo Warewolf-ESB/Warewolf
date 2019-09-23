@@ -11,7 +11,8 @@
 
 using System;
 using System.Linq;
-using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
+using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
@@ -25,7 +26,7 @@ namespace Warewolf.Logger
             {
                 Environment.Exit(1);
             };
-            var impl = new Implementation(config, new WebSocketServerWrapper.WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer());
+            var impl = new Implementation(config, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer());
             impl.Run();
             impl.Pause();
         }
@@ -33,12 +34,12 @@ namespace Warewolf.Logger
         public class Implementation
         {
             private readonly IConsoleWindowFactory _consoleWindowFactory;
-            private readonly WebSocketServerWrapper.IWebSocketServerFactory _webSocketServerFactory;
+            private readonly IWebSocketServerFactory _webSocketServerFactory;
             private readonly ILoggerContext _loggerContext;
             private readonly IWriter _writer;
             private readonly ILogServerFactory _logServerFactory;
 
-            public Implementation(ILoggerContext loggerContext, WebSocketServerWrapper.IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer)
+            public Implementation(ILoggerContext loggerContext, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer)
             {
                 _consoleWindowFactory = consoleWindowFactory;
 
