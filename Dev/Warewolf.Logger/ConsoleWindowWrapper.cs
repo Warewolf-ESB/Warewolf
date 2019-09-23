@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Warewolf.Common;
 
 namespace Warewolf.Logger
@@ -37,5 +36,4 @@ namespace Warewolf.Logger
            return new ConsoleWindowWrapper();
         }
     }
-
 }

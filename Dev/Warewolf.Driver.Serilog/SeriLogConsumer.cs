@@ -13,13 +13,11 @@ using Warewolf.Data;
 using Warewolf.Logging;
 using System;
 using Serilog.Events;
-using System.Text;
 using Warewolf.Interfaces.Auditing;
-using Newtonsoft.Json;
 
 namespace Warewolf.Driver.Serilog
 {
-    public class SeriLogConsumer : ILoggerConsumer
+    public class SeriLogConsumer : ILoggerConsumer<IAudit>
     {
         private readonly ILoggerContext _loggerContext;
 
@@ -28,7 +26,7 @@ namespace Warewolf.Driver.Serilog
             _loggerContext = loggerContext;
         }
 
-        public Task<ConsumerResult> Consume(byte[] body)
+        public Task<ConsumerResult> Consume(IAudit item)
         {
             var logger = _loggerContext.Source;
             var connection = logger.NewConnection(_loggerContext.LoggerConfig);
@@ -36,12 +34,7 @@ namespace Warewolf.Driver.Serilog
 
             try
             {
-                var audit = JsonConvert.DeserializeObject<IAudit>(Encoding.UTF8.GetString(body),
-                                                                    new JsonSerializerSettings()
-                                                                        {
-                                                                            TypeNameHandling = TypeNameHandling.All
-                                                                        });
-                LogMessage(publisher, audit);
+               LogMessage(publisher, item);
 
                 return Task.FromResult(ConsumerResult.Success);
             }

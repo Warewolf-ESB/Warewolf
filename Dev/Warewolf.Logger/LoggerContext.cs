@@ -25,6 +25,8 @@ namespace Warewolf.Logger
             public bool Verbose { get; set; }
 
         }
+        private Options _options;
+
 
         public bool Verbose { get; private set; }
         public ILoggerSource Source {
@@ -42,9 +44,9 @@ namespace Warewolf.Logger
                 ServerLoggingAddress = "ws://127.0.0.1:5000/ws"
             };
             Errors = new List<Error>();
-            var processArgs = CommandLine.Parser.Default.ParseArguments<Options>(args)
-                 .WithParsed<Options>(opts => IsVerbose(opts))
-                 .WithNotParsed<Options>((errs) => HandleParseError(errs));
+            CommandLine.Parser.Default.ParseArguments<Options>(args)
+                 .WithParsed(opts => _options = opts)
+                 .WithNotParsed((errs) => HandleParseError(errs));
 
         }
 

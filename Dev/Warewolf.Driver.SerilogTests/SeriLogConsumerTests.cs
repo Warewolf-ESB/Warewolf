@@ -34,11 +34,7 @@ namespace Warewolf.Tests
             var audit = new AuditStub();
             audit.AuditType = "Information";
 
-            var message = Encoding.Default.GetBytes(JsonConvert.SerializeObject(audit,
-        new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        }));
+            var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
             var mockLoggerContext = new Mock<ILoggerContext>();
@@ -66,52 +62,13 @@ namespace Warewolf.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SeriLogConsumer))]
-        public void SeriLogConsumer_Consume_WhenException_FailResult()
-        {
-            //------------------------------Arrange-----------------------------
-            var message = Encoding.Default.GetBytes(JsonConvert.SerializeObject(new object(),
-        new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        }));
-            var mockLogger = new Mock<ILogger>();
-            var mockLoggerPublisher = new Mock<ILoggerPublisher>();
-            var mockLoggerContext = new Mock<ILoggerContext>();
-            var mockLoggerSource = new Mock<ILoggerSource>();
-            var mockLoggerConnection = new Mock<ILoggerConnection>();
-            var mockLoggerConfig = new Mock<ILoggerConfig>();
-
-            mockLoggerPublisher.Setup(p => p.Info(It.IsAny<string>(), It.IsAny<object[]>())).Verifiable();
-            mockLoggerConnection.Setup(l => l.NewPublisher()).Returns(mockLoggerPublisher.Object);
-            mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
-            mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
-            mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
-            mockLogger.Setup(o => o.Debug(It.IsAny<string>())).Verifiable();
-
-
-            var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
-
-            //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
-            //------------------------------Assert------------------------------
-            mockLoggerPublisher.Verify(p => p.Info(It.IsAny<string>(), It.IsAny<object[]>()), Times.Never);
-            Assert.AreEqual(expected: ConsumerResult.Failed, actual: response.Result);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SeriLogConsumer))]
         public void SeriLogConsumer_Consume_InfoMessage_ShouldCall_Information()
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Information";
 
-            var message = Encoding.Default.GetBytes(JsonConvert.SerializeObject(audit,
-        new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        }));
+            var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
             var mockLoggerContext = new Mock<ILoggerContext>();
@@ -145,11 +102,7 @@ namespace Warewolf.Tests
             var audit = new AuditStub();
             audit.AuditType = "Warning";
 
-            var message = Encoding.Default.GetBytes(JsonConvert.SerializeObject(audit,
-        new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        }));
+            var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
             var mockLoggerContext = new Mock<ILoggerContext>();
@@ -183,11 +136,7 @@ namespace Warewolf.Tests
             var audit = new AuditStub();
             audit.AuditType = "Error";
 
-            var message = Encoding.Default.GetBytes(JsonConvert.SerializeObject(audit,
-        new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        }));
+            var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
             var mockLoggerContext = new Mock<ILoggerContext>();
@@ -221,11 +170,7 @@ namespace Warewolf.Tests
             var audit = new AuditStub();
             audit.AuditType = "Fatal";
 
-            var message = Encoding.Default.GetBytes(JsonConvert.SerializeObject(audit,
-        new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        }));
+            var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
             var mockLoggerContext = new Mock<ILoggerContext>();
