@@ -17,6 +17,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Security.Principal;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Storage;
 
 namespace Warewolf.Auditing.Tests
