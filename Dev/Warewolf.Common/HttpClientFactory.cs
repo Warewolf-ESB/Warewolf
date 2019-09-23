@@ -10,6 +10,7 @@
 
 
 using System;
+using System.Net;
 using System.Net.Http;
 using Warewolf.Web;
 
@@ -17,23 +18,47 @@ namespace Warewolf.Common
 {
     public interface IHttpClientFactory
     {
-        IHttpClient New(Uri uri);
-        IHttpClient New(string url);
+        IHttpClient New(Uri uri, string userName, string password);
+        IHttpClient New(string url, string userName, string password);
     }
 
     public class HttpClientFactory : IHttpClientFactory
     {
-        public IHttpClient New(Uri uri)
+        public IHttpClient New(Uri uri, string userName, string password)
         {
             var baseAddress = uri.GetLeftPart(UriPartial.Authority);
-            var client = new HttpClient { BaseAddress = new Uri(baseAddress) };
+            var httpClientHandler = new HttpClientHandler();
+            httpClientHandler.UseDefaultCredentials = true;
+            var hasCredentials = false;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                httpClientHandler.UseDefaultCredentials = false;
+                httpClientHandler.PreAuthenticate = true;
+                var credential = new NetworkCredential();
+                if (userName.Contains("\\"))
+                {
+                    var userNameParts = userName.Split('\\');
+                    credential.Domain = userNameParts[0];
+                    credential.UserName = userNameParts[1];
+                }
+                else
+                {
+                    credential.UserName = userName;
+                }
+                credential.Password = password;
+                hasCredentials = true;
+            }
+            var client = new HttpClient(httpClientHandler)
+            {
+                BaseAddress = new Uri(baseAddress)
+            };
 
-            return new HttpClientWrapper(client);
+            return new HttpClientWrapper(client, hasCredentials);
         }
 
-        public IHttpClient New(string url)
+        public IHttpClient New(string url, string userName, string password)
         {
-            return New(new Uri(url));
+            return New(new Uri(url), userName, password);
         }
     }
 }

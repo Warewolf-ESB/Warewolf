@@ -8,12 +8,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.IO;
-using Warewolf.OS.IO;
 
-namespace Dev2.Common.Wrappers
+namespace Warewolf.OS.IO
 {
-    public class FileSystemWatcherWrapper : FileSystemWatcher, IFileSystemWatcher
+    public interface IFileSystemWatcher : IDisposable
     {
+        string Path { get; set; }
+        string Filter { get; set; }
+        bool EnableRaisingEvents { get; set; }
+        NotifyFilters NotifyFilter { get; set; }
+
+        event FileSystemEventHandler Created;
+        event FileSystemEventHandler Changed;
+        event FileSystemEventHandler Deleted;
+        event RenamedEventHandler Renamed;
+        event ErrorEventHandler Error;
     }
 }

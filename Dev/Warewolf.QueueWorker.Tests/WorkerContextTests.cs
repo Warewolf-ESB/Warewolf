@@ -16,9 +16,11 @@ using Moq;
 using QueueWorker;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Warewolf.Common;
 using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.OS.IO;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
 
@@ -102,6 +104,30 @@ namespace Warewolf.QueueWorker.Tests
             var url = context.WorkflowUrl;
             var expected = "http://somehost:1234//secure/Some Workflow.json";
             Assert.AreEqual(expected, url);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(QueueWorker))]
+        public void WorkerContext_WatchTriggerResource_ShouldHaveValidSetup()
+        {
+            var context = ConstructWorkerContext(out var _, out var _);
+
+            var mockWatcher = new Mock<IFileSystemWatcher>();
+
+            var watcher = mockWatcher.Object;
+            context.WatchTriggerResource(watcher);
+
+            Assert.IsTrue(watcher is IFileSystemWatcher);
+
+            mockWatcher.VerifySet(o => o.Path = "C:\\ProgramData\\Warewolf\\Triggers\\Queue", Times.Once);
+            mockWatcher.VerifySet(o => o.Filter = $"{_resourceId}.bite", Times.Once);
+            mockWatcher.VerifySet(o => o.NotifyFilter = NotifyFilters.LastWrite
+                    | NotifyFilters.FileName
+                    | NotifyFilters.DirectoryName, Times.Once);
+            mockWatcher.VerifySet(o => o.EnableRaisingEvents = false, Times.Once);
+            mockWatcher.VerifySet(o => o.EnableRaisingEvents = true, Times.Once);
         }
 
         private static IWorkerContext ConstructWorkerContext(out RabbitMQSource rabbitSource, out RabbitMQSource rabbitSink)

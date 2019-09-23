@@ -10,13 +10,17 @@
 
 using Dev2.Common.Interfaces.Resources;
 using Warewolf.Data;
+using Warewolf.OS.IO;
 using Warewolf.Triggers;
 
 namespace QueueWorker
 {
     internal interface IWorkerContext
     {
+        void  WatchTriggerResource(IFileSystemWatcher watcher);
         string WorkflowUrl { get; }
+        string Username { get; }
+        string Password { get; }
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
         IQueueConfig QueueConfig { get; }
