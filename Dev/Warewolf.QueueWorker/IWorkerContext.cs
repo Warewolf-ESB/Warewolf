@@ -17,6 +17,8 @@ namespace QueueWorker
     internal interface IWorkerContext
     {
         string WorkflowUrl { get; }
+        string Username { get; }
+        string Password { get; }
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
         IQueueConfig QueueConfig { get; }

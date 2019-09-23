@@ -40,6 +40,9 @@ namespace QueueWorker
 
         public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
 
+        public string Username { get => _triggerQueue.UserName; }
+        public string Password { get => _triggerQueue.Password; }
+
         IQueueSource _queueSource;
         public IQueueSource Source
         {

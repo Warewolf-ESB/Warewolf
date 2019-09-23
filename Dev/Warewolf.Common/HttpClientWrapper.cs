@@ -35,5 +35,7 @@ namespace Warewolf
         {
             return _httpClient.PostAsync(url,new StringContent(postData));
         }
+
+        public bool HasCredentials { get; set; }
     }
 }
