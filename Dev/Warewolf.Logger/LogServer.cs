@@ -12,8 +12,6 @@
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using Fleck;
-using Serilog.Events;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,10 +65,6 @@ namespace Warewolf.Logger
             var loggerConfig = _loggerContext.LoggerConfig as ILoggerConfig;
 
             _server = _webSocketServerFactory.New(loggerConfig.ServerLoggingAddress);
-            var logger = _loggerContext.Source;
-            var connection = logger.NewConnection(_loggerContext.LoggerConfig);
-            var publisher = connection.NewPublisher();
-
             _server.Start(socket =>
             {
                 socket.OnOpen = () =>
@@ -93,7 +87,8 @@ namespace Warewolf.Logger
                     {
                         case "LogEntry":
                             _writer.Write("Logging Server LogMessage" + message);
-                            LogMessage(publisher: publisher, audit: msg.Audit);
+                            var jsonAudit = serializer.Serialize<IAudit>(msg.Audit);
+                            new SeriLogConsumer(loggerContext: _loggerContext).Consume(Encoding.UTF8.GetBytes(jsonAudit));
                             break;
                         case "LogQuery":
                             _writer.Write("Logging Server LogQuery" + message);
@@ -121,30 +116,6 @@ namespace Warewolf.Logger
             {
                 _writer.Write("sending QueryLog to server: " + results + "...");
                 socket.Send(serializer.Serialize(results));
-            }
-        }
-
-        private void LogMessage(ILoggerPublisher publisher, Audit audit)
-        {
-            var logTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-
-            switch (audit.AuditType)
-            {
-                case "Information":
-                    publisher.Info(logTemplate, DateTime.Now, LogEventLevel.Information, audit);
-                    break;
-                case "Warning":
-                    publisher.Warn(logTemplate, DateTime.Now, LogEventLevel.Warning, audit);
-                    break;
-                case "Error":
-                    publisher.Error(logTemplate, DateTime.Now, LogEventLevel.Error, audit, Environment.NewLine, audit.Exception);
-                    break;
-                case "Fatal":
-                    publisher.Fatal(logTemplate, DateTime.Now, LogEventLevel.Fatal, audit, Environment.NewLine, audit.Exception);
-                    break;
-
-                default:
-                    break;
             }
         }
     }
