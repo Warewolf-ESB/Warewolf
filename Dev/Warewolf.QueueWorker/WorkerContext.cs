@@ -42,22 +42,20 @@ namespace QueueWorker
             _resourceCatalogProxy = resourceCatalogProxy;
         }
 
-        public IFileSystemWatcher WatchTriggerResource()
+        public void WatchTriggerResource(IFileSystemWatcher watcher)
         {
             var path = Path.GetDirectoryName(_path);
             var filename = Path.GetFileName(_path);
-            var watcher = new FileSystemWatcherWrapper
-            {
-                Path = path,
-                Filter = filename,
-                NotifyFilter = NotifyFilters.LastWrite
-                        | NotifyFilters.FileName
-                        | NotifyFilters.DirectoryName
-            };
+
+            watcher.EnableRaisingEvents = false;
+
+            watcher.Path = path;
+            watcher.Filter = filename;
+            watcher.NotifyFilter = NotifyFilters.LastWrite
+                    | NotifyFilters.FileName
+                    | NotifyFilters.DirectoryName;
 
             watcher.EnableRaisingEvents = true;
-
-            return watcher;
         }
 
         public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
