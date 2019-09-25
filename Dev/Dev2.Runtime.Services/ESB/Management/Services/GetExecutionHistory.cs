@@ -108,7 +108,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                             socket.Close();
                         });
                         ewh.WaitOne();
-                        LogExecutionHistoryCache.CurrentResults = result;
                         //TODO: response is being returning as IAudit but needs to return as IExecutionHistory
                         return serializer.SerializeToBuilder(result);
                     }
@@ -116,7 +115,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         Dev2Logger.Info("Get Execution History Data ServiceError", e, GlobalConstants.WarewolfInfo);
                     }
-                    LogExecutionHistoryCache.CurrentResults = result;
                     return serializer.SerializeToBuilder(result);
                 }
                 Dev2Logger.Debug("No QueueName Provided", GlobalConstants.WarewolfDebug);
@@ -134,10 +132,5 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList></DataList>");
 
         public override string HandlesType() => "GetExecutionHistoryService";
-    }
-
-    public static class LogExecutionHistoryCache
-    {
-        public static IEnumerable<dynamic> CurrentResults { get; set; }
     }
 }
