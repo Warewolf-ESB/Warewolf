@@ -89,6 +89,11 @@ namespace Warewolf.Auditing
             SendMessageAsync(message);
         }
 
+        public bool IsOpen()
+        {
+            return _ws.State == WebSocketState.Open;
+        }
+
         private async void SendMessageAsync(string message)
         {
             if (_ws.State != WebSocketState.Open)
