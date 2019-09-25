@@ -21,9 +21,9 @@ namespace Warewolf.Auditing
     {
         private string _connectionString;
         private string _tableName;
-        
+
         public AuditQueryable()
-        { 
+        {
         }
 
         public AuditQueryable(string connectionString, string tableName)
@@ -37,17 +37,21 @@ namespace Warewolf.Auditing
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
+            var executionID = GetValue<string>("ExecutionID", values);
 
             var sql = BuildSQLWebUIFilterString(startTime, endTime, eventLevel);
 
-            return GetLogData(values, sql);
-            
+            return GetLogData(executionID, sql);
+
         }
-
-        public IEnumerable<dynamic> GetLogData(Dictionary<string, StringBuilder> values, StringBuilder sql)
+        public object QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
-            var executionID = GetValue<string>("ExecutionID", values);
-
+            var triggerID = GetValue<string>("ResourceId", values);
+            var sql = new StringBuilder($"SELECT * FROM {_tableName} WHERE ResourceId = '" + triggerID + "'");
+            return GetLogData(null, sql);
+        }
+        public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
+        {
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
             {
                 using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
@@ -73,7 +77,7 @@ namespace Warewolf.Auditing
 
             }
         }
-
+       
         private StringBuilder BuildSQLWebUIFilterString(string startTime, string endTime, string eventLevel)
         {
             var sql = new StringBuilder($"SELECT * FROM {_tableName} ");

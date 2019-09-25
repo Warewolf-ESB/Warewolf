@@ -47,7 +47,6 @@ namespace Warewolf.Tests
             mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
             mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
             mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
-            mockLogger.Setup(o => o.Debug(It.IsAny<string>())).Verifiable();
 
 
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
@@ -81,7 +80,6 @@ namespace Warewolf.Tests
             mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
             mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
             mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
-            mockLogger.Setup(o => o.Debug(It.IsAny<string>())).Verifiable();
 
 
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
@@ -114,7 +112,6 @@ namespace Warewolf.Tests
             mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
             mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
             mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
-            mockLogger.Setup(o => o.Debug(It.IsAny<string>())).Verifiable();
 
 
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
@@ -148,7 +145,6 @@ namespace Warewolf.Tests
             mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
             mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
             mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
-            mockLogger.Setup(o => o.Debug(It.IsAny<string>())).Verifiable();
 
 
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
@@ -182,7 +178,6 @@ namespace Warewolf.Tests
             mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
             mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
             mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
-            mockLogger.Setup(o => o.Debug(It.IsAny<string>())).Verifiable();
 
 
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
@@ -191,6 +186,38 @@ namespace Warewolf.Tests
             var response = seriLogConsumer.Consume(message);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Fatal(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(SeriLogConsumer))]
+        public void SeriLogConsumer_Consume_NotMatchingType_ShouldCall_Debug()
+        {
+            //------------------------------Arrange-----------------------------
+            var audit = new AuditStub();
+            audit.AuditType = "Something Else";
+
+            var message = audit;
+            var mockLogger = new Mock<ILogger>();
+            var mockLoggerPublisher = new Mock<ILoggerPublisher>();
+            var mockLoggerContext = new Mock<ILoggerContext>();
+            var mockLoggerSource = new Mock<ILoggerSource>();
+            var mockLoggerConnection = new Mock<ILoggerConnection>();
+            var mockLoggerConfig = new Mock<ILoggerConfig>();
+
+            mockLoggerPublisher.Setup(p => p.Debug(It.IsAny<string>(), It.IsAny<object[]>())).Verifiable();
+            mockLoggerConnection.Setup(l => l.NewPublisher()).Returns(mockLoggerPublisher.Object);
+            mockLoggerSource.Setup(s => s.NewConnection(It.IsAny<ILoggerConfig>())).Returns(mockLoggerConnection.Object);
+            mockLoggerContext.Setup(c => c.Source).Returns(mockLoggerSource.Object);
+            mockLoggerContext.Setup(c => c.LoggerConfig).Returns(mockLoggerConfig.Object);
+
+
+            var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
+
+            //------------------------------Act---------------------------------
+            var response = seriLogConsumer.Consume(message);
+            //------------------------------Assert------------------------------
+            mockLoggerPublisher.Verify(p => p.Debug(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
 
         public class AuditStub : IAudit

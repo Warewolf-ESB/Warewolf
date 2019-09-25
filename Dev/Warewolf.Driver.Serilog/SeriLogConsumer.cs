@@ -62,8 +62,8 @@ namespace Warewolf.Driver.Serilog
                 case "Fatal":
                     publisher.Fatal(logTemplate, DateTime.Now, LogEventLevel.Fatal, audit, Environment.NewLine, audit.Exception);
                     break;
-
                 default:
+                    publisher.Debug(logTemplate, DateTime.Now, LogEventLevel.Information, audit);
                     break;
             }
         }

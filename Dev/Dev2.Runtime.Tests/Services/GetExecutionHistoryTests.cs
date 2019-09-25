@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GetExecutionHistory))]
-        public void GetExecutionHistory__CreateServiceEntry_Returns_GetExecutionHistory()
+        public void GetExecutionHistory_CreateServiceEntry_Returns_GetExecutionHistory()
         {
             //------------Setup for test-------------------------
             var getExecutionHistory = new GetExecutionHistory();
@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", resId.ToString().ToStringBuilder()}
+                {"ResourceId", resId.ToString().ToStringBuilder()}
             };
             var executeResults = getExecutionHistory.Execute(requestArgs, workspaceMock.Object);
             var jsonSerializer = new Dev2JsonSerializer();
