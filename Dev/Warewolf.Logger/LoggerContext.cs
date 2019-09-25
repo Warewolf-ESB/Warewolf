@@ -9,6 +9,7 @@
 */
 
 using CommandLine;
+using Dev2.Common;
 using System;
 using System.Collections.Generic;
 using Warewolf.Driver.Serilog;
@@ -19,16 +20,10 @@ namespace Warewolf.Logger
     public class LoggerContext : ILoggerContext
     {
         public IEnumerable<Error> Errors { get; private set; }
-        public class Options
-        {
-            [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
-            public bool Verbose { get; set; }
+        
+        private IArgs _options;
 
-        }
-        private Options _options;
-
-
-        public bool Verbose { get; private set; }
+        public bool Verbose { get => _options.Verbose; }
         public ILoggerSource Source {
             get
             {
@@ -37,35 +32,13 @@ namespace Warewolf.Logger
         }
         public ILoggerConfig LoggerConfig { get; set; }
 
-        public LoggerContext(string[] args)
+        public LoggerContext(IArgs args)
         {
+            _options = args;
             LoggerConfig = new SeriLogSQLiteConfig
             {
-                ServerLoggingAddress = "ws://127.0.0.1:5000/ws"
+                ServerLoggingAddress = Config.Auditing.Endpoint
             };
-            Errors = new List<Error>();
-            CommandLine.Parser.Default.ParseArguments<Options>(args)
-                 .WithParsed(opts => _options = opts)
-                 .WithNotParsed((errs) => HandleParseError(errs));
-
-        }
-
-        public void IsVerbose(Options opts)
-        {
-            if (opts.Verbose)
-            {
-                Verbose = true;
-            }
-            else
-            {
-                Verbose = false;
-            }
-        }
-
-        public void HandleParseError(IEnumerable<Error> errs)
-        {
-            Console.WriteLine("Command Line parameters provided were not valid!");
-            Errors = errs;
         }
     }
 }

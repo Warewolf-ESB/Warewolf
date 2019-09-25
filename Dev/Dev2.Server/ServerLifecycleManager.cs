@@ -65,11 +65,14 @@ namespace Dev2
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
+        public LoggingServiceMonitor LoggingServiceMonitor { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
             var writer = new Writer();
 
+            var childProcessTracker = new ChildProcessTrackerWrapper();
+            var processFactory = new ProcessWrapperFactory();
             return new StartupConfiguration
             {
                 ServerEnvironmentPreparer = serverEnvironmentPreparer,
@@ -81,7 +84,8 @@ namespace Dev2
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
-                QueueWorkerMonitor = new QueueWorkerMonitor(new ProcessWrapperFactory(), new QueueWorkerConfigLoader(), TriggersCatalog.Instance, new ChildProcessTrackerWrapper())
+                QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
+                LoggingServiceMonitor = new LoggingServiceMonitor(childProcessTracker, processFactory, new JobConfig(Guid.NewGuid()))
             };
         }
     }
@@ -110,14 +114,15 @@ namespace Dev2
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
-
+            
         }
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
             SetApplicationDirectory();
             _writer = startupConfiguration.Writer;
-            
+            StartLoggingService(startupConfiguration);
+
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
             _startUpDirectory = startupConfiguration.Directory;
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
@@ -128,7 +133,7 @@ namespace Dev2
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
-            
+
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
 
@@ -149,6 +154,14 @@ namespace Dev2
                 EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
             }
         }
+
+        private void StartLoggingService(StartupConfiguration startupConfiguration)
+        {
+            _writer.Write("Starting logging service...  ");
+            startupConfiguration.LoggingServiceMonitor.Start();
+            _writer.WriteLine("done.");
+        }
+
         /// <summary>
         /// Starts up the server with relevant workers.
         /// NOTE: This must return a task as in Windows Server 2008 and Windows Server 2012 there is an issue
