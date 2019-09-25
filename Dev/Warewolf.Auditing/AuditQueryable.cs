@@ -44,7 +44,7 @@ namespace Warewolf.Auditing
             return GetLogData(executionID, sql);
 
         }
-        public object QueryTriggerData(Dictionary<string, StringBuilder> values)
+        public IEnumerable<dynamic> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var triggerID = GetValue<string>("ResourceId", values);
             var sql = new StringBuilder($"SELECT * FROM {_tableName} WHERE ResourceId = '" + triggerID + "'");
