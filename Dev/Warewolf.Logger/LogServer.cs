@@ -81,63 +81,6 @@ namespace Warewolf.Logger
             });
         }
 
-      
-
-            public MyLogConsumer(ILoggerConsumer<IAudit> loggerConsumer, IWebSocketConnection socket, IWriter writer)
-            {
-                _socket = socket;
-                _writer = writer;
-                _logger = loggerConsumer;
-            }
-
-            public Task<ConsumerResult> Consume(AuditCommand msg)
-            {
-                
-                _writer.Write("Logging Server OnMessage: Type:" + msg.Type);
-
-                switch (msg.Type)
-                {
-                    case "LogEntry":
-                        _logger.Consume(msg.Audit);
-                        break;
-                    case "LogQuery":
-                        _writer.Write("Logging Server LogQuery " + msg.Query);
-                        QueryLog(msg.Query, _socket, _writer);
-                        break;
-                    case "TriggerQuery":
-                        _writer.Write("Logging Server TriggerQuery " + msg.Query);
-                        QueryTriggerLog(msg.Query, _socket, _writer);
-                        break;
-                    default:
-                        _writer.Write("Logging Server Invalid Message Type");
-                        Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
-                        break;
-                }
-
-                return Task.FromResult(ConsumerResult.Success);
-            }          
-        }
-        private static void QueryTriggerLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
-        {
-            var serializer = new Dev2JsonSerializer();
-            var seriLoggerSource = new SeriLoggerSource();
-            var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
-            var results = auditQueryable.QueryTriggerData(query);
-
-            writer.Write("sending QueryTriggerLog to server: " + results + "...");
-            socket.Send(serializer.Serialize(results));
-        }
-        private static void QueryLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
-        {
-            var serializer = new Dev2JsonSerializer();
-            var seriLoggerSource = new SeriLoggerSource();
-            var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
-            var results = auditQueryable.QueryLogData(query);
-
-            writer.Write("sending QueryLog to server: " + results + "...");
-            socket.Send(serializer.Serialize(results));
-        }
-
         private bool _disposed = false;
         protected virtual void Dispose(bool disposing)
         {

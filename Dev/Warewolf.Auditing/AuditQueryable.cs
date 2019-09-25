@@ -48,12 +48,10 @@ namespace Warewolf.Auditing
         {
             var triggerID = GetValue<string>("ResourceId", values);
             var sql = new StringBuilder($"SELECT * FROM {_tableName} WHERE ResourceId = '" + triggerID + "'");
-            return GetLogData(values, sql);
+            return GetLogData(null, sql);
         }
         public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
         {
-            
-
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
             {
                 using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
