@@ -8,17 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Warewolf.Configuration
+using CommandLine;
+
+namespace Warewolf.Logger
 {
-    public class AuditingSettingsData
+    public interface IArgs
     {
-        public string Endpoint { get; internal set; } = "ws://127.0.0.1:5000/ws";
-
-        public bool Equals(AuditingSettingsData other)
-        {
-            var equals = Endpoint == other.Endpoint;
-
-            return equals;
-        }
+        bool Verbose { get; }
+    }
+    public class Args : IArgs
+    {
+        [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
+        public bool Verbose { get; set; }
     }
 }
