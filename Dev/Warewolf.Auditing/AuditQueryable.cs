@@ -46,9 +46,38 @@ namespace Warewolf.Auditing
         }
         public IEnumerable<dynamic> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
-            var triggerID = GetValue<string>("ResourceId", values);
-            var sql = new StringBuilder($"SELECT * FROM {_tableName} WHERE ResourceId = '" + triggerID + "'");
-            return GetLogData(null, sql);
+            var resourceId = GetValue<string>("ResourceId", values);
+            return GetQueueLogData(resourceId);
+        }
+        public IEnumerable<dynamic> GetQueueLogData(string resourceId)
+        {
+            //TODO: This sql query still needs to change. Waiting for valid data to save to the DB
+            var sql = new StringBuilder($"SELECT { _tableName}.* from { _tableName}, json_each({ _tableName}.Message) WHERE json_extract(value, '$.ResourceId') = '" + resourceId + "'");
+            
+            using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
+            {
+                using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
+                {
+                    sqlConn.Open();
+                    sqlConn.EnableExtensions(true);
+                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
+                    var reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var results = reader.GetValues();
+                            var value = results.GetValues("Properties");
+
+                            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
+                            var historyJson = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
+
+                            if (string.IsNullOrEmpty(resourceId) || resourceId == historyJson.ResourceId.ToString())
+                                yield return historyJson;
+                        }
+                    }
+                };
+            }
         }
         public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
         {
@@ -77,7 +106,6 @@ namespace Warewolf.Auditing
 
             }
         }
-       
         private StringBuilder BuildSQLWebUIFilterString(string startTime, string endTime, string eventLevel)
         {
             var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
