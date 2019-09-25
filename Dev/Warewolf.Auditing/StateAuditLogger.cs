@@ -39,7 +39,12 @@ namespace Warewolf.Auditing
         {
             if (logEntry is Audit auditLog)
             {
-                string json = JsonConvert.SerializeObject(auditLog);
+                var auditCommand = new AuditCommand
+                {
+                    Audit = auditLog,
+                    Type = "LogEntry"
+                };
+                string json = JsonConvert.SerializeObject(auditCommand);
                 _ws.SendMessage(json);
             }
         }

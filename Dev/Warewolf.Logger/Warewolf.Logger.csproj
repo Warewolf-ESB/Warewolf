@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
     <ApplicationIcon />
-    <StartupObject />
+    <StartupObject>Warewolf.Logger.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

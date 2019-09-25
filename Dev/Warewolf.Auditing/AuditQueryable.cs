@@ -37,16 +37,17 @@ namespace Warewolf.Auditing
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
+            var executionID = GetValue<string>("ExecutionID", values);
 
             var sql = BuildSQLWebUIFilterString(startTime, endTime, eventLevel);
 
-            return GetLogData(values, sql);
+            return GetLogData(executionID, sql);
             
         }
 
-        public IEnumerable<dynamic> GetLogData(Dictionary<string, StringBuilder> values, StringBuilder sql)
+        public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
         {
-            var executionID = GetValue<string>("ExecutionID", values);
+            
 
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
             {
