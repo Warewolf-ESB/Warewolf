@@ -8,32 +8,45 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using CommandLine;
 using Fleck;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
 namespace Warewolf.Logger
 {
-    public class Program
+    public static class Program
     {
-
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            var context = new LoggerContext(args);
-            if (context.Errors.Count() > 0)
-            {
-                Environment.Exit(1);
-            };
-            var impl = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
-            impl.Run();
-            impl.WaitForExit();
+            var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
+            return result.MapResult(
+                options => new Impl(options).Run(),
+                _ => 1);
         }
 
-        public class Implementation
+        internal class Impl
+        {
+            private readonly IArgs _options;
+
+            public Impl(Args options)
+            {
+                _options = options;
+            }
+            public int Run()
+            {
+                var context = new LoggerContext(_options);
+
+                var implementation = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
+                implementation.Run();
+                implementation.WaitForExit();
+                return 0;
+            }
+        }
+
+        internal class Implementation
         {
             private readonly IConsoleWindowFactory _consoleWindowFactory;
             private readonly IWebSocketServerFactory _webSocketServerFactory;
