@@ -27,6 +27,11 @@ namespace Warewolf.Driver.Serilog
             Log.Logger.Error(outputTemplate, args);
         }
 
+        public void Debug(string outputTemplate, params object[] args)
+        {
+            Log.Logger.Debug(outputTemplate, args);
+        }
+
         public void Fatal(string outputTemplate, params object[] args)
         {
             Log.Logger.Fatal(outputTemplate, args);
