@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
-    <PackageReference Include="Serilog.Sinks.SQLite" Version="5.0.0-dev-00086" />
+    <PackageReference Include="Serilog.Sinks.SQLite" Version="4.5.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110.0" />
     <PackageReference Include="Fleck" Version="1.1.0" />
   </ItemGroup>
