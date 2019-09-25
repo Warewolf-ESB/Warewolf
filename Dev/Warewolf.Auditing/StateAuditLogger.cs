@@ -31,7 +31,7 @@ namespace Warewolf.Auditing
         public StateAuditLogger(IWebSocketFactory webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
-            _ws = _webSocketFactory.New(); 
+            _ws = _webSocketFactory.New();
             _ws.Connect();
         }
 
