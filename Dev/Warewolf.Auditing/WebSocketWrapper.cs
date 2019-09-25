@@ -22,7 +22,7 @@ namespace Warewolf.Auditing
     {
         public IWebSocketWrapper New()
         {
-            return WebSocketWrapper.Create("ws://localhost:5000/ws");
+            return WebSocketWrapper.Create("ws://127.0.0.1:5000/ws");
         }
     }
 

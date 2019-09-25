@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var _client = WebSocketWrapper.Create("ws://localhost:5000/ws");
+            var _client = WebSocketWrapper.Create("ws://127.0.0.1:5000/ws");
             _client.Connect();                  
 
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
@@ -58,6 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ewh.Set();
                     response = msgResponse;
+                    var items = serializer.Deserialize<dynamic>(response);
                     socket.Close();
                 });
 

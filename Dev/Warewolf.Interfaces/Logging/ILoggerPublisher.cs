@@ -19,5 +19,6 @@ namespace Warewolf.Logging
         void Warn(string outputTemplate, params object[] args);
         void Error(string outputTemplate, params object[] args);
         void Fatal(string outputTemplate, params object[] args);
+        void Debug(string outputTemplate, params object[] args);
     }
 }
