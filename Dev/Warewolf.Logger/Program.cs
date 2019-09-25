@@ -12,6 +12,7 @@ using Fleck;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
@@ -29,7 +30,7 @@ namespace Warewolf.Logger
             };
             var impl = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
             impl.Run();
-            impl.Pause();
+            impl.WaitForExit();
         }
 
         public class Implementation
@@ -40,6 +41,7 @@ namespace Warewolf.Logger
             private readonly IWriter _writer;
             private readonly IPauseHelper _pause;
             private readonly ILogServerFactory _logServerFactory;
+            readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
             public Implementation(ILoggerContext context, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer, IPauseHelper pause)
             {
@@ -63,9 +65,16 @@ namespace Warewolf.Logger
                 logServer.Start(new List<IWebSocketConnection>()); 
             }
 
-            public void Pause()
+            public void WaitForExit()
             {
-                _pause.Pause();
+                if (_context.Verbose)
+                {
+                    _pause.Pause();
+                }
+                else
+                {
+                    _waitHandle.WaitOne();
+                }
             }
         }
     }
