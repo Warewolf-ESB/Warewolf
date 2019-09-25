@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Net.WebSockets;
 using System.Net.WebSockets.Managed;
 using Warewolf.Interfaces.Auditing;
+using Dev2.Common;
 
 namespace Warewolf.Auditing
 {
@@ -22,7 +23,7 @@ namespace Warewolf.Auditing
     {
         public IWebSocketWrapper New()
         {
-            return WebSocketWrapper.Create("ws://127.0.0.1:5000/ws");
+            return WebSocketWrapper.Create(Config.Auditing.Endpoint);
         }
     }
 

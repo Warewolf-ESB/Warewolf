@@ -9,6 +9,7 @@
 */
 
 using CommandLine;
+using Dev2.Common;
 using System;
 using System.Collections.Generic;
 using Warewolf.Driver.Serilog;
@@ -27,7 +28,6 @@ namespace Warewolf.Logger
         }
         private Options _options;
 
-
         public bool Verbose { get; private set; }
         public ILoggerSource Source {
             get
@@ -41,13 +41,12 @@ namespace Warewolf.Logger
         {
             LoggerConfig = new SeriLogSQLiteConfig
             {
-                ServerLoggingAddress = "ws://127.0.0.1:5000/ws"
+                ServerLoggingAddress = Config.Auditing.Endpoint
             };
             Errors = new List<Error>();
             CommandLine.Parser.Default.ParseArguments<Options>(args)
                  .WithParsed(opts => _options = opts)
                  .WithNotParsed((errs) => HandleParseError(errs));
-
         }
 
         public void IsVerbose(Options opts)
