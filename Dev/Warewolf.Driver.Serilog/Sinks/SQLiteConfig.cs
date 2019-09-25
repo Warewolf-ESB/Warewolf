@@ -39,6 +39,7 @@ namespace Warewolf.Driver.Serilog
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
+                .MinimumLevel.Verbose()
                 .WriteTo
                 .SQLite(sqliteDbPath: ConnectionString, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
                 .CreateLogger();
