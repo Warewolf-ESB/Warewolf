@@ -28,8 +28,8 @@ namespace Warewolf.Driver.Serilog
 
         public Task<ConsumerResult> Consume(IAudit item)
         {
-            var logger = _loggerContext.Source;
-            var connection = logger.NewConnection(_loggerContext.LoggerConfig);
+            var loggerSource = _loggerContext.Source;
+            var connection = loggerSource.NewConnection(_loggerContext.LoggerConfig);
             var publisher = connection.NewPublisher();
 
             try
@@ -46,7 +46,7 @@ namespace Warewolf.Driver.Serilog
 
         private void LogMessage(ILoggerPublisher publisher, IAudit audit)
         {
-            var logTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+            var logTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {@Message}{NewLine}{Exception}";
 
             switch (audit.AuditType)
             {
@@ -63,7 +63,7 @@ namespace Warewolf.Driver.Serilog
                     publisher.Fatal(logTemplate, DateTime.Now, LogEventLevel.Fatal, audit, Environment.NewLine, audit.Exception);
                     break;
                 default:
-                    publisher.Debug(logTemplate, DateTime.Now, LogEventLevel.Information, audit);
+                    publisher.Debug(logTemplate,DateTime.Now,LogEventLevel.Debug,audit);
                     break;
             }
         }
