@@ -12,12 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Triggers;
 
@@ -68,28 +71,53 @@ namespace Dev2.Runtime.ESB.Management.Services
 
     public class GetExecutionHistory : DefaultEsbManagementEndpoint
     {
+        private readonly IWebSocketServerFactory _webSocketServerFactory;
+        private readonly IWebSocketFactory _webSocketFactory;
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
                 var serializer = new Dev2JsonSerializer();
+                var result = new List<IExecutionHistory>();
                 if (values == null)
                 {
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
-                string queueName = null;
-                values.TryGetValue("resourceID", out StringBuilder tmp);
-                if (tmp != null)
+                values.TryGetValue("ResourceId", out StringBuilder triggerID);
+                if (triggerID != null)
                 {
-                    queueName = tmp.ToString();
-                    Dev2Logger.Info("Get Execution History. " + tmp, GlobalConstants.WarewolfInfo);
-                    //TODO: Once the events are being logged this line will be replaced with a query of that log
-                    var b = new ExecutionInfo(new DateTime(2001, 01, 01), new TimeSpan(1, 0, 0), new DateTime(2001, 01, 01), QueueRunStatus.Error, "sdf");
-                    var history = new List<IExecutionHistory>();
-                    history.Add(new ExecutionHistory("WorflowA", b, "bob"));
-                    history.Add(new ExecutionHistory("WorflowB", b, "bob"));
-                    history.Add(new ExecutionHistory("WorflowC", b, "bob"));
-                    return serializer.SerializeToBuilder(history);
+                    var _client = WebSocketWrapper.Create("ws://localhost:5000/ws");
+                    _client.Connect();
+
+                    Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
+                   
+                    var response = "";
+                    var message = new AuditCommand
+                    {
+                        Type = "TriggerQuery",
+                        Query = values
+                    };
+                    try
+                    {
+                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
+                        _client.SendMessage(serializer.Serialize(message));
+                        _client.OnMessage((msgResponse, socket) =>
+                        {
+                            ewh.Set();
+                            response = msgResponse;
+                            socket.Close();
+                        });
+                        ewh.WaitOne();
+                        LogExecutionHistoryCache.CurrentResults = result;
+                        //TODO: response is being returning as IAudit but needs to return as IExecutionHistory
+                        return serializer.SerializeToBuilder(result);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Info("Get Execution History Data ServiceError", e, GlobalConstants.WarewolfInfo);
+                    }
+                    LogExecutionHistoryCache.CurrentResults = result;
+                    return serializer.SerializeToBuilder(result);
                 }
                 Dev2Logger.Debug("No QueueName Provided", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(new List<IExecutionHistory>());
@@ -106,5 +134,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList></DataList>");
 
         public override string HandlesType() => "GetExecutionHistoryService";
+    }
+
+    public static class LogExecutionHistoryCache
+    {
+        public static IEnumerable<dynamic> CurrentResults { get; set; }
     }
 }

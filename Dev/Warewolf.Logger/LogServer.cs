@@ -111,6 +111,10 @@ namespace Warewolf.Logger
                         _writer.Write("Logging Server LogQuery " + msg.Query);
                         QueryLog(msg.Query, _socket, _writer);
                         break;
+                    case "TriggerQuery":
+                        _writer.Write("Logging Server TriggerQuery " + msg.Query);
+                        QueryTriggerLog(msg.Query, _socket, _writer);
+                        break;
                     default:
                         _writer.Write("Logging Server Invalid Message Type");
                         Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
@@ -118,9 +122,18 @@ namespace Warewolf.Logger
                 }
 
                 return Task.FromResult(ConsumerResult.Success);
-            }
+            }          
         }
+        private static void QueryTriggerLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
+        {
+            var serializer = new Dev2JsonSerializer();
+            var seriLoggerSource = new SeriLoggerSource();
+            var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+            var results = auditQueryable.QueryTriggerData(query);
 
+            writer.Write("sending QueryTriggerLog to server: " + results + "...");
+            socket.Send(serializer.Serialize(results));
+        }
         private static void QueryLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
             var serializer = new Dev2JsonSerializer();

@@ -605,7 +605,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             var serializer = new Dev2JsonSerializer();
             var comsController = GetCommunicationController.Invoke("GetExecutionHistoryService");
-            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
             var message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(resourceId.ToString()));
             var result = comsController.ExecuteCommand<List<IExecutionHistory>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
