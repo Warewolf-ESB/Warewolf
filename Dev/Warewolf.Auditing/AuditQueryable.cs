@@ -21,9 +21,9 @@ namespace Warewolf.Auditing
     {
         private string _connectionString;
         private string _tableName;
-        
+
         public AuditQueryable()
-        { 
+        {
         }
 
         public AuditQueryable(string connectionString, string tableName)
@@ -42,9 +42,14 @@ namespace Warewolf.Auditing
             var sql = BuildSQLWebUIFilterString(startTime, endTime, eventLevel);
 
             return GetLogData(executionID, sql);
-            
-        }
 
+        }
+        public object QueryTriggerData(Dictionary<string, StringBuilder> values)
+        {
+            var triggerID = GetValue<string>("ResourceId", values);
+            var sql = new StringBuilder($"SELECT * FROM {_tableName} WHERE ResourceId = '" + triggerID + "'");
+            return GetLogData(values, sql);
+        }
         public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
         {
             
@@ -74,7 +79,7 @@ namespace Warewolf.Auditing
 
             }
         }
-
+       
         private StringBuilder BuildSQLWebUIFilterString(string startTime, string endTime, string eventLevel)
         {
             var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
