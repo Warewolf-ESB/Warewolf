@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ResourceId", out StringBuilder triggerID);
                 if (triggerID != null)
                 {
-                    var _client = WebSocketWrapper.Create("ws://localhost:5000/ws");
+                    var _client = WebSocketWrapper.Create(Config.Auditing.Endpoint);
                     _client.Connect();
 
                     Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
