@@ -12,6 +12,7 @@ using System;
 
 namespace Warewolf.Interfaces.Auditing
 {
+    // TODO: move to Warewolf.Net
     public interface IWebSocketWrapper
     {
         IWebSocketWrapper Connect();
@@ -21,5 +22,6 @@ namespace Warewolf.Interfaces.Auditing
         bool IsOpen();
         IWebSocketWrapper Close();
         void SendMessage(string message);
+        void SendMessage(byte[] message);
     }
 }
