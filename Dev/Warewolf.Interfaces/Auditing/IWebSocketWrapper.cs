@@ -18,7 +18,7 @@ namespace Warewolf.Interfaces.Auditing
         IWebSocketWrapper OnConnect(Action<IWebSocketWrapper> onConnect);
         IWebSocketWrapper OnDisconnect(Action<IWebSocketWrapper> onDisconnect);
         IWebSocketWrapper OnMessage(Action<string, IWebSocketWrapper> onMessage);
-
+        bool IsOpen();
         IWebSocketWrapper Close();
         void SendMessage(string message);
     }

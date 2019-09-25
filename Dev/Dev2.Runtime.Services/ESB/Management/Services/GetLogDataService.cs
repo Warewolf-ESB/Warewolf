@@ -37,8 +37,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var _client = WebSocketWrapper.Create(Config.Auditing.Endpoint);
-            _client.Connect();                  
+            var client = WebSocketWrapper.Create(Config.Auditing.Endpoint).Connect();
+            while (!client.IsOpen())
+            {
+                Thread.Sleep(100);
+            }         
 
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
             var serializer = new Dev2JsonSerializer();
@@ -53,8 +56,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
 
-                _client.SendMessage(serializer.Serialize(message));
-                _client.OnMessage((msgResponse, socket) =>
+                client.SendMessage(serializer.Serialize(message));
+                client.OnMessage((msgResponse, socket) =>
                 {
                     ewh.Set();
                     response = msgResponse;
