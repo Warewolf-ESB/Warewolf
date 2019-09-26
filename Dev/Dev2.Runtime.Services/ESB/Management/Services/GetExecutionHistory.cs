@@ -39,8 +39,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ResourceId", out StringBuilder triggerID);
                 if (triggerID != null)
                 {
-                    var _client = WebSocketWrapper.Create(Config.Auditing.Endpoint);
-                    _client.Connect();
+                    var client = WebSocketWrapper.Create(Config.Auditing.Endpoint);
+                    client.Connect();
 
                     Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
                    
@@ -53,13 +53,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                     try
                     {
                         var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
-                        _client.SendMessage(serializer.Serialize(message));
-                        _client.OnMessage((msgResponse, socket) =>
+                        client.SendMessage(serializer.Serialize(message));
+                        client.OnMessage((msgResponse, socket) =>
                         {
-                            ewh.Set();
                             response = msgResponse;
-                            socket.Close();
+                            result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
+                            ewh.Set();
                         });
+                        client.SendMessage(serializer.Serialize(message));
+
                         ewh.WaitOne();
                         return serializer.SerializeToBuilder(response);
                     }
