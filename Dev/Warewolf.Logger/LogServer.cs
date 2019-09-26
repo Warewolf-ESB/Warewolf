@@ -53,9 +53,9 @@ namespace Warewolf.Logger
 
         public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
         {
-            _webSocketServerFactory = webSocketServerFactory;
-            _writer = writer;
-            _loggerContext = loggerContext;
+            _webSocketServerFactory = webSocketServerFactory ?? throw new ArgumentNullException(nameof(webSocketServerFactory));
+            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
+            _loggerContext = loggerContext ?? throw new ArgumentNullException(nameof(loggerContext));
         }
 
         public void Start(IList<IWebSocketConnection> clients)

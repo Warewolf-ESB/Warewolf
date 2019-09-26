@@ -10,6 +10,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
@@ -25,10 +26,49 @@ namespace Warewolf.Logger.Tests
         public void LogServer_Constructor_WhenValidParameters_ShouldNotThrowException()
         {
             //--------------------------------Arrange-------------------------------
-
             //--------------------------------Act-----------------------------------
+            var logServer = new LogServer(new Mock<IWebSocketServerFactory>().Object, new Mock<IWriter>().Object, new Mock<ILoggerContext>().Object);
             //--------------------------------Assert--------------------------------
+            Assert.IsNotNull(logServer);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(LogServer))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void LogServer_Constructor_WhenNullWebSocketFactory_ShouldNotThrowException()
+        {
+            //--------------------------------Arrange-------------------------------
+            //--------------------------------Act-----------------------------------
+            var logServer = new LogServer(null, new Mock<IWriter>().Object, new Mock<ILoggerContext>().Object);
+            //--------------------------------Assert--------------------------------
+            Assert.IsNull(logServer);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(LogServer))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void LogServer_Constructor_WhenNullWriter_ShouldNotThrowException()
+        {
+            //--------------------------------Arrange-------------------------------
+            //--------------------------------Act-----------------------------------
+            var logServer = new LogServer(new Mock<IWebSocketServerFactory>().Object, null, new Mock<ILoggerContext>().Object);
+            //--------------------------------Assert--------------------------------
+            Assert.IsNull(logServer);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(LogServer))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void LogServer_Constructor_WhenNullLoggerContext_ShouldNotThrowException()
+        {
+            //--------------------------------Arrange-------------------------------
+            //--------------------------------Act-----------------------------------
+            var logServer = new LogServer(new Mock<IWebSocketServerFactory>().Object, new Mock<IWriter>().Object, null);
+            //--------------------------------Assert--------------------------------
+            Assert.IsNull(logServer);
+        }
     }
 }
