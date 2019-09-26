@@ -27,6 +27,7 @@ namespace Warewolf.Auditing
         }
     }
 
+    // TODO: move to Warewolf.Common and rewrite the class
     public class WebSocketWrapper : IWebSocketWrapper
     {
         private const int ReceiveChunkSize = 1024;
@@ -56,7 +57,8 @@ namespace Warewolf.Auditing
 
         public IWebSocketWrapper Connect()
         {
-            ConnectAsync();
+            var task = ConnectAsync();
+            task.Wait();
             return this;
         }
 
@@ -84,19 +86,34 @@ namespace Warewolf.Auditing
             return this;
         }
 
-        public void SendMessage(string message)
+        public async void SendMessage(string message)
         {
-            SendMessageAsync(message);
+            await SendMessageAsync(message);
         }
 
-        private async void SendMessageAsync(string message)
+        public async void SendMessage(byte[] message)
+        {
+            await SendMessageAsync(message);
+        }
+
+        public bool IsOpen()
+        {
+            return _ws.State == WebSocketState.Open;
+        }
+
+        private async Task SendMessageAsync(string message)
         {
             if (_ws.State != WebSocketState.Open)
             {
-                throw new Exception("Connection is not open.");
+                throw new WebSocketException("Connection is not open.");
             }
 
             var messageBuffer = Encoding.UTF8.GetBytes(message);
+            await SendMessageAsync(messageBuffer);
+        }
+
+        private async Task SendMessageAsync(byte[] messageBuffer)
+        {
             var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / SendChunkSize);
 
             for (var i = 0; i < messagesCount; i++)
@@ -114,14 +131,14 @@ namespace Warewolf.Auditing
             }
         }
 
-        private async void ConnectAsync()
+        private async Task ConnectAsync()
         {
             await _ws.ConnectAsync(_uri, _cancellationToken);
             CallOnConnected();
-            StartListen();
+            await StartListen(); // TODO: why are we listening in the connect method???
         }
 
-        private async void StartListen()
+        private async Task StartListen()
         {
             var buffer = new byte[ReceiveChunkSize];
 

@@ -20,7 +20,10 @@ namespace Warewolf.Logger.Tests
         [TestCategory(nameof(LoggerContext))]
         public void LoggerContext_Contructor_Verbose_IsTrue()
         {
-            var args = new string[] { "-v" };
+            var args = new Args
+            {
+                Verbose = true
+            };
             var loggerContext = new LoggerContext(args);
             Assert.IsNotNull(loggerContext);
             Assert.IsTrue(loggerContext.Verbose);
@@ -31,21 +34,13 @@ namespace Warewolf.Logger.Tests
         [TestCategory(nameof(LoggerContext))]
         public void LoggerContext_Contructor_Verbose_IsFalse()
         {
-            var args = new string[] { };
+            var args = new Args
+            {
+                Verbose = false
+            };
             var loggerContext = new LoggerContext(args);
             Assert.IsNotNull(loggerContext);
             Assert.IsFalse(loggerContext.Verbose);
-        }
-
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(LoggerContext))]
-        public void LoggerContext_HandleParseError()
-        {
-            var args = new string[] { "-h" };
-            var loggerContext = new LoggerContext(args);
-            Assert.AreEqual(1,loggerContext.Errors.Count());
         }
     }
 }
