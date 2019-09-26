@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -15,10 +16,14 @@ using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
 
 namespace Dev2.Tests.Runtime.Services
@@ -88,24 +93,41 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GetExecutionHistory))]
-        public void GetExecutionHistory_Execute_GivenNoArgs_Exception()
+        public void GetExecutionHistory_Execute()
         {
-            //------------Setup for test-------------------------
-            var getExecutionHistory = new GetExecutionHistory();
-            var workspaceMock = new Mock<IWorkspace>();
-            var resId = Guid.NewGuid();
-            //------------Execute Test---------------------------
-            var requestArgs = new Dictionary<string, StringBuilder>
+            var stringBuilders = new Dictionary<string, StringBuilder>
             {
-                {"ResourceId", resId.ToString().ToStringBuilder()}
+               { "ResourceId", new StringBuilder(GlobalConstants.DefaultLoggingSourceId) }
             };
-            var executeResults = getExecutionHistory.Execute(requestArgs, workspaceMock.Object);
-            var jsonSerializer = new Dev2JsonSerializer();
-            Assert.IsNotNull(executeResults);
-            var deserializedResults = jsonSerializer.Deserialize<IList<IExecutionHistory>>(executeResults);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(deserializedResults);
-            Assert.IsTrue(deserializedResults.Count > 0);
+            var webSocketFactoryMock = new Mock<IWebSocketFactory>();
+            var webSocketWrapperMock = new Mock<IWebSocketWrapper>();
+            var commandMessage = "";
+            var onMessage = new Action<string, IWebSocketWrapper>((s, w) => { });
+            webSocketWrapperMock.Setup(ws => ws.SendMessage(It.IsAny<string>())).Callback((string s) =>
+            {
+                commandMessage = s;
+            }).Verifiable();
+
+            webSocketWrapperMock.Setup(c => c.Connect()).Returns(webSocketWrapperMock.Object);
+            webSocketWrapperMock.Setup(ws => ws.OnMessage(onMessage));
+
+
+
+            webSocketFactoryMock.Setup(c => c.New()).Returns(webSocketWrapperMock.Object);
+
+            //------------------------------Act--------------------------------------
+            var getExecutionHistory = new GetExecutionHistory(webSocketFactoryMock.Object, TimeSpan.FromMilliseconds(1));
+            getExecutionHistory.Execute(stringBuilders, null);
+            //------------------------------Assert-----------------------------------
+
+            var auditCommand = JsonConvert.DeserializeObject<AuditCommand>(commandMessage);
+            Assert.IsNotNull(auditCommand);
+            Assert.AreEqual("TriggerQuery", auditCommand.Type);
+            Assert.AreEqual(1, auditCommand.Query.Count);
+            Assert.AreEqual("ResourceId", auditCommand.Query.First().Key);
+            Assert.AreEqual(GlobalConstants.DefaultLoggingSourceId, auditCommand.Query.First().Value.ToString());
+
+            webSocketWrapperMock.Verify(s => s.OnMessage(It.IsAny<Action<string, IWebSocketWrapper>>()), Times.Once);
         }
     }
 }

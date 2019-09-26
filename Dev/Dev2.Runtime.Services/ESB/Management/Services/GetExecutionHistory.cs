@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Triggers;
 
@@ -26,6 +27,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetExecutionHistory : DefaultEsbManagementEndpoint
     {
+        private readonly IWebSocketFactory _webSocketFactory;
+        private readonly TimeSpan _waitTimeOut;
+
+        public GetExecutionHistory()
+             : this(new WebSocketFactory(), TimeSpan.MaxValue)
+        {
+        }
+
+        public GetExecutionHistory(IWebSocketFactory webSocketFactory, TimeSpan waitTimeOut)
+        {
+            _webSocketFactory = webSocketFactory;
+            _waitTimeOut = waitTimeOut;
+        }
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -39,8 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ResourceId", out StringBuilder triggerID);
                 if (triggerID != null)
                 {
-                    var _client = WebSocketWrapper.Create(Config.Auditing.Endpoint);
-                    _client.Connect();
+                    var client = _webSocketFactory.New().Connect();
 
                     Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
                    
@@ -53,14 +67,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     try
                     {
                         var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
-                        _client.SendMessage(serializer.Serialize(message));
-                        _client.OnMessage((msgResponse, socket) =>
+                        client.SendMessage(serializer.Serialize(message));
+                        client.OnMessage((msgResponse, socket) =>
                         {
                             ewh.Set();
                             response = msgResponse;
                             socket.Close();
                         });
-                        ewh.WaitOne();
+                        ewh.WaitOne(_waitTimeOut);
                         return serializer.SerializeToBuilder(response);
                     }
                     catch (Exception e)
