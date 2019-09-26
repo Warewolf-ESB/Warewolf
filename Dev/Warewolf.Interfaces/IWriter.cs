@@ -15,15 +15,18 @@ namespace Warewolf
 {
     public interface IWriter
     {
-        void Write(string value);
+        void Write(string message);
+        void WriteLine(string message);
     }
 
     public class Writer : IWriter
     {
-        public void Write(string value)
+        public void Write(string message)
         {
-            Console.Write(value);
+            Console.Write(message);
         }
+
+        public void WriteLine(string message) => Console.WriteLine(message);
     }
 
 

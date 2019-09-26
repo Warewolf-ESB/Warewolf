@@ -12,13 +12,17 @@ using System;
 
 namespace Warewolf.Interfaces.Auditing
 {
-    public interface IAudit
+    public interface IAuditEntry
+    {
+        Exception Exception { get; set; }
+        string AuditType { get; set; }
+    }
+
+    public interface IAudit : IAuditEntry
     {
         string AdditionalDetail { get; set; }
         DateTime AuditDate { get; set; }
-        string AuditType { get; set; }
         string Environment { get; set; }
-        Exception Exception { get; set; }
         string ExecutingUser { get; set; }
         string ExecutionID { get; set; }
         long ExecutionOrigin { get; set; }

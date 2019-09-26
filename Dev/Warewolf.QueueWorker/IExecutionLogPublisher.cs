@@ -8,21 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Auditing;
 using Warewolf.Logging;
 
 namespace QueueWorker
 {
-    internal class LogEntry
+    public interface IExecutionLogPublisher : ILoggerPublisher
     {
-        private LogLevel debug;
-        private string outputTemplate;
-        private object[] args;
-
-        public LogEntry(LogLevel debug, string outputTemplate, object[] args)
-        {
-            this.debug = debug;
-            this.outputTemplate = outputTemplate;
-            this.args = args;
-        }
+        void ExecutionFailed(ExecutionHistory executionHistory);
+        void ExecutionSucceeded(ExecutionHistory executionHistory);
+        void StartExecution(string message, params object[] args);
     }
 }
