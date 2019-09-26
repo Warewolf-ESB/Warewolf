@@ -12,49 +12,73 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data.SQLite;
 using System.Text;
 using Warewolf.Driver.Serilog;
-using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Auditing
 {
-    public class AuditQueryable
+    public abstract class AuditQueryable
     {
         private string _connectionString;
         private string _tableName;
 
-        public AuditQueryable()
+        protected AuditQueryable()
         {
         }
 
-        public AuditQueryable(string connectionString, string tableName)
+        protected AuditQueryable(string connectionString, string tableName)
         {
             _connectionString = connectionString;
             _tableName = tableName;
         }
 
-        public IEnumerable<dynamic> QueryLogData(Dictionary<string, StringBuilder> values)
+        public IEnumerable<Audit> QueryLogData(Dictionary<string, StringBuilder> values)
         {
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
             var executionID = GetValue<string>("ExecutionID", values);
 
-            var sql = BuildSQLWebUIFilterString(startTime, endTime, eventLevel);
+            var sql = BuildSQLWebUIFilterString(executionID, startTime, endTime, eventLevel);
 
-            GetAuditLogs logs = new GetAuditLogs();
-            return logs.Logs(_connectionString, executionID, sql);
+            var results = ExecuteDatabase(_connectionString, sql);
+            if (results.Length > 0)
+            {
+                var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
+                var audit = serilogData.Property("Message").Value.ToObject<Audit>();
+                yield return audit;
+            }
+            else
+            {
+                yield return null;
+            }
+
         }
-        public IEnumerable<dynamic> QueryTriggerData(Dictionary<string, StringBuilder> values)
+        public IEnumerable<ExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
-            GetAuditLogs logs = new GetAuditLogs();
-            return logs.Queues(_connectionString, resourceId);          
+
+            var sql = new StringBuilder($"SELECT * from Logs ");
+            if (resourceId != null)
+            {
+                sql.Append("WHERE json_extract(Properties, '$.ResourceId') = '" + resourceId + "' ");
+
+                var results = ExecuteDatabase(_connectionString, sql);
+                if (results.Length > 0)
+                {
+                    var serilogData = JsonConvert.DeserializeObject<SeriLogData>(results[0]);
+                    var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
+
+                    if (string.IsNullOrEmpty(resourceId) || resourceId == executionHistory.ResourceId.ToString())
+                        yield return executionHistory;
+                }
+            }
+            yield return null;
         }
 
-        private StringBuilder BuildSQLWebUIFilterString(string startTime, string endTime, string eventLevel)
+        protected abstract String[] ExecuteDatabase(string connectionString, StringBuilder sql);
+        private StringBuilder BuildSQLWebUIFilterString(string executionID, string startTime, string endTime, string eventLevel)
         {
             var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
 
@@ -62,32 +86,43 @@ namespace Warewolf.Auditing
             {
                 switch (eventLevel)
                 {
+                    case "Debug":
+                        sql.Append("WHERE Level = 'Debug' ");
+                        break;
                     case "Information":
-                        sql.Append("WHERE Level = 'Information'");
+                        sql.Append("WHERE Level = 'Information' ");
                         break;
                     case "Warning":
-                        sql.Append("WHERE Level = 'Warning'");
+                        sql.Append("WHERE Level = 'Warning' ");
                         break;
                     case "Error":
-                        sql.Append("WHERE Level = 'Error'");
+                        sql.Append("WHERE Level = 'Error' ");
                         break;
                     case "Fatal":
-                        sql.Append("WHERE Level = 'Fatal'");
+                        sql.Append("WHERE Level = 'Fatal' ");
                         break;
                     default:
                         break;
                 }
             }
+            if (!string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionID))
+            {
+                sql.Append("AND json_extract(Properties, '$.ExecutionID') = '" + executionID + "' ");
 
-            if (!string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
-            {
-                sql.Append(" AND (Timestamp >= '" + startTime + "' AND ");
-                sql.Append(" Timestamp <= '" + endTime + "') ");
             }
-            if (string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            if (string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionID))
             {
-                sql.Append(" WHERE Timestamp >= '" + startTime + "' AND ");
-                sql.Append(" Timestamp <= '" + endTime + "' ");
+                sql.Append("WHERE json_extract(Properties, '$.ExecutionID') = '" + executionID + "' ");
+            }
+            if ((!string.IsNullOrEmpty(eventLevel) || !string.IsNullOrEmpty(executionID)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            {
+                sql.Append("AND (Timestamp >= '" + startTime + "' ");
+                sql.Append("AND Timestamp <= '" + endTime + "') ");
+            }
+            if ((string.IsNullOrEmpty(eventLevel) && string.IsNullOrEmpty(executionID)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            {
+                sql.Append("WHERE (Timestamp >= '" + startTime + "' ");
+                sql.Append("AND Timestamp <= '" + endTime + "') ");
             }
 
             return sql;
@@ -104,15 +139,21 @@ namespace Warewolf.Auditing
             return toReturn;
         }
     }
-    class GetAuditLogs : AuditQueryableSqlite
+    public class AuditQueryableSqlite : AuditQueryable
     {
-        String[] ExecuteDatabase(string connectionString, StringBuilder sql)
+        public AuditQueryableSqlite(string connectionString, string tableName) : base(connectionString, tableName)
+        {
+        }
+
+        protected override String[] ExecuteDatabase(string connectionString, StringBuilder sql)
         {
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + connectionString + ";"))
             {
                 using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
                 {
                     sqlConn.Open();
+                    sqlConn.EnableExtensions(true);
+                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
@@ -126,33 +167,5 @@ namespace Warewolf.Auditing
             }
             return new string[0];
         }
-        public override IEnumerable<dynamic> Logs(string connectionString, string executionID, StringBuilder sql)
-        {
-            var results = ExecuteDatabase(connectionString, sql);
-            var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
-            var auditJson = serilogData.Property("Message").Value.ToObject<Audit>();
-
-            if (string.IsNullOrEmpty(executionID) || executionID == auditJson.ExecutionID)
-                yield return auditJson;
-        }
-        public override IEnumerable<dynamic> Queues(string connectionString, string resourceId)
-        {
-            //TODO: This sql query still needs to change. Waiting for valid data to save to the DB
-            var sql = new StringBuilder($"SELECT Logs.* from Logs, json_each(Logs.RenderedMessage)");
-            sql.Append("WHERE json_extract(value, '$.ResourceId') = '" + resourceId + "'");
-            var value = ExecuteDatabase(connectionString, sql);
-
-            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
-            var historyJson = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
-
-            if (string.IsNullOrEmpty(resourceId) || resourceId == historyJson.ResourceId.ToString())
-                yield return historyJson;
-        }
-    }
-    abstract class AuditQueryableSqlite
-    {
-        public abstract IEnumerable<dynamic> Queues(string connectionString, string resourceId);
-
-        public abstract IEnumerable<dynamic> Logs(string connectionString, string executionID, StringBuilder sql);
     }
 }
