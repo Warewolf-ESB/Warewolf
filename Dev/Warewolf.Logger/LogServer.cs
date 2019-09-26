@@ -86,11 +86,6 @@ namespace Warewolf.Logger
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-
                 _disposed = true;
                 _server.Dispose();
             }
