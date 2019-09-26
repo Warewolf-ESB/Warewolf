@@ -20,6 +20,7 @@ namespace Warewolf.Auditing.Tests
     [TestClass]
     public class AuditQueryableTests
     {
+        string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ";
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
@@ -49,7 +50,7 @@ namespace Warewolf.Auditing.Tests
             var result = auditQueryable.QueryTriggerData(query);
             var historyJson = result.ToArray();
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual("SELECT * from Logs WHERE json_extract(Properties, '$.ResourceId') = '" + resourceId + "' ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ", auditQueryable.SqlString.ToString());
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -65,7 +66,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual("SELECT * FROM Logs ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage, auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -86,7 +87,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(@"SELECT * FROM Logs WHERE Level = 'Debug' AND json_extract(Properties, '$.ExecutionID') = '" + executionID.ToString() + "' ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID.ToString() + "' ", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -107,7 +108,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(@"SELECT * FROM Logs WHERE Level = 'Debug' ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' ", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -130,7 +131,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(@"SELECT * FROM Logs WHERE (Timestamp >= '" + StartDateTime + "' AND Timestamp <= '" + CompletedDateTime + "') ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE (Timestamp >= '" + StartDateTime + "' AND Timestamp <= '" + CompletedDateTime + "') ", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -154,7 +155,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(@"SELECT * FROM Logs WHERE Level = 'Debug' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -180,7 +181,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(@"SELECT * FROM Logs WHERE Level = 'Debug' AND json_extract(Properties, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
         }
 
         public class AuditQueryableForTesting : AuditQueryable
