@@ -8,14 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-namespace Warewolf.Triggers
+using System.Collections.Generic;
+using System.Text;
+
+namespace Warewolf.Interfaces.Auditing
 {
-    public interface IExecutionHistory
+    public interface IAuditQueryable
     {
-        Guid ResourceId { get; set; }
-        string WorkflowOutput { get; }
-        IExecutionInfo ExecutionInfo { get; }
-        string UserName { get; set; }
+        IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql);
+        IEnumerable<dynamic> GetQueueLogData(string resourceId);
+        IEnumerable<dynamic> QueryLogData(Dictionary<string, StringBuilder> values);
+        IEnumerable<dynamic> QueryTriggerData(Dictionary<string, StringBuilder> values);
     }
 }

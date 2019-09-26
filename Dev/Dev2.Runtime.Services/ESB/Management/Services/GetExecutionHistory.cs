@@ -18,61 +18,14 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 using Warewolf.Auditing;
-using Warewolf.Interfaces.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Triggers;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class ExecutionHistory : IExecutionHistory
-    {
-        public ExecutionHistory(string workflowOutput, IExecutionInfo executionInfo, string userName)
-        {
-            ExecutionInfo = executionInfo;
-            WorkflowOutput = workflowOutput;
-            UserName = userName;
-        }
-        public string WorkflowOutput { get; private set; }
-        public IExecutionInfo ExecutionInfo { get; private set; }
-        public string UserName { get; set; }
-    }
-    public class ExecutionInfo : IExecutionInfo
-    {
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, string executionId, string failureReason)
-        {
-
-            ExecutionId = executionId;
-            Success = success;
-            EndDate = endDate;
-            Duration = duration;
-            StartDate = startDate;
-            FailureReason = failureReason;
-        }
-        [JsonConstructor]
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, string executionId)
-            : this(startDate, duration, endDate, success, executionId, "")
-        {
-            ExecutionId = executionId;
-            Success = success;
-            EndDate = endDate;
-            Duration = duration;
-            StartDate = startDate;
-        }
-
-        public DateTime StartDate { get; private set; }
-        public TimeSpan Duration { get; private set; }
-        public DateTime EndDate { get; private set; }
-        public QueueRunStatus Success { get; private set; }
-        public string ExecutionId { get; private set; }
-        public string FailureReason { get; private set; }
-    }
-
     public class GetExecutionHistory : DefaultEsbManagementEndpoint
     {
-        private readonly IWebSocketServerFactory _webSocketServerFactory;
-        private readonly IWebSocketFactory _webSocketFactory;
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -108,8 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             socket.Close();
                         });
                         ewh.WaitOne();
-                        //TODO: response is being returning as IAudit but needs to return as IExecutionHistory
-                        return serializer.SerializeToBuilder(result);
+                        return serializer.SerializeToBuilder(response);
                     }
                     catch (Exception e)
                     {
