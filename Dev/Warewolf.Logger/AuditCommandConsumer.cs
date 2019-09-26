@@ -67,7 +67,7 @@ namespace Warewolf.Logger
         {
             var serializer = new Dev2JsonSerializer();
             var seriLoggerSource = new SeriLoggerSource();
-            var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+            var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryTriggerData(query);
 
             writer.Write("sending QueryTriggerLog to server: " + results + "...");
@@ -77,7 +77,7 @@ namespace Warewolf.Logger
         {
             var serializer = new Dev2JsonSerializer();
             var seriLoggerSource = new SeriLoggerSource();
-            var auditQueryable = new AuditQueryable(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+            var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryLogData(query);
 
             writer.Write("sending QueryLog to server: " + results + "...");
