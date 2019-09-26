@@ -17,6 +17,19 @@ namespace Warewolf.Driver.Serilog
 {
     public class SeriLogSQLiteConfig : ISeriLogConfig
     {
+        static readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() => new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo
+                .SQLite(
+                    sqliteDbPath: _staticSettings.ConnectionString,
+                    tableName: _staticSettings.TableName,
+                    restrictedToMinimumLevel: _staticSettings.RestrictedToMinimumLevel,
+                    formatProvider: _staticSettings.FormatProvider,
+                    storeTimestampInUtc: _staticSettings.StoreTimestampInUtc,
+                    retentionPeriod: _staticSettings.RetentionPeriod)
+                    .CreateLogger());
+
+        static readonly Settings _staticSettings = new Settings();
 
         readonly Settings _config;
 
@@ -30,7 +43,7 @@ namespace Warewolf.Driver.Serilog
             _config = sqlConfig;
         }
 
-        public ILogger Logger { get => CreateLogger(); }
+        public ILogger Logger { get => _logger.Value; }
         //TODO: this path needs to come the Config.Server.AuditPath which is still tobe moved to project Framework48
         public string ConnectionString { get => _config.ConnectionString; }  
 
@@ -55,7 +68,7 @@ namespace Warewolf.Driver.Serilog
                 TableName = "Logs";
                 RestrictedToMinimumLevel = LogEventLevel.Verbose;
                 FormatProvider = null;
-                StoreTimestampInUtc = false;
+                StoreTimestampInUtc = false; // TODO: this should default to true...
             }
             public string ConnectionString
             {
