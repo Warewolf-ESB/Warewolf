@@ -65,7 +65,7 @@ namespace Dev2
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
-        public LoggingServiceMonitor LoggingServiceMonitor { get; set; }
+        public LoggingServiceMonitorWithRestart LoggingServiceMonitor { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -85,7 +85,7 @@ namespace Dev2
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
-                LoggingServiceMonitor = new LoggingServiceMonitor(childProcessTracker, processFactory, new JobConfig(Guid.NewGuid()))
+                LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory)
             };
         }
     }
