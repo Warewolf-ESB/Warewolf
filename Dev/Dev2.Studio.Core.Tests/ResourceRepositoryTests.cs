@@ -868,7 +868,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsNotNull(returnMessage);
             Assert.AreEqual("GetExecutionHistoryService", returnMessage.ServiceName);
             Assert.AreEqual(1, returnMessage.Args.Count);
-            Assert.AreEqual(resourceId.ToString(), returnMessage.Args["resourceID"].ToString());
+            Assert.AreEqual(resourceId.ToString(), returnMessage.Args["ResourceId"].ToString());
         }
 
         [TestMethod]
