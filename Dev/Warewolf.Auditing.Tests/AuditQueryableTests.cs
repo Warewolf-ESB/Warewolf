@@ -65,6 +65,7 @@ namespace Warewolf.Auditing.Tests
             };
             var results = auditQueryable.QueryLogData(query);
             Assert.IsNotNull(results) ;
+            var historyJson = JsonConvert.SerializeObject(results);
         }
 
         [TestMethod]
