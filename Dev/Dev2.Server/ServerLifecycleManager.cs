@@ -158,7 +158,9 @@ namespace Dev2
         private void StartLoggingService(StartupConfiguration startupConfiguration)
         {
             _writer.Write("Starting logging service...  ");
-            startupConfiguration.LoggingServiceMonitor.Start();
+            var monitor = startupConfiguration.LoggingServiceMonitor;
+            monitor.OnProcessDied += (e) => _writer.WriteLine("logging service exited");
+            monitor.Start();
             _writer.WriteLine("done.");
         }
 

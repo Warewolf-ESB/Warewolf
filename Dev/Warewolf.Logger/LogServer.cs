@@ -67,12 +67,12 @@ namespace Warewolf.Logger
             {
                 socket.OnOpen = () =>
                 {
-                    _writer.Write("Logging Server OnOpen...");
+                    _writer.WriteLine("Logging Server OnOpen...");
                     clients.Add(socket);
                 };
                 socket.OnClose = () =>
                 {
-                    _writer.Write("Logging Server OnClose...");
+                    _writer.WriteLine("Logging Server OnClose...");
                     clients.Remove(socket);
                 };
 
