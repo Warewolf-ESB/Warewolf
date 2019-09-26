@@ -39,6 +39,7 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
+using Warewolf.Auditing;
 using Warewolf.Configuration;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;

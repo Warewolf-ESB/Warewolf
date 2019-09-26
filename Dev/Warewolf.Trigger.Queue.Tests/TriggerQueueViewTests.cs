@@ -722,7 +722,7 @@ namespace Warewolf.Trigger.Queue.Tests
         {
             var resourceId = Guid.NewGuid();
 
-            var mockExecutionInfo = new Mock<IExecutionInfo>();
+            var mockExecutionInfo = new Mock<ExecutionInfo>();
 
             var history = new List<IExecutionHistory>
             {
