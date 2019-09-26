@@ -9,8 +9,6 @@
 */
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,10 +42,10 @@ namespace Warewolf.Auditing.Tests
             var resourceId = Guid.NewGuid();
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ResourceId", resourceId.ToString().ToStringBuilder()}               
+                {"ResourceId", resourceId.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");          
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
             var result = auditQueryable.QueryTriggerData(query);
             var historyJson = result.ToArray();
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
@@ -182,34 +180,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(@"SELECT * FROM Logs WHERE Level = 'Debug' AND json_extract(Properties, '$.ExecutionID') = '"+ executionID + "' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
-        }
-        public class AuditStub : IAudit
-        {
-            public string AdditionalDetail { get; set; }
-            public DateTime AuditDate { get; set; }
-            public string AuditType { get; set; }
-            public string Environment { get; set; }
-            public Exception Exception { get; set; }
-            public string ExecutingUser { get; set; }
-            public string ExecutionID { get; set; }
-            public long ExecutionOrigin { get; set; }
-            public string ExecutionOriginDescription { get; set; }
-            public string ExecutionToken { get; set; }
-            public int Id { get; set; }
-            public bool IsRemoteWorkflow { get; set; }
-            public bool IsSubExecution { get; set; }
-            public string NextActivity { get; set; }
-            public string NextActivityId { get; set; }
-            public string NextActivityType { get; set; }
-            public string ParentID { get; set; }
-            public string PreviousActivity { get; set; }
-            public string PreviousActivityId { get; set; }
-            public string PreviousActivityType { get; set; }
-            public string ServerID { get; set; }
-            public string VersionNumber { get; set; }
-            public string WorkflowID { get; set; }
-            public string WorkflowName { get; set; }
+            Assert.AreEqual(@"SELECT * FROM Logs WHERE Level = 'Debug' AND json_extract(Properties, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
         }
 
         public class AuditQueryableForTesting : AuditQueryable

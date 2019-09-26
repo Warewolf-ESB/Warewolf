@@ -12,11 +12,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data.SQLite;
 using System.Text;
 using Warewolf.Driver.Serilog;
-using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Auditing
 {
