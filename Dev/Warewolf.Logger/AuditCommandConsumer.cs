@@ -28,35 +28,44 @@ namespace Warewolf.Logger
     {
         private readonly IWebSocketConnection _socket;
         private readonly IWriter _writer;
-        private readonly ILoggerConsumer<IAudit> _logger;
+        private readonly ILoggerConsumer<IAuditEntry> _logger;
 
-        public AuditCommandConsumer(ILoggerConsumer<IAudit> loggerConsumer, IWebSocketConnection socket, IWriter writer)
+        public AuditCommandConsumer(ILoggerConsumer<IAuditEntry> loggerConsumer, IWebSocketConnection socket, IWriter writer)
         {
             _socket = socket;
             _writer = writer;
             _logger = loggerConsumer;
         }
 
-        public Task<ConsumerResult> Consume(AuditCommand msg)
+        public Task<ConsumerResult> Consume(AuditCommand item)
         {
 
-            _writer.Write("Logging Server OnMessage: Type:" + msg.Type);
+            _writer.WriteLine("Logging Server OnMessage: Type:" + item.Type);
 
-            switch (msg.Type)
+            var msg = item;
+            switch (item.Type)
             {
                 case "LogEntry":
                     _logger.Consume(msg.Audit);
                     break;
                 case "LogQuery":
-                    _writer.Write("Logging Server LogQuery " + msg.Query);
+                    _writer.WriteLine("Executing query: " + msg.Query);
                     ExecuteLogQuery(msg.Query, _socket, _writer);
                     break;
                 case "TriggerQuery":
-                    _writer.Write("Logging Server TriggerQuery " + msg.Query);
+                    _writer.WriteLine("Executing TriggerQuery: " + msg.Query);
                     QueryTriggerLog(msg.Query, _socket, _writer);
                     break;
+                case "LogEntryCommand":
+                    _writer.WriteLine(msg.LogEntry.OutputTemplate);
+                    _logger.Consume(msg.LogEntry);
+                    break;
+                case "ExecutionAuditCommand":
+                    _writer.WriteLine(msg.ExecutionHistory.ResourceId.ToString());
+                    _logger.Consume(msg.ExecutionHistory);
+                    break;
                 default:
-                    _writer.Write("Logging Server Invalid Message Type");
+                    _writer.WriteLine("Logging Server Invalid Message Type");
                     Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
                     break;
             }
@@ -70,7 +79,7 @@ namespace Warewolf.Logger
             var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryTriggerData(query);
 
-            writer.Write("sending QueryTriggerLog to server: " + results + "...");
+            writer.WriteLine("sending QueryTriggerLog to server: " + results + "...");
             socket.Send(serializer.Serialize(results));
         }
         private static void ExecuteLogQuery(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
@@ -80,7 +89,7 @@ namespace Warewolf.Logger
             var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryLogData(query);
 
-            writer.Write("sending QueryLog to server: " + results + "...");
+            writer.WriteLine("sending QueryLog to server: " + results + "...");
             socket.Send(serializer.Serialize(results));
         }
     }

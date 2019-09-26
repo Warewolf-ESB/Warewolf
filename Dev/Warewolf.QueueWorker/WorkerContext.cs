@@ -58,6 +58,8 @@ namespace QueueWorker
             watcher.EnableRaisingEvents = true;
         }
 
+        public Guid TriggerId { get => _triggerQueue.Id; }
+
         public string WorkflowUrl { get => $"{_serverUri}/secure/{_triggerQueue.WorkflowName}.json"; }
 
         public string Username { get => _triggerQueue.UserName; }

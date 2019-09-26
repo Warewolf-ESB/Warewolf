@@ -67,12 +67,12 @@ namespace Warewolf.Logger
             {
                 socket.OnOpen = () =>
                 {
-                    _writer.Write("Logging Server OnOpen...");
+                    _writer.WriteLine("Logging Server OnOpen...");
                     clients.Add(socket);
                 };
                 socket.OnClose = () =>
                 {
-                    _writer.Write("Logging Server OnClose...");
+                    _writer.WriteLine("Logging Server OnClose...");
                     clients.Remove(socket);
                 };
 
@@ -86,11 +86,6 @@ namespace Warewolf.Logger
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-
                 _disposed = true;
                 _server.Dispose();
             }
