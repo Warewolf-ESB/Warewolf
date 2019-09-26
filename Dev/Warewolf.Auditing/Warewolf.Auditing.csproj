@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
