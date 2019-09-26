@@ -17,12 +17,14 @@ namespace QueueWorker
 {
     internal class NetworkLogger : ILoggerPublisher
     {
-        private readonly IWebSocketWrapper _ws;
+        private IWebSocketWrapper _ws;
+        private readonly string _endpoint;
         private readonly ISerializer _serializer;
         protected ISerializer Serializer { get => _serializer; }
 
         public NetworkLogger(string endpoint, ISerializer serializer)
         {
+            _endpoint = endpoint;
             _serializer = serializer;
             _ws = WebSocketWrapper.Create(endpoint);
             _ws.Connect();
@@ -30,6 +32,12 @@ namespace QueueWorker
 
         private void SendMessage(LogEntry logEntry)
         {
+            if (!_ws.IsOpen())
+            {
+                _ws = WebSocketWrapper.Create(_endpoint);
+                _ws.Connect();
+            }
+
             var logCommand = new AuditCommand
             {
                 Type = "LogEntryCommand",
