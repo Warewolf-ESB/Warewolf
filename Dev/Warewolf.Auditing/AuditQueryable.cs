@@ -66,13 +66,14 @@ namespace Warewolf.Auditing
                 var results = ExecuteDatabase(_connectionString, sql);
                 if (results.Length > 0)
                 {
-                    var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
-                    var executionHistory = serilogData.Property("Message").Value.ToObject<ExecutionHistory>();
-
+                    var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(results[0]);
                     yield return executionHistory;
                 }
             }
-            yield return null;
+            else
+            {
+                yield return null;
+            }
         }
 
         protected abstract String[] ExecuteDatabase(string connectionString, StringBuilder sql);
@@ -157,7 +158,7 @@ namespace Warewolf.Auditing
                         while (reader.Read())
                         {
                             var results = reader.GetValues();
-                            return results.GetValues("Properties");
+                            return results.GetValues("Message");
                         }
                     }
                 };

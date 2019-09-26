@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private readonly TimeSpan _waitTimeOut;
 
         public GetExecutionHistory()
-             : this(new WebSocketFactory(), TimeSpan.MaxValue)
+             : this(new WebSocketFactory(), TimeSpan.FromMinutes(5))
         {
         }
 
@@ -66,16 +66,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     try
                     {
-                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
-                        client.SendMessage(serializer.Serialize(message));
+                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);                      
                         client.OnMessage((msgResponse, socket) =>
                         {
                             response = msgResponse;
                             result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
                             ewh.Set();
                         });
+                        client.SendMessage(serializer.Serialize(message));
                         ewh.WaitOne(_waitTimeOut);
-                        return serializer.SerializeToBuilder(response);
+                        return serializer.SerializeToBuilder(result);
                     }
                     catch (Exception e)
                     {

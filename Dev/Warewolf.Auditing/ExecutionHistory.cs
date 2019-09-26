@@ -16,7 +16,8 @@ namespace Warewolf.Auditing
 {
     public class ExecutionHistory : IExecutionHistory
     {
-        public ExecutionHistory(Guid resourceId, string workflowOutput, IExecutionInfo executionInfo, string userName)
+        [JsonConstructor]
+        public ExecutionHistory(Guid resourceId, string workflowOutput, ExecutionInfo executionInfo, string userName)
         {
             ResourceId = resourceId;
             ExecutionInfo = executionInfo;
@@ -24,7 +25,7 @@ namespace Warewolf.Auditing
             UserName = userName;
         }
         public Guid ResourceId { get; set; }
-        public string WorkflowOutput { get; private set; }
+        public string WorkflowOutput { get; set; }
         public IExecutionInfo ExecutionInfo { get; private set; }
         public string UserName { get; set; }
     }
