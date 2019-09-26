@@ -70,9 +70,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         client.SendMessage(serializer.Serialize(message));
                         client.OnMessage((msgResponse, socket) =>
                         {
-                            ewh.Set();
                             response = msgResponse;
-                            socket.Close();
+                            result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
+                            ewh.Set();
                         });
                         ewh.WaitOne(_waitTimeOut);
                         return serializer.SerializeToBuilder(response);
