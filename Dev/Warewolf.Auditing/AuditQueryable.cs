@@ -67,11 +67,10 @@ namespace Warewolf.Auditing
                 var results = ExecuteDatabase(_connectionString, sql);
                 if (results.Length > 0)
                 {
-                    var serilogData = JsonConvert.DeserializeObject<SeriLogData>(results[0]);
-                    var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
+                    var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
+                    var executionHistory = serilogData.Property("Message").Value.ToObject<ExecutionHistory>();
 
-                    if (string.IsNullOrEmpty(resourceId) || resourceId == executionHistory.ResourceId.ToString())
-                        yield return executionHistory;
+                    yield return executionHistory;
                 }
             }
             yield return null;
