@@ -9,6 +9,7 @@
 */
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -128,8 +129,8 @@ namespace Warewolf.Auditing
         public override IEnumerable<dynamic> Logs(string connectionString, string executionID, StringBuilder sql)
         {
             var results = ExecuteDatabase(connectionString, sql);
-            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(results[0]);
-            var auditJson = JsonConvert.DeserializeObject<Audit>(serilogData.Message);
+            var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
+            var auditJson = serilogData.Property("Message").Value.ToObject<Audit>();
 
             if (string.IsNullOrEmpty(executionID) || executionID == auditJson.ExecutionID)
                 yield return auditJson;
