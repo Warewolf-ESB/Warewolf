@@ -80,13 +80,13 @@ namespace QueueWorker
 
             public void Run()
             {
-                var logger = new NetworkLogger(Config.Auditing.Endpoint, new JsonSerializer());
+                var logger = new ExecutionLogger(Config.Auditing.Endpoint, new JsonSerializer());
                 logger.Info("Starting queue worker", _config.QueueName);
 
                 var deadletterPublisher = CreateDeadLetterPublisher();
 
                 var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl,_config.Username,_config.Password, _config.Inputs);
-                var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder);
+                var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder, _config.TriggerId, _config.Username);
 
                 var queue = _config.Source;
 

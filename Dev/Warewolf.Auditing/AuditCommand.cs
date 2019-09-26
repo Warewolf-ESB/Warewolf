@@ -8,8 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Warewolf.Interfaces.Auditing;
+using Warewolf.Logging;
 
 namespace Warewolf.Auditing
 {
@@ -18,5 +21,23 @@ namespace Warewolf.Auditing
         public string Type { get; set; }
         public Audit Audit { get; set; }
         public Dictionary<string, StringBuilder> Query { get; set; }
+        public ExecutionHistory ExecutionHistory { get; set; }
+        public LogEntry LogEntry { get; set; }
+    }
+
+    public class LogEntry : IAuditEntry
+    {
+        public LogLevel LogLevel { get; set; }
+        public string OutputTemplate { get; set; }
+        public object[] Args { get; set; }
+        public Exception Exception { get; set; }
+        public string AuditType { get; set; }
+
+        public LogEntry(LogLevel logLevel, string outputTemplate, object[] args)
+        {
+            this.LogLevel = logLevel;
+            this.OutputTemplate = outputTemplate;
+            this.Args = args;
+        }
     }
 }

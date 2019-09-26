@@ -18,7 +18,7 @@ namespace Warewolf.Triggers
         TimeSpan Duration { get; }
         DateTime EndDate { get; }
         QueueRunStatus Success { get; }
-        string ExecutionId { get; }
+        Guid ExecutionId { get; }
         string FailureReason { get; }
     }
 }

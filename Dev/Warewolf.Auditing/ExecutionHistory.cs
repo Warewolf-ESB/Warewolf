@@ -10,11 +10,12 @@
 
 using Newtonsoft.Json;
 using System;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
 
 namespace Warewolf.Auditing
 {
-    public class ExecutionHistory : IExecutionHistory
+    public class ExecutionHistory : IExecutionHistory, IAuditEntry
     {
         public ExecutionHistory(Guid resourceId, string workflowOutput, IExecutionInfo executionInfo, string userName)
         {
@@ -22,15 +23,19 @@ namespace Warewolf.Auditing
             ExecutionInfo = executionInfo;
             WorkflowOutput = workflowOutput;
             UserName = userName;
+
         }
         public Guid ResourceId { get; set; }
         public string WorkflowOutput { get; private set; }
         public IExecutionInfo ExecutionInfo { get; private set; }
         public string UserName { get; set; }
+        public Exception Exception { get; set; }
+        public string AuditType { get; set; } = "Information";
     }
+
     public class ExecutionInfo : IExecutionInfo
     {
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, string executionId, string failureReason)
+        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, Guid executionId, string failureReason)
         {
 
             ExecutionId = executionId;
@@ -41,7 +46,7 @@ namespace Warewolf.Auditing
             FailureReason = failureReason;
         }
         [JsonConstructor]
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, string executionId)
+        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, Guid executionId)
             : this(startDate, duration, endDate, success, executionId, "")
         {
             ExecutionId = executionId;
@@ -55,7 +60,7 @@ namespace Warewolf.Auditing
         public TimeSpan Duration { get; private set; }
         public DateTime EndDate { get; private set; }
         public QueueRunStatus Success { get; private set; }
-        public string ExecutionId { get; private set; }
+        public Guid ExecutionId { get; private set; }
         public string FailureReason { get; private set; }
     }
 }

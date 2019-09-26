@@ -19,6 +19,7 @@ namespace QueueWorker
     {
         private readonly IWebSocketWrapper _ws;
         private readonly ISerializer _serializer;
+        protected ISerializer Serializer { get => _serializer; }
 
         public NetworkLogger(string endpoint, ISerializer serializer)
         {
@@ -29,7 +30,12 @@ namespace QueueWorker
 
         private void SendMessage(LogEntry logEntry)
         {
-            var msg = _serializer.Serialize(logEntry);
+            var logCommand = new AuditCommand
+            {
+                Type = "LogEntryCommand",
+                LogEntry = logEntry
+            };
+            var msg = _serializer.Serialize(logCommand);
             _ws.SendMessage(msg);
         }
 
@@ -39,6 +45,6 @@ namespace QueueWorker
         public void Info(string outputTemplate, params object[] args) => SendMessage(new LogEntry(LogLevel.Info, outputTemplate, args));
         public void Warn(string outputTemplate, params object[] args) => SendMessage(new LogEntry(LogLevel.Warn, outputTemplate, args));
 
-        public void Publish(byte[] value) => throw new System.Exception("logging byte[] is not supported");
+        public void Publish(byte[] value) => _ws.SendMessage(value);
     }
 }
