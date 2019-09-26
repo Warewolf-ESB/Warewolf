@@ -66,8 +66,11 @@ namespace Warewolf.Auditing
                 var results = ExecuteDatabase(_connectionString, sql);
                 if (results.Length > 0)
                 {
-                    var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(results[0]);
-                    yield return executionHistory;
+                    foreach (var result in results)
+                    {
+                        var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(result);
+                        yield return executionHistory;
+                    }
                 }
             }
             else
@@ -155,11 +158,13 @@ namespace Warewolf.Auditing
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
+                        var ret = new List<string>();
                         while (reader.Read())
                         {
                             var results = reader.GetValues();
-                            return results.GetValues("Message");
+                            ret.Add(results.GetValues("Message")[0]); // TODO: should not just hope that the Message key exists
                         }
+                        return ret.ToArray();
                     }
                 };
             }
