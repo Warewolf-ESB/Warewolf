@@ -52,14 +52,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
 
-                client.SendMessage(serializer.Serialize(message));
                 client.OnMessage((msgResponse, socket) =>
                 {
-                    ewh.Set();
                     response = msgResponse;
-                    var items = serializer.Deserialize<dynamic>(response);
-                    socket.Close();
+                    result.AddRange(serializer.Deserialize<List<Audit>>(response));
+                    ewh.Set();
                 });
+                client.SendMessage(serializer.Serialize(message));
 
                 ewh.WaitOne();
                 LogDataCache.CurrentResults = result;
