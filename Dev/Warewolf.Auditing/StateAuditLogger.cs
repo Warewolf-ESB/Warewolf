@@ -23,18 +23,26 @@ namespace Warewolf.Auditing
 
     public class StateAuditLogger : IStateAuditLogger, IWarewolfLogWriter
     {
-        private readonly IWebSocketWrapper _ws;
+        private IWebSocketWrapper _ws;
+        private readonly IWebSocketFactory _webSocketFactory;
 
         public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
         
         public StateAuditLogger(IWebSocketFactory webSocketFactory)
         {
+            _webSocketFactory = webSocketFactory;
             _ws = webSocketFactory.New();
             _ws.Connect();
         }
 
         public void LogAuditState(Object logEntry)
         {
+            if (!_ws.IsOpen())
+            {
+                _ws = _webSocketFactory.New();
+                _ws.Connect();
+            }
+
             if (logEntry is Audit auditLog)
             {
                 var auditCommand = new AuditCommand
