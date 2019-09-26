@@ -61,21 +61,22 @@ namespace Warewolf.Auditing
         {
             var resourceId = GetValue<string>("ResourceId", values);
 
-            var sql = new StringBuilder($"SELECT Logs.* from Logs, json_each(Logs.RenderedMessage)");
-            sql.Append("WHERE json_extract(value, '$.ResourceId') = '" + resourceId + "'");
-            var results = ExecuteDatabase(_connectionString, sql);
-            if (results.Length > 0)
+            var sql = new StringBuilder($"SELECT * from Logs ");
+            if (resourceId != null)
             {
-                var serilogData = JsonConvert.DeserializeObject<SeriLogData>(results[0]);
-                var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
+                sql.Append("WHERE json_extract(Properties, '$.ResourceId') = '" + resourceId + "' ");
 
-                if (string.IsNullOrEmpty(resourceId) || resourceId == executionHistory.ResourceId.ToString())
-                    yield return executionHistory;
+                var results = ExecuteDatabase(_connectionString, sql);
+                if (results.Length > 0)
+                {
+                    var serilogData = JsonConvert.DeserializeObject<SeriLogData>(results[0]);
+                    var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
+
+                    if (string.IsNullOrEmpty(resourceId) || resourceId == executionHistory.ResourceId.ToString())
+                        yield return executionHistory;
+                }
             }
-            else
-            {
-                yield return null;
-            }
+            yield return null;
         }
 
         protected abstract String[] ExecuteDatabase(string connectionString, StringBuilder sql);
@@ -93,7 +94,7 @@ namespace Warewolf.Auditing
                     case "Information":
                         sql.Append("WHERE Level = 'Information' ");
                         break;
-                    case "Warning": 
+                    case "Warning":
                         sql.Append("WHERE Level = 'Warning' ");
                         break;
                     case "Error":
@@ -153,6 +154,8 @@ namespace Warewolf.Auditing
                 using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
                 {
                     sqlConn.Open();
+                    sqlConn.EnableExtensions(true);
+                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {

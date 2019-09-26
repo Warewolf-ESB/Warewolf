@@ -32,10 +32,27 @@ namespace Warewolf.Auditing.Tests
             var query = new Dictionary<string, StringBuilder>();
             var result = auditQueryable.QueryTriggerData(query);
             var historyJson = result.ToArray();
-            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual("Logs", auditQueryable.SqlString);
+            Assert.AreEqual(null, auditQueryable.ConnectionString);
+            Assert.AreEqual(null, auditQueryable.SqlString);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        public void AuditQueryable_QueryTriggerData_FilterByResourceId()
+        {
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var resourceId = Guid.NewGuid();
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"ResourceId", resourceId.ToString().ToStringBuilder()}               
+            };
 
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");          
+            var result = auditQueryable.QueryTriggerData(query);
+            var historyJson = result.ToArray();
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual("SELECT * from Logs WHERE json_extract(Properties, '$.ResourceId') = '" + resourceId + "' ", auditQueryable.SqlString.ToString());
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
