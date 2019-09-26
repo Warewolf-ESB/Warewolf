@@ -5,6 +5,7 @@
     <TargetFramework>net48</TargetFramework>
     <ApplicationIcon />
     <StartupObject>Warewolf.Logger.Program</StartupObject>
+    <AssemblyName>WarewolfLogger</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
