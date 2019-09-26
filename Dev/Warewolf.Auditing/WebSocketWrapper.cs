@@ -135,10 +135,10 @@ namespace Warewolf.Auditing
         {
             await _ws.ConnectAsync(_uri, _cancellationToken);
             CallOnConnected();
-            await StartListen(); // TODO: why are we listening in the connect method???
+            WatchForMessagesFromServer();
         }
 
-        private async Task StartListen()
+        private async void WatchForMessagesFromServer()
         {
             var buffer = new byte[ReceiveChunkSize];
 

@@ -330,6 +330,10 @@
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj">
+      <Project>{a44298cd-2e74-4b81-a115-cf9497c982f2}</Project>
+      <Name>Warewolf.Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.QueueWorker\Warewolf.QueueWorker.csproj">
       <Project>{88794bac-c9ea-48a6-a9c4-0a76a44caede}</Project>
       <Name>Warewolf.QueueWorker</Name>

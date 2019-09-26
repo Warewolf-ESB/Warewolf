@@ -24,14 +24,12 @@ namespace Warewolf.Auditing
     public class StateAuditLogger : IStateAuditLogger, IWarewolfLogWriter
     {
         private readonly IWebSocketWrapper _ws;
-        private readonly IWebSocketFactory _webSocketFactory;
 
         public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
         
         public StateAuditLogger(IWebSocketFactory webSocketFactory)
         {
-            _webSocketFactory = webSocketFactory;
-            _ws = _webSocketFactory.New();
+            _ws = webSocketFactory.New();
             _ws.Connect();
         }
 
@@ -51,7 +49,7 @@ namespace Warewolf.Auditing
 
         public void Dispose()
         {
+            // TODO: close and dispose websocket
         }
-
     }
 }

@@ -22,7 +22,7 @@ namespace Dev2
 
         protected override ProcessStartInfo GetProcessStartInfo()
         {
-            return null;
+            return new ProcessStartInfo("WarewolfLogger.exe");
         }
     }
 }
