@@ -239,15 +239,8 @@ namespace Dev2.Network
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                var ensureConnectedWaitTask = new Task(() =>
-                {
-                    while (IsConnected == false)
-                    {
-                        Task.Yield();
-                    }
-                });
-                ensureConnectedWaitTask.Start();
-                ensureConnectedWaitTask.Wait(30000);
+                var ensureConnectedWaitTask = ConnectAsync(id);
+                ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
             catch (AggregateException aex)
             {
@@ -272,6 +265,14 @@ namespace Dev2.Network
         public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
+            var ensureConnectedWaitTask = new Task(() =>
+            {
+                while (IsConnected == false)
+                {
+                    Task.Yield();
+                }
+            });
+            ensureConnectedWaitTask.Start();
             return true;
         }
 
