@@ -11,9 +11,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.SQLite;
 using System.Text;
 using Warewolf.Driver.Serilog;
+using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Auditing
 {
@@ -51,61 +53,15 @@ namespace Warewolf.Auditing
         }
         public IEnumerable<dynamic> GetQueueLogData(string resourceId)
         {
-            //TODO: This sql query still needs to change. Waiting for valid data to save to the DB
-            var sql = new StringBuilder($"SELECT { _tableName}.* from { _tableName}, json_each({ _tableName}.Message) WHERE json_extract(value, '$.ResourceId') = '" + resourceId + "'");
-            
-            using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
-            {
-                using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
-                {
-                    sqlConn.Open();
-                    sqlConn.EnableExtensions(true);
-                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
-                    var reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var results = reader.GetValues();
-                            var value = results.GetValues("Properties");
-
-                            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
-                            var historyJson = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
-
-                            if (string.IsNullOrEmpty(resourceId) || resourceId == historyJson.ResourceId.ToString())
-                                yield return historyJson;
-                        }
-                    }
-                };
-            }
+            GetAuditLogs logs = new GetAuditLogs();
+            return logs.Queues(_connectionString, resourceId);
         }
         public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
         {
-            using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
-            {
-                using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
-                {
-                    sqlConn.Open();
-                    var reader = command.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var results = reader.GetValues();
-                            var value = results.GetValues("Properties");
-
-                            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
-                            var auditJson = JsonConvert.DeserializeObject<Audit>(serilogData.Message);
-
-                            if (string.IsNullOrEmpty(executionID) || executionID == auditJson.ExecutionID)
-                                yield return auditJson;
-                        }
-                    }
-                };
-
-            }
+            GetAuditLogs logs = new GetAuditLogs();
+            return logs.Logs(_connectionString, executionID, sql);
         }
+
         private StringBuilder BuildSQLWebUIFilterString(string startTime, string endTime, string eventLevel)
         {
             var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
@@ -155,5 +111,56 @@ namespace Warewolf.Auditing
             }
             return toReturn;
         }
+    }
+    class GetAuditLogs : AuditQueryableSqlite
+    {
+        String[] ExecuteDatabase(string connectionString, StringBuilder sql)
+        {
+            using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + connectionString + ";"))
+            {
+                using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
+                {
+                    sqlConn.Open();
+                    var reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var results = reader.GetValues();
+                            return results.GetValues("Properties");
+                        }
+                    }
+                };
+            }
+            return new string[0];
+        }
+        public override IEnumerable<dynamic> Logs(string connectionString, string executionID, StringBuilder sql)
+        {
+            var results = ExecuteDatabase(connectionString, sql);
+            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(results[0]);
+            var auditJson = JsonConvert.DeserializeObject<Audit>(serilogData.Message);
+
+            if (string.IsNullOrEmpty(executionID) || executionID == auditJson.ExecutionID)
+                yield return auditJson;
+        }
+        public override IEnumerable<dynamic> Queues(string connectionString, string resourceId)
+        {
+            //TODO: This sql query still needs to change. Waiting for valid data to save to the DB
+            var sql = new StringBuilder($"SELECT Logs.* from Logs, json_each(Logs.RenderedMessage)");
+            sql.Append("WHERE json_extract(value, '$.ResourceId') = '" + resourceId + "'");
+            var value = ExecuteDatabase(connectionString, sql);
+
+            var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
+            var historyJson = JsonConvert.DeserializeObject<ExecutionHistory>(serilogData.Message);
+
+            if (string.IsNullOrEmpty(resourceId) || resourceId == historyJson.ResourceId.ToString())
+                yield return historyJson;
+        }
+    }
+    abstract class AuditQueryableSqlite
+    {
+        public abstract IEnumerable<dynamic> Queues(string connectionString, string resourceId);
+
+        public abstract IEnumerable<dynamic> Logs(string connectionString, string executionID, StringBuilder sql);
     }
 }
