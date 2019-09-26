@@ -43,23 +43,14 @@ namespace Warewolf.Auditing
 
             var sql = BuildSQLWebUIFilterString(startTime, endTime, eventLevel);
 
-            return GetLogData(executionID, sql);
-
+            GetAuditLogs logs = new GetAuditLogs();
+            return logs.Logs(_connectionString, executionID, sql);
         }
         public IEnumerable<dynamic> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
-            return GetQueueLogData(resourceId);
-        }
-        public IEnumerable<dynamic> GetQueueLogData(string resourceId)
-        {
             GetAuditLogs logs = new GetAuditLogs();
-            return logs.Queues(_connectionString, resourceId);
-        }
-        public IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql)
-        {
-            GetAuditLogs logs = new GetAuditLogs();
-            return logs.Logs(_connectionString, executionID, sql);
+            return logs.Queues(_connectionString, resourceId);          
         }
 
         private StringBuilder BuildSQLWebUIFilterString(string startTime, string endTime, string eventLevel)
