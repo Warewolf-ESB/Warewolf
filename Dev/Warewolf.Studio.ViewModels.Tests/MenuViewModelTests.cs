@@ -329,7 +329,26 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             VerifyUpdateProperties();
             _mainViewModelMock.VerifySet(it=>it.MenuExpanded = true);
-            Assert.AreEqual(35, _target.ButtonWidth);
+            Assert.AreEqual(125, _target.ButtonWidth);
+            Assert.IsTrue(_target.IsPanelOpen);
+        }
+
+        [TestMethod, Timeout(60000)]
+        public void TestSlideClosedCommandIsPopoutViewOpenTrue()
+        {
+            //arrange
+            Assert.IsFalse(_target.IsPopoutViewOpen);
+            _target.IsPopoutViewOpen = true;
+            _mainViewModelMock.SetupGet(it => it.MenuPanelWidth).Returns(81);
+            _target.IsNotOverLockCommand.Execute(null);
+            _changedProperties.Clear();
+
+            //act
+            _target.SlideClosedCommand.Execute(null);
+            Assert.IsTrue(_target.SlideClosedCommand.CanExecute(null));
+
+            //assert
+            Assert.AreEqual(125, _target.ButtonWidth);
             Assert.IsTrue(_target.IsPanelOpen);
         }
 
