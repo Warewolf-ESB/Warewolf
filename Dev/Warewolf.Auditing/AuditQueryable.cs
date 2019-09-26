@@ -58,12 +58,11 @@ namespace Warewolf.Auditing
         public IEnumerable<ExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
+            var sql = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
 
-            var sql = new StringBuilder($"SELECT * from Logs ");
             if (resourceId != null)
             {
-                sql.Append("WHERE json_extract(Properties, '$.ResourceId') = '" + resourceId + "' ");
-
+                sql.Append("WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ");
                 var results = ExecuteDatabase(_connectionString, sql);
                 if (results.Length > 0)
                 {
@@ -79,7 +78,7 @@ namespace Warewolf.Auditing
         protected abstract String[] ExecuteDatabase(string connectionString, StringBuilder sql);
         private StringBuilder BuildSQLWebUIFilterString(string executionID, string startTime, string endTime, string eventLevel)
         {
-            var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
+            var sql = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
 
             if (eventLevel != null)
             {
@@ -106,12 +105,11 @@ namespace Warewolf.Auditing
             }
             if (!string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionID))
             {
-                sql.Append("AND json_extract(Properties, '$.ExecutionID') = '" + executionID + "' ");
-
+                sql.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionID + "' ");
             }
             if (string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionID))
             {
-                sql.Append("WHERE json_extract(Properties, '$.ExecutionID') = '" + executionID + "' ");
+                sql.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionID + "' ");
             }
             if ((!string.IsNullOrEmpty(eventLevel) || !string.IsNullOrEmpty(executionID)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
