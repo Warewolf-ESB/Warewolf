@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Warewolf.Interfaces.Auditing;
 
 namespace Warewolf.Auditing.Tests
 {
@@ -50,7 +49,7 @@ namespace Warewolf.Auditing.Tests
             var result = auditQueryable.QueryTriggerData(query);
             var historyJson = result.ToArray();
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -66,7 +65,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage, auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -87,14 +86,51 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID.ToString() + "' ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID.ToString() + "' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
-
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AuditQueryable_QueryLogData_FilterBy_EventLevel()
+        public void AuditQueryable_QueryLogData_FilterBy_EventLevel_IncorrectLevel()
+        {
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"EventLevel","Wrong".ToStringBuilder() }
+            };
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var results = auditQueryable.QueryLogData(query);
+            var historyJson = results.ToArray();
+
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual(sqlMessage + "ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AuditQueryable_QueryLogData_FilterBy_ExecutionId()
+        {
+            var executionID = Guid.NewGuid();
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"ExecutionID", executionID.ToString().ToStringBuilder()}
+
+            };
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var results = auditQueryable.QueryLogData(query);
+            var historyJson = results.ToArray();
+
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual(sqlMessage + "WHERE json_extract(Message, '$.ExecutionID') = '" + executionID.ToString() + "' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Debug()
         {
             var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
@@ -108,9 +144,88 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Information()
+        {
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"EventLevel","Information".ToStringBuilder() }
+            };
 
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+
+            var results = auditQueryable.QueryLogData(query);
+            var historyJson = results.ToArray();
+
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Information' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Warning()
+        {
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"EventLevel","Warning".ToStringBuilder() }
+            };
+
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+
+            var results = auditQueryable.QueryLogData(query);
+            var historyJson = results.ToArray();
+
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Warning' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Error()
+        {
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"EventLevel","Error".ToStringBuilder() }
+            };
+
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+
+            var results = auditQueryable.QueryLogData(query);
+            var historyJson = results.ToArray();
+
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Error' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditQueryable))]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Fatal()
+        {
+            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+            var query = new Dictionary<string, StringBuilder>
+            {
+                {"EventLevel","Fatal".ToStringBuilder() }
+            };
+
+            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+
+            var results = auditQueryable.QueryLogData(query);
+            var historyJson = results.ToArray();
+
+            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Fatal' ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
@@ -131,7 +246,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE (Timestamp >= '" + StartDateTime + "' AND Timestamp <= '" + CompletedDateTime + "') ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE (Timestamp >= '" + StartDateTime + "' AND Timestamp <= '" + CompletedDateTime + "') ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -155,7 +270,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
 
         [TestMethod]
@@ -181,7 +296,7 @@ namespace Warewolf.Auditing.Tests
             var historyJson = results.ToArray();
 
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '" + StartDateTime.ToString() + "' AND Timestamp <= '" + CompletedDateTime.ToString() + "') ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
         }
 
         public class AuditQueryableForTesting : AuditQueryable
