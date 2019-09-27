@@ -102,8 +102,13 @@ namespace Warewolf.Logger.Tests
         public void LogServer_PerformingStartAction_ShouldCallActionOnTheWrapper()
         {
             //--------------------------------Arrange-------------------------------
+            var mockLoggerSource = new Mock<ILoggerSource>();
+            mockLoggerSource.Setup(ls => ls.NewConnection(It.IsAny<ILoggerConfig>())).Returns(new Mock<ILoggerConnection>().Object);
+
             var mockLoggerContext = new Mock<ILoggerContext>();
             mockLoggerContext.Setup(l => l.LoggerConfig).Returns(new Mock<ILoggerConfig>().Object);
+            mockLoggerContext.Setup(l => l.Source).Returns(mockLoggerSource.Object);
+
             Action<IWebSocketConnection> performedAction = null;
             var mockWebSocketServerWrapper = new Mock<IWebSocketServerWrapper>();
             mockWebSocketServerWrapper.Setup(ws => ws.Start(It.IsAny<Action<IWebSocketConnection>>())).Callback((Action<IWebSocketConnection> a) =>
@@ -131,8 +136,13 @@ namespace Warewolf.Logger.Tests
         public void LogServer_PerformingClientOnOpen_ShouldCallAction()
         {
             //--------------------------------Arrange-------------------------------
+            var mockLoggerSource = new Mock<ILoggerSource>();
+            mockLoggerSource.Setup(ls => ls.NewConnection(It.IsAny<ILoggerConfig>())).Returns(new Mock<ILoggerConnection>().Object);
+
             var mockLoggerContext = new Mock<ILoggerContext>();
             mockLoggerContext.Setup(l => l.LoggerConfig).Returns(new Mock<ILoggerConfig>().Object);
+            mockLoggerContext.Setup(l => l.Source).Returns(mockLoggerSource.Object);
+
             Action<IWebSocketConnection> performedAction = null;
             var mockWebSocketServerWrapper = new Mock<IWebSocketServerWrapper>();
             mockWebSocketServerWrapper.Setup(ws => ws.Start(It.IsAny<Action<IWebSocketConnection>>())).Callback((Action<IWebSocketConnection> a) =>
@@ -144,7 +154,7 @@ namespace Warewolf.Logger.Tests
             mockWebSocketServerFactory.Setup(ws => ws.New(It.IsAny<string>())).Returns(mockWebSocketServerWrapper.Object);
             var consoleString = "";
             var mockWriter = new Mock<IWriter>();
-            mockWriter.Setup(w => w.Write(It.IsAny<string>())).Callback((string s) => { consoleString = s; }) ;
+            mockWriter.Setup(w => w.WriteLine(It.IsAny<string>())).Callback((string s) => { consoleString = s; }) ;
             var logServer = new LogServer(mockWebSocketServerFactory.Object, mockWriter.Object, mockLoggerContext.Object);
 
             var mockClient = new Mock<IWebSocketConnection>();
@@ -166,8 +176,13 @@ namespace Warewolf.Logger.Tests
         public void LogServer_PerformingClientOnClose_ShouldCallAction()
         {
             //--------------------------------Arrange-------------------------------
+            var mockLoggerSource = new Mock<ILoggerSource>();
+            mockLoggerSource.Setup(ls => ls.NewConnection(It.IsAny<ILoggerConfig>())).Returns(new Mock<ILoggerConnection>().Object);
+
             var mockLoggerContext = new Mock<ILoggerContext>();
             mockLoggerContext.Setup(l => l.LoggerConfig).Returns(new Mock<ILoggerConfig>().Object);
+            mockLoggerContext.Setup(l => l.Source).Returns(mockLoggerSource.Object);
+
             Action<IWebSocketConnection> performedAction = null;
             var mockWebSocketServerWrapper = new Mock<IWebSocketServerWrapper>();
             mockWebSocketServerWrapper.Setup(ws => ws.Start(It.IsAny<Action<IWebSocketConnection>>())).Callback((Action<IWebSocketConnection> a) =>
@@ -179,7 +194,7 @@ namespace Warewolf.Logger.Tests
             mockWebSocketServerFactory.Setup(ws => ws.New(It.IsAny<string>())).Returns(mockWebSocketServerWrapper.Object);
             var consoleString = "";
             var mockWriter = new Mock<IWriter>();
-            mockWriter.Setup(w => w.Write(It.IsAny<string>())).Callback((string s) => { consoleString = s; });
+            mockWriter.Setup(w => w.WriteLine(It.IsAny<string>())).Callback((string s) => { consoleString = s; });
             var logServer = new LogServer(mockWebSocketServerFactory.Object, mockWriter.Object, mockLoggerContext.Object);
 
             var mockClient = new Mock<IWebSocketConnection>();
