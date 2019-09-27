@@ -86,9 +86,9 @@ namespace Warewolf.Auditing
             return this;
         }
 
-        public async void SendMessage(string message)
+        public void SendMessage(string message)
         {
-            await SendMessageAsync(message);
+            SendMessageAsync(message);
         }
 
         public async void SendMessage(byte[] message)
@@ -101,7 +101,7 @@ namespace Warewolf.Auditing
             return _ws.State == WebSocketState.Open;
         }
 
-        private async Task SendMessageAsync(string message)
+        private void SendMessageAsync(string message)
         {
             if (_ws.State != WebSocketState.Open)
             {
@@ -109,7 +109,7 @@ namespace Warewolf.Auditing
             }
 
             var messageBuffer = Encoding.UTF8.GetBytes(message);
-            await SendMessageAsync(messageBuffer);
+            SendMessageAsync(messageBuffer).Wait();
         }
 
         private async Task SendMessageAsync(byte[] messageBuffer)
@@ -156,8 +156,7 @@ namespace Warewolf.Auditing
 
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
-                            await
-                                _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                            await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                             CallOnDisconnected();
                         }
                         else
@@ -181,7 +180,6 @@ namespace Warewolf.Auditing
                 _ws.Dispose();
             }
         }
-
         private void CallOnMessage(StringBuilder stringResult)
         {
             if (_onMessage != null)

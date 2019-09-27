@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private readonly TimeSpan _waitTimeOut;
 
         public GetLogDataService()
-             : this(new WebSocketFactory(),TimeSpan.MaxValue)
+             : this(new WebSocketFactory(),TimeSpan.FromMinutes(5))
         {
         }
 
