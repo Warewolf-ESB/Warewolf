@@ -138,11 +138,34 @@ namespace Warewolf.Auditing
         [DataMember]
         public DateTime AuditDate { get; set; }
 
+        [Column(Name = "Url", DbType = "string", CanBeNull = true)]
+        [JsonProperty("Url")]
+        [DataMember]
+        public string Url { get; set; }
+        [Column(Name = "User", CanBeNull = true)]
+        [JsonProperty("User")]
+        [DataMember]
+        public string User { get; set; }
+        [Column(Name = "Status", CanBeNull = true)]
+        [JsonProperty("Status")]
+        [DataMember]
+        public string Status { get; set; }
+        [Column(Name = "ExecutionTime", CanBeNull = true)]
+        [JsonProperty("ExecutionTime")]
+        [DataMember]
+        public string ExecutionTime { get; set; }
         [Column(Name = "Exception", CanBeNull = true)]
         [JsonProperty("Exception")]
         [DataMember]
         public Exception Exception { get; set; }
 
+        [JsonProperty("StartDateTime")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
+        public DateTime StartDateTime { get; set; }
+
+        [JsonProperty("CompletedDateTime")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
+        public DateTime CompletedDateTime { get; set; }
         public static Expression<Func<Audit, bool>> EqualsAuditType(string searchTerm)
         {
             return p => (string.IsNullOrEmpty(searchTerm) || p.AuditType == searchTerm);
@@ -172,14 +195,19 @@ namespace Warewolf.Auditing
             ServerID = dsfDataObject.ServerID.ToString();
             ParentID = dsfDataObject.ParentID.ToString();
             ExecutingUser = dsfDataObject.ExecutingUser?.ToString();
+            User = dsfDataObject.ExecutingUser?.ToString();
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
             Environment = dsfDataObject.Environment.ToJson();
             VersionNumber = dsfDataObject.VersionNumber.ToString();
             AuditDate = DateTime.Now;
+            StartDateTime = DateTime.Now;
+            CompletedDateTime = DateTime.Now;
+            Url = dsfDataObject.WebUrl;
             AuditType = auditType;
             AdditionalDetail = detail;
             Exception = exception;
+
             if (previousActivity != null)
             {
                 PreviousActivity = previousActivity.GetDisplayName();
