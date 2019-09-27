@@ -115,7 +115,7 @@ namespace Warewolf.Driver.Serilog.Tests
             Assert.AreEqual(expected: expectedTestFatalMsg, actual: actualLogEventList[2].MessageTemplate.Text);
         }
        
-        [TestMethod]
+        [TestMethod]  
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogPublisher))]
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_SQLite_Success()
