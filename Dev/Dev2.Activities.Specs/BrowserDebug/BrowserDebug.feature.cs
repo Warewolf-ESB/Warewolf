@@ -595,7 +595,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 151
   testRunner.Given("I have a workflow \"ErrorWebResponse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 152
-  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ErrorWebResponse.json\" i" +
+  testRunner.And("I Debug \"http://localhost:3142/secure/ErrorWebResponse.json\" i" +
                     "n Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
   testRunner.Then("Browser content is \"\"Message\": \"\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
