@@ -48,7 +48,10 @@ namespace Warewolf.Auditing
                 foreach (var result in results)
                 {
                     var audit = JsonConvert.DeserializeObject<Audit>(result);
-                    yield return audit;
+                    if (audit.ExecutionID != null)
+                    {
+                        yield return audit;
+                    }
                 }
             }
             else
