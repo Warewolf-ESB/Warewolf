@@ -11,15 +11,11 @@
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Serializers;
-using Dev2.Common.Wrappers;
 using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
@@ -30,46 +26,6 @@ namespace Dev2.Tests.Runtime.Triggers
     [TestClass]
     public class TriggersCatalogTests
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            var resourcePath = Path.Combine(@"C:\ProgramData\Warewolf\Triggers");
-
-            if (Directory.Exists(resourcePath))
-            {
-                DirectoryWrapperInstance().CleanUp(resourcePath);
-            }
-        }
-        public static IDirectory DirectoryWrapperInstance()
-        {
-            return new DirectoryWrapper();
-        }
-
-        public static IFile FileWrapperInstance()
-        {
-            return new FileWrapper();
-        }
-
-        public static ISerializer SerializerInstance()
-        {
-            return new Dev2JsonSerializer();
-        }
-
-        public static IFileSystemWatcher FileSystemWatcherWrapperInstance()
-        {
-            return new FileSystemWatcherWrapper();
-        }
-
-
-        public void CleanupTestDirectory(string queueTriggersPath)
-        {
-            if (Directory.Exists(queueTriggersPath))
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                DirectoryWrapperInstance().CleanUp(queueTriggersPath);
-            }
-        }
         public static string QueueTriggersPath
         {
             get
@@ -85,19 +41,18 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             //------------Setup for test--------------------------
             var queueTriggersPath = QueueTriggersPath;
-            try
-            {
-                //------------Assert Preconditions-------------------
-                Assert.IsFalse(Directory.Exists(queueTriggersPath));
-                //------------Execute Test---------------------------
-                new TriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), queueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
-                //------------Assert Results-------------------------
-                Assert.IsTrue(Directory.Exists(queueTriggersPath));
-            }
-            finally
-            {
-                CleanupTestDirectory(queueTriggersPath);
-            }
+
+            var serializerInstance = new Mock<IBuilderSerializer>().Object;
+            var mockDirectory = new Mock<IDirectory>();
+            var directory = mockDirectory.Object;
+            var file = new Mock<IFile>().Object;
+            var fileSystemWatcherWrapper = new Mock<IFileSystemWatcher>().Object;
+
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            new TriggersCatalog(directory, file, queueTriggersPath, serializerInstance, fileSystemWatcherWrapper);
+            //------------Assert Results-------------------------
+            mockDirectory.Verify(o => o.CreateIfNotExists(queueTriggersPath), Times.Once);
         }
 
         [TestMethod]
@@ -106,38 +61,22 @@ namespace Dev2.Tests.Runtime.Triggers
         public void TriggersCatalog_SaveTriggerQueue_ShouldSave()
         {
             var queueTriggersPath = QueueTriggersPath;
-            try
-            {
-                var queue = "TestQueueName";
-                var workflowName = "TestWorkflow";
+            var contents = "";
+            var triggerId = Guid.NewGuid();
+            var path = queueTriggersPath + "\\" + triggerId + ".bite";
 
-                var mockTriggerQueue = new Mock<ITriggerQueue>();
-                mockTriggerQueue.Setup(triggerQueue => triggerQueue.TriggerId).Returns(Guid.NewGuid());
-                mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueSourceId).Returns(Guid.NewGuid());
-                mockTriggerQueue.Setup(triggerQueue => triggerQueue.QueueName).Returns(queue);
-                mockTriggerQueue.Setup(triggerQueue => triggerQueue.WorkflowName).Returns(workflowName);
+            var serializerInstance = new Mock<IBuilderSerializer>();
+            serializerInstance.Setup(serializer => serializer.Serialize(It.IsAny<ITriggerQueue>())).Returns(contents);
+            var directory = new Mock<IDirectory>().Object;
+            var mockFile = new Mock<IFile>();
+            mockFile.Setup(file => file.WriteAllText(path, It.IsAny<string>()));
+            var fileSystemWatcherWrapper = new Mock<IFileSystemWatcher>().Object;
 
-                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
-                var triggerQueueEvent = mockTriggerQueue.Object;
-                triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+            var triggerCatalog = GetTriggersCatalog(directory, mockFile.Object, queueTriggersPath, serializerInstance.Object, fileSystemWatcherWrapper);
 
-                var path = queueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
+            var triggerQueue = SaveRandomTriggerQueue(triggerCatalog, triggerId);
 
-                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-
-                Assert.AreEqual(1, triggerQueueFiles.Count);
-                Assert.AreEqual(path, triggerQueueFiles[0]);
-
-                ThoroughlyDeleteTrigger(triggerCatalog, mockTriggerQueue.Object);
-
-                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-
-                Assert.AreEqual(0, triggerQueueFiles.Count);
-            }
-            finally
-            {
-                CleanupTestDirectory(queueTriggersPath);
-            }
+            mockFile.Verify(file => file.WriteAllText(path, It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]
@@ -146,170 +85,65 @@ namespace Dev2.Tests.Runtime.Triggers
         public void TriggersCatalog_SaveTriggerQueue_WhenHasTriggerId_ShouldSave_NotUpdateTriggerId()
         {
             var queueTriggersPath = QueueTriggersPath;
-            try
+
+            var source = "TestResource";
+            var queue = "TestQueueName";
+            var workflowName = "TestWorkflow";
+            var triggerId = Guid.NewGuid();
+
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(resource => resource.ResourceName).Returns(source);
+            mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
+
+            var triggerQueueEvent = new TriggerQueue
             {
-                var source = "TestResource";
-                var queue = "TestQueueName";
-                var workflowName = "TestWorkflow";
-                var triggerId = Guid.NewGuid();
+                QueueSourceId = mockResource.Object.ResourceID,
+                QueueName = queue,
+                WorkflowName = workflowName,
+                TriggerId = triggerId
+            };
+            var serializer = new Dev2.Common.Serializers.Dev2JsonSerializer();
 
-                var mockResource = new Mock<IResource>();
-                mockResource.Setup(resource => resource.ResourceName).Returns(source);
-                mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
+            var mockSerializer = new Mock<IBuilderSerializer>();
+            mockSerializer.Setup(o => o.Serialize(It.IsAny<ITriggerQueue>())).Returns(serializer.Serialize(triggerQueueEvent));
+            var serializerInstance = mockSerializer.Object;
 
-                var triggerQueueEvent = new TriggerQueue
-                {
-                    QueueSourceId = mockResource.Object.ResourceID,
-                    QueueName = queue,
-                    WorkflowName = workflowName,
-                    TriggerId = triggerId
-                };
+            var path = queueTriggersPath + "\\" + triggerId + ".bite";
 
-                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
-                triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+            var directory = new Mock<IDirectory>().Object;
+            var mockFile = new Mock<IFile>();
+            var savedData = string.Empty;
+            mockFile.Setup(o => o.WriteAllText(It.IsAny<string>(), It.IsAny<string>())).Callback<string, string>((filename, data) => {
+                savedData = data;
+            });
 
-                var path = queueTriggersPath + "\\" + triggerId + ".bite";
+            var file = mockFile.Object;
+            var fileSystemWatcherWrapper = new Mock<IFileSystemWatcher>().Object;
 
-                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
+            var triggerCatalog = GetTriggersCatalog(directory, file, queueTriggersPath, serializerInstance, fileSystemWatcherWrapper);
 
-                Assert.AreEqual(1, triggerQueueFiles.Count);
-                Assert.AreEqual(path, triggerQueueFiles[0]);
+            triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
 
-                var savedData = File.ReadAllText(path);
-                var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
-                Assert.IsTrue(isEncrypted);
 
-                var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
-                var serializer = new Dev2JsonSerializer();
+            mockFile.Verify(o => o.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
-                var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
-                Assert.IsNotNull(theSavedTrigger);
-                Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
-                Assert.AreEqual(triggerId, theSavedTrigger.TriggerId);
+            var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
+            Assert.IsTrue(isEncrypted);
 
-                ThoroughlyDeleteTrigger(triggerCatalog, triggerQueueEvent);
+            var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
 
-                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
+            var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
+            Assert.IsNotNull(theSavedTrigger);
+            Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
 
-                Assert.AreEqual(0, triggerQueueFiles.Count);
-            }
-            finally
-            {
-                CleanupTestDirectory(queueTriggersPath);
-            }
-        }
+            Assert.AreEqual(triggerId, theSavedTrigger.TriggerId);
 
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(TriggersCatalog))]
-        public void TriggersCatalog_SaveTriggerQueue_ShouldSaveEncrypted()
-        {
-            var queueTriggersPath = QueueTriggersPath;
+            mockFile.Setup(o => o.Exists(path)).Returns(() => savedData != string.Empty);
+            triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
 
-            try
-            {
-                var source = "TestResource";
-                var queue = "TestQueueName";
-                var workflowName = "TestWorkflow";
+            mockFile.Verify(o => o.Delete(path), Times.Once);
 
-                var mockResource = new Mock<IResource>();
-                mockResource.Setup(resource => resource.ResourceName).Returns(source);
-                mockResource.Setup(resource => resource.ResourceID).Returns(Guid.NewGuid());
-
-                var triggerQueueEvent = new TriggerQueue
-                {
-                    TriggerId = Guid.NewGuid(),
-                    QueueSourceId = mockResource.Object.ResourceID,
-                    QueueName = queue,
-                    WorkflowName = workflowName
-                };
-
-                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
-
-                triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
-
-                var path = queueTriggersPath + "\\" + triggerQueueEvent.TriggerId + ".bite";
-
-                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-
-                Assert.AreEqual(1, triggerQueueFiles.Count);
-                Assert.AreEqual(path, triggerQueueFiles[0]);
-
-                var savedData = File.ReadAllText(path);
-                var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
-                Assert.IsTrue(isEncrypted);
-
-                var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
-                var serializer = new Dev2JsonSerializer();
-
-                var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
-                Assert.IsNotNull(theSavedTrigger);
-                Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
-
-                ThoroughlyDeleteTrigger(triggerCatalog, triggerQueueEvent);
-
-                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-
-                Assert.AreEqual(0, triggerQueueFiles.Count);
-            }
-            finally
-            {
-                CleanupTestDirectory(queueTriggersPath);
-            }
-        }
-
-        void ThoroughlyDeleteTrigger(ITriggersCatalog triggerCatalog, ITriggerQueue triggerQueue)
-        {
-            var retryCount = 0;
-            try
-            {
-                triggerCatalog.DeleteTriggerQueue(triggerQueue);
-            }
-            catch(IOException e)
-            {
-                if (e.Message.Contains("it is being used by another process") && retryCount++ < 10)
-                {
-                    Thread.Sleep(1000);
-                }
-                else
-                {
-                    throw e;
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(TriggersCatalog))]
-        public void TriggersCatalog_Load_ShouldLoadAllTriggerQueuesInDirectory()
-        {
-            var queueTriggersPath = QueueTriggersPath;
-            try
-            {
-                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
-
-                SaveRandomTriggerQueue(triggerCatalog);
-
-                var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-                Assert.AreEqual(1, triggerQueueFiles.Count);
-
-                Thread.Sleep(500);
-                var triggerQueueEvents = triggerCatalog.Queues;
-                Assert.AreEqual(1, triggerQueueEvents.Count);
-
-                SaveRandomTriggerQueue(triggerCatalog);
-
-                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-                Assert.AreEqual(2, triggerQueueFiles.Count);
-
-                Thread.Sleep(500);
-                triggerQueueEvents = triggerCatalog.Queues;
-                Assert.AreEqual(2, triggerQueueEvents.Count);
-            }
-            finally
-            {
-                CleanupTestDirectory(queueTriggersPath);
-            }
+            Assert.AreEqual(0, triggerCatalog.Queues.Count);
         }
 
         [TestMethod]
@@ -318,24 +152,25 @@ namespace Dev2.Tests.Runtime.Triggers
         public void TriggersCatalog_DeleteTrigger_ShouldOnlyDeleteRequestedTrigger()
         {
             var queueTriggersPath = QueueTriggersPath;
-            try
-            {
-                var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
+            var contents = "";
 
-                SaveRandomTriggerQueue(triggerCatalog);
-                SaveRandomTriggerQueue(triggerCatalog);
-                SaveRandomTriggerQueue(triggerCatalog);
+            var serializerInstance = new Mock<IBuilderSerializer>();
+            serializerInstance.Setup(serializer => serializer.Serialize(It.IsAny<ITriggerQueue>())).Returns(contents);
+            var directory = new Mock<IDirectory>().Object;
+            var mockFile = new Mock<IFile>();
+            mockFile.Setup(file => file.WriteAllText(queueTriggersPath, contents));
+            var fileSystemWatcherWrapper = new Mock<IFileSystemWatcher>().Object;
 
-                var triggerQueueEvents = triggerCatalog.Queues;
+            var triggerCatalog = GetTriggersCatalog(directory, mockFile.Object, queueTriggersPath, serializerInstance.Object, fileSystemWatcherWrapper);
 
-                ThoroughlyDeleteTrigger(triggerCatalog, triggerQueueEvents[1]);
-                triggerQueueEvents = triggerCatalog.Queues;
-                Assert.AreEqual(2, triggerQueueEvents.Count);
-            }
-            catch
-            {
-                CleanupTestDirectory(queueTriggersPath);
-            }
+            var triggerQueue = SaveRandomTriggerQueue(triggerCatalog, Guid.Empty);
+
+            var path = queueTriggersPath + "\\" + triggerQueue.TriggerId + ".bite";
+            mockFile.Setup(file => file.Exists(path)).Returns(true);
+
+            triggerCatalog.DeleteTriggerQueue(triggerQueue);
+            mockFile.Verify(file => file.Exists(path), Times.Once);
+            mockFile.Verify(file => file.Delete(path), Times.Once);
         }
 
         [TestMethod]
@@ -361,7 +196,204 @@ namespace Dev2.Tests.Runtime.Triggers
             Assert.AreEqual(expectedTrigger, actual);
         }
 
-        void SaveRandomTriggerQueue(ITriggersCatalog triggerCatalog)
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_PathFromResourceId()
+        {
+            var triggerId = Guid.NewGuid().ToString();
+            var expectedPath = Common.EnvironmentVariables.QueueTriggersPath + @"\" + triggerId + ".bite";
+            var path = TriggersCatalog.PathFromResourceId(triggerId);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_Instance()
+        {
+            var catalogInstance = TriggersCatalog.Instance;
+            Assert.IsNotNull(catalogInstance);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_FileSystemWatcher_Created()
+        {
+            var directory = "some path";
+            var fileName = Guid.NewGuid().ToString() + ".bite";
+            var files = new string[] { fileName };
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var triggerId = Guid.NewGuid();
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+            var expectedTrigger = new TriggerQueue
+            {
+                TriggerId = triggerId
+            };
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, directory, mockSerializer.Object, mockFileSystemWatcher.Object);
+
+            mockFileSystemWatcher.Raise(fileWatcher => fileWatcher.Created += null, null, new FileSystemEventArgs(WatcherChangeTypes.Created, directory, fileName));
+
+            mockDirectoryWrapper.Verify(directoryWrapper => directoryWrapper.GetFiles(directory), Times.Exactly(2));
+
+            Assert.AreEqual(1, catalog.Queues.Count);
+            Assert.AreEqual(triggerId, catalog.Queues[0].TriggerId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_FileSystemWatcher_Changed()
+        {
+            var directory = "some path";
+            var fileName = Guid.NewGuid().ToString() + ".bite";
+            var files = new string[] { fileName };
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var triggerId = Guid.NewGuid();
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+            var expectedTrigger = new TriggerQueue
+            {
+                TriggerId = triggerId
+            };
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, directory, mockSerializer.Object, mockFileSystemWatcher.Object);
+
+            mockFileSystemWatcher.Raise(fileWatcher => fileWatcher.Changed += null, null, new FileSystemEventArgs(WatcherChangeTypes.Changed, directory, fileName));
+
+            mockDirectoryWrapper.Verify(directoryWrapper => directoryWrapper.GetFiles(directory), Times.Exactly(2));
+
+            Assert.AreEqual(1, catalog.Queues.Count);
+            Assert.AreEqual(triggerId, catalog.Queues[0].TriggerId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_FileSystemWatcher_Deleted()
+        {
+            var directory = "some path";
+            var fileName = Guid.NewGuid().ToString() + ".bite";
+            var files = new string[] { fileName };
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var triggerId = Guid.NewGuid();
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+            var expectedTrigger = new TriggerQueue
+            {
+                TriggerId = triggerId
+            };
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, directory, mockSerializer.Object, mockFileSystemWatcher.Object);
+
+            mockFileSystemWatcher.Raise(fileWatcher => fileWatcher.Deleted += null, null, new FileSystemEventArgs(WatcherChangeTypes.Deleted, directory, fileName));
+
+            mockDirectoryWrapper.Verify(directoryWrapper => directoryWrapper.GetFiles(directory), Times.Exactly(2));
+
+            Assert.AreEqual(1, catalog.Queues.Count);
+            Assert.AreEqual(triggerId, catalog.Queues[0].TriggerId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_FileSystemWatcher_Renamed()
+        {
+            var directory = "some path";
+            var fileName = Guid.NewGuid().ToString() + ".bite";
+            var oldName = Guid.NewGuid().ToString() + ".bite";
+            var files = new string[] { fileName };
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var triggerId = Guid.NewGuid();
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+            var expectedTrigger = new TriggerQueue
+            {
+                TriggerId = triggerId
+            };
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, directory, mockSerializer.Object, mockFileSystemWatcher.Object);
+
+            mockFileSystemWatcher.Raise(fileWatcher => fileWatcher.Renamed += null, null, new RenamedEventArgs(WatcherChangeTypes.Renamed, directory, fileName, oldName));
+
+            mockDirectoryWrapper.Verify(directoryWrapper => directoryWrapper.GetFiles(directory), Times.Exactly(2));
+
+            Assert.AreEqual(1, catalog.Queues.Count);
+            Assert.AreEqual(triggerId, catalog.Queues[0].TriggerId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_FileSystemWatcher_Error()
+        {
+            var directory = "some path";
+            var fileName = Guid.NewGuid().ToString() + ".bite";
+            var oldName = Guid.NewGuid().ToString() + ".bite";
+            var files = new string[] { fileName };
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var triggerId = Guid.NewGuid();
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+            var expectedTrigger = new TriggerQueue
+            {
+                TriggerId = triggerId
+            };
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, directory, mockSerializer.Object, mockFileSystemWatcher.Object);
+
+            mockFileSystemWatcher.Raise(fileWatcher => fileWatcher.Error += null, null, new ErrorEventArgs(new Exception()));
+
+            mockDirectoryWrapper.Verify(directoryWrapper => directoryWrapper.GetFiles(directory), Times.Exactly(1));
+
+            Assert.AreEqual(1, catalog.Queues.Count);
+            Assert.AreEqual(triggerId, catalog.Queues[0].TriggerId);
+        }
+
+        TriggerQueue SaveRandomTriggerQueue(ITriggersCatalog triggerCatalog, Guid triggerId)
         {
             var randomizer = new Random();
             var source = "TestResource" + randomizer.Next(1, 10000);
@@ -374,22 +406,20 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerQueueEvent = new TriggerQueue
             {
+                TriggerId = triggerId,
                 QueueSourceId = mockResource.Object.ResourceID,
                 QueueName = queue,
                 WorkflowName = workflowName
             };
 
             triggerCatalog.SaveTriggerQueue(triggerQueueEvent);
+
+            return triggerQueueEvent;
         }
 
-        ITriggersCatalog GetTriggersCatalog(string queueTriggersPath)
+        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher fileSystemWatcherWrapper)
         {
-            return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), queueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
-        }
-
-        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher fileSystemWatcher)
-        {
-            return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcher);
+            return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcherWrapper);
         }
     }
 }
