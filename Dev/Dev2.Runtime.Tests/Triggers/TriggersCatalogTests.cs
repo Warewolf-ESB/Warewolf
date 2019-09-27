@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.Triggers
                 Assert.AreEqual(1, triggerQueueFiles.Count);
                 Assert.AreEqual(path, triggerQueueFiles[0]);
 
-                triggerCatalog.DeleteTriggerQueue(mockTriggerQueue.Object);
+                ThoroughlyDeleteTrigger(triggerCatalog, mockTriggerQueue.Object);
 
                 triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
@@ -186,7 +186,7 @@ namespace Dev2.Tests.Runtime.Triggers
                 Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
                 Assert.AreEqual(triggerId, theSavedTrigger.TriggerId);
 
-                triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+                ThoroughlyDeleteTrigger(triggerCatalog, triggerQueueEvent);
 
                 triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
@@ -245,7 +245,7 @@ namespace Dev2.Tests.Runtime.Triggers
                 Assert.IsNotNull(theSavedTrigger);
                 Assert.AreEqual(workflowName, theSavedTrigger.WorkflowName);
 
-                triggerCatalog.DeleteTriggerQueue(triggerQueueEvent);
+                ThoroughlyDeleteTrigger(triggerCatalog, triggerQueueEvent);
 
                 triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
 
@@ -254,6 +254,26 @@ namespace Dev2.Tests.Runtime.Triggers
             finally
             {
                 CleanupTestDirectory(queueTriggersPath);
+            }
+        }
+
+        void ThoroughlyDeleteTrigger(ITriggersCatalog triggerCatalog, ITriggerQueue triggerQueue)
+        {
+            var retryCount = 0;
+            try
+            {
+                triggerCatalog.DeleteTriggerQueue(triggerQueue);
+            }
+            catch(IOException e)
+            {
+                if (e.Message.Contains("it is being used by another process") && retryCount++ < 10)
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    throw e;
+                }
             }
         }
 
@@ -300,7 +320,7 @@ namespace Dev2.Tests.Runtime.Triggers
 
                 var triggerQueueEvents = triggerCatalog.Queues;
 
-                triggerCatalog.DeleteTriggerQueue(triggerQueueEvents[1]);
+                ThoroughlyDeleteTrigger(triggerCatalog, triggerQueueEvents[1]);
                 triggerQueueEvents = triggerCatalog.Queues;
                 Assert.AreEqual(2, triggerQueueEvents.Count);
             }
