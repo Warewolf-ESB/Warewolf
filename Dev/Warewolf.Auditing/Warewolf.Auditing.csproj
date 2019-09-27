@@ -15,9 +15,6 @@
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj" />
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
   </ItemGroup>
 <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -27,4 +24,7 @@
       <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.Linq.dll</HintPath>
     </Reference>
   </ItemGroup>
+<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Exec Command="COPY /Y &quot;$(SolutionDir)AssemblyCommonInfo.cs&quot; &quot;$(ProjectDir)AssemblyCommonInfo.cs&quot;" />
+</Target>
 </Project>
