@@ -17,7 +17,6 @@ using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -66,6 +65,8 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             if (Directory.Exists(queueTriggersPath))
             {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 DirectoryWrapperInstance().CleanUp(queueTriggersPath);
             }
         }
@@ -288,15 +289,22 @@ namespace Dev2.Tests.Runtime.Triggers
                 var triggerCatalog = GetTriggersCatalog(queueTriggersPath);
 
                 SaveRandomTriggerQueue(triggerCatalog);
-                SaveRandomTriggerQueue(triggerCatalog);
-                SaveRandomTriggerQueue(triggerCatalog);
 
                 var triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
-                Assert.AreEqual(3, triggerQueueFiles.Count);
+                Assert.AreEqual(1, triggerQueueFiles.Count);
 
                 Thread.Sleep(500);
                 var triggerQueueEvents = triggerCatalog.Queues;
-                Assert.AreEqual(3, triggerQueueEvents.Count);
+                Assert.AreEqual(1, triggerQueueEvents.Count);
+
+                SaveRandomTriggerQueue(triggerCatalog);
+
+                triggerQueueFiles = Directory.EnumerateFiles(queueTriggersPath).ToList();
+                Assert.AreEqual(2, triggerQueueFiles.Count);
+
+                Thread.Sleep(500);
+                triggerQueueEvents = triggerCatalog.Queues;
+                Assert.AreEqual(2, triggerQueueEvents.Count);
             }
             finally
             {
@@ -379,9 +387,9 @@ namespace Dev2.Tests.Runtime.Triggers
             return GetTriggersCatalog(DirectoryWrapperInstance(), FileWrapperInstance(), queueTriggersPath, SerializerInstance(), FileSystemWatcherWrapperInstance());
         }
 
-        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher fileSystemWatcherWrapper)
+        ITriggersCatalog GetTriggersCatalog(IDirectory directory, IFile file, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher fileSystemWatcher)
         {
-            return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcherWrapper);
+            return new TriggersCatalog(directory, file, queueTriggersPath, serializer, fileSystemWatcher);
         }
     }
 }
