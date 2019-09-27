@@ -15,6 +15,9 @@
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj" />
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
   </ItemGroup>
 <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations">
