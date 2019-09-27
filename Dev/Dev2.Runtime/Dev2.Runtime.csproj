@@ -273,7 +273,7 @@
       <Version>1.0.110</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.110</Version>
+      <Version>1.0.111</Version>
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>
