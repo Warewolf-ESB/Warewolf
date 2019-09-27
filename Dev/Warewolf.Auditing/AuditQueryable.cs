@@ -45,9 +45,11 @@ namespace Warewolf.Auditing
             var results = ExecuteDatabase(_connectionString, sql);
             if (results.Length > 0)
             {
-                var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
-                var audit = serilogData.Property("Message").Value.ToObject<Audit>();
-                yield return audit;
+                foreach (var result in results)
+                {
+                    var audit = JsonConvert.DeserializeObject<Audit>(result);
+                    yield return audit;
+                }
             }
             else
             {
@@ -63,6 +65,7 @@ namespace Warewolf.Auditing
             if (resourceId != null)
             {
                 sql.Append("WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ");
+                sql.Append("ORDER BY TimeStamp Desc LIMIT 20");
                 var results = ExecuteDatabase(_connectionString, sql);
                 if (results.Length > 0)
                 {
@@ -125,7 +128,8 @@ namespace Warewolf.Auditing
                 sql.Append("WHERE (Timestamp >= '" + startTime + "' ");
                 sql.Append("AND Timestamp <= '" + endTime + "') ");
             }
-
+            sql.Append("ORDER BY TimeStamp Desc LIMIT 20");
+            
             return sql;
         }
 
