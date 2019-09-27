@@ -121,8 +121,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 		SonarQube\Warewolf-ESBCSharp.ruleset = SonarQube\Warewolf-ESBCSharp.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrieNet", "TrieNet\TrieNet.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Interfaces", "Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj", "{D7189600-3C18-4D35-97A4-8095DE1A4504}"
