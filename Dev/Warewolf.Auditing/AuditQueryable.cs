@@ -45,9 +45,11 @@ namespace Warewolf.Auditing
             var results = ExecuteDatabase(_connectionString, sql);
             if (results.Length > 0)
             {
-                var serilogData = JsonConvert.DeserializeObject(results[0]) as JObject;
-                var audit = serilogData.Property("Message").Value.ToObject<Audit>();
-                yield return audit;
+                foreach (var result in results)
+                {
+                    var audit = JsonConvert.DeserializeObject<Audit>(result);
+                    yield return audit;
+                }
             }
             else
             {
