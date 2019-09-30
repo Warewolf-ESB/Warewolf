@@ -530,7 +530,7 @@
       <Version>1.4.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.3</Version>
+      <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="NodaTime">
       <Version>2.2.2</Version>
@@ -539,7 +539,7 @@
       <Version>3.6.1</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.110</Version>
+      <Version>1.0.111</Version>
     </PackageReference>
     <PackageReference Include="TSQL.Parser">
       <Version>1.1.1</Version>

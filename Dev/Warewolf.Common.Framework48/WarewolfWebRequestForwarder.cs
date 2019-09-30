@@ -15,8 +15,8 @@ using System.Threading.Tasks;
 using Warewolf.Triggers;
 using Dev2.Common.ExtMethods;
 using System.Linq;
-using Warewolf.Interfaces.Data;
 using Warewolf.Data;
+using Warewolf.Streams;
 
 namespace Warewolf.Common
 {

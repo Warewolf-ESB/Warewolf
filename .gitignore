@@ -34,8 +34,13 @@
 # Visual Studio
 ####################################################################################
 .vs/**
-Dev/.vs/**
-Dev/MigrationBackup/**
+/Dev/.vs/**
+/Dev/.sonarlint
+/Dev/MigrationBackup/**
+/Dev/UpgradeLog.htm
+/Dev/UpgradeLog2.htm
+/Dev/UpgradeLog3.htm
+tools/
 
 ####################################################################################
 # Compile outputs
@@ -86,7 +91,7 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/**
 /Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/places.sqlite
 
-/Dev/.sonarlint
-/Dev/UpgradeLog.htm
-/Dev/UpgradeLog2.htm
-tools/
+####################################################################################
+# Versioning
+####################################################################################
+/Dev/Warewolf.Auditing/AssemblyCommonInfo.cs

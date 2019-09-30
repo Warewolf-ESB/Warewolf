@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Warewolf.Logger": {
+      "commandName": "Project",
+      "commandLineArgs": "-v"
+    }
+  }
+}

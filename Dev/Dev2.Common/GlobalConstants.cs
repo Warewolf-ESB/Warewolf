@@ -537,6 +537,7 @@ where pn.nspname = 'public';
         public static string HTTPNewLine { get; } = "\r\n";
         public static string QueueWorkerExe { get; } = "QueueWorker.exe";
 
+        public static readonly string DefaultLoggingSourceId = "{8f090202-0000-0000-0000-5598abe69001}";
         public static readonly string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static readonly string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
         public static readonly string DropBoxSuccess = "Success";

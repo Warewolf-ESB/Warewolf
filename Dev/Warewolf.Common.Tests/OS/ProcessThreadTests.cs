@@ -26,7 +26,7 @@ namespace Warewolf.OS.Tests
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(ProcessThread))]
+        [TestCategory(nameof(ProcessMonitor))]
         public void ProcessThread_Constructor()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -41,7 +41,7 @@ namespace Warewolf.OS.Tests
         }
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(ProcessThread))]
+        [TestCategory(nameof(ProcessMonitor))]
         public void ProcessThread_Start_GivenValid_ExpectNewProcessCreated()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -70,7 +70,7 @@ namespace Warewolf.OS.Tests
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(ProcessThread))]
+        [TestCategory(nameof(ProcessMonitor))]
         public void ProcessThread_Kill_GivenUnstartedProcess_DoNotThrow()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -95,7 +95,7 @@ namespace Warewolf.OS.Tests
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(ProcessThread))]
+        [TestCategory(nameof(ProcessMonitor))]
         public void ProcessThread_Kill_GivenDeadProcess_DoNotThrow()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -125,7 +125,7 @@ namespace Warewolf.OS.Tests
         }
     }
 
-    internal class ProcessThreadForTesting : ProcessThread
+    internal class ProcessThreadForTesting : ProcessMonitor
     {
         private readonly ProcessStartInfo _testProcessInfo;
 

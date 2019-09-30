@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Triggers;
+using Warewolf.Streams;
 
 namespace Warewolf.Options
 {
-    public class RabbitMqOptions : IQueueConfig
+    public class RabbitMqOptions : IStreamConfig
     {
         public RabbitMqOptions()
         {

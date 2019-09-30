@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CustomMaterialModule } from "./core/custommaterial.module";
+import { CustomMaterialModule } from './core/custommaterial.module';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,14 +25,14 @@ import { ExecutionLoggingComponent } from './components/executionlogging/executi
 import { SettingsComponent } from './components/settings/settings.component';
 
 import { ExecutionLoggingService } from './services/executionlogging.service';
-//import { LogEntryComponent } from './components/logentry/logentry.component';
+// import { LogEntryComponent } from './components/logentry/logentry.component';
 
 import { MediatorService } from './services/mediator.service';
 import { APIService } from './services/api.service';
 
 @NgModule({
   entryComponents: [
-    //LogEntryComponent
+    // LogEntryComponent
   ],
   declarations: [
     AppComponent,
@@ -41,10 +41,10 @@ import { APIService } from './services/api.service';
     OutputsExplorerComponent,
     ExecutionLoggingComponent,
     SettingsComponent
-    //, LogEntryComponent
+    // LogEntryComponent
   ],
   imports: [
-    NgbModule.forRoot(),
+    NgbModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
     HttpClientModule,
