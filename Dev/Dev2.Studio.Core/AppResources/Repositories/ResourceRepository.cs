@@ -30,7 +30,6 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Auditing;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Factories;
@@ -40,6 +39,7 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
+using Warewolf.Auditing;
 using Warewolf.Configuration;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
@@ -606,7 +606,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             var serializer = new Dev2JsonSerializer();
             var comsController = GetCommunicationController.Invoke("GetExecutionHistoryService");
-            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
             var message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(resourceId.ToString()));
             var result = comsController.ExecuteCommand<List<IExecutionHistory>>(_server.Connection, GlobalConstants.ServerWorkspaceID);

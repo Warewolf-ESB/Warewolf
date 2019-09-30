@@ -13,10 +13,10 @@ using RabbitMQ.Client;
 using System;
 using System.Text;
 using System.Threading;
-using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
-using Warewolf.Interfaces.Data;
+using Warewolf.Data;
 using System.Threading.Tasks;
+using Warewolf.Streams;
 
 namespace Warewolf.Driver.RabbitMQ.Tests
 {

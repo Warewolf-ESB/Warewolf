@@ -12,6 +12,7 @@
 using System;
 using Dev2.Common;
 using Dev2.Runtime.WebServer;
+using Warewolf;
 
 namespace Dev2
 {

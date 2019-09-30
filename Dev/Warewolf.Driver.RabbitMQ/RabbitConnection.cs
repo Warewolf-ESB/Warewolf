@@ -10,6 +10,7 @@
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Warewolf.Streams;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
 
@@ -26,13 +27,13 @@ namespace Warewolf.Driver.RabbitMQ
 
         public bool IsOpen => _connection.IsOpen;
 
-        public IPublisher NewPublisher(IQueueConfig config)
+        public IPublisher NewPublisher(IStreamConfig config)
         {
             var channel = CreateChannel(config as RabbitConfig);
             return new RabbitPublisher(config as RabbitConfig, channel);
         }
 
-        public void StartConsuming(IQueueConfig config, IConsumer consumer)
+        public void StartConsuming(IStreamConfig config, IConsumer consumer)
         {
             var rabbitConfig = config as RabbitConfig; 
             var channel = CreateChannel(rabbitConfig);
@@ -44,7 +45,7 @@ namespace Warewolf.Driver.RabbitMQ
 
                 var resultTask = consumer.Consume(body);
                 resultTask.Wait();
-                if (resultTask.Result == Interfaces.Data.ConsumerResult.Success)
+                if (resultTask.Result == Data.ConsumerResult.Success)
                 {
                     channel.BasicAck(eventArgs.DeliveryTag, false);
                 }
@@ -81,7 +82,7 @@ namespace Warewolf.Driver.RabbitMQ
             Dispose(true);
         }
 
-        public void DeleteQueue(IQueueConfig config)
+        public void DeleteQueue(IStreamConfig config)
         {
             var rabbitConfig = config as RabbitConfig;
             var channel = _connection.CreateModel();

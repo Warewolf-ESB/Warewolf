@@ -9,15 +9,14 @@
 */
 
 using System;
+using Warewolf.Streams;
 
 namespace Warewolf.Triggers
 {
-    public interface IQueueConnection : IDisposable
+    public interface IQueueConnection : IConnection, IDisposable
     {
         bool IsOpen { get; }
 
-        IPublisher NewPublisher(IQueueConfig config);
-        void StartConsuming(IQueueConfig config, IConsumer consumer);
-        void DeleteQueue(IQueueConfig config);
+        void DeleteQueue(IStreamConfig config);
     }
 }

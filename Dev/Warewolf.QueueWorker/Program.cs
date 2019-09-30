@@ -9,12 +9,14 @@
 */
 
 using CommandLine;
+using Dev2.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
 using System;
 using Warewolf.Common;
-using Warewolf.Triggers;
+using Warewolf.Data;
+using Warewolf.Streams;
 
 namespace QueueWorker
 {
@@ -78,9 +80,13 @@ namespace QueueWorker
 
             public void Run()
             {
+                var logger = new ExecutionLogger(Config.Auditing.Endpoint, new JsonSerializer());
+                logger.Info("Starting queue worker", _config.QueueName);
+
                 var deadletterPublisher = CreateDeadLetterPublisher();
 
                 var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl,_config.Username,_config.Password, _config.Inputs);
+                var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder, _config.TriggerId, _config.Username);
 
                 var queue = _config.Source;
 
@@ -88,7 +94,7 @@ namespace QueueWorker
                 Console.WriteLine($"Workflow: {_config.WorkflowUrl} Inputs: {_config.Inputs}");
 
                 var connection = queue.NewConnection();
-                connection.StartConsuming(_config.QueueConfig, requestForwarder);
+                connection.StartConsuming(_config.QueueConfig, loggingForwarder);
             }
 
             private IPublisher CreateDeadLetterPublisher()

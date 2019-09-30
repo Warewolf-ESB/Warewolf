@@ -31,6 +31,7 @@ namespace Dev2.Common
 
         public static ServerSettings Server = new ServerSettings();
         public static StudioSettings Studio = new StudioSettings();
+        public static AuditingSettings Auditing = new AuditingSettings();
     }
 
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
@@ -181,5 +182,23 @@ namespace Dev2.Common
             }
             return result;
         }
+    }
+
+
+    public class AuditingSettings : ConfigSettingsBase<AuditingSettingsData>
+    {
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "auditingSettings.json");
+
+        public AuditingSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public string Endpoint => _settings.Endpoint;
     }
 }

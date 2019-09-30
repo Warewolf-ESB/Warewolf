@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Streams;
 
-namespace Warewolf.Triggers
+namespace Warewolf.Logging
 {
-    public interface IPublisher
+    public interface ILoggerConsumer<in T> : IConsumer<T>
     {
-        void Publish(byte[] value);
     }
 }

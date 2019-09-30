@@ -68,7 +68,7 @@ namespace Dev2
 
         protected override IProcessThread GetProcessThread() => new QueueProcessThread(_childProcessTracker, _processFactory, Config);
     }
-    class QueueProcessThread : ProcessThread
+    class QueueProcessThread : ProcessMonitor
     {
         public QueueProcessThread(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IJobConfig config)
             : base(childProcessTracker, processFactory, config)
