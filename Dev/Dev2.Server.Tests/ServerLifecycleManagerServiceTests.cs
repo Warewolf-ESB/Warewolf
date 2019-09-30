@@ -138,6 +138,7 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new Mock<LoggingServiceMonitorWithRestart>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 
@@ -160,6 +161,7 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -197,6 +199,7 @@ namespace Dev2.Server.Tests
             var mockStartWebServer = new Mock<IStartWebServer>();
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
             var mockQueueProcessMonitor = new Mock<IProcessMonitor>();
+            var mockLoggingServiceMonitorWithRestart = new Mock<LoggingServiceMonitorWithRestart>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 
@@ -220,6 +223,7 @@ namespace Dev2.Server.Tests
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
                 QueueWorkerMonitor = mockQueueProcessMonitor.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -258,6 +262,7 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new Mock<LoggingServiceMonitorWithRestart>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 
@@ -280,6 +285,7 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -313,6 +319,7 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new Mock<LoggingServiceMonitorWithRestart>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 
@@ -335,6 +342,7 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
