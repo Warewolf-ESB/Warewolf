@@ -28,6 +28,7 @@ using Dev2.Interfaces;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Common;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
 {
@@ -57,6 +58,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
 
         protected new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
+            Config.Server.EnableDetailedLogging = false;
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
             svc.SetActivity(FlowchartProcess);
             var mockChannel = new Mock<IEsbChannel>();
