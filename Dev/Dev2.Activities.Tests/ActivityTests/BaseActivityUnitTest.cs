@@ -137,6 +137,7 @@ namespace ActivityUnitTests
 
         protected IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
+            Config.Server.EnableDetailedLogging = false;
             using (ServiceAction svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" })
             {
                 svc.SetActivity(FlowchartProcess);
