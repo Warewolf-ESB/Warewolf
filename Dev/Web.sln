@@ -9,19 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources", "Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Web.UI.Tests", "Warewolf.Web.UI.Tests\Warewolf.Web.UI.Tests.csproj", "{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj", "{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "warewolfBI", "warewolfBI\warewolfBI.csproj", "{64B1BC06-92D4-4314-8B7E-279E9D008648}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "warewolfBI", "warewolfBI\warewolfBI.csproj", "{64B1BC06-92D4-4314-8B7E-279E9D008648}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{7C946C04-7556-4C3D-9E62-11CCA5A1AE10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,6 @@ Global
 		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{64B1BC06-92D4-4314-8B7E-279E9D008648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64B1BC06-92D4-4314-8B7E-279E9D008648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64B1BC06-92D4-4314-8B7E-279E9D008648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C946C04-7556-4C3D-9E62-11CCA5A1AE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C946C04-7556-4C3D-9E62-11CCA5A1AE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C946C04-7556-4C3D-9E62-11CCA5A1AE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C946C04-7556-4C3D-9E62-11CCA5A1AE10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
