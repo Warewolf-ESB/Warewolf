@@ -784,7 +784,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://my.warewolf.io/Audit.
+        ///   Looks up a localized string similar to http://my.warewolf.io/.
         /// </summary>
         public static string MyWarewolfUrl {
             get {
