@@ -742,7 +742,6 @@ namespace Warewolf.Trigger.Queue.Tests
             };
 
             Assert.IsNull(triggerQueueView.History);
-            Assert.AreEqual(1, triggerQueueView.History.Count);
             Assert.IsFalse(triggerQueueView.IsProgressBarVisible);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(2));
         }
