@@ -199,7 +199,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewExecutionLoggingCommand = new DelegateCommand(() =>
             {
-                Process.Start(Resources.Languages.Core.MyWarewolfUrl + "?server=" + Server.Name);
+                Process.Start(Resources.Languages.Core.MyWarewolfUrl);
             });
 
             DeployCommand = new DelegateCommand(() =>
