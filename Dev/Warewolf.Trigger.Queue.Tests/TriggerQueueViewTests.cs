@@ -726,7 +726,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var history = new List<IExecutionHistory>
             {
-                new ExecutionHistory(resourceId,"output", mockExecutionInfo, "username")
+                new ExecutionHistory(resourceId, "output", mockExecutionInfo, "username")
             };
 
             var mockServer = new Mock<IServer>();
