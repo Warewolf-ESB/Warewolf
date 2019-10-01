@@ -161,7 +161,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointFileUploadActivity_ValidateRequest_SharepointServerResourceId_EmptyGuid()
         {
             //------------Setup for test--------------------------
@@ -191,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointFileUploadActivity_ValidateRequest_ServerInputPath_IsEmpty()
         {
             //------------Setup for test--------------------------
