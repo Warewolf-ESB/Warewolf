@@ -88,6 +88,7 @@ namespace Warewolf.Studio.ViewModels
             ButtonWidth = ButtonWidthLarge;
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
+            IsPopoutViewOpen = false;
             DebugIcon = FontAwesomeIcon.Bug;
             
         }
@@ -199,10 +200,13 @@ namespace Warewolf.Studio.ViewModels
 
         void SlideClosed(IShellViewModel mainViewModel)
         {
+            if (IsPopoutViewOpen)
+            {
+                return;
+            }
             if (IsPanelLockedOpen && !IsPanelOpen)
             {
                 mainViewModel.MenuExpanded = !IsPanelOpen;
-                ButtonWidth = ButtonWidthSmall;
                 IsPanelOpen = !IsPanelOpen;
             }
             else
@@ -251,7 +255,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        
+        public bool IsPopoutViewOpen { get; set; }
+
         public string NewLabel
         {
             get

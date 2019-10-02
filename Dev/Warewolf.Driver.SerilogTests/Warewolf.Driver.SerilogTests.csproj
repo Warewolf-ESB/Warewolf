@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>Warewolf.Tests</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog.Sinks.SQLite" Version="4.5.0" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.111" />
+    <PackageReference Include="Moq" Version="4.8.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj" />
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />
+    <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj" />
+  </ItemGroup>
+</Project>

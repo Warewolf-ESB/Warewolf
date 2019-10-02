@@ -297,7 +297,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("currentEnvironment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();

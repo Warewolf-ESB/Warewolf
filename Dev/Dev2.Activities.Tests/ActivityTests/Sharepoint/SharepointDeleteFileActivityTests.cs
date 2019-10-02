@@ -155,7 +155,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointDeleteFileActivity_ValidateRequest_SharepointServerResourceId_EmptyGuid()
         {
             //------------Setup for test--------------------------
@@ -185,7 +185,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointDeleteFileActivity_ValidateRequest_ServerInputPath_IsEmpty()
         {
             //------------Setup for test--------------------------

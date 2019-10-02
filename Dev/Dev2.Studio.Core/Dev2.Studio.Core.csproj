@@ -377,10 +377,6 @@
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
-      <Project>{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}</Project>
-      <Name>Dev2.Runtime.Auditing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
@@ -408,6 +404,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
+      <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
+      <Name>Warewolf.Auditing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
@@ -458,6 +458,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

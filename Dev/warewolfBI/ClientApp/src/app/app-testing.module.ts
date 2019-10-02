@@ -8,7 +8,7 @@ import { ExecutionLoggingComponent } from './components/executionlogging/executi
 import { SettingsComponent } from './components/settings/settings.component';
 import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
 import { OutputsExplorerComponent } from './components/outputs-explorer/outputs-explorer.component';
-import { CustomMaterialModule } from "./core/custommaterial.module";
+import { CustomMaterialModule } from './core/custommaterial.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -18,7 +18,6 @@ import { MediatorService } from './services/mediator.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
 
-import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
@@ -44,7 +43,6 @@ export const testRoutes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     CustomMaterialModule,
-    HttpModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
