@@ -51,7 +51,7 @@ public class Depends: System.Attribute, IDisposable
         Hostname = hostname;
         using (var client = new WebClient { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
-            var result = client.DownloadString($"http://T004124.premier.local:3142/public/Start/{ConvertToString(_containerType)}.json?Hostname={hostname}");
+            var result = client.DownloadString($"http://T004124.premier.local:3142/public/Container/Async/Start/{ConvertToString(_containerType)}.json?Hostname={hostname}");
             if (result != "Success")
             {
                 throw new Exception($"Cannot start container{(result == string.Empty ? "." : ": " + result)}");
@@ -63,7 +63,7 @@ public class Depends: System.Attribute, IDisposable
     {
         using (var client = new WebClient { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
-            var result = client.DownloadString($"http://T004124.premier.local:3142/public/Stop/{ConvertToString(_containerType)}.json?Hostname={Hostname}");
+            var result = client.DownloadString($"http://T004124.premier.local:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json?Hostname={Hostname}");
             if (result != "Success")
             {
                 throw new Exception($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
