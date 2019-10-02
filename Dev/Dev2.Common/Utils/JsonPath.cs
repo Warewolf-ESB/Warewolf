@@ -192,7 +192,7 @@ namespace Dev2.Common.Utils
             return sb.ToString();
         }
 
-        public sealed class Interpreter
+        internal sealed class Interpreter
         {
             static readonly char[] Colon = { ':' };
             static readonly char[] Semicolon = { ';' };
