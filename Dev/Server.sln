@@ -88,13 +88,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Sharepoint", "Ware
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Interfaces", "Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj", "{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics.Tests", "Dev2.Diagnostics.Tests\Dev2.Diagnostics.Tests.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceDecryptScript", "ResourceDecryptScript", "{61FA0A32-BD85-484D-AA7E-76B135C67008}"
 	ProjectSection(SolutionItems) = preProject
@@ -134,6 +134,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement.Tests", "Warewolf.ResourceManagement.Tests\Warewolf.ResourceManagement.Tests.csproj", "{54724E72-4953-4CED-B4EA-532F9596A88D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj", "{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Logger", "Warewolf.Logger\Warewolf.Logger.csproj", "{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{1EC3364C-3871-4753-A402-F9A174BF2352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -555,6 +561,29 @@ Global
 		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|x86.ActiveCfg = Release|Any CPU
 		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|x86.Build.0 = Release|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|x86.Build.0 = Debug|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Release|x86.ActiveCfg = Release|Any CPU
+		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Release|x86.Build.0 = Release|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Debug|x86.Build.0 = Debug|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Release|x86.ActiveCfg = Release|Any CPU
+		{1EC3364C-3871-4753-A402-F9A174BF2352}.Release|x86.Build.0 = Release|Any CPU
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|x86.ActiveCfg = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|x86.Build.0 = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.ActiveCfg = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.Build.0 = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.ActiveCfg = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

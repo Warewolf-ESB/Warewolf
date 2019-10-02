@@ -280,8 +280,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         }
         if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
 			if ($OutputFolderName -eq "Webs") {
-				npm install --global --production windows-build-tools
+				npm install --add-python-to-path='true' --global --production windows-build-tools
 			}
+
             if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             } else {

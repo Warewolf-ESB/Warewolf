@@ -208,7 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointCopyFileActivity_ValidateRequest_SharepointServerResourceId_EmptyGuid()
         {
             //------------Setup for test--------------------------
@@ -243,7 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointCopyFileActivity_ValidateRequest_ServerInputPathFrom_IsEmpty_ExpectAreEqual_Success()
         {
             //------------Setup for test--------------------------
@@ -281,7 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointCopyFileActivity_ValidateRequest_ServerInputPathTo_IsEmpty_Expect_Exception()
         {
             //------------Setup for test--------------------------

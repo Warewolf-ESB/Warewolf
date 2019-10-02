@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -17,8 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Core;
 using Warewolf.Data;
-using Warewolf.Interfaces.Data;
-using Warewolf.Triggers;
+using Warewolf.Streams;
 using Warewolf.Web;
 
 namespace Warewolf.Common.Tests

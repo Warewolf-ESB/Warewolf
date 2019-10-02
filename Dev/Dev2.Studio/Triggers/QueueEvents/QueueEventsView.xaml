@@ -747,71 +747,6 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-
-                                            <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="80"
-                                                                    IsReadOnly="True"
-                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                                    Header="Start Time"
-                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                                 BorderThickness="0"
-                                                                 Text="{Binding ExecutionHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-
-                                            <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="70"
-                                                                    IsReadOnly="True"
-                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                                    Header="Duration"
-                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                                 BorderThickness="0"
-                                                                 Text="{Binding ExecutionHistoryOutput.Duration, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-
-                                            <DataGridTemplateColumn Width="*"
-                                                                    IsReadOnly="True"
-                                                                    MinWidth="80"
-                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                                    Header="End Time"
-                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                                 BorderThickness="0"
-                                                                 Text="{Binding ExecutionHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-
-                                            <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="50"
-                                                                    IsReadOnly="True"
-                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
-                                                                    Header="Status"
-                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBox IsReadOnly="True"
-                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                                 BorderThickness="0"
-                                                                 Text="{Binding ExecutionHistoryOutput.Success, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-
                                             <DataGridTemplateColumn Width="*"
                                                                     MinWidth="70"
                                                                     IsReadOnly="True"
@@ -823,11 +758,71 @@
                                                         <TextBox IsReadOnly="True"
                                                                  Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                                  BorderThickness="0"
-                                                                 Text="{Binding ExecutionHistoryOutput.ExecutionId, Mode=OneWay}" />
+                                                                 Text="{Binding ExecutionInfo.ExecutionId, Mode=OneWay}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-
+                                            
+                                            <DataGridTemplateColumn Width="*"
+                                                                    MinWidth="80"
+                                                                    IsReadOnly="True"
+                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                                    Header="Start Time"
+                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox IsReadOnly="True"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 BorderThickness="0"
+                                                                 Text="{Binding ExecutionInfo.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="*"
+                                                                    IsReadOnly="True"
+                                                                    MinWidth="80"
+                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                                    Header="End Time"
+                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox IsReadOnly="True"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 BorderThickness="0"
+                                                                 Text="{Binding ExecutionInfo.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="*"
+                                                                    MinWidth="70"
+                                                                    IsReadOnly="True"
+                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                                    Header="Duration"
+                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox IsReadOnly="True"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 BorderThickness="0"
+                                                                 Text="{Binding ExecutionInfo.Duration, Mode=OneWay}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="*"
+                                                                    MinWidth="50"
+                                                                    IsReadOnly="True"
+                                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                                    Header="Status"
+                                                                    d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox IsReadOnly="True"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 BorderThickness="0"
+                                                                 Text="{Binding ExecutionInfo.Success, Mode=OneWay}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <DataGridTemplateColumn Width="*"
                                                                     MinWidth="90"
                                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
@@ -845,7 +840,6 @@
                                             </DataGridTemplateColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-
                                 </Grid>
                             </Expander>
                         </Grid>

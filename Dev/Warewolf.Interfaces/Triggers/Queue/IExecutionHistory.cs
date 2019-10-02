@@ -8,10 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 namespace Warewolf.Triggers
 {
     public interface IExecutionHistory
     {
+        Guid ResourceId { get; set; }
         string WorkflowOutput { get; }
         IExecutionInfo ExecutionInfo { get; }
         string UserName { get; set; }
