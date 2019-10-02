@@ -8,17 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System.Threading.Tasks;
-using Warewolf.Interfaces.Data;
+using Warewolf.Streams;
 
 namespace Warewolf.Triggers
 {
-    public interface IConsumer
-    {
-        Task<ConsumerResult> Consume(byte[] body);
-    }
-
     public interface IQueueConsumer : IConsumer
     {
     }

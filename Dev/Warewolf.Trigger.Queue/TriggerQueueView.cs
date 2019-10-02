@@ -595,7 +595,27 @@ namespace Warewolf.Trigger.Queue
             {
                 _isHistoryExpanded = value;
                 RaisePropertyChanged(nameof(IsHistoryExpanded));
+                FetchHistory();
                 RaisePropertyChanged(nameof(History));
+            }
+        }
+
+        private void FetchHistory()
+        {
+            _history = new List<IExecutionHistory>();
+            
+            if (!IsNewQueue && IsHistoryExpanded)
+            {
+                    _asyncWorker.Start(() =>
+                    {
+                        IsProgressBarVisible = true;
+                        _history = _resourceRepository.GetTriggerQueueHistory(TriggerId);
+                    }
+                   , () =>
+                   {
+                       IsProgressBarVisible = false;
+                       RaisePropertyChanged(nameof(History));
+                   });
             }
         }
 
@@ -604,26 +624,7 @@ namespace Warewolf.Trigger.Queue
         {
             get
             {
-                if (!IsHistoryExpanded)
-                {
-                    return new List<IExecutionHistory>();
-                }
-                if (_history == null && !IsNewQueue)
-                {
-                    _asyncWorker.Start(() =>
-                    {
-                        IsProgressBarVisible = true;
-                        _history = _resourceRepository.GetTriggerQueueHistory(ResourceId);
-                    }
-                   , () =>
-                   {
-                       IsProgressBarVisible = false;
-                       RaisePropertyChanged(nameof(History));
-                   });
-                }
-                var history = _history;
-                _history = null;
-                return history ?? new List<IExecutionHistory>();
+                return _history;
             }
         }
 

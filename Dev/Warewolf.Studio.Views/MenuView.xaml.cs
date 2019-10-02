@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -50,6 +51,10 @@ namespace Warewolf.Studio.Views
                 MenuQueueEventsButton is Button menuQueueEventsButton && !menuQueueEventsButton.IsMouseOver)
             {
                 TasksPopup.IsOpen = true;
+                if (DataContext is MenuViewModel menuViewModel)
+                {
+                    menuViewModel.IsPopoutViewOpen = true;
+                }
             }
         }
 
@@ -59,6 +64,11 @@ namespace Warewolf.Studio.Views
                 MenuQueueEventsButton is Button menuQueueEventsButton && !menuQueueEventsButton.IsMouseOver)
             {
                 TasksPopup.IsOpen = false;
+                if (DataContext is MenuViewModel menuViewModel)
+                {
+                    menuViewModel.IsPopoutViewOpen = false;
+                    menuViewModel.SlideClosedCommand.Execute(null);
+                }
             }
         }
     }

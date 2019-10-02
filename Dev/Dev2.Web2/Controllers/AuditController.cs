@@ -1,6 +1,5 @@
 #pragma warning disable
 ﻿using Dev2.Communication;
-using Dev2.Runtime.Auditing;
 using Dev2.Web2.Models.Auditing;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
+using Warewolf.Auditing;
 
 namespace Dev2.Web2.Controllers
 {
@@ -34,7 +34,7 @@ namespace Dev2.Web2.Controllers
         public ActionResult Index()
         {
             var request = CheckRequest(null);
-            var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
+            var model = new Tuple<List<Audit>, AuditingViewModel>(new List<Audit>(), request);
             return View(model);
         }
 
@@ -49,7 +49,7 @@ namespace Dev2.Web2.Controllers
                 servername = "localhost";
             }
             request.Server = servername;
-            var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
+            var model = new Tuple<List<Audit>, AuditingViewModel>(new List<Audit>(), request);
             return View(model);
         }
 
@@ -61,13 +61,13 @@ namespace Dev2.Web2.Controllers
             var request = CheckRequest(null);
             if (jsonData != null)
             {
-                var logEntries = serializer.Deserialize<List<AuditLog>>(jsonData);
-                var model = new Tuple<List<AuditLog>, AuditingViewModel>(logEntries, request);
+                var logEntries = serializer.Deserialize<List<Audit>>(jsonData);
+                var model = new Tuple<List<Audit>, AuditingViewModel>(logEntries, request);
                 return PartialView("AuditList", model.Item1);
             }
             else
             {
-                var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
+                var model = new Tuple<List<Audit>, AuditingViewModel>(new List<Audit>(), request);
                 return PartialView("AuditList", model.Item1);
             }
         }

@@ -229,7 +229,6 @@ namespace Dev2.Runtime.ESB.Execution
                     KeepLogsForDays = 2,
                     CompressOldLogFiles = true
                 };
-
                 if (dsfDataObject.Settings.EnableDetailedLogging)
                 {
                     stateNotifier = LogManager.CreateStateNotifier(dsfDataObject);

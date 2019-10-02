@@ -45,15 +45,13 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   logEntry: LogEntry;
   dataSource: ExecutionDataSource;
   serverURL: string;
-  serverName: string = "localhost";
-  port: string = "3142";
+  serverName: string = 'localhost';
+  port: string = '3142';
   protocol: string = 'http';
   loading: boolean = true;
   portSelect = 'http';
-  displayedColumns = ["ExecutionId", "Url", "ExecutionTime", "Status", "StartDateTime", "CompletedDateTime", "User"];
+  displayedColumns = ['ExecutionId', 'Url', 'ExecutionTime', 'Status', 'StartDateTime', 'CompletedDateTime', 'User'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private formBuilder: FormBuilder,
     public dialog: MatDialog,
@@ -64,24 +62,24 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     this.displayLogs = false;
     this.loading = true;
     this.protocol = 'http';
-    this.port = "3142"
-    this.serverName = "localhost";
-    this.logEntry = this.route.snapshot.data["logEntry"];
+    this.port = '3142';
+    this.serverName = 'localhost';
+    this.logEntry = this.route.snapshot.data['logEntry'];
     this.dataSource = new ExecutionDataSource(this.executionLoggingservice);
-    this.serverURL = this.protocol + "://" + this.serverName + ":" + this.port;
+    this.serverURL = this.protocol + '://' + this.serverName + ':' + this.port;
     this.dataSource.loadLogs(this.serverURL, '', '', 'asc', 0, 3);
     this.loading = false;
     this.displayLogs = true;
   }
   ChangingPort(event) {
     this.protocol = event;
-    if (this.protocol == "http") { this.port = "3142" } else { this.port = "3143"; }
-    this.serverURL = this.protocol + "://" + this.serverName + ":" + this.port;
+    if (this.protocol == 'http') { this.port = '3142' } else { this.port = '3143'; }
+    this.serverURL = this.protocol + '://' + this.serverName + ':' + this.port;
   }
   ngAfterViewInit() {
 
-    //TODO: This will be added in when we do the paging and sorting in the next ticket
-    //fromEvent(this.serverNameInput.nativeElement, 'keyup')
+    // TODO: This will be added in when we do the paging and sorting in the next ticket
+    // fromEvent(this.serverNameInput.nativeElement, 'keyup')
     //  .pipe(
     //    debounceTime(150),
     //    distinctUntilChanged(),
@@ -102,19 +100,19 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(buttonType): void {
-    if (buttonType === "Update") {
-      this.serverURL = this.protocol + "://" + this.serverName + ":" + this.port;
+    if (buttonType === 'Update') {
+      this.serverURL = this.protocol + '://' + this.serverName + ':' + this.port;
       var filter = '';
       this.dataSource.loadLogs(this.serverURL, '', filter, 'asc', 0, 3);
     }
-    if (buttonType === "Clear") {
-      this.model.filtefilterIdrUrl = "";
-      this.model.filterUrl = "";
-      this.model.filterTime = "";
-      this.model.filterStatus = "";
-      this.model.filterStart = "";
-      this.model.filterUser = "";
-      this.model.filterComplete = "";
+    if (buttonType === 'Clear') {
+      this.model.filtefilterIdrUrl = '';
+      this.model.filterUrl = '';
+      this.model.filterTime = '';
+      this.model.filterStatus = '';
+      this.model.filterStart = '';
+      this.model.filterUser = '';
+      this.model.filterComplete = '';
     }
   }
 
@@ -124,20 +122,20 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
       this.serverURL,
       this.logEntry.ExecutionId,
       '',
-      this.sort.direction,
-      this.paginator.pageIndex,
-      this.paginator.pageSize
+     // this.sort.direction,
+    //  this.paginator.pageIndex,
+     // this.paginator.pageSize
     );
     this.loading = false;
     this.displayLogs = true;
   }
 
-  //onRowClicked(LogEntry) {
+  // onRowClicked(LogEntry) {
   //  const dialogConfig = new MatDialogConfig();
   //  dialogConfig.disableClose = true;
   //  dialogConfig.autoFocus = true;
   //  dialogConfig.data = { LogEntry };
   //  const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
-  //}
+  // }
 }
 

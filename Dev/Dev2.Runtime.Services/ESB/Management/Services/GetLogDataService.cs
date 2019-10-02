@@ -16,22 +16,60 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using Dev2.Runtime.Auditing;
+using Warewolf.Driver.Serilog;
+using Warewolf.Auditing;
+using Warewolf.Logging;
+using System.Threading;
+using Warewolf.Interfaces.Auditing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
     {
+        private readonly IWebSocketFactory _webSocketFactory;
+        private readonly TimeSpan _waitTimeOut;
+
+        public GetLogDataService()
+             : this(new WebSocketFactory(),TimeSpan.FromMinutes(5))
+        {
+        }
+
+        public GetLogDataService(IWebSocketFactory webSocketFactory,TimeSpan waitTimeOut)
+        {
+            _webSocketFactory = webSocketFactory;
+            _waitTimeOut = waitTimeOut;
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            var client = _webSocketFactory.New().Connect();
+            
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
             var serializer = new Dev2JsonSerializer();
+            var result = new List<Audit>();
+            var response = "";
+            var message = new AuditCommand()
+            {
+                Type = "LogQuery",
+                Query = values
+            };
             try
             {
-                var results = BuildTempObjects(values);
-                LogDataCache.CurrentResults = results;
-                return serializer.SerializeToBuilder(results);
+                var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
+
+                client.OnMessage((msgResponse, socket) =>
+                {
+                    response = msgResponse;
+                    result.AddRange(serializer.Deserialize<List<Audit>>(response));
+                    ewh.Set();
+                });
+                client.SendMessage(serializer.Serialize(message));
+
+                ewh.WaitOne(_waitTimeOut);
+                LogDataCache.CurrentResults = result;
+                return serializer.SerializeToBuilder(result);
             }
             catch (Exception e)
             {
@@ -39,12 +77,21 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return serializer.SerializeToBuilder("");
         }
-              
+
+        T GetValue<T>(string key, Dictionary<string, StringBuilder> values)
+        {
+            var toReturn = default(T);
+            if (values.TryGetValue(key, out StringBuilder value))
+            {
+                var item = value.ToString();
+                return (T)Convert.ChangeType(item, typeof(T));
+            }
+            return toReturn;
+        }
+
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "GetLogDataService";
-
-       
     }
 
     public static class LogDataCache

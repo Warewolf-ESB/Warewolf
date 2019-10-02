@@ -37,6 +37,7 @@ using System.Collections.ObjectModel;
 using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Triggers;
 using Warewolf.Data;
+using Warewolf.Auditing;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
@@ -465,7 +466,7 @@ namespace Warewolf.Trigger.Queue.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("somePassword", triggerQueueView.Password);
         }
-       
+
         IContextualResourceModel CreateItemModelResourceModel(bool isConnected = true)
         {
             var moqModel = new Mock<IContextualResourceModel>();
@@ -482,7 +483,7 @@ namespace Warewolf.Trigger.Queue.Tests
             dataListViewModel.InitializeDataListViewModel(moqModel.Object);
             dataListViewModel.Add(new ScalarItemModel("Name", enDev2ColumnArgumentDirection.Input));
             dataListViewModel.Add(new ScalarItemModel("Surname", enDev2ColumnArgumentDirection.Input));
-            
+
             var recordSetItemModel = new RecordSetItemModel("Person", enDev2ColumnArgumentDirection.Input);
             var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
             {
@@ -511,14 +512,14 @@ namespace Warewolf.Trigger.Queue.Tests
             dataListViewModel.InitializeDataListViewModel(moqModel.Object);
 
             var complexObject = new ComplexObjectItemModel("Person", null, enDev2ColumnArgumentDirection.Input);
-            complexObject.Children.Add(new ComplexObjectItemModel("Name", complexObject,enDev2ColumnArgumentDirection.Input));
+            complexObject.Children.Add(new ComplexObjectItemModel("Name", complexObject, enDev2ColumnArgumentDirection.Input));
             complexObject.Children.Add(new ComplexObjectItemModel("Surname", complexObject, enDev2ColumnArgumentDirection.Input));
             dataListViewModel.Add(complexObject);
-    
+
             dataListViewModel.WriteToResourceModel();
             return moqModel.Object;
         }
-        
+
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
@@ -551,7 +552,7 @@ namespace Warewolf.Trigger.Queue.Tests
             triggerQueueView.VerifyResults = "<DataList><Name>Test</Name><Surname>test1</Surname><Person><Name>sdas</Name><Surname>asdsad</Surname></Person></DataList>";
             triggerQueueView.GetInputsFromWorkflow();
             triggerQueueView.VerifyCommand.Execute(null);
-   
+
             Assert.AreEqual(4, triggerQueueView.Inputs.Count);
 
             var inputs = triggerQueueView.Inputs.ToList();
@@ -647,7 +648,7 @@ namespace Warewolf.Trigger.Queue.Tests
             triggerQueueView.VerifyResults = json;
             triggerQueueView.GetInputsFromWorkflow();
             triggerQueueView.VerifyCommand.Execute(null);
-            
+
             popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Never);
 
             Assert.IsTrue(triggerQueueView.VerifyResultsAvailable);
@@ -711,7 +712,7 @@ namespace Warewolf.Trigger.Queue.Tests
             var triggerQueueView = CreateViewModel();
 
             Assert.IsFalse(triggerQueueView.IsHistoryExpanded);
-            Assert.AreEqual(0, triggerQueueView.History.Count);
+            Assert.IsNull(triggerQueueView.History);
         }
 
         [TestMethod]
@@ -721,11 +722,11 @@ namespace Warewolf.Trigger.Queue.Tests
         {
             var resourceId = Guid.NewGuid();
 
-            var mockExecutionInfo = new Mock<IExecutionInfo>();
+            var executionInfo = new ExecutionInfo(new DateTime(), new TimeSpan(), new DateTime(), new QueueRunStatus(), Guid.NewGuid());
 
             var history = new List<IExecutionHistory>
             {
-                new ExecutionHistory("output", mockExecutionInfo.Object, "username")
+                new ExecutionHistory(resourceId, "output", executionInfo, "username")
             };
 
             var mockServer = new Mock<IServer>();
@@ -736,14 +737,14 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var triggerQueueView = new TriggerQueueView(mockServer.Object, new SynchronousAsyncWorker())
             {
-                ResourceId = resourceId,
+                TriggerId = resourceId,
                 IsHistoryExpanded = true
             };
 
             Assert.IsNotNull(triggerQueueView.History);
             Assert.AreEqual(1, triggerQueueView.History.Count);
             Assert.IsFalse(triggerQueueView.IsProgressBarVisible);
-            mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(2));
+            mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(1));
         }
 
         [TestMethod]

@@ -9,16 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Runtime.Auditing;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Warewolf.Auditing;
+
 namespace Dev2.Web2.Models.Auditing
 {
-    public class AuditingViewModel : AuditLog
+    public class AuditingViewModel : Audit
     {
         public AuditingViewModel()
         {

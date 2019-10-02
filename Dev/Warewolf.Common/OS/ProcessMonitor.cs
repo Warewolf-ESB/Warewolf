@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace Warewolf.OS
 {
-    public abstract class ProcessThread : IProcessThread
+    public abstract class ProcessMonitor : IProcessThread
     {
         Thread _thread;
         private readonly IProcessFactory _processFactory;
@@ -54,7 +54,7 @@ namespace Warewolf.OS
 
         public bool IsAlive => _thread?.IsAlive ?? false;
 
-        protected ProcessThread(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IJobConfig config)
+        protected ProcessMonitor(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IJobConfig config)
         {
             _childProcessTracker = childProcessTracker;
             _processFactory = processFactory;

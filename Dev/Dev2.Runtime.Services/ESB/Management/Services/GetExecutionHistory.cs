@@ -12,84 +12,76 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
+using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Triggers;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class ExecutionHistory : IExecutionHistory
-    {
-        public ExecutionHistory(string workflowOutput, IExecutionInfo executionInfo, string userName)
-        {
-            ExecutionInfo = executionInfo;
-            WorkflowOutput = workflowOutput;
-            UserName = userName;
-        }
-        public string WorkflowOutput { get; private set; }
-        public IExecutionInfo ExecutionInfo { get; private set; }
-        public string UserName { get; set; }
-    }
-    public class ExecutionInfo : IExecutionInfo
-    {
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, string executionId, string failureReason)
-        {
-
-            ExecutionId = executionId;
-            Success = success;
-            EndDate = endDate;
-            Duration = duration;
-            StartDate = startDate;
-            FailureReason = failureReason;
-        }
-        [JsonConstructor]
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, string executionId)
-            : this(startDate, duration, endDate, success, executionId, "")
-        {
-            ExecutionId = executionId;
-            Success = success;
-            EndDate = endDate;
-            Duration = duration;
-            StartDate = startDate;
-        }
-
-        public DateTime StartDate { get; private set; }
-        public TimeSpan Duration { get; private set; }
-        public DateTime EndDate { get; private set; }
-        public QueueRunStatus Success { get; private set; }
-        public string ExecutionId { get; private set; }
-        public string FailureReason { get; private set; }
-    }
-
     public class GetExecutionHistory : DefaultEsbManagementEndpoint
     {
+        private readonly IWebSocketFactory _webSocketFactory;
+        private readonly TimeSpan _waitTimeOut;
+
+        public GetExecutionHistory()
+             : this(new WebSocketFactory(), TimeSpan.FromMinutes(5))
+        {
+        }
+
+        public GetExecutionHistory(IWebSocketFactory webSocketFactory, TimeSpan waitTimeOut)
+        {
+            _webSocketFactory = webSocketFactory;
+            _waitTimeOut = waitTimeOut;
+        }
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
                 var serializer = new Dev2JsonSerializer();
+                var result = new List<IExecutionHistory>();
                 if (values == null)
                 {
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
-                string queueName = null;
-                values.TryGetValue("resourceID", out StringBuilder tmp);
-                if (tmp != null)
+                values.TryGetValue("ResourceId", out StringBuilder triggerID);
+                if (triggerID != null)
                 {
-                    queueName = tmp.ToString();
-                    Dev2Logger.Info("Get Execution History. " + tmp, GlobalConstants.WarewolfInfo);
-                    //TODO: Once the events are being logged this line will be replaced with a query of that log
-                    var b = new ExecutionInfo(new DateTime(2001, 01, 01), new TimeSpan(1, 0, 0), new DateTime(2001, 01, 01), QueueRunStatus.Error, "sdf");
-                    var history = new List<IExecutionHistory>();
-                    history.Add(new ExecutionHistory("WorflowA", b, "bob"));
-                    history.Add(new ExecutionHistory("WorflowB", b, "bob"));
-                    history.Add(new ExecutionHistory("WorflowC", b, "bob"));
-                    return serializer.SerializeToBuilder(history);
+                    var client = _webSocketFactory.New().Connect();
+
+                    Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
+                   
+                    var response = "";
+                    var message = new AuditCommand
+                    {
+                        Type = "TriggerQuery",
+                        Query = values
+                    };
+                    try
+                    {
+                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);                      
+                        client.OnMessage((msgResponse, socket) =>
+                        {
+                            response = msgResponse;
+                            result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
+                            ewh.Set();
+                        });
+                        client.SendMessage(serializer.Serialize(message));
+                        ewh.WaitOne(_waitTimeOut);
+                        return serializer.SerializeToBuilder(result);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Info("Get Execution History Data ServiceError", e, GlobalConstants.WarewolfInfo);
+                    }
+                    return serializer.SerializeToBuilder(result);
                 }
                 Dev2Logger.Debug("No QueueName Provided", GlobalConstants.WarewolfDebug);
                 return serializer.SerializeToBuilder(new List<IExecutionHistory>());

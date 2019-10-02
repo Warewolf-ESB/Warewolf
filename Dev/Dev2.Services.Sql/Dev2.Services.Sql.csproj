@@ -138,10 +138,10 @@
       <Version>12.1.2400</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.110</Version>
+      <Version>1.0.111</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.110</Version>
+      <Version>1.0.111</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.EF6">
       <Version>1.0.110</Version>

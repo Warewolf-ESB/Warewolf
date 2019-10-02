@@ -8,10 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Resources;
 using Warewolf.Data;
 using Warewolf.OS.IO;
-using Warewolf.Triggers;
+using Warewolf.Streams;
 
 namespace QueueWorker
 {
@@ -23,8 +24,9 @@ namespace QueueWorker
         string Password { get; }
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
-        IQueueConfig QueueConfig { get; }
+        IStreamConfig QueueConfig { get; }
         string QueueName { get; }
         IServiceInputBase[] Inputs { get; }
+        Guid TriggerId { get; }
     }
 }
