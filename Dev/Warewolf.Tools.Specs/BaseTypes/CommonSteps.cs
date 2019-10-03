@@ -389,6 +389,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"call the web service ""(.*)""")]
         public void GivenCallTheWebService(string onErrorWebserviceToCall)
         {
+            if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
+            {
+                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote", Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.Hostname);
+            }
             _scenarioContext.Add("webserviceToCall", onErrorWebserviceToCall);
         }
 

@@ -31,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     public class DataSplitSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
-        static Depends _containerOps;
+        public static Depends _containerOps;
 
         public DataSplitSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -155,7 +155,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape ""(.*)""")]
-        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape ""(.*)""")]
         public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string splitAt, string include, string escape)
         {
             var included = include.ToLower() == "selected";
@@ -245,7 +244,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"remote server container has started")]
-        public void GivenRemoteServerContainerHasStarted() => _containerOps = new Depends(Depends.ContainerType.Warewolf, "tst-ci-remote.premier.local");
+        public void GivenRemoteServerContainerHasStarted() => _containerOps = new Depends(Depends.ContainerType.CIRemote);
 
         [AfterScenario]
         public void CleanUp() => _containerOps?.Dispose();
