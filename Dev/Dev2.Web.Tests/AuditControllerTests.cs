@@ -1,11 +1,15 @@
-﻿using Dev2.Web2.Controllers;
+﻿using Dev2.Common.ExtMethods;
+using Dev2.Web2.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Warewolf.Auditing;
 
 namespace Dev2.Web.Tests
 {
@@ -64,5 +68,62 @@ namespace Dev2.Web.Tests
             response.VerifySet(res => res.StatusCode = 401, Times.AtLeastOnce);
             Assert.AreEqual(1, controller.TempData.Count);
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AuditController))]
+        public void AuditController_AuditList_JsonDataString_Invalid_Json_ShouldReturn_EmptyModel()
+        {
+            //----------------------------Arrange-----------------------------
+            using (var controller = new AuditController())
+            {
+                //-------------------Act---------------------------------
+                var result = controller.AuditList("invalidJson");
+                
+                //-------------------Assert-----------------------------------
+                Assert.IsInstanceOfType(result, typeof(ActionResult));
+                Assert.IsInstanceOfType(result, typeof(PartialViewResult));
+
+                var partialViewResult = (PartialViewResult)result; 
+                Assert.AreEqual("AuditList", partialViewResult.ViewName);
+            };
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AuditController))]
+        public void AuditController_AuditList_JsonDataString_Valid_Json_ShouldReturn_EmptyModel()
+        {
+            //----------------------------Arrange-----------------------------
+            using (var controller = new AuditController())
+            {
+                //-------------------Arrange-----------------------------
+                var validJosonA = @"{ 'AuditType': 'testTypeA','AuditDate':'2019/10/03'}";
+                var validJosonB = @"{ 'AuditType': 'testTypeB','AuditDate':'2019/10/03'}";
+
+                var AuditA = JsonConvert.DeserializeObject<Audit>(validJosonA);
+                var AuditB = JsonConvert.DeserializeObject<Audit>(validJosonB);
+
+                var audits = new List<Audit>
+                {
+                    AuditA,
+                    AuditB
+                };
+
+                //-------------------Act---------------------------------
+                var expectedAudits = JsonConvert.SerializeObject(audits);
+
+                var result = controller.AuditList(expectedAudits);
+
+                //-------------------Assert-----------------------------------
+                Assert.IsInstanceOfType(result, typeof(ActionResult));
+                Assert.IsInstanceOfType(result, typeof(PartialViewResult));
+
+                var partialViewResult = (PartialViewResult)result;
+                Assert.AreEqual("AuditList", partialViewResult.ViewName);
+                Assert.AreEqual(expectedAudits, JsonConvert.SerializeObject(partialViewResult.ViewData.Model));
+            };
+        }
+
     }
 }
