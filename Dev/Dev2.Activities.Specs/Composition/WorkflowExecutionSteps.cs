@@ -779,7 +779,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            if (server == "Remote Container")
+            if (server == "Remote Connection Integration")
             {
                 _containerOps = new Depends(Depends.ContainerType.CIRemote);
             }
