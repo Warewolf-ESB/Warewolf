@@ -111,13 +111,13 @@
 </form>
 <script type="text/javascript">
 	var browserType;
-	browserType = browser();
-
+    browserType = browser();
+    
 	$("#auditList").tablesorter();
 	$('.filter').multifilter();
 	$("#StartDateTime").datetimepicker({
-		format: 'Y/m/d H:i:s',
-		defaultDate: new Date()
+        format: 'Y/m/d H:i:s',
+        defaultDate: new Date()
 	});
 	$("#CompletedDateTime").datetimepicker({
 		format: 'Y/m/d H:i:s',
@@ -152,7 +152,7 @@
 	function reset() {
 		document.getElementById("protocolDropdown").value = "http";
 		document.getElementById("serverName").value = "localhost";
-		document.getElementById("port").value = "3142";
+        document.getElementById("port").value = "3142";
 	}
 
 	function getLogData() {
@@ -161,8 +161,8 @@
 		var wareWolfUrl = serverUrl + "/services/GetLogDataService";
 		var pingUrl = serverUrl + "/secure/ping";
 
-		var result = {};
-		var startdate = $('#StartDateTime').val();
+        var result = {};
+        var startdate = $('#StartDateTime').val();
 		var enddate = $('#CompletedDateTime').val();
 
 		$.each($('.filter-container :input').serializeArray(), function () {
@@ -320,8 +320,11 @@
 		}
 	});
 
-	$(document).ready(function () {
-		$("#StartDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
+    $(document).ready(function () {
+        var currenttime = moment(new Date(), "YYYY/MM/DD hh:mm:ss");
+        var modifiedtime = currenttime.add(-30, 'minutes');
+
+        $("#StartDateTime").val(modifiedtime.format("YYYY/MM/DD hh:mm:ss"));
 		$("#CompletedDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
 		getLogData();
 	});

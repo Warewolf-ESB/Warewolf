@@ -1,5 +1,6 @@
 #pragma warning disable
-﻿using Dev2.Communication;
+using Dev2.Common.ExtMethods;
+using Dev2.Communication;
 using Dev2.Web2.Models.Auditing;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace Dev2.Web2.Controllers
         {
             var serializer = new Dev2JsonSerializer();
             var request = CheckRequest(null);
-            if (jsonData != null)
+            if (jsonData.IsJSON() & !jsonData.Contains("[null]"))
             {
                 var logEntries = serializer.Deserialize<List<Audit>>(jsonData);
                 var model = new Tuple<List<Audit>, AuditingViewModel>(logEntries, request);

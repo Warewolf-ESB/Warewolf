@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Net;
 using System.Text;
 using Warewolf.Driver.Serilog;
 
@@ -33,12 +34,42 @@ namespace Warewolf.Auditing
             _tableName = tableName;
         }
 
+        private bool IsUrlEncoded(string text)
+        {
+            return (WebUtility.UrlDecode(text)) != text;
+        }
+
+        private string GetDecoded(string encodedText)
+        {
+            return WebUtility.UrlDecode(encodedText);
+        }
+
         public IEnumerable<Audit> QueryLogData(Dictionary<string, StringBuilder> values)
         {
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
             var executionID = GetValue<string>("ExecutionID", values);
+
+            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
+
+            if (!string.IsNullOrEmpty(startTime) & !string.IsNullOrEmpty(endTime))
+            {
+                if (IsUrlEncoded(startTime) & IsUrlEncoded(endTime))
+                {
+                    var decodedStartTime = Convert.ToDateTime(GetDecoded(startTime));
+                    var decodedEndTime = Convert.ToDateTime(GetDecoded(endTime));
+
+                    startTime = decodedStartTime.ToString(dtFormat);
+                    endTime = decodedEndTime.ToString(dtFormat);
+                }
+                else 
+                {
+                    startTime = Convert.ToDateTime(startTime).ToString(dtFormat);
+                    endTime = Convert.ToDateTime(endTime).ToString(dtFormat);
+
+                }
+            }
 
             var sql = BuildSQLWebUIFilterString(executionID, startTime, endTime, eventLevel);
 
