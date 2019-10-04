@@ -59,6 +59,9 @@
     <Reference Include="Moq, Version=4.9.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.9.0\lib\net45\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -79,12 +82,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Web2\Dev2.Web.csproj">
       <Project>{76467c57-4f15-4fd6-90bd-68443adb838d}</Project>
       <Name>Dev2.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
+      <Project>{7C946C04-7556-4C3D-9E62-11CCA5A1AE10}</Project>
+      <Name>Warewolf.Auditing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
