@@ -81,7 +81,7 @@ public class Depends : System.Attribute, IDisposable
     {
         JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
         var JSONObj = javaScriptSerializer.Deserialize<NewContainer>(result);
-        return JSONObj.ID.Substring(0, 12) + RigOpsDomain;
+        return JSONObj.ID.Substring(0, 12) + '.' + RigOpsDomain;
     }
 
 
