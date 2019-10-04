@@ -781,15 +781,15 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (server == "Remote Container")
             {
-                _containerOps = new Depends(Depends.ContainerType.Warewolf, "tst-ci-remote.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.CIRemote);
             }
             else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
             {
-                _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MSSQL);
             }
             else if (remoteWf == "RabbitMQTest")
             {
-                _containerOps = new Depends(Depends.ContainerType.RabbitMQ, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             }
 
             var localHostEnv = LocalEnvModel;
@@ -798,7 +798,7 @@ namespace Dev2.Activities.Specs.Composition
 
             if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
             {
-                _containerOps = new Depends(Depends.ContainerType.MySQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MySQL);
             }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
