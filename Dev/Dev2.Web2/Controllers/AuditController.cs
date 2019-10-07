@@ -6,10 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
 using Warewolf.Auditing;
+using Warewolf.Common;
 
 namespace Dev2.Web2.Controllers
 {
@@ -30,6 +32,18 @@ namespace Dev2.Web2.Controllers
     [EnableCors("*", "*", "*", PreflightMaxAge = 10000, SupportsCredentials = true)]
     public class AuditController : Controller
     {
+        private readonly IWebClientFactory _clientFactory;
+        public AuditController()
+            :this(new WebClientFactory())
+        {
+
+        }
+
+        public AuditController(IWebClientFactory clientFactory)
+        {
+            _clientFactory = clientFactory;
+        }
+
         // GET: Audit
         [AllowCrossSiteJson]
         public ActionResult Index()
@@ -88,24 +102,7 @@ namespace Dev2.Web2.Controllers
                     authHeader = Encoding.UTF7.GetString(authHeaderBytes);
                     var userName = authHeader.Split(':')[0];
                     var password = authHeader.Split(':')[1];
-
-                    var credential = new NetworkCredential(userName, password);
-                    using (var client = new WebClient
-                    {
-                        Credentials = credential
-                    })
-                    {
-                        var nameValueCollection = new NameValueCollection
-                        {
-                            { "resourceID",new StringBuilder(resourceID).ToString() },
-                            { "startActivityId",new StringBuilder(startActivityId).ToString() },
-                            { "environment",new StringBuilder(environment).ToString() },
-                        };
-
-                        TempData.Remove("allowLogin");
-                        var returnValue = client.UploadValues(wareWolfResumeUrl, "POST", nameValueCollection);
-                        return Json(returnValue);
-                    }
+                    return UploadValues(resourceID, environment, startActivityId, wareWolfResumeUrl, userName, password);
                 }
             }
 
@@ -118,6 +115,23 @@ namespace Dev2.Web2.Controllers
             Response.Write("You must log in to access this URL.");
 
             return Json("Success");
+        }
+
+        internal ActionResult UploadValues(string resourceID, string environment, string startActivityId, string wareWolfResumeUrl, string userName, string password)
+        {
+            using (var client = _clientFactory.New(userName, password))
+            {
+                var nameValueCollection = new NameValueCollection
+                        {
+                            { "resourceID",new StringBuilder(resourceID).ToString() },
+                            { "startActivityId",new StringBuilder(startActivityId).ToString() },
+                            { "environment",new StringBuilder(environment).ToString() },
+                        };
+
+                TempData.Remove("allowLogin");
+                var returnValue = client.UploadValues(wareWolfResumeUrl, "POST", nameValueCollection);
+                return Json(returnValue);
+            }
         }
 
         AuditingViewModel CheckRequest(AuditingViewModel Request)
