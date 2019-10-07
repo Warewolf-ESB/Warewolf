@@ -47,6 +47,7 @@ namespace ActivityUnitTests
 
         public BaseActivityUnitTest()
         {
+            Config.Server.EnableDetailedLogging = false;
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             TestStartNode = new FlowStep
             {

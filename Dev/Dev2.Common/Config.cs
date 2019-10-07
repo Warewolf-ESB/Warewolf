@@ -50,7 +50,7 @@ namespace Dev2.Common
                 Save();
             }
         }
-        public bool EnableDetailedLogging => _settings.EnableDetailedLogging ?? true;
+        public bool EnableDetailedLogging { get => _settings.EnableDetailedLogging ?? false; set => _settings.EnableDetailedLogging = value; }
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
         public string SslCertificateName => _settings.SslCertificateName;
