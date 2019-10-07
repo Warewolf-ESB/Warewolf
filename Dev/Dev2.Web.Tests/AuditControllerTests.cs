@@ -1,10 +1,20 @@
-﻿using Dev2.Common.ExtMethods;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Web2.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -17,38 +27,48 @@ namespace Dev2.Web.Tests
     public class AuditControllerTests
     {
         [TestMethod]
-        public void Resuming_Workflow_Given_UnAuthorizedUser_Authentication()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AuditController))]
+        public void AuditController_Resuming_Workflow_Given_UnAuthorizedUser_Authentication()
         {
-            var request = new Mock<HttpRequestBase>();
-            var response = new Mock<HttpResponseBase>();
-            request.SetupGet(x => x.Headers).Returns(
+            //---------------------------------Arrange---------------------------------------
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var returnedExceptionMessage = "The remote server returned an error: (401) Unauthorized.";
+
+            var mockContext = new Mock<HttpContextBase>();
+            var mockRequest = new Mock<HttpRequestBase>();
+            var mockWebClientFactory = new Mock<IWebClientFactory>();
+            var mockClientWrapper = new Mock<IWebClientWrapper>();
+
+            var tempData = new TempDataDictionary
+            {
+                { "allowLogin", true }
+            };
+
+            mockRequest.SetupGet(x => x.Headers).Returns(
                 new WebHeaderCollection
                 {
                     { "X-Requested-With", "XMLHttpRequest"},
                     { "Authorization", "Basic ZGV2MlxJbnRlcmdyYXRpb25UZXN0ZXI6STczNTczcjA="},
                 });
 
-            var context = new Mock<HttpContextBase>();
-            context.SetupGet(x => x.Request).Returns(request.Object);
-            context.SetupGet(x => x.Response).Returns(response.Object);
-            var controller = new AuditController();
-            controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
-            controller.TempData.Add("allowLogin", true);            
-            var url = "http://localhost:3142/secure/WorkflowResume";
-            string returnedExceptionMessage = "";
-            try
+            mockContext.SetupGet(o => o.Request).Returns(mockRequest.Object);
+            mockWebClientFactory.Setup(o => o.New(It.IsAny<string>(),It.IsAny<string>())).Returns(mockClientWrapper.Object);
+            mockClientWrapper.Setup(o => o.UploadValues(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NameValueCollection>())).Throws(new Exception(returnedExceptionMessage));
+
+            //---------------------------------Act------------------------------------------
+            using (var controller = new AuditController(mockWebClientFactory.Object))
             {
-                controller.PerformResume(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), url);
-            }
-            catch (Exception ex)
-            {
-                returnedExceptionMessage = ex.Message;
-            }
-            Assert.AreEqual("The remote server returned an error: (401) Unauthorized.", returnedExceptionMessage);
+                controller.TempData = tempData;
+                controller.ControllerContext = new ControllerContext(mockContext.Object, new RouteData(), controller);
+
+                //----------------------------Assert---------------------------------------
+                Assert.ThrowsException<Exception>(() => controller.PerformResume(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), url));
+            };
         }
 
         [TestMethod]
-        public void Resuming_Workflow_Does_Not_Require_Authentication_Given_allowLogIn_Is_False()
+        public void AuditController_Resuming_Workflow_Does_Not_Require_Authentication_Given_allowLogIn_Is_False()
         {
             var request = new Mock<HttpRequestBase>();
             var response = new Mock<HttpResponseBase>();
