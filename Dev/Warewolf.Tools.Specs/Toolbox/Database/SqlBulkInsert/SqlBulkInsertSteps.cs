@@ -52,7 +52,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         {
             try
             {
-                _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MSSQL);
             }
             catch
             {

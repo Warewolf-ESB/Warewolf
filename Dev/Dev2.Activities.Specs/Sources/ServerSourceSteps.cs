@@ -193,6 +193,6 @@ namespace Dev2.Activities.Specs.Sources
         }
 
         [BeforeFeature("ServerSourceTests")]
-        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, "tst-ci-remote.premier.local");
+        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
     }
 }

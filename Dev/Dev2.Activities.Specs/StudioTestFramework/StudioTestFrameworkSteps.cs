@@ -1743,7 +1743,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             if (workflowName == "RabbitTestWf")
             {
-                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.RabbitMQ, "SVRDEV.premier.local");
+                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             }
             var env = ServerRepository.Instance.Source;
             env.ForceLoadResources();

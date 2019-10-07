@@ -34,7 +34,7 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
-            WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, "tst-ci-remote.premier.local");
+            WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
@@ -44,12 +44,12 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            string destinationServerHostname = WorkflowExecutionSteps._containerOps.Hostname;
+            string destinationServer = WorkflowExecutionSteps._containerOps.RigOpsHost + '.' + WorkflowExecutionSteps._containerOps.RigOpsDomain + ':' + WorkflowExecutionSteps._containerOps.Port;
 
-            var formattableString = $"http://{destinationServerHostname}:3142";
+            var formattableString = $"http://{destinationServer}";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))
             {
-                Name = destinationServerHostname
+                Name = destinationServer
             };
             _scenarioContext.Add("destinationServer", remoteServer);
             remoteServer.Connect();

@@ -526,7 +526,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             var environmentModel = _scenarioContext.Get<IServer>("server");
             environmentModel.Connect();
-            _containerOps = new Depends(Depends.ContainerType.MySQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MySQL);
             CreateNewResourceModel(workflowName, environmentModel);
             CreateDBServiceModel(environmentModel);
 
