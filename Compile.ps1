@@ -217,6 +217,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
+[assembly: InternalsVisibleTo("Warewolf.QueueWorker.Tests")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
