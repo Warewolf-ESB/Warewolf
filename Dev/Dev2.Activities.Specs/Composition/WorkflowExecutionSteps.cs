@@ -329,7 +329,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowName == "TestMySqlWFWithMySqlStarIndex" ||
                 workflowName == "TestMySqlWFWithMySqlIntIndex")
             {
-                _containerOps = new Depends(Depends.ContainerType.MySQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MySQL);
             }
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -1617,7 +1617,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (dbSrcName == "NewSqlServerSource" || dbSrcName == "NewSqlBulkInsertSource")
             {
-                _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.MSSQL);
             }
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
@@ -3961,7 +3961,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
         {
-            _containerOps = new Depends(Depends.ContainerType.RabbitMQ, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4002,7 +4002,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
         {
-            _containerOps = new Depends(Depends.ContainerType.RabbitMQ, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4236,7 +4236,7 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
-            _containerOps = new Depends(Depends.ContainerType.MySQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MySQL);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
@@ -4423,7 +4423,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings for testing as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             var inputs = GetServiceInputs(table);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
@@ -4497,7 +4497,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
@@ -4881,7 +4881,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"I startup the mysql container")]
         public void WhenIStartupTheContainer()
         {
-            _containerOps = new Depends(Depends.ContainerType.MySQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MySQL);
         }
 
         ResourceCatalog ResourceCat { get; set; }

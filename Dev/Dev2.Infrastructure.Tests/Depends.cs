@@ -10,8 +10,8 @@ using System.Web.Script.Serialization;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public class Depends : System.Attribute, IDisposable
 {
-    readonly string RigOpsHost = "RSAKLFSVRHST1";
-    readonly string RigOpsDomain = "dev2.local";
+    public readonly string RigOpsHost = "RSAKLFSVRHST1";
+    public readonly string RigOpsDomain = "dev2.local";
 
     public enum ContainerType
     {
@@ -44,21 +44,18 @@ public class Depends : System.Attribute, IDisposable
     }
 
     ContainerType _containerType;
-
-    public string Hostname;
+    
+    public string Port;
 
     public Depends() { throw new ArgumentNullException("Missing type of the container."); }
 
-    public Depends(ContainerType type) : this(type, "") { }
-
-    public Depends(ContainerType type, string hostname)
+    public Depends(ContainerType type)
     {
         _containerType = type;
-        Hostname = hostname;
         using (var client = new WebClientWithExtendedTimeout { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
-            var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Start/{ConvertToString(_containerType)}.json?Hostname={hostname}");
-            Hostname = ParseForHostname(result);
+            var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Start/{ConvertToString(_containerType)}.json");
+            Port = ParseForPort(result);
         }
         switch (_containerType)
         {
@@ -77,11 +74,11 @@ public class Depends : System.Attribute, IDisposable
         }
     }
 
-    string ParseForHostname(string result)
+    string ParseForPort(string result)
     {
         JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
         var JSONObj = javaScriptSerializer.Deserialize<NewContainer>(result);
-        return JSONObj.ID.Substring(0, 12) + '.' + RigOpsDomain;
+        return JSONObj.IP.Substring(JSONObj.IP.IndexOf(':') + 1, JSONObj.IP.Length - JSONObj.IP.IndexOf(':') - 1);
     }
 
 
@@ -120,7 +117,7 @@ public class Depends : System.Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"AppServerUri=http://{Hostname}:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
+            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsHost}.{RigOpsDomain}:{Port}/dsf;WebServerPort=3142;AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
         }
         else
         {
@@ -146,7 +143,7 @@ public class Depends : System.Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"Data Source={Hostname},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
+            UpdateSourcesConnectionStrings($"Data Source={RigOpsHost}.{RigOpsDomain},{Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
             Thread.Sleep(30000);
         }
         else
@@ -169,7 +166,7 @@ public class Depends : System.Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"HostName={Hostname};Port=5672;UserName=guest;Password=guest;VirtualHost=/", knownServerSources);
+            UpdateSourcesConnectionStrings($"HostName={RigOpsHost}.{RigOpsDomain};Port={Port};UserName=guest;Password=guest;VirtualHost=/", knownServerSources);
             Thread.Sleep(120000);
         }
         else
@@ -187,7 +184,7 @@ public class Depends : System.Attribute, IDisposable
     {
         if (EnableDocker)
         {
-            UpdateSourcesConnectionString(Hostname, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            UpdateSourcesConnectionString(RigOpsHost + '.' + RigOpsDomain + ':' + Port, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             Thread.Sleep(30000);
         }
         else
