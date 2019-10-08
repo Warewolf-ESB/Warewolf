@@ -64,8 +64,8 @@ namespace Dev2
         public IWriter Writer { get; set; }
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
-        public IProcessMonitor QueueWorkerMonitor { get; set; } = new EmptyQueueWorkerMonitor();
-        public LoggingServiceMonitorWithRestart LoggingServiceMonitor { get; set; }
+        public IProcessMonitor QueueWorkerMonitor { get; set; } = new NullProcessMonitor();
+        public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
