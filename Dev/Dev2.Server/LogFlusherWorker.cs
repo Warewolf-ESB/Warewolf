@@ -83,7 +83,7 @@ namespace Dev2
 
         public void Dispose()
         {
-            _loggerFlushTimer.Dispose();
+            _loggerFlushTimer?.Dispose();
         }
     }
 }
