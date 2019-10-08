@@ -1,4 +1,4 @@
-FROM microsoft/windowsservercore
+FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
 
 RUN NET localgroup "Warewolf Administrators" /ADD
 EXPOSE 3142
