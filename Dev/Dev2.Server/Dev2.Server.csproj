@@ -228,7 +228,6 @@
     <Compile Include="LoggingServiceMonitor.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="IServerLifecycleWorker.cs" />
-    <Compile Include="LogFlusherWorker.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
