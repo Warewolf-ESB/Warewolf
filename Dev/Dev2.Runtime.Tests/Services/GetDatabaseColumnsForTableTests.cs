@@ -316,13 +316,13 @@ namespace Dev2.Tests.Runtime.Services
 
         static DbSource CreateDev2TestingDbSource()
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = "rsaklfsvrdev.dev2.local",
+                Server = _containerOps.RigOpsHost + "." + _containerOps.RigOpsDomain + ":" + _containerOps.Port,
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,

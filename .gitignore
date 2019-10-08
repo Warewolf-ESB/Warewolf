@@ -66,6 +66,7 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /TestResults/**
 /Dev/*.bat
 *.tmp_proj
+/Dev/PrecompiledWeb/**
 
 ####################################################################################
 # DotCover
