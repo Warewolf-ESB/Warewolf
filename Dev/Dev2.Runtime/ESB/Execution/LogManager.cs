@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class LogManagerImplementation : IDisposable
     {
-        readonly IStateAuditLogger _logger = new StateAuditLogger(new WebSocketFactory());
+        IStateAuditLogger _logger;
       
         public IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {
@@ -28,6 +28,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
+                _logger = new StateAuditLogger(new WebSocketFactory());
                 stateNotifier.Subscribe(_logger.NewStateListener(dsfDataObject));
             }
 
@@ -41,7 +42,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if (disposing)
                 {
-                    _logger.Dispose();
+                    _logger?.Dispose();
                 }
                 _isDisposed = true;
             }
