@@ -722,11 +722,11 @@ namespace Warewolf.Trigger.Queue.Tests
         {
             var resourceId = Guid.NewGuid();
 
-            var mockExecutionInfo = new Mock<ExecutionInfo>();
+            var executionInfo = new ExecutionInfo(DateTime.Now, DateTime.Now-DateTime.UtcNow, DateTime.Today, QueueRunStatus.Success, Guid.NewGuid());
 
             var history = new List<IExecutionHistory>
             {
-                new ExecutionHistory(resourceId,"output", mockExecutionInfo.Object, "username")
+                new ExecutionHistory(resourceId,"output", executionInfo, "username")
             };
 
             var mockServer = new Mock<IServer>();
@@ -737,6 +737,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             var triggerQueueView = new TriggerQueueView(mockServer.Object, new SynchronousAsyncWorker())
             {
+                TriggerId = resourceId,
                 ResourceId = resourceId,
                 IsHistoryExpanded = true
             };
@@ -744,7 +745,7 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.IsNotNull(triggerQueueView.History);
             Assert.AreEqual(1, triggerQueueView.History.Count);
             Assert.IsFalse(triggerQueueView.IsProgressBarVisible);
-            mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(2));
+            mockResourceRepository.Verify(resourceRepository => resourceRepository.GetTriggerQueueHistory(resourceId), Times.Exactly(1));
         }
 
         [TestMethod]
