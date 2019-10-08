@@ -50,7 +50,11 @@ namespace Dev2.Common.Tests
         {
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
 
-            var settings = new ServerSettings();
+            var mockFileWrapper = new Mock<IFile>();
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+
+            var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
+            settings.EnableDetailedLogging = true;
             Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort)0, settings.WebServerPort);
@@ -164,7 +168,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", result.AuditFilePath);
             Assert.IsFalse(result.CollectUsageStats.Value);
             Assert.AreEqual(0, result.DaysToKeepTempFiles);
-            Assert.IsTrue(result.EnableDetailedLogging.Value);
+            Assert.IsFalse(result.EnableDetailedLogging.Value);
             Assert.AreEqual(200, result.LogFlushInterval);
             Assert.IsNull(result.SslCertificateName);
             Assert.AreEqual(0, result.WebServerPort.Value);
