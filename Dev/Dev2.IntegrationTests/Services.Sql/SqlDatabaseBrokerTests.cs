@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             if (_containerOps != null)
             {
                 Thread.Sleep(10000);
