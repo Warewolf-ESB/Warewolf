@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,6 +21,12 @@ namespace Dev2.Server.Tests
     [TestClass]
     public class LogFlusherWorkerTests
     {
+        [ClassInitialize]
+        public void Setup() => Config.Server.EnableDetailedLogging = true;
+
+        [ClassCleanup]
+        public void Cleanup() => Config.Server.EnableDetailedLogging = false;
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogFlusherWorker")]
