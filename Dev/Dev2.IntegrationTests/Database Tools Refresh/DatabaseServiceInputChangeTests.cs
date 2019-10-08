@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             var aggr = new Mock<IEventAggregator>();
             DataListSingleton.SetDataList(new DataListViewModel(aggr.Object));
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, "SVRDEV.premier.local");
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
         }
 
         [ClassCleanup]
