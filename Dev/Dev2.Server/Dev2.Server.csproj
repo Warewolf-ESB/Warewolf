@@ -219,7 +219,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
-    <Compile Include="EmptyQueueProcessorMonitor.cs" />
+    <Compile Include="NullProcessMonitor.cs" />
     <Compile Include="IQueueConfigLoader.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="JobConfig.cs" />
