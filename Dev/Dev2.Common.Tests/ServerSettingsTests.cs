@@ -59,7 +59,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
             Assert.AreEqual(expectedPath, settings.AuditFilePath);
-            Assert.AreEqual(true, settings.EnableDetailedLogging);
+            Assert.AreEqual(false, settings.EnableDetailedLogging);
             Assert.AreEqual(200, settings.LogFlushInterval);
         }
 
@@ -164,7 +164,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", result.AuditFilePath);
             Assert.IsFalse(result.CollectUsageStats.Value);
             Assert.AreEqual(0, result.DaysToKeepTempFiles);
-            Assert.IsTrue(result.EnableDetailedLogging.Value);
+            Assert.IsFalse(result.EnableDetailedLogging.Value);
             Assert.AreEqual(200, result.LogFlushInterval);
             Assert.IsNull(result.SslCertificateName);
             Assert.AreEqual(0, result.WebServerPort.Value);
