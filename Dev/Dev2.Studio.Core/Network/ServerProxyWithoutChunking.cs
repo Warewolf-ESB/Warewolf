@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -227,7 +227,7 @@ namespace Dev2.Network
             }
         }
 
-        public bool IsConnected { get; set; }
+        public bool IsConnected { get; private set; }
         public bool IsConnecting { get; private set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
@@ -238,9 +238,11 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                var ensureConnectedWaitTask = ConnectAsync(id);
-                ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
+                if (!IsConnecting)
+                {
+                    ConnectAsync(id);
+                }
+                //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
             catch (AggregateException aex)
             {
@@ -262,18 +264,20 @@ namespace Dev2.Network
             }
         }
 
-        public async Task<bool> ConnectAsync(Guid id)
+        public Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
-            var ensureConnectedWaitTask = new Task(() =>
+            var ensureConnectedWaitTask = new Task<bool>(() =>
             {
                 while (IsConnected == false)
                 {
+                    Task.Delay(300).Wait();
                     Task.Yield();
                 }
+                return true;
             });
             ensureConnectedWaitTask.Start();
-            return true;
+            return ensureConnectedWaitTask;
         }
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
@@ -586,11 +590,15 @@ namespace Dev2.Network
         public ServerProxyPersistentConnection(string webAddress, string userName, string password)
             : base(webAddress, userName, password)
         {
+            HubConnection.Start();
+            StartHubConnectionWatchdogThread();
         }
 
         public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
             : base(serverUri, credentials, worker)
         {
+            HubConnection.Start();
+            StartHubConnectionWatchdogThread();
         }
 
         private void StartHubConnectionWatchdogThread()

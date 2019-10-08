@@ -149,14 +149,12 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxy
             {
-                IsConnected = true,
                 DisplayName = "localhost"
             };
             //------------Execute Test---------------------------
             var isLocalHost = serverProxy.IsLocalHost;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serverProxy.IsConnected);
             Assert.IsTrue(isLocalHost);
         }
 
@@ -168,14 +166,12 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxy
             {
-                IsConnected = true,
                 DisplayName = "LoCaLhOst"
             };
             //------------Execute Test---------------------------
             var isLocalHost = serverProxy.IsLocalHost;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serverProxy.IsConnected);
             Assert.IsTrue(isLocalHost);
         }
 
@@ -187,14 +183,12 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxy
             {
-                IsConnected = true,
                 DisplayName = "localhost (Connected)"
             };
             //------------Execute Test---------------------------
             var isLocalHost = serverProxy.IsLocalHost;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serverProxy.IsConnected);
             Assert.IsTrue(isLocalHost);
         }
 
@@ -206,14 +200,12 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxy
             {
-                IsConnected = true,
                 DisplayName = "localhost 2"
             };
             //------------Execute Test---------------------------
             var isLocalHost = serverProxy.IsLocalHost;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serverProxy.IsConnected);
             Assert.IsFalse(isLocalHost);
         }
 
@@ -225,14 +217,12 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxy
             {
-                IsConnected = true,
                 DisplayName = ""
             };
             //------------Execute Test---------------------------
             var isLocalHost = serverProxy.IsLocalHost;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serverProxy.IsConnected);
             Assert.IsFalse(isLocalHost);
         }
         
@@ -244,14 +234,12 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxy
             {
-                IsConnected = true,
                 DisplayName = null
             };
             //------------Execute Test---------------------------
             var isLocalHost = serverProxy.IsLocalHost;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serverProxy.IsConnected);
             Assert.IsFalse(isLocalHost);
         }
 
@@ -259,6 +247,8 @@ namespace Dev2.Core.Tests.Network
 
     class TestServerProxy : ServerProxyWithoutChunking
     {
+        public bool IsConnectedOverride { get; set; }
+
         // TODO: Move this constructor to a test class!!
         public TestServerProxy(string uri, string userName, string password)
             : base(uri, userName, password)
