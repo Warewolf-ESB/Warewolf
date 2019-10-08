@@ -100,7 +100,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         {
             if (hostname == "test-rabbitmq")
             {
-                _containerOps = new Depends(Depends.ContainerType.RabbitMQ, "SVRDEV.premier.local");
+                _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             }
             var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.EnterHostName(hostname);
