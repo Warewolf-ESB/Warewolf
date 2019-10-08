@@ -1405,10 +1405,9 @@ Global
 		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Debug|x86.Build.0 = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.ActiveCfg = Release|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.Build.0 = Release|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.ActiveCfg = Debug|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
