@@ -217,6 +217,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
+[assembly: InternalsVisibleTo("Warewolf.QueueWorker.Tests")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
@@ -279,6 +280,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
         }
         if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
+			if ($OutputFolderName -eq "Webs") {
+				npm install --add-python-to-path='true' --global --production windows-build-tools
+			}
+
             if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             } else {

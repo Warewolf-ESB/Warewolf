@@ -149,7 +149,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof(Exception))]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NullException()
         {
             //------------Setup for test--------------------------
