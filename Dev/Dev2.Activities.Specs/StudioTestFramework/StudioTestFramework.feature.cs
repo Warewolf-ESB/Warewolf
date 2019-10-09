@@ -90,69 +90,69 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 #line 9
   testRunner.Given("test folder is cleaned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1274 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table1.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "[[a]]"});
 #line 10
-  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1, "And ");
+  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1274, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1275 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table2.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "[[outputValue]]"});
 #line 13
-  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table2, "And ");
+  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1275, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1276 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table3.AddRow(new string[] {
+            table1276.AddRow(new string[] {
                         "[[rec().a]]"});
-            table3.AddRow(new string[] {
+            table1276.AddRow(new string[] {
                         "[[rec().b]]"});
 #line 16
-  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table3, "Given ");
+  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1276, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1277 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table4.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "[[returnVal]]"});
 #line 20
-  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table4, "And ");
+  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1277, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1278 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table5.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "[[A]]"});
-            table5.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "[[B]]"});
-            table5.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "[[C]]"});
 #line 23
-  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table5, "Given ");
+  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1278, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1279 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table6.AddRow(new string[] {
+            table1279.AddRow(new string[] {
                         "[[message]]"});
 #line 28
-  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table6, "And ");
+  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1279, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1280 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table7.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "[[input]]"});
 #line 31
-  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table7, "Given ");
+  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1280, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1281 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table8.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "[[outputValue]]"});
 #line 34
-  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table8, "And ");
+  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1281, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1282 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error",
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "TestPending",
                         "TestInvalid",
                         "TestPassed"});
-            table9.AddRow(new string[] {
+            table1282.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "false",
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "true"});
-            table9.AddRow(new string[] {
+            table1282.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "false",
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "false"});
-            table9.AddRow(new string[] {
+            table1282.AddRow(new string[] {
                         "Test3",
                         "Windows",
                         "false",
@@ -184,7 +184,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "true",
                         "false"});
-            table9.AddRow(new string[] {
+            table1282.AddRow(new string[] {
                         "Test4",
                         "Windows",
                         "false",
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false"});
 #line 37
-  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table9, "And ");
+  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1282, "And ");
 #line hidden
         }
         
@@ -227,23 +227,23 @@ this.FeatureBackground();
 #line 53
  testRunner.And("password is blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1283 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table10.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "a",
                         ""});
 #line 54
- testRunner.And("inputs are", ((string)(null)), table10, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1283, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1284 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table11.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 57
- testRunner.And("outputs as", ((string)(null)), table11, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1284, "And ");
 #line 60
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
@@ -282,23 +282,23 @@ this.FeatureBackground();
 #line 72
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1285 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table12.AddRow(new string[] {
+            table1285.AddRow(new string[] {
                         "a",
                         ""});
 #line 73
- testRunner.And("inputs are", ((string)(null)), table12, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1285, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1286 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table13.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 76
- testRunner.And("outputs as", ((string)(null)), table13, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1286, "And ");
 #line 79
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 80
@@ -320,23 +320,23 @@ this.FeatureBackground();
 #line 88
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1287 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table14.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "a",
                         ""});
 #line 89
- testRunner.And("inputs are", ((string)(null)), table14, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1287, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1288 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table15.AddRow(new string[] {
+            table1288.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 92
- testRunner.And("outputs as", ((string)(null)), table15, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1288, "And ");
 #line 95
  testRunner.And("save is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -369,23 +369,23 @@ this.FeatureBackground();
 #line 104
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1289 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table16.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "a",
                         ""});
 #line 105
- testRunner.And("inputs are", ((string)(null)), table16, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1289, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1290 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table17.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 108
- testRunner.And("outputs as", ((string)(null)), table17, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1290, "And ");
 #line 111
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
@@ -401,23 +401,23 @@ this.FeatureBackground();
 #line 117
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1291 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table18.AddRow(new string[] {
+            table1291.AddRow(new string[] {
                         "a",
                         ""});
 #line 118
- testRunner.And("inputs are", ((string)(null)), table18, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1291, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1292 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table19.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 121
- testRunner.And("outputs as", ((string)(null)), table19, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1292, "And ");
 #line 124
  testRunner.And("save is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 125
@@ -429,23 +429,23 @@ this.FeatureBackground();
 #line 128
  testRunner.And("test name starts with \"Test 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1293 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table20.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "a",
                         ""});
 #line 129
- testRunner.And("inputs are", ((string)(null)), table20, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1293, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1294 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table21.AddRow(new string[] {
+            table1294.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 132
- testRunner.And("outputs as", ((string)(null)), table21, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1294, "And ");
 #line 135
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
@@ -482,16 +482,16 @@ this.FeatureBackground();
 #line 146
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1295 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table22.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 147
- testRunner.And("I set Test Values as", ((string)(null)), table22, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1295, "And ");
 #line 150
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 151
@@ -499,16 +499,16 @@ this.FeatureBackground();
 #line 152
  testRunner.When("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1296 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table23.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "true"});
 #line 153
- testRunner.And("I set Test Values as", ((string)(null)), table23, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1296, "And ");
 #line 156
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
@@ -524,29 +524,29 @@ this.FeatureBackground();
 #line 162
  testRunner.And("I select \"Test2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1297 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table24.AddRow(new string[] {
+            table1297.AddRow(new string[] {
                         "Test2",
                         "Public",
                         "true"});
 #line 163
- testRunner.And("I set Test Values as", ((string)(null)), table24, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1297, "And ");
 #line 166
  testRunner.Then("Name for display is \"Test2 *\" and test is edited", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1298 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table25.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "true"});
 #line 167
- testRunner.And("I set Test Values as", ((string)(null)), table25, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1298, "And ");
 #line 170
  testRunner.Then("Name for display is \"Test2\" and test is not edited", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -573,16 +573,16 @@ this.FeatureBackground();
 #line 176
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1299 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table26.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 177
- testRunner.And("I set Test Values as", ((string)(null)), table26, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1299, "And ");
 #line 180
  testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 181
@@ -594,16 +594,16 @@ this.FeatureBackground();
 #line 184
  testRunner.When("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1300 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table27.AddRow(new string[] {
+            table1300.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "true"});
 #line 185
- testRunner.And("I set Test Values as", ((string)(null)), table27, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1300, "And ");
 #line 188
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
@@ -621,16 +621,16 @@ this.FeatureBackground();
 #line 195
  testRunner.Then("Duplicate Test is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1301 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table28.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "Test2",
                         "Public",
                         "true"});
 #line 196
- testRunner.And("I set Test Values as", ((string)(null)), table28, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1301, "And ");
 #line 199
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 200
@@ -671,16 +671,16 @@ this.FeatureBackground();
 #line 212
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1302 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table29.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 213
- testRunner.And("I set Test Values as", ((string)(null)), table29, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1302, "And ");
 #line 216
  testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 217
@@ -692,16 +692,16 @@ this.FeatureBackground();
 #line 220
  testRunner.When("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1303 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table30.AddRow(new string[] {
+            table1303.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "true"});
 #line 221
- testRunner.And("I set Test Values as", ((string)(null)), table30, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1303, "And ");
 #line 224
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 225
@@ -760,16 +760,16 @@ this.FeatureBackground();
 #line 246
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1304 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table31.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 247
- testRunner.And("I set Test Values as", ((string)(null)), table31, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1304, "And ");
 #line 250
  testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 251
@@ -816,16 +816,16 @@ this.FeatureBackground();
 #line 266
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1305 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table32.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 267
- testRunner.And("I set Test Values as", ((string)(null)), table32, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1305, "And ");
 #line 270
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 271
@@ -864,16 +864,16 @@ this.FeatureBackground();
 #line 282
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1306 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table33.AddRow(new string[] {
+            table1306.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 283
- testRunner.And("I set Test Values as", ((string)(null)), table33, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1306, "And ");
 #line 286
  testRunner.Then("Test Status saved is \"TestPending\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 287
@@ -914,16 +914,16 @@ this.FeatureBackground();
 #line 299
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1307 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table34.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 300
- testRunner.And("I set Test Values as", ((string)(null)), table34, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1307, "And ");
 #line 303
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 304
@@ -931,16 +931,16 @@ this.FeatureBackground();
 #line 305
  testRunner.When("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1308 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table35.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "true"});
 #line 306
- testRunner.And("I set Test Values as", ((string)(null)), table35, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1308, "And ");
 #line 309
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 310
@@ -977,16 +977,16 @@ this.FeatureBackground();
 #line 320
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1309 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table36.AddRow(new string[] {
+            table1309.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "true"});
 #line 321
- testRunner.And("I set Test Values as", ((string)(null)), table36, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1309, "And ");
 #line 324
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 325
@@ -994,16 +994,16 @@ this.FeatureBackground();
 #line 326
  testRunner.When("I click \"Test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1310 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
-            table37.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "NewName",
                         "Windows",
                         "false"});
 #line 327
- testRunner.And("I set Test Values as", ((string)(null)), table37, "And ");
+ testRunner.And("I set Test Values as", ((string)(null)), table1310, "And ");
 #line 330
  testRunner.Then("Tab Header is \"Workflow 3 - Tests *\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1065,23 +1065,23 @@ this.FeatureBackground();
 #line 348
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1311 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table38.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "a",
                         ""});
 #line 349
- testRunner.And("inputs are", ((string)(null)), table38, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1311, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1312 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table39.AddRow(new string[] {
+            table1312.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 352
- testRunner.And("outputs as", ((string)(null)), table39, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1312, "And ");
 #line 355
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 356
@@ -1130,23 +1130,23 @@ this.FeatureBackground();
 #line 372
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1313 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table40.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "a",
                         ""});
 #line 373
- testRunner.And("inputs are", ((string)(null)), table40, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1313, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1314 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table41.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 376
- testRunner.And("outputs as", ((string)(null)), table41, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1314, "And ");
 #line 379
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 380
@@ -1213,16 +1213,16 @@ this.FeatureBackground();
 #line 405
  testRunner.And("I Add \"Assign (1)\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1315 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table42.AddRow(new string[] {
+            table1315.AddRow(new string[] {
                         "[[DiceRollValue]]",
                         "=",
                         "4"});
 #line 406
- testRunner.And("I add \"Assign (1)\" StepOutputs as", ((string)(null)), table42, "And ");
+ testRunner.And("I add \"Assign (1)\" StepOutputs as", ((string)(null)), table1315, "And ");
 #line 409
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 410
@@ -1277,23 +1277,23 @@ this.FeatureBackground();
 #line 429
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1316 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table43.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "a",
                         ""});
 #line 430
- testRunner.And("inputs are", ((string)(null)), table43, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1316, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1317 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table44.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 433
- testRunner.And("outputs as", ((string)(null)), table44, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1317, "And ");
 #line 436
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 437
@@ -1356,23 +1356,23 @@ this.FeatureBackground();
 #line 460
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1318 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table45.AddRow(new string[] {
+            table1318.AddRow(new string[] {
                         "a",
                         ""});
 #line 461
- testRunner.And("inputs are", ((string)(null)), table45, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1318, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1319 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table46.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 464
- testRunner.And("outputs as", ((string)(null)), table46, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1319, "And ");
 #line 467
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 468
@@ -1394,23 +1394,23 @@ this.FeatureBackground();
 #line 476
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1320 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table47.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "a",
                         ""});
 #line 477
- testRunner.And("inputs are", ((string)(null)), table47, "And ");
+ testRunner.And("inputs are", ((string)(null)), table1320, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1321 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Value"});
-            table48.AddRow(new string[] {
+            table1321.AddRow(new string[] {
                         "outputValue",
                         ""});
 #line 480
- testRunner.And("outputs as", ((string)(null)), table48, "And ");
+ testRunner.And("outputs as", ((string)(null)), table1321, "And ");
 #line 483
  testRunner.And("save is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 484

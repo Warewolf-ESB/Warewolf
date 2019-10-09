@@ -111,14 +111,14 @@ this.FeatureBackground();
     testRunner.And("\"WFWithAsyncLoggingForEach\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" " +
                     "executions \"2000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table585 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table1.AddRow(new string[] {
+            table585.AddRow(new string[] {
                         "[[Warewolf]]",
                         "bob"});
 #line 14
- testRunner.And("\"ForEachTest\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
+ testRunner.And("\"ForEachTest\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table585, "And ");
 #line 17
  testRunner.When("\"WFWithAsyncLoggingForEach\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
@@ -156,17 +156,17 @@ this.FeatureBackground();
 #line 28
   testRunner.Given("I have a workflow \"WorkflowWithAssign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table2.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "[[rec().a]]",
                         "yes"});
-            table2.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "[[rec().a]]",
                         "no"});
 #line 29
-  testRunner.And("\"WorkflowWithAssign\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table2, "And ");
+  testRunner.And("\"WorkflowWithAssign\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table586, "And ");
 #line 33
    testRunner.When("\"WorkflowWithAssign\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
@@ -174,32 +174,32 @@ this.FeatureBackground();
 #line 35
    testRunner.And("the \"WorkflowWithAssign\" has a start and end duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table3.AddRow(new string[] {
+            table587.AddRow(new string[] {
                         "1",
                         "[[rec().a]] =",
                         "yes"});
-            table3.AddRow(new string[] {
+            table587.AddRow(new string[] {
                         "2",
                         "[[rec().a]] =",
                         "no"});
 #line 36
-   testRunner.And("the \"Rec To Convert\" in WorkFlow \"WorkflowWithAssign\" debug inputs as", ((string)(null)), table3, "And ");
+   testRunner.And("the \"Rec To Convert\" in WorkFlow \"WorkflowWithAssign\" debug inputs as", ((string)(null)), table587, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table4.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = yes"});
-            table4.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = no"});
 #line 40
-   testRunner.And("the \"Rec To Convert\" in Workflow \"WorkflowWithAssign\" debug outputs as", ((string)(null)), table4, "And ");
+   testRunner.And("the \"Rec To Convert\" in Workflow \"WorkflowWithAssign\" debug outputs as", ((string)(null)), table588, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
