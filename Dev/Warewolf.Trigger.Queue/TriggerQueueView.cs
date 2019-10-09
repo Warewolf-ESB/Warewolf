@@ -81,7 +81,7 @@ namespace Warewolf.Trigger.Queue
         readonly IPopupController _popupController;
         private bool _isHistoryExpanded;
         private bool _isProgressBarVisible;
-        private IList<IExecutionHistory> _history;
+        private IList<IExecutionHistory> _history = new List<IExecutionHistory>();
         private bool _isDirty;
 
         /// <summary>
@@ -602,8 +602,6 @@ namespace Warewolf.Trigger.Queue
 
         private void FetchHistory()
         {
-            _history = new List<IExecutionHistory>();
-            
             if (!IsNewQueue && IsHistoryExpanded)
             {
                     _asyncWorker.Start(() =>
