@@ -72,7 +72,7 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
 
-            new WorkSurfaceContextViewModel(null, new Mock<IWorkSurfaceViewModel>().Object);
+            new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IWorkSurfaceViewModel>().Object, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             //------------Assert Results-------------------------
         }
@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
 
-            new WorkSurfaceContextViewModel(new WorkSurfaceKey(), null);
+            new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, new WorkSurfaceKey(), null, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             //------------Assert Results-------------------------
         }
@@ -110,7 +110,7 @@ namespace Dev2.Core.Tests
 
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
             //------------Execute Test---------------------------
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel, new Mock<IPopupController>().Object, (a, b, c) => { });
             //------------Assert Results-------------------------
             Assert.IsNotNull(workSurfaceContextViewModel);
             Assert.IsNull(workSurfaceContextViewModel.DebugOutputViewModel);
@@ -151,7 +151,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, viewModel, new Mock<IPopupController>().Object, (a, b, c) => { }) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
             mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
             //------------Assert Results-------------------------
@@ -539,7 +539,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.BindToModel();
             //------------Assert---------------------------------
@@ -569,7 +569,7 @@ namespace Dev2.Core.Tests
 
             var viewModel = WorkflowDesignerViewModelMock(true);
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, viewModel, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
@@ -596,7 +596,7 @@ namespace Dev2.Core.Tests
 
             var viewModel = WorkflowDesignerViewModelMock(true);
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, viewModel, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
@@ -622,7 +622,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var viewModel = WorkflowDesignerViewModelMock(true);
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, viewModel, new Mock<IPopupController>().Object, (a, b, c) => { }) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanExecute());
@@ -647,7 +647,7 @@ namespace Dev2.Core.Tests
             var serverRepository = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepository.Object);
             var viewModel = WorkflowDesignerViewModelMock(true);
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, viewModel, new Mock<IPopupController>().Object, (a, b, c) => { }) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanViewInBrowser());
@@ -676,7 +676,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -713,7 +713,7 @@ namespace Dev2.Core.Tests
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
 
             // object to work on 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             var mr = new Mock<IStudioCompileMessageRepo>();
             mr.Setup(a => a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>())).Returns(new CompileMessageList());
@@ -758,7 +758,7 @@ namespace Dev2.Core.Tests
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
 
             // object to work on 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
 
             var lst = new CompileMessageList { MessageList = new List<ICompileMessageTO> { new CompileMessageTO() } };
             var mr = new Mock<IStudioCompileMessageRepo>();
@@ -828,7 +828,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -1006,7 +1006,7 @@ namespace Dev2.Core.Tests
 
             var viewModel = WorkflowDesignerViewModelMock(isConnected, mockResourceModel);
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, viewModel, new Mock<IPopupController>().Object, (a, b, c) => { });
             return workSurfaceContextViewModel;
         }
 
@@ -1114,7 +1114,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(model => model.UserPermissions).Returns(resourceModel.UserPermissions);
             var viewModel = WorkflowDesignerViewModelMock(true, mockResourceModel);
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new WorkSurfaceKey(), viewModel)
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, new WorkSurfaceKey(), viewModel, new Mock<IPopupController>().Object, (a, b, c) => { })
             {
                 DebugOutputViewModel = { DebugStatus = DebugStatus.Ready }
             };
