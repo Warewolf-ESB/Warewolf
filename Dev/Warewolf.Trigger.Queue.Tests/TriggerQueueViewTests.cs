@@ -712,7 +712,7 @@ namespace Warewolf.Trigger.Queue.Tests
             var triggerQueueView = CreateViewModel();
 
             Assert.IsFalse(triggerQueueView.IsHistoryExpanded);
-            Assert.IsNull(triggerQueueView.History);
+            Assert.AreEqual(0, triggerQueueView.History.Count);
         }
 
         [TestMethod]
@@ -722,7 +722,7 @@ namespace Warewolf.Trigger.Queue.Tests
         {
             var resourceId = Guid.NewGuid();
 
-            var executionInfo = new ExecutionInfo(new DateTime(), new TimeSpan(), new DateTime(), new QueueRunStatus(), Guid.NewGuid());
+            var executionInfo = new ExecutionInfo(DateTime.Now, DateTime.Now-DateTime.UtcNow, DateTime.Today, QueueRunStatus.Success, Guid.NewGuid());
 
             var history = new List<IExecutionHistory>
             {
@@ -738,6 +738,7 @@ namespace Warewolf.Trigger.Queue.Tests
             var triggerQueueView = new TriggerQueueView(mockServer.Object, new SynchronousAsyncWorker())
             {
                 TriggerId = resourceId,
+                ResourceId = resourceId,
                 IsHistoryExpanded = true
             };
 

@@ -50,7 +50,10 @@ namespace Dev2.Common.Tests
         {
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
 
-            var settings = new ServerSettings();
+            var mockFileWrapper = new Mock<IFile>();
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+
+            var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
             Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort)0, settings.WebServerPort);
