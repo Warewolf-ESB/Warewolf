@@ -141,7 +141,7 @@ namespace Dev2.Activities.Specs.TestFramework
         private static void ConnectAndLoadServer()
         {
             _environmentModel = ServerRepository.Instance.Source;
-            _environmentModel.Connect();
+            _environmentModel.ConnectAsync().Wait(60000);
             if (_environmentModel.IsConnected)
             {
                 _environmentModel.ResourceRepository.Load(true);

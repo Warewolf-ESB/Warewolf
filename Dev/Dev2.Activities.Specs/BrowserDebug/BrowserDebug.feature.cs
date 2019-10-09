@@ -485,7 +485,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 122
 this.ScenarioSetup(scenarioInfo);
 #line 123
- testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/AssignOnlyWithNoOutp" +
                     "ut.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
  testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -502,7 +502,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 126
 this.ScenarioSetup(scenarioInfo);
 #line 127
- testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/AssignOnlyWithNoOutp" +
                     "ut.xml\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 128
  testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -590,16 +590,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingAWorkflowAlwaysReturnsOutputsEvenWhenError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a workflow always returns outputs even when error", ((string[])(null)));
-#line 150
-this.ScenarioSetup(scenarioInfo);
 #line 151
-  testRunner.Given("I have a workflow \"ErrorWebResponse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 152
-  testRunner.And("I Debug \"http://localhost:3142/secure/ErrorWebResponse.json\" i" +
-                    "n Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have a workflow \"ErrorWebResponse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 153
-  testRunner.Then("Browser content is \"\"Message\": \"\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I Debug \"http://localhost:3142/secure/ErrorWebResponse.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
+  testRunner.Then("Browser content is \"\"Message\": \"\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 155
   testRunner.Then("Browser content is not \"FatalError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

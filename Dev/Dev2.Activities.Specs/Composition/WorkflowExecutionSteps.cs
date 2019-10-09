@@ -311,7 +311,7 @@ namespace Dev2.Activities.Specs.Composition
         static void SetUpLocalHost()
         {
             LocalEnvModel = ServerRepository.Instance.Source;
-            LocalEnvModel.Connect();
+            LocalEnvModel.ConnectAsync().Wait(60000);
             LocalEnvModel.ForceLoadResources();
         }
 

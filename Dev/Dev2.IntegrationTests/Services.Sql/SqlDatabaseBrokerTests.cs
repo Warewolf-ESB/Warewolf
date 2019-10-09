@@ -50,7 +50,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
         {
             RunAs("IntegrationTester", "dev2", () =>
@@ -64,7 +63,6 @@ namespace Dev2.Integration.Tests.Services.Sql
         
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
             RunAs("NoDBAccessTest", "DEV2", () =>
@@ -87,7 +85,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker")]
         [ExpectedException(typeof(WarewolfDbException))]        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
         {
@@ -101,7 +98,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
@@ -112,7 +108,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker")]        
+        [TestCategory("SqlDatabaseBroker")]
         public void SqlDatabaseBroker_TestService_WindowsUserWithDbAccess_ReturnsValidResult()
         {
             RunAs("IntegrationTester", "dev2", () =>
@@ -139,7 +135,6 @@ namespace Dev2.Integration.Tests.Services.Sql
         
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_WindowsUserWithoutDbAccess_ReturnsInvalidResult()
         {
             Exception exception = null;
@@ -179,7 +174,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker")]
         [ExpectedException(typeof(WarewolfDbException))]        
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
 
@@ -207,7 +201,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker")]        
+        [TestCategory("SqlDatabaseBroker")]
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
@@ -231,7 +225,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_ValidDbServiceThatReturnsNull_RecordsetWithNullColumn()
         {
             var service = new DbService
