@@ -53,7 +53,6 @@
     <Compile Include="WebServerConfigurationTests.cs" />
     <Compile Include="ServerLifecycleManagerServiceTests.cs" />
     <Compile Include="ServerEnvironmentPreparerTests.cs" />
-    <Compile Include="LogFlusherWorkerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
