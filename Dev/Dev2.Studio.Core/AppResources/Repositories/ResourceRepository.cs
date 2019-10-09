@@ -230,6 +230,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return null;
             }
+
+            if (!IsLoaded)
+            {
+                Load(false);
+            }
+
             var result = _resourceModels.Find(func.Invoke);
 
             if (result != null && fetchDefinition)
