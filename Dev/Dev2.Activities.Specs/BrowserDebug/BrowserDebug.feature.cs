@@ -485,7 +485,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 122
 this.ScenarioSetup(scenarioInfo);
 #line 123
- testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/AssignOnlyWithNoOutp" +
                     "ut.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
  testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -502,7 +502,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 126
 this.ScenarioSetup(scenarioInfo);
 #line 127
- testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/AssignOnlyWithNoOutp" +
                     "ut.xml\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 128
  testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
