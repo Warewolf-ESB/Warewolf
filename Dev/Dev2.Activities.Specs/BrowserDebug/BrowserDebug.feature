@@ -120,11 +120,11 @@ Scenario: Executing Hello world in browser
 	Then Browser content is "Hello World."
 
 Scenario: Executing Workflow with empty Json Assign in browser 
-	Given I Debug "http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutput.json" in Browser
+	Given I Debug "http://localhost:3142/secure/AssignOnlyWithNoOutput.json" in Browser
 	Then Browser content is "{}"
 
 Scenario: Executing Workflow with empty Xml Assign in browser 
-	Given I Debug "http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutput.xml" in Browser
+	Given I Debug "http://localhost:3142/secure/AssignOnlyWithNoOutput.xml" in Browser
 	Then Browser content is "<DataList />"
 
 Scenario: Executing Workflow with Execute Permissions and Nested Workflow With No Execute Permissions
