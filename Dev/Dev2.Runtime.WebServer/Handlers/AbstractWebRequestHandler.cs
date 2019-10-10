@@ -209,6 +209,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return DebugFromWebExecutionResponse(_dataObject, _serializer);
                 }
 
+                DataListFormat formatter;
+                if (webRequest.ServiceName.EndsWith(".xml"))
+                {
+                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                } else
+                {
+                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                }
+
                 var executionDto = new ExecutionDto
                 {
                     WebRequestTO = webRequest,
@@ -217,7 +226,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     DataListIdGuid = _executionDlid,
                     WorkspaceID = _workspaceGuid,
                     Resource = _resource,
-                    DataListFormat = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json"),
+                    DataListFormat = formatter,
                     PayLoad = _executePayload,
                     Serializer = _serializer,
                 };

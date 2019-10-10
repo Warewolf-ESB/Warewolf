@@ -129,6 +129,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 Dev2Logger.Error(ex, executionId);
                 DataObject.Environment.AddError(ex.Message);
+                DataObject.ExecutionException = ex;
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
             return result;
