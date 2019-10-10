@@ -55,7 +55,13 @@ public class Depends : System.Attribute, IDisposable
         using (var client = new WebClientWithExtendedTimeout { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
             var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Start/{ConvertToString(_containerType)}.json");
-            Port = ParseForPort(result);
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<StartContainer>(result);
+            if (string.IsNullOrEmpty(JSONObj.Port))
+            {
+                throw new Exception($"Cannot start container{(result == string.Empty ? "." : ": " + result)}");
+            }
+            Port = JSONObj.Port;
         }
         switch (_containerType)
         {
@@ -74,22 +80,14 @@ public class Depends : System.Attribute, IDisposable
         }
     }
 
-    string ParseForPort(string result)
-    {
-        JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-        var JSONObj = javaScriptSerializer.Deserialize<NewContainer>(result);
-        return JSONObj.IP.Substring(JSONObj.IP.IndexOf(':') + 1, JSONObj.IP.Length - JSONObj.IP.IndexOf(':') - 1);
-    }
-
-
     public void Dispose()
     {
         using (var client = new WebClient { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
             var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
-            if (result != @"{
-  ""Result"": ""Success""
-}")
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<StopContainer>(result);
+            if (JSONObj.Result !="Success")
             {
                 throw new Exception($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
             }
@@ -289,10 +287,16 @@ public class Depends : System.Attribute, IDisposable
     }
 }
 
-class NewContainer
+class StartContainer
 {
     public string ID { get; set; }
     public string IP { get; set; }
+    public string Port { get; set; }
+}
+
+class StopContainer
+{
+    public string Result { get; set; }
 }
 
 class WebClientWithExtendedTimeout : WebClient
