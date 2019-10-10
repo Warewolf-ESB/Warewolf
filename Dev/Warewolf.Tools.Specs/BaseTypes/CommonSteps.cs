@@ -565,7 +565,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             //Send the error in error variable
             var onErrorWebserviceToCall = _scenarioContext.Get<string>("webserviceToCall").Replace("[[error]]", errorValue);
             var webClient = WebRequest.Create(onErrorWebserviceToCall);
-            webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+            webClient.Credentials = new NetworkCredential("WarewolfAdmin", "W@rEw0lf@dm1n");
             ServicePointManager.DefaultConnectionLimit = 100;
             webClient.Timeout = Timeout.Infinite;
             webClient.GetResponse();
