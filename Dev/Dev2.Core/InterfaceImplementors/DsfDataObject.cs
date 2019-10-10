@@ -404,6 +404,7 @@ namespace Dev2.DynamicServices
             result.ExecutingUser = ExecutingUser;
             result.StateNotifier = StateNotifier;
             result.AuthCache = new ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool>(AuthCache);
+            result.ExecutionException = ExecutionException;
 
             if (ServiceTest != null)
             {
