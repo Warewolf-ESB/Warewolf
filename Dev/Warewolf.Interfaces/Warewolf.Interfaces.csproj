@@ -18,5 +18,6 @@
  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fleck" Version="1.1.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.1.1" />
   </ItemGroup>
 </Project>

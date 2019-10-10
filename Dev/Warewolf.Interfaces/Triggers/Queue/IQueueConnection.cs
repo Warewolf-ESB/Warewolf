@@ -8,8 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using RabbitMQ.Client;
 using System;
 using Warewolf.Streams;
+using IConnection = Warewolf.Streams.IConnection;
 
 namespace Warewolf.Triggers
 {
@@ -18,5 +20,9 @@ namespace Warewolf.Triggers
         bool IsOpen { get; }
 
         void DeleteQueue(IStreamConfig config);
+
+        void BasicQos(IStreamConfig config);
+        BasicGetResult BasicGet(string queueName, bool acknowledge);
+        void StartConsumingWithTimeOut(IEventingBasicConsumerFactory consumerFactory, IManualResetEventFactory resetEventFactory, IStreamConfig config, IConsumer consumer, int time);
     }
 }

@@ -34,7 +34,7 @@ namespace Dev2.Data.ServiceModel
         public string Password { get; set; }
         public string VirtualHost { get; set; }
 
-        IConnectionFactory _factory; 
+        IConnectionFactory _factory;
         private IConnectionFactory GetConnectionFactory()
         {
             if (_factory is null)
@@ -105,10 +105,15 @@ namespace Dev2.Data.ServiceModel
 
             return result;
         }
-
         public IQueueConnection NewConnection()
         {
             return new RabbitConnection(GetConnectionFactory().CreateConnection());
+        }
+
+        public IQueueConnection NewConnection(IModel channel)
+        {
+            var connection = GetConnectionFactory().CreateConnection();
+            return new RabbitConnection(connection, channel);
         }
 
         public override bool IsSource => true;

@@ -105,6 +105,7 @@
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
+    <Compile Include="Activities\RabbitMQ\Consume\DsfConsumeRabbitMQActivity_upgrade.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
     <Compile Include="Comparer\DataSplitDTOComparer.cs" />
@@ -433,6 +434,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj">
+      <Project>{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}</Project>
+      <Name>Warewolf.Driver.RabbitMQ</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj">
       <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>

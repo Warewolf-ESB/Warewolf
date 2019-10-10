@@ -10,6 +10,9 @@
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
+using System.Collections.Generic;
+using Warewolf.Resource.Errors;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
@@ -18,7 +21,15 @@ namespace Warewolf.Driver.RabbitMQ
 {
     public class RabbitConnection : IQueueConnection
     {
-        readonly IConnection _connection;
+        private readonly IConnection _connection;
+        private readonly IManualResetEventFactory _resetEventFactory;
+        private IModel _channel;
+
+        public RabbitConnection(IConnection connection, IModel channel)
+            :this(connection)
+        {
+            _channel = channel;
+        }
 
         public RabbitConnection(IConnection connection)
         {
@@ -57,6 +68,54 @@ namespace Warewolf.Driver.RabbitMQ
                                         consumer: eventConsumer);
         }
 
+        public void StartConsumingWithTimeOut(IEventingBasicConsumerFactory consumerFactory, IManualResetEventFactory resetEventFactory, IStreamConfig stream, IConsumer consumer, int time)
+        {
+            var config = stream as RabbitConfig;
+
+            using (var signal = resetEventFactory.New(initialState: false))
+            {
+                var eventConsumer =  consumerFactory.New(channel: _channel); 
+
+                eventConsumer.Received += (model, eventArgs) =>
+                {
+                    var body = eventArgs.Body;
+
+                    var resultTask = consumer.Consume(body);
+                    resultTask.Wait();
+                    if (resultTask.Result == Data.ConsumerResult.Success)
+                    {
+                        _channel.BasicAck(eventArgs.DeliveryTag, false);
+                    }
+
+                    signal.Set();
+                };
+
+                try
+                {
+                    var args = new Dictionary<string, object>();
+
+                    _channel.BasicConsume(queue: config.QueueName,
+                                        autoAck: false,
+                                        noLocal: true,
+                                        exclusive: false,
+                                        arguments: args,
+                                        consumerTag: eventConsumer.ConsumerTag,
+                                        consumer: eventConsumer);
+                }
+                catch (Exception)
+                {
+                    throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, config.QueueName));
+                }
+
+                var timeout = !signal.WaitOne(TimeSpan.FromSeconds(time));
+
+                if (timeout)
+                {
+                    _channel.BasicCancel(eventConsumer.ConsumerTag);
+                }
+            }
+        }
+
         private IModel CreateChannel(RabbitConfig rConfig)
         {
             return rConfig.CreateChannel(_connection);
@@ -88,5 +147,20 @@ namespace Warewolf.Driver.RabbitMQ
             var channel = _connection.CreateModel();
             channel.QueueDelete(rabbitConfig.QueueName);
         }
+
+        public void BasicQos(IStreamConfig stream)
+        {
+            var config = stream as RabbitConfig;
+            var channel = _connection.CreateModel();
+
+            channel.BasicQos(config.PrefetchSize, config.PrefetchCount, config.Acknwoledge);
+        }
+
+        public BasicGetResult BasicGet(string queueName, bool acknowledge)
+        {
+            var channel = _connection.CreateModel();
+            return channel.BasicGet(queueName, acknowledge);
+        }
+
     }
 }

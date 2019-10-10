@@ -25,6 +25,9 @@ namespace Warewolf.Driver.RabbitMQ
         public bool Exclusive { get; set; }
         public bool AutoDelete { get; set; }
         public IDictionary<string, object> Arguments { get; set; }
+        public uint PrefetchSize { get; set; }
+        public ushort PrefetchCount { get; set; }
+        public bool Acknwoledge { get; set; }
 
         public RabbitConfig()
         {
