@@ -597,7 +597,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 153
   testRunner.And("I Debug \"http://localhost:3142/secure/ErrorWebResponse.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
-  testRunner.Then("Browser content is \"\"Message\": \"\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("Browser content is \"\"Message\": null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 155
   testRunner.Then("Browser content is not \"FatalError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

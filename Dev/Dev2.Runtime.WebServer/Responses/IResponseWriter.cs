@@ -21,4 +21,17 @@ namespace Dev2.Runtime.WebServer.Responses
     {
         void Write(IResponseMessageContext context);
     }
+
+    public interface IStringResponseWriterFactory
+    {
+        IResponseWriter New(string executePayload, string contentType);
+    }
+
+    public class StringResponseWriterFactory : IStringResponseWriterFactory
+    {
+        public IResponseWriter New(string executePayload, string contentType)
+        {
+            return new StringResponseWriter(executePayload, contentType);
+        }
+    }
 }
