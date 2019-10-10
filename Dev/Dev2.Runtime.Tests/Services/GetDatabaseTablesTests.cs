@@ -187,14 +187,15 @@ namespace Dev2.Tests.Runtime.Services
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
-                DatabaseName = emptyDBName?"": "Dev2TestingDB",
-                Server = "rsaklfsvrdev.dev2.local",
+                DatabaseName = emptyDBName ? "" : "Dev2TestingDB",
+                Server = $"{GetDatabaseColumnsForTableTests._containerOps.RigOpsHost}.{GetDatabaseColumnsForTableTests._containerOps.RigOpsDomain}",
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
                 Password = "test123",
-                ConnectionTimeout = 30
+                ConnectionTimeout = 30,
+                Port = int.Parse(GetDatabaseColumnsForTableTests._containerOps.Port)
             };
             return dbSource;
         }
