@@ -151,15 +151,13 @@ namespace Warewolf.Driver.RabbitMQ
         public void BasicQos(IStreamConfig stream)
         {
             var config = stream as RabbitConfig;
-            var channel = _connection.CreateModel();
 
-            channel.BasicQos(config.PrefetchSize, config.PrefetchCount, config.Acknwoledge);
+            _channel.BasicQos(config.PrefetchSize, config.PrefetchCount, config.Acknwoledge);
         }
 
         public BasicGetResult BasicGet(string queueName, bool acknowledge)
         {
-            var channel = _connection.CreateModel();
-            return channel.BasicGet(queueName, acknowledge);
+            return _channel.BasicGet(queueName, acknowledge);
         }
 
     }

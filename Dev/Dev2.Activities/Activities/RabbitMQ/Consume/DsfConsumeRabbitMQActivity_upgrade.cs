@@ -41,10 +41,15 @@ namespace Dev2.Activities.RabbitMQ.Consume
         private readonly bool _shouldSerializeRabbitSource;
         private readonly bool _shouldSerializeChannel;
 
+        private readonly IEventingBasicConsumerFactory _consumerFactory;
+        private readonly IManualResetEventFactory _eventFactory;
+        private readonly QueueConsumer _consumer;
+
         internal List<string> _messages;
         private string _result;
         private int _timeOut;
         private ushort _prefetch;
+        private IModel _channel;
 
         public DsfConsumeRabbitMQActivity_upgrade()
             :this(new ResponseManager())
@@ -70,6 +75,15 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public DsfConsumeRabbitMQActivity_upgrade(IResponseManager responseManager)
         {
             ResponseManager = responseManager;
+        }
+
+        public DsfConsumeRabbitMQActivity_upgrade(IEventingBasicConsumerFactory consumerFactory, IManualResetEventFactory eventFactory, QueueConsumer consumer, IModel channel)
+            :this()
+        {
+            _consumerFactory = consumerFactory;
+            _eventFactory = eventFactory;
+            _consumer = consumer;
+            _channel = channel;
         }
 
         public Guid RabbitMQSourceResourceId { get; internal set; }
@@ -208,11 +222,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     VirtualHost = RabbitSource.VirtualHost
                 };
 
-                using (Connection = source.NewConnection())
+                var connection = _channel is null ? source.NewConnection() : source.NewConnection(_channel);
+
+                using (Connection = connection)
                 {
                     PerformExecutionOnChannel(queueName, prefetch);
                 }
-                return new List<string> { _result };
+                return _messages;
             }
             catch (Exception ex)
             {
@@ -270,6 +286,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                         throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                     }
                 }
+
             }
             else
             {
@@ -279,17 +296,16 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 }
                 else
                 {
-                    var consumer = new QueueConsumer();
                     try
                     {
-                        Connection.StartConsuming(config, consumer);
+                        Connection.StartConsuming(config, _consumer);
 
-                        for (int j = 0; j < consumer.Messages.Count; j++)
+                        for (int j = 0; j < _consumer.Messages.Count; j++)
                         {
-                            _messages.Add(consumer.Messages[j]);
+                            _messages.Add(_consumer.Messages[j]);
                         }
 
-                        if (consumer.Messages.Count == 0)
+                        if (_consumer.Messages.Count == 0)
                         {
                             _result = "Empty";
                         }
@@ -304,26 +320,24 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         private void ExecuteWithTimeout(RabbitConfig config)
         {
-            var consumer = new QueueConsumer();
-
             try
             {
-                Connection.StartConsumingWithTimeOut(new EventingBasicConsumerFactory(), new ManualResetEventFactory(), config, consumer, _timeOut);
+                Connection.StartConsumingWithTimeOut(_consumerFactory, _eventFactory, config, _consumer, _timeOut);
             }
             catch (Exception)
             {
                 throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, config.QueueName));
             }
 
-            if (consumer.Messages.Count == 0)
+            if (_consumer.Messages.Count == 0)
             {
                 _result = $"Empty, timeout: {_timeOut} second(s)";
             }
             else
             {
-                for (int i = 0; i < consumer.Messages.Count; i++)
+                for (int i = 0; i < _consumer.Messages.Count; i++)
                 {
-                    _messages.Add(consumer.Messages[i]);
+                    _messages.Add(_consumer.Messages[i]);
                 }
             }
         }

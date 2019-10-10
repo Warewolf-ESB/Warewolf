@@ -441,7 +441,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
 
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity_upgrade
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade
             {
                 ResourceCatalog = resourceCatalog.Object,
                 QueueName = queueName,
@@ -457,6 +457,217 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
+        public void DsfConsumeRabbitMQActivity_PerformExecution_PerformExecutionOnChannel_ReQueue_True_OnEmptyQueue_NoSuccess()
+        {
+            //------------Setup for test--------------------------
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var channel = new Mock<IModel>();
+            var queueConnection = new Mock<IQueueConnection>();
+
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade(new EventingBasicConsumerFactory(), new ManualResetEventFactory(), new QueueConsumer(), channel.Object)
+            {
+                ResourceCatalog = resourceCatalog.Object,
+                QueueName = queueName,
+                Prefetch = "1",
+                ReQueue = true,
+                Acknowledge = true,
+            };
+
+            var source = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrdev.dev2.local",
+                UserName = "test",
+                Password = "test"
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
+
+            var response = dsfConsumeRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>() { { "QueueName", queueName }, { "Prefetch", "1" } });
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected: 0, actual: response.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
+        public void DsfConsumeRabbitMQActivity_PerformExecution_PerformExecutionOnChannel_ReQueue_True_OnEmptyQueue_Success()
+        {
+            //------------Setup for test--------------------------
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var channel = new Mock<IModel>();
+            var queueConnection = new Mock<IQueueConnection>();
+
+            var getResult = new BasicGetResult((ulong)1, false, "testExchannge", "testRoutingKey", (uint)1, new BasicProperties(), Encoding.UTF8.GetBytes("test message"));
+
+            channel.Setup(o => o.BasicGet(It.IsAny<string>(), It.IsAny<bool>())).Returns(getResult);
+
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade(new EventingBasicConsumerFactory(), new ManualResetEventFactory(), new QueueConsumer(), channel.Object)
+            {
+                ResourceCatalog = resourceCatalog.Object,
+                QueueName = queueName,
+                Prefetch = "1",
+                ReQueue = true,
+                Acknowledge = true,
+            };
+
+            var source = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrdev.dev2.local",
+                UserName = "test",
+                Password = "test"
+            };
+            
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
+
+            var response = dsfConsumeRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>() { { "QueueName", queueName }, { "Prefetch", "1" } });
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected: "test message", actual: response[0]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
+        public void DsfConsumeRabbitMQActivity_PerformExecution_PerformExecutionOnChannel_ReQueue_False_OnEmptyQueue_NoTimeOut_Success()
+        {
+            //------------Setup for test--------------------------
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var channel = new Mock<IModel>();
+            var queueConnection = new Mock<IQueueConnection>();
+
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade(new EventingBasicConsumerFactory(), new ManualResetEventFactory(), new QueueConsumer(), channel.Object)
+            {
+                ResourceCatalog = resourceCatalog.Object,
+                QueueName = queueName,
+                Prefetch = "1",
+                ReQueue = false,
+                Acknowledge = true,
+            };
+
+            var source = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrdev.dev2.local",
+                UserName = "test",
+                Password = "test"
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
+
+            var response = dsfConsumeRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>() { { "QueueName", queueName }, { "Prefetch", "1" } });
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected: 0, actual: response.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
+        public void DsfConsumeRabbitMQActivity_PerformExecution_PerformExecutionOnChannel_ReQueue_False_OnEmptyQueue_WithTimeOut_Success()
+        {
+            //------------Setup for test--------------------------
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var channel = new Mock<IModel>();
+            var mockResetFactory = new Mock<IManualResetEventFactory>();
+            var mockResetWrapper = new Mock<IManualResetEventWrapper>();
+            var mockConsumerFactory = new Mock<IEventingBasicConsumerFactory>();
+
+            var consumer = new QueueConsumer();
+
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade(mockConsumerFactory.Object, mockResetFactory.Object, consumer, channel.Object)
+            {
+                ResourceCatalog = resourceCatalog.Object,
+                QueueName = queueName,
+                Prefetch = "1",
+                TimeOut = "1",
+                ReQueue = false,
+                Acknowledge = true,
+            };
+
+            var source = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrdev.dev2.local",
+                UserName = "test",
+                Password = "test"
+            };
+
+            var testConsumerWrapper = new TestEventingBasicConsumerWrapper(channel.Object)
+            {
+                ConsumerTag = "testConsumerTag"
+            };
+            var eventArgs = new BasicDeliverEventArgs("testConsumerTeg", (ulong)1, false, "testExchange", "testRoutingKey", new BasicProperties(), Encoding.UTF8.GetBytes("test message"));
+
+            mockConsumerFactory.Setup(o => o.New(It.IsAny<IModel>())).Returns(testConsumerWrapper);
+            mockResetWrapper.Setup(o => o.WaitOne(It.IsAny<TimeSpan>())).Returns(false);
+            mockResetFactory.Setup(o => o.New(It.IsAny<bool>())).Returns(mockResetWrapper.Object);
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
+
+            //------------Execute Test---------------------------
+            var responseBefore = dsfConsumeRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>() { { "QueueName", queueName }, { "Prefetch", "1" } });
+            testConsumerWrapper.TiggerRecievedForTests(eventArgs);
+            var responseAfter = dsfConsumeRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>() { { "QueueName", queueName }, { "Prefetch", "1" } });
+
+            //------------Assert Results-------------------------
+
+            mockResetWrapper.Verify(o => o.Set(), Times.Once());
+            channel.Verify(o => o.BasicCancel(It.IsAny<string>()), Times.AtLeast(2));
+            channel.Verify(o => o.BasicAck(It.IsAny<ulong>(), It.IsAny<bool>()), Times.Once());
+
+            Assert.AreEqual(expected: "test message", consumer.Messages[0]);
+            Assert.AreEqual(expected: 1, consumer.Messages.Count());
+
+            Assert.AreEqual(expected: 0, actual: responseBefore.Count); 
+            Assert.AreEqual(expected: 1, actual: responseAfter.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
+        public void DsfConsumeRabbitMQActivity_PerformExecution_PerformExecutionOnChannel_ReQueue_False_NotEmptyQueue_WithTimeOut_Success()
+        {
+            //------------Setup for test--------------------------
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var channel = new Mock<IModel>();
+            var queueConnection = new Mock<IQueueConnection>();
+
+            var getResult = new BasicGetResult((ulong)1, false, "testExchannge", "testRoutingKey", (uint)1, new BasicProperties(), Encoding.UTF8.GetBytes("test message"));
+
+            channel.Setup(o => o.BasicGet(It.IsAny<string>(), It.IsAny<bool>())).Returns(getResult);
+
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade(new EventingBasicConsumerFactory(), new ManualResetEventFactory(), new QueueConsumer(), channel.Object)
+            {
+                ResourceCatalog = resourceCatalog.Object,
+                QueueName = queueName,
+                Prefetch = "1",
+                TimeOut = "1",
+                ReQueue = false,
+                Acknowledge = true,
+            };
+
+            var source = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrdev.dev2.local",
+                UserName = "test",
+                Password = "test"
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
+
+            var response = dsfConsumeRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>() { { "QueueName", queueName }, { "Prefetch", "1" } });
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected: 0, actual: response.Count);
+        }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
@@ -522,9 +733,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
 
-            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-
             var dataList = new ExecutionEnvironment();
             dataList.AllErrors.Add("Some Error");
 
@@ -533,6 +741,47 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var debugOutputs = dsfConsumeRabbitMQActivity.GetDebugOutputs(dataList, It.IsAny<int>());
             dsfConsumeRabbitMQActivity.TestAssignResult(dataObj, It.IsAny<int>());
             //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(debugOutputs.Count > 0);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfConsumeRabbitMQActivity_upgrade))]
+        public void DsfConsumeRabbitMQActivity_AssignResult_IsObject_False_UpdateEnvironmentRecordsets_EnvironmentAssign_Success()
+        {
+            //------------Setup for test--------------------------
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+
+            var dsfConsumeRabbitMQActivity = new TestDsfConsumeRabbitMQActivity_upgrade
+            {
+                QueueName = queueName,
+                ReQueue = true,
+                Prefetch = "2",
+                Response = "response",
+                _messages = new List<string> { "Message" },
+                IsObject = false,
+                ObjectName = "[[@Human]]",
+            };
+
+            var source = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrdev.dev2.local",
+                UserName = "test",
+                Password = "test"
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
+
+            var dataList = new ExecutionEnvironment();
+            dataList.AllErrors.Add("Some Error");
+
+            var dataObj = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>());
+
+            var debugOutputs = dsfConsumeRabbitMQActivity.GetDebugOutputs(dataList, It.IsAny<int>());
+            //------------Execute Test---------------------------
+            dsfConsumeRabbitMQActivity.TestAssignResult(dataObj, It.IsAny<int>());
             //------------Assert Results-------------------------
             Assert.IsTrue(debugOutputs.Count > 0);
         }
@@ -838,6 +1087,12 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         {
 
         }
+
+        public TestDsfConsumeRabbitMQActivity_upgrade(IEventingBasicConsumerFactory consumerFactory, IManualResetEventFactory eventFactory, QueueConsumer consumer, IModel channel)
+            :base(consumerFactory, eventFactory, consumer, channel)
+        {
+
+        }
         
         public TestDsfConsumeRabbitMQActivity_upgrade(IResponseManager responseManager) 
             : base(responseManager)
@@ -845,6 +1100,11 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         public List<string> TestPerformExecution(Dictionary<string, string> evaluatedValues)
+        {
+            return base.PerformExecution(evaluatedValues);
+        }
+
+        public List<string> TestPerformExecution(IModel channel, Dictionary<string, string> evaluatedValues)
         {
             return base.PerformExecution(evaluatedValues);
         }
