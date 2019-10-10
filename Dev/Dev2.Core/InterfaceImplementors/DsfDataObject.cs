@@ -326,6 +326,7 @@ namespace Dev2.DynamicServices
         public IStateNotifier StateNotifier { get; set; }
         public IDev2WorkflowSettings Settings { get; set; }
         public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
+        public Exception ExecutionException { get; set; }
 
         #endregion Properties
 
