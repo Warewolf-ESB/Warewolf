@@ -87,7 +87,7 @@ public class Depends : System.Attribute, IDisposable
             var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             var JSONObj = javaScriptSerializer.Deserialize<StopContainer>(result);
-            if (JSONObj.Result !="Success")
+            if (JSONObj.Result !="Success" && JSONObj.Result != "This API does not support stopping Linux containers.")
             {
                 throw new Exception($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
             }
@@ -172,7 +172,7 @@ public class Depends : System.Attribute, IDisposable
             var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
             if (defaultServer != null)
             {
-                UpdateSourcesConnectionStrings($"HostName={defaultServer};Port=5672;UserName=test;Password=test;VirtualHost=/", knownServerSources);
+                UpdateSourcesConnectionStrings($"HostName={defaultServer};Port={Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
                 Thread.Sleep(30000);
             }
         }
@@ -182,7 +182,7 @@ public class Depends : System.Attribute, IDisposable
     {
         if (EnableDocker)
         {
-            UpdateSourcesConnectionString(RigOpsHost + '.' + RigOpsDomain + ':' + Port, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            UpdateSourcesConnectionString($"{RigOpsHost}.{RigOpsDomain};Port={Port}", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             Thread.Sleep(30000);
         }
         else
