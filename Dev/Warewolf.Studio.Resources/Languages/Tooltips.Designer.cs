@@ -902,6 +902,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The dead-letter queue name.
+        /// </summary>
+        public static string DeadLetterQueueTooltip {
+            get {
+                return ResourceManager.GetString("DeadLetterQueueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugBrowserToolTip {
@@ -3323,7 +3332,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Queue will use this password for the above username.
+        ///   Looks up a localized string similar to Workflow will use this password for the above username.
         /// </summary>
         public static string QueueSettingsToolTipPassword {
             get {
@@ -3332,7 +3341,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Queue should execute as this user.
+        ///   Looks up a localized string similar to Workflow should execute as this user.
         /// </summary>
         public static string QueueSettingsToolTipUsername {
             get {
@@ -3341,7 +3350,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a Queue to be triggered.
+        ///   Looks up a localized string similar to Select a Workflow to be triggered.
         /// </summary>
         public static string QueueSettingsToolTipWorkFlow {
             get {
