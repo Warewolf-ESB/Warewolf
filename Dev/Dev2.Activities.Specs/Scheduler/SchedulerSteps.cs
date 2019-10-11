@@ -215,7 +215,7 @@ namespace Dev2.Activities.Specs.Scheduler
                 }
                 else
                 {
-                    Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error || x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error);
+                    Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error, x[0].TaskHistoryOutput.FailureReason);
                 }
                 _scenarioContext["History"] = x;
 
