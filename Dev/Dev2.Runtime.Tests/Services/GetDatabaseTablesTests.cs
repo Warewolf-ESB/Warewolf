@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Test.Agent;
+using System.Linq;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -146,7 +147,7 @@ namespace Dev2.Tests.Runtime.Services
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbTableList>(value);
-            Assert.IsTrue(result.Items.Count > 2);
+            Assert.IsTrue(result.Items.Count > 2, "Wrong tables in database: \"" + value + "\" expecting only 2 tables in the database.");
             var duplicateTables = result.Items.FindAll(table => table.TableName.Contains("[City]"));
             Assert.AreEqual(2, duplicateTables.Count);
             var dboCityTable = duplicateTables.Find(table => table.Schema == "dbo");
