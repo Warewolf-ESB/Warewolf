@@ -196,7 +196,7 @@ namespace Dev2.Tests.Runtime.Services
                 UserID = "testUser",
                 Password = "test123",
                 ConnectionTimeout = 30,
-                Port = int.Parse(GetDatabaseColumnsForTableTests._containerOps.Port)
+                Port = int.Parse(GetDatabaseColumnsForTableTests._containerOps.Container.Port)
             };
             return dbSource;
         }

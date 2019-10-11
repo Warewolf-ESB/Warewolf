@@ -391,7 +391,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
             {
-                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote:3142", Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.RigOpsHost + '.' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.RigOpsDomain + ':' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.Port);
+                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote:3142", Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.RigOpsHost + '.' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.RigOpsDomain + ':' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.Container.Port);
             }
             _scenarioContext.Add("webserviceToCall", onErrorWebserviceToCall);
         }
