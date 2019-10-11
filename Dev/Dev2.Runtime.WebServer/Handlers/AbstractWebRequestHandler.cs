@@ -158,7 +158,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
                 if (!_canExecute)
                 {
-                    _dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName));
+                    var errorMessage = string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
+                    _dataObject.Environment.AddError(errorMessage);
+                    _dataObject.ExecutionException = new Exception(errorMessage);
                 }
 
                 _executionDlid = GlobalConstants.NullDataListID;
