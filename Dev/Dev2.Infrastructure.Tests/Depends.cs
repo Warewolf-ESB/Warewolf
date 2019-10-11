@@ -89,7 +89,7 @@ public class Depends : System.Attribute, IDisposable
             var JSONObj = javaScriptSerializer.Deserialize<StopContainer>(result);
             if (JSONObj.Result !="Success" && JSONObj.Result != "This API does not support stopping Linux containers.")
             {
-                throw new Exception($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
+                Console.WriteLine($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
             }
         }
     }
