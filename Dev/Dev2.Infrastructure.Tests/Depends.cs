@@ -87,7 +87,7 @@ public class Depends : System.Attribute, IDisposable
             var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             var JSONObj = javaScriptSerializer.Deserialize<StopContainer>(result);
-            if (JSONObj.Result !="Success" && JSONObj.Result != "This API does not support stopping Linux containers.")
+            if (JSONObj.Result !="Success" && JSONObj.Result != "This API does not support stopping Linux containers." && JSONObj.Result != "")
             {
                 Console.WriteLine($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
             }
