@@ -8,7 +8,7 @@ using System.Threading;
 using System.Web.Script.Serialization;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
-public class Depends : System.Attribute, IDisposable
+public class Depends : Attribute, IDisposable
 {
     public readonly string RigOpsHost = "RSAKLFSVRHST1";
     public readonly string RigOpsDomain = "dev2.local";
@@ -45,23 +45,24 @@ public class Depends : System.Attribute, IDisposable
 
     ContainerType _containerType;
     
-    public string Port;
+    public Container Container;
 
-    public Depends() { throw new ArgumentNullException("Missing type of the container."); }
+    public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
     public Depends(ContainerType type)
     {
         _containerType = type;
         using (var client = new WebClientWithExtendedTimeout { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
-            var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Start/{ConvertToString(_containerType)}.json");
+            var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Find/{ConvertToString(_containerType)}.json");
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            var JSONObj = javaScriptSerializer.Deserialize<StartContainer>(result);
-            if (string.IsNullOrEmpty(JSONObj.Port))
+            Container = javaScriptSerializer.Deserialize<Container>(result);
+            if (string.IsNullOrEmpty(Container.Port))
             {
-                throw new Exception($"Cannot start container{(result == string.Empty ? "." : ": " + result)}");
+                throw new Exception($"Cannot find container{(result == string.Empty ? "." : ": " + result)}");
             }
-            Port = JSONObj.Port;
+            Container.Host = RigOpsHost;
+            Container.Domain = RigOpsDomain;
         }
         switch (_containerType)
         {
@@ -77,17 +78,25 @@ public class Depends : System.Attribute, IDisposable
             case ContainerType.CIRemote:
                 StartRemoteCIRemoteContainer(true);
                 break;
+            case ContainerType.PostGreSQL:
+                StartRemotePostGreSQLContainer(true);
+                break;
         }
     }
 
     public void Dispose()
+    {
+        //TODO: Stop containers when they are not in use as an optimization.
+    }
+
+    void Stop()
     {
         using (var client = new WebClient { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
             var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             var JSONObj = javaScriptSerializer.Deserialize<StopContainer>(result);
-            if (JSONObj.Result !="Success" && JSONObj.Result != "This API does not support stopping Linux containers." && JSONObj.Result != "")
+            if (JSONObj.Result != "Success" && JSONObj.Result != "This API does not support stopping Linux containers." && JSONObj.Result != "")
             {
                 Console.WriteLine($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
             }
@@ -115,7 +124,7 @@ public class Depends : System.Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsHost}.{RigOpsDomain}:{Port}/dsf;WebServerPort=3142;AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
+            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsHost}.{RigOpsDomain}:{Container.Port}/dsf;WebServerPort=3142;AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
         }
         else
         {
@@ -141,7 +150,7 @@ public class Depends : System.Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"Data Source={RigOpsHost}.{RigOpsDomain},{Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
+            UpdateSourcesConnectionStrings($"Data Source={RigOpsHost}.{RigOpsDomain},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
             Thread.Sleep(30000);
         }
         else
@@ -164,7 +173,7 @@ public class Depends : System.Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"HostName={RigOpsHost}.{RigOpsDomain};Port={Port};UserName=guest;Password=guest;VirtualHost=/", knownServerSources);
+            UpdateSourcesConnectionStrings($"HostName={RigOpsHost}.{RigOpsDomain};Port={Container.Port};UserName=guest;Password=guest;VirtualHost=/", knownServerSources);
             Thread.Sleep(120000);
         }
         else
@@ -172,7 +181,30 @@ public class Depends : System.Attribute, IDisposable
             var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
             if (defaultServer != null)
             {
-                UpdateSourcesConnectionStrings($"HostName={defaultServer};Port={Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
+                UpdateSourcesConnectionStrings($"HostName={defaultServer};UserName=test;Password=test;VirtualHost=/", knownServerSources);
+                Thread.Sleep(30000);
+            }
+        }
+    }
+
+    private void StartRemotePostGreSQLContainer(bool EnableDocker)
+    {
+        var knownServerSources = new List<string>()
+            {
+                @"%programdata%\Warewolf\Resources\Sources\Database\NewPostgresSource.bite",
+                @"%programdata%\Warewolf\Resources\Sources\Database\NewPostgresSource.xml"
+            };
+        if (EnableDocker)
+        {
+            UpdateSourcesConnectionStrings($"Host={RigOpsHost}.{RigOpsDomain};Port={Container.Port};UserName=guest;Password=guest;Database=TestDB", knownServerSources);
+            Thread.Sleep(120000);
+        }
+        else
+        {
+            var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
+            if (defaultServer != null)
+            {
+                UpdateSourcesConnectionStrings($"Host={defaultServer};UserName=test;Password=test;Database=TestDB", knownServerSources);
                 Thread.Sleep(30000);
             }
         }
@@ -182,7 +214,7 @@ public class Depends : System.Attribute, IDisposable
     {
         if (EnableDocker)
         {
-            UpdateSourcesConnectionString($"{RigOpsHost}.{RigOpsDomain};Port={Port}", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            UpdateSourcesConnectionString($"{RigOpsHost}.{RigOpsDomain};Port={Container.Port}", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             Thread.Sleep(30000);
         }
         else
@@ -287,11 +319,13 @@ public class Depends : System.Attribute, IDisposable
     }
 }
 
-class StartContainer
+public class Container
 {
     public string ID { get; set; }
     public string IP { get; set; }
     public string Port { get; set; }
+    public string Host { get; set; }
+    public string Domain { get; set; }
 }
 
 class StopContainer
@@ -306,5 +340,32 @@ class WebClientWithExtendedTimeout : WebClient
         WebRequest w = base.GetWebRequest(uri);
         w.Timeout = 20 * 60 * 1000;
         return w;
+    }
+}
+
+public static class TestContextExtentionMethod
+{
+    public static Container GetContainer(this Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testCtx)
+    {
+        try
+        {
+            return ((Depends)Type.GetType(testCtx.FullyQualifiedTestClassName).GetMethod(testCtx.TestName).GetCustomAttributes(typeof(Depends), false)[0]).Container;
+        }
+        catch (SystemException)
+        {
+            return null;
+        }
+    }
+
+    public static void DisposeContainers(this Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testCtx)
+    {
+        try
+        {
+            ((Depends)Type.GetType(testCtx.FullyQualifiedTestClassName).GetMethod(testCtx.TestName).GetCustomAttributes(typeof(Depends), false)[0]).Dispose();
+        }
+        catch (SystemException)
+        {
+            //Already disposed
+        }
     }
 }
