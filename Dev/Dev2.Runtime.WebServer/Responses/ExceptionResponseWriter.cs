@@ -25,7 +25,18 @@ namespace Dev2.Runtime.WebServer.Responses
         public new void Write(IResponseMessageContext context)
         {
             context.ResponseMessage.StatusCode = _statusCode;
-            context.ResponseMessage.Content = new StringContent(_message);
+
+            if (_message.StartsWith("<")) {
+                context.ResponseMessage.Content = new StringContent(_message, System.Text.Encoding.Default, "text/xml");
+            } else
+            {
+                var msg = _message;
+                if (string.IsNullOrWhiteSpace(_message))
+                {
+                    msg = "{}";
+                }
+                context.ResponseMessage.Content = new StringContent(msg, System.Text.Encoding.UTF8, "application/json");
+            }
         }
     }
 }
