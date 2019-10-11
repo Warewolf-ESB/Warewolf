@@ -772,11 +772,14 @@
     <value>Edit RabbitMQ Source</value>
   </data>
   <data name="QueueSourceHelp" xml:space="preserve">
-    <value>Select the source message Queue</value>
+    <value>Select the Source of the queue you want to listen to</value>
   </data>
   <data name="DeadLetterQueueSourceHelp" xml:space="preserve">
     <value>Select the source message dead-letter Queue</value>
   </data>
+  <data name="DeadLetterQueueHelp" xml:space="preserve">
+    <value>The name of the queue you want to post the dead-letter onto</value>
+  </data> 
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
   </data>
@@ -1093,7 +1096,7 @@
     <value>Create Queue events</value>
   </data>
   <data name="MenuTasksHelp" xml:space="preserve">
-    <value>Open to Schedule workflow executions or create events</value>
+    <value>Opens Triggers so you can create a listener to a queue.</value>
   </data>
   <data name="MenuSettingsHelp" xml:space="preserve">
     <value>Edit or View system settings such as Security and Logging.</value>
@@ -1129,10 +1132,10 @@
     <value>New RabbitMQ Source</value>
   </data>
   <data name="QueueNameHelp" xml:space="preserve">
-    <value>QueueNameHelp</value>
+    <value>The name you want to use to refer to this Queue trigger.</value>
   </data>
   <data name="QueueConcurrencyHelp" xml:space="preserve">
-    <value>Set the concurrency of the Queue</value>
+    <value>Set the concurrency of the Queue. This is the number of workflows that can execute in parallel limited by the number of threads available at run time.</value>
   </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
@@ -1222,7 +1225,7 @@
     <value>Provides the number of messages that can be consumed concurrently.  This will pre-fetch the given number of messages and block further traffic until you acknowledge something. This ensures that a maximum of the given number of unacknowledged messages are pre-fetched at one time. 0 or blank will get all messages.&lt;br /&gt;If you are getting more than one message at a time you should use a recordset().value or @ObjectArray()	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;&lt;li&gt;[[@Object]]&lt;/li&gt;	&lt;li&gt;[[@ObjectArray()]]&lt;/li&gt;		&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
-    <value>Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>The name of the queue as it appears on the server of the source provided</value>
   </data>
   <data name="RabbitMQHelpRequeue" xml:space="preserve">
     <value>Marking this as True will leave the	message you consumed in the Queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;</value>
@@ -1386,14 +1389,14 @@
   <data name="SchedulerStatusAltHelpTextTrigger" xml:space="preserve">
     <value>Enables or Disables the scheduled task. Disabled schedules will not execute when their trigger is valid.</value>
   </data>
-  <data name="QueueNameHelp" xml:space="preserve">
-    <value>Provide a name of the Queue</value>
-  </data>
   <data name="QueueStatusAltHelpTextTrigger" xml:space="preserve">
     <value>Enables or Disables the Queue. Disabled queues will not execute when their trigger is valid.</value>
   </data>
   <data name="QueueMapEntireMessageHelpTextTrigger" xml:space="preserve">
-    <value>Map the entire message</value>
+    <value>Map the entire message. This will put the full response from the queue into one variable for you to unpack in your workflow.</value>
+  </data>  
+  <data name="QueuePasteInputHelp" xml:space="preserve">
+    <value>Paste the XML, JSON or plain text message received from the queue here.</value>
   </data>
   <data name="ScriptingHelpEscapeScript" xml:space="preserve">
     <value>Your variables might contain values like '\t' or '\n' etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences.</value>
@@ -1822,7 +1825,7 @@ A test must be ignored/disabled before it can be deleted.</value>
   </data>
   <data name="WebServicePasteInputHelp" xml:space="preserve">
     <value>Paste the XML, JSON or plain text response of the web service call here.&lt;br/&gt;	&lt;br/&gt;	If you do not know the response body exactly, rather execute the Test execution.</value>
-  </data>
+  </data>  
   <data name="WebServiceRequestBodyHelp" xml:space="preserve">
     <value>The request body.&lt;br/&gt;	&lt;br/&gt;	This is typically directly after the header text in the Request.</value>
   </data>
