@@ -98,14 +98,14 @@ namespace Dev2.Tests.Runtime.WebServer
             mockResponseMessageContext.Setup(o => o.ResponseMessage).Returns(responseMessage);
             responseWriter.Write(mockResponseMessageContext.Object);
 
-            Assert.AreEqual("application/json", responseMessage.Content.Headers.ContentType.ToString());
-            Assert.AreEqual("OK", responseMessage.ReasonPhrase);
-            Assert.AreEqual(HttpStatusCode.OK, responseMessage.StatusCode);
+            Assert.AreEqual("application/json; charset=utf-8", responseMessage.Content.Headers.ContentType.ToString());
+            Assert.AreEqual("Internal Server Error", responseMessage.ReasonPhrase);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, responseMessage.StatusCode);
             Assert.AreEqual(Version.Parse("1.1"), responseMessage.Version);
 
             var result = ((StringContent)responseMessage.Content).ReadAsStringAsync();
             result.Wait();
-            Assert.AreEqual("", result.Result);
+            Assert.AreEqual("{}", result.Result);
         }
 
         [TestMethod]
