@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         private void CreateDbServiceModel()
         {
             var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
+            environmentModel.ConnectAsync().Wait(60000);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
 
