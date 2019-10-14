@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using Dev2.Common;
 
@@ -29,6 +30,11 @@ namespace Dev2.Activities.Specs
             }
             catch (Exception e)
             {
+                if (e is WebException webException)
+                {
+                    var reader = new StreamReader(webException.Response.GetResponseStream());
+                    WebResult.Add(reader.ReadToEnd());
+                }
                 Dev2Logger.Error(e, "Warewolf Error");
             }
 

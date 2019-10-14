@@ -85,6 +85,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             var webRequestTO = new WebRequestTO
             {
+                ServiceName = "",
                 WebServerUrl = "http://localhost:3142/secure/Hello%20World.tests/Blank%20Input"
             };
             //---------------Assert Precondition----------------
@@ -97,14 +98,14 @@ namespace Dev2.Tests.Runtime.WebServer
             mockResponseMessageContext.Setup(o => o.ResponseMessage).Returns(responseMessage);
             responseWriter.Write(mockResponseMessageContext.Object);
 
-            Assert.AreEqual("application/json", responseMessage.Content.Headers.ContentType.ToString());
-            Assert.AreEqual("OK", responseMessage.ReasonPhrase);
-            Assert.AreEqual(HttpStatusCode.OK, responseMessage.StatusCode);
+            Assert.AreEqual("application/json; charset=utf-8", responseMessage.Content.Headers.ContentType.ToString());
+            Assert.AreEqual("Internal Server Error", responseMessage.ReasonPhrase);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, responseMessage.StatusCode);
             Assert.AreEqual(Version.Parse("1.1"), responseMessage.Version);
 
             var result = ((StringContent)responseMessage.Content).ReadAsStringAsync();
             result.Wait();
-            Assert.AreEqual("", result.Result);
+            Assert.AreEqual("{}", result.Result);
         }
 
         [TestMethod]
@@ -227,6 +228,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
 
@@ -272,6 +274,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTo = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
 
@@ -316,6 +319,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
 
@@ -361,6 +365,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
 
@@ -405,6 +410,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
 
@@ -529,6 +535,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
                 },
@@ -576,6 +583,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
             {
+                ServiceName = "",
                 Variables = new NameValueCollection()
                 {
                 },
@@ -1762,7 +1770,11 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/json");
-            handlerMock.CreateFromMock(new WebRequestTO(), "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
+            var webRequestTO = new WebRequestTO
+            {
+                ServiceName = ""
+            };
+            handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
             //---------------Execute Test ----------------------
             dataObject.Object.SetContentType(headers.Object);
             //------------Assert Results-------------------------
@@ -1793,7 +1805,11 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/xml");
-            handlerMock.CreateFromMock(new WebRequestTO(), "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
+            var webRequestTO = new WebRequestTO()
+            {
+                ServiceName = ""
+            };
+            handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
             //---------------Execute Test ----------------------            
             dataObject.Object.SetContentType(headers.Object);
             //------------Assert Results-------------------------
