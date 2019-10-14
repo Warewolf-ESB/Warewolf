@@ -701,13 +701,13 @@ Returns the output of the script, if any.</value>
     <value>Select a workflow to be triggered</value>
   </data>
   <data name="QueueSettingsToolTipWorkFlow" xml:space="preserve">
-    <value>Select a Queue to be triggered</value>
+    <value>Select a Workflow to be triggered</value>
   </data>
   <data name="SchedulerSettingsToolTipUsername" xml:space="preserve">
     <value>Schedule should execute as this user</value>
   </data>
   <data name="QueueSettingsToolTipUsername" xml:space="preserve">
-    <value>Queue should execute as this user</value>
+    <value>Workflow should execute as this user</value>
   </data>
   <data name="QueueAddWorkflowCommandToolTip" xml:space="preserve">
     <value>Select the workflow to executed in the Queue</value>
@@ -721,11 +721,14 @@ Returns the output of the script, if any.</value>
   <data name="QueueNameTooltip" xml:space="preserve">
     <value>Provide a name of the Queue</value>
   </data>
+  <data name="DeadLetterQueueTooltip" xml:space="preserve">
+    <value>The dead-letter queue name</value>
+  </data>
   <data name="SchedulerSettingsToolTipPassword" xml:space="preserve">
     <value>Schedule will use this password for the above username</value>
   </data>
   <data name="QueueSettingsToolTipPassword" xml:space="preserve">
-    <value>Queue will use this password for the above username</value>
+    <value>Workflow will use this password for the above username</value>
   </data>
   <data name="SchedulerSettingsToolTipName" xml:space="preserve">
     <value>What name do you want to give this Schedule?</value>

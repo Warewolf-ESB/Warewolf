@@ -474,7 +474,7 @@
                                                               ValueMemberPath="Value" 
                                                               ItemsSource="{Binding DeadLetterQueues, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                               Text="{Binding DeadLetterQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
+                                                              ToolTip="{x:Static languages:Tooltips.DeadLetterQueueTooltip}"
                                                               Style="{StaticResource AutoCompleteBoxStyle}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}"
@@ -697,7 +697,7 @@
                                              ToolTip="{x:Static languages:Tooltips.ManageWebPasteResponseTooltip}"
                                              HorizontalScrollBarVisibility="Disabled" >
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.WebServicePasteInputHelp}" 
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.QueuePasteInputHelp}" 
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>

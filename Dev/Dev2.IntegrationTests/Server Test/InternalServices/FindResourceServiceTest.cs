@@ -11,6 +11,10 @@
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Net;
+using System.Web;
 using TestBase;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
@@ -61,9 +65,17 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var path = "http://localhost:3142/services/" + "Acceptance%20Testing%20Resources/WorkflowWithNoStartNodeConnected";
 
-            var result = TestHelper.PostDataToWebserver(path);
+            string result = "";
+            try
+            {
+                result = TestHelper.PostDataToWebserver(path);
+            } catch (WebException e)
+            {
+                var errorContent = new StreamReader(e.Response.GetResponseStream());
+                result = errorContent.ReadToEnd();
+            }
 
-            Assert.IsTrue(result.Contains("An internal error occurred while executing the service request"));
+            Assert.IsTrue(result.Contains("The workflow must have at least one service or activity connected to the Start Node."));
             Assert.IsTrue(result.Contains(GlobalConstants.NoStartNodeError));
         }
 

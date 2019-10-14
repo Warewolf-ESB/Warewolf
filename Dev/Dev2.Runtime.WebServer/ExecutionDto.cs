@@ -23,6 +23,7 @@ using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -85,7 +86,14 @@ namespace Dev2.Runtime.WebServer
                 dataObject.DataListID = executionDlid;
                 dataObject.WorkspaceID = workspaceGuid;
                 dataObject.ServiceName = serviceName;
-                _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
+                if (dataObject.ExecutionException is null)
+                {
+                    _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
+                } else
+                {
+                    var content = GetExecuteExceptionPayload(dataObject, resource, webRequest, ref formatter);
+                    return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, content);
+                }
             }
             else
             {
@@ -158,6 +166,32 @@ namespace Dev2.Runtime.WebServer
                     {
                         formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                         return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+                    }
+                }
+            }
+            return string.Empty;
+        }
+
+        string GetExecuteExceptionPayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        {
+            var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
+            if (notDebug && resource?.DataList != null)
+            {
+                switch (dataObject.ReturnType)
+                {
+                    case EmitionTypes.XML:
+                    {
+                        return $"<Error>{dataObject.ExecutionException.Message}</Error>";
+                    }
+                    case EmitionTypes.SWAGGER:
+                    {
+                        formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
+                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
+                    }
+                    default:
+                    case EmitionTypes.JSON:
+                    {
+                        return JsonConvert.SerializeObject(new { Message = dataObject.ExecutionException.Message });
                     }
                 }
             }

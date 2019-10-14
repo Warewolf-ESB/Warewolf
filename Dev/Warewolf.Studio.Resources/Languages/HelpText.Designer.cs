@@ -904,6 +904,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name of the queue you want to post the dead-letter onto.
+        /// </summary>
+        public static string DeadLetterQueueHelp {
+            get {
+                return ResourceManager.GetString("DeadLetterQueueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the source message dead-letter Queue.
         /// </summary>
         public static string DeadLetterQueueSourceHelp {
@@ -2110,7 +2119,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open to Schedule workflow executions or create events.
+        ///   Looks up a localized string similar to Opens Triggers so you can create a listener to a queue..
         /// </summary>
         public static string MenuTasksHelp {
             get {
@@ -2465,7 +2474,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set the concurrency of the Queue.
+        ///   Looks up a localized string similar to Set the concurrency of the Queue. This is the number of workflows that can execute in parallel limited by the number of threads available at run time..
         /// </summary>
         public static string QueueConcurrencyHelp {
             get {
@@ -2483,7 +2492,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Map the entire message.
+        ///   Looks up a localized string similar to Map the entire message. This will put the full response from the queue into one variable for you to unpack in your workflow..
         /// </summary>
         public static string QueueMapEntireMessageHelpTextTrigger {
             get {
@@ -2492,11 +2501,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a name of the Queue.
+        ///   Looks up a localized string similar to The name you want to use to refer to this Queue trigger..
         /// </summary>
         public static string QueueNameHelp {
             get {
                 return ResourceManager.GetString("QueueNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste the XML, JSON or plain text message received from the queue here..
+        /// </summary>
+        public static string QueuePasteInputHelp {
+            get {
+                return ResourceManager.GetString("QueuePasteInputHelp", resourceCulture);
             }
         }
         
@@ -2528,7 +2546,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the source message Queue.
+        ///   Looks up a localized string similar to Select the Source of the queue you want to listen to.
         /// </summary>
         public static string QueueSourceHelp {
             get {
@@ -2663,7 +2681,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to The name of the queue as it appears on the server of the source provided.
         /// </summary>
         public static string RabbitMQHelpQueueName {
             get {
