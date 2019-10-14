@@ -52,7 +52,7 @@ namespace Dev2.Activities.Specs.Deploy
                 Name = destinationServerHostname
             };
             _scenarioContext.Add("destinationServer", remoteServer);
-            remoteServer.Connect();
+            remoteServer.ConnectAsync().Wait(60000);
         }
 
         [Then(@"And the destination resource is ""(.*)""")]
