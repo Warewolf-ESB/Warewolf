@@ -73,7 +73,7 @@ namespace Dev2.Activities.Specs.Merge
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
-                remoteServer.Connect();
+                remoteServer.ConnectAsync().Wait(60000);
                 remoteServer.ResourceRepository.Load(true);
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
                 Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
@@ -93,7 +93,7 @@ namespace Dev2.Activities.Specs.Merge
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
-                remoteServer.Connect();
+                remoteServer.ConnectAsync().Wait(60000);
                 remoteServer.ResourceRepository.Load(true);
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
                 Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");

@@ -34,7 +34,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
         {
             var webResult = _externalProcessExecutor.WebResult.First();
             var contains = webResult.Contains(p0);
-            Assert.IsTrue(contains);
+            Assert.IsTrue(contains, webResult + " does not contain " + p0);
         }
 
         [Then(@"Browser content is not ""(.*)""")]
