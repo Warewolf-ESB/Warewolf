@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -50,13 +50,9 @@ namespace Dev2.Network
 {
     public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
+        System.Timers.Timer _reconnectHeartbeat;
         const int MillisecondsTimeout = 10000;
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
-
-        static ServerProxyWithoutChunking()
-        {
-            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-        }
 
         public ServerProxyWithoutChunking(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
@@ -176,7 +172,7 @@ namespace Dev2.Network
             {
                 return;
             }
-
+            StartReconnectTimer();
             if (HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
@@ -227,22 +223,31 @@ namespace Dev2.Network
             }
         }
 
-        public bool IsConnected { get; private set; }
+        public bool IsConnected { get; set; }
         public bool IsConnecting { get; private set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
 
         public void Connect(Guid id)
         {
-            // bug: since Connect doesn't control connection parameters, Id should not be set from here.
             ID = id;
             try
             {
-                if (!IsConnecting)
+                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
-                    ConnectAsync(id);
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
                 }
-                //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
+
+
+                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut) && !IsLocalHost)
+                    {
+                        ConnectionRetry();
+                    }
+
+                }
             }
             catch (AggregateException aex)
             {
@@ -264,27 +269,141 @@ namespace Dev2.Network
             }
         }
 
-        public Task<bool> ConnectAsync(Guid id)
+        public async Task<bool> ConnectAsync(Guid id)
         {
             ID = id;
-            var ensureConnectedWaitTask = new Task<bool>(() =>
+            try
             {
-                while (IsConnected == false)
+                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
-                    Task.Delay(300).Wait();
-                    Task.Yield();
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
                 }
-                return true;
-            });
-            ensureConnectedWaitTask.Start();
-            return ensureConnectedWaitTask;
+
+
+                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    await HubConnection.Start().ConfigureAwait(true);
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
+                    {
+                        ConnectionRetry();
+                    }
+
+                }
+                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    await HubConnection.Start().ConfigureAwait(true);
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
+                    {
+                        ConnectionRetry();
+                    }
+
+                    var popup = CustomContainer.Get<IPopupController>();
+                    popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                }
+            }
+            catch (AggregateException aex)
+            {
+                aex.Flatten();
+                aex.Handle(ex =>
+                {
+                    if (ex.Message.Contains("1.4"))
+                    {
+                        throw new FallbackException();
+                    }
+
+                    Dev2Logger.Error(this, aex, "Warewolf Error");
+                    if (ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                    {
+                        UpdateIsAuthorized(false);
+                        throw new UnauthorizedAccessException();
+                    }
+                    throw new NotConnectedException();
+                });
+            }
+            catch (NotConnectedException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                var popup = CustomContainer.Get<IPopupController>();
+                popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                HandleConnectError(e);
+                return false;
+            }
+            return true;
         }
 
-        static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
+        void ConnectionRetry()
+        {
+            HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
+            var popup = CustomContainer.Get<IPopupController>();
+
+            var application = Application.Current;
+            MessageBoxResult res;
+            application?.Dispatcher?.Invoke(() =>
+            {
+                res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
+                if (res == MessageBoxResult.Yes)
+                {
+                    if (!HubConnection.Start().Wait(30000))
+                    {
+                        ConnectionRetry();
+                    }
+                }
+                else
+                {
+                    throw new NotConnectedException();
+                }
+            });
+        }
+
+        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
         void HandleConnectError(Exception e)
         {
             Dev2Logger.Error(this, e, "Warewolf Error");
+            StartReconnectTimer();
+        }
+
+        protected void StartReconnectTimer()
+        {
+            if (IsLocalHost && _reconnectHeartbeat == null)
+            {
+                _reconnectHeartbeat = new System.Timers.Timer();
+                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+                _reconnectHeartbeat.Interval = 1000;
+                _reconnectHeartbeat.AutoReset = true;
+                _reconnectHeartbeat.Start();
+            }
+
+        }
+
+        protected void StopReconnectHeartbeat()
+        {
+            if (_reconnectHeartbeat != null)
+            {
+                _reconnectHeartbeat.Stop();
+                _reconnectHeartbeat.Dispose();
+                _reconnectHeartbeat = null;
+            }
+        }
+
+        void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
+        {
+            if (!IsConnecting)
+            {
+                Connect(ID);
+            }
+            if (IsConnected)
+            {
+                StopReconnectHeartbeat();
+                ConnectControlSingleton.Instance.Refresh(Guid.Empty);
+            }
         }
 
         public void Disconnect()
@@ -294,6 +413,8 @@ namespace Dev2.Network
             try
             {
                 IsShuttingDown = true;
+                IsConnected = false;
+                IsConnecting = false;
                 HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
             catch (AggregateException aex)
@@ -375,12 +496,14 @@ namespace Dev2.Network
 
             if (wait)
             {
+                HubConnection.Start().Wait(MillisecondsTimeout);
                 callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                              ? ConnectResult.Success
                              : ConnectResult.ConnectFailed);
             }
             else
             {
+                HubConnection.Start();
                 AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
@@ -389,7 +512,11 @@ namespace Dev2.Network
 
         public void StartAutoConnect()
         {
-
+            if (IsConnected)
+            {
+                return;
+            }
+            StartReconnectTimer();
         }
 
         public IEventPublisher ServerEvents { get; }
@@ -568,6 +695,10 @@ namespace Dev2.Network
         {
             if (!_disposedValue)
             {
+                if (disposing)
+                {
+                    _reconnectHeartbeat.Dispose();
+                }
                 _disposedValue = true;
             }
         }
@@ -577,64 +708,18 @@ namespace Dev2.Network
             Dispose(true);
         }
     }
-
-    class ServerProxyPersistentConnection : ServerProxyWithoutChunking
+    public class ServerProxyPersistentConnection : ServerProxyWithoutChunking
     {
-        public ServerProxyPersistentConnection(Uri serverUri)
-            : base(serverUri)
+        public ServerProxyPersistentConnection(Uri serverUri) : base(serverUri)
         {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
         }
 
-        public ServerProxyPersistentConnection(string webAddress, string userName, string password)
-            : base(webAddress, userName, password)
+        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) : base(serverUri, credentials, worker)
         {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
         }
 
-        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
-            : base(serverUri, credentials, worker)
+        public ServerProxyPersistentConnection(string webAddress, string userName, string password) : base(webAddress, userName, password)
         {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        private void StartHubConnectionWatchdogThread()
-        {
-            var t = new Thread(() =>
-            {
-                const int initialDelay = 1;
-                const int multiplier = 2;
-                const int maxDelay = 60;
-                var delay = initialDelay;
-                bool stopped = false;
-
-                HubConnection.StateChanged += (stateChange) =>
-                {
-                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
-                    {
-                        stopped = true;
-                    }
-                };
-                while (true)
-                {
-                    Thread.Sleep(delay);
-                    if (stopped)
-                    {
-                        stopped = false;
-                        delay *= multiplier;
-                        if (delay > maxDelay)
-                        {
-                            delay = initialDelay;
-                        }
-                        HubConnection.Start();
-                    }
-                }
-            });
-            t.IsBackground = true;
-            t.Start();
         }
     }
 

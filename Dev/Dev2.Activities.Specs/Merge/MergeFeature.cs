@@ -74,6 +74,7 @@ namespace Dev2.Activities.Specs.Merge
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
                 remoteServer.ConnectAsync().Wait(60000);
+                Assert.IsTrue(remoteServer.IsConnected, $"expected remote server({serverName}) connection successful");
                 remoteServer.ResourceRepository.Load(true);
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
                 Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
