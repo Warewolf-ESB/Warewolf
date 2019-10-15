@@ -60,7 +60,7 @@ public class Depends : Attribute, IDisposable
             Container = javaScriptSerializer.Deserialize<Container>(result);
             if (string.IsNullOrEmpty(Container.Port))
             {
-                if (result.Contains("\"No process is associated with this object.\",\"One or more errors occurred.\",\"Connection is not open.\""))
+                if (result.Contains("\"Connection is not open.\""))
                 {
                     result = client.DownloadString(address);
                     Container = javaScriptSerializer.Deserialize<Container>(result);
