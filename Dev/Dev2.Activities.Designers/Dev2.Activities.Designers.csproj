@@ -150,6 +150,7 @@
     <Compile Include="Designers2\Gate\GateDesigner.xaml.cs">
       <DependentUpon>GateDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Gate\GateDesignerViewModel.cs" />
     <Compile Include="Designers2\ReadFolderNew\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
