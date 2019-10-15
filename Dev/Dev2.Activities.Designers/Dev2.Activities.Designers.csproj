@@ -147,6 +147,9 @@
     <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Gate\GateDesigner.xaml.cs">
+      <DependentUpon>GateDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\ReadFolderNew\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1526,6 +1529,10 @@
     <Page Include="Designers2\FormatNumber\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Gate\GateDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\GatherSystemInformation\Large.xaml">
       <SubType>Designer</SubType>
