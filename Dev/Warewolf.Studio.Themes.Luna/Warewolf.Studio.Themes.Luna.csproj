@@ -158,6 +158,8 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="SharedResourceDictionary.cs" />
+    <Resource Include="Images\gate-closed.png" />
+    <Resource Include="Images\gate-open.png" />
     <None Include="app.config" />
     <None Include="Warewolf.Studio.Themes.Luna.ruleset" />
     <Resource Include="Images\Filter.png" />
