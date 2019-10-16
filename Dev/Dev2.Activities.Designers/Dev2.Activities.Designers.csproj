@@ -151,6 +151,9 @@
       <DependentUpon>GateDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Gate\GateDesignerViewModel.cs" />
+    <Compile Include="Designers2\Gate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Gate\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -1535,6 +1538,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Gate\GateDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Gate\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
