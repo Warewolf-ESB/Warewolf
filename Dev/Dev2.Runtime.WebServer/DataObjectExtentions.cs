@@ -225,8 +225,12 @@ namespace Dev2.Runtime.WebServer
                         MapServiceToDataObjects(dataObject, localResource);
                     }
                 }
-
+                if (localResource == null)
+                {
+                    dataObject.Environment.AddError($"Service {serviceName} not found.");
+                }
             }
+                
             resource = localResource;
         }
 
