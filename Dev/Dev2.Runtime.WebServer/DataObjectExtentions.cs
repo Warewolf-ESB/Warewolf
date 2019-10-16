@@ -225,12 +225,15 @@ namespace Dev2.Runtime.WebServer
                         MapServiceToDataObjects(dataObject, localResource);
                     }
                 }
-                if (localResource == null)
-                {
-                    throw new EntryPointNotFoundException($"Service {serviceName} not found.");
-                }
             }
-            resource = localResource;
+            if (localResource != null)
+            {
+                resource = localResource;
+            }
+            else
+            {
+                throw new EntryPointNotFoundException($"Service {serviceName} not found.");
+            }
         }
 
         static void MapServiceToDataObjects(IDSFDataObject dataObject, IResource localResource)
