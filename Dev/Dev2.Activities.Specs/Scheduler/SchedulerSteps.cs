@@ -211,7 +211,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
                 if (status == "Success")
                 {
-                    Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success);
+                    Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success, x[0].TaskHistoryOutput.FailureReason);
                 }
                 else
                 {
@@ -283,6 +283,10 @@ namespace Dev2.Activities.Specs.Scheduler
                     i++;
 
                 } while (i < times);
+                if (task.LastTaskResult != 0)
+                {
+                    throw new Exception($"Error executing scheduled task: {task.Name}\n{task.Xml}");
+                }
             }
             catch (Exception e)
             {
