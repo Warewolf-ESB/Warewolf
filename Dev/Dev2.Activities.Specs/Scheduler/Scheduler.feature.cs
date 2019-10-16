@@ -297,7 +297,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
    testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table914, "And ");
 #line 56
-   testRunner.Then("the Schedule task has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("the Schedule task has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
