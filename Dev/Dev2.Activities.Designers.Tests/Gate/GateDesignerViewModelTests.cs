@@ -25,14 +25,13 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_Constructor()
         {
             //------------Setup for test--------------------------
-            var expectedImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
             var expectedGateFailure = "Retry [Gate]";
             var mockModelItem = new Mock<ModelItem>();
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results--------------------------
-            Assert.AreEqual(expectedImagePath, gateDesignerViewModel.ImagePath);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.GateFailure);
+            Assert.IsTrue(gateDesignerViewModel.HasLargeView);
         }
     }
 }
