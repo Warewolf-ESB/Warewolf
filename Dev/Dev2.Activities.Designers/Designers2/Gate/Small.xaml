@@ -26,14 +26,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- TODO: Replace with binding to ImagePath in ViewModel -->
-        <Image Grid.Row="0" 
-               HorizontalAlignment="Center" 
-               Source="pack://application:,,,/Warewolf Studio;component/Images/gate-open.png"/>
-        <!-- TODO: Replace with binding to Text in ViewModel -->
-        <TextBlock Grid.Row="1" 
-                   HorizontalAlignment="Center" 
-                   Text="Rety [Gate] / Stop On Error"/>
+        <Image Grid.Row="0" HorizontalAlignment="Center" Source="{Binding ImagePath}"/>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{Binding GateFailure}"/>
     </Grid>
     
 </core:ActivityDesignerTemplate>
