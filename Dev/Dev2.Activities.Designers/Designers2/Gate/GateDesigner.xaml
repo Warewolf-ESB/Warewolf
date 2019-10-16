@@ -17,8 +17,8 @@
             <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
             <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
 
-            <Style x:Key="ContentViewStyle"
-                   BasedOn="{StaticResource ActivityDesignerStyle}"
+            <Style x:Key="ContentViewStyle" 
+                   BasedOn="{StaticResource ActivityDesignerStyle}" 
                    TargetType="{x:Type sap:ActivityDesigner}">
                 <Setter Property="Content" Value="{DynamicResource Small}" />
                 <Style.Triggers>
@@ -34,6 +34,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource Icon}"/>
+        <Binding Source="{StaticResource ControlFlow-Gate-Icon}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>
