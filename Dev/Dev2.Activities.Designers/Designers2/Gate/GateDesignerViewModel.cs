@@ -9,6 +9,7 @@
 */
 
 using Dev2.Activities.Designers2.Core;
+using Dev2.Studio.Interfaces;
 using System.Activities.Presentation.Model;
 
 namespace Dev2.Activities.Designers2.Gate
@@ -18,16 +19,17 @@ namespace Dev2.Activities.Designers2.Gate
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            ImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
+            AddTitleBarLargeToggle();
+
             GateFailure = "Retry [Gate]";
         }
 
-        public string ImagePath { get; set; }
         public string GateFailure { get; set; }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }
