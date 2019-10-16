@@ -66,7 +66,7 @@ Scenario: Schedule with LocalUser
 	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |	        |
 	  When the "LocalUserSchedule" is executed "1" times
 	  Then the Schedule task has "NO" error
-	  Then the schedule status is "Error"
+	  Then the schedule status is "Success"
 	  And "LocalUserSchedule" has "2" row of history	   
 	  
 Scenario: Schedule with ErrorInDebug
