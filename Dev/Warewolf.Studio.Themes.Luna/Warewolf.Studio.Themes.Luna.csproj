@@ -413,6 +413,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Images\ControlFlow-Gate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Images\DotNetDLL.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
