@@ -9,8 +9,10 @@
 */
 
 using System;
+using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Gate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Activities.Designers.Tests.Gate
 {
@@ -25,8 +27,9 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Setup for test--------------------------
             var expectedImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
             var expectedGateFailure = "Retry [Gate]";
+            var mockModelItem = new Mock<ModelItem>();
             //------------Execute Test----------------------------
-            var gateDesignerViewModel = new GateDesignerViewModel();
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results--------------------------
             Assert.AreEqual(expectedImagePath, gateDesignerViewModel.ImagePath);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.GateFailure);
