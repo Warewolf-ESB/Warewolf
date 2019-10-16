@@ -10,7 +10,15 @@
 
 namespace Dev2.Activities.Designers2.Gate
 {
-    class GateDesignerViewModel
+    public class GateDesignerViewModel
     {
+        public GateDesignerViewModel()
+        {
+            ImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
+            GateFailure = "Retry [Gate]";
+        }
+
+        public string ImagePath { get; set; }
+        public string GateFailure { get; set; }
     }
 }
