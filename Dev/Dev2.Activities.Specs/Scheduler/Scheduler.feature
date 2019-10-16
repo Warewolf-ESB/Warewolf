@@ -76,8 +76,8 @@ Scenario: Schedule with ErrorInDebug
 	  And the task status "Status" is "Enabled"
 	  And "ScheduleWithError" has a username of "dev2\IntegrationTester" and a saved password
 	  And "ScheduleWithError" has a Schedule of
-	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime | ResourceId |
-	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |            |
+	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime | ResourceId                           |
+	  | On a schedule | Daily    | 2020/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   | acb75027-ddeb-47d7-814e-a54c37247ec2 |
 	  When the "ScheduleWithError" is executed "1" times
 	  Then the Schedule task has "AN" error
 	  Then the schedule status is "Failure"
