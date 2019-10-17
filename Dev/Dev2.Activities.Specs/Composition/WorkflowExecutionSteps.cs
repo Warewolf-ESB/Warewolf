@@ -420,7 +420,7 @@ namespace Dev2.Activities.Specs.Composition
         void EnsureEnvironmentConnected(IServer server, int timeout)
         {
             var startTime = DateTime.UtcNow;
-            server.Connect();
+            server.ConnectAsync().Wait(60000);
 
             while (!server.IsConnected && !server.Connection.IsConnected)
             {

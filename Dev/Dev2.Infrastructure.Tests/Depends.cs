@@ -283,7 +283,7 @@ public class Depends : Attribute, IDisposable
             client.Credentials = CredentialCache.DefaultNetworkCredentials;
             try
             {
-                client.DownloadString("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true");
+                Console.WriteLine(client.DownloadString("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
             }
             catch (WebException e)
             {
