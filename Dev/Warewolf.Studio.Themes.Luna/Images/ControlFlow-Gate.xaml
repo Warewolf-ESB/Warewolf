@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="ControlFlow-Gate">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF333333" Geometry="M 0,0 L 50.08,0 50.08,50.08 0,50.08 z" />
+                    <GeometryDrawing Brush="#FF333333" Geometry="M 0,0 L 49.92,0 49.92,49.92 0,49.92 z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingBrush x:Key="ControlFlow-Gate-Icon">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <DrawingGroup>
+                        <DrawingGroup.Children>
+                            <GeometryDrawing Brush="#FF333333" Geometry="M 0,0 L 50.08,0 50.08,50.08 0,50.08 z" />
+                            <GeometryDrawing Brush="#FF333333" Geometry="M 0,0 L 49.92,0 49.92,49.92 0,49.92 z" />
+                        </DrawingGroup.Children>
+                    </DrawingGroup>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+</ResourceDictionary>

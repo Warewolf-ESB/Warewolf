@@ -42,7 +42,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionNoneStyle">
-        <Grid>
+        <Grid Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -52,7 +52,7 @@
     </DataTemplate>
     
     <DataTemplate x:Key="OptionBoolStyle" DataType="{x:Type options:OptionBool}">
-        <Grid>
+        <Grid Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -68,7 +68,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionIntStyle" DataType="{x:Type options:OptionInt}">
-        <Grid DataContext="{Binding Path=DataContext}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -84,7 +84,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionAutocompleteStyle" DataType="{x:Type options:OptionAutocomplete}">
-        <Grid>
+        <Grid Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -102,6 +102,26 @@
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionComboBoxStyle" ><!--DataType="{x:Type options:OptionComboBox}"-->
+        <Grid Margin="{StaticResource ControlBorderTop}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding Path=DataContext.Options, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="Value"
+                      Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource ComboBoxStyle}" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
         </Grid>
     </DataTemplate>
 
