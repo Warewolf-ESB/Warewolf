@@ -54,23 +54,15 @@ public class Depends : Attribute, IDisposable
         _containerType = type;
         using (var client = new WebClientWithExtendedTimeout { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
-            string address = $"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Find/{ConvertToString(_containerType)}.json";
-            var result = client.DownloadString(address);
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            Container = javaScriptSerializer.Deserialize<Container>(result);
-            if (string.IsNullOrEmpty(Container.Port))
+            string result = "";
+            string address = $"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Find/{ConvertToString(_containerType)}.json";
+            var retryCount = 0;
+            while (!result.Contains("<ID>") && !result.Contains("<IP>") && !result.Contains("<Port>") && retryCount++ < 10)
             {
-                if (result.Contains("\"No process is associated with this object.\""))
-                {
-                    result = client.DownloadString(address);
-                    Container = javaScriptSerializer.Deserialize<Container>(result);
-
-                }
-                if (string.IsNullOrEmpty(Container.Port))
-                {
-                    throw new Exception($"Cannot find container{(result == string.Empty ? "." : ": " + result)}");
-                }
+                result = client.DownloadString(address);
             }
+            Container = javaScriptSerializer.Deserialize<Container>(result);
             Container.Host = RigOpsHost;
             Container.Domain = RigOpsDomain;
         }
