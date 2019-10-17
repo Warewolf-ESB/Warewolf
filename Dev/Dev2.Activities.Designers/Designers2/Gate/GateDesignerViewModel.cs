@@ -36,10 +36,10 @@ namespace Dev2.Activities.Designers2.Gate
                 _gateFailureOption = value;
             }
         }
-        public IEnumerable<string> GateFailureOptions => GateFailureOptionsHelper<GateFailureOptions>.GetDescriptionsAsList(typeof(GateFailureOptions)).ToList();
+        public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureOptions>.GetDescriptionsAsList(typeof(GateFailureOptions)).ToList();
         public string SelectedGateFailure
         {
-            get => GateFailureOptionsHelper<GateFailureOptions>.GetEnumDescription(GateFailure.ToString());
+            get => GateOptionsHelper<GateFailureOptions>.GetEnumDescription(GateFailure.ToString());
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(GateFailure.ToString()))
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers2.Gate
                 var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
                 _selectedGateFailure = gateFailure;
 
-                var enumFromDescription = GateFailureOptionsHelper<GateFailureOptions>.GetEnumFromDescription(gateFailure);
+                var enumFromDescription = GateOptionsHelper<GateFailureOptions>.GetEnumFromDescription(gateFailure);
                 GateFailure = enumFromDescription;
             }
         }
