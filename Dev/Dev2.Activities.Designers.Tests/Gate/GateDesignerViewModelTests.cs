@@ -26,12 +26,9 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_Constructor()
         {
             //------------Setup for test--------------------------
-            var expectedImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
-            var expectedGateFailure = "Retry";
             var mockModelItem = new Mock<ModelItem>();
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
-            //------------Assert Results--------------------------
             Assert.AreEqual(expectedImagePath, gateDesignerViewModel.ImagePath);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.GateFailure.ToString());
         }
@@ -80,6 +77,8 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var list = gateDesignerViewModel.GateFailureOptions.ToList();
             Assert.AreEqual("Retry: Retry execution on error", list[0]);
             Assert.AreEqual("StopOnError: Stop execution on error", list[1]);
+            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.GateFailure);
+            Assert.IsTrue(gateDesignerViewModel.HasLargeView);
         }
     }
 }
