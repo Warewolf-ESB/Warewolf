@@ -58,11 +58,19 @@ namespace Warewolf.ResourceManagement
                         return act;
                     });
                     return act;
-                }                    
-                catch(Exception err) //errors caught inside                    
+                }
+                catch (InvalidWorkflowException e)
+                {
+                    Dev2Logger.Error($"Error processing {resourceIdGuid}: " + e.Message, "Warewolf Error");
+                    if (failOnError)
+                    {
+                        throw;
+                    }
+                }
+                catch (Exception err) //errors caught inside                    
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
-                    if(failOnError)
+                    if (failOnError)
                     {
                         throw;
                     }

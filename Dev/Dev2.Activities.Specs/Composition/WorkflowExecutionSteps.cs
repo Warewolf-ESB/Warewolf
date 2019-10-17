@@ -1501,6 +1501,77 @@ namespace Dev2.Activities.Specs.Composition
             Assert.Fail("No debug output found for " + workflowName + ".");
         }
 
+
+        [Given(@"the ""(.*)"" in Workflow ""(.*)"" unsorted debug outputs as")]
+        [When(@"the ""(.*)"" in Workflow ""(.*)"" unsorted debug outputs as")]
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" unsorted debug outputs as")]
+        public void ThenTheInWorkflowUnsortedDebugOutputsAs(string toolName, string workflowName, Table table)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = Guid.Empty;
+
+            if (parentWorkflowName != workflowName)
+            {
+                if (toolName != null && workflowName != null)
+                {
+                    IDebugState debugState = debugStates.FirstOrDefault(wf => wf.DisplayName.Equals(workflowName));
+                    if (debugState != null)
+                    {
+                        workflowId = debugState.ID;
+                    }
+                    else
+                    {
+                        var errors = debugStates.Where(wf => wf.ErrorMessage != "");
+                        var errorsMessage = "";
+                        if (errors != null)
+                        {
+                            errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
+                        }
+                        Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException("SpecFlow broke.");
+                }
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            IDebugState outputState;
+            if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
+            {
+                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+            }
+            else
+            {
+                outputState = toolSpecificDebug.FirstOrDefault();
+            }
+
+            if (outputState != null && outputState.Outputs != null)
+            {
+                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+                if (SelectResults != null && SelectResults.ToList() != null)
+                {
+                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug, true);
+                    return;
+                }
+                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+            }
+            Assert.Fail("No debug output found for " + workflowName + ".");
+        }
+
+
         [Then(@"the tool ""(.*)"" with Guid of ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         public void ThenTheToolWithGuidOfInWorkflowDebugOutputsAs(string toolName, string toolGuid, string workflowName, Table table)
         {
@@ -2824,7 +2895,7 @@ namespace Dev2.Activities.Specs.Composition
             if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
             {
                 var password = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", password, false);
+                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev.dev2.local/", "integrationtester@dev2.local", password, false);
                 sharepointHelper.Delete(serverPath);
             }
         }
