@@ -153,7 +153,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _workspaceGuid = EnsureWorkspaceIdValid(workspaceId);
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
-
+                if (_resource is null)
+                {
+                    _dataObject.Environment.AddError($"invalid resource {serviceName}");
+                    _dataObject.ExecutionException = new Exception("invalid resource");
+                }
                 _serializer = new Dev2JsonSerializer();
                 _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
                 if (!_canExecute)
