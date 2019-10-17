@@ -9,25 +9,54 @@
 */
 
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Gates;
+using Dev2.Common.Interfaces.Enums;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Activities.Designers2.Gate
 {
     public class GateDesignerViewModel : ActivityDesignerViewModel
     {
+        string _selectedGateFailure;
+        private GateFailureOptions _gateFailureOption;
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             ImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
-            GateFailure = "Retry [Gate]";
         }
 
         public string ImagePath { get; set; }
-        public string GateFailure { get; set; }
+        public GateFailureOptions GateFailure
+        {
+            get => _gateFailureOption;
+            set
+            {
+                _gateFailureOption = value;
+            }
+        }
+        public IEnumerable<string> GateFailureOptions => GateFailureOptionsHelper<GateFailureOptions>.GetDiscriptionsAsList(typeof(GateFailureOptions)).ToList();
+        public string SelectedGateFailure
+        {
+            get => GateFailureOptionsHelper<GateFailureOptions>.GetEnumDescription(GateFailure.ToString());
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(GateFailure.ToString()))
+                {
+                    return;
+                }
 
+                var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
+                _selectedGateFailure = gateFailure;
+
+                var enumFromDescription = GateFailureOptionsHelper<GateFailureOptions>.GetEnumFromDescription(gateFailure);
+                GateFailure = enumFromDescription;
+            }
+        }
         public override void UpdateHelpDescriptor(string helpText)
         {
-            
+
         }
     }
 }
