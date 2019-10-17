@@ -134,6 +134,10 @@ namespace QueueWorker
                     {
                         p.SetValue(result, optionBool.Value);
                     }
+                    else if (option is IOptionEnum optionEnum)
+                    {
+                        p.SetValue(result, optionEnum.Value);
+                    }
                 }
             }
 

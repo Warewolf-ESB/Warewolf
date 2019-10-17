@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using Warewolf.Data;
+using System;
 
 namespace Warewolf.Options
 {
@@ -61,6 +62,14 @@ namespace Warewolf.Options
                 {
                     Name = prop.Name,
                     Value = (bool)prop.GetValue(instance)
+                };
+            }
+            else if (prop.PropertyType.IsAssignableFrom(typeof(Enum)))
+            {
+                return new OptionEnum
+                {
+                    Name = prop.Name,
+                    Value = (Enum)prop.GetValue(instance)
                 };
             }
             throw UnhandledException;

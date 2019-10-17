@@ -23,7 +23,7 @@ namespace Warewolf.Data.Tests
         {
             var result = ConvertDataToOptionsList();
 
-            Assert.AreEqual(3, result.Length);
+            Assert.AreEqual(4, result.Length);
         }
 
 
@@ -33,7 +33,7 @@ namespace Warewolf.Data.Tests
             var result = ConvertDataToOptionsList();
 
             Assert.AreEqual(nameof(TestData.MyInt), result[0].Name);
-            Assert.AreEqual(12, ((OptionInt) result[0]).Value);
+            Assert.AreEqual(12, ((OptionInt)result[0]).Value);
         }
 
         [TestMethod]
@@ -57,16 +57,36 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(true, ((OptionBool)result[2]).Value);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(OptionConvertor))]
+        public void OptionConvertor_GivenSimpleClass_ExpectedEnumOption_Success()
+        {
+            //----------------------Arrange----------------------
+            //----------------------Act--------------------------
+            var actual = ConvertDataToOptionsList();
+            //----------------------Assert-----------------------
+            Assert.AreEqual(nameof(TestData.MyEnum), actual[3].Name);
+            Assert.AreEqual(MyOptions.Option1, ((OptionEnum)actual[3]).Value);
+        }
+
         private static IOption[] ConvertDataToOptionsList()
         {
             var cls = new TestData
             {
                 MyInt = 12,
                 MyString = "hello",
-                MyBool = true
+                MyBool = true,
+                MyEnum = MyOptions.Option1
             };
 
             return OptionConvertor.Convert(cls);
+        }
+
+        enum MyOptions
+        {
+            Option1,
+            Option2
         }
 
         public class TestData
@@ -75,11 +95,13 @@ namespace Warewolf.Data.Tests
             [DataProvider(typeof(OptionsForS))]
             public string MyString { get; set; }
             public bool MyBool { get; set; }
+            public Enum MyEnum { get; set; }
 
             public class OptionsForS : IOptionDataList
             {
                 public string[] Options => new string[] { "sopt1", "sopt2", "sopt3", "sopt4" };
             }
         }
+
     }
 }
