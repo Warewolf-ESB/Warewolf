@@ -155,4 +155,55 @@ namespace Warewolf.Options
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
         }
     }
+
+    public class OptionEnum : BindableBase, IOptionEnum
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private Enum _value;
+
+        public event EventHandler<OptionValueChangedArgs<Enum>> ValueUpdated;
+
+        public Enum Value
+        {
+            get => _value;
+            set
+            {
+                var eventArgs = new OptionValueChangedArgs<Enum>(_name, _value, value);
+                _value = value;
+                RaisePropertyChanged(nameof(Value));
+                ValueUpdated?.Invoke(this, eventArgs);
+            }
+        }
+
+        public Enum Default => throw new NotImplementedException();
+
+        public object Clone()
+        {
+            return new OptionEnum
+            {
+                Name = _name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionEnum;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
+        }
+    }
 }
