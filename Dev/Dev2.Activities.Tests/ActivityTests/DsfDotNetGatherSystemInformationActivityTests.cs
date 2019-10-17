@@ -123,7 +123,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 string.IsNullOrWhiteSpace(warewolfCPU[0]) ||
                 string.IsNullOrWhiteSpace(warewolfServerVersion[0]))
             {
-
                 ob.Execute(data.Object, 0);
 
                 outputs = ob.GetOutputs();
