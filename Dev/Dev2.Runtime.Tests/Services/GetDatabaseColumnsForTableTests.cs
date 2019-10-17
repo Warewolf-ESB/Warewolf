@@ -322,13 +322,14 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = _containerOps.RigOpsHost + "." + _containerOps.RigOpsDomain + "," + _containerOps.Container.Port,
+                Server = _containerOps.RigOpsHost + "." + _containerOps.RigOpsDomain,
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
                 Password = "test123",
-                ConnectionTimeout = 30
+                ConnectionTimeout = 30,
+                Port = int.Parse(_containerOps.Container.Port)
             };
             return dbSource;
         }
