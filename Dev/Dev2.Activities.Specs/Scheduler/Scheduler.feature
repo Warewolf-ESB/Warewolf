@@ -41,7 +41,8 @@ Scenario: Setting schedule task "At log on"
 	  | At log on    | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |           |
 	  Then the Schedule task has "NO" error
 	  When the "Diceroll1" is executed "1" times
-	  Then the schedule status is "Error"
+	  Then the Schedule task has "NO" error
+	  Then the schedule status is "Success"
 	  And "Diceroll1" has "2" row of history	   
 	  
 Scenario: Schedule the task with Incorrect username or password
