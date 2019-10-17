@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,15 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
@@ -32,6 +25,10 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using System;
+using System.Activities;
+using System.Linq;
+using System.Threading;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -73,7 +70,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Entered Wf Container", dataObjectExecutionId);
             DataObject.ServiceName = ServiceAction.ServiceName;
 
-            var executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : "Execute"));
+            var executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : nameof(Execute)));
             Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
             SetExecutionOrigin();
 
@@ -218,9 +215,6 @@ namespace Dev2.Runtime.ESB.Execution
 
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
-            var outerStateLogger = dsfDataObject.StateNotifier;
-
-            IStateNotifier stateNotifier = null;
             try
             {
                 dsfDataObject.Settings = new Dev2WorkflowSettingsTO
@@ -230,18 +224,12 @@ namespace Dev2.Runtime.ESB.Execution
                     KeepLogsForDays = 2,
                     CompressOldLogFiles = true
                 };
-                if (dsfDataObject.Settings.EnableDetailedLogging)
-                {
-                    stateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
-                    dsfDataObject.StateNotifier = stateNotifier;
-                }
 
                 AddExecutionToExecutionManager(dsfDataObject, resource);
 
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                stateNotifier?.LogPreExecuteState(resource);
 
                 IDev2Activity next;
                 IDev2Activity lastActivity;
@@ -249,22 +237,17 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     lastActivity = resource;
                     next = resource.Execute(dsfDataObject, update);
-                    stateNotifier?.LogPostExecuteState(resource, next);
                 }
                 catch (Exception e)
                 {
-                    stateNotifier?.LogExecuteException(e, resource);
+                    Dev2Logger.Debug(e, GlobalConstants.WarewolfError);
                     throw;
                 }
-
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
             }
             finally
             {
                 _executionManager?.CompleteExecution();
-
-                stateNotifier?.Dispose();
-                dsfDataObject.StateNotifier = outerStateLogger;
             }
         }
 
@@ -295,42 +278,26 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
         {
-            var stateNotifier = dsfDataObject.StateNotifier;
             var environment = dsfDataObject.Environment;
 
-            bool stoppedExecution = false;
             Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
             while (next != null)
             {
                 if (dsfDataObject.StopExecution)
                 {
-                    stoppedExecution = true;
                     break;
                 }
-
-                stateNotifier?.LogPreExecuteState(next);
                 var current = next;
                 lastActivity = current;
                 try
                 {
                     next = current.Execute(dsfDataObject, update);
-                    stateNotifier?.LogPostExecuteState(current, next);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    stateNotifier?.LogExecuteException(e, current);
                     throw;
                 }
                 environment.AllErrors.UnionWith(environment.Errors);
-            }
-
-            if (!stoppedExecution)
-            {
-                stateNotifier?.LogExecuteCompleteState(lastActivity);
-            }
-            else
-            {
-                stateNotifier?.LogStopExecutionState(lastActivity);
             }
         }
 
@@ -358,7 +325,8 @@ namespace Dev2.Runtime.ESB.Execution
 
                 var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId, resumeVersionNumber.ToString());
                 startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId, resourceObject);
-            } else
+            }
+            else
             {
                 startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId);
             }
