@@ -56,13 +56,18 @@ public class Depends : Attribute, IDisposable
         {
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result = "";
-            string address = $"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Find/{ConvertToString(_containerType)}.json";
+            string containerType = ConvertToString(_containerType);
+            string address = $"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Find/{containerType}.json";
             var retryCount = 0;
-            while (!result.Contains("<ID>") && !result.Contains("<IP>") && !result.Contains("<Port>") && retryCount++ < 10)
+            do
             {
                 result = client.DownloadString(address);
+                Container = javaScriptSerializer.Deserialize<Container>(result);
+            } while (string.IsNullOrEmpty(Container.Port) && retryCount++ < 10);
+            if (string.IsNullOrEmpty(Container.Port))
+            {
+                throw new Exception($"Container for {containerType} type dependency not found.");
             }
-            Container = javaScriptSerializer.Deserialize<Container>(result);
             Container.Host = RigOpsHost;
             Container.Domain = RigOpsDomain;
         }
