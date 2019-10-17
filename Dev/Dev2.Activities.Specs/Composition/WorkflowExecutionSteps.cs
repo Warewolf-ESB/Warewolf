@@ -419,19 +419,14 @@ namespace Dev2.Activities.Specs.Composition
 
         void EnsureEnvironmentConnected(IServer server, int timeout)
         {
-            var startTime = DateTime.UtcNow;
             server.ConnectAsync().Wait(60000);
 
-            while (!server.IsConnected && !server.Connection.IsConnected)
+            var retryCount = 0;
+            while (!server.IsConnected && !server.Connection.IsConnected && retryCount++<10)
             {
                 Assert.AreEqual(server.IsConnected, server.Connection.IsConnected);
-
-                var now = DateTime.UtcNow;
-                if (now.Subtract(startTime).TotalSeconds > timeout)
-                {
-                    break;
-                }
                 Thread.Sleep(GlobalConstants.NetworkTimeOut);
+                server.ConnectAsync().Wait(60000);
             }
 
             if (!server.IsConnected && !server.Connection.IsConnected)
