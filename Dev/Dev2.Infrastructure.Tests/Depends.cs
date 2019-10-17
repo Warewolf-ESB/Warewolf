@@ -126,7 +126,7 @@ public class Depends : Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsHost}.{RigOpsDomain}:{Container.Port}/dsf;WebServerPort=3142;AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
+            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsHost}.{RigOpsDomain}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
         }
         else
         {
