@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.Gate
                 _gateFailureOption = value;
             }
         }
-        public IEnumerable<string> GateFailureOptions => GateFailureOptionsHelper<GateFailureOptions>.GetDiscriptionsAsList(typeof(GateFailureOptions)).ToList();
+        public IEnumerable<string> GateFailureOptions => GateFailureOptionsHelper<GateFailureOptions>.GetDescriptionsAsList(typeof(GateFailureOptions)).ToList();
         public string SelectedGateFailure
         {
             get => GateFailureOptionsHelper<GateFailureOptions>.GetEnumDescription(GateFailure.ToString());
