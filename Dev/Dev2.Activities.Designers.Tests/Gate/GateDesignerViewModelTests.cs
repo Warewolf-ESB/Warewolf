@@ -27,9 +27,10 @@ namespace Dev2.Activities.Designers.Tests.Gate
         {
             //------------Setup for test--------------------------
             var mockModelItem = new Mock<ModelItem>();
+            var expectedGateFailure = "Retry";
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
-            Assert.AreEqual(expectedImagePath, gateDesignerViewModel.ImagePath);
+            Assert.IsTrue(gateDesignerViewModel.HasLargeView);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.GateFailure.ToString());
         }
         [TestMethod]
@@ -77,8 +78,8 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var list = gateDesignerViewModel.GateFailureOptions.ToList();
             Assert.AreEqual("Retry: Retry execution on error", list[0]);
             Assert.AreEqual("StopOnError: Stop execution on error", list[1]);
-            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.GateFailure);
-            Assert.IsTrue(gateDesignerViewModel.HasLargeView);
+          
+           
         }
     }
 }
