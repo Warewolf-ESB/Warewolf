@@ -15,7 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DsfDotNetGatherSystemInformationActivityTests
     {
         [TestMethod]
-        public void GetCorrectSystemInformation_AllInformationGatherShouldHaveValues()
+        public void GetCorrectSystemInformation_MultipleInformationGatherShouldHaveValues()
         {
             var ob = new DsfDotNetGatherSystemInformationActivity
             {
@@ -48,7 +48,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.IPv4Address, "[[iPv4Address]]", 1),
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.IPv6Address, "[[iPv6Address]]", 1),
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.WarewolfMemory, "[[warewolfMemory]]", 1),
-                    new GatherSystemInformationTO(enTypeOfSystemInformationToGather.WarewolfCPU, "[[warewolfCPU]]", 1),
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.WarewolfServerVersion, "[[warewolfServerVersion]]", 1),
                 }
             };
@@ -144,11 +143,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             var warewolfMemory = env.EvalAsListOfStrings("[[warewolfMemory]]", 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfMemory[0]), "[[warewolfMemory]]");
 
-            var warewolfCPU = env.EvalAsListOfStrings("[[warewolfCPU]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfCPU[0]), "[[warewolfCPU]]");
-
             var warewolfServerVersion = env.EvalAsListOfStrings("[[warewolfServerVersion]]", 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfServerVersion[0]), "[[warewolfServerVersion]]");
+        }
+        [TestMethod]
+        public void GetCorrectSystemInformation_WarewolfCPU_GatherShouldHaveValues()
+        {
+            var ob = new DsfDotNetGatherSystemInformationActivity
+            {
+                SystemInformationCollection = new List<GatherSystemInformationTO>
+                {
+                    new GatherSystemInformationTO(enTypeOfSystemInformationToGather.WarewolfCPU, "[[warewolfCPU]]", 1)
+                }
+            };
+
+            var env = new ExecutionEnvironment();
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+
+            ob.Execute(data.Object, 0);
+
+            var warewolfCPU = env.EvalAsListOfStrings("[[warewolfCPU]]", 0);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfCPU[0]), "[[warewolfCPU]]");
         }
 
         [TestMethod]
