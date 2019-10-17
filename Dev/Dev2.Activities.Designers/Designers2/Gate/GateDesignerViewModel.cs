@@ -9,25 +9,79 @@
 */
 
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Gates;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Studio.Interfaces;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Activities.Designers2.Gate
 {
     public class GateDesignerViewModel : ActivityDesignerViewModel
     {
+        private GateFailureOptions _gateFailureOption;
+        private GateRetryStrategies _retryStrategy;
+
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            ImagePath = "pack://application:,,,/Warewolf Studio;component/Images/gate-open.png";
-            GateFailure = "Retry [Gate]";
+            AddTitleBarLargeToggle();
         }
 
-        public string ImagePath { get; set; }
-        public string GateFailure { get; set; }
+        public GateFailureOptions GateFailure
+        {
+            get => _gateFailureOption;
+            set
+            {
+                _gateFailureOption = value;
+            }
+        }
+        public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureOptions>.GetDescriptionsAsList(typeof(GateFailureOptions)).ToList();
+        public IEnumerable<string> GateRetryStrategies => GateOptionsHelper<GateRetryStrategies>.GetDescriptionsAsList(typeof(GateRetryStrategies)).ToList();
+        public string SelectedGateFailure
+        {
+            get => GateOptionsHelper<GateFailureOptions>.GetEnumDescription(GateFailure.ToString());
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(GateFailure.ToString()))
+                {
+                    return;
+                }
+
+                var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
+                var enumFromDescription = GateOptionsHelper<GateFailureOptions>.GetEnumFromDescription(gateFailure);
+                GateFailure = enumFromDescription;
+            }
+        }
+        public GateRetryStrategies GateRetryStrategy
+        {
+            get => _retryStrategy;
+            set
+            {
+                _retryStrategy = value;
+            }
+        }
+        public string SelectedRetryStrategy
+        {
+            get => GateOptionsHelper<GateRetryStrategies>.GetEnumDescription(GateRetryStrategy.ToString());
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(GateRetryStrategy.ToString()))
+                {
+                    return;
+                }
+
+                var retryStrategy = GateRetryStrategies.Single(p => p.ToString().Contains(value));
+                var enumFromDescription = GateOptionsHelper<GateRetryStrategies>.GetEnumFromDescription(retryStrategy);
+                GateRetryStrategy = enumFromDescription;
+            }
+        }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }
