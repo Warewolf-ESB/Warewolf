@@ -60,6 +60,6 @@ namespace Dev2.Common.Gates
             throw new Exception();
         }
 
-        public static IEnumerable<string> GetDiscriptionsAsList(Type type) => type.GetEnumNames().Select(GetEnumDescription).ToList();
+        public static IEnumerable<string> GetDescriptionsAsList(Type type) => type.GetEnumNames().Select(GetEnumDescription).ToList();
     }
 }
