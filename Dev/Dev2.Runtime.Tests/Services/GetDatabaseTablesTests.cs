@@ -184,6 +184,10 @@ namespace Dev2.Tests.Runtime.Services
 
         DbSource CreateDev2TestingDbSource(bool emptyDBName=false)
         {
+            if (GetDatabaseColumnsForTableTests._containerOps == null)
+            {
+                GetDatabaseColumnsForTableTests._containerOps = new Depends(Depends.ContainerType.MSSQL);
+            }
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
