@@ -18,7 +18,7 @@ namespace Dev2.Common.Interfaces.Enums
         NoBackoff,
         [Description("ConstantBackoff : Add a fixed delay after every attempt")]
         ConstantBackoff,
-        [Description("LinearBackoff : Delay increases along with every attempt on Linear curve.")]
+        [Description("LinearBackoff : Delay increases along with every attempt on Linear curve")]
         LinearBackoff,
         [Description("FibonacciBackoff  : Delays based on the sum of the Fibonacci series")]
         FibonacciBackoff,
