@@ -216,7 +216,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 DataListFormat formatter;
-                if (webRequest.ServiceName.EndsWith(".xml"))
+                if (webRequest.ServiceName.EndsWith(".xml") || _dataObject.ReturnType == EmitionTypes.XML)
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
                 } else
