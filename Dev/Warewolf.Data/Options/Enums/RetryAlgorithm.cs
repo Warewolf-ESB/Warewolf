@@ -10,9 +10,9 @@
 
 using System.ComponentModel;
 
-namespace Warewolf.Data
+namespace Warewolf.Data.Options.Enums
 {
-    public enum GateRetryStrategies
+    public enum RetryAlgorithm
     {
         [Description("NoBackoff: On Error Retry Immediately")]
         NoBackoff,

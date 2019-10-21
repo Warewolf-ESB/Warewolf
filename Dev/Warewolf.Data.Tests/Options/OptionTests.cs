@@ -9,6 +9,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Tests
@@ -181,5 +182,104 @@ namespace Warewolf.Data.Tests
             expectedValue = optionAutocomplete.CompareTo(optionAutocomplete);
             Assert.AreEqual(0, expectedValue);
         }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnum))]
+        [Owner("Siphamandla Dube")]
+        public void OptionEnum_Default()
+        {
+            var optionEnum = new OptionEnum();
+
+            Assert.IsNull(optionEnum.Name);
+            optionEnum.Name = "MyEnum";
+            Assert.AreEqual("MyEnum", optionEnum.Name);
+
+            Assert.IsNull(optionEnum.Value);
+            optionEnum.Value = MyEnum.Option2;
+            Assert.AreEqual(MyEnum.Option2, optionEnum.Value);
+
+            Assert.IsNull(optionEnum.Default);
+            optionEnum.Default = MyEnum.Option1;
+            Assert.AreEqual(MyEnum.Option1, optionEnum.Default);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnum))]
+        [Owner("Siphamandla Dube")]
+        public void OptionEnum_Clone()
+        {
+            var optionEnum = new OptionEnum
+            {
+                Name = "MyEnum",
+                Value = MyEnum.Option2
+            };
+
+            var cloneOptionEnum = optionEnum.Clone() as OptionEnum;
+            Assert.AreEqual(optionEnum.Name, cloneOptionEnum.Name);
+            Assert.AreEqual(optionEnum.Value, cloneOptionEnum.Value);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnum))]
+        [Owner("Siphamandla Dube")]
+        public void OptionEnum_CompareTo()
+        {
+            var optionEnum = new OptionEnum
+            {
+                Name = "MyEnum",
+                Value = MyEnum.Option2
+            };
+
+            var expectedValue = optionEnum.CompareTo(null);
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionEnum.CompareTo(new object { });
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionEnum.CompareTo(optionEnum);
+            Assert.AreEqual(0, expectedValue);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionCombobox))]
+        [Owner("Siphamandla Dube")]
+        public void OptionCombobox_Clone()
+        {
+            var optionAutocomplete = new OptionCombobox
+            {
+                Name = "MyEnum",
+                Value = MyEnum.Option1.ToString()
+            };
+
+            Assert.ThrowsException<NotImplementedException>(() => optionAutocomplete.Clone() as OptionCombobox);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionCombobox))]
+        [Owner("Siphamandla Dube")]
+        public void OptionCombobox_CompareTo()
+        {
+            var optionCombobox = new OptionCombobox
+            {
+                Name = "MyEnum",
+                Value = MyEnum.Option1.ToString()
+            };
+
+            var expectedValue = optionCombobox.CompareTo(null);
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionCombobox.CompareTo(new object { });
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionCombobox.CompareTo(optionCombobox);
+            Assert.AreEqual(0, expectedValue);
+        }
+
+        enum MyEnum
+        {
+            Option1,
+            Option2
+        }
+
     }
 }

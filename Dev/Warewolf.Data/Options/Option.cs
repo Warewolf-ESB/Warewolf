@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using Warewolf.Interfaces.Options;
 
 namespace Warewolf.Options
 {
@@ -181,7 +183,7 @@ namespace Warewolf.Options
             }
         }
 
-        public Enum Default => throw new NotImplementedException();
+        public Enum Default { get; set; }
 
         public object Clone()
         {
@@ -204,6 +206,47 @@ namespace Warewolf.Options
                 return -1;
             }
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
+        }
+    }
+
+    public class OptionCombobox : BindableBase, IOptionComboBox
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+        public Dictionary<string, IEnumerable<IOption>> Options { get; } = new Dictionary<string, IEnumerable<IOption>>();
+
+        private string _value;
+
+        public event EventHandler<OptionValueChangedArgs<string>> ValueUpdated;
+
+        public string Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value);
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionCombobox;
+            if (item is null)
+            {
+                return -1;
+            }
+
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | string.Compare(item.Value, Value);
         }
     }
 }
