@@ -2005,6 +2005,11 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             var name = table.Rows[0]["Server"];
             var serverPath = table.Rows[0]["ServerPath"];
+            if (ScenarioContext.Current.ContainsKey("serverPathToUniqueNameGuid"))
+            {
+                var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+                serverPath = CommonSteps.AddGuidToPath(serverPath, serverPathUniqueNameGuid);
+            }
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
 
