@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 
 namespace Warewolf.Options
 {
@@ -26,4 +27,36 @@ namespace Warewolf.Options
             return Activator.CreateInstance(_providerType);
         }
     }
+
+    public class MultiDataProviderAttribute : Attribute
+    {
+        private readonly Type[] _providerTypes;
+
+        public MultiDataProviderAttribute(params Type[] dataProvider)
+        {
+            _providerTypes = dataProvider;
+        }
+
+        public object[] Get()
+        {
+            return _providerTypes.Select(providerType => Activator.CreateInstance(providerType)).ToArray();
+        }
+    }
+
+    public class DataValueAttribute : Attribute
+    {
+        private string _valueFieldName;
+
+        public DataValueAttribute(string v)
+        {
+            this._valueFieldName = v;
+        }
+
+        internal string Get()
+        {
+            return _valueFieldName;
+        }
+    }
+
+
 }
