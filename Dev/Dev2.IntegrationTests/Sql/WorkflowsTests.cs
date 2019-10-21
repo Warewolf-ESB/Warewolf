@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.IO;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -21,8 +23,19 @@ namespace Dev2.Integration.Tests.Sql
         [TestMethod]
         public void RunWorkflowIntegration()
         {
-            var reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:3142/services/", "Hello World?Name=Manager"));
-            Assert.IsNotNull(reponseData);
+            try
+            {
+                var reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:3142/services/", "Acceptance Testing Resources/SampleEmployeesWorkflow?ResultType=Managers"));
+                Assert.IsNotNull(reponseData);
+            }
+            catch (WebException e)
+            {
+                using (var stream = e.Response.GetResponseStream())
+                {
+                    var responseData = new StreamReader(stream).ReadToEnd();
+                    Assert.IsNotNull(responseData);
+                }
+            }
         }
 
         [TestMethod]
