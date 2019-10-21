@@ -10,7 +10,7 @@
 
 using System.ComponentModel;
 
-namespace Dev2.Common.Interfaces.Enums
+namespace Warewolf.Data
 {
     public enum GateRetryStrategies
     {
