@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
 using System.Linq;
-using Warewolf.Data;
+using Warewolf.Data.Options.Enums;
 
 namespace Dev2.Activities.Designers.Tests.Gate
 {
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             gateDesignerViewModel.SelectedGateFailure = "Retry: Retry execution on error";
             //------------Assert Results-------------------------
             Assert.AreEqual("Retry: Retry execution on error", gateDesignerViewModel.SelectedGateFailure);
-            Assert.AreEqual(GateFailureOptions.Retry, gateDesignerViewModel.GateFailure);
+            Assert.AreEqual(GateFailureAction.Retry, gateDesignerViewModel.GateFailure);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -63,7 +63,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             gateDesignerViewModel.SelectedGateFailure = "StopOnError: Stop execution on error";
             //------------Assert Results-------------------------
             Assert.AreEqual("StopOnError: Stop execution on error", gateDesignerViewModel.SelectedGateFailure);
-            Assert.AreEqual(GateFailureOptions.StopOnError, gateDesignerViewModel.GateFailure);
+            Assert.AreEqual(GateFailureAction.StopOnError, gateDesignerViewModel.GateFailure);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -117,7 +117,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             gateDesignerViewModel.SelectedRetryStrategy = "ConstantBackoff : Add a fixed delay after every attempt";
             //------------Assert Results-------------------------
             Assert.AreEqual("ConstantBackoff : Add a fixed delay after every attempt", gateDesignerViewModel.SelectedRetryStrategy);
-            Assert.AreEqual(GateRetryStrategies.ConstantBackoff, gateDesignerViewModel.GateRetryStrategy);
+            Assert.AreEqual(RetryAlgorithm.ConstantBackoff, gateDesignerViewModel.GateRetryStrategy);
         }
     }
 }

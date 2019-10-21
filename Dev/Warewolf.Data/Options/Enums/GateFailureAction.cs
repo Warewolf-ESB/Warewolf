@@ -10,10 +10,10 @@
 
 using System.ComponentModel;
 
-namespace Warewolf.Data
+namespace Warewolf.Data.Options.Enums
 {
    
-    public enum GateFailureOptions
+    public enum GateFailureAction
     {
         [Description("Retry: Retry execution on error")]
         Retry,
