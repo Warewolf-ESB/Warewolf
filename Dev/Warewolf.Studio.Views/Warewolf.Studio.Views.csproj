@@ -180,6 +180,9 @@
     <Compile Include="ManageWcfSourceControl.xaml.cs">
       <DependentUpon>ManageWcfSourceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageRedisSourceControl.xaml.cs">
+      <DependentUpon>ManageRedisSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManageWebserviceSourceControl.xaml.cs">
       <DependentUpon>ManageWebserviceSourceControl.xaml</DependentUpon>
     </Compile>
@@ -286,6 +289,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ManageWcfSourceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManageRedisSourceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

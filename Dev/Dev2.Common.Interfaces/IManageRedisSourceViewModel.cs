@@ -1,0 +1,99 @@
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Input;
+using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Runtime.ServiceModel.Data;
+
+namespace Dev2.Common.Interfaces
+{
+    public interface IManageRedisSourceViewModel
+    {
+        /// <summary>
+        ///  Password or Anonymous
+        /// </summary>
+        AuthenticationType AuthenticationType { get; set; }
+
+        /// <summary>
+        /// The Host Name of the Redis Server
+        /// </summary>
+        string HostName { get; set; }
+
+       
+        /// <summary>
+        /// Password
+        /// </summary>
+        string Password { get; set; }
+
+        /// <summary>
+        /// Port Number of the Redis Server
+        /// </summary>
+        int Port { get; set; }
+
+        /// <summary>
+        /// Test if connection is successful
+        /// </summary>
+        ICommand TestCommand { get; set; }
+
+        ICommand CancelTestCommand { get; set; }
+
+       
+        /// <summary>
+        /// The message that will be set if the test is either successful or not
+        /// </summary>
+        string TestMessage { get; }
+        /// <summary>
+        /// The message that will be set if the test is either successful or not
+        /// </summary>
+        string TestDefault { get; }
+
+        /// <summary>
+        /// Command for save/ok
+        /// </summary>
+        ICommand OkCommand { get; set; }
+
+        /// <summary>
+        /// Header text that is used on the view
+        /// </summary>
+        string HeaderText { get; set; }
+
+        /// <summary>
+        /// Has test passed
+        /// </summary>
+        bool TestPassed { get; set; }
+       
+
+        /// <summary>
+        /// has test failed
+        /// </summary>
+        bool TestFailed { get; set; }
+        /// <summary>
+        /// IsTesting
+        /// </summary>
+        bool Testing { get; }
+
+        /// <summary>
+        /// The name of the resource
+        /// </summary>
+        
+        string ResourceName { get; set; }
+        
+
+        /// <summary>
+        /// The authentications Type
+        /// </summary>
+        bool PasswordAuthenticationSelected { get; }
+    }
+
+    public interface IManageRedisSourceModel
+    {
+
+        void TestConnection(IRedisSource resource);
+
+        void Save(IRedisSource toDbSource);
+
+        string ServerName { get; set; }
+
+        IRedisSource FetchSource(Guid id);
+    }
+
+}
