@@ -14,14 +14,14 @@ using Dev2.Studio.Interfaces;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
-using Warewolf.Data;
+using Warewolf.Data.Options.Enums;
 
 namespace Dev2.Activities.Designers2.Gate
 {
     public class GateDesignerViewModel : ActivityDesignerViewModel
     {
-        private GateFailureOptions _gateFailureOption;
-        private GateRetryStrategies _retryStrategy;
+        private GateFailureAction _gateFailureOption;
+        private RetryAlgorithm _retryStrategy;
 
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.Gate
             AddTitleBarLargeToggle();
         }
 
-        public GateFailureOptions GateFailure
+        public GateFailureAction GateFailure
         {
             get => _gateFailureOption;
             set
@@ -37,11 +37,11 @@ namespace Dev2.Activities.Designers2.Gate
                 _gateFailureOption = value;
             }
         }
-        public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureOptions>.GetDescriptionsAsList(typeof(GateFailureOptions)).ToList();
-        public IEnumerable<string> GateRetryStrategies => GateOptionsHelper<GateRetryStrategies>.GetDescriptionsAsList(typeof(GateRetryStrategies)).ToList();
+        public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureAction>.GetDescriptionsAsList(typeof(GateFailureAction)).ToList();
+        public IEnumerable<string> GateRetryStrategies => GateOptionsHelper<RetryAlgorithm>.GetDescriptionsAsList(typeof(RetryAlgorithm)).ToList();
         public string SelectedGateFailure
         {
-            get => GateOptionsHelper<GateFailureOptions>.GetEnumDescription(GateFailure.ToString());
+            get => GateOptionsHelper<GateFailureAction>.GetEnumDescription(GateFailure.ToString());
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(GateFailure.ToString()))
@@ -50,11 +50,11 @@ namespace Dev2.Activities.Designers2.Gate
                 }
 
                 var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
-                var enumFromDescription = GateOptionsHelper<GateFailureOptions>.GetEnumFromDescription(gateFailure);
+                var enumFromDescription = GateOptionsHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
                 GateFailure = enumFromDescription;
             }
         }
-        public GateRetryStrategies GateRetryStrategy
+        public RetryAlgorithm GateRetryStrategy
         {
             get => _retryStrategy;
             set
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.Gate
         }
         public string SelectedRetryStrategy
         {
-            get => GateOptionsHelper<GateRetryStrategies>.GetEnumDescription(GateRetryStrategy.ToString());
+            get => GateOptionsHelper<RetryAlgorithm>.GetEnumDescription(GateRetryStrategy.ToString());
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(GateRetryStrategy.ToString()))
@@ -73,7 +73,7 @@ namespace Dev2.Activities.Designers2.Gate
                 }
 
                 var retryStrategy = GateRetryStrategies.Single(p => p.ToString().Contains(value));
-                var enumFromDescription = GateOptionsHelper<GateRetryStrategies>.GetEnumFromDescription(retryStrategy);
+                var enumFromDescription = GateOptionsHelper<RetryAlgorithm>.GetEnumFromDescription(retryStrategy);
                 GateRetryStrategy = enumFromDescription;
             }
         }
