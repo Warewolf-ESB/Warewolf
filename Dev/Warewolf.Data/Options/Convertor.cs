@@ -99,7 +99,7 @@ namespace Warewolf.Options
                 var returnVal = new OptionCombobox
                 {
                     Name = prop.Name,
-                    Value = Enum.GetName(fieldNameProp.PropertyType, enumValue), //"OatsBreakfast", // currently selected value of inner field named in UDA
+                    Value = Enum.GetName(fieldNameProp.PropertyType, enumValue), 
                 };
 
                 if (dataProviderAttr != null)
