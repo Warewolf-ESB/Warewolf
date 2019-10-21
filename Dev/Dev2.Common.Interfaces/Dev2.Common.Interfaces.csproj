@@ -150,8 +150,6 @@
     <Compile Include="enIntellisensePartType.cs" />
     <Compile Include="Enums\AuthorizationContext.cs" />
     <Compile Include="Enums\enRandomType.cs" />
-    <Compile Include="Enums\GateFailureOptions.cs" />
-    <Compile Include="Enums\GateRetryStrategies.cs" />
     <Compile Include="Enums\LoggerType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
