@@ -27,10 +27,8 @@ namespace Dev2.Integration.Tests.Sql
             {
                 var reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:3142/services/", "Acceptance Testing Resources/SampleEmployeesWorkflow?ResultType=Managers"));
                 Assert.IsNotNull(reponseData);
-#pragma warning disable CS0168 // Variable is declared but never used
             }
             catch (WebException e)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 using (var stream = e.Response.GetResponseStream())
                 {
