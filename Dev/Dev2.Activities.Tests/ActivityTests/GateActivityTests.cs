@@ -137,7 +137,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_GetHashCode()
         {
-            using (var gateActivityActivity = new GateActivity { GateFailure = "Retry", GateRetryStrategy = "" })
+            using (var gateActivityActivity = new GateActivity { })
             {
                 var hashCode = gateActivityActivity.GetHashCode();
                 Assert.IsNotNull(hashCode);

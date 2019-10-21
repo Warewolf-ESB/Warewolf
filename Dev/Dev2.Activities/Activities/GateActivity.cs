@@ -140,8 +140,8 @@ namespace Dev2.Activities
 
         public static void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update)
         {
-           
-            
+
+
 
         }
 
@@ -175,8 +175,6 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397);
-                hashCode = (hashCode * 397) ^ (GateFailure.GetHashCode());
-                hashCode = (hashCode * 397) ^ (GateRetryStrategy.GetHashCode());
 
                 return hashCode;
             }
@@ -231,6 +229,13 @@ namespace Dev2.Activities
         {
             var env = dataObject.Environment;
             Gate = _gateFactory.New(env);
+           
+            //TODO: This needs to be implemented
+            //IStateNotifier stateNotifier = null;
+            //stateNotifier = LogManager.CreateStateNotifier(dataObject);
+            //dataObject.StateNotifier = stateNotifier;
+            //stateNotifier?.LogPreExecuteState(_activity);
+
         }
 
         public void AddValidationErrors(ErrorResultTO allErrors)
