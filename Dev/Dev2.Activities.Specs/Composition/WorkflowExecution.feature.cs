@@ -1018,15 +1018,19 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with ForEach in Rec with star which contains Dot Net DLL")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NestedForEachExecution")]
         public virtual void WorkflowWithForEachInRecWithStarWhichContainsDotNetDLL()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach in Rec with star which contains Dot Net DLL", ((string[])(null)));
-#line 283
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach in Rec with star which contains Dot Net DLL", new string[] {
+                        "NestedForEachExecution"});
+#line 282
  this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 284
+#line 283
       testRunner.Given("I have a workflow \"WFWithForEachContainingDotNetDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 284
+    testRunner.And("Debug states are cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table709 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -1394,11 +1398,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing 2 ForEach\"s inside a ForEach which contains Assign only Large Execution" +
             "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NestedForEachExecution")]
         public virtual void Executing2ForEachsInsideAForEachWhichContainsAssignOnlyLargeExecution()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing 2 ForEach\"s inside a ForEach which contains Assign only Large Execution" +
-                    "", ((string[])(null)));
-#line 383
+                    "", new string[] {
+                        "NestedForEachExecution"});
+#line 384
   this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
