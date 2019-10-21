@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data.Options.Enums;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -66,11 +67,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.Environment).Returns(env);
 
             var activity = GetGateActivity(new Mock<IGateActivityWorker>());
-            activity.GateRetryStrategy = GateRetryStrategies.LinearBackoff.ToString();
-            activity.GateFailure = GateFailureOptions.StopOnError.ToString(); ;
+            activity.GateRetryStrategy = RetryAlgorithm.LinearBackoff.ToString();
+            activity.GateFailure = GateFailureAction.StopOnError.ToString(); ;
 
-            Assert.AreEqual(GateRetryStrategies.LinearBackoff.ToString(), activity.GateRetryStrategy);
-            Assert.AreEqual(GateFailureOptions.StopOnError.ToString(), activity.GateFailure);
+            Assert.AreEqual(RetryAlgorithm.LinearBackoff.ToString(), activity.GateRetryStrategy);
+            Assert.AreEqual(GateFailureAction.StopOnError.ToString(), activity.GateFailure);
         }
 
         [TestMethod]
