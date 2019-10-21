@@ -153,21 +153,28 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _workspaceGuid = EnsureWorkspaceIdValid(workspaceId);
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
-                if (_resource is null)
+                try
                 {
-                    _dataObject.Environment.AddError($"invalid resource {serviceName}");
-                    _dataObject.ExecutionException = new Exception("invalid resource");
-                }
-                _serializer = new Dev2JsonSerializer();
-                _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
-                if (!_canExecute)
+                    if (_resource is null)
+                    {
+                        var msg = string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, serviceName);
+                        _dataObject.Environment.AddError(msg);
+                        _dataObject.ExecutionException = new Exception(msg);
+                        return null;
+                    }
+                    _serializer = new Dev2JsonSerializer();
+                    _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
+                    if (!_canExecute)
+                    {
+                        var errorMessage = string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
+                        _dataObject.Environment.AddError(errorMessage);
+                        _dataObject.ExecutionException = new Exception(errorMessage);
+                    }
+                } finally
                 {
-                    var errorMessage = string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
-                    _dataObject.Environment.AddError(errorMessage);
-                    _dataObject.ExecutionException = new Exception(errorMessage);
+                    _executionDlid = GlobalConstants.NullDataListID;
                 }
 
-                _executionDlid = GlobalConstants.NullDataListID;
                 if (_canExecute && _dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     Thread.CurrentPrincipal = user;
