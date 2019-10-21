@@ -3,7 +3,7 @@
 namespace Warewolf.Interfaces.Options
 {
 
-    public interface IOptionCombobox : IOption
+    public interface IOptionComboBox : IOption
     {
         string Value { get; set; }
     }
