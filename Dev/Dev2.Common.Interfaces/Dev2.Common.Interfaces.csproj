@@ -220,6 +220,7 @@
     <Compile Include="IManagePluginServiceInputViewModel.cs" />
     <Compile Include="IManagePluginSourceModel.cs" />
     <Compile Include="IManagePluginSourceViewModel.cs" />
+    <Compile Include="IManageRedisSourceViewModel.cs" />
     <Compile Include="IManageServiceInputViewModel.cs" />
     <Compile Include="IManageSharePointSourceViewModel.cs" />
     <Compile Include="IManageWcfServiceInputViewModel.cs" />
@@ -336,6 +337,7 @@
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Resources\IQueueSource.cs" />
+    <Compile Include="ServerProxyLayer\IRedisSource.cs" />
     <Compile Include="ServerProxyLayer\ISqliteDBSource.cs" />
     <Compile Include="ServerProxyLayer\IUpdateManager.cs" />
     <Compile Include="ServerProxyLayer\IVersionManager.cs" />
