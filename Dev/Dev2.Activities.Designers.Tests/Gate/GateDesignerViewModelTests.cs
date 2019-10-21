@@ -9,11 +9,11 @@
 */
 
 using Dev2.Activities.Designers2.Gate;
-using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
 using System.Linq;
+using Warewolf.Data;
 
 namespace Dev2.Activities.Designers.Tests.Gate
 {
