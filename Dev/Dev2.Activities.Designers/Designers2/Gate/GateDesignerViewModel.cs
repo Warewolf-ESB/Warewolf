@@ -10,11 +10,11 @@
 
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Gates;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Studio.Interfaces;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Data;
 
 namespace Dev2.Activities.Designers2.Gate
 {
