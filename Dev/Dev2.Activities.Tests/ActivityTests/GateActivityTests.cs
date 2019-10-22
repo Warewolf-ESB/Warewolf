@@ -44,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Construct_Default()
+        public void GateActivity_Construct_Default_Execute_Returns_GateActivity()
         {
             var env = CreateExecutionEnvironment();
             var dataObject = new Mock<IDSFDataObject>();
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Construct_Change()
+        public void GateActivity_Construct_Set_GateRetryStrategy_GateFailure_Returns_GateRetryStrategy_GateFailure()
         {
             var env = CreateExecutionEnvironment();
             var dataObject = new Mock<IDSFDataObject>();
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Equal_OtherIsNull()
+        public void GateActivity_Equals_Set_OtherIsNull_Returns_IsFalse()
         {
             var gateActivity = CreateGateActivity();
             var gateActivityEqual = gateActivity.Equals(null);
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Equal_OtherisEqual()
+        public void GateActivity_Equals_Set_OtherisEqual_Returns_IsTrue()
         {
             var gateActivity = CreateGateActivity();
             var gateActivityOther = gateActivity;
@@ -115,7 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Equal_BothareObjects()
+        public void GateActivity_Equals_Set_BothAreObjects_Returns_IsFalse()
         {
             object gateActivity = CreateGateActivity();
             var other = new object();
@@ -126,7 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Equal_OtherisObjectofGateActivityEqual()
+        public void GateActivity_Equals_Set_OtherisObjectofGateActivityEqual_Returns_IsFalse()
         {
             var gateActivity = CreateGateActivity();
             object other = new GateActivity();
@@ -148,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        public void Gate_Environment_Construtor()
+        public void Gate_Environment_Construtor_Returns_Environment_IsNotNull()
         {
             var env = CreateExecutionEnvironment();
             var dataObject = new Mock<IDSFDataObject>();
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         [TestMethod]
         [Owner("Candice Daniel")]
-        public void Gate_Construtor_SetEnvironmentProperty()
+        public void Gate_Construtor_SetEnvironmentProperty_Returns__Environment_IsNotNull()
         {
             var env = CreateExecutionEnvironment();
             var dataObject = new Mock<IDSFDataObject>();
