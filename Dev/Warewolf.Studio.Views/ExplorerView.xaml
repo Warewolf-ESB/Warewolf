@@ -295,9 +295,9 @@
                                         </MenuItem>
                                         <MenuItem Name="NewRedisSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewRedisSourceSourceCommand}"
+                                                  Command="{Binding NewRedisSourceCommand}"
                                                   CommandParameter="RedisSource"
-                                                  Header="New Redis Service Source"
+                                                  Header="New Redis Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewRedisSourceTooltip}">
                                             <!--<MenuItem.Icon>
@@ -905,9 +905,9 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewRedisSourceItem"
                                                           Style="{StaticResource MenuItemStyle}"
-                                                          Command="{Binding NewRedisSourceSourceCommand}"
+                                                          Command="{Binding NewRedisSourceCommand}"
                                                           CommandParameter="RedisSource"
-                                                          Header="New Redis Service Source"
+                                                          Header="New Redis Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewRedisSourceTooltip}">
                                                     <!--<MenuItem.Icon>

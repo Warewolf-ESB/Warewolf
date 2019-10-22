@@ -111,6 +111,8 @@
         </StackPanel>
 
         <Grid x:Name="PasswordContainer" 
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
               Grid.Row="4" 
               Margin="0,-3,0,6"
               Visibility="{Binding Path=PasswordSelected,Converter={StaticResource BoolToVisibilityConverter}}">
@@ -121,14 +123,13 @@
                 <ColumnDefinition Width="{Binding ElementName=Authentication, Path=ActualWidth}"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Text="{x:Static languages:Core.PasswordLabel}"/>
+            <TextBlock Grid.Column="0" Margin="{StaticResource ControlBorderTop}" Text="{x:Static languages:Core.PasswordLabel}"/>
             <PasswordBox x:Name="PasswordTextBox" 
                          Grid.Column="1"
-                         Grid.Row="2" 
                          ToolTip="{x:Static languages:Tooltips.RedisPasswordTooltip}"
                          Margin="{StaticResource ControlBorderTop}"
                          passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true" 
-                         passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
