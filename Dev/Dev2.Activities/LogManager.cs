@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Logging;
 using Warewolf.Logger;
 using Warewolf.Auditing;
 
-namespace Dev2.Runtime.ESB.Execution
+namespace Dev2
 {
     public class LogManagerImplementation : IDisposable
     {

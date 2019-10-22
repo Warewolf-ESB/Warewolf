@@ -50,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
+            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
             var activity = GetGateActivity(new Mock<IGateActivityWorker>());
             activity.Execute(dataObject.Object, 0);
@@ -65,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
+            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
             var activity = GetGateActivity(new Mock<IGateActivityWorker>());
             activity.GateRetryStrategy = RetryAlgorithm.LinearBackoff.ToString();
@@ -152,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
+            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
             var gate = new Gate(env);
             Assert.IsNotNull(gate.Environment);
@@ -164,6 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
+            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
             var gate = new Gate
             {
