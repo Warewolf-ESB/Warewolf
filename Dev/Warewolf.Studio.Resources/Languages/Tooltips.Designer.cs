@@ -3170,6 +3170,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new redis source.
+        /// </summary>
+        public static string NewRedisSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewRedisSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
         public static string NewServerSourceTooltip {
@@ -3238,6 +3247,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string OpenVersionTooltip {
             get {
                 return ResourceManager.GetString("OpenVersionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using a specific account.
+        /// </summary>
+        public static string PasswordAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("PasswordAuthenticationToolTip", resourceCulture);
             }
         }
         
@@ -3703,6 +3721,51 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ReadLocalFolderToolTipFolder {
             get {
                 return ResourceManager.GetString("ReadLocalFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the test execution.
+        /// </summary>
+        public static string RedisCancelTestTooltip {
+            get {
+                return ResourceManager.GetString("RedisCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The account password.
+        /// </summary>
+        public static string RedisPasswordTooltip {
+            get {
+                return ResourceManager.GetString("RedisPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RedisSourceHostNameTooltip.
+        /// </summary>
+        public static string RedisSourceHostNameTooltip {
+            get {
+                return ResourceManager.GetString("RedisSourceHostNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RedisSourcePortTooltip.
+        /// </summary>
+        public static string RedisSourcePortTooltip {
+            get {
+                return ResourceManager.GetString("RedisSourcePortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the redis source connection.
+        /// </summary>
+        public static string RedisTestTooltip {
+            get {
+                return ResourceManager.GetString("RedisTestTooltip", resourceCulture);
             }
         }
         
