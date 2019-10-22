@@ -2005,6 +2005,11 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             var name = table.Rows[0]["Server"];
             var serverPath = table.Rows[0]["ServerPath"];
+            if (ScenarioContext.Current.ContainsKey("serverPathToUniqueNameGuid"))
+            {
+                var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+                serverPath = CommonSteps.AddGuidToPath(serverPath, serverPathUniqueNameGuid);
+            }
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
 
@@ -2874,30 +2879,11 @@ namespace Dev2.Activities.Specs.Composition
             repository.DeleteResource(resourceModel);
         }
 
-        [Then(@"the file ""(.*)"" is deleted from the Sharepoint server as cleanup")]
-        public void ThenFileIsDeletedFromSharepointServerAsCleanup(string fileName)
-        {
-            DeleteSharepointFile(fileName);
-        }
-
         [Then(@"the folder ""(.*)"" is deleted from the server as cleanup")]
         public void ThenTheFolderIsDeletedFromTheServerAsCleanup(string shapointLocalFolder)
         {
             var folderToDelete = Path.Combine(EnvironmentVariables.ResourcePath, shapointLocalFolder);
             Directory.Delete(folderToDelete, true);
-        }
-
-
-        static void DeleteSharepointFile(string serverPathTo)
-        {
-            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
-            var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
-            if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
-            {
-                var password = TestEnvironmentVariables.GetVar("dev2\\IntegrationTester");
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev.dev2.local/", "integrationtester@dev2.local", password, false);
-                sharepointHelper.Delete(serverPath);
-            }
         }
 
         [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
