@@ -7,7 +7,6 @@
     <AssemblyName>QueueWorker</AssemblyName>
     <ApplicationIcon />
     <StartupObject />
-    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup>
