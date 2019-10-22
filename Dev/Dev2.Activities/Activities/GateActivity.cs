@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using System;
@@ -97,7 +98,21 @@ namespace Dev2.Activities
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
-
+            dataObject.Settings = new Dev2WorkflowSettingsTO
+            {
+                EnableDetailedLogging = Config.Server.EnableDetailedLogging,
+                LoggerType = LoggerType.JSON,
+                KeepLogsForDays = 2,
+                CompressOldLogFiles = true
+            };
+            IStateNotifier stateNotifier = null;
+            var outerStateLogger = dataObject.StateNotifier;
+            if (dataObject.Settings.EnableDetailedLogging)
+            {
+                stateNotifier = LogManager.CreateStateNotifier(dataObject);
+                dataObject.StateNotifier = stateNotifier;
+                stateNotifier?.LogPreExecuteState(this);
+            }
             try
             {
                 _worker.AddValidationErrors(allErrors);
@@ -108,10 +123,12 @@ namespace Dev2.Activities
                         ExecuteToolAddDebugItems(dataObject, update);
                     }
                     _worker.ExecuteGate(dataObject, update);
+                    stateNotifier?.LogPostExecuteState(this, null);
                 }
             }
             catch (Exception e)
             {
+                stateNotifier?.LogExecuteException(e, this);
                 Dev2Logger.Error(nameof(Gate), e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
@@ -129,6 +146,8 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+                stateNotifier?.Dispose();
+                dataObject.StateNotifier = outerStateLogger;
             }
         }
 
@@ -229,13 +248,6 @@ namespace Dev2.Activities
         {
             var env = dataObject.Environment;
             Gate = _gateFactory.New(env);
-           
-            //TODO: This needs to be implemented
-            //IStateNotifier stateNotifier = null;
-            //stateNotifier = LogManager.CreateStateNotifier(dataObject);
-            //dataObject.StateNotifier = stateNotifier;
-            //stateNotifier?.LogPreExecuteState(_activity);
-
         }
 
         public void AddValidationErrors(ErrorResultTO allErrors)
