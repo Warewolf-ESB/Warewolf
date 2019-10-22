@@ -99,6 +99,8 @@
     <Compile Include="ManageSqliteSourceViewModel.cs" />
     <Compile Include="ManageSqlServerSourceViewModel.cs" />
     <Compile Include="MergeServiceViewModel.cs" />
+    <Compile Include="RedisSourceModel.cs" />
+    <Compile Include="RedisSourceViewModel.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="ServiceTestStep.cs" />
     <Compile Include="SingleExplorerDeployViewModel.cs" />
