@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Warewolf.Interfaces.Options;
 
 namespace Warewolf.Options
 {
