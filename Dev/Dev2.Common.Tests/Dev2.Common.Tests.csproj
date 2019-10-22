@@ -66,6 +66,7 @@
     <Compile Include="Core\EmailServiceSourceDefinitionTests.cs" />
     <Compile Include="Core\ExchangeSourceDefinitionTests.cs" />
     <Compile Include="Core\SharePointServiceSourceDefinitionTests.cs" />
+    <Compile Include="Core\RedisSourceDefinitionTests.cs" />
     <Compile Include="Core\WebServiceSourceDefinitionTests.cs" />
     <Compile Include="Core\WcfServiceSourceDefinitionTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
