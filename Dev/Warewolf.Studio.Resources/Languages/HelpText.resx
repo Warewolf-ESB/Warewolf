@@ -1847,6 +1847,12 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="WebServiceTestCommandHelp" xml:space="preserve">
     <value>Test the Webservice to get response payload. &lt;br/&gt;	&lt;br/&gt;	This allows us to map response data back into the system for you.</value>
   </data>
+  <data name="RedisSourceHostNameHelp" xml:space="preserve">
+    <value>RedisSourceHostNameHelp</value>
+  </data>
+  <data name="RedisSourcePortHelp" xml:space="preserve">
+    <value>RedisSourcePortHelp</value>
+  </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
   </data>

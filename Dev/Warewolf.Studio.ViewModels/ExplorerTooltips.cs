@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         string _newOracleSourceTooltip;
         string _newOdbcSourceTooltip;
         string _newWebSourceTooltip;
+        string _newRedisSourceTooltip;
         string _newPluginSourceTooltip;
         string _newComPluginSourceTooltip;
         string _newEmailSourceTooltip;
@@ -59,6 +60,7 @@ namespace Warewolf.Studio.ViewModels
             var noPermissionsToolTip = Resources.Languages.Tooltips.NoPermissionsToolTip;
             NewServerSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewServerSourceTooltip : noPermissionsToolTip;
             NewWebSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewWebSourceTooltip : noPermissionsToolTip;
+            NewRedisSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewRedisSourceTooltip : noPermissionsToolTip;
             NewRabbitMqSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewRabbitMqSourceTooltip : noPermissionsToolTip;
             NewDropboxSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewDropboxSourceTooltip : noPermissionsToolTip;
             NewSharepointSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : noPermissionsToolTip;
@@ -160,6 +162,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _newWebSourceTooltip = value;
                 OnPropertyChanged(() => NewWebSourceTooltip);
+            }
+        }
+        public string NewRedisSourceTooltip
+        {
+            get => _newRedisSourceTooltip;
+            set
+            {
+                _newRedisSourceTooltip = value;
+                OnPropertyChanged(() => NewRedisSourceTooltip);
             }
         }
         public string NewPluginSourceTooltip

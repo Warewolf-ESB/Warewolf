@@ -295,6 +295,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewWebSource(_target.ResourcePath));
         }
 
+        [TestMethod, Timeout(60000)]
+        public void TestNewRedisSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "RedisSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewWebSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.NewRedisSource(_target.ResourcePath));
+        }
+
         [TestMethod,Timeout(60000)]
         public void TestNewEmailSourceCommand()
         {

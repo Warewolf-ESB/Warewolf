@@ -40,9 +40,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.3.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -55,9 +52,7 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Prism, Version=7.2.0.1367, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Core.7.2.0.1367\lib\net45\Prism.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -73,25 +68,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Redis Source.cs">
-      <DependentUpon>Redis Source.feature</DependentUpon>
+    <Compile Include="Redis Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Redis Source.feature</DependentUpon>
     </Compile>
     <Compile Include="RedisSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
     <None Include="Redis Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Redis Source.cs</LastGenOutput>
+      <LastGenOutput>Redis Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
@@ -101,10 +111,44 @@
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
+      <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
+      <Name>Warewolf.Studio.Views</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.UIBindingTests.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Moq">
+      <Version>4.8.3</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestAdapter">
+      <Version>1.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.Mvvm">
+      <Version>1.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.UnityExtensions">
+      <Version>5.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow">
+      <Version>2.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.MsTest">
+      <Version>2.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
+      <Version>2.3.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

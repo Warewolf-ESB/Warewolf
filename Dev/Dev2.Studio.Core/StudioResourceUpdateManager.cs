@@ -74,6 +74,8 @@ namespace Dev2.Studio.Core
 
         public void TestConnection(IWebServiceSource serverSource) => UpdateManagerProxy.TestConnection(serverSource);
 
+        public void TestConnection(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.TestConnection(redisServiceSource);
+
         public void TestConnection(ISharepointServerSource sharePointServiceSource) => UpdateManagerProxy.TestConnection(sharePointServiceSource);
 
         public IList<string> TestDbConnection(IDbSource serverSource) => UpdateManagerProxy.TestDbConnection(serverSource);
@@ -94,6 +96,8 @@ namespace Dev2.Studio.Core
                 //
             }
         }
+
+        public void Save(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.SaveRedisServiceSource(redisServiceSource, GlobalConstants.ServerWorkspaceID);
 
         public void Save(ISharepointServerSource sharePointServiceSource)
         {

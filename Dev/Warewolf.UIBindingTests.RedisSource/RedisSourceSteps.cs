@@ -1,12 +1,19 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.SaveDialog;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -17,11 +24,11 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-using System.IO;
 using Dev2.Infrastructure.Tests;
-using Prism.Events;
+using Dev2.Studio.Core;
+using Dev2.Common.SaveDialog;
 
-namespace Warewolf.UIBindingTests.WebSource
+namespace Warewolf.UIBindingTests.RedisSource
 {
     [Binding]
     public class RedisSourceSteps
@@ -42,33 +49,33 @@ namespace Warewolf.UIBindingTests.WebSource
         [BeforeFeature("RedisSource")]
         public static void SetupForSystem()
         {
-            //Utils.SetupResourceDictionary();
-            //var manageWebserviceSourceControl = new ManageWebserviceSourceControl();
-            //var mockStudioUpdateManager = new Mock<IManageWebServiceSourceModel>();
-            //mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
+            Utils.SetupResourceDictionary();
+            var redisSourceControl = new RedisSourceControl();
+            var mockStudioUpdateManager = new Mock<IRedisSourceModel>();
+            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            //var manageWebserviceSourceViewModel = new ManageWebserviceSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
-            //manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
-            //Utils.ShowTheViewForTesting(manageWebserviceSourceControl);
-            //FeatureContext.Current.Add(Utils.ViewNameKey, manageWebserviceSourceControl);
-            //FeatureContext.Current.Add(Utils.ViewModelNameKey, manageWebserviceSourceViewModel);
-            //FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            //FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            //FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            var redisSourceViewModel = new RedisSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
+            redisSourceControl.DataContext = redisSourceViewModel;
+            Utils.ShowTheViewForTesting(redisSourceControl);
+            FeatureContext.Current.Add(Utils.ViewNameKey, redisSourceControl);
+            FeatureContext.Current.Add(Utils.ViewModelNameKey, redisSourceViewModel);
+            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
+            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
 
-        [BeforeScenario("WebSource")]
-        public void SetupForWebSource()
+        [BeforeScenario("RedisSource")]
+        public void SetupForRedisSource()
         {
-            //scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey));
-            //scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IManageWebServiceSourceModel>>("updateManager"));
-            //scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            //scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            //scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageWebserviceSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<RedisSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IRedisSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<RedisSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -81,144 +88,88 @@ namespace Warewolf.UIBindingTests.WebSource
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string title)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             Assert.AreEqual(title, viewModel.HeaderText);
-            Assert.AreEqual(title, manageWebserviceSourceControl.GetHeaderText());
+            Assert.AreEqual(title, redisSourceControl.GetHeaderText());
         }
 
-        [Given(@"I open New Web Source")]
-        public void GivenIOpenNewWebSource()
+        [Given(@"I open New Redis Source")]
+        public void GivenIOpenNewRedisSource()
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            Assert.IsNotNull(manageWebserviceSourceControl);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            Assert.IsNotNull(redisSourceControl);
         }
 
-       
-        [Given(@"I type Address as ""(.*)""")]
-        [When(@"I change Address to ""(.*)""")]
-        [Then(@"I type Address as ""(.*)""")]
-        public void GivenITypeAddressAs(string address)
+        [Then(@"I type HostName as ""(.*)""")]
+        [When(@"I change HostName to ""(.*)""")]
+        public void ThenITypeHostNameAs(string hostName)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.EnterServerName(address);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(address, viewModel.HostName);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.EnterHostName(hostName);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            Assert.AreEqual(hostName, viewModel.HostName);
         }
 
-        [Given(@"I type Default Query as ""(.*)""")]
-        [When(@"I type Default Query as ""(.*)""")]
-        [Then(@"I type Default Query as ""(.*)""")]
-        public void GivenITypeDefaultQueryAs(string defaultQuery)
+        [Then(@"I type port number as ""(.*)""")]
+        [When(@"I change port number to ""(.*)""")]
+        public void ThenITypePortNumberAs(string portNumber)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.EnterDefaultQuery(defaultQuery);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(defaultQuery, viewModel.DefaultQuery);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.EnterPortNumber(portNumber);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            Assert.AreEqual(portNumber, viewModel.HostName);
         }
 
-        [Given(@"I open ""(.*)"" web source")]
-        public void GivenIOpenWebSource(string resourceName)
+        [Given(@"I open ""(.*)"" redis source")]
+        public void GivenIOpenRedisSource(string resourceName)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var mockStudioUpdateManager = new Mock<IManageWebServiceSourceModel>();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var mockStudioUpdateManager = new Mock<IRedisSourceModel>();
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
             var username = @"dev2\IntegrationTester";
             var password = TestEnvironmentVariables.GetVar(username);
-            var webServiceSourceDefinition = new WebServiceSourceDefinition
+            var redisSourceDefinition = new RedisSourceDefinition
             {
                 Name = "Test",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
-                DefaultQuery = "/GetCountries.ashx?extension=json&prefix=a",
-                UserName = "IntegrationTester",
                 Password = password
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
-                .Returns(webServiceSourceDefinition);
-            var manageWebserviceSourceViewModel = new ManageWebserviceSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object,webServiceSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
-            manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
+                .Returns(redisSourceDefinition);
+            var redisSourceViewModel = new RedisSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, redisSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
+            redisSourceControl.DataContext = redisSourceViewModel;
             _scenarioContext.Remove("viewModel");
-            _scenarioContext.Add("viewModel",manageWebserviceSourceViewModel);
+            _scenarioContext.Add("viewModel", redisSourceViewModel);
         }
 
-        [Given(@"Address is ""(.*)""")]
-        [When(@"Address is ""(.*)""")]
-        [Then(@"Address is ""(.*)""")]
-        public void GivenAddressIs(string address)
+        [Given(@"HostName is ""(.*)""")]
+        [When(@"HostName is ""(.*)""")]
+        [Then(@"HostName is ""(.*)""")]
+        public void GivenHostNameIs(string hostName)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(address, viewModel.HostName);
-            Assert.AreEqual(address, manageWebserviceSourceControl.GetAddress());
-        }
-
-        [Given(@"Default Query is ""(.*)""")]
-        [When(@"Default Query is ""(.*)""")]
-        [Then(@"Default Query is ""(.*)""")]
-        public void GivenDefaultQueryIs(string defaultQuery)
-        {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(defaultQuery, viewModel.DefaultQuery);
-            Assert.AreEqual(defaultQuery, manageWebserviceSourceControl.GetDefaultQuery());
-        }
-
-        [Given(@"Username is ""(.*)""")]
-        public void GivenUsernameIs(string userName)
-        {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
-            Assert.AreEqual(userName, manageWebserviceSourceControl.GetUsername());
-        }
-
-        [Then(@"TestQuery is ""(.*)""")]
-        public void ThenTestQueryIs(string testQuery)
-        {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(testQuery, viewModel.TestDefault);
-            var queryEqual = testQuery.Equals(manageWebserviceSourceControl.GetTestDefault(), StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(queryEqual);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            Assert.AreEqual(hostName, viewModel.HostName);
+            Assert.AreEqual(hostName, redisSourceControl.GetHostName());
         }
 
         [Given(@"Password is ""(.*)""")]
         public void GivenPasswordIs(string password)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(password, viewModel.UserName);
-            Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
-        }
-
-        [When(@"I click TestQuery")]
-        public void WhenIClickTestQuery()
-        {
-            var mockExecutor = _scenarioContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor");
-            mockExecutor.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>())).Callback<Uri>(uri => _scenarioContext.Add("uriCalled", uri)).Verifiable();
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.ClickHyperLink();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            Assert.AreEqual(password, redisSourceControl.GetPassword());
         }
 
         [When(@"I Cancel the Test")]
         public void WhenICancelTheTest()
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.CancelTest();
-        }
-
-
-        [Then(@"the browser window opens with ""(.*)""")]
-        public void ThenTheBrowserWindowOpensWith(string expectedUriCalled)
-        {
-            var mockExecutor = _scenarioContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor");
-            mockExecutor.Verify();
-            var uri = _scenarioContext.Get<Uri>("uriCalled");
-            var correctUriCalled = String.Equals(expectedUriCalled, uri.ToString(), StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(correctUriCalled);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.CancelTest();
         }
 
         [Given(@"Validation message is thrown")]
@@ -226,9 +177,9 @@ namespace Warewolf.UIBindingTests.WebSource
         [Then(@"Validation message is thrown")]
         public void WhenValidationMessageIsThrown()
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            var errorMessageFromControl = redisSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             Assert.AreNotEqual(string.IsNullOrEmpty(errorMessageFromControl), errorMessageOnViewModel);
             var isErrorMessage = !errorMessageOnViewModel.Contains("Passed");
@@ -238,38 +189,27 @@ namespace Warewolf.UIBindingTests.WebSource
         [Then(@"Validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string msg)
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            var errorMessageFromControl = redisSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(msg, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isErrorMessageOnControl);
-            var isErrorMessage = errorMessageOnViewModel.Equals(msg,StringComparison.OrdinalIgnoreCase);
+            var isErrorMessage = errorMessageOnViewModel.Equals(msg, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isErrorMessage);
         }
 
         [When(@"Validation message is Not thrown")]
         public void WhenValidationMessageIsNotThrown()
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            var errorMessageFromControl = redisSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnViewModel = !errorMessageOnViewModel.Contains("Passed");
             var isErrorMessageOnControl = !errorMessageFromControl.Contains("Passed");
             Assert.IsFalse(isErrorMessageOnViewModel);
             Assert.IsFalse(isErrorMessageOnControl);
-        }
-
-        [Given(@"Username field is ""(.*)""")]
-        [When(@"Username field is ""(.*)""")]
-        [Then(@"Username field is ""(.*)""")]
-        public void WhenUsernameFieldIs(string visibility)
-        {
-            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var databaseDropDownVisibility = manageWebserviceSourceControl.GetUsernameVisibility();
-            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
 
         [Given(@"Password field is ""(.*)""")]
@@ -278,54 +218,32 @@ namespace Warewolf.UIBindingTests.WebSource
         public void WhenPasswordFieldIs(string visibility)
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var databaseDropDownVisibility = manageWebserviceSourceControl.GetPasswordVisibility();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var databaseDropDownVisibility = redisSourceControl.GetPasswordVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
-        }
-
-
-        [Given(@"I type Username as ""(.*)""")]
-        [When(@"I type Username as ""(.*)""")]
-        [Then(@"I type Username as ""(.*)""")]
-        public void GivenITypeUsernameAs(string userName)
-        {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.EnterUserName(userName);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
-        }
-
-        [When(@"Username field as ""(.*)""")]
-        public void WhenUsernameFieldAs(string userName)
-        {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
-            Assert.AreEqual(userName, manageWebserviceSourceControl.GetUsername());
         }
 
         [When(@"Password field")]
         public void WhenPasswordField()
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             var username = @"dev2\IntegrationTester";
             var password = TestEnvironmentVariables.GetVar(username);
             Assert.AreEqual(password, viewModel.Password);
-            Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
+            Assert.AreEqual(password, redisSourceControl.GetPassword());
         }
-
 
         [Given(@"I type Password")]
         [When(@"I type Password")]
         [Then(@"I type Password")]
         public void WhenITypePassword()
         {
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             var username = @"dev2\IntegrationTester";
             var password = TestEnvironmentVariables.GetVar(username);
-            manageWebserviceSourceControl.EnterPassword(password);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
+            redisSourceControl.EnterPassword(password);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
         }
 
@@ -335,7 +253,7 @@ namespace Warewolf.UIBindingTests.WebSource
             errorMessage = "Exception: " + _illegalCharactersInPath + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + _illegalCharactersInPath;
 
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<RedisSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -351,26 +269,26 @@ namespace Warewolf.UIBindingTests.WebSource
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
         {
-            var mockUpdateManager = _scenarioContext.Get<Mock<IManageWebServiceSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IRedisSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
-                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()));
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IRedisServiceSource>()));
             }
-            else if(isLongRunning)
+            else if (isLongRunning)
             {
-                var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()));
+                var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IRedisServiceSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
             }
             else
             {
-                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()))
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IRedisServiceSource>()))
                     .Throws(new WarewolfTestException(_illegalCharactersInPath, new Exception(_illegalCharactersInPath)));
             }
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.PerformTestConnection();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.PerformTestConnection();
         }
 
         [When(@"I save the source")]
@@ -378,9 +296,8 @@ namespace Warewolf.UIBindingTests.WebSource
         {
             var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.PerformSave();
-
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.PerformSave();
         }
 
         [Then(@"the save dialog is opened")]
@@ -396,10 +313,9 @@ namespace Warewolf.UIBindingTests.WebSource
             var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ResourceName).Returns(new ResourceName("", resourceName));
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK);
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.PerformSave();
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.PerformSave();
         }
-
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
         [When(@"I Select Authentication Type as ""(.*)""")]
@@ -409,29 +325,29 @@ namespace Warewolf.UIBindingTests.WebSource
         [Given(@"Select Authentication Type as ""(.*)""")]
         public void ThenSelectAuthenticationTypeAs(string authenticationTypeString)
         {
-            var authenticationType = String.Equals(authenticationTypeString, "User",
+            var authenticationType = String.Equals(authenticationTypeString, "Password",
                 StringComparison.OrdinalIgnoreCase)
-                ? AuthenticationType.User
+                ? AuthenticationType.Password
                 : AuthenticationType.Anonymous;
 
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.SetAuthenticationType(authenticationType);
-            var viewModel = _scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.SetAuthenticationType(authenticationType);
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
         }
 
-        [AfterScenario("WebSource")]
+        [AfterScenario("RedisSource")]
         public void Cleanup()
         {
             var mockExecutor = new Mock<IExternalProcessExecutor>();
-            var mockUpdateManager = _scenarioContext.Get<Mock<IManageWebServiceSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IRedisSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManageWebserviceSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
-            var manageWebserviceSourceControl = _scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.DataContext = viewModel;
+            var viewModel = new RedisSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");
             FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Remove("externalProcessExecutor");
