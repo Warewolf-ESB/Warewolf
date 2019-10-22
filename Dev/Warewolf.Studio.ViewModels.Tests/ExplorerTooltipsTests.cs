@@ -69,6 +69,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewWebSourceTooltip);
         }
 
+        [TestMethod, Timeout(60000)]
+        public void TestNewRedisSourceTooltip()
+        {
+            _target.NewRedisSourceTooltip = Resources.Languages.Tooltips.NoPermissionsToolTip;
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewRedisSourceTooltip);
+        }
+
         [TestMethod,Timeout(60000)]
         public void TestNewPluginSourceTooltip()
         {
