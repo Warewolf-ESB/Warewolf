@@ -7,7 +7,6 @@
     <StartupObject>Warewolf.Logger.Program</StartupObject>
     <AssemblyName>WarewolfLogger</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
