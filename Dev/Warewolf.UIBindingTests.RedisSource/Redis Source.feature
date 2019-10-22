@@ -14,8 +14,8 @@ Scenario: Creating New Redis Source
    Given I open New Redis Source 
    Then "New Redis Source" tab is opened
    And title is "New Redis Source"
-   And I type Server as "localhost"
-   And the port number is "6379"
+   And I type HostName as "localhost"
+   And I type port number as "6379"
    Then "New Redis Source *" tab is opened
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
@@ -37,7 +37,7 @@ Scenario: Creating New Redis Source
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Redis Source under password
    Given I open New Redis Source
-   And I type Server as "localhost"
+   And I type HostName as "localhost"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "Password"
@@ -55,8 +55,8 @@ Scenario: Creating New Redis Source under password
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect hostname anonymous auth type not allowing save
-   Given I open New Web Source
-   And I type Address as "sdfsdfd"
+   Given I open New Redis Source
+   And I type HostName as "sdfsdfd"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "Anonymous"
@@ -73,7 +73,7 @@ Scenario: Incorrect hostname anonymous auth type not allowing save
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection 
    Given I open New Redis Source
    And "Save" is "Disabled"
-   And I type Address as "localhost" 
+   And I type HostName as "localhost" 
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "Password"
@@ -101,13 +101,13 @@ Scenario: Editing saved Redis Source
    Given I open "Test-Redis" redis source
    Then "Test-Redis" tab is opened
    And title is "Test-Redis"
-   And Address is "localhost"
+   And HostName is "localhost"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And Select Authentication Type as "Anonymous"
    And Password field is "Collapsed"
    And "Save" is "Enabled"
-   When I change Address to "anotherredisserver"
+   When I change HostName to "anotherredisserver"
    Then "Test-Redis *" tab is opened
    And "Test Connection" is "Enabled"
    And "Save" is "Enabled"

@@ -94,6 +94,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newOracleSourceCommand;
         private AuthorizeCommand<string> _newOdbcSourceCommand;
         private AuthorizeCommand<string> _newWebSourceCommand;
+        private AuthorizeCommand<string> _newRedisSourceCommand;
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
         private AuthorizeCommand<string> _newExchangeSourceCommand;
@@ -337,6 +338,10 @@ namespace Dev2.Studio.ViewModels
         public IAuthorizeCommand<string> NewWebSourceCommand
         {
             get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
+        }
+        public IAuthorizeCommand<string> NewRedisSourceCommand
+        {
+            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(@""), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewServerSourceCommand
         {
@@ -759,8 +764,12 @@ namespace Dev2.Studio.ViewModels
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessEmailSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "WebSource":
-                        workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.EmailSource;
+                        workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.WebSource;
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessWebSource(_contextualResourceModel, workSurfaceKey));
+                        break;
+                    case "RedisSource":
+                        workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.RedisSource;
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessRedisSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "ComPluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ComPluginSource;
@@ -931,6 +940,19 @@ namespace Dev2.Studio.ViewModels
             var vm = new SourceViewModel<IEmailServiceSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageEmailSourceControl(), ActiveServer);
 
             var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(workSurfaceKey, vm);
+            return workSurfaceContextViewModel;
+        }
+
+        WorkSurfaceContextViewModel ProcessRedisSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
+        {
+            var def = new RedisSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
+
+            var viewModel = new RedisSourceViewModel(
+                new RedisSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, new ExternalProcessExecutor());
+            var vm = new SourceViewModel<IRedisServiceSource>(EventPublisher, viewModel, PopupProvider, new RedisSourceControl(), ActiveServer);
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
@@ -1320,6 +1342,8 @@ namespace Dev2.Studio.ViewModels
         public void NewOdbcSource(string resourcePath) => _worksurfaceContextManager.NewOdbcSource(resourcePath);
 
         public void NewWebSource(string resourcePath) => _worksurfaceContextManager.NewWebSource(resourcePath);
+
+        public void NewRedisSource(string resourcePath) => _worksurfaceContextManager.NewRedisSource(resourcePath);
 
         public void NewPluginSource(string resourcePath) => _worksurfaceContextManager.NewPluginSource(resourcePath);
 

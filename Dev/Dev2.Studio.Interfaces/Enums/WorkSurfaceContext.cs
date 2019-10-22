@@ -51,6 +51,7 @@ namespace Dev2.Studio.Interfaces.Enums
         OdbcSource,
         OAuthSource,
         WebSource,
+        RedisSource,
         PluginSource,
         ComPluginSource,
         SharepointServerSource,
