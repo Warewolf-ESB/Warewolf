@@ -118,6 +118,7 @@
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="Core\PluginSourceDefinition.cs" />
+    <Compile Include="Core\RedisSourceDefinition.cs" />
     <Compile Include="Core\SharePointServiceSourceDefinition.cs" />
     <Compile Include="Core\WcfServiceSourceDefinition.cs" />
     <Compile Include="Core\WebServiceSourceDefinition.cs" />
@@ -227,6 +228,8 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="IRedisServiceSource.cs" />
+    <Compile Include="IRedisSourceViewModel.cs" />
     <Compile Include="ISharepointHelper.cs" />
     <Compile Include="IToolConflictItem.cs" />
     <Compile Include="IMergeView.cs" />
