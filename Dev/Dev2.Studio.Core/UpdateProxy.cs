@@ -183,6 +183,37 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public void SaveRedisServiceSource(IRedisServiceSource redisServiceSource, Guid serverWorkspaceId)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveRedisServiceSource");
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("RedisServiceSource", serialiser.SerializeToBuilder(redisServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+        }
+
+        public void TestConnection(IRedisServiceSource redisServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestRedisServiceSource");
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("RedisServiceSource", serialiser.SerializeToBuilder(redisServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+        }
+
         public void SaveSharePointServiceSource(ISharepointServerSource resource, Guid serverWorkspaceID)
         {
             var con = Connection;
