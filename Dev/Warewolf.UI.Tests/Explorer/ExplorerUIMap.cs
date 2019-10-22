@@ -590,7 +590,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.WaitForControlReady(60000);
+            UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, 60000);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
