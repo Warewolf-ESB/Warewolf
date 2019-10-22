@@ -398,6 +398,9 @@ The window will be reloaded when you click OK.</value>
   <data name="WebserviceNewHeaderLabel" xml:space="preserve">
     <value>New Web Service Source</value>
   </data>
+  <data name="RedisNewHeaderLabel" xml:space="preserve">
+    <value>New Redis Service Source</value>
+  </data>
   <data name="SharePointServiceNewHeaderLabel" xml:space="preserve">
     <value>New SharePoint Service Source</value>
   </data>

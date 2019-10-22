@@ -236,6 +236,9 @@ Returns the response text of the web get request.</value>
   <data name="UserAuthenticationToolTip" xml:space="preserve">
     <value>Connect using a specific account</value>
   </data>
+  <data name="PasswordAuthenticationToolTip" xml:space="preserve">
+    <value>Connect using a specific account</value>
+  </data>
   <data name="UnzipToolTipZipname" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To unzip a file, put the full path and zip file name in here.
@@ -956,6 +959,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewWebSourceTooltip" xml:space="preserve">
     <value>Create a new web source</value>
   </data>
+  <data name="NewRedisSourceTooltip" xml:space="preserve">
+    <value>Create a new redis source</value>
+  </data>
   <data name="NewSharepointSourceTooltip" xml:space="preserve">
     <value>Create a new sharepoint source</value>
   </data>
@@ -1118,6 +1124,21 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ManageWebSourceHostNameTooltip" xml:space="preserve">
     <value>The base URL of the webservice</value>
+  </data>
+  <data name="RedisSourceHostNameTooltip" xml:space="preserve">
+    <value>RedisSourceHostNameTooltip</value>
+  </data>
+  <data name="RedisSourcePortTooltip" xml:space="preserve">
+    <value>RedisSourcePortTooltip</value>
+  </data>
+  <data name="RedisPasswordTooltip" xml:space="preserve">
+    <value>The account password</value>
+  </data>
+  <data name="RedisTestTooltip" xml:space="preserve">
+    <value>Test the redis source connection</value>
+  </data>
+  <data name="RedisCancelTestTooltip" xml:space="preserve">
+    <value>Cancel the test execution</value>
   </data>
   <data name="ManageWebSourceDefaultQueryTooltip" xml:space="preserve">
     <value>Optional default query</value>

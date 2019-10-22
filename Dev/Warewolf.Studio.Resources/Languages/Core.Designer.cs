@@ -928,6 +928,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Redis Service Source.
+        /// </summary>
+        public static string RedisNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("RedisNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error reseting counters: .
         /// </summary>
         public static string ResetPerfMonCountersHasError {
