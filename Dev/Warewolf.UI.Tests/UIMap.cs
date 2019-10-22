@@ -75,7 +75,7 @@ namespace Warewolf.UI.Tests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
-
+            Playback.Wait(1000);
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
