@@ -131,8 +131,12 @@ namespace Warewolf.Studio.ViewModels
             get => _port;
             set
             {
-                _port = value;
-                OnPropertyChanged(Port);
+                if (value != _port)
+                {
+                    _port = value;
+                    OnPropertyChanged(() => Port);
+                    ResetTestValue();
+                }
             }
         }
         public bool PasswordSelected => AuthenticationType == AuthenticationType.Password;
