@@ -928,7 +928,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Redis Service Source.
+        ///   Looks up a localized string similar to New Redis Source.
         /// </summary>
         public static string RedisNewHeaderLabel {
             get {
