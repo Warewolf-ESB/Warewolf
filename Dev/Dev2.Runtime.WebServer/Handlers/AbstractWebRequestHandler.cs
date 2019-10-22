@@ -151,14 +151,17 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 _executePayload = "";
                 _workspaceGuid = EnsureWorkspaceIdValid(workspaceId);
+                _serializer = new Dev2JsonSerializer();
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
                 if (_resource is null)
                 {
-                    _dataObject.Environment.AddError($"invalid resource {serviceName}");
-                    _dataObject.ExecutionException = new Exception("invalid resource");
+                    var msg = string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, serviceName);
+                    _dataObject.Environment.AddError(msg);
+                    _dataObject.ExecutionException = new Exception(msg);
+                    _executionDlid = GlobalConstants.NullDataListID;
+                    return null;
                 }
-                _serializer = new Dev2JsonSerializer();
                 _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
                 if (!_canExecute)
                 {
@@ -168,6 +171,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 _executionDlid = GlobalConstants.NullDataListID;
+
                 if (_canExecute && _dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     Thread.CurrentPrincipal = user;
