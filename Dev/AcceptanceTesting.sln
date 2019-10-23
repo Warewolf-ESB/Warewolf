@@ -368,7 +368,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServerTests", "Dev2.Runtime.WebServerTests\Dev2.Runtime.WebServerTests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer.Tests", "Dev2.Runtime.WebServerTests\Dev2.Runtime.WebServer.Tests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
