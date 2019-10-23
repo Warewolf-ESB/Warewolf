@@ -31,6 +31,10 @@ namespace Dev2.Activities.Specs.Search
             var search = new Search(_scenarioContext);
             localHost = environmentModel.Source;
             localHost.Connect();
+            if (!localHost.IsConnected)
+            {
+                Assert.Fail("expected valid connection to localhost");
+            }
             searchValue = new Common.Search.Search();
         }
 

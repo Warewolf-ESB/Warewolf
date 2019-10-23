@@ -305,6 +305,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
         public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems, bool isDataMerge)
         {
+            ThenTheDebugOutputAs(table, outputDebugItems, isDataMerge, false);
+        }
+        public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems, bool isDataMerge, bool sortItemsFirst)
+        {
             var expectedDebugItems = BuildExpectedDebugItems(table);
 
             // Very specific case ;)
@@ -312,6 +316,12 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 // chop the first one off ;)
                 expectedDebugItems.RemoveAt(0);
+            }
+
+            if (sortItemsFirst)
+            {
+                expectedDebugItems.Sort((x, y) => x.Value.CompareTo(y.Value));
+                outputDebugItems.Sort((x, y) => x.Value.CompareTo(y.Value));
             }
 
             CollectionsAssert(expectedDebugItems, outputDebugItems);

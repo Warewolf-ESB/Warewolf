@@ -283,6 +283,10 @@ namespace Dev2.Activities.Specs.Scheduler
                     i++;
 
                 } while (i < times);
+                if (task.LastTaskResult != 0)
+                {
+                    throw new Exception($"Task {scheduleName} exitted with a non-zero exit code: ({task.LastTaskResult})");
+                }
             }
             catch (Exception e)
             {
