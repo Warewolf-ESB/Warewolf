@@ -76,6 +76,7 @@ namespace Dev2.Common.Tests.Core
             const string expectedHostName = "testHost";
 
             var mockRedisSource = new Mock<IRedisSource>();
+            mockRedisSource.Setup(redisSource => redisSource.HostName).Returns(expectedHostName);
             mockRedisSource.Setup(redisSource => redisSource.ResourceID).Returns(expectedId);
             mockRedisSource.Setup(redisSource => redisSource.ResourceName).Returns(expectedName);
             mockRedisSource.Setup(redisSource => redisSource.Password).Returns(expectedPassword);
