@@ -121,11 +121,14 @@ Scenario: Test WF with Ruby
 Scenario: Test WF with Sharepoint Copy File
 	Given I have a workflow "ShapointCopyFileTestWF"	
 	  And "ShapointCopyFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | LocalPathFrom                                     | ServerPathTo | Result     |
-	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.bite | e.bite        | [[Result]] |	  
+	| Server                 | LocalPathFrom                                      | ServerPathTo | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.bite | e.bite       | [[Result]] |	  
 	And "ShapointCopyFileTestWF" contains SharepointCopyFile "TestSharePCopyFile" as 
 	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result         |
-	| SharePoint Test Server | e.bite          | f.bite        | true      | [[copyResult]] |
+	| SharePoint Test Server | e.bite         | f.bite       | true      | [[copyResult]] |
+	And "ShapointCopyFileTestWF" contains SharepointDeleteSingle "TestSharePdeleteListItem" as 
+	| Server                 | ServerPath | Result     |
+	| SharePoint Test Server | e.bite     | [[Result]] |
 	And I save workflow "ShapointCopyFileTestWF"
 	Then the test builder is open with "ShapointCopyFileTestWF"
 	And I click New Test
@@ -141,7 +144,6 @@ Scenario: Test WF with Sharepoint Copy File
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointCopyFileTestWF" is deleted as cleanup
-	Then the file "e.bite" is deleted from the Sharepoint server as cleanup
 	
 Scenario: Test WF with Sharepoint Create List Items
 	Given I have a workflow "ShapointCreateListItemsTestWF"	
@@ -199,7 +201,7 @@ Scenario: Test WF with Sharepoint Delete File List
 	Then workflow "ShapointDeleteFileListTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Sharepoint Delete File
-	Given I have a workflow "ShapointDelSingleItemTestWF"		
+	Given I have a workflow "ShapointDelSingleItemTestWF"
 	And "ShapointDelSingleItemTestWF" contains SharepointDeleteSingle "TestSharePdeleteListItem" as 
 	| Server                 | ServerPath | Result     |
 	| SharePoint Test Server | 125698.xml | [[Result]] |
@@ -226,8 +228,11 @@ Scenario: Test WF with Sharepoint Download File
 	| Server                 | LocalPathFrom                                      | ServerPathTo     | Result       |
 	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.bite | Hello World.bite | [[Uploaded]] |
 	And "ShapointDownloadFileTestWF" contains SharepointDownloadFile "TestSharePDownloadFile" as 
-		| Server                 | ServerPathFrom   | LocalPathTo                                                                 | Overwrite | Result         |
-		| SharePoint Test Server | Hello World.bite | C:\ProgramData\Warewolf\Resources\DownloadedFromSharepoint\Hello World.bite | True      | [[Downloaded]] |
+	| Server                 | ServerPathFrom   | LocalPathTo                                                                 | Overwrite | Result         |
+	| SharePoint Test Server | Hello World.bite | C:\ProgramData\Warewolf\Resources\DownloadedFromSharepoint\Hello World.bite | True      | [[Downloaded]] |
+	And "ShapointDownloadFileTestWF" contains SharepointDeleteSingle "TestSharePdeleteListItem" as 
+	| Server                 | ServerPath       | Result     |
+	| SharePoint Test Server | Hello World.bite | [[Result]] |
 	And I save workflow "ShapointDownloadFileTestWF"
 	Then the test builder is open with "ShapointDownloadFileTestWF"
 	And I click New Test
@@ -243,7 +248,6 @@ Scenario: Test WF with Sharepoint Download File
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointDownloadFileTestWF" is deleted as cleanup
-	Then the file "Hello World.bite" is deleted from the Sharepoint server as cleanup
 	Then the folder "DownloadedFromSharepoint" is deleted from the server as cleanup
 	
 Scenario: Test WF with Sharepoint Upload File
@@ -251,6 +255,9 @@ Scenario: Test WF with Sharepoint Upload File
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
 	| Server                 | LocalPathFrom                                      | ServerPathTo | Result     |
 	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.bite | a.bite       | [[Result]] |
+	And "ShapointUploadFileTestWF" contains SharepointDeleteSingle "TestSharePdeleteListItem" as 
+	| Server                 | ServerPath | Result     |
+	| SharePoint Test Server | a.bite     | [[Result]] |
 	And I save workflow "ShapointUploadFileTestWF"
 	Then the test builder is open with "ShapointUploadFileTestWF"
 	And I click New Test
@@ -266,7 +273,6 @@ Scenario: Test WF with Sharepoint Upload File
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointUploadFileTestWF" is deleted as cleanup
-	Then the file "a.bite" is deleted from the Sharepoint server as cleanup
 
 Scenario: Test WF with Sharepoint Move File
 	Given I have a workflow "ShapointMoveFileTestWF"	
