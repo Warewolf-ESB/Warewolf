@@ -58,8 +58,7 @@ namespace Warewolf.Data.Tests
         }
 
         [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(OptionConvertor))]
+       
         public void OptionConvertor_GivenSimpleClass_ExpectedEnumOption_Success()
         {
             //----------------------Arrange----------------------
@@ -71,8 +70,7 @@ namespace Warewolf.Data.Tests
         }
 
         [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(OptionConvertor))]
+       
         public void OptionConvertor_Given_MultiDataProvider_WithEnum_ReturnSuccess()
         {
             //----------------------Arrange----------------------
