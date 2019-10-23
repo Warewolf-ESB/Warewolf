@@ -1018,14 +1018,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with ForEach in Rec with star which contains Dot Net DLL")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NestedForEachExecution")]
         public virtual void WorkflowWithForEachInRecWithStarWhichContainsDotNetDLL()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach in Rec with star which contains Dot Net DLL", ((string[])(null)));
-#line 283
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach in Rec with star which contains Dot Net DLL", new string[] {
+                        "NestedForEachExecution"});
+#line 282
  this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 284
+#line 283
       testRunner.Given("I have a workflow \"WFWithForEachContainingDotNetDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table709 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1043,9 +1045,9 @@ this.FeatureBackground();
             table709.AddRow(new string[] {
                         "[[rec().number]]",
                         "4"});
-#line 285
+#line 284
     testRunner.And("\"WFWithForEachContainingDotNetDLL\" contains an Assign \"RecVal\" as", ((string)(null)), table709, "And ");
-#line 291
+#line 290
    testRunner.And("\"WFWithForEachContainingDotNetDLL\" contains a Foreach \"ForEachTest\" as \"InRecords" +
                     "et\" executions \"[[rec(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1061,18 +1063,18 @@ this.FeatureBackground();
                         "[[@human]]",
                         "BuildInts",
                         "[[rec1().num]]"});
-#line 292
+#line 291
    testRunner.And("\"ForEachTest\" contains an DotNet DLL \"DotNetService\" as", ((string)(null)), table710, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table711 = new TechTalk.SpecFlow.Table(new string[] {
                         "parameterName",
                         "value",
                         "type"});
-#line 295
+#line 294
    testRunner.And("\"DotNetService\" constructorinputs 0 with inputs as", ((string)(null)), table711, "And ");
-#line 298
+#line 297
       testRunner.When("\"WFWithForEachContainingDotNetDLL\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 299
+#line 298
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table712 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1095,9 +1097,9 @@ this.FeatureBackground();
                         "4",
                         "[[rec().number]] =",
                         "4"});
-#line 300
+#line 299
     testRunner.And("the \"RecVal\" in WorkFlow \"WFWithForEachContainingDotNetDLL\" debug inputs as", ((string)(null)), table712, "And ");
-#line 306
+#line 305
       testRunner.And("the \"ForEachTest\" in WorkFlow \"WFWithForEachContainingDotNetDLL\" has  \"4\" nested " +
                     "children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1126,7 +1128,7 @@ this.FeatureBackground();
                         "[[rec(1).number]]",
                         "1",
                         "="});
-#line 307
+#line 306
    testRunner.And("the dotnetdll \"BuildInts\" in \'DotNet DLL\' in step 1 for \"ForEachTest\" debug input" +
                     "s as", ((string)(null)), table713, "And ");
 #line hidden
@@ -1155,7 +1157,7 @@ this.FeatureBackground();
                         "[[rec(2).number]]",
                         "2",
                         "="});
-#line 313
+#line 312
    testRunner.And("the dotnetdll \"BuildInts\" in \'DotNet DLL\' in step 2 for \"ForEachTest\" debug input" +
                     "s as", ((string)(null)), table714, "And ");
 #line hidden
@@ -1184,7 +1186,7 @@ this.FeatureBackground();
                         "[[rec(3).number]]",
                         "3",
                         "="});
-#line 319
+#line 318
   testRunner.And("the dotnetdll \"BuildInts\" in \'DotNet DLL\' in step 3 for \"ForEachTest\" debug input" +
                     "s as", ((string)(null)), table715, "And ");
 #line hidden
@@ -1213,7 +1215,7 @@ this.FeatureBackground();
                         "[[rec(4).number]]",
                         "4",
                         "="});
-#line 325
+#line 324
   testRunner.And("the dotnetdll \"BuildInts\" in \'DotNet DLL\' in step 4 for \"ForEachTest\" debug input" +
                     "s as", ((string)(null)), table716, "And ");
 #line hidden
@@ -1227,7 +1229,7 @@ this.FeatureBackground();
                         "[[rec1(4).num]]",
                         "1",
                         "="});
-#line 331
+#line 330
  testRunner.And("the dotnetdll \"BuildInts\" in \"DotNet DLL\" in step 1 for \"ForEachTest\" debug outpu" +
                     "t as", ((string)(null)), table717, "And ");
 #line hidden
@@ -1241,7 +1243,7 @@ this.FeatureBackground();
                         "[[rec1(8).num]]",
                         "2",
                         "="});
-#line 334
+#line 333
     testRunner.And("the dotnetdll \"BuildInts\" in \"DotNet DLL\" in step 2 for \"ForEachTest\" debug outpu" +
                     "t as", ((string)(null)), table718, "And ");
 #line hidden
@@ -1255,7 +1257,7 @@ this.FeatureBackground();
                         "[[rec1(12).num]]",
                         "3",
                         "="});
-#line 337
+#line 336
     testRunner.And("the dotnetdll \"BuildInts\" in \"DotNet DLL\" in step 3 for \"ForEachTest\" debug outpu" +
                     "t as", ((string)(null)), table719, "And ");
 #line hidden
@@ -1269,7 +1271,7 @@ this.FeatureBackground();
                         "[[rec1(16).num]]",
                         "4",
                         "="});
-#line 340
+#line 339
     testRunner.And("the dotnetdll \"BuildInts\" in \"DotNet DLL\" in step 4 for \"ForEachTest\" debug outpu" +
                     "t as", ((string)(null)), table720, "And ");
 #line hidden
@@ -1284,19 +1286,19 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing 2 ForEach\"s inside a ForEach which contains Assign only", new string[] {
                         "WorkflowExecution"});
-#line 348
+#line 347
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 349
+#line 348
       testRunner.Given("I have a workflow \"WFContainsForEachInsideforEach\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
+#line 349
    testRunner.And("\"WFContainsForEachInsideforEach\" contains a Foreach \"ForEachTest1\" as \"NumOfExecu" +
                     "tion\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 351
+#line 350
    testRunner.And("\"ForEachTest1\" contains a Foreach \"ForEachTest2\" as \"NumOfExecution\" executions \"" +
                     "2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
+#line 351
    testRunner.And("\"ForEachTest2\" contains a Foreach \"ForEachTest3\" as \"NumOfExecution\" executions \"" +
                     "2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1306,11 +1308,11 @@ this.FeatureBackground();
             table721.AddRow(new string[] {
                         "[[rec(1).a]]",
                         "123"});
-#line 353
+#line 352
    testRunner.And("\"ForEachTest3\" contains an Assign \"Testingoutput\" as", ((string)(null)), table721, "And ");
-#line 356
+#line 355
    testRunner.When("\"WFContainsForEachInsideforEach\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 357
+#line 356
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table722 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1319,9 +1321,9 @@ this.FeatureBackground();
             table722.AddRow(new string[] {
                         "No. of Executes",
                         "2"});
-#line 358
+#line 357
    testRunner.And("the \"ForEachTest1\" in WorkFlow \"WFContainsForEachInsideforEach\" debug inputs as", ((string)(null)), table722, "And ");
-#line 361
+#line 360
    testRunner.And("the \"ForEachTest1\" in WorkFlow \"WFContainsForEachInsideforEach\" has  \"2\" nested c" +
                     "hildren", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1331,9 +1333,9 @@ this.FeatureBackground();
             table723.AddRow(new string[] {
                         "No. of Executes",
                         "2"});
-#line 362
+#line 361
       testRunner.And("the \"ForEachTest2\" in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table723, "And ");
-#line 365
+#line 364
       testRunner.And("the \"ForEachTest2\" in WorkFlow \"ForEachTest1\" has  \"2\" nested children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table724 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1342,9 +1344,9 @@ this.FeatureBackground();
             table724.AddRow(new string[] {
                         "No. of Executes",
                         "2"});
-#line 366
+#line 365
    testRunner.And("the \"ForEachTest3\" in step 1 for \"ForEachTest2\" debug inputs as", ((string)(null)), table724, "And ");
-#line 369
+#line 368
    testRunner.And("the \"ForEachTest3\" in WorkFlow \"ForEachTest2\" has  \"2\" nested children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table725 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1355,7 +1357,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(1).a]] =",
                         "123"});
-#line 370
+#line 369
    testRunner.And("the \"Testingoutput\" in step 1 for \"ForEachTest3\" debug inputs as", ((string)(null)), table725, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table726 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1364,7 +1366,7 @@ this.FeatureBackground();
             table726.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]]  =  123"});
-#line 373
+#line 372
    testRunner.And("the \"Testingoutput\" in step 1 for \"ForEachTest3\" debug outputs as", ((string)(null)), table726, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table727 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1375,7 +1377,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(1).a]] = 123",
                         "123"});
-#line 376
+#line 375
    testRunner.And("the \"Testingoutput\" in step 2 for \"ForEachTest3\" debug inputs as", ((string)(null)), table727, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table728 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1384,7 +1386,7 @@ this.FeatureBackground();
             table728.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = 123"});
-#line 379
+#line 378
    testRunner.And("the \"Testingoutput\" in step 2 for \"ForEachTest3\" debug outputs as", ((string)(null)), table728, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1394,10 +1396,12 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing 2 ForEach\"s inside a ForEach which contains Assign only Large Execution" +
             "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NestedForEachExecution")]
         public virtual void Executing2ForEachsInsideAForEachWhichContainsAssignOnlyLargeExecution()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing 2 ForEach\"s inside a ForEach which contains Assign only Large Execution" +
-                    "", ((string[])(null)));
+                    "", new string[] {
+                        "NestedForEachExecution"});
 #line 383
   this.ScenarioSetup(scenarioInfo);
 #line 6
