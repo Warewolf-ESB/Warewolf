@@ -105,7 +105,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="OptionComboBoxStyle" ><!--DataType="{x:Type options:OptionComboBox}"-->
+    <DataTemplate x:Key="OptionComboBoxStyle" DataType="{x:Type options:OptionCombobox}">
         <Grid Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
