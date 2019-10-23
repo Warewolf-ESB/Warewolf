@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Entered Wf Container", dataObjectExecutionId);
             DataObject.ServiceName = ServiceAction.ServiceName;
 
-            var executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : nameof(Execute)));
+            var executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : $"Execute"));
             Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
             SetExecutionOrigin();
 
@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         Guid ExecuteWf()
         {
-            var result = new Guid();
+            var result = Guid.NewGuid();
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils(_resourceCatalog);
             ErrorResultTO invokeErrors;
@@ -289,19 +289,14 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 var current = next;
                 lastActivity = current;
-                try
-                {
-                    next = current.Execute(dsfDataObject, update);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+
+                next = current.Execute(dsfDataObject, update);
+
                 environment.AllErrors.UnionWith(environment.Errors);
             }
         }
 
-        protected override void Eval(Guid resourceId, IDSFDataObject dataObject)
+        protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             var executionId = dataObject.ExecutionID.ToString();
             var versionNumber = dataObject.VersionNumber;
@@ -320,15 +315,15 @@ namespace Dev2.Runtime.ESB.Execution
                 var resumeVersionNumber = versionNumber;
                 if (resumeVersionNumber == 0)
                 {
-                    resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceId);
+                    resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceID);
                 }
 
-                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId, resumeVersionNumber.ToString());
-                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId, resourceObject);
+                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID, resumeVersionNumber.ToString());
+                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, executionId, resourceObject);
             }
             else
             {
-                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId);
+                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, executionId);
             }
 
             Dev2Logger.Debug("Got Resource to Execute", executionId);
