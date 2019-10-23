@@ -14,7 +14,7 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource Execution-ForEach-Icon}"/>
+        <Binding Source="{StaticResource RedisIcon}"/>
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>

@@ -29,6 +29,7 @@ namespace Warewolf.Studio.Core
             OracleSource,
             OdbcSource,
             PluginSource,
+            RedisSource,
             WebSource,
             EmailSource,
             OauthSource,
@@ -57,6 +58,7 @@ namespace Warewolf.Studio.Core
             {MenuIcons.View, "Explorer-Permission-Disbled"},
             {MenuIcons.Execute, "Explorer-Run-Disabled"},
             {MenuIcons.WebSource, "WebMethodsSource"},
+            {MenuIcons.RedisSource, "RedisSource"},
             {MenuIcons.PluginSource, "DotNetDllSource"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
             {MenuIcons.ExchangeSource, "ExchangeSource"},
@@ -87,6 +89,8 @@ namespace Warewolf.Studio.Core
         public static string OracleSource => MenuIconsDictionary[MenuIcons.OracleSource];
 
         public static string PluginSource => MenuIconsDictionary[MenuIcons.PluginSource];
+
+        public static string RedisSource => MenuIconsDictionary[MenuIcons.RedisSource];
 
         public static string EmailSource => MenuIconsDictionary[MenuIcons.EmailSource];
 

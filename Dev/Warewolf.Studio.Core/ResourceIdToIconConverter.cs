@@ -71,6 +71,8 @@ namespace Warewolf.Studio.Core
                     return _dict["PostgreSource"] as DrawingImage;
                 case "ODBC":
                     return _dict["OdbcSource"] as DrawingImage;
+                case "RedisSource":
+                    return _dict[CustomMenuIcons.RedisSource] as DrawingImage;
                 case "WebSource":
                     return _dict[CustomMenuIcons.WebSource] as DrawingImage;
                 case "SharepointServerSource":
