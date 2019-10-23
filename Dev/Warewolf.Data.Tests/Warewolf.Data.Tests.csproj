@@ -1,22 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;net48</TargetFrameworks>
+    <TargetFrameworks>net48</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Link="AssemblyCommonInfo.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Options\" />
   </ItemGroup>
 
   <ItemGroup>
