@@ -15,4 +15,12 @@ namespace Warewolf.Service
         public const string WorkspaceId = nameof(WorkspaceId);
         public const string ResourceId = nameof(ResourceId);
     }
+
+    public static class OptionsService
+    {
+        public const string ParameterName = nameof(ParameterName);
+
+        public const string GateResume = nameof(GateResume);
+    }
+
 }
