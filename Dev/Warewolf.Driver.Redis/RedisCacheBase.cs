@@ -8,10 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using StackExchange.Redis;
 using System;
+using Warewolf.Interfaces;
 
-namespace Dev2.Activities.Redis
+namespace Warewolf.Driver.Redis
 {
     public abstract class RedisCacheBase
     {
@@ -33,7 +33,7 @@ namespace Dev2.Activities.Redis
                 case string s:
                     Cache.StringSet(key, s);
                     break;
-                case object o:
+                case object _:
                     throw new InvalidOperationException(nameof(value));
                 default:
                     throw new ArgumentNullException(nameof(value));
@@ -45,16 +45,5 @@ namespace Dev2.Activities.Redis
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.StringGet(key);
         }
-    }
-
-    public interface IRedisConnection
-    {
-        IRedisCache Cache { get; set; }
-    }
-
-    public interface IRedisCache
-    {
-        bool StringSet(string key, string value);
-        string StringGet(string key);
     }
 }
