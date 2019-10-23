@@ -47,14 +47,16 @@ namespace Dev2.Activities
             ExecuteTool(dataObject, 0);
         }
 
-
         public override List<string> GetOutputs() => new List<string> { Result };
+
+        protected IDSFDataObject DataObject { get; private set; }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             var allErrors = new ErrorResultTO();
             var errors = new ErrorResultTO();
             _executionResult = new List<string>();
+            DataObject = dataObject;
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors

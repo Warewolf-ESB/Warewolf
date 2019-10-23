@@ -97,6 +97,7 @@ using Dev2.Activities.Scripting;
 using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Redis;
+using Dev2.Activities.Designers2.Redis;
 
 namespace Dev2.Studio.ActivityDesigners
 {

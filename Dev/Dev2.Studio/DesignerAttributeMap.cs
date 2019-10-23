@@ -106,6 +106,7 @@ using Dev2.Activities.Designers2.ReadFolderNew;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Redis;
+using Dev2.Activities.Designers2.Redis;
 
 namespace Dev2
 {

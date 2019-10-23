@@ -14,5 +14,6 @@ namespace Warewolf.Interfaces
     {
         bool StringSet(string key, string value);
         string StringGet(string key);
+        bool HashSet(string key, System.Collections.Generic.IDictionary<string, string> dictionary);
     }
 }
