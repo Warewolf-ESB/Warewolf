@@ -32,6 +32,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.State;
 using Warewolf.Interfaces;
+using Warewolf.Driver.Redis;
+using System.Activities;
 
 namespace Dev2.Activities.Redis
 {
@@ -40,24 +42,24 @@ namespace Dev2.Activities.Redis
     {
         string _result = "Success";
         int _timeOut;
-        public bool IsObject { get; set; }
-        [FindMissing]
-        public string ObjectName { get; set; }
+        private RedisCacheBase _redisCache;
+
         public RedisActivity()
-            : this(new ResponseManager())
+            : this(new ResponseManager(),new RedisCacheImpl("localhost"))
         {
             DisplayName = "Redis";
         }
 
-        public RedisActivity(IResourceCatalog resourceCatalog)
+        public RedisActivity(IResourceCatalog resourceCatalog,RedisCacheBase redisCache)
         {
             DisplayName = "Redis";
             ResourceCatalog = resourceCatalog;
         }
 
-        public RedisActivity(IResponseManager responseManager)
+        public RedisActivity(IResponseManager responseManager,RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
+            _redisCache = redisCache;
         }
 
         public Guid SourceId { get; set; }
@@ -71,9 +73,7 @@ namespace Dev2.Activities.Redis
 
         [FindMissing]
         public string TimeOut { get; set; }
-
-        IRedisCache Cache { get; set; }
-
+        
         public bool ShouldSerializeConsumer() => false;
 
         public bool ShouldSerializeConnectionFactory() => false;
@@ -82,7 +82,8 @@ namespace Dev2.Activities.Redis
 
         public bool ShouldSerializeConnection() => false;
 
-        
+        public ActivityFunc<string, bool> Activity { get; set; }
+
         public override IEnumerable<StateVariable> GetState()
         {
             return new[] {
@@ -113,7 +114,15 @@ namespace Dev2.Activities.Redis
         {
             try
             {
-                
+                var act = Activity.Handler as IDev2Activity;
+                act.Execute(DataObject, 0);
+                var outputVars = act.GetOutputs();
+                var data = new Dictionary<string, string>();
+                foreach(var output in outputVars)
+                {
+                    data.Add(output, DataObject.Environment.Eval(output, 0).ToString());
+                }
+                _redisCache.Set(Key, data);
                 return new List<string> { _result };
             }
             catch (Exception ex)
@@ -143,7 +152,7 @@ namespace Dev2.Activities.Redis
         {
             base.GetDebugOutputs(env, update);
 
-            if (env != null && !string.IsNullOrEmpty(Response) && !IsObject)
+            if (env != null && !string.IsNullOrEmpty(Response))
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugEvalResult(Response, "", env, update), debugItem);
@@ -172,8 +181,6 @@ namespace Dev2.Activities.Redis
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
                 && TimeOut == other.TimeOut
-                && IsObject == other.IsObject
-                && string.Equals(ObjectName, other.ObjectName)
                 && SourceId.Equals(other.SourceId)
                 && string.Equals(Key, other.Key)
                 && string.Equals(DisplayName, other.DisplayName)
@@ -211,8 +218,6 @@ namespace Dev2.Activities.Redis
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _timeOut;
-                hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
-                hashCode = (hashCode * 397) ^ (ObjectName != null ? ObjectName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
