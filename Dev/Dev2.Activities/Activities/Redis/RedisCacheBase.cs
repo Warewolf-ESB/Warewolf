@@ -15,26 +15,29 @@ namespace Dev2.Activities.Redis
 {
     public abstract class RedisCacheBase
     {
+        readonly Lazy<IRedisConnection> _connection;
 
-        readonly Lazy<IConnectionMultiplexer> _connection;
-
-        protected RedisCacheBase(Func<IConnectionMultiplexer> createConnection)
+        protected RedisCacheBase(Func<IRedisConnection> createConnection)
         {
             if (createConnection is null) throw new ArgumentNullException(nameof(createConnection));
-            _connection = new Lazy<IConnectionMultiplexer>(() => createConnection?.Invoke());
+            _connection = new Lazy<IRedisConnection>(() => createConnection?.Invoke());
         }
 
-        private IDatabase Cache => _connection.Value.GetDatabase();
+        private IRedisCache Cache => _connection.Value.Cache;
 
         public void Set<T>(string key, T value)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            _ = value switch
+            switch (value)
             {
-                string s => Cache.StringSet(key, s),
-                { } => throw new InvalidOperationException(nameof(value)),
-                null => throw new ArgumentNullException(nameof(value))
-            };
+                case string s:
+                    Cache.StringSet(key, s);
+                    break;
+                case object o:
+                    throw new InvalidOperationException(nameof(value));
+                default:
+                    throw new ArgumentNullException(nameof(value));
+            }            
         }
 
         public string Get(string key)
@@ -42,5 +45,16 @@ namespace Dev2.Activities.Redis
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.StringGet(key);
         }
+    }
+
+    public interface IRedisConnection
+    {
+        IRedisCache Cache { get; set; }
+    }
+
+    public interface IRedisCache
+    {
+        bool StringSet(string key, string value);
+        string StringGet(string key);
     }
 }
