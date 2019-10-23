@@ -305,8 +305,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQTests", "Warewolf.Driver.RabbitMQTests\Warewolf.Driver.RabbitMQTests.csproj", "{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Data.Tests", "Warewolf.Data.Tests\Warewolf.Data.Tests.csproj", "{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Interfaces", "Warewolf.Interfaces\Warewolf.Interfaces.csproj", "{926CF512-B3FD-410D-AA83-EBDF4C4868DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Data", "Warewolf.Data\Warewolf.Data.csproj", "{66DCB0B3-1F33-490F-B874-913CF1F43E49}"
@@ -369,6 +367,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer.Tests", "Dev2.Runtime.WebServerTests\Dev2.Runtime.WebServer.Tests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Data.Tests", "Warewolf.Data.Tests\Warewolf.Data.Tests.csproj", "{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1251,13 +1251,6 @@ Global
 		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Release|x86.ActiveCfg = Release|Any CPU
 		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Release|x86.Build.0 = Release|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|x86.Build.0 = Debug|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Release|x86.ActiveCfg = Release|Any CPU
-		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Release|x86.Build.0 = Release|Any CPU
 		{926CF512-B3FD-410D-AA83-EBDF4C4868DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{926CF512-B3FD-410D-AA83-EBDF4C4868DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{926CF512-B3FD-410D-AA83-EBDF4C4868DE}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1416,6 +1409,14 @@ Global
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.ActiveCfg = Release|Any CPU
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.Build.0 = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
