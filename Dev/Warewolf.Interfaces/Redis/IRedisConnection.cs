@@ -12,6 +12,6 @@ namespace Warewolf.Interfaces
 {
     public interface IRedisConnection
     {
-        IRedisCache Cache { get; set; }
+        IRedisCache Cache { get; }
     }
 }
