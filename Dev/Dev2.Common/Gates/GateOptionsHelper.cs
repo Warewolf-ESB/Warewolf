@@ -42,19 +42,14 @@ namespace Dev2.Common.Gates
             }
             foreach (var field in type.GetFields())
             {
-                if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
+                if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute && attribute.Description == description)
                 {
-                    if (attribute.Description == description)
-                    {
-                        return (T)field.GetValue(null);
-                    }
+                    return (T)field.GetValue(null);
                 }
-                else
+
+                if (field.Name == description)
                 {
-                    if (field.Name == description)
-                    {
-                        return (T)field.GetValue(null);
-                    }
+                    return (T)field.GetValue(null);
                 }
             }
             throw new Exception();

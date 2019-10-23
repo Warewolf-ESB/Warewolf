@@ -16,13 +16,13 @@ namespace Warewolf.Data.Options.Enums
     {
         [Description("NoBackoff: On Error Retry Immediately")]
         NoBackoff,
-        [Description("ConstantBackoff : Add a fixed delay after every attempt")]
+        [Description("ConstantBackoff: Add a fixed delay after every attempt")]
         ConstantBackoff,
-        [Description("LinearBackoff : Delay increases along with every attempt on Linear curve")]
+        [Description("LinearBackoff: Delay increases along with every attempt on Linear curve")]
         LinearBackoff,
-        [Description("FibonacciBackoff  : Delays based on the sum of the Fibonacci series")]
+        [Description("FibonacciBackoff: Delays based on the sum of the Fibonacci series")]
         FibonacciBackoff,
-        [Description("QuadraticBackoff : Delay increases along with every attempt on Quadratic curve")]
+        [Description("QuadraticBackoff: Delay increases along with every attempt on Quadratic curve")]
         QuadraticBackoff,
     }
 }
