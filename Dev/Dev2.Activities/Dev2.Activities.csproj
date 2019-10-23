@@ -105,7 +105,7 @@
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
-    <Compile Include="Activities\Redis\RedisCacheBase.cs" />
+    <Compile Include="Activities\Redis\RedisActivity.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
     <Compile Include="Comparer\DataSplitDTOComparer.cs" />
@@ -523,5 +523,6 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

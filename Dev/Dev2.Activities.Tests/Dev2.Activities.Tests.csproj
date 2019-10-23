@@ -92,7 +92,6 @@
     <Compile Include="Activities\DsfComDllActivityTests.cs" />
     <Compile Include="Activities\EmailSenderTests.cs" />
     <Compile Include="Activities\DsfPluginActivityTests.cs" />
-    <Compile Include="Activities\Redis\RedisCacheTests.cs" />
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivityTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
@@ -548,6 +547,9 @@
     <PackageReference Include="TSQL.Parser">
       <Version>1.1.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Activities\Redis\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
