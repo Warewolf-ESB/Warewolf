@@ -101,7 +101,6 @@
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Container\WarewolfQueue.cs" />
     <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DataNode.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
@@ -256,9 +255,6 @@
     </PackageReference>
     <PackageReference Include="Dropbox.Api">
       <Version>4.2.4</Version>
-    </PackageReference>
-    <PackageReference Include="MessagePack">
-      <Version>1.7.3.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Exchange.WebServices">
       <Version>2.2.0</Version>
