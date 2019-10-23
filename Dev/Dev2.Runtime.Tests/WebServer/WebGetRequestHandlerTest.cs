@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.Runtime.Interfaces;
@@ -48,6 +49,9 @@ namespace Dev2.Tests.Runtime.WebServer
             var principle = new Mock<IPrincipal>();
             var mockIdentity = new Mock<IIdentity>();
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockResource = new Mock<IResource>();
+            var resource = mockResource.Object;
+            resourceCatalog.Setup(o => o.GetResource(Guid.Empty, "ping")).Returns(resource);
             var testCatalog = new Mock<ITestCatalog>();
             mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");

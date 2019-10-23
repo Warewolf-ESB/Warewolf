@@ -175,7 +175,7 @@ namespace Dev2.Runtime.WebServer
         string GetExecuteExceptionPayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
-            if (notDebug && resource?.DataList != null)
+            if (notDebug)
             {
                 switch (dataObject.ReturnType)
                 {
@@ -183,12 +183,8 @@ namespace Dev2.Runtime.WebServer
                     {
                         return $"<Error>{dataObject.ExecutionException.Message}</Error>";
                     }
-                    case EmitionTypes.SWAGGER:
-                    {
-                        formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
-                    }
                     default:
+                    case EmitionTypes.SWAGGER:
                     case EmitionTypes.JSON:
                     {
                         return JsonConvert.SerializeObject(new { Message = dataObject.ExecutionException.Message });

@@ -94,6 +94,10 @@ namespace Warewolf.Options
                 {
                     throw new Exception("currently only enums supported");
                 }
+                if (propertyValue is null)
+                {
+                    throw NullException;
+                }
 
                 var enumValue = fieldNameProp.GetValue(propertyValue);
                 var returnVal = new OptionCombobox
@@ -117,5 +121,6 @@ namespace Warewolf.Options
         }
 
         public static readonly System.Exception UnhandledException = new System.Exception("unhandled property type for option conversion");
+        public static readonly System.Exception NullException = new System.NullReferenceException("property value null for option conversion");
     }
 }
