@@ -364,6 +364,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer.Tests", "Dev2.Runtime.WebServerTests\Dev2.Runtime.WebServer.Tests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Data.Tests", "Warewolf.Data.Tests\Warewolf.Data.Tests.csproj", "{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1389,6 +1391,14 @@ Global
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.ActiveCfg = Release|Any CPU
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.Build.0 = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E8F8034-AAD2-4930-8EC4-E71AE338AEAA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
