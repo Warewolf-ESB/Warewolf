@@ -449,6 +449,11 @@
         <Setter Property="Width" Value="12"/>
         <Setter Property="Source" Value="{StaticResource WebMethodsSource}"/>
     </Style>
+    <Style TargetType="Image" x:Key="RedisSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource RedisSource}"/>
+    </Style>
     <Style TargetType="Image" x:Key="NewPluginSourceIcon">
         <Setter Property="Height" Value="12"/>
         <Setter Property="Width" Value="12"/>

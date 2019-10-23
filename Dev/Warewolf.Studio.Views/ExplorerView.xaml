@@ -300,9 +300,9 @@
                                                   Header="New Redis Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewRedisSourceTooltip}">
-                                            <!--<MenuItem.Icon>
+                                            <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewRedisSourceIcon}"/>
-                                            </MenuItem.Icon>-->
+                                            </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Name="NewPluginSource"
                                                   Style="{StaticResource MenuItemStyle}"
@@ -910,9 +910,9 @@
                                                           Header="New Redis Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewRedisSourceTooltip}">
-                                                    <!--<MenuItem.Icon>
+                                                    <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewRedisSourceIcon}"/>
-                                                    </MenuItem.Icon>-->
+                                                    </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem Name="NewPluginSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
