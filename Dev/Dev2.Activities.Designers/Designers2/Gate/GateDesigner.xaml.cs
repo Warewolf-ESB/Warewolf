@@ -8,6 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Windows;
+using System.Windows.Media;
+
 namespace Dev2.Activities.Designers2.Gate
 {
     public partial class GateDesigner
@@ -15,6 +18,7 @@ namespace Dev2.Activities.Designers2.Gate
         public GateDesigner()
         {
             InitializeComponent();
+            Icon = Application.Current.Resources["ControlFlow-Gate-Icon"] as DrawingBrush;
         }
     }
 }
