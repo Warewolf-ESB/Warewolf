@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Activities.Designers2.Foreach
+namespace Dev2.Activities.Designers2.Redis
 {
     public partial class RedisDesigner
     {

@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.Redis
             DropPoint.PreviewDrop += DoDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
-
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
         void DoDrop(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;

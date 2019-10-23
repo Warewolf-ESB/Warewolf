@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
@@ -33,6 +34,9 @@ namespace Warewolf.Driver.Redis
                 case string s:
                     Cache.StringSet(key, s);
                     break;
+                case IDictionary<string,string> dict:
+                    Cache.HashSet(key,dict);
+                    break;
                 case object _:
                     throw new InvalidOperationException(nameof(value));
                 default:
@@ -44,6 +48,14 @@ namespace Warewolf.Driver.Redis
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.StringGet(key);
+        }
+    }
+
+    public class RedisCacheImpl : RedisCacheBase
+    {
+        public RedisCacheImpl(string hostName) : this(() => new RedisConnection(hostName)) { }
+        public RedisCacheImpl(Func<IRedisConnection> createConnection) : base(createConnection)
+        {
         }
     }
 }
