@@ -666,6 +666,9 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.111</Version>
     </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.1</Version>
+    </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.5.20</Version>
     </PackageReference>
