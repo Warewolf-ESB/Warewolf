@@ -166,23 +166,23 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        private Enum _value;
+        private int _value;
 
-        public event EventHandler<OptionValueChangedArgs<Enum>> ValueUpdated;
+        public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
 
-        public Enum Value
+        public int Value
         {
             get => _value;
             set
             {
-                var eventArgs = new OptionValueChangedArgs<Enum>(_name, _value, value);
+                var eventArgs = new OptionValueChangedArgs<int>(_name, _value, value);
                 _value = value;
                 RaisePropertyChanged(nameof(Value));
                 ValueUpdated?.Invoke(this, eventArgs);
             }
         }
 
-        public Enum Default { get; set; }
+        public int Default { get; set; }
 
         public object Clone()
         {
