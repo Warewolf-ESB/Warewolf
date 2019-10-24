@@ -64,7 +64,7 @@
                                        HintText="Drop Activity Here"
                                        BorderBrush="Black"
                                        BorderThickness="2"
-                                       Item="{Binding Path=ModelItem.Activity,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
+                                       Item="{Binding Path=ModelItem.ActivityFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
                                        MinHeight="50"
                                        attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>

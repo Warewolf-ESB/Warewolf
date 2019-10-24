@@ -48,6 +48,12 @@ namespace Dev2.Activities.Redis
             : this(new ResponseManager(),new RedisCacheImpl("localhost"))
         {
             DisplayName = "Redis";
+            ActivityFunc = new ActivityFunc<string, bool>
+            {
+                DisplayName = "Data Action",
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
+
+            };
         }
 
         public RedisActivity(IResourceCatalog resourceCatalog,RedisCacheBase redisCache)
@@ -82,7 +88,7 @@ namespace Dev2.Activities.Redis
 
         public bool ShouldSerializeConnection() => false;
 
-        public ActivityFunc<string, bool> Activity { get; set; }
+        public ActivityFunc<string, bool> ActivityFunc { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -114,7 +120,7 @@ namespace Dev2.Activities.Redis
         {
             try
             {
-                var act = Activity.Handler as IDev2Activity;
+                var act = ActivityFunc.Handler as IDev2Activity;
                 act.Execute(DataObject, 0);
                 var outputVars = act.GetOutputs();
                 var data = new Dictionary<string, string>();
