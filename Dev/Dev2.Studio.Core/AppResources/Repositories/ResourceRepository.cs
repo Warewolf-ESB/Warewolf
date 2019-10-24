@@ -1092,15 +1092,16 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public List<IOption> FindOptionsBy(IServer targetEnvironment, string name)
         {
-            var result = new List<IOption>();
             if (targetEnvironment == null)
             {
-                return result;
+                return new List<IOption>();
             }
             var comsController = new CommunicationController { ServiceName = "FindOptionsBy" };
             comsController.AddPayloadArgument(OptionsService.ParameterName, name);
-            result = comsController.ExecuteCommand<List<IOption>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
-            return result;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+
+            var serialize = new Dev2JsonSerializer();
+            return serialize.Deserialize<List<IOption>>(result.Message);
         }
 
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)

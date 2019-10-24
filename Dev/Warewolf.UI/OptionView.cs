@@ -52,7 +52,7 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionBoolStyle";
                     var item = DataContext as IOptionBool;
-                    item.ValueUpdated += Item_ValueUpdated;
+                    item.ValueUpdated += Item_ValueUpdatedBool;
                 }
                 if (DataContext is IOptionInt)
                 {
@@ -64,7 +64,9 @@ namespace Warewolf.UI
                 }
                 if (DataContext is IOptionComboBox)
                 {
-                    dataTemplateName = "OptionComboBoxStyle";
+                    dataTemplateName = "OptionComboBoxStyle"; 
+                    var item = DataContext as IOptionComboBox;
+                    item.ValueUpdated += Item_ValueUpdatedComboBox;
                 }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
@@ -73,7 +75,12 @@ namespace Warewolf.UI
             }
         }
 
-        private void Item_ValueUpdated(object sender, OptionValueChangedArgs<bool> e)
+        private void Item_ValueUpdatedComboBox(object sender, OptionValueChangedArgs<string> e)
+        {
+            _valueUpdatedAction();
+        }
+
+        private void Item_ValueUpdatedBool(object sender, OptionValueChangedArgs<bool> e)
         {
             _valueUpdatedAction();
         }

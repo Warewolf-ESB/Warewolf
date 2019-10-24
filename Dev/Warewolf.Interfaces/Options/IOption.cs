@@ -18,7 +18,7 @@ namespace Warewolf.Options
         string Name { get; set; }
     }
 
-    public interface IOptionComboBox : IOption
+    public interface IOptionComboBox : IOption, IOptionNotifyUpdate<string>
     {
         string Value { get; set; }
     }
