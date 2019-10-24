@@ -64,9 +64,9 @@ namespace Warewolf.UI
                 }
                 if (DataContext is IOptionComboBox)
                 {
+                    dataTemplateName = "OptionComboBoxStyle"; 
                     var item = DataContext as IOptionComboBox;
                     item.ValueUpdated += Item_ValueUpdatedComboBox;
-                    dataTemplateName = "OptionComboBoxStyle"; 
                 }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
