@@ -26,20 +26,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" HorizontalAlignment="Center" Height="25" Width="25" >
-            <Image.Style>
-                <Style TargetType="Image">
-                    <Style.Triggers>
-                        <DataTrigger  Binding="{Binding GateSelectionVisible}" Value="true">
-                            <Setter Property="Source" Value="{StaticResource ControlFlow-Gate-Open}"/>
-                        </DataTrigger >
-                        <DataTrigger  Binding="{Binding GateSelectionVisible}" Value="false">
-                            <Setter Property="Source" Value="{StaticResource ControlFlow-Gate}"/>
-                        </DataTrigger >
-                    </Style.Triggers>
-                </Style>
-            </Image.Style>
-        </Image>
+        <Image Grid.Row="0" HorizontalAlignment="Center" Height="25" Width="25" Source="{StaticResource ControlFlow-Gate}"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{Binding SelectedGateFailure}" ToolTip="{Binding SelectedGateFailure}"/>
     </Grid>
     
