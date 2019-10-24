@@ -141,6 +141,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Interfaces", "Warewolf.Interfaces\Warewolf.Interfaces.csproj", "{59816741-F603-45D8-B1FF-FADCC4BC343B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -584,6 +586,14 @@ Global
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.Build.0 = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.ActiveCfg = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.Build.0 = Debug|x86
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Debug|x86.Build.0 = Debug|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Release|x86.ActiveCfg = Release|Any CPU
+		{59816741-F603-45D8-B1FF-FADCC4BC343B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
