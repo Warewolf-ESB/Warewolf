@@ -66,11 +66,19 @@ namespace Warewolf.Options
             }
             else if (prop.PropertyType.IsEnum || prop.PropertyType.IsAssignableFrom(typeof(Enum)))
             {
-                return new OptionEnum
+                var result = new OptionEnum
                 {
                     Name = prop.Name,
                     Value = (int)prop.GetValue(instance)
                 };
+                var options = new List<KeyValuePair<string, int>>();
+                foreach (var option in Enum.GetValues(prop.PropertyType))
+                {
+                    var key = Enum.GetName(prop.PropertyType, option);
+                    options.Add(new KeyValuePair<string, int>(key, (int)option));
+                }
+                result.Options = options;
+                return result;
             }
             else
             {
