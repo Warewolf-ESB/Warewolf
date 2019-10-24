@@ -30,6 +30,13 @@ namespace Dev2.Activities.Designers2.Redis
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
+            var dataFunc = modelItem.Properties["ActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
+            ActivityFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
+            var type = dataFunc?.Handler?.GetType();
+            if (type != null)
+            {
+                ActivityFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
+            }
         }
 
       
@@ -38,6 +45,25 @@ namespace Dev2.Activities.Designers2.Redis
             get { return (Visibility)GetValue(VisibilityProperty); }
             set { SetValue(VisibilityProperty, value); }
         }
+
+        public string ActivityFuncDisplayName
+        {
+            get { return (string)GetValue(ActivityFuncDisplayNameProperty); }
+            set { SetValue(ActivityFuncDisplayNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty ActivityFuncDisplayNameProperty =
+            DependencyProperty.Register("ActivityFuncDisplayName", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
+
+        public ImageSource ActivityFuncIcon
+        {
+            get { return (ImageSource)GetValue(ActivityFuncIconProperty); }
+            set { SetValue(ActivityFuncIconProperty, value); }
+        }
+
+        public static readonly DependencyProperty ActivityFuncIconProperty =
+            DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
+
 
         public static readonly DependencyProperty VisibilityProperty =
             DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
