@@ -23,13 +23,13 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Warewolf.Data.Options.Enums;
+using Warewolf.Options;
+using Warewolf.Service;
+using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Gate
 {
@@ -38,7 +38,9 @@ namespace Dev2.Activities.Designers2.Gate
         private string _selectedGateFailure;
         private bool _gateSelectionVisible;
         private string _selectedRetryStrategy;
-        private DrawingBrush _gateIcon;
+        private ObservableCollection<OptionView> _options;
+        private IServer _server;
+        private IResourceRepository _resourceRepository;
 
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -48,6 +50,9 @@ namespace Dev2.Activities.Designers2.Gate
             SelectedRetryStrategy = GetRetryAlgorithm(RetryAlgorithm.NoBackoff.ToString()).ToString();
             Collection = new ObservableCollection<IDev2TOFn>();
             Collection.CollectionChanged += CollectionCollectionChanged;
+
+            LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone();
+
             var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
             WhereOptions = new ObservableCollection<string>(collection);
             SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
@@ -55,6 +60,58 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 DeleteRow(x as DecisionTO);
             });
+
+            Options = new ObservableCollection<OptionView>();
+            //LoadOptions();
+        }
+
+        private void LoadOptions()
+        {
+            var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
+            _server = activeServer;
+            _resourceRepository = _server.ResourceRepository;
+
+            var retryOptions = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume);
+
+            UpdateOptions(retryOptions);
+        }
+
+        private void UpdateOptions(List<IOption> options)
+        {
+            Options.Clear();
+            var optionViews = new ObservableCollection<OptionView>();
+            foreach (var option in options)
+            {
+                var optionView = new OptionView(option, () => { });
+                optionViews.Add(optionView);
+            }
+
+            Options = optionViews;
+        }
+
+        private void LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone()
+        {
+            var decisionTo = new DecisionTO
+            {
+                MatchValue = "[[name]]",
+                SearchType = "=",
+                SearchCriteria = "bob"
+            };
+            var decisionTo1 = new DecisionTO
+            {
+                MatchValue = "[[name1]]",
+                SearchType = "=",
+                SearchCriteria = "bob1"
+            };
+            var decisionTo2 = new DecisionTO
+            {
+                MatchValue = "[[name2]]",
+                SearchType = "=",
+                SearchCriteria = "bob2"
+            };
+            Collection.Add(decisionTo);
+            Collection.Add(decisionTo1);
+            Collection.Add(decisionTo2);
         }
 
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
@@ -123,17 +180,6 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
-
-        public DrawingBrush GateIcon
-        {
-            get => _gateIcon;
-            set
-            {
-                _gateIcon = value;
-                OnPropertyChanged(nameof(GateIcon));
-            }
-        }
-
         public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureAction>.GetDescriptionsAsList(typeof(GateFailureAction)).ToList();
         public string SelectedGateFailure
         {
@@ -143,17 +189,7 @@ namespace Dev2.Activities.Designers2.Gate
                 var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
                 _selectedGateFailure = gateFailure;
                 GateSelectionVisible = GetGateFailure(_selectedGateFailure) == GateFailureAction.Retry;
-                UpdateGateIcon();
                 OnPropertyChanged(nameof(SelectedGateFailure));
-            }
-        }
-
-        private void UpdateGateIcon()
-        {
-            string icon = GateSelectionVisible ? "ControlFlow-Gate-Open-Icon" : "ControlFlow-Gate-Icon";
-            if (Application.Current != null)
-            {
-                GateIcon = Application.Current.Resources[icon] as DrawingBrush;
             }
         }
 
@@ -188,6 +224,18 @@ namespace Dev2.Activities.Designers2.Gate
                 OnPropertyChanged(nameof(GateSelectionVisible));
             }
         }
+
+
+        public ObservableCollection<OptionView> Options
+        {
+            get => _options;
+            set
+            {
+                _options = value;
+                OnPropertyChanged(nameof(Options));
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

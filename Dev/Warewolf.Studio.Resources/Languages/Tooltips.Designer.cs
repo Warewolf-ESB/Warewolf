@@ -1432,6 +1432,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ExistingGatesToolTip.
+        /// </summary>
+        public static string ExistingGatesToolTip {
+            get {
+                return ResourceManager.GetString("ExistingGatesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand or collapse all execution nodes..
         /// </summary>
         public static string ExpandCollapseAllToolTip {
@@ -1677,6 +1686,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string FormatNumberToolTipRoundvalue {
             get {
                 return ResourceManager.GetString("FormatNumberToolTipRoundvalue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GateFailuresToolTip.
+        /// </summary>
+        public static string GateFailuresToolTip {
+            get {
+                return ResourceManager.GetString("GateFailuresToolTip", resourceCulture);
             }
         }
         

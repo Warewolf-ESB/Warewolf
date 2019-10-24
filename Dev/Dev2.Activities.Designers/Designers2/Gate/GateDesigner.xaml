@@ -10,8 +10,7 @@
                        d:DataContext="{d:DesignInstance local:GateDesignerViewModel}"
                        x:TypeArguments="local:GateDesignerViewModel"
                        Style="{DynamicResource ContentViewStyle}"
-                       mc:Ignorable="d"
-                       Icon="{Binding GateIcon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                       mc:Ignorable="d">
 
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>
@@ -33,4 +32,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
+
+    <sap:ActivityDesigner.Icon>
+        <Binding Source="{StaticResource ControlFlow-Gate-Icon}"/>
+    </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>

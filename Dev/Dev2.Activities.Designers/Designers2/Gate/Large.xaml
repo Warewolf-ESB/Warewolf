@@ -288,24 +288,24 @@
                           Grid.Column="0"
                           ItemsSource="{Binding GateFailureOptions}"
                           SelectedValuePath="SelectedGateFailure"
-                          ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
+                          ToolTip="{x:Static languages:Tooltips.GateFailuresToolTip}"
                           IsEditable="False"
                           Margin="{StaticResource ControlBorderRight}"
                           SelectedItem="{Binding SelectedGateFailure, Mode=TwoWay}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.GateFailuresHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </ComboBox>
                 <ComboBox x:Name="cbExistingGates"
                           Grid.Column="1"
                           ItemsSource="{Binding GateFailureOptions}"
                           SelectedValuePath="GateFailureAction"
-                          ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
+                          ToolTip="{x:Static languages:Tooltips.ExistingGatesToolTip}"
                           IsEditable="False"
                           Visibility="{Binding GateSelectionVisible, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding GateFailureAction, Mode=TwoWay}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.ExistingGatesHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </ComboBox>
             </Grid>
@@ -313,7 +313,12 @@
 
         <Expander Grid.Row="2" Header="Resume"
                   Style="{StaticResource ServiceTestTestStepExpander}" >
-
+            <!--<ListBox x:Name="OptionsListBox" 
+                         ItemsSource="{Binding Options}" 
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Padding="0,3,3,3">
+            </ListBox>-->
         </Expander>
 
         <errors:OnError Grid.Row="3" />

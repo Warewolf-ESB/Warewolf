@@ -1390,6 +1390,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ExistingGatesHelp.
+        /// </summary>
+        public static string ExistingGatesHelp {
+            get {
+                return ResourceManager.GetString("ExistingGatesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/knowledge-base/.
         /// </summary>
         public static string ExpertHelpUrl {
@@ -1602,6 +1611,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string FormatNumberHelpRoundValue {
             get {
                 return ResourceManager.GetString("FormatNumberHelpRoundValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GateFailuresHelp.
+        /// </summary>
+        public static string GateFailuresHelp {
+            get {
+                return ResourceManager.GetString("GateFailuresHelp", resourceCulture);
             }
         }
         
