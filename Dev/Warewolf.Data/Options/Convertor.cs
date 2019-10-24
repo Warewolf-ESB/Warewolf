@@ -69,7 +69,7 @@ namespace Warewolf.Options
                 return new OptionEnum
                 {
                     Name = prop.Name,
-                    Value = (Enum)prop.GetValue(instance)
+                    Value = (int)prop.GetValue(instance)
                 };
             }
             else

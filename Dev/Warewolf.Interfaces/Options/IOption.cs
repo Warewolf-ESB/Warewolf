@@ -33,7 +33,7 @@ namespace Warewolf.Options
         string[] Suggestions { get; }
     }
 
-    public interface IOptionEnum : IOptionBasic<Enum>
+    public interface IOptionEnum : IOptionBasic<int>
     {
 
     }

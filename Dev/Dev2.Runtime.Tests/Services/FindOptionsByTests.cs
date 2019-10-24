@@ -17,6 +17,8 @@ using System.Text;
 using Dev2.Workspaces;
 using Warewolf.Service;
 using Dev2.Common.Common;
+using Dev2.Common.Serializers;
+using Warewolf.Options;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -60,6 +62,26 @@ namespace Dev2.Tests.Runtime.Services
             var expected = "{\"$id\":\"1\",\"$type\":\"Warewolf.Options.OptionCombobox, Warewolf.Data\",\"Name\":\"GateFailureAction\",\"Options\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.IEnumerable`1[[Warewolf.Options.IOption, Warewolf.Interfaces]], mscorlib]], mscorlib\",\"VOptions\":[{\"$id\":\"2\",\"$type\":\"Warewolf.Options.OptionEnum, Warewolf.Data\",\"Name\":\"Resume\",\"Value\":1,\"Default\":null},{\"$id\":\"3\",\"$type\":\"Warewolf.Options.OptionAutocomplete, Warewolf.Data\",\"Name\":\"ResumeEndpoint\",\"Value\":\"Not Yet Set\",\"Default\":\"\",\"Suggestions\":null},{\"$id\":\"4\",\"$type\":\"Warewolf.Options.OptionInt, Warewolf.Data\",\"Name\":\"Count\",\"Value\":2,\"Default\":0},{\"$id\":\"5\",\"$type\":\"Warewolf.Options.OptionCombobox, Warewolf.Data\",\"Name\":\"Strategy\",\"Options\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.IEnumerable`1[[Warewolf.Options.IOption, Warewolf.Interfaces]], mscorlib]], mscorlib\",\"NoBackoffStrategy\":[{\"$id\":\"6\",\"$type\":\"Warewolf.Options.OptionInt, Warewolf.Data\",\"Name\":\"TimeOut\",\"Value\":60000,\"Default\":0}],\"ConstantBackoffStrategy\":[{\"$id\":\"7\",\"$type\":\"Warewolf.Options.OptionInt, Warewolf.Data\",\"Name\":\"TimeOut\",\"Value\":60000,\"Default\":0}],\"LinearBackoffStrategy\":[{\"$id\":\"8\",\"$type\":\"Warewolf.Options.OptionInt, Warewolf.Data\",\"Name\":\"TimeOut\",\"Value\":60000,\"Default\":0}],\"FibonacciBackoffStrategy\":[{\"$id\":\"9\",\"$type\":\"Warewolf.Options.OptionInt, Warewolf.Data\",\"Name\":\"TimeOut\",\"Value\":60000,\"Default\":0}],\"QuadraticBackoffStrategy\":[{\"$id\":\"10\",\"$type\":\"Warewolf.Options.OptionInt, Warewolf.Data\",\"Name\":\"TimeOut\",\"Value\":60000,\"Default\":0}]},\"Value\":\"NoBackoff\"}]},\"Value\":\"Retry\"}";
 
             Assert.AreEqual(expected: expected, actual: actual);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(FindOptionsBy))]
+        public void FindOptionsBy_Given_OptionsServiceGateResume_ExpectDeserializeSuccess()
+        {
+            //----------------------Arrange----------------------
+            var values = new Dictionary<string, StringBuilder>
+            {
+                { OptionsService.ParameterName, OptionsService.GateResume.ToStringBuilder() }
+            };
+
+            var sut = new FindOptionsBy();
+            //----------------------Act--------------------------
+            var jsonResponse = sut.Execute(values, new Mock<IWorkspace>().Object);
+            //----------------------Assert-----------------------
+            var serializer = new Dev2JsonSerializer();
+            var result = serializer.Deserialize<IOption[]>(jsonResponse);
+            Assert.AreEqual("GateFailureAction", result[0].Name);
         }
 
         [TestMethod]
