@@ -245,13 +245,14 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table607 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table607.AddRow(new string[] {
-                        "[[values(1).low]] = hello"});
-            table607.AddRow(new string[] {
                         "[[values(1).up]] = HELLO"});
+            table607.AddRow(new string[] {
+                        "[[values(1).low]] = hello"});
             table607.AddRow(new string[] {
                         "[[output]] = HELLO"});
 #line 53
-   testRunner.And("the \"WorkflowUsedBySpecs\" in Workflow \"TestAssignWithRemoteWF\" debug outputs as", ((string)(null)), table607, "And ");
+   testRunner.And("the \"WorkflowUsedBySpecs\" in Workflow \"TestAssignWithRemoteWF\" unsorted debug out" +
+                    "puts as", ((string)(null)), table607, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

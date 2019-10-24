@@ -62,6 +62,10 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionAutocompleteStyle";
                 }
+                if (DataContext is IOptionComboBox)
+                {
+                    dataTemplateName = "OptionComboBoxStyle";
+                }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
 
