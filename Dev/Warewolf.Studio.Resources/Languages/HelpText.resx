@@ -1185,6 +1185,12 @@
   <data name="PluginSourceRefreshCommandHelp" xml:space="preserve">
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
   </data>
+  <data name="GateFailuresHelp" xml:space="preserve">
+    <value>GateFailuresHelp</value>
+  </data>
+  <data name="ExistingGatesHelp" xml:space="preserve">
+    <value>ExistingGatesHelp</value>
+  </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)	This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5	Preview (scalar field - including indexed recordsets and ())	This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
   </data>

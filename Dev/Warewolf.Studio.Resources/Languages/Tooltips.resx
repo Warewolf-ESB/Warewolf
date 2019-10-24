@@ -941,6 +941,12 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="PluginServiceSelectConstructorToolTip" xml:space="preserve">
     <value>Select constructor to execute.</value>
   </data>
+  <data name="GateFailuresToolTip" xml:space="preserve">
+    <value>GateFailuresToolTip</value>
+  </data>
+  <data name="ExistingGatesToolTip" xml:space="preserve">
+    <value>ExistingGatesToolTip</value>
+  </data>
   <data name="PasswordToolTip" xml:space="preserve">
     <value>Enter the corresponding password</value>
   </data>
