@@ -1089,6 +1089,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
+        public List<IOption> FindOptionsBy(IServer targetEnvironment, IResource selectedSource)
+        {
+            if (targetEnvironment == null)
+            {
+                return new List<IOption>();
+            }
+            var comsController = new CommunicationController { ServiceName = "FindOptionsBy" };
+            comsController.AddPayloadArgument("SelectedSourceId", selectedSource.ResourceID.ToString());
+            var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+
+            var serialize = new Dev2JsonSerializer();
+            return serialize.Deserialize<List<IOption>>(result.Message);
+        }
+
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
         {
             var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };
