@@ -1235,6 +1235,10 @@
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj">
+      <Project>{76F7A7F3-1153-49C0-BE56-77973867F974}</Project>
+      <Name>Warewolf.ServiceDefinitions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
@@ -1262,6 +1266,10 @@
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
+      <Project>{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}</Project>
+      <Name>Warewolf.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
