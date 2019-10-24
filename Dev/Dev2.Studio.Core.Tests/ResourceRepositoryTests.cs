@@ -53,6 +53,7 @@ using Moq;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Options;
+using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Triggers;
 
@@ -2573,7 +2574,7 @@ namespace BusinessDesignStudio.Unit.Tests
             using (var sut = new ResourceRepository(new Mock<IServer>().Object))
             {
                 //----------------------Act--------------------------
-                var result = sut.FindOptionsBy(null, new Mock<IResource>().Object);
+                var result = sut.FindOptionsBy(null, string.Empty);
                 //----------------------Assert-----------------------
                 Assert.AreEqual(0, result.Count);
             };
@@ -2605,7 +2606,7 @@ namespace BusinessDesignStudio.Unit.Tests
             using (var sut = new ResourceRepository(new Mock<IServer>().Object))
             {
                 //----------------------Act--------------------------
-                var result = sut.FindOptionsBy(mockServer.Object, new Mock<IResource>().Object);
+                var result = sut.FindOptionsBy(mockServer.Object, OptionsService.GateResume);
                 //----------------------Assert-----------------------
                 Assert.AreEqual(2, result.Count);
 

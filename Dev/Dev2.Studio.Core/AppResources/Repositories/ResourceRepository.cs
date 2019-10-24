@@ -43,6 +43,7 @@ using Warewolf.Auditing;
 using Warewolf.Configuration;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
+using Warewolf.Service;
 using Warewolf.Triggers;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -1089,18 +1090,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public List<IOption> FindOptionsBy(IServer targetEnvironment, IResource selectedSource)
+        public List<IOption> FindOptionsBy(IServer targetEnvironment, string name)
         {
+            var result = new List<IOption>();
             if (targetEnvironment == null)
             {
-                return new List<IOption>();
+                return result;
             }
             var comsController = new CommunicationController { ServiceName = "FindOptionsBy" };
-            comsController.AddPayloadArgument("SelectedSourceId", selectedSource.ResourceID.ToString());
-            var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
-
-            var serialize = new Dev2JsonSerializer();
-            return serialize.Deserialize<List<IOption>>(result.Message);
+            comsController.AddPayloadArgument(OptionsService.ParameterName, name);
+            result = comsController.ExecuteCommand<List<IOption>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
+            return result;
         }
 
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
