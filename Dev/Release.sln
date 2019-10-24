@@ -133,6 +133,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Exchange.Email.Wra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.MergeParser", "Warewolf.MergeParser\Warewolf.MergeParser.csproj", "{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Interfaces", "Warewolf.Interfaces\Warewolf.Interfaces.csproj", "{8B716B54-0B25-460B-A6F2-14A5845A0C3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -547,6 +549,14 @@ Global
 		{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}.Release|x86.ActiveCfg = Release|Any CPU
 		{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}.Release|x86.Build.0 = Release|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Debug|x86.Build.0 = Debug|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B716B54-0B25-460B-A6F2-14A5845A0C3C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
