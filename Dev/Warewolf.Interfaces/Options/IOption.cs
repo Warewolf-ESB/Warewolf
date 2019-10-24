@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace Warewolf.Options
 {
@@ -35,7 +36,7 @@ namespace Warewolf.Options
 
     public interface IOptionEnum : IOptionBasic<int>
     {
-
+        IEnumerable<KeyValuePair<string, int>> Options { get; set; }
     }
 
     public interface IOptionInt : IOptionBasic<int>

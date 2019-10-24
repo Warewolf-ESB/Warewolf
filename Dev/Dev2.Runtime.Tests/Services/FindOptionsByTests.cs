@@ -81,6 +81,7 @@ namespace Dev2.Tests.Runtime.Services
             //----------------------Assert-----------------------
             var serializer = new Dev2JsonSerializer();
             var result = serializer.Deserialize<IOption[]>(jsonResponse);
+            Assert.IsNotNull(result, "failed to deserialize previously serialized options");
             Assert.AreEqual("GateFailureAction", result[0].Name);
         }
 

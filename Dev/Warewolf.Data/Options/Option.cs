@@ -168,6 +168,8 @@ namespace Warewolf.Options
 
         private int _value;
 
+        public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+
         public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
 
         public int Value
