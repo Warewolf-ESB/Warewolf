@@ -1,17 +1,18 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Web.Script.Serialization;
 
-
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public class Depends : Attribute, IDisposable
 {
+    public readonly string RigOpsHost = "RSAKLFSVRHST1";
+    public readonly string RigOpsDomain = "dev2.local";
+
     public enum ContainerType
     {
         MySQL = 0,
@@ -45,22 +46,6 @@ public class Depends : Attribute, IDisposable
     ContainerType _containerType;
     
     public Container Container;
-
-    public string RigOpsHost
-    {
-        get
-        {            
-            return ConfigurationManager.AppSettings["Rig_Ops_Host"];
-        }
-    }
-
-    public string RigOpsDomain 
-    { 
-        get 
-        {
-            return ConfigurationManager.AppSettings["Rig_Ops_Domain"];
-        } 
-    }
 
     public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
