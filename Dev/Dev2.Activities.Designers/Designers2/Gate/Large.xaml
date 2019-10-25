@@ -15,6 +15,7 @@
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                                MinWidth="350"
                                Width="350"
                                MinHeight="440"
@@ -30,6 +31,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
 
@@ -313,12 +315,12 @@
 
         <Expander Grid.Row="2" Header="Resume"
                   Style="{StaticResource ServiceTestTestStepExpander}" >
-            <!--<ListBox x:Name="OptionsListBox" 
+            <ListBox x:Name="OptionsListBox" 
                          ItemsSource="{Binding Options}" 
                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
                          Padding="0,3,3,3">
-            </ListBox>-->
+            </ListBox>
         </Expander>
 
         <errors:OnError Grid.Row="3" />
