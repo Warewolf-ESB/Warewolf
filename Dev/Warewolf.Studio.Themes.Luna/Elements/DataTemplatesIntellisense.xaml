@@ -114,7 +114,7 @@
 
             <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
             <ComboBox Grid.Column="1" 
-                      ItemsSource="{Binding Path=DataContext.Options, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding Path=OptionNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       DisplayMemberPath="Value"
                       Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource ComboBoxStyle}" >

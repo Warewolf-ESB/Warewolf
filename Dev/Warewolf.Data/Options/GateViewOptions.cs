@@ -16,7 +16,7 @@ namespace Warewolf.Data.Options
     public class GateViewOptions 
     {
         [DataValue(nameof(GateFailureActionBase.GateFailureAction))]
-        [MultiDataProvider(typeof(VOptions))]
+        [MultiDataProvider(typeof(Retry))]
         public GateFailureActionBase GateFailureAction { get; set; }
 
     }
@@ -26,7 +26,7 @@ namespace Warewolf.Data.Options
         public GateFailureAction GateFailureAction { get; set; }
     }
 
-    public class VOptions : GateFailureActionBase
+    public class Retry : GateFailureActionBase
     {
         public YesNo Resume { get; set; } = YesNo.No;
         public string ResumeEndpoint { get; set; } = "Not Yet Set";

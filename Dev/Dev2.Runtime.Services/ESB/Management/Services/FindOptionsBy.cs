@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (optionsRequested == OptionsService.GateResume)
                 {
-                    var failureOptions = OptionConvertor.Convert(new GateViewOptions { GateFailureAction = new VOptions() }); 
+                    var failureOptions = OptionConvertor.Convert(new GateViewOptions { GateFailureAction = new Retry() }); 
 
                     result.AddRange(failureOptions);
                 }

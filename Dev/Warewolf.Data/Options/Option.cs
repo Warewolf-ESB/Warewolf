@@ -220,6 +220,30 @@ namespace Warewolf.Options
         }
         public Dictionary<string, IEnumerable<IOption>> Options { get; } = new Dictionary<string, IEnumerable<IOption>>();
 
+        public IEnumerable<string> OptionNames
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Value))
+                {
+                    return new List<string>();
+                }
+                return Options.Keys;
+            }
+        }
+
+        public IEnumerable<IOption> SelectedOptions
+        { 
+            get
+            {
+                if (string.IsNullOrEmpty(Value))
+                {
+                    return new List<IOption>();
+                }
+                return Options[Value];
+            }
+        }
+
         private string _value;
 
         public event EventHandler<OptionValueChangedArgs<string>> ValueUpdated;
@@ -227,7 +251,13 @@ namespace Warewolf.Options
         public string Value
         {
             get => _value;
-            set => SetProperty(ref _value, value);
+            set
+            {
+                if (SetProperty(ref _value, value))
+                {
+                    RaisePropertyChanged(nameof(SelectedOptions));
+                }
+            }
         }
 
         public object Clone()

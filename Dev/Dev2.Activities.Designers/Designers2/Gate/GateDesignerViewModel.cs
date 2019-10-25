@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers2.Gate
             });
 
             Options = new ObservableCollection<OptionView>();
-            //LoadOptions();
+            LoadOptions();
         }
 
         private void LoadOptions()

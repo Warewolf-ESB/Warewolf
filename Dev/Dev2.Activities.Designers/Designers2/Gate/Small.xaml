@@ -26,7 +26,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" HorizontalAlignment="Center" Height="25" Width="25" Source="{StaticResource ControlFlow-Gate}"/>
+        <Image Grid.Row="0" HorizontalAlignment="Center" Height="35" Width="35" Source="{StaticResource ControlFlow-Gate}"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{Binding SelectedGateFailure}" ToolTip="{Binding SelectedGateFailure}"/>
     </Grid>
     
