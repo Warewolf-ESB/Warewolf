@@ -29,12 +29,24 @@ namespace Warewolf.Options
         T Default { get; }
     }
 
+    public interface IOptionBasic<TKey, TValue> : IOption, IOptionNotifyUpdate<KeyValuePair<string, int>>
+    {
+        KeyValuePair<TKey, TValue> Value { get; set; }
+        KeyValuePair<TKey, TValue> Default { get; }
+    }
+     
+
     public interface IOptionAutocomplete : IOptionBasic<string>
     {
         string[] Suggestions { get; }
     }
 
-    public interface IOptionEnum : IOptionBasic<int>
+    public interface IOptionEnum : IOptionBasic<Enum>
+    {
+        IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+    }
+
+    public interface IOptionEnumGen : IOptionBasic<string, int>
     {
         IEnumerable<KeyValuePair<string, int>> Options { get; set; }
     }

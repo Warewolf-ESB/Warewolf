@@ -166,25 +166,25 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        private int _value;
+        private Enum _value;
 
         public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
 
-        public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
+        public event EventHandler<OptionValueChangedArgs<Enum>> ValueUpdated;
 
-        public int Value
+        public Enum Value
         {
             get => _value;
             set
             {
-                var eventArgs = new OptionValueChangedArgs<int>(_name, _value, value);
+                var eventArgs = new OptionValueChangedArgs<Enum>(_name, _value, value);
                 _value = value;
                 RaisePropertyChanged(nameof(Value));
                 ValueUpdated?.Invoke(this, eventArgs);
             }
         }
 
-        public int Default { get; set; }
+        public Enum Default { get; set; }
 
         public object Clone()
         {
@@ -207,6 +207,59 @@ namespace Warewolf.Options
                 return -1;
             }
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
+        }
+    }
+
+    public class OptionEnumGen : BindableBase, IOptionEnumGen
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private KeyValuePair<string, int> _value;
+
+        public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+
+        public event EventHandler<OptionValueChangedArgs<KeyValuePair<string, int>>> ValueUpdated;
+
+        public KeyValuePair<string, int> Value
+        {
+            get => _value;
+            set
+            {
+                var eventArgs = new OptionValueChangedArgs<KeyValuePair<string, int>>(_name, _value, value);
+                _value = value;
+                RaisePropertyChanged(nameof(Value));
+                ValueUpdated?.Invoke(this, eventArgs);
+            }
+        }
+
+        KeyValuePair<string, int> IOptionBasic<string, int>.Default { get; }
+
+        public object Clone()
+        {
+            return new OptionEnumGen
+            {
+                Name = _name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionEnumGen;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value.Equals(Value) ? 0 : -1);
         }
     }
 

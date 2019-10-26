@@ -10,6 +10,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Tests
@@ -195,11 +196,11 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("MyEnum", optionEnum.Name);
 
             Assert.IsNull(optionEnum.Value);
-            optionEnum.Value = (int)MyEnum.Option2;
+            optionEnum.Value = MyEnum.Option2;
             Assert.AreEqual(MyEnum.Option2, optionEnum.Value);
 
             Assert.IsNull(optionEnum.Default);
-            optionEnum.Default = (int)MyEnum.Option1;
+            optionEnum.Default = MyEnum.Option1;
             Assert.AreEqual(MyEnum.Option1, optionEnum.Default);
         }
 
@@ -211,7 +212,7 @@ namespace Warewolf.Data.Tests
             var optionEnum = new OptionEnum
             {
                 Name = "MyEnum",
-                Value = (int)MyEnum.Option2
+                Value = MyEnum.Option2
             };
 
             var cloneOptionEnum = optionEnum.Clone() as OptionEnum;
@@ -227,7 +228,7 @@ namespace Warewolf.Data.Tests
             var optionEnum = new OptionEnum
             {
                 Name = "MyEnum",
-                Value = (int)MyEnum.Option2
+                Value = MyEnum.Option2
             };
 
             var expectedValue = optionEnum.CompareTo(null);
@@ -237,6 +238,60 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(-1, expectedValue);
 
             expectedValue = optionEnum.CompareTo(optionEnum);
+            Assert.AreEqual(0, expectedValue);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnumGen))]
+        [Owner("Siphamandla Dube")]
+        public void OptionEnumGen_Default()
+        {
+            var optionEnum = new OptionEnumGen();
+
+            Assert.IsNull(optionEnum.Name);
+            optionEnum.Name = "MyEnum";
+            Assert.AreEqual("MyEnum", optionEnum.Name);
+
+            Assert.AreEqual(new KeyValuePair<string, int>(), optionEnum.Value);
+            optionEnum.Value = new KeyValuePair<string, int>(MyEnum.Option2.ToString(), (int)MyEnum.Option2);
+            Assert.AreEqual(MyEnum.Option2.ToString(), optionEnum.Value.Key);
+            Assert.AreEqual(1, optionEnum.Value.Value);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnumGen))]
+        [Owner("Siphamandla Dube")]
+        public void OptionEnumGen_Clone()
+        {
+            var optionEnumGen = new OptionEnumGen
+            {
+                Name = "MyEnum",
+                Value = new KeyValuePair<string, int>(MyEnum.Option2.ToString(), (int)MyEnum.Option2)
+            };
+
+            var cloneOptionEnumGen = optionEnumGen.Clone() as OptionEnumGen;
+            Assert.AreEqual(optionEnumGen.Name, cloneOptionEnumGen.Name);
+            Assert.AreEqual(optionEnumGen.Value, cloneOptionEnumGen.Value);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnumGen))]
+        [Owner("Siphamandla Dube")]
+        public void OptionEnumGen_CompareTo()
+        {
+            var optionEnumGen = new OptionEnumGen
+            {
+                Name = "MyEnum",
+                Value = new KeyValuePair<string, int>(MyEnum.Option2.ToString(), (int)MyEnum.Option2)
+            };
+
+            var expectedValue = optionEnumGen.CompareTo(null);
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionEnumGen.CompareTo(new object { });
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionEnumGen.CompareTo(optionEnumGen);
             Assert.AreEqual(0, expectedValue);
         }
 
