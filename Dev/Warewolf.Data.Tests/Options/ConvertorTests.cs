@@ -66,7 +66,9 @@ namespace Warewolf.Data.Tests
             var actual = ConvertDataToOptionsList();
             //----------------------Assert-----------------------
             Assert.AreEqual(nameof(TestData.MyEnum), actual[3].Name);
-            Assert.AreEqual(MyOptions.Option1, ((OptionEnum)actual[3]).Value);
+            var optionEnumGen = ((OptionEnumGen)actual[3]).Value;
+            Assert.AreEqual(MyOptions.Option1.ToString(), optionEnumGen.Key.ToString());
+            Assert.AreEqual(0, optionEnumGen.Value);
         }
 
         [TestMethod]
