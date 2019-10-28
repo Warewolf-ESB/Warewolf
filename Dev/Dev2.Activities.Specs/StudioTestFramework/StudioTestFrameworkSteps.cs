@@ -716,7 +716,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var test = serviceTest.SelectedServiceTest;
             var errors = test.DebugForTest.Where((e) => { return e.ErrorMessage != ""; });
             Assert.IsNotNull(test, "Workflow Service Test expects Not Null for Test - " + test.TestName);
-            Assert.IsTrue(test.TestPassed, "Workflow Service Test expects Passed for Test - " + test.TestName + errors.FirstOrDefault());
+            Assert.IsTrue(test.TestPassed, "Workflow Service Test expects Passed for Test - " + test.TestName + "\n" + string.Join(", ", errors.Select((state) => { return state.ErrorMessage; })));
             Assert.IsFalse(test.TestFailing, "Workflow Service Test expects Failed to be false for Test - " + test.TestName);
         }
 
