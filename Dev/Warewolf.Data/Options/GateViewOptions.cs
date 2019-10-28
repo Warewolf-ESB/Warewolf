@@ -33,8 +33,8 @@ namespace Warewolf.Data.Options
         public int Count { get; set; } = 2;
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
-        [MultiDataProvider(typeof(NoBackoffStrategy), typeof(ConstantBackoffStrategy), typeof(LinearBackoffStrategy), typeof(FibonacciBackoffStrategy), typeof(QuadraticBackoffStrategy))]
-        public RetryAlgorithmBase Strategy { get; set; } = new NoBackoffStrategy();
+        [MultiDataProvider(typeof(NoBackoff), typeof(ConstantBackoff), typeof(LinearBackoff), typeof(FibonacciBackoff), typeof(QuadraticBackoff))]
+        public RetryAlgorithmBase Strategy { get; set; } = new NoBackoff();
     }
 
     public enum YesNo
@@ -50,9 +50,9 @@ namespace Warewolf.Data.Options
     }
 
         
-    public class NoBackoffStrategy : RetryAlgorithmBase
+    public class NoBackoff : RetryAlgorithmBase
     {
-        public NoBackoffStrategy()
+        public NoBackoff()
         {
             RetryAlgorithm = RetryAlgorithm.NoBackoff;
         }
@@ -60,9 +60,9 @@ namespace Warewolf.Data.Options
         public int TimeOut { get; set; } = 60000;
     }
 
-    public class ConstantBackoffStrategy : RetryAlgorithmBase
+    public class ConstantBackoff : RetryAlgorithmBase
     {
-        public ConstantBackoffStrategy()
+        public ConstantBackoff()
         {
             RetryAlgorithm = RetryAlgorithm.ConstantBackoff;
         }
@@ -70,9 +70,9 @@ namespace Warewolf.Data.Options
         public int TimeOut { get; set; } = 60000;
     }
 
-    public class LinearBackoffStrategy : RetryAlgorithmBase
+    public class LinearBackoff : RetryAlgorithmBase
     {
-        public LinearBackoffStrategy()
+        public LinearBackoff()
         {
             RetryAlgorithm = RetryAlgorithm.LinearBackoff;
         }
@@ -80,9 +80,9 @@ namespace Warewolf.Data.Options
         public int TimeOut { get; set; } = 60000;
     }
 
-    public class FibonacciBackoffStrategy : RetryAlgorithmBase
+    public class FibonacciBackoff : RetryAlgorithmBase
     {
-        public FibonacciBackoffStrategy()
+        public FibonacciBackoff()
         {
             RetryAlgorithm = RetryAlgorithm.FibonacciBackoff;
         }
@@ -90,9 +90,9 @@ namespace Warewolf.Data.Options
         public int TimeOut { get; set; } = 60000;
     }
 
-    public class QuadraticBackoffStrategy : RetryAlgorithmBase
+    public class QuadraticBackoff : RetryAlgorithmBase
     {
-        public QuadraticBackoffStrategy()
+        public QuadraticBackoff()
         {
             RetryAlgorithm = RetryAlgorithm.QuadraticBackoff;
         }

@@ -196,11 +196,11 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("MyEnum", optionEnum.Name);
 
             Assert.IsNull(optionEnum.Value);
-            optionEnum.Value = MyEnum.Option2;
+            optionEnum.Value = (int)MyEnum.Option2;
             Assert.AreEqual(MyEnum.Option2, optionEnum.Value);
 
             Assert.IsNull(optionEnum.Default);
-            optionEnum.Default = MyEnum.Option1;
+            optionEnum.Default = (int)MyEnum.Option1;
             Assert.AreEqual(MyEnum.Option1, optionEnum.Default);
         }
 
@@ -212,7 +212,7 @@ namespace Warewolf.Data.Tests
             var optionEnum = new OptionEnum
             {
                 Name = "MyEnum",
-                Value = MyEnum.Option2
+                Value = (int)MyEnum.Option2
             };
 
             var cloneOptionEnum = optionEnum.Clone() as OptionEnum;
@@ -228,7 +228,7 @@ namespace Warewolf.Data.Tests
             var optionEnum = new OptionEnum
             {
                 Name = "MyEnum",
-                Value = MyEnum.Option2
+                Value = (int)MyEnum.Option2
             };
 
             var expectedValue = optionEnum.CompareTo(null);
