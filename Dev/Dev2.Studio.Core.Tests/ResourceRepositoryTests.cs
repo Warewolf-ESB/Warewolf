@@ -2586,27 +2586,23 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_FindOptionsBy_ExecuteCommand_Given_TargetEnvironment_IsNotNull_ExpectedOptions()
         {
             //----------------------Arrange----------------------
-            var mockServer = new Mock<IServer>();
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-
-            var options = new IOption[] { new OptionBool { Name = "Breakfast", Value = true }, new OptionAutocomplete { Name = "TestName", Value = "TestValue", Suggestions = new string[] { "TestSuggestion1", "TestSuggestion2" } } }.ToList();
-
-            var serializer = new Dev2JsonSerializer();
-            var serializedOptions = serializer.Serialize(options);
-
-            var executeMessage = new ExecuteMessage { Message = new StringBuilder(serializedOptions), HasError = false };
-            var payload = JsonConvert.SerializeObject(executeMessage);
-
             mockEnvironmentConnection.Setup(o => o.IsConnected).Returns(true);
-            mockEnvironmentConnection.Setup(o => o.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
+            var mockServer = new Mock<IServer>();
             mockServer.Setup(o => o.Connection).Returns(mockEnvironmentConnection.Object);
             mockServer.Setup(o => o.IsConnected).Returns(true);
 
-            using (var sut = new ResourceRepository(new Mock<IServer>().Object))
+            var executeOptions = new List<IOption>() { new OptionBool { Name = "Breakfast", Value = true }, new OptionAutocomplete { Name = "TestName", Value = "TestValue", Suggestions = new string[] { "TestSuggestion1", "TestSuggestion2" } } }.ToList();
+
+            var commController = new Mock<ICommunicationController>();
+            commController.Setup(o => o.ExecuteCommand<List<IOption>>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>())).Returns(executeOptions);
+
+            using (var resourceRepository = new ResourceRepository(new Mock<IServer>().Object))
             {
+                resourceRepository.GetCommunicationController = someName => commController.Object;
                 //----------------------Act--------------------------
-                var result = sut.FindOptionsBy(mockServer.Object, OptionsService.GateResume);
+                var result = resourceRepository.FindOptionsBy(mockServer.Object, OptionsService.GateResume);
                 //----------------------Assert-----------------------
                 Assert.AreEqual(2, result.Count);
 

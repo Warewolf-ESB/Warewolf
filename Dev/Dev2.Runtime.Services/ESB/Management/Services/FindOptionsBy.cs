@@ -39,10 +39,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            var item = new GateViewOptions { GateFailureAction = new Retry() };
-            var r = new Retry();
-            
-
             var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
