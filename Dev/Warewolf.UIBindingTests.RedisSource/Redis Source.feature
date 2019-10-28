@@ -28,7 +28,7 @@ Scenario: Creating New Redis Source
    Then the save dialog is opened
    Then title is "Testing Redis Source Save"
    And "Testing Redis Source Save" tab is opened
-   
+    
 @RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
