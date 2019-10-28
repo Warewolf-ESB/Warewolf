@@ -1092,15 +1092,22 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public List<IOption> FindOptionsBy(IServer targetEnvironment, string name)
         {
-            var result = new List<IOption>();
-            if (targetEnvironment == null)
+            if (GetCommunicationController != null)
             {
+                var result = new List<IOption>();
+                if (targetEnvironment == null)
+                {
+                    return result;
+                }
+                var comsController = GetCommunicationController.Invoke("FindOptionsBy");
+                comsController.AddPayloadArgument(OptionsService.ParameterName, name);
+                result = comsController.ExecuteCommand<List<IOption>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
                 return result;
             }
-            var comsController = new CommunicationController { ServiceName = "FindOptionsBy" };
-            comsController.AddPayloadArgument(OptionsService.ParameterName, name);
-            result = comsController.ExecuteCommand<List<IOption>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
-            return result;
+            else
+            {
+                throw new NullReferenceException("Cannot Find Options By. Cannot get Communication Controller.");
+            }
         }
 
         public ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
