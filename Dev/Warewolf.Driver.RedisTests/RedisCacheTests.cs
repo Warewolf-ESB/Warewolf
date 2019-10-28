@@ -21,7 +21,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_NullFunction_ShouldThrowException()
+        public void RedisCache_Constructor_NullFunction_ShouldThrowException()
         {
             //--------------Arrange------------------------------
             //--------------Act----------------------------------
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
-        public void Set_StringValue_ShouldCallStringSetOnCache()
+        public void RedisCache_Set_StringValue_ShouldCallStringSetOnCache()
         {
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Set_NullValue_ShouldThrowArgumentNullException()
+        public void RedisCache_Set_NullValue_ShouldThrowArgumentNullException()
         {
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Set_NotStringValue_ShouldThrowInvalidOperationException()
+        public void RedisCache_Set_NotStringValue_ShouldThrowInvalidOperationException()
         {
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Set_NullKey_ShouldThrowArgumentNullException()
+        public void RedisCache_Set_NullKey_ShouldThrowArgumentNullException()
         {
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Get_NullKey_ShouldThrowArgumentNullException()
+        public void RedisCache_Get_NullKey_ShouldThrowArgumentNullException()
         {
             //--------------Arrange------------------------------
             var ext = System.Threading.Tasks.TaskExtensions.Unwrap(new System.Threading.Tasks.Task<System.Threading.Tasks.Task>(() => System.Threading.Tasks.Task.FromResult(true)));
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
-        public void Get_ValidKey_ShouldReturn()
+        public void RedisCache_Get_ValidKey_ShouldReturn()
         {
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
