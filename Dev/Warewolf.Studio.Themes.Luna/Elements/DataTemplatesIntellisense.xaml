@@ -106,17 +106,17 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionComboBoxStyle" DataType="{x:Type options:OptionCombobox}">
-        <Grid Margin="{StaticResource ControlBorderTop}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+            <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
             <ComboBox Grid.Column="1" 
-                      ItemsSource="{Binding Path=OptionNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      DisplayMemberPath="Value"
-                      Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding Path=OptionNames}"
+                      DisplayMemberPath="."
+                      Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource ComboBoxStyle}" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />

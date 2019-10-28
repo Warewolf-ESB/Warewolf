@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Warewolf.Options
 {
@@ -166,25 +168,25 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        private Enum _value;
+        private int _value;
 
         public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
 
-        public event EventHandler<OptionValueChangedArgs<Enum>> ValueUpdated;
+        public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
 
-        public Enum Value
+        public int Value
         {
             get => _value;
             set
             {
-                var eventArgs = new OptionValueChangedArgs<Enum>(_name, _value, value);
+                var eventArgs = new OptionValueChangedArgs<int>(_name, _value, value);
                 _value = value;
                 RaisePropertyChanged(nameof(Value));
                 ValueUpdated?.Invoke(this, eventArgs);
             }
         }
 
-        public Enum Default { get; set; }
+        public int Default { get; set; }
 
         public object Clone()
         {
@@ -273,15 +275,11 @@ namespace Warewolf.Options
         }
         public Dictionary<string, IEnumerable<IOption>> Options { get; } = new Dictionary<string, IEnumerable<IOption>>();
 
-        public IEnumerable<string> OptionNames
+        public List<string> OptionNames
         {
             get
             {
-                if (string.IsNullOrEmpty(Value))
-                {
-                    return new List<string>();
-                }
-                return Options.Keys;
+                return Options.Keys.ToList();
             }
         }
 
