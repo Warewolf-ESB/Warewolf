@@ -39,13 +39,13 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.StringSet(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(()=> mockConnection.Object);
             //--------------Act----------------------------------
             redis.Set<string>("bob", "the builder");
             //--------------Assert-------------------------------
-            mockDatabase.Verify(db => db.StringSet(It.IsAny<string>(), It.IsAny<string>()),Times.Once);
+            mockDatabase.Verify(db => db.Set(It.IsAny<string>(), It.IsAny<string>()),Times.Once);
 
         }
 
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.StringSet(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.StringSet(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.StringSet(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             var ext = System.Threading.Tasks.TaskExtensions.Unwrap(new System.Threading.Tasks.Task<System.Threading.Tasks.Task>(() => System.Threading.Tasks.Task.FromResult(true)));
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.StringGet(It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Get(It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
@@ -130,16 +130,16 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.StringGet("bob")).Verifiable();
+            mockDatabase.Setup(db => db.Get("bob")).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
             redis.Get("bob");
             //--------------Assert-------------------------------
-            mockDatabase.Verify(db => db.StringGet("bob"), Times.Once);
-        }
+            mockDatabase.Verify(db => db.Get("bob"), Times.Once);
+        }      
     }
-
+  
     internal class RedisCacheStub : RedisCacheBase
     {
         public RedisCacheStub(Func<IRedisConnection> createConnection) : base(createConnection)

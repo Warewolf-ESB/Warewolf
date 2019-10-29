@@ -1,4 +1,5 @@
 ﻿@WebSource
+@RedisSource
 Feature: Redis Source
 	In order to create a Redis source for accessing a Redis Cache Server
 	As a Warewolf user
@@ -6,10 +7,14 @@ Feature: Redis Source
 
 @RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:EnableDocker.txt	
 Scenario: Creating New Redis Source 
    Given I open New Redis Source 
    Then "New Redis Source" tab is opened
@@ -28,13 +33,17 @@ Scenario: Creating New Redis Source
    Then the save dialog is opened
    Then title is "Testing Redis Source Save"
    And "Testing Redis Source Save" tab is opened
-    
+
 @RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:EnableDocker.txt	   
 Scenario: Creating New Redis Source under password
    Given I open New Redis Source
    And I type HostName as "localhost"
@@ -47,13 +56,17 @@ Scenario: Creating New Redis Source under password
    And "Save" is "Enabled"
    When I save the source
    Then the save dialog is opened
-	
+
 @RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:EnableDocker.txt		
 Scenario: Incorrect hostname anonymous auth type not allowing save
    Given I open New Redis Source
    And I type HostName as "sdfsdfd"
@@ -63,13 +76,17 @@ Scenario: Incorrect hostname anonymous auth type not allowing save
    When Test Connecton is "UnSuccessful"
    And Validation message is thrown
    And "Save" is "Enabled"
-   	
+
 @RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:EnableDocker.txt	   	
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection 
    Given I open New Redis Source
    And "Save" is "Disabled"
@@ -90,13 +107,17 @@ Scenario: Testing Auth type as Anonymous and swaping it resets the test connecti
    And I Select Authentication Type as "Password"
    And Password field is "Visible"
    And "Save" is "Enabled" 
-	 	 
-@WebSource
+
+@RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:EnableDocker.txt		 	 
 Scenario: Editing saved Redis Source 
    Given I open "Test-Redis" redis source
    Then "Test-Redis" tab is opened

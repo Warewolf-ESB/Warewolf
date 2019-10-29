@@ -9,24 +9,27 @@
 */
 
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.SaveDialog;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
-using Dev2.Threading;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Warewolf.UIBindingTests.Core;
+using Warewolf.Test.Agent;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Warewolf.UIBindingTests.Core;
 using Dev2.Infrastructure.Tests;
-using Dev2.Studio.Core;
-using Dev2.Common.SaveDialog;
+using Dev2.Threading;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Dev2.Common.Interfaces.Core;
 
 namespace Warewolf.UIBindingTests.RedisSource
 {
@@ -35,6 +38,7 @@ namespace Warewolf.UIBindingTests.RedisSource
     {
         readonly ScenarioContext _scenarioContext;
         string _illegalCharactersInPath = "Illegal characters in path.";
+        public static ContainerLauncher _containerOps;
 
         public RedisSourceSteps(ScenarioContext scenarioContext)
         {
@@ -46,7 +50,7 @@ namespace Warewolf.UIBindingTests.RedisSource
             this._scenarioContext = scenarioContext;
         }
 
-        [BeforeFeature("RedisSource")]
+        [BeforeFeature(@"RedisSource")]
         public static void SetupForSystem()
         {
             Utils.SetupResourceDictionary();
@@ -68,9 +72,9 @@ namespace Warewolf.UIBindingTests.RedisSource
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
 
-        [BeforeScenario("RedisSource")]
+        [BeforeScenario(@"RedisSource")]
         public void SetupForRedisSource()
-        {
+        {         
             _scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<RedisSourceControl>(Utils.ViewNameKey));
             _scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IRedisSourceModel>>("updateManager"));
             _scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
@@ -100,7 +104,8 @@ namespace Warewolf.UIBindingTests.RedisSource
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(redisSourceControl);
         }
-
+      
+        [Given(@"I type HostName as ""(.*)""")]
         [Then(@"I type HostName as ""(.*)""")]
         [When(@"I change HostName to ""(.*)""")]
         public void ThenITypeHostNameAs(string hostName)
@@ -336,7 +341,7 @@ namespace Warewolf.UIBindingTests.RedisSource
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
         }
 
-        [AfterScenario("RedisSource")]
+        [AfterScenario(@"RedisSource")]
         public void Cleanup()
         {
             var mockExecutor = new Mock<IExternalProcessExecutor>();
