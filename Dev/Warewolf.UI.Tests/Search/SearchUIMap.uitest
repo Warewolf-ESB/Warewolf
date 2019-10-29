@@ -40,25 +40,7 @@
     </Group>
   </Configuration>
   <InitializeActions />
-  <ExecuteActions>
-    <AssertAction UIObjectName="SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Custom</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-  </ExecuteActions>
+  <ExecuteActions />
   <CleanupActions />
   <OnErrorActions />
   <Maps>
@@ -717,7 +699,7 @@
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
