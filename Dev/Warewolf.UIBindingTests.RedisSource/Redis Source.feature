@@ -71,6 +71,7 @@ Scenario: Creating New Redis Source under password
 Scenario: Incorrect hostname anonymous auth type not allowing save
    Given I open New Redis Source
    And I type HostName as "sdfsdfd"
+   And I type port number as "6379"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "Anonymous"
@@ -92,6 +93,7 @@ Scenario: Testing Auth type as Anonymous and swaping it resets the test connecti
    Given I open New Redis Source
    And "Save" is "Disabled"
    And I type HostName as "localhost" 
+   And I type port number as "6379"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "Password"
@@ -123,7 +125,8 @@ Scenario: Editing saved Redis Source
    Given I open "Test-Redis" redis source
    Then "Test-Redis" tab is opened
    And title is "Test-Redis"
-   And HostName is "localhost"
+   And HostName is "http://RSAKLFSVRTFSBLD/IntegrationTestSite"
+   And I type port number as "6379"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And Select Authentication Type as "Anonymous"

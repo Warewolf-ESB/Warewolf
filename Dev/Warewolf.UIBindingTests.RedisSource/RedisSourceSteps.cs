@@ -137,9 +137,10 @@ namespace Warewolf.UIBindingTests.RedisSource
             var password = TestEnvironmentVariables.GetVar(username);
             var redisSourceDefinition = new RedisSourceDefinition
             {
-                Name = "Test",
+                Name = "Test-Redis",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
-                Password = password
+                Password = password,
+                Port = "6379"
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(redisSourceDefinition);
