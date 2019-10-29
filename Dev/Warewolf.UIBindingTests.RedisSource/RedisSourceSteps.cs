@@ -9,27 +9,25 @@
 */
 
 using System;
-using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.SaveDialog;
+using Dev2.Infrastructure.Tests;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
+using Dev2.Threading;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Warewolf.Test.Agent;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Warewolf.Test.Agent;
 using Warewolf.UIBindingTests.Core;
-using Dev2.Infrastructure.Tests;
-using Dev2.Threading;
-using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Dev2.Common.Interfaces.Core;
 
 namespace Warewolf.UIBindingTests.RedisSource
 {
@@ -74,7 +72,7 @@ namespace Warewolf.UIBindingTests.RedisSource
 
         [BeforeScenario(@"RedisSource")]
         public void SetupForRedisSource()
-        {         
+        {
             _scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<RedisSourceControl>(Utils.ViewNameKey));
             _scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IRedisSourceModel>>("updateManager"));
             _scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
@@ -104,7 +102,7 @@ namespace Warewolf.UIBindingTests.RedisSource
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(redisSourceControl);
         }
-      
+
         [Given(@"I type HostName as ""(.*)""")]
         [Then(@"I type HostName as ""(.*)""")]
         [When(@"I change HostName to ""(.*)""")]
@@ -123,7 +121,7 @@ namespace Warewolf.UIBindingTests.RedisSource
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             redisSourceControl.EnterPortNumber(portNumber);
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
-            Assert.AreEqual(portNumber, viewModel.HostName);
+            Assert.AreEqual(portNumber, viewModel.Port);
         }
 
         [Given(@"I open ""(.*)"" redis source")]
