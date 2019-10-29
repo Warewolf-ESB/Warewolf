@@ -124,22 +124,22 @@
                                 <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                 <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                                <PropertyCondition Name="Name">Dev2.Settings.Scheduler.SchedulerViewModel</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.Triggers.Scheduler.SchedulerViewModel</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="UI_SchedulerView_AutoID" SpecialControlType="None">
+                                <UIObject ControlType="Custom" Id="ContentDockManager" FriendlyName="ContentDockManager" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
-                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
@@ -364,7 +364,7 @@
                                                 </UIObject>
                                               </Descendants>
                                             </UIObject>
-                                            <UIObject ControlType="ListItem" Id="NewTask1ResourceListItem" FriendlyName="Name:New Task1 ResourceId:99c1d2b9-11c3-45b1-abb5-..." SpecialControlType="None">
+                                            <UIObject ControlType="ListItem" Id="AllToolsResourceListItem" FriendlyName="Name:All Tools ResourceId:" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -372,7 +372,7 @@
                                               <AndCondition>
                                                 <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="Name" Operator="Contains">Name:New Task1 ResourceId</PropertyCondition>
+                                                <PropertyCondition Name="Name" Operator="Contains">Name:All Tools ResourceId:</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>

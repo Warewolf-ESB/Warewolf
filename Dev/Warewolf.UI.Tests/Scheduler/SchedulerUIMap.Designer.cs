@@ -223,21 +223,21 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Settings.Scheduler.SchedulerViewModel";
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Triggers.Scheduler.SchedulerViewModel";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WorkSurfaceContext WorkSurfaceContext
+        public ContentDockManager ContentDockManager
         {
             get
             {
-                if ((this.mWorkSurfaceContext == null))
+                if ((this.mContentDockManager == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext(this);
+                    this.mContentDockManager = new ContentDockManager(this);
                 }
-                return this.mWorkSurfaceContext;
+                return this.mContentDockManager;
             }
         }
         
@@ -276,7 +276,7 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         #endregion
         
         #region Fields
-        private WorkSurfaceContext mWorkSurfaceContext;
+        private ContentDockManager mContentDockManager;
         
         private WpfButton mCloseButton;
         
@@ -285,16 +285,16 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "16.0.28315.86")]
-    public class WorkSurfaceContext : WpfCustom
+    public class ContentDockManager : WpfCustom
     {
         
-        public WorkSurfaceContext(UITestControl searchLimitContainer) : 
+        public ContentDockManager(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -626,15 +626,15 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
             }
         }
         
-        public NewTask1ResourceListItem NewTask1ResourceListItem
+        public AllToolsResourceListItem AllToolsResourceListItem
         {
             get
             {
-                if ((this.mNewTask1ResourceListItem == null))
+                if ((this.mAllToolsResourceListItem == null))
                 {
-                    this.mNewTask1ResourceListItem = new NewTask1ResourceListItem(this);
+                    this.mAllToolsResourceListItem = new AllToolsResourceListItem(this);
                 }
-                return this.mNewTask1ResourceListItem;
+                return this.mAllToolsResourceListItem;
             }
         }
         
@@ -692,7 +692,7 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         
         private NewAssignWfSchedule mNewAssignWfSchedule;
         
-        private NewTask1ResourceListItem mNewTask1ResourceListItem;
+        private AllToolsResourceListItem mAllToolsResourceListItem;
         
         private ScheduleNewTaskListItem mScheduleNewTaskListItem;
         
@@ -777,14 +777,14 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "16.0.28315.86")]
-    public class NewTask1ResourceListItem : WpfListItem
+    public class AllToolsResourceListItem : WpfListItem
     {
         
-        public NewTask1ResourceListItem(UITestControl searchLimitContainer) : 
+        public AllToolsResourceListItem(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "Name:New Task1 ResourceId", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "Name:All Tools ResourceId:", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }

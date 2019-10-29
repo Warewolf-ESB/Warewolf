@@ -91,21 +91,21 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         [When("I create a new scheduled task using shortcut")]
         public void Create_Scheduler_Using_Shortcut()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, new Point(151, 13));
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, "N", ModifierKeys.Control);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList, new Point(151, 13));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList, "N", ModifierKeys.Control);
         }
 
         [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
         public void Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = @"Warewolf Administrators\LocalSchedulerAdmin";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "987Sched#@!";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.UserNameTextBoxEdit.Text = @"Warewolf Administrators\LocalSchedulerAdmin";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.PasswordTextbox.Text = "987Sched#@!";
         }
 
         [When(@"I Click Scheduler Create New Task Button")]
         public void Click_Scheduler_NewTaskButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton, new Point(151, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton, new Point(151, 13));
         }
 
         public void Click_SchedulerTab_CloseButton()
@@ -116,27 +116,27 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         [When(@"I Click Erase Schedule Button")]
         public void Click_Schedule_EraseSchedulerButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
         }
 
         [When("I delete the UI Load Test scheduled task")]
         public void Delete_First_Scheduled_Task()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UILoadTestiListItem.EnabledCheckbox);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UILoadTestiListItem.DeleteButton, new Point(6, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.UILoadTestiListItem.EnabledCheckbox);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.UILoadTestiListItem.DeleteButton, new Point(6, 16));
             Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton);
         }
 
         [When(@"I Click Scheduler Enable Disable Checkbox Button")]
         public void Click_HelloWorldSchedule_EnableOrDisableCheckbox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox);
         }
 
         [When(@"I Click Scheduler ResourcePicker Button")]
         public void Click_Scheduler_ResourcePickerButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(14, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.ResourcePickerButton, new Point(14, 13));
         }
     }
 }
