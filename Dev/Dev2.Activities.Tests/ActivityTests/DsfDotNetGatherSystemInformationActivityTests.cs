@@ -146,6 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var warewolfServerVersion = env.EvalAsListOfStrings("[[warewolfServerVersion]]", 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfServerVersion[0]), "[[warewolfServerVersion]]");
         }
+
         [TestMethod]
         public void GetCorrectSystemInformation_WarewolfCPU_GatherShouldHaveValues()
         {
@@ -161,11 +162,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             var data = new Mock<IDSFDataObject>();
             data.Setup(o => o.Environment).Returns(env);
             data.Setup(o => o.IsDebugMode()).Returns(() => true);
-
-            ob.Execute(data.Object, 0);
-
-            var warewolfCPU = env.EvalAsListOfStrings("[[warewolfCPU]]", 0);
+            var warewolfCPU = GetWarewolfCPUInfo(ob, env, data);
+            if (string.IsNullOrWhiteSpace(warewolfCPU[0]))
+            {
+                warewolfCPU = GetWarewolfCPUInfo(ob, env, data);
+            }
             Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfCPU[0]), "[[warewolfCPU]]");
+        }
+
+        static IList<string> GetWarewolfCPUInfo(DsfDotNetGatherSystemInformationActivity ob, ExecutionEnvironment env, Mock<IDSFDataObject> data)
+        {
+            ob.Execute(data.Object, 0);
+            return env.EvalAsListOfStrings("[[warewolfCPU]]", 0);
         }
 
         [TestMethod]
