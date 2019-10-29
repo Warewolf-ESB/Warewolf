@@ -19,7 +19,9 @@ namespace Dev2.Tests.Activities.Activities.Redis
     [TestClass]
     public class RedisCacheTests
     {
-        [TestMethod]
+        [TestMethod]      
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RedisCache_Constructor_NullFunction_ShouldThrowException()
         {
@@ -30,6 +32,8 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         public void RedisCache_Set_StringValue_ShouldCallStringSetOnCache()
         {
             //--------------Arrange------------------------------
@@ -46,6 +50,8 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RedisCache_Set_NullValue_ShouldThrowArgumentNullException()
         {
@@ -62,6 +68,8 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void RedisCache_Set_NotStringValue_ShouldThrowInvalidOperationException()
         {
@@ -78,6 +86,8 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RedisCache_Set_NullKey_ShouldThrowArgumentNullException()
         {
@@ -94,6 +104,8 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RedisCache_Get_NullKey_ShouldThrowArgumentNullException()
         {
@@ -111,6 +123,8 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Hagashen Naidu")]
         public void RedisCache_Get_ValidKey_ShouldReturn()
         {
             //--------------Arrange------------------------------
