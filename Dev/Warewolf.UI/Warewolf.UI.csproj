@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="OptionView.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" />
+    <Compile Include="OptionViewConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">

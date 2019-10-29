@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.Gate
         private string _selectedGateFailure;
         private bool _gateSelectionVisible;
         private string _selectedRetryStrategy;
-        private ObservableCollection<OptionView> _options;
+        private IEnumerable<IOption> _options;
         private IServer _server;
         private IResourceRepository _resourceRepository;
 
@@ -61,7 +61,6 @@ namespace Dev2.Activities.Designers2.Gate
                 DeleteRow(x as DecisionTO);
             });
 
-            Options = new ObservableCollection<OptionView>();
             LoadOptions();
         }
 
@@ -71,22 +70,7 @@ namespace Dev2.Activities.Designers2.Gate
             _server = activeServer;
             _resourceRepository = _server.ResourceRepository;
 
-            var retryOptions = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume);
-
-            UpdateOptions(retryOptions);
-        }
-
-        private void UpdateOptions(List<IOption> options)
-        {
-            Options.Clear();
-            var optionViews = new ObservableCollection<OptionView>();
-            foreach (var option in options)
-            {
-                var optionView = new OptionView(option, () => { });
-                optionViews.Add(optionView);
-            }
-
-            Options = optionViews;
+            Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume);
         }
 
         private void LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone()
@@ -226,7 +210,7 @@ namespace Dev2.Activities.Designers2.Gate
         }
 
 
-        public ObservableCollection<OptionView> Options
+        public IEnumerable<IOption> Options
         {
             get => _options;
             set
@@ -235,7 +219,6 @@ namespace Dev2.Activities.Designers2.Gate
                 OnPropertyChanged(nameof(Options));
             }
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -62,6 +62,12 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionAutocompleteStyle";
                 }
+                if (DataContext is IOptionEnum)
+                {
+                    dataTemplateName = "OptionEnumComboBoxStyle";
+                    var item = DataContext as IOptionEnum;
+                    item.ValueUpdated += Item_ValueUpdated;
+                }
                 if (DataContext is IOptionComboBox)
                 {
                     dataTemplateName = "OptionComboBoxStyle"; 
@@ -73,6 +79,11 @@ namespace Warewolf.UI
 
                 return application?.TryFindResource(dataTemplateName) as DataTemplate;
             }
+        }
+
+        private void Item_ValueUpdated(object sender, OptionValueChangedArgs<int> e)
+        {
+            _valueUpdatedAction();
         }
 
         private void Item_ValueUpdatedComboBox(object sender, OptionValueChangedArgs<string> e)
