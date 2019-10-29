@@ -32,7 +32,7 @@ namespace Warewolf.Driver.Redis
             switch (value)
             {
                 case string s:
-                    Cache.StringSet(key, s);
+                    Cache.Set(key, s);
                     break;
                 case IDictionary<string,string> dict:
                     Cache.HashSet(key,dict);
@@ -47,7 +47,7 @@ namespace Warewolf.Driver.Redis
         public string Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            return Cache.StringGet(key);
+            return Cache.Get(key);
         }
     }
 

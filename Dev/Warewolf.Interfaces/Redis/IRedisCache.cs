@@ -12,8 +12,8 @@ namespace Warewolf.Interfaces
 {
     public interface IRedisCache
     {
-        bool StringSet(string key, string value);
-        string StringGet(string key);
+        bool Set(string key, string value);
+        string Get(string key);
         bool HashSet(string key, System.Collections.Generic.IDictionary<string, string> dictionary);
     }
 }

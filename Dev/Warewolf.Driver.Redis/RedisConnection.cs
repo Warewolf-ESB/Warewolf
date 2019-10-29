@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using StackExchange.Redis;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using ServiceStack.Redis;
 using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
@@ -20,29 +18,28 @@ namespace Warewolf.Driver.Redis
     {
         public RedisConnection(string hostName)
         {
-            var connection = ConnectionMultiplexer.Connect(hostName);
-            Cache = new RedisCache(connection.GetDatabase());
+            var client = new RedisClient(hostName);
+            Cache = new RedisCache(client);
         }
         public IRedisCache Cache { get; private set; }
     }
 
     internal class RedisCache : IRedisCache
     {
-        private IDatabase _database;
+        private readonly RedisClient _client;
 
-        public RedisCache(IDatabase database)
+        public RedisCache(RedisClient client)
         {
-            _database = database;
+            _client = client;
         }
 
-        public bool HashSet(string key,IDictionary<string,string> dictionary)
+        public bool HashSet(string key, IDictionary<string, string> dictionary)
         {
-            var entries = dictionary.Select(item => new HashEntry(item.Key, item.Value)).ToArray();
-            _database.HashSet(key, entries);
+            _client.SetRangeInHash(key, dictionary);
             return true;
         }
 
-        public string StringGet(string key) => _database.StringGet(key);
-        public bool StringSet(string key, string value) => _database.StringSet(key,value);
+        public string Get(string key) => _client.Get<string>(key);
+        public bool Set(string key, string value) => _client.Set(key, value);
     }
 }
