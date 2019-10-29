@@ -47,6 +47,7 @@ Scenario: Creating New Redis Source
 Scenario: Creating New Redis Source under password
    Given I open New Redis Source
    And I type HostName as "localhost"
+   And I type port number as "6379"
    And "Save" is "Enabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "Password"

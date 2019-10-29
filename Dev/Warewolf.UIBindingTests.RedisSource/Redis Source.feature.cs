@@ -172,22 +172,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 49
    testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
-   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
-   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
-   testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+   testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
-   testRunner.When("I save the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
+   testRunner.When("I save the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 59
    testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -213,23 +215,23 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
-#line 70
-this.ScenarioSetup(scenarioInfo);
 #line 71
-   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 72
-   testRunner.And("I type HostName as \"sdfsdfd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 73
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type HostName as \"sdfsdfd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
-   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
-   testRunner.When("Test Connecton is \"UnSuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
-   testRunner.And("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.When("Test Connecton is \"UnSuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 78
+   testRunner.And("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 79
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -255,45 +257,45 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
-#line 90
-this.ScenarioSetup(scenarioInfo);
 #line 91
-   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 92
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 93
-   testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 95
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
-   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
-   testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
-   testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
-   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 105
-   testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
    testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+   testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 100
+   testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 106
+   testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
-   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
+   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -319,33 +321,33 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
-#line 121
-this.ScenarioSetup(scenarioInfo);
 #line 122
-   testRunner.Given("I open \"Test-Redis\" redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 123
-   testRunner.Then("\"Test-Redis\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Given("I open \"Test-Redis\" redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
-   testRunner.And("title is \"Test-Redis\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("\"Test-Redis\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 125
-   testRunner.And("HostName is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"Test-Redis\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("HostName is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
-   testRunner.And("Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
-   testRunner.When("I change HostName to \"anotherredisserver\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 132
-   testRunner.Then("\"Test-Redis *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 133
+#line 128
    testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+   testRunner.And("Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 132
+   testRunner.When("I change HostName to \"anotherredisserver\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 133
+   testRunner.Then("\"Test-Redis *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 134
+   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 135
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
