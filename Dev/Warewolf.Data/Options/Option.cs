@@ -172,6 +172,19 @@ namespace Warewolf.Options
 
         public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
 
+        public List<string> OptionNames
+        {
+            get
+            {
+                var optionNames = new List<string>();
+                foreach (var opt in Options)
+                {
+                    optionNames.Add(opt.Key.ToString());
+                }
+                return optionNames;
+            }
+        }
+
         public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
 
         public int Value

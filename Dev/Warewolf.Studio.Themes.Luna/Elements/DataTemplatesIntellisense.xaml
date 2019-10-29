@@ -5,14 +5,18 @@
                     xmlns:options="clr-namespace:Warewolf.Options;assembly=Warewolf.Data"
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources">
-
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                    xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI">
 
     <ResourceDictionary.MergedDictionaries>
         <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
         <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
         <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector" />
+
+    <ColumnDefinition x:Key="MasterColumnDefinition" Width="100" />
 
     <DataTemplate x:Key="DefaultDefaultTextTemplate">
         <ContentControl Content="{Binding}"
@@ -50,11 +54,11 @@
             <TextBlock Grid.Column="0" Text="None" HorizontalAlignment="Center" />
         </Grid>
     </DataTemplate>
-    
+
     <DataTemplate x:Key="OptionBoolStyle" DataType="{x:Type options:OptionBool}">
-        <Grid Margin="{StaticResource ControlBorderTop}">
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -68,9 +72,9 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionIntStyle" DataType="{x:Type options:OptionInt}">
-        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -84,9 +88,9 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionAutocompleteStyle" DataType="{x:Type options:OptionAutocomplete}">
-        <Grid Margin="{StaticResource ControlBorderTop}">
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -105,23 +109,72 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="OptionComboBoxStyle" DataType="{x:Type options:OptionCombobox}">
-        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <DataTemplate x:Key="OptionEnumComboBoxStyle" DataType="{x:Type options:OptionEnum}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
-            <ComboBox Grid.Column="1" 
-                      ItemsSource="{Binding Path=OptionNames}"
-                      DisplayMemberPath="."
-                      Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource ComboBoxStyle}" >
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
+                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
+                <ComboBox Grid.Column="1" 
+                          ItemsSource="{Binding Path=OptionNames}"
+                          DisplayMemberPath="."
+                          Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxStyle}" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionComboBoxStyle" DataType="{x:Type options:OptionCombobox}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
+                <ComboBox Grid.Column="1" 
+                          ItemsSource="{Binding Path=OptionNames}"
+                          DisplayMemberPath="."
+                          Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxStyle}" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ContentPresenter ContentTemplate="{StaticResource OptionListBoxStyle}" DataContext="{Binding .}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionListBoxStyle" DataType="{x:Type options:OptionCombobox}">
+        <Grid DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <ListBox x:Name="OptionsListBox" 
+                     ItemsSource="{Binding SelectedOptions, Converter={StaticResource OptionViewConverter}}" 
+                     ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle1}"
+                     BorderBrush="Transparent"
+                     Margin="0,0,-1,0">
+            </ListBox>
         </Grid>
     </DataTemplate>
 

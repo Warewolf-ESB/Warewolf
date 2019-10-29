@@ -316,7 +316,7 @@
         <Expander Grid.Row="2" Header="Resume"
                   Style="{StaticResource ServiceTestTestStepExpander}" >
             <ListBox x:Name="OptionsListBox" 
-                         ItemsSource="{Binding Options}" 
+                         ItemsSource="{Binding Options, Converter={StaticResource OptionViewConverter}}" 
                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
                          Padding="0,3,3,3">
