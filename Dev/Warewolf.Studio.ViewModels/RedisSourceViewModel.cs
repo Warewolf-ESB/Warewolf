@@ -60,6 +60,7 @@ namespace Warewolf.Studio.ViewModels
             _warewolfserverName = redisSourceModel.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
             _hostName = string.Empty;
+            _port = string.Empty;
             _password = string.Empty;
             HeaderText = Resources.Languages.Core.RedisNewHeaderLabel;
             Header = Resources.Languages.Core.RedisNewHeaderLabel;
@@ -371,6 +372,7 @@ namespace Warewolf.Studio.ViewModels
             HostName = HostName,
             Password = Password,
             Name = ResourceName,
+            Port = Port,
             Id = _redisServiceSource?.Id ?? Guid.NewGuid()
         };
 
@@ -394,6 +396,7 @@ namespace Warewolf.Studio.ViewModels
                 return new RedisSourceDefinition
                 {
                     HostName = HostName,
+                    Port = Port,
                     AuthenticationType = AuthenticationType,
                     Password = Password,
                     Name = ResourceName,
@@ -404,6 +407,7 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 _redisServiceSource.HostName = HostName;
+                _redisServiceSource.Port = Port;
                 _redisServiceSource.AuthenticationType = AuthenticationType;
                 _redisServiceSource.Password = Password;
                 return _redisServiceSource;
@@ -422,6 +426,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Name = Item.Name,
                 HostName = HostName,
+                Port = Port,
                 AuthenticationType = AuthenticationType,
                 Password = Password,
                 Id = Item.Id,
