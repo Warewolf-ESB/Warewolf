@@ -2541,7 +2541,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "CodedUITestServerSourceDuplicated";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "CodedUITestServerSourceDuplicated", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
