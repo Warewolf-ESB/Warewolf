@@ -6243,7 +6243,7 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Text" Id="Text" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+                <UIObject ControlType="Text" Id="Text" FriendlyName="CI Remote Connection" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf</WindowTitle>
@@ -11156,7 +11156,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="ComboboxListItemAsRemoteConnectionIntegration" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsRemoteConnectionIntegration" FriendlyName="CI Remote Connection" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
@@ -11165,11 +11165,11 @@
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">CI Remote Connection</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Text" Id="Text" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+                <UIObject ControlType="Text" Id="Text" FriendlyName="CI Remote Connection" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf</WindowTitle>
@@ -11177,14 +11177,14 @@
                   <AndCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">CI Remote Connection</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="ComboboxListItemAsRestrictedRemoteConnection" FriendlyName="Restricted Remote Connection" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsRestrictedRemoteConnection" FriendlyName="Restricted CI Remote" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
@@ -11193,11 +11193,11 @@
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name" Operator="Contains">Restricted Remote Connection</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Restricted CI Remote</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Text" Id="Text" FriendlyName="Restricted Remote Connection" SpecialControlType="None">
+                <UIObject ControlType="Text" Id="Text" FriendlyName="Restricted CI Remote" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf</WindowTitle>
@@ -11205,7 +11205,7 @@
                   <AndCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="Name" Operator="Contains">Restricted Remote Connection</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Restricted CI Remote</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />

@@ -264,7 +264,7 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
-                                                    <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+                                                    <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="CI Remote Connection" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf</WindowTitle>
@@ -272,7 +272,7 @@
                                                       <AndCondition>
                                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                                                        <PropertyCondition Name="Name" Operator="Contains">CI Remote Connection</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
@@ -516,7 +516,7 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
-                                                    <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+                                                    <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="CI Remote Connection" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf</WindowTitle>
@@ -524,7 +524,7 @@
                                                       <AndCondition>
                                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                                                        <PropertyCondition Name="Name" Operator="Contains">CI Remote Connection</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
@@ -869,7 +869,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="DeployDestinationRemoteConnection" FriendlyName="Remote Connection Integration (Connected)" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="DeployDestinationRemoteConnection" FriendlyName="CI Remote Connection (Connected)" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -878,11 +878,11 @@
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Remote Connection Integration (Connected)</PropertyCondition>
+                <PropertyCondition Name="Name">CI Remote Connection (Connected)</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Text" Id="ConnectedRemoteServer" FriendlyName="Remote Connection Integration (Connected)" SpecialControlType="None">
+                <UIObject ControlType="Text" Id="ConnectedRemoteServer" FriendlyName="CI Remote Connection (Connected)" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -890,7 +890,7 @@
                   <AndCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">Remote Connection Integration (Connected)</PropertyCondition>
+                    <PropertyCondition Name="Name">CI Remote Connection (Connected)</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
