@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 
@@ -29,7 +30,7 @@ namespace Warewolf.Data.Options
     public class Retry : GateFailureActionBase
     {
         public YesNo Resume { get; set; } = YesNo.No;
-        public string ResumeEndpoint { get; set; } = "Not Yet Set";
+        public Guid ResumeEndpoint { get; set; } = Guid.Empty;
         public int Count { get; set; } = 2;
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
@@ -68,6 +69,8 @@ namespace Warewolf.Data.Options
         }
 
         public int TimeOut { get; set; } = 60000;
+
+        public int Increment { get; set; } = 100;
     }
 
     public class LinearBackoff : RetryAlgorithmBase

@@ -71,6 +71,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
 using Dev2.Instrumentation;
 using Dev2.Triggers;
+using Dev2.Dialogs;
+using Dev2.Studio.Enums;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -111,6 +113,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand _tasksCommand;
         private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
+        private ICommand _addWorkflowCommand;
         readonly IAsyncWorker _asyncWorker;
         readonly IViewFactory _factory;
         readonly IFile _file;
@@ -294,6 +297,41 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        IResourcePickerDialog _currentResourcePicker;
+
+        public ICommand AddWorkflowCommand
+        {
+            get => _addWorkflowCommand ?? (_addWorkflowCommand = new DelegateCommand(param => OpenResourcePicker(param)));
+        }
+
+        private void OpenResourcePicker(object item)
+        {
+            if (_currentResourcePicker.ShowDialog(ServerRepository.ActiveServer))
+            {
+                var optionView = item as Warewolf.UI.OptionView;
+                var selectedResource = _currentResourcePicker.SelectedResource;
+
+                if (optionView.DataContext is Warewolf.Options.OptionWorkflow optionWorkflow)
+                {
+                    optionWorkflow.Value = selectedResource.ResourceId;
+                    optionWorkflow.WorkflowName = selectedResource.ResourcePath;
+                }
+                
+                
+                //SelectedQueue.ResourceId = selectedResource.ResourceId;
+                //SelectedQueue.WorkflowName = selectedResource.ResourcePath;
+                //SelectedQueue.GetInputsFromWorkflow();
+            }
+        }
+
+        IResourcePickerDialog CreateResourcePickerDialog()
+        {
+            var environmentViewModel = ExplorerViewModel?.Environments.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
+            var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
+            return res;
+        }
+
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
@@ -445,6 +483,10 @@ namespace Dev2.Studio.ViewModels
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
+            if (_currentResourcePicker == null)
+            {
+                _currentResourcePicker = CreateResourcePickerDialog();
+            }
         }
 
         public void Handle(ShowReverseDependencyVisualizer message)

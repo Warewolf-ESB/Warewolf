@@ -10,8 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using Warewolf.Data;
 
 namespace Warewolf.Options
 {
@@ -342,6 +342,74 @@ namespace Warewolf.Options
             }
 
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | string.Compare(item.Value, Value);
+        }
+    }
+
+    public class OptionWorkflow : BindableBase, IOptionWorkflow
+    {
+        private Guid _value;
+
+        public Guid Value
+        {
+            get => _value;
+            set
+            {
+                SetProperty(ref _value, value);
+            }
+        }
+
+        public Guid Default;
+
+        public string Name { get; set; }
+
+        Guid IOptionBasic<Guid>.Default => Guid.Empty;
+
+        private string _workflowName;
+
+        public string WorkflowName 
+        {
+            get => _workflowName;
+            set
+            {
+                SetProperty(ref _workflowName, value);
+            }
+        }
+
+        private ICollection<IServiceInputBase> _inputs;
+        public ICollection<IServiceInputBase> Inputs
+        {
+            get => _inputs;
+            set
+            {
+                SetProperty(ref _inputs, value);
+            }
+        }
+
+        public event EventHandler<OptionValueChangedArgs<Guid>> ValueUpdated;
+
+        public object Clone()
+        {
+            return new OptionWorkflow
+            {
+                Name = Name,
+                Value = _value,
+                Inputs = _inputs
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionWorkflow;
+            if (item is null)
+            {
+                return -1;
+            }
+
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
         }
     }
 }

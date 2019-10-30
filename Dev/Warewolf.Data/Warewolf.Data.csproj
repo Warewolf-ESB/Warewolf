@@ -15,4 +15,12 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Prism.Mvvm">
+      <Version>1.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.UnityExtensions">
+      <Version>5.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
 </Project>
