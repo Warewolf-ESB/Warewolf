@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
             _warewolfserverName = redisSourceModel.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
             _hostName = string.Empty;
-            _port = string.Empty;
+            _port = "6379";
             _password = string.Empty;
             HeaderText = Resources.Languages.Core.RedisNewHeaderLabel;
             Header = Resources.Languages.Core.RedisNewHeaderLabel;

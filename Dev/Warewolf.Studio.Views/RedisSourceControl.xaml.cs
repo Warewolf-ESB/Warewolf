@@ -53,6 +53,8 @@ namespace Warewolf.Studio.Views
 
         public string GetPassword() => PasswordTextBox.Password;
 
+        public string GetPort() => RedisPortTextbox.Text;
+
         public void CancelTest()
         {
             CancelButton.Command.Execute(null);

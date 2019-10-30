@@ -113,6 +113,16 @@ namespace Warewolf.UIBindingTests.RedisSource
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             Assert.AreEqual(hostName, viewModel.HostName);
         }
+
+        [Then(@"server port is ""(.*)""")]
+        public void ThenServerPortIs(int port)
+        {
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
+            var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            Assert.AreEqual(port.ToString(), viewModel.Port);
+            Assert.AreEqual(port.ToString(), redisSourceControl.GetPort());
+        }
+
         [Given(@"I type port number as ""(.*)""")]
         [Then(@"I type port number as ""(.*)""")]
         [When(@"I change port number to ""(.*)""")]

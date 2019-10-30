@@ -20,6 +20,7 @@ Scenario: Creating New Redis Source
    Then "New Redis Source" tab is opened
    And title is "New Redis Source"
    And I type HostName as "localhost"
+   And server port is "6379" 
    And I type port number as "6379"
    Then "New Redis Source *" tab is opened
    And "Save" is "Enabled"
