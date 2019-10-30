@@ -776,7 +776,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     this.mRemoteConnectionIntegrationText = new WpfText(this);
                     #region Search Criteria
-                    this.mRemoteConnectionIntegrationText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+                    this.mRemoteConnectionIntegrationText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "CI Remote Connection", PropertyExpressionOperator.Contains));
                     this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -972,7 +972,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     this.mRemoteConnectionIntegrationText = new WpfText(this);
                     #region Search Criteria
-                    this.mRemoteConnectionIntegrationText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+                    this.mRemoteConnectionIntegrationText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "CI Remote Connection", PropertyExpressionOperator.Contains));
                     this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1466,7 +1466,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "CI Remote Connection (Connected)";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -1480,7 +1480,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 {
                     this.mConnectedRemoteServer = new WpfText(this);
                     #region Search Criteria
-                    this.mConnectedRemoteServer.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mConnectedRemoteServer.SearchProperties[WpfText.PropertyNames.Name] = "CI Remote Connection (Connected)";
                     this.mConnectedRemoteServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }

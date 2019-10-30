@@ -115,7 +115,7 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
                     this.mComboboxItemAsRemoteConnectionIntegration = new WpfCustom(this);
                     #region Search Criteria
                     this.mComboboxItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mComboboxItemAsRemoteConnectionIntegration.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+                    this.mComboboxItemAsRemoteConnectionIntegration.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "CI Remote Connection", PropertyExpressionOperator.Contains));
                     this.mComboboxItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }

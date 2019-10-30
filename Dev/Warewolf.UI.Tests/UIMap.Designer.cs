@@ -19665,7 +19665,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "CI Remote Connection", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -19679,7 +19679,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "CI Remote Connection", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19702,7 +19702,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Restricted Remote Connection", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Restricted CI Remote", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -19716,7 +19716,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Restricted Remote Connection", PropertyExpressionOperator.Contains));
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Restricted CI Remote", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
