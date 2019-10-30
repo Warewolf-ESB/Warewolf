@@ -36,8 +36,7 @@ namespace Warewolf.UI.Tests.Workflow
             Playback.Wait(2000);
             ExecuteCommand(fileName);
             Playback.Wait(2000);
-            UIMap.SetPlaybackSettings();
-            UIMap.AssertStudioIsRunning();
+            Assert.IsTrue(UIMap.MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager);
             var dockWidthAfter = UIMap.MainStudioWindow.DockManager.Width;
             Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");
