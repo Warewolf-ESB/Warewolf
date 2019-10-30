@@ -80,7 +80,7 @@ namespace Warewolf.UI.Tests.ServerSource
         public void EditServerSource_LoadCorrectly()
         {
             _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-            const string ExistingSourceName = "ExistingCodedUITestServerSource";
+            const string ExistingSourceName = "ExistingUITestServerSource";
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
@@ -100,7 +100,7 @@ namespace Warewolf.UI.Tests.ServerSource
         [Owner("Pieter Terblanche")]
         public void DuplicateServerSource_AddsToConnectControl()
         {
-            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingCodedUITestServerSource");
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingUITestServerSource");
             const string newName = "DuplicatedCodedUITestServerSource";
             WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
@@ -117,14 +117,14 @@ namespace Warewolf.UI.Tests.ServerSource
         [TestCategory("Server Sources")]
         public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
         {
-            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingCodedUITestServerSource");
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingUITestServerSource");
             const string newName = "CodedUITestServerSourceDuplicated";
             WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
             Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.MoveScrollWheel(-10);
             Mouse.MoveScrollWheel(10);
-            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated.Exists, "This UI test expects ExistingCodedUITestServerSource to exist in the connect control dropdown list.");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated.Exists, "This UI test expects ExistingUITestServerSource to exist in the connect control dropdown list.");
             ExplorerUIMap.Filter_Explorer(newName);
             ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
             DialogsUIMap.Click_Yes_On_The_Confirm_Delete();
@@ -186,7 +186,7 @@ namespace Warewolf.UI.Tests.ServerSource
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenExistingOpenTabHasNoChanges_ClosingStudioPromptsChanges()
         {
-            const string ExistingSourceName = "ExistingCodedUITestServerSource";
+            const string ExistingSourceName = "ExistingUITestServerSource";
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
