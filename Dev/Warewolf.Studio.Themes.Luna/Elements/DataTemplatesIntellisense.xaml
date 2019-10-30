@@ -7,6 +7,7 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                     xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI">
+    <!--xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"-->
 
     <ResourceDictionary.MergedDictionaries>
         <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
@@ -106,6 +107,50 @@
                     <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionAddWorkflowStyle" DataType="{x:Type options:OptionWorkflow}">
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+            <Grid Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" 
+                         x:Name="WorkflowTextBox"
+                         Text="{Binding Path=DataContext.WorkflowName}"
+                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                         ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipWorkFlow}"
+                         HorizontalAlignment="Stretch"
+                         AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
+                         IsReadOnly="True">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextWorkFlow}"
+                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                <!--, diag:PresentationTraceSources.TraceLevel=High-->
+                <Button Grid.Column="1" 
+                        Content="..."
+                        Margin="{StaticResource ControlBorderLeft}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{x:Static languages:Tooltips.QueueAddWorkflowCommandToolTip}"
+                        CommandParameter="{Binding .}"
+                        Command="{Binding Path=DataContext.AddWorkflowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}" 
+                        AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueAddWorkflowCommandHelpText}"
+                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+            </Grid>
         </Grid>
     </DataTemplate>
 

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Warewolf.Options
 {
@@ -59,6 +60,11 @@ namespace Warewolf.Options
     public interface IOptionBool : IOptionBasic<bool>
     {
 
+    }
+
+    public interface IOptionWorkflow : IOptionBasic<Guid>
+    {
+        string WorkflowName { get; set; }
     }
 
     public interface IOptionNotifyUpdate<T>

@@ -48,11 +48,10 @@ namespace Warewolf.UI
             get
             {
                 string dataTemplateName = "OptionNoneStyle";
-                if (DataContext is IOptionBool)
+                if (DataContext is IOptionBool optionBool)
                 {
                     dataTemplateName = "OptionBoolStyle";
-                    var item = DataContext as IOptionBool;
-                    item.ValueUpdated += Item_ValueUpdatedBool;
+                    optionBool.ValueUpdated += Item_ValueUpdatedBool;
                 }
                 if (DataContext is IOptionInt)
                 {
@@ -62,17 +61,19 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionAutocompleteStyle";
                 }
-                if (DataContext is IOptionEnum)
+                if (DataContext is IOptionWorkflow)
+                {
+                    dataTemplateName = "OptionAddWorkflowStyle";
+                }
+                if (DataContext is IOptionEnum optionEnum)
                 {
                     dataTemplateName = "OptionEnumComboBoxStyle";
-                    var item = DataContext as IOptionEnum;
-                    item.ValueUpdated += Item_ValueUpdated;
+                    optionEnum.ValueUpdated += Item_ValueUpdated;
                 }
-                if (DataContext is IOptionComboBox)
+                if (DataContext is IOptionComboBox optionComboBox)
                 {
                     dataTemplateName = "OptionComboBoxStyle"; 
-                    var item = DataContext as IOptionComboBox;
-                    item.ValueUpdated += Item_ValueUpdatedComboBox;
+                    optionComboBox.ValueUpdated += Item_ValueUpdatedComboBox;
                 }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
