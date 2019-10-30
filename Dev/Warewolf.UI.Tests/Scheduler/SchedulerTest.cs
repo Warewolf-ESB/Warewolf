@@ -110,7 +110,6 @@ namespace Warewolf.UI.Tests.Scheduler
             Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             WorkflowTabUIMap.DisplayStartNodeContextMenu();
             WorkflowTabUIMap.Click_Scheduler_StartNode_Context_Item();
-            DialogsUIMap.Click_MessageBox_OK();
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.Exists, "Scheduled items list doe not exist");
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.ContentDockManager.SchedulerView.SchedulesList.NewAssignWfSchedule.Exists, "NewAssignWfSchedule was not created.");
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
