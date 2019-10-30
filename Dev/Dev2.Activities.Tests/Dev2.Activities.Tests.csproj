@@ -538,9 +538,6 @@
     <PackageReference Include="RabbitMQ.Client">
       <Version>3.6.1</Version>
     </PackageReference>
-    <PackageReference Include="StackExchange.Redis">
-      <Version>2.0.601</Version>
-    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.111</Version>
     </PackageReference>
