@@ -36,7 +36,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -54,37 +53,44 @@
         </StackPanel>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Host Name" Margin="{StaticResource ElementBorderTop}"/>
-        <TextBox x:Name="RedisHostNameTextbox"
-                 Grid.Column="1" 
-                 Grid.Row="1" 
-                 Margin="{StaticResource ElementBorderTop}"
-                 Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="{x:Static languages:Tooltips.RedisSourceHostNameTooltip}"
-                 Focusable="True">
-            <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:HelpText.RedisSourceHostNameHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </TextBox>
+        <Grid Grid.Row="1" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="RedisHostNameTextbox"
+                     Grid.Column="0" 
+                     Margin="{StaticResource ElementBorderTop}"
+                     Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{x:Static languages:Tooltips.RedisSourceHostNameTooltip}"
+                     Focusable="True">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.RedisSourceHostNameHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Text="Port" />
-        <TextBox x:Name="RedisPortTextbox"
-                 Grid.Column="1" 
-                 Grid.Row="2" 
-                 Margin="{StaticResource ElementBorderTop}"
-                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="{x:Static languages:Tooltips.RedisSourcePortTooltip}"
-                 Focusable="True">
-            <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:HelpText.RedisSourcePortHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </TextBox>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text=":"></TextBlock>
+            
+            <TextBox x:Name="RedisPortTextbox"
+                     Grid.Column="2" 
+                     MinWidth="35"
+                     Margin="{StaticResource ElementBorderTop}"
+                     Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{x:Static languages:Tooltips.RedisSourcePortTooltip}"
+                     Focusable="True">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.RedisSourcePortHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
+        </Grid>
 
         <TextBlock Grid.Column="0"
-                   Grid.Row="3" 
+                   Grid.Row="2" 
                    Margin="0,-3,0,-3"
                    x:Name="Authentication"
                    Text="{x:Static languages:Core.AuthenticationTypeLabel}"/>
-        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" Margin="0,-3,0,0">
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Margin="0,-3,0,0">
             <RadioButton Margin="{StaticResource ControlBorderRight}" 
                          x:Name="AnonymousRadioButton" 
                          ToolTip="{x:Static languages:Tooltips.AnonymousAuthenticationToolTip}" 
@@ -113,7 +119,7 @@
         <Grid x:Name="PasswordContainer" 
               Grid.Column="0"
               Grid.ColumnSpan="2"
-              Grid.Row="4" 
+              Grid.Row="3" 
               Margin="0,-3,0,6"
               Visibility="{Binding Path=PasswordSelected,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
@@ -136,7 +142,7 @@
             </PasswordBox>
         </Grid>
         <StackPanel Grid.Column="1" 
-                    Grid.Row="5" 
+                    Grid.Row="4" 
                     Margin="{StaticResource ControlBorderTop}" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
@@ -177,7 +183,7 @@
                     Content="{x:Static languages:Core.CancelTest}"></Button>
         </StackPanel>
         <TextBox TextWrapping="WrapWithOverflow" 
-                 Grid.Row="6"
+                 Grid.Row="5"
                  VerticalAlignment="Top"
                  HorizontalAlignment="Left"
                  x:Name="ErrorTextBlock" 
