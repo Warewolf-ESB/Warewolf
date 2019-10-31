@@ -11550,10 +11550,10 @@
                 <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">DuplicatedCodedUITestServerSource</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">DuplicatedServerSource</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>

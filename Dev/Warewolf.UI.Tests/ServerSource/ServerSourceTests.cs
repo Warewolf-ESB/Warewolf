@@ -108,7 +108,7 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Filter_Explorer(newName);
             Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists, "New server source does not exist in the connect control dropdown list.");
         }
 
         [TestMethod]
