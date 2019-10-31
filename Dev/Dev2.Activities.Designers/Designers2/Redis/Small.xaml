@@ -32,23 +32,55 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Text="Key" />
-            <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                    Grid.Column="1"
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
+            <ComboBox Grid.Column="1"
+                      Grid.Row="0"
+                      x:Name="InitialFocusElement"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      ItemsSource="{Binding RedisServers}"
+                      DisplayMemberPath="ResourceName"
+                      Margin="{StaticResource ControlBorderRight}"
+                      IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
+                      SelectedItem="{Binding SelectedRedisServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static languages:Tooltips.RedisServersToolTip}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisServers_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisServerHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button Grid.Column="2"
+                    Grid.Row="0"
+                    Content="..."
+                    Command="{Binding EditRedisServerCommand}"
+                    ToolTip="{x:Static languages:Tooltips.RedisEditServerToolTip}"
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRedisServerCommand_AutoID}" >
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisEditServerHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="Key" 
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
+                                    Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding Path=ModelItem.Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisKeyTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.RedisKeyToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisKeyHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Key"
                                          SourcePropertyValue="{Binding ModelItem.Key, UpdateSourceTrigger=PropertyChanged}"

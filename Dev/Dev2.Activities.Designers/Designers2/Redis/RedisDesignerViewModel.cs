@@ -8,27 +8,40 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Interfaces;
 using System.Activities;
 using System.Windows.Media;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Common.ExtMethods;
+using System.Collections.ObjectModel;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core;
+using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers2.Redis
 {
     public class RedisDesignerViewModel : ActivityDesignerViewModel
     {
+        readonly IServer _server;
+
+        [ExcludeFromCodeCoverage]
         public RedisDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, ServerRepository.Instance.ActiveServer)
+        {
+
+        }
+
+        public RedisDesignerViewModel(ModelItem modelItem, IServer server)
             : base(modelItem)
         {
+            VerifyArgument.IsNotNull("environmentModel", server);
+            _server = server;
+
             AddTitleBarLargeToggle();
             var dataFunc = modelItem.Properties["ActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             ActivityFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
@@ -37,19 +50,52 @@ namespace Dev2.Activities.Designers2.Redis
             {
                 ActivityFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
             }
+            RedisServers = new ObservableCollection<RedisSource>();
+            LoadRedisServers();
+            EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
         }
 
-      
-        public Visibility Visibility
+        public ObservableCollection<RedisSource> RedisServers { get; private set; }
+
+        public RedisSource SelectedRedisServer
         {
-            get { return (Visibility)GetValue(VisibilityProperty); }
-            set { SetValue(VisibilityProperty, value); }
+            get => (RedisSource)GetValue(SelectedRedisServerProperty);
+            set => SetValue(SelectedRedisServerProperty, value);
+        }
+
+        public static readonly DependencyProperty SelectedRedisServerProperty =
+            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
+
+        private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (RedisDesignerViewModel)d;
+            viewModel.EditRedisServerCommand.RaiseCanExecuteChanged();
+        }
+
+        public RelayCommand EditRedisServerCommand { get; private set; }
+
+        public bool IsRedisServerSelected => SelectedRedisServer != null;
+
+        private void EditRedisServerSource()
+        {
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            if (shellViewModel != null)
+            {
+                shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, shellViewModel.ActiveServer);
+                LoadRedisServers();
+            }
+        }
+
+        private void LoadRedisServers()
+        {
+            var redisServers = _server.ResourceRepository.FindSourcesByType<RedisSource>(_server, enSourceType.RedisSource);
+            RedisServers = redisServers.ToObservableCollection();
         }
 
         public string ActivityFuncDisplayName
         {
-            get { return (string)GetValue(ActivityFuncDisplayNameProperty); }
-            set { SetValue(ActivityFuncDisplayNameProperty, value); }
+            get => (string)GetValue(ActivityFuncDisplayNameProperty);
+            set => SetValue(ActivityFuncDisplayNameProperty, value);
         }
 
         public static readonly DependencyProperty ActivityFuncDisplayNameProperty =
@@ -57,18 +103,14 @@ namespace Dev2.Activities.Designers2.Redis
 
         public ImageSource ActivityFuncIcon
         {
-            get { return (ImageSource)GetValue(ActivityFuncIconProperty); }
-            set { SetValue(ActivityFuncIconProperty, value); }
+            get => (ImageSource)GetValue(ActivityFuncIconProperty);
+            set => SetValue(ActivityFuncIconProperty, value);
         }
 
         public static readonly DependencyProperty ActivityFuncIconProperty =
             DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
 
-
-        public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
-
-      
+        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }

@@ -69,6 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceID = redisSourceDef.Id,
                     HostName = redisSourceDef.HostName,
+                    Port = redisSourceDef.Port,
                     AuthenticationType = redisSourceDef.AuthenticationType,
                     Password = redisSourceDef.Password, 
                     ResourceName = redisSourceDef.Name
