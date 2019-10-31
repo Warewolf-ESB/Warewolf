@@ -143,6 +143,7 @@
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
+    <Compile Include="ServiceModel\RedisSourcesTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
