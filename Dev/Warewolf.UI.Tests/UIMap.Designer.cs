@@ -20035,7 +20035,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "DuplicatedCodedUITestServerSource";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "DuplicatedServerSource", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
             #endregion
         }
