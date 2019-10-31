@@ -162,11 +162,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var data = new Mock<IDSFDataObject>();
             data.Setup(o => o.Environment).Returns(env);
             data.Setup(o => o.IsDebugMode()).Returns(() => true);
-            var warewolfCPU = GetWarewolfCPUInfo(ob, env, data);
-            if (string.IsNullOrWhiteSpace(warewolfCPU[0]))
+            IList<string> warewolfCPU;
+            int retryCount = 0;
+            do
             {
                 warewolfCPU = GetWarewolfCPUInfo(ob, env, data);
             }
+            while (string.IsNullOrWhiteSpace(warewolfCPU[0]) && retryCount++ < 100);
             Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfCPU[0]), "[[warewolfCPU]]");
         }
 
