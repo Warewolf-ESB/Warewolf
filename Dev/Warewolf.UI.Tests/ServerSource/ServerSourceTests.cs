@@ -101,7 +101,7 @@ namespace Warewolf.UI.Tests.ServerSource
         public void DuplicateServerSource_AddsToConnectControl()
         {
             ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingUITestServerSource");
-            const string newName = "DuplicatedCodedUITestServerSource";
+            const string newName = "DuplicatedServerSource";
             WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
             UIMap.WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
