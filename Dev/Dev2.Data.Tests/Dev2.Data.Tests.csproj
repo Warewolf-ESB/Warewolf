@@ -153,6 +153,7 @@
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
+    <Compile Include="ServiceModel\RedisSourceTests.cs" />
     <Compile Include="SetingTest.cs" />
     <Compile Include="ListIndexIteratorTests.cs" />
     <Compile Include="LoopedIndexIteratorTests.cs" />

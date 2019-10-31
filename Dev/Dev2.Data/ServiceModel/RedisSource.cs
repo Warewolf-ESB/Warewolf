@@ -23,6 +23,7 @@ namespace Dev2.Data.ServiceModel
 {
     public class RedisSource : Resource, IDisposable, IResourceSource, IRedisSource
     {
+        const string DefaultPort = "6379";
         public string HostName { get; set; }
         public string Password { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
@@ -34,6 +35,7 @@ namespace Dev2.Data.ServiceModel
             ResourceID = Guid.Empty;
             ResourceType = "RedisSource";
             AuthenticationType = AuthenticationType.Anonymous;
+            Port = DefaultPort;
         }
 
         public RedisSource(XElement xml)
@@ -41,7 +43,7 @@ namespace Dev2.Data.ServiceModel
         {
             ResourceType = "RedisSource";
             AuthenticationType = AuthenticationType.Anonymous;
-
+            Port = DefaultPort;
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "HostName", string.Empty },
