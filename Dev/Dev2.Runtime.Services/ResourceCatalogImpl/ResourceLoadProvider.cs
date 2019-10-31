@@ -183,7 +183,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 { enSourceType.WebSource, ()=>BuildSourceList<WebSource>(resources) },
                 { enSourceType.OauthSource, ()=>BuildSourceList<DropBoxSource>(resources) },
                 { enSourceType.SharepointServerSource, ()=>BuildSourceList<SharepointSource>(resources) },
-                { enSourceType.ExchangeSource, ()=>BuildSourceList<ExchangeSource>(resources) }
+                { enSourceType.ExchangeSource, ()=>BuildSourceList<ExchangeSource>(resources) },
+                { enSourceType.RedisSource, ()=>BuildSourceList<RedisSource>(resources) }
             };
 
             var result = commands.ContainsKey(sourceType) ? commands[sourceType].Invoke() : null;
