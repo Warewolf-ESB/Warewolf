@@ -14,11 +14,26 @@ using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
 {
-    internal class RedisConnection : IRedisConnection
+    public class RedisConnection : IRedisConnection
     {
         public RedisConnection(string hostName)
         {
             var client = new RedisClient(hostName);
+            Cache = new RedisCache(client);
+        }
+        public RedisConnection(string hostName, int port)
+        {
+            var client = new RedisClient(hostName, port);
+            Cache = new RedisCache(client);
+        }
+        public RedisConnection(string hostName, int port, string password)
+        {
+            var client = new RedisClient(hostName, port, password);
+            Cache = new RedisCache(client);
+        }
+        public RedisConnection(System.Uri uri)
+        {
+            var client = new RedisClient(uri);
             Cache = new RedisCache(client);
         }
         public IRedisCache Cache { get; private set; }
