@@ -250,6 +250,7 @@
     <Compile Include="Services\SaveTriggerQueueServiceTests.cs" />
     <Compile Include="Services\DeleteTriggerQueueServiceTests.cs" />
     <Compile Include="Services\SaveRedisSourceTests.cs" />
+    <Compile Include="Services\TestRedisSourceTests.cs" />
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
     <Compile Include="Triggers\TriggersCatalogTests.cs" />
