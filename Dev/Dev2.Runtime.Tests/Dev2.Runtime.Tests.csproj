@@ -143,6 +143,7 @@
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
+    <Compile Include="ServiceModel\RedisSourcesTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Services\SaveTriggerQueueServiceTests.cs" />
     <Compile Include="Services\DeleteTriggerQueueServiceTests.cs" />
     <Compile Include="Services\SaveRedisSourceTests.cs" />
+    <Compile Include="Services\TestRedisSourceTests.cs" />
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
     <Compile Include="Triggers\TriggersCatalogTests.cs" />

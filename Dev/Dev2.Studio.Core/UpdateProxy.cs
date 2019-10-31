@@ -26,8 +26,7 @@ using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
-
-
+using Warewolf.Service;
 
 namespace Dev2.Studio.Core
 {
@@ -196,9 +195,9 @@ namespace Dev2.Studio.Core
         public void SaveRedisServiceSource(IRedisServiceSource redisServiceSource, Guid serverWorkspaceId)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SaveRedisSource");
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveRedisSource));
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("RedisSource", serialiser.SerializeToBuilder(redisServiceSource));
+            comsController.AddPayloadArgument(SaveRedisSource.RedisSource, serialiser.SerializeToBuilder(redisServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
             {
@@ -209,9 +208,9 @@ namespace Dev2.Studio.Core
         public void TestConnection(IRedisServiceSource redisServiceSource)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("TestRedisServiceSource");
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestRedisSource));
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("RedisServiceSource", serialiser.SerializeToBuilder(redisServiceSource));
+            comsController.AddPayloadArgument(TestRedisSource.RedisSource, serialiser.SerializeToBuilder(redisServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
