@@ -11,8 +11,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     public class Service
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Resource Tools")]
         public void ServiceTool_UIBehaviourCheck_UITest()
         {

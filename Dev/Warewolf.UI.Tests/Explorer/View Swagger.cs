@@ -13,8 +13,6 @@ namespace Warewolf.UI.Tests
     public class ViewSwagger
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void ShowSwagger_ForResource()
         {

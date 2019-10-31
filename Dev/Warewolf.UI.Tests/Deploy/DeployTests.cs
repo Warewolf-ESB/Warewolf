@@ -15,8 +15,6 @@ namespace Warewolf.UI.Tests
     public class DeployTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy")]
         public void Deploy_Tab_Default_View()
         {
@@ -41,8 +39,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy")]
         public void Deploy_Select_Server_AutoConnects_Destination_Server()
         {
@@ -51,8 +47,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy")]
         public void Deploy_Select_Server_AutoConnects_Source_Server()
         {
@@ -61,8 +55,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy Hello World")]
         public void Deploy_Hello_World()
         {
@@ -71,8 +63,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy Select Dependencies")]
         public void Deploy_DotnetWorkFlowForTesttingSelectAllDependencies_HasSourceSelected()
         {
@@ -88,8 +78,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy")]
         public void Deploy_EditingServer_KeepsSelectedServer()
         {
@@ -100,8 +88,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy")]
         public void Deploy_Button_Is_Enabling_When_Selecting_Resource_In_Source_Side()
         {
@@ -112,8 +98,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy Filtering")]
         public void Filtering_And_Clearing_Filter_On_Source_Side()
         {
@@ -124,8 +108,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy Filtering")]
         public void Deploying_With_Filter_Enabled()
         {
@@ -137,8 +119,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection()
         {
@@ -149,8 +129,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy from Remote")]
         public void Open_Deploy_Tab_And_Change_Source_Loads_Resources()
         {
@@ -163,8 +141,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection_CreateNewWorkflow()
         {

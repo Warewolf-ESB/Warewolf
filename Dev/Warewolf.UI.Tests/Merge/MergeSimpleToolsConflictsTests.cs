@@ -13,8 +13,6 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeAllConflicting = "MergeAllConflicting";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Merge_From_MergeWfWithVersion_ContextMenu_Show_Merge_PopUp()
         {
@@ -23,8 +21,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Assign_From_The_Difference_List_Adds_Assign_To_The_Workflow()
         {

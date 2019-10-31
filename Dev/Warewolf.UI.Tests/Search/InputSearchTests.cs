@@ -10,8 +10,6 @@ namespace Warewolf.UI.Tests.Search
     public class InputSearchTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_InputVariable_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
@@ -23,8 +21,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_Existing_InputVariable_All_Lower_Case_And_Match_Case_Is_False()
         {
@@ -37,8 +33,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_Existing_InputVariable_All_Upper_Case_And_Match_Case_Is_False()
         {
@@ -51,8 +45,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_Existing_InputVariable_All_Lower_Case_And_Match_Case_Is_True()
         {
@@ -65,8 +57,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_Existing_InputVariable_All_Upper_Case_And_Match_Case_Is_True()
         {
@@ -79,8 +69,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_Partial_Existing_InputVariable_And_Match_WholeWord_Is_False()
         {
@@ -93,8 +81,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_Partial_Existing_InputVariable_And_Match_WholeWord_Is_True()
         {
@@ -107,8 +93,6 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Input Search")]
         public void Given_UnExisting_InputVariable_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {

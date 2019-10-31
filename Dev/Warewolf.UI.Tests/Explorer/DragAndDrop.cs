@@ -8,8 +8,6 @@ namespace Warewolf.UI.Tests
     public class DragAndDrop
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Moving_Resource_Into_The_Same_Folder_Does_Not_Create_Duplicate_UITest()
         {
@@ -23,8 +21,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void MergeFolders_With_DragAndDrop_UITest()
         {

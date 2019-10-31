@@ -11,8 +11,6 @@ namespace Warewolf.UI.Tests
         const string SourceName = "CodedUITestEmailSource";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Source Wizards")]
         public void Create_Save_And_Edit_EmailSource_From_ExplorerContextMenu_UITests()
         {

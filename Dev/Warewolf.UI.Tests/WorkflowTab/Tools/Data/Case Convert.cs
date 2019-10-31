@@ -9,8 +9,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     public class Case_Convert
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Data Tools")]
         public void CaseConvertTool_Small_And_Large_Then_QVIView_UITest()
         {
@@ -29,8 +27,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Data Tools")]
         public void CaseConvertTool_Small_And_Large_Then_ShowErrorBox_UITest()
         {

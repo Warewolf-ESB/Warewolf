@@ -20,8 +20,6 @@ namespace Warewolf.UI.Tests.Explorer
         const string DeleteRemoteServer = "RemoteServerToDelete";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Delete_ExplorerResource()
         {
@@ -33,8 +31,6 @@ namespace Warewolf.UI.Tests.Explorer
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void DeleteDialog_PressEscape_ClosesDialogWindow()
         {
@@ -45,8 +41,6 @@ namespace Warewolf.UI.Tests.Explorer
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void DeletedResourceIsRemovedFromResources()
         {
@@ -62,8 +56,6 @@ namespace Warewolf.UI.Tests.Explorer
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void DeletedResourceShowDependencies()
         {
@@ -79,8 +71,6 @@ namespace Warewolf.UI.Tests.Explorer
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void DeletedFolderShowDependencies()
         {
@@ -96,8 +86,6 @@ namespace Warewolf.UI.Tests.Explorer
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void DeletedRemoteServer_RemoveItemFromTree()
         {

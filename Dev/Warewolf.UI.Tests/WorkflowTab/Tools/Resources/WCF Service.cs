@@ -10,8 +10,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     public class WCF_Service
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Resource Tools")]
         public void WCFServiceTool_Small_And_LargeView_Then_NewSource_UITest()
         {

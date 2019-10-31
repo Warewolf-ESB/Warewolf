@@ -9,8 +9,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     public class Base_Convert
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Data Tools")]
         public void BaseConvertTool_Small_And_Large_Then_QVIView_UITest()
         {
@@ -26,8 +24,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "Base Conversion QVI Window does not exist on the design surface");
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Data Tools")]
         public void BaseConvertTool_EnterData_Then_Debug_UITest()
         {
@@ -39,8 +35,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Data Tools")]
         public void BaseConvertTool_Small_And_Large_Then_ShowErrorBox_UITest()
         {

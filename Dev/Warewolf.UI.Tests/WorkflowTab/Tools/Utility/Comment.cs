@@ -12,8 +12,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
         private const string TestingCommentToolForWidthResize = "TestingCommentToolForWidthResize";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Utility Tools")]
         public void CommentTool_EnterText_Save_And_Resize_Height_Then_Debug_UITest()
         {
@@ -33,8 +31,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Utility Tools")]
         public void CommentTool_EnterText_Save_And_Resize_Width_Then_Debug_UITest()
         {
