@@ -3734,11 +3734,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Redis Server Source.
+        /// </summary>
+        public static string RedisEditServerToolTip {
+            get {
+                return ResourceManager.GetString("RedisEditServerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Key to store data.
+        /// </summary>
+        public static string RedisKeyToolTip {
+            get {
+                return ResourceManager.GetString("RedisKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The account password.
         /// </summary>
         public static string RedisPasswordTooltip {
             get {
                 return ResourceManager.GetString("RedisPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured redis source..
+        /// </summary>
+        public static string RedisServersToolTip {
+            get {
+                return ResourceManager.GetString("RedisServersToolTip", resourceCulture);
             }
         }
         
