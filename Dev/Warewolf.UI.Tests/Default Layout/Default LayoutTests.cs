@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.Workflow
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Default Layout")]
-        public void Studio_Default_Layout_UITest()
+        public void StudioLayout_ChangesSaved_UITest()
         {
             Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");
             var fileName = studio?.MainModule.FileName;
@@ -24,15 +24,6 @@ namespace Warewolf.UI.Tests.Workflow
             UIMap.Close_And_Lock_Side_Menu_Bar();
             var dockWidthBefore = UIMap.MainStudioWindow.DockManager.Width;
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            string path = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
-            path = Directory.GetParent(path).ToString();
-            Console.WriteLine("Layout file Path: " + path);
-            var layOutFile = Environment.ExpandEnvironmentVariables(path + @"\AppData\Local\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml");
-            if(File.Exists(layOutFile))
-            {
-                Console.WriteLine("Actual Layout file: " + fileName);
-                File.Delete(layOutFile);
-            }
             Playback.Wait(2000);
             ExecuteCommand(fileName);
             Playback.Wait(2000);
