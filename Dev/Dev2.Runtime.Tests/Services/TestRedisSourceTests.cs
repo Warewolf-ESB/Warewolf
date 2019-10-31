@@ -11,9 +11,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -55,6 +61,75 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual("TestRedisSource", testRedisSource.HandlesType());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TestRedisSource))]
+        public void TestRedisSource_CreateServiceEntry_ExpectActions()
+        {
+            //------------Setup for test--------------------------
+            var testRedisSource = new TestRedisSource();
+            //------------Execute Test---------------------------
+            var dynamicService = testRedisSource.CreateServiceEntry();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dynamicService);
+            Assert.IsNotNull(dynamicService.Actions);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TestRedisSource))]
+        public void TestRedisSource_Execute_NullValues_ErrorResult()
+        {
+            //------------Setup for test--------------------------
+            var testRedisSource = new TestRedisSource();
+            var serializer = new Dev2JsonSerializer();
+            //------------Execute Test---------------------------
+            var jsonResult = testRedisSource.Execute(null, null);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result.HasError);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TestRedisSource))]
+        public void TestRedisSource_Execute_ResourceIDNotPresent_ErrorResult()
+        {
+            //------------Setup for test--------------------------
+            var values = new Dictionary<string, StringBuilder> { { "item", new StringBuilder() } };
+            var testRedisSource = new TestRedisSource();
+            var serializer = new Dev2JsonSerializer();
+            //------------Execute Test---------------------------
+            var jsonResult = testRedisSource.Execute(values, null);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result.HasError);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TestRedisSource))]
+        public void TestRedisSource_Execute_GivenResourceDefination_ShouldTestNewSourceReturnResourceDefinationMsg()
+        {
+            //---------------Set up test pack-------------------
+            var serializer = new Dev2JsonSerializer();
+            var source = new RedisSourceDefinition()
+            {
+                Id = Guid.Empty,
+                Name = "Name",
+                HostName = "HostName",
+                Port = "3679",
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+            };
+            var testRedisSource = new TestRedisSource();
+            var values = new Dictionary<string, StringBuilder>
+            {
+                { "RedisSource", source.SerializeToJsonStringBuilder() }
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var jsonResult = testRedisSource.Execute(values, null);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(result.HasError);
         }
     }
 }
