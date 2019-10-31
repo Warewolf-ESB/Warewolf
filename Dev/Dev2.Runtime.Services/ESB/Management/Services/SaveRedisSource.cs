@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Save Redis Resource Service", GlobalConstants.WarewolfInfo);
 
-                values.TryGetValue(nameof(RedisSource), out StringBuilder resourceDefinition);
+                values.TryGetValue(Warewolf.Service.SaveRedisSource.RedisSource, out StringBuilder resourceDefinition);
 
                 IRedisServiceSource redisSourceDef = serializer.Deserialize<RedisSourceDefinition>(resourceDefinition);
 
@@ -97,6 +97,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public string HandlesType() => nameof(SaveRedisSource);
+        public string HandlesType() => nameof(Warewolf.Service.SaveRedisSource);
     }
 }
