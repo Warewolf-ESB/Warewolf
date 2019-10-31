@@ -329,6 +329,10 @@
       <Project>{b1ecf2e3-9706-43a5-a5ab-97ae8ca577cd}</Project>
       <Name>Warewolf.Driver.RabbitMQ</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj">
+      <Project>{86df54bb-e37d-4559-8014-13d6030a2242}</Project>
+      <Name>Warewolf.Driver.Redis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
