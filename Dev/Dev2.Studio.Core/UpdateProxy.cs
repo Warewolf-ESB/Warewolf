@@ -75,7 +75,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfTestException(output.Message.ToString(), null);
             }
         }
-        
+
         public IList<string> TestDbConnection(IDbSource resource)
         {
             var con = Connection;
@@ -196,9 +196,9 @@ namespace Dev2.Studio.Core
         public void SaveRedisServiceSource(IRedisServiceSource redisServiceSource, Guid serverWorkspaceId)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SaveRedisServiceSource");
+            var comsController = CommunicationControllerFactory.CreateController("SaveRedisSource");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("RedisServiceSource", serialiser.SerializeToBuilder(redisServiceSource));
+            comsController.AddPayloadArgument("RedisSource", serialiser.SerializeToBuilder(redisServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
             {
