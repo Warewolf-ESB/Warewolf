@@ -1853,6 +1853,15 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisSourcePortHelp" xml:space="preserve">
     <value>RedisSourcePortHelp</value>
   </data>
+  <data name="RedisServerHelp" xml:space="preserve">
+    <value>Select a preconfigured redis source.</value>
+  </data>
+  <data name="RedisEditServerHelp" xml:space="preserve">
+    <value>Edit the selected redis connection properties</value>
+  </data>
+  <data name="RedisKeyHelp" xml:space="preserve">
+    <value>Redis Key to store data</value>
+  </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
   </data>
