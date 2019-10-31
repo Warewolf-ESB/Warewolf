@@ -8,8 +8,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
     public class Start_Node
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Tools")]
         public void WorkflowDesignSurface_StartNode_IsVisible_UITest()
         {

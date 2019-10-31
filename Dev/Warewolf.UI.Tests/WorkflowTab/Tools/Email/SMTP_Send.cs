@@ -13,8 +13,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email
         const string SourceName = "EmailSourceFromTool";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void SMTPSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -76,8 +74,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_HtmlBody_Checkbox_Is_Selected_UITest()
         {
@@ -94,8 +90,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.HtmlBodyCheckBox.Checked, "HTML Body Combobox is not checked after changing to small view.");
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void SMTPMultipleAttachmentsUITest()
         {

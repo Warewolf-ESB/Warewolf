@@ -12,8 +12,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
     public class Switch
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragOnWorkflow_UITest()
         {
@@ -29,8 +27,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragDialogWindow_UITest()
         {
@@ -41,8 +37,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_EditSwitchCase_UITest()
         {

@@ -19,8 +19,6 @@ namespace Warewolf.UI.Tests.Merge
         public const string Merge_Assign_Content_Conflict = "Merge_Assign_Content_Conflict";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge_WitH_Resource_History_Open_In_Exporer()
         {
@@ -33,8 +31,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge_WitH_Updated_Name_Should_Show_Conflict_On_Names()
         {
@@ -47,8 +43,6 @@ namespace Warewolf.UI.Tests.Merge
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge_For_MergeWithCopiedTool_Has_Two_Assign_Tools()
         {
@@ -60,8 +54,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void MergeWithCopiedTool_Has_Current_Assign_Selected_And_Connector_Selected()
         {
@@ -76,8 +68,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Open_MergeLoopingConnector_Has_New_Connector_Conflict_Enabled()
         {
@@ -92,8 +82,6 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem6.Current.Enabled);
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge3ToolsWorkflow_Given_Current_Replace_Is_Selected_Difference_Connector_Is_Disabled()
         {
@@ -107,8 +95,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge3ToolsWorkflow_Has_Conflicts()
         {
@@ -130,8 +116,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Selecting_Difference_For_Replace_Tool_Has_Replace_On_The_Design_Surface()
         {
@@ -148,8 +132,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void UnSelecting_Difference_For_Replace_Tool_Removes_Replace_On_The_Design_Surface()
         {
@@ -167,8 +149,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Merge_CommentTool_Content_Changed()
         {
@@ -183,8 +163,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Merge_AssignTool_Content_Changed()
         {

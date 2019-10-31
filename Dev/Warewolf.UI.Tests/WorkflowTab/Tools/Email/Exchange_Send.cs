@@ -13,8 +13,6 @@ namespace Warewolf.UI.Tests.Tools
         const string SourceName = "ExchangeSourceFromTool";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -55,8 +53,6 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_HtmlBody_Checkbox_Is_Selected_UITest()
         {
@@ -72,8 +68,6 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeMultipleAttachments_LargeViewUITest()
         {

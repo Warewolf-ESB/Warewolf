@@ -13,8 +13,6 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeForeach = "MergeForeach";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Select_All_Current_Radio_Buttons_Has_Tools_On_The_Surface()
         {
@@ -30,8 +28,6 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Select_All_Difference_Radio_Buttons_Has_Tools_On_The_Surface()
         {

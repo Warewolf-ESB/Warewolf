@@ -16,8 +16,6 @@ namespace Warewolf.UI.Tests
         const string SourceName = "CodedUITestSQLServerSource";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SQLServerSource_From_ExplorerContextMenu_UITests()
@@ -54,8 +52,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         // ReSharper disable once InconsistentNaming
         public void Test_SQLServerSource_From_ExplorerContextMenu_UITests()
@@ -76,8 +72,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateSQLServerSource_GivenTabHasChanges_ClosingStudioPromptsChanges()

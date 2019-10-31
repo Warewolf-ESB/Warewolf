@@ -12,8 +12,6 @@ namespace Warewolf.UI.Tests.Tools
         const string SourceName = "MySQLSourceFromTool";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void MySQLDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -64,8 +62,6 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void MySQLDatabaseConnectorTool_Test_Connection_From_Design_Surface_UITest()
         {
@@ -83,8 +79,6 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void MySQLDatabaseConnectorTool_Test_Command_Timeout_Empty_UITest()
         {

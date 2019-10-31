@@ -16,8 +16,6 @@ namespace Warewolf.UI.Tests.ServerSource
     public class ServerSourceTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServer_GivenTabIsOpened_ShouldHaveDefaultControls()
@@ -34,8 +32,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServerSource_GivenTabIsOpenedUserButtonSelected_ShouldHaveCredentialsControls()
@@ -49,8 +45,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void SaveNewServerSource_GivenSourceName()
@@ -73,8 +67,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
@@ -94,8 +86,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void DuplicateServerSource_AddsToConnectControl()
@@ -112,8 +102,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
         {
@@ -140,8 +128,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void Try_Create_Server_Source_On_Restricted_Server()
         {
@@ -165,8 +151,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenTabHasChanges_ClosingStudioPromptsChanges()
@@ -180,8 +164,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenExistingOpenTabHasNoChanges_ClosingStudioPromptsChanges()
@@ -198,8 +180,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_CreateNewWorkflow_ClosingWorkflowDoesNotError()
@@ -217,8 +197,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
@@ -241,8 +219,6 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void DoubleClicking_ErrorMessage_SelectsWholeMessage()
         {

@@ -9,8 +9,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
     public class SortTest
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void SortTool_Small_And_LargeView_UITest()
         {

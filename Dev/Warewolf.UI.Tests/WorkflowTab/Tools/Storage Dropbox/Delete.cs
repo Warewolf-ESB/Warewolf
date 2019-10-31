@@ -10,8 +10,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Storage_Dropbox
     public class Delete
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dropbox Tools")]
         public void DropboxDeleteTool_Small_And_LargeView_Then_NewSource_UITest()
         {

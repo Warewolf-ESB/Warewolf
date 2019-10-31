@@ -13,8 +13,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
         const string SourceName = "SharepointSourceFromTool";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {

@@ -16,8 +16,6 @@ namespace Warewolf.UI.Tests.DependencyGraph
     public class ShowDependencyTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenDotnetWorkflowAsDependencyIsDoubleClicked_ShouldOpenWorkflowTabWithToolsInside()
@@ -34,8 +32,6 @@ namespace Warewolf.UI.Tests.DependencyGraph
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenSourceIsDoubleClicked_ShouldOpenSourceTab()
@@ -50,8 +46,6 @@ namespace Warewolf.UI.Tests.DependencyGraph
             Assert.AreEqual(@"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll", DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text);
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dependency Graph")]
         public void ShowDependencies_ExplorerContextMenuItem_UITest()
         {
@@ -65,8 +59,6 @@ namespace Warewolf.UI.Tests.DependencyGraph
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dependency Graph")]
         public void ShowDependencies_On_An_Unfiltered_Resource()
         {

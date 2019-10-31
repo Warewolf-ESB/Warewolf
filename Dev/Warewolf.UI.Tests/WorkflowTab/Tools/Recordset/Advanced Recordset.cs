@@ -18,8 +18,6 @@ namespace Warewolf.UI.Tests
         const string CopyPasteADNameChange = "CopyPasteADNameChange";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset")]
         public void F6_Execute_OnFocustLost_Thus_Persisting_Textbox_Changes()
         {
@@ -43,8 +41,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset")]
         public void Assigning_Declared_Variable_To_A_Recordset_Shows_The_Equal_Sign()
         {
@@ -59,8 +55,6 @@ namespace Warewolf.UI.Tests
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset")]
         public void Change_Declared_Value_Updates_Output()
         {
@@ -82,8 +76,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Declare_Value_Change_Debug_Should_Update()
         {

@@ -11,8 +11,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
     public class Sequence
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingNonDecision_Allowed_LargeView_UITest()
         {
@@ -24,8 +22,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingNonDecision_Allowed_SmallView_UITest()
         {
@@ -34,8 +30,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingSwitch_NotAllowed_BothViews_UITest()
         {
@@ -52,8 +46,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingDecision_NotAllowed_BothViews_UITest()
         {
@@ -70,8 +62,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
         const string HelloWorld = "Hello World";
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingResourceFromFolder_UITest()
         {

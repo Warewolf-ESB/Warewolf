@@ -11,8 +11,6 @@ namespace Warewolf.UI.Tests.OracleSource
         const string SourceName = "CodedUITestOracleSource";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Sources")]
         public void Create_Save_And_Open_OracleSource_From_ExplorerContextMenu_UITests()
         {

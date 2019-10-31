@@ -15,8 +15,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
         const string fileName = @"C:\.Python\testPython.py";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Tools")]
         public void PytonScriptTool_Small_And_LargeView_UITest()
         {
@@ -36,8 +34,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tools")]
         public void PytonScriptTool_LargeView_SelectFile_UITest()
         {
@@ -73,8 +69,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tools")]
         public void PytonScriptTool_LoseFocus_ChangeTab_UITest()
         {

@@ -15,8 +15,6 @@ namespace Warewolf.UI.Tests
         const string WorkflowName = "RefreshExplorerAfterDeletingResourceFromDiskUITest";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
@@ -34,8 +32,6 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void RefreshExplorerAfterConnectingToRemoteDoesNotRefreshLocalhost()
         {
