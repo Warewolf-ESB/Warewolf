@@ -22,7 +22,7 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class TestRedisServiceSourceService : IEsbManagementEndpoint
+    public class TestRedisSource : IEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
@@ -34,9 +34,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Test Redis Service Source", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Test Redis Source", GlobalConstants.WarewolfInfo);
                 msg.HasError = false;
-                values.TryGetValue("RedisServiceSource", out StringBuilder resourceDefinition);
+                values.TryGetValue(Warewolf.Service.TestRedisSource.RedisSource, out StringBuilder resourceDefinition);
 
                 var redisServiceSourceDefinition = serializer.Deserialize<RedisSourceDefinition>(resourceDefinition);
                 var con = new RedisSources();
@@ -64,6 +64,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><RedisServiceSource ColumnIODirection =\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "TestRedisServiceSource";
+        public string HandlesType() => nameof(Warewolf.Service.TestRedisSource);
     }
 }

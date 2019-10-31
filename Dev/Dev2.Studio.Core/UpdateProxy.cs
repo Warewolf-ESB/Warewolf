@@ -208,9 +208,9 @@ namespace Dev2.Studio.Core
         public void TestConnection(IRedisServiceSource redisServiceSource)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("TestRedisServiceSource");
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestRedisSource));
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("RedisServiceSource", serialiser.SerializeToBuilder(redisServiceSource));
+            comsController.AddPayloadArgument(TestRedisSource.RedisSource, serialiser.SerializeToBuilder(redisServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {

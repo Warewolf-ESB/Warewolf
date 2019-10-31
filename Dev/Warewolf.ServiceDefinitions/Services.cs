@@ -20,5 +20,9 @@ namespace Warewolf.Service
     {
         public const string RedisSource = nameof(RedisSource);
     }
-    
+    public static class TestRedisSource
+    {
+        public const string RedisSource = nameof(RedisSource);
+    }
+
 }
