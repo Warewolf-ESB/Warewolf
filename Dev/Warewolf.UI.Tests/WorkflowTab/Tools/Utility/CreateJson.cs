@@ -9,8 +9,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     public class CreateJson
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Utility Tools")]
         public void CreateJsonTool_Small_And_LargeView_UITest()
         {
@@ -23,8 +21,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Data Tools")]
         public void CreateJson_Small_And_Large_Then_ShowErrorBox_UITest()
         {

@@ -6,6 +6,9 @@ IF NOT EXIST "%programfiles(x86)%\Git\bin\git.exe" echo GIT not found. &pause &e
 if not %errorlevel%==0 pause & exit 1
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." clean -xdf --exclude Dev/packages/
 if not %errorlevel%==0 pause & exit 1
+"%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." branch
+echo Repo scorched. Get version? Leave blank to get latest. Branch and tag names are also allowed.
+set /p Version=
 if "%Version%"=="" ("%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." pull) else ("%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." checkout %Version%)
 if not %errorlevel%==0 pause & exit 1
 GOTO exit
@@ -13,10 +16,12 @@ GOTO exit
 :GitCommandline
 git -C "%~dp0.." fetch --all
 git -C "%~dp0.." reset --hard
+git -C "%~dp0.." branch
 if not %errorlevel%==0 pause & exit 1
 git -C "%~dp0.." clean -xdf --exclude Dev/packages/
 @echo off
 if not %errorlevel%==0 pause & exit 1
+git -C "%~dp0.." branch
 echo Repo scorched. Get version? Leave blank to get latest. Branch and tag names are also allowed.
 set /p Version=
 if "%Version%"=="" (git -C "%~dp0.." pull) else (git -C "%~dp0.." checkout %Version%)
