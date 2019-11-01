@@ -20,7 +20,7 @@ namespace Dev2.Common.Tests.Wrappers
             ITimer timerWrapper;
             using (timerWrapper = new TimerWrapper(callback, expectedState, 100, 100))
             {
-                Task.Delay(250).Wait();
+                Task.Delay(225).Wait();
             }
             timerWrapper.Dispose();
 
