@@ -23,7 +23,7 @@ namespace Warewolf.Driver.Redis
             if (createConnection is null) throw new ArgumentNullException(nameof(createConnection));
             _connection = new Lazy<IRedisConnection>(() => createConnection?.Invoke());
         }
-
+       
         private IRedisCache Cache => _connection.Value.Cache;
 
         public void Set<T>(string key, T value)
