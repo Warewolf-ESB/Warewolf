@@ -16,5 +16,13 @@
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\Binaries\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\Binaries\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
