@@ -45,7 +45,7 @@ namespace Dev2.Activities.Redis
         private RedisCacheBase _redisCache;
 
         public RedisActivity()
-            : this(new ResponseManager(),new RedisCacheImpl("localhost"))
+            : this(new ResponseManager(),new RedisCacheImpl("localhost:6379"))
         {
             DisplayName = "Redis";
             ActivityFunc = new ActivityFunc<string, bool>
