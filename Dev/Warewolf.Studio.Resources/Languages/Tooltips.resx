@@ -1143,6 +1143,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisServersToolTip" xml:space="preserve">
     <value>Select a preconfigured redis source.</value>
   </data>
+  <data name="RedisNewServerToolTip" xml:space="preserve">
+    <value>Create a new Redis Server Source</value>
+  </data>
   <data name="RedisEditServerToolTip" xml:space="preserve">
     <value>Edit Redis Server Source</value>
   </data>

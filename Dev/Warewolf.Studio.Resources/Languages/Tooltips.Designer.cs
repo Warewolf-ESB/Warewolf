@@ -3752,6 +3752,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new Redis Server Source.
+        /// </summary>
+        public static string RedisNewServerToolTip {
+            get {
+                return ResourceManager.GetString("RedisNewServerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The account password.
         /// </summary>
         public static string RedisPasswordTooltip {
