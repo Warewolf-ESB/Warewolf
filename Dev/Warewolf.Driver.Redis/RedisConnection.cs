@@ -16,34 +16,29 @@ namespace Warewolf.Driver.Redis
 {
     public class RedisConnection : IRedisConnection
     {
+        readonly IRedisClientsManager _clientManager;
         public RedisConnection(string hostName)
         {
-            var client = new RedisClient(hostName);
+            _clientManager = new PooledRedisClientManager(new[] { hostName });
+            IRedisClient client = _clientManager.GetClient();
             Cache = new RedisCache(client);
         }
-        public RedisConnection(string hostName, int port)
+      
+        public RedisConnection(string hostName, string password)
         {
-            var client = new RedisClient(hostName, port);
+            var connectionString = password + "@" + hostName;
+            _clientManager = new PooledRedisClientManager(connectionString);
+            IRedisClient client = _clientManager.GetClient();
             Cache = new RedisCache(client);
         }
-        public RedisConnection(string hostName, int port, string password)
-        {
-            var client = new RedisClient(hostName, port, password);
-            Cache = new RedisCache(client);
-        }
-        public RedisConnection(System.Uri uri)
-        {
-            var client = new RedisClient(uri);
-            Cache = new RedisCache(client);
-        }
+
         public IRedisCache Cache { get; private set; }
     }
 
     internal class RedisCache : IRedisCache
     {
-        private readonly RedisClient _client;
-
-        public RedisCache(RedisClient client)
+        private readonly IRedisClient _client;
+        public RedisCache(IRedisClient client)
         {
             _client = client;
         }

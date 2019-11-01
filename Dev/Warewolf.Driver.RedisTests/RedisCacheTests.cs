@@ -11,6 +11,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceStack.Redis;
 using Warewolf.Driver.Redis;
 using Warewolf.Interfaces;
 
@@ -19,7 +20,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
     [TestClass]
     public class RedisCacheTests
     {
-        [TestMethod]      
+        [TestMethod]
         [TestCategory("RedisCache")]
         [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -41,11 +42,11 @@ namespace Dev2.Tests.Activities.Activities.Redis
             var mockDatabase = new Mock<IRedisCache>();
             mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
-            var redis = new RedisCacheStub(()=> mockConnection.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
             redis.Set<string>("bob", "the builder");
             //--------------Assert-------------------------------
-            mockDatabase.Verify(db => db.Set(It.IsAny<string>(), It.IsAny<string>()),Times.Once);
+            mockDatabase.Verify(db => db.Set(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
         }
 
@@ -137,9 +138,36 @@ namespace Dev2.Tests.Activities.Activities.Redis
             redis.Get("bob");
             //--------------Assert-------------------------------
             mockDatabase.Verify(db => db.Get("bob"), Times.Once);
-        }      
+        }
+
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        public void RedisCache_PooledRedisClientManager_Does_set_Client_on_Pooled_Connection()
+        {
+            var redisConnectionString = "password@localhost:6379";
+            var clientManager = new PooledRedisClientManager(new[] { redisConnectionString });
+            using (IRedisClient redis = clientManager.GetClient())
+            {
+                Assert.AreEqual("localhost",redis.Host);
+                Assert.AreEqual(6379, redis.Port);
+                Assert.AreEqual("password", redis.Password);
+            }
+        }
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        public void RedisCache_Connection_Does_set_Client_on_Pooled_Connection()
+        {
+            //--------------Arrange------------------------------          
+            var redis = new RedisCacheImpl("localhost:6379");
+            //--------------Act----------------------------------
+            redis.Set<string>("bob", "the builder");         
+            //--------------Assert-------------------------------
+            Assert.AreEqual("the builder", redis.Get("bob"));
+        }
     }
-  
+
     internal class RedisCacheStub : RedisCacheBase
     {
         public RedisCacheStub(Func<IRedisConnection> createConnection) : base(createConnection)
