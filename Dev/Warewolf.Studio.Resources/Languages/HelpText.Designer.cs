@@ -2933,6 +2933,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new redis connection.
+        /// </summary>
+        public static string RedisNewServerHelp {
+            get {
+                return ResourceManager.GetString("RedisNewServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a preconfigured redis source..
         /// </summary>
         public static string RedisServerHelp {
@@ -2942,7 +2951,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RedisSourceHostNameHelp.
+        ///   Looks up a localized string similar to The Redis server name to connect to..
         /// </summary>
         public static string RedisSourceHostNameHelp {
             get {
@@ -2951,7 +2960,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RedisSourcePortHelp.
+        ///   Looks up a localized string similar to The default port on which Redis listens is 6379..
         /// </summary>
         public static string RedisSourcePortHelp {
             get {
@@ -4954,6 +4963,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Utility_Random {
             get {
                 return ResourceManager.GetString("Tool_Utility_Random", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Redis tool to store data in-memory..
+        /// </summary>
+        public static string Tool_Utility_Redis {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
             }
         }
         

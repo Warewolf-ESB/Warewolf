@@ -1848,13 +1848,16 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Test the Webservice to get response payload. &lt;br/&gt;	&lt;br/&gt;	This allows us to map response data back into the system for you.</value>
   </data>
   <data name="RedisSourceHostNameHelp" xml:space="preserve">
-    <value>RedisSourceHostNameHelp</value>
+    <value>The Redis server name to connect to.</value>
   </data>
   <data name="RedisSourcePortHelp" xml:space="preserve">
-    <value>RedisSourcePortHelp</value>
+    <value>The default port on which Redis listens is 6379.</value>
   </data>
   <data name="RedisServerHelp" xml:space="preserve">
     <value>Select a preconfigured redis source.</value>
+  </data>
+  <data name="RedisNewServerHelp" xml:space="preserve">
+    <value>Create a new redis connection</value>
   </data>
   <data name="RedisEditServerHelp" xml:space="preserve">
     <value>Edit the selected redis connection properties</value>
@@ -1970,6 +1973,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
     <value>Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s Queue.</value>
+  </data>
+  <data name="Tool_Utility_Redis" xml:space="preserve">
+    <value>Use the Redis tool to store data in-memory.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">
     <value>Use the format number tool for rounding and showing decimals.</value>
