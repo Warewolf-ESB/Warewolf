@@ -48,6 +48,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -80,10 +81,21 @@
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisEditServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
+            <Button x:Name="RedisNewButton" 
+                        Grid.Column="3"
+                        Content="{x:Static languages:Core.New}" 
+                        Width="Auto"
+                        Style="{StaticResource ButtonOrangeStyle}" 
+                        ToolTip="{x:Static languages:Tooltips.RedisNewServerToolTip}"
+                        Command="{Binding NewRedisServerCommand}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisNewServerHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="2"
+                                    Grid.ColumnSpan="3"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="Key" 

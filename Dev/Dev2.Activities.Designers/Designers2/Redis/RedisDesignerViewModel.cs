@@ -22,25 +22,30 @@ using Dev2.Data.ServiceModel;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Common;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System;
 
 namespace Dev2.Activities.Designers2.Redis
 {
     public class RedisDesignerViewModel : ActivityDesignerViewModel
     {
         readonly IServer _server;
+        IShellViewModel _shellViewModel;
 
         [ExcludeFromCodeCoverage]
         public RedisDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, ServerRepository.Instance.ActiveServer)
+            : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
         {
 
         }
 
-        public RedisDesignerViewModel(ModelItem modelItem, IServer server)
+        public RedisDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("environmentModel", server);
             _server = server;
+            VerifyArgument.IsNotNull("shellViewModel", shellViewModel);
+            _shellViewModel = shellViewModel;
 
             AddTitleBarLargeToggle();
             var dataFunc = modelItem.Properties["ActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
@@ -53,6 +58,7 @@ namespace Dev2.Activities.Designers2.Redis
             RedisServers = new ObservableCollection<RedisSource>();
             LoadRedisServers();
             EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
+            NewRedisServerCommand = new RelayCommand(o => NewRedisServerSource());
         }
 
         public ObservableCollection<RedisSource> RedisServers { get; private set; }
@@ -60,7 +66,10 @@ namespace Dev2.Activities.Designers2.Redis
         public RedisSource SelectedRedisServer
         {
             get => (RedisSource)GetValue(SelectedRedisServerProperty);
-            set => SetValue(SelectedRedisServerProperty, value);
+            set
+            {
+                SetValue(SelectedRedisServerProperty, value);
+            }
         }
 
         public static readonly DependencyProperty SelectedRedisServerProperty =
@@ -69,27 +78,44 @@ namespace Dev2.Activities.Designers2.Redis
         private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RedisDesignerViewModel)d;
-            viewModel.EditRedisServerCommand.RaiseCanExecuteChanged();
+            viewModel.OnSelectedRedisServerChanged();
+            viewModel.EditRedisServerCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected virtual void OnSelectedRedisServerChanged()
+        {
+            ModelItem.SetProperty("SourceId", SelectedRedisServer.ResourceID);
         }
 
         public RelayCommand EditRedisServerCommand { get; private set; }
+        public RelayCommand NewRedisServerCommand { get; set; }
 
         public bool IsRedisServerSelected => SelectedRedisServer != null;
 
         private void EditRedisServerSource()
         {
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            if (shellViewModel != null)
-            {
-                shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, shellViewModel.ActiveServer);
-                LoadRedisServers();
-            }
+            _shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
+            LoadRedisServers();
+        }
+
+        private void NewRedisServerSource()
+        {
+            _shellViewModel.NewRedisSource("");
+            LoadRedisServers();
         }
 
         private void LoadRedisServers()
         {
             var redisServers = _server.ResourceRepository.FindSourcesByType<RedisSource>(_server, enSourceType.RedisSource);
             RedisServers = redisServers.ToObservableCollection();
+            SetSelectedRedisServer();
+        }
+
+        void SetSelectedRedisServer()
+        {
+            var sourceId = Guid.Parse(ModelItem.Properties["SourceId"].ComputedValue.ToString());
+            var selectedRedisServer = RedisServers.FirstOrDefault(redisServer => redisServer.ResourceID == sourceId);
+            SelectedRedisServer = selectedRedisServer;
         }
 
         public string ActivityFuncDisplayName

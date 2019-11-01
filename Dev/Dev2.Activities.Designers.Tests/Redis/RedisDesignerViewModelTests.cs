@@ -35,11 +35,24 @@ namespace Dev2.Activities.Designers.Tests.Redis
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(RedisDesignerViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_SelectedForeachTypeIsInitialized()
+        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Null_EnvironmentModel()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            _ = new RedisDesignerViewModel(CreateModelItem(), null);
+            _ = new RedisDesignerViewModel(CreateModelItem(), null, null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RedisDesignerViewModel))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Null_ShellViewModel()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            //------------Execute Test---------------------------
+            _ = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, null);
             //------------Assert Results-------------------------
         }
 
@@ -66,8 +79,10 @@ namespace Dev2.Activities.Designers.Tests.Redis
             var mockServer = new Mock<IServer>();
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
+            var mockShellViewModel = new Mock<IShellViewModel>();
+
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object);
+            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(redisDesignerViewModel.HasLargeView);
             Assert.AreEqual(string.Empty, redisDesignerViewModel.ActivityFuncDisplayName);
@@ -124,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object);
+            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             redisDesignerViewModel.UpdateHelpDescriptor(expectedHelpText);
 
             mockHelpViewModel.Verify(helpViewModel => helpViewModel.UpdateHelpText(expectedHelpText), Times.Once);
@@ -162,13 +177,52 @@ namespace Dev2.Activities.Designers.Tests.Redis
             CustomContainer.Register(mockShellViewModel.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object)
+            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object)
             {
                 SelectedRedisServer = redisSource
             };
             redisDesignerViewModel.EditRedisServerCommand.Execute(null);
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.OpenResource(expectedId, environmentId, mockServer.Object), Times.Once);
+            mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RedisDesignerViewModel))]
+        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_NewRedisServerSource()
+        {
+            var expectedId = Guid.NewGuid();
+            var redisSource = new RedisSource
+            {
+                ResourceID = expectedId,
+                ResourceName = "ResourceName",
+                HostName = "HostName",
+                Port = "6379",
+                AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+            };
+
+            var redisSources = new List<RedisSource> { redisSource };
+
+            var environmentId = Guid.NewGuid();
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource)).Returns(redisSources);
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.EnvironmentID).Returns(environmentId);
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockServer.Object);
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.NewRedisSource(""));
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            //------------Execute Test---------------------------
+            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            redisDesignerViewModel.NewRedisServerCommand.Execute(null);
+
+            mockShellViewModel.Verify(shellViewModel => shellViewModel.NewRedisSource(""), Times.Once);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));
         }
     }
