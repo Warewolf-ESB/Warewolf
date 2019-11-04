@@ -29,12 +29,13 @@ namespace Warewolf.Common
         private readonly MessageToInputsMapper _messageToInputsMapper;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IPublisher _publisher;
+        private readonly bool _mapEntireMessage;
 
         private WarewolfWebRequestForwarder()
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url,string username,string password, ICollection<IServiceInputBase> valueKeys)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url,string username,string password, ICollection<IServiceInputBase> valueKeys, bool mapEntireMessage)
         {
             _httpClientFactory = httpClientFactory;
             _publisher = publisher;
@@ -43,6 +44,7 @@ namespace Warewolf.Common
             _password = password;
             _valueKeys = valueKeys;
             _messageToInputsMapper = new MessageToInputsMapper();
+            _mapEntireMessage = mapEntireMessage;
         }
 
         public async Task<ConsumerResult> Consume(byte[] body)
@@ -64,7 +66,7 @@ namespace Warewolf.Common
         {
             var returnedQueueMessage = Encoding.UTF8.GetString(body);
             var inputs = _valueKeys.Select(v => (v.Name, v.Value)).ToList();
-            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), returnedQueueMessage.IsXml(),false);
+            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), returnedQueueMessage.IsXml(),_mapEntireMessage);
             return mappedData;
         }
 

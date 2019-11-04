@@ -22,8 +22,8 @@ namespace Warewolf.Driver.RabbitMQ
 
         public RabbitPublisher(RabbitConfig config, IModel channel)
         {
-            _exchange = config.Exchange;
-            _routingKey = config.RoutingKey;
+            _exchange = config.Exchange ?? config.QueueName;
+            _routingKey = config.RoutingKey ?? config.QueueName;
             _basicProperties = config.BasicProperties;
             _channel = channel;
         }

@@ -14,6 +14,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
 using System;
+using System.Diagnostics;
 using Warewolf.Common;
 using Warewolf.Data;
 using Warewolf.Streams;
@@ -24,6 +25,7 @@ namespace QueueWorker
     {
         public static int Main(string[] args)
         {
+            Debugger.Launch();
             var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
             return result.MapResult(
                 options => new Implementation(options).Run(),
@@ -85,7 +87,7 @@ namespace QueueWorker
 
                 var deadletterPublisher = CreateDeadLetterPublisher();
 
-                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl,_config.Username,_config.Password, _config.Inputs);
+                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl,_config.Username,_config.Password, _config.Inputs, _config.MapEntireMessage);
                 var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder, _config.TriggerId, _config.Username);
 
                 var queue = _config.Source;
@@ -116,7 +118,7 @@ namespace QueueWorker
                 {
                     var deadLetterSource = _config.DeadLetterSink;
                     var deadLetterConnection = deadLetterSource.NewConnection();
-                    var publisher = deadLetterConnection.NewPublisher(_config.QueueConfig);
+                    var publisher = deadLetterConnection.NewPublisher(_config.DeadLetterConfig);
                     publisher.Publish(value);
                 }
             }

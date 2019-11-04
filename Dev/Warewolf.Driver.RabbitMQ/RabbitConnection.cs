@@ -10,6 +10,7 @@
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
@@ -41,20 +42,44 @@ namespace Warewolf.Driver.RabbitMQ
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>
             {
-                var body = eventArgs.Body;
-
-                var resultTask = consumer.Consume(body);
-                resultTask.Wait();
-                if (resultTask.Result == Data.ConsumerResult.Success)
+                try
                 {
-                    channel.BasicAck(eventArgs.DeliveryTag, false);
-                }
+                    var body = eventArgs.Body;
 
+                    var resultTask = consumer.Consume(body);
+                    resultTask.Wait();
+                    if (resultTask.Result == Data.ConsumerResult.Success)
+                    {
+                        channel.BasicAck(eventArgs.DeliveryTag, false);
+                    } else
+                    {
+                        Console.WriteLine($"failure while consuming message, task.status:'{resultTask.Status}'");
+                    }
+                } catch (Exception e)
+                {
+                    WriteExceptionToConsole(e);
+
+                    throw;
+                }
             };
 
             channel.BasicConsume(queue: rabbitConfig.QueueName,
                                         noAck: false,
                                         consumer: eventConsumer);
+        }
+
+        private static void WriteExceptionToConsole(Exception e)
+        {
+            Console.WriteLine($"exception while consuming message:");
+            WriteExceptionToConsole(e, 0);
+        }
+        private static void WriteExceptionToConsole(Exception e, int depth)
+        {
+            Console.WriteLine($"\t'{e.Message}'");
+            if (e.InnerException != null)
+            {
+                WriteExceptionToConsole(e.InnerException, depth + 1);
+            }
         }
 
         private IModel CreateChannel(RabbitConfig rConfig)

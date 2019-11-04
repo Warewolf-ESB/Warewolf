@@ -19,7 +19,7 @@ namespace Warewolf.OS
     {
         private readonly List<IProcessThreadList> _processLists = new List<IProcessThreadList>();
 
-        private bool _running;
+        private volatile bool _running;
 
         public event ProcessDiedEvent OnProcessDied;
 

@@ -35,8 +35,11 @@ namespace Warewolf.Driver.RabbitMQ
         {
             var channel = connection.CreateModel();
             channel.QueueDeclare(QueueName, Durable, Exclusive, AutoDelete, Arguments);
-
-              //configure channel using options here             
+            if (string.IsNullOrWhiteSpace(RoutingKey))
+            {
+                //channel.QueueBind(QueueName, QueueName, "");
+            }
+            //configure channel using options here
             return channel;
         }
     }

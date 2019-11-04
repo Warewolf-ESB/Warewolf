@@ -25,8 +25,10 @@ namespace QueueWorker
         IQueueSource Source { get; }
         IQueueSource DeadLetterSink { get; }
         IStreamConfig QueueConfig { get; }
+        IStreamConfig DeadLetterConfig { get; }
         string QueueName { get; }
         IServiceInputBase[] Inputs { get; }
         Guid TriggerId { get; }
+        bool MapEntireMessage { get; }
     }
 }

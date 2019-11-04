@@ -91,9 +91,10 @@ namespace Warewolf.Auditing
             SendMessageAsync(message);
         }
 
-        public async void SendMessage(byte[] message)
+        public void SendMessage(byte[] message)
         {
-            await SendMessageAsync(message);
+            var task = SendMessageAsync(message);
+            task.Wait();
         }
 
         public bool IsOpen()
@@ -135,10 +136,12 @@ namespace Warewolf.Auditing
         {
             await _ws.ConnectAsync(_uri, _cancellationToken);
             CallOnConnected();
+#pragma warning disable CS4014 // This call is supposed to continue in the background
             WatchForMessagesFromServer();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        private async void WatchForMessagesFromServer()
+        private async Task WatchForMessagesFromServer()
         {
             var buffer = new byte[ReceiveChunkSize];
 
