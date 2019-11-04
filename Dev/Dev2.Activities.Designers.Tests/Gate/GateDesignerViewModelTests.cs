@@ -9,17 +9,38 @@
 */
 
 using Dev2.Activities.Designers2.Gate;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Linq;
-using Warewolf.Data.Options.Enums;
+using Warewolf.Options;
 
 namespace Dev2.Activities.Designers.Tests.Gate
 {
     [TestClass]
     public class GateDesignerViewModelTests
     {
+        [TestInitialize]
+        public void SetupForTest()
+        {
+            var optionBool = new OptionBool();
+            var optionsList = new List<IOption> { optionBool };
+
+            var mockServer = new Mock<IServer>();
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindOptionsBy(mockServer.Object, "")).Returns(optionsList);
+
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockServer.Object);
+
+            CustomContainer.Register(mockShellViewModel.Object);
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(GateDesignerViewModel))]

@@ -66,9 +66,7 @@ namespace Warewolf.Data.Tests
             var actual = ConvertDataToOptionsList();
             //----------------------Assert-----------------------
             Assert.AreEqual(nameof(TestData.MyEnum), actual[3].Name);
-            var optionEnumGen = ((OptionEnumGen)actual[3]).Value;
-            Assert.AreEqual(MyOptions.Option1.ToString(), optionEnumGen.Key.ToString());
-            Assert.AreEqual(0, optionEnumGen.Value);
+            Assert.AreEqual(0, ((OptionInt)actual[3]).Value);
         }
 
         [TestMethod]
@@ -100,7 +98,7 @@ namespace Warewolf.Data.Tests
                 MyInt = 12,
                 MyString = "hello",
                 MyBool = true,
-                MyEnum = MyOptions.Option1,
+                MyEnum = (int)MyOptions.Option1,
                 MyBreakfast = new OatsBreakfast()
             };
 
@@ -119,7 +117,7 @@ namespace Warewolf.Data.Tests
             [DataProvider(typeof(OptionsForS))]
             public string MyString { get; set; }
             public bool MyBool { get; set; }
-            public Enum MyEnum { get; set; }
+            public int MyEnum { get; set; }
 
 
             [DataValue(nameof(BreakfastBase.BreakfastType))]
