@@ -11,6 +11,7 @@ namespace Warewolf.Web.UI.Tests.BrowserWebDrivers
         public FirefoxWebDriver() : base(new FirefoxDriver(driverService, firefoxOptions, TimeSpan.FromMinutes(3)))
         {
             driverService.Port = 18406;
+            firefoxOptions.AddArgument($"-profile=\"{Path.Combine(Environment.CurrentDirectory, "WebDriverProfiles", "Firefox")}\"");
         }
     }
 }
