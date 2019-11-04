@@ -306,6 +306,10 @@ namespace Dev2.Studio.ViewModels
 
         private void OpenResourcePicker(object item)
         {
+            if (_currentResourcePicker is null)
+            {
+                return;
+            }
             if (_currentResourcePicker.ShowDialog(ServerRepository.ActiveServer))
             {
                 var optionView = item as Warewolf.UI.OptionView;
@@ -317,19 +321,20 @@ namespace Dev2.Studio.ViewModels
                     optionWorkflow.WorkflowName = selectedResource.ResourcePath;
                 }
                 
-                
-                //SelectedQueue.ResourceId = selectedResource.ResourceId;
-                //SelectedQueue.WorkflowName = selectedResource.ResourcePath;
                 //SelectedQueue.GetInputsFromWorkflow();
             }
         }
 
         IResourcePickerDialog CreateResourcePickerDialog()
         {
-            var environmentViewModel = ExplorerViewModel?.Environments.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
-            var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
-            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
-            return res;
+            var environmentViewModels = ExplorerViewModel?.Environments;
+            if (environmentViewModels != null)
+            {
+                var environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
+                var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
+                ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
+            }
+            return null;
         }
 
         public IAuthorizeCommand SchedulerCommand
