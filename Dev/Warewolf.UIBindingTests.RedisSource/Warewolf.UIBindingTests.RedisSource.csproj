@@ -52,9 +52,11 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
+    <Reference Include="Warewolf.Language.Parser, Version=0.0.7246.16356, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
@@ -79,6 +81,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
@@ -87,6 +93,10 @@
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
       <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
       <Name>Dev2.Infrastructure.Tests</Name>
@@ -94,6 +104,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
@@ -106,6 +120,22 @@
     <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj">
+      <Project>{86DF54BB-E37D-4559-8014-13D6030A2242}</Project>
+      <Name>Warewolf.Driver.Redis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
+      <Name>Warewolf.Storage.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>

@@ -360,6 +360,67 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("No data in Cache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Redis Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
+        public virtual void NoDataInCache()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No data in Cache", new string[] {
+                        "RedisSource",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll",
+                        "MSTest:DeploymentItem:Warewolf_Studio.exe",
+                        "MSTest:DeploymentItem:Newtonsoft.Json.dll",
+                        "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
+                        "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
+                        "MSTest:DeploymentItem:EnableDocker.txt"});
+#line 151
+this.ScenarioSetup(scenarioInfo);
+#line 152
+ testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 153
+ testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+ testRunner.And("No data in the cache", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "var",
+                        "value"});
+            table1.AddRow(new string[] {
+                        "[[Var1]]",
+                        "\"Test1\""});
+#line 155
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table1, "And ");
+#line 158
+ testRunner.When("I execute the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Key",
+                        "Data"});
+            table2.AddRow(new string[] {
+                        "MyData",
+                        "\"[[Var1]],Test1\""});
+#line 159
+ testRunner.Then("the cache will contain", ((string)(null)), table2, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "var",
+                        "value"});
+            table3.AddRow(new string[] {
+                        "[[Var1]]",
+                        "\"Test1\""});
+#line 162
+ testRunner.And("output variables have the following values", ((string)(null)), table3, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

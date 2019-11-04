@@ -137,3 +137,28 @@ Scenario: Editing saved Redis Source
    Then "Test-Redis *" tab is opened
    And "Test Connection" is "Enabled"
    And "Save" is "Enabled"
+
+@RedisSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:EnableDocker.txt	
+Scenario: No data in Cache
+	Given Redis source "localhost"
+	And I have a key "MyData"
+	And No data in the cache
+	And an assign "dataToStore" as 
+	| var | value |
+	|  [[Var1]]   |  "Test1" |
+	When I execute the tool
+	Then the cache will contain
+	| Key    | Data             |
+	| MyData | "[[Var1]],Test1" |
+	And output variables have the following values
+	| var      | value   |
+	| [[Var1]] | "Test1" |
