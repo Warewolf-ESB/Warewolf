@@ -85,17 +85,30 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
+                RedisClient clientAnon;
                 if (redisSource.AuthenticationType == AuthenticationType.Anonymous)
                 {
-                    var clientAnon = new RedisClient(redisSource.HostName, int.Parse(redisSource.Port), redisSource.Password);
+                    clientAnon = new RedisClient(redisSource.HostName, int.Parse(redisSource.Port));
                 }
                 else
                 {
-                    var clientAnon = new RedisClient(redisSource.HostName, int.Parse(redisSource.Port), redisSource.Password);
+                    clientAnon = new RedisClient(redisSource.HostName, int.Parse(redisSource.Port), redisSource.Password);
                 }
+                var isValid = false;
+                var errorMessage = "";
+                if (clientAnon.ServerVersion != null)
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    errorMessage = "No such host can be found.";
+                }
+
                 return new ValidationResult
                 {
-                    IsValid = true
+                    IsValid = isValid,
+                    ErrorMessage = errorMessage
                 };
             }
             catch (Exception e)

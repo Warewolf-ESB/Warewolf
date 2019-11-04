@@ -43,20 +43,77 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(RedisSources))]
         public void RedisSources_Test_With_InValidArgs_Expected_Valid_InValidationResult()
         {
-            var handler = new RedisSources();      
-         
+            var handler = new RedisSources();
+
             var result = handler.Test("asd");
             Assert.IsFalse(result.IsValid);
         }
         [TestMethod]
-        public void RedisSources_Test_With_ValidHost_Expected_ValidValidationResult()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisSources))]
+        public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
-            var source = new RedisSource { HostName = "localhost:222", Port = "6379" }.ToString();
+            var source = new RedisSource
+            {
+                HostName = "localhost",
+                Port = "6379"
+            }.ToString();
 
             var handler = new RedisSources();
             var result = handler.Test(source);
             Assert.IsTrue(result.IsValid, result.ErrorMessage);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisSources))]
+        public void RedisSources_Test_With_InvalidHost__AuthenticationType_Anonymous_Expected_InvalidValidationResult()
+        {
+            var source = new RedisSource
+            {
+                HostName = "ddd:222",
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
+                Port = "6379"
+            }.ToString();
 
+            var handler = new RedisSources();
+            var result = handler.Test(source);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual("could not connect to redis Instance at ddd:222:6379\r\nNo such host is known", result.ErrorMessage);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisSources))]
+        public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
+        {
+            var source = new RedisSource
+            {
+                HostName = "localhost",
+                Port = "6379",
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
+                Password = "Password"
+            }.ToString();
+
+            var handler = new RedisSources();
+            var result = handler.Test(source);
+            Assert.IsTrue(result.IsValid);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisSources))]
+        public void RedisSources_Test_With_InvalidHost_AuthenticationType_Password_Expected_InvalidValidationResult()
+        {
+            var source = new RedisSource
+            {
+                HostName = "ddd",
+                Port = "6379",
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
+                Password = "Password"
+            }.ToString();
+
+            var handler = new RedisSources();
+            var result = handler.Test(source);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual("could not connect to redis Instance at ddd:6379\r\nNo such host is known", result.ErrorMessage);
+        }
     }
 }
