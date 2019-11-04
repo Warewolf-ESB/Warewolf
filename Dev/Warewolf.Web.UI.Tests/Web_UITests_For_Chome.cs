@@ -3,7 +3,7 @@ using System;
 using Warewolf.Web.UI.Tests.BrowserWebDrivers;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 
-namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
+namespace Warewolf.Web.UI.Tests
 {
     [TestClass]
     public class Chrome_Audit_UITests
