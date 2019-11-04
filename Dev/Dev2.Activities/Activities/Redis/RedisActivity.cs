@@ -133,7 +133,7 @@ namespace Dev2.Activities.Redis
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("ConsumeRabbitMQActivity", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
         }
