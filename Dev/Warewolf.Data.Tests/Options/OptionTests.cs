@@ -195,13 +195,13 @@ namespace Warewolf.Data.Tests
             optionEnum.Name = "MyEnum";
             Assert.AreEqual("MyEnum", optionEnum.Name);
 
-            Assert.IsNull(optionEnum.Value);
+            Assert.IsNotNull(optionEnum.Value);
             optionEnum.Value = (int)MyEnum.Option2;
-            Assert.AreEqual(MyEnum.Option2, optionEnum.Value);
+            Assert.AreEqual((int)MyEnum.Option2, optionEnum.Value);
 
-            Assert.IsNull(optionEnum.Default);
+            Assert.IsNotNull(optionEnum.Default);
             optionEnum.Default = (int)MyEnum.Option1;
-            Assert.AreEqual(MyEnum.Option1, optionEnum.Default);
+            Assert.AreEqual((int)MyEnum.Option1, optionEnum.Default);
         }
 
         [TestMethod]
