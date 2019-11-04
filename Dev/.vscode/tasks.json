@@ -11,14 +11,15 @@
                 "-AcceptanceTesting",
                 "-UITesting",
                 "-MSBuildPath",
-				"D:\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe"
+                "D:\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe"
             ],
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
-                // Reveal the output only if unrecognized errors occur.
                 "reveal": "silent"
             },
-            // Use the standard MS compiler pattern to detect errors, warnings and infos
             "problemMatcher": "$msCompile"
         }
     ]
