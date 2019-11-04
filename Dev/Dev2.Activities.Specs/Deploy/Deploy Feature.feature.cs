@@ -97,17 +97,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
  testRunner.And("I have a workflow \"OriginalName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table910 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table913 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table910.AddRow(new string[] {
+            table913.AddRow(new string[] {
                         "[[rec().a]]",
                         "yes"});
-            table910.AddRow(new string[] {
+            table913.AddRow(new string[] {
                         "[[rec().a]]",
                         "no"});
 #line 7
- testRunner.And("the workflow contains an Assign \"Rec To Convert\" as", ((string)(null)), table910, "And ");
+ testRunner.And("the workflow contains an Assign \"Rec To Convert\" as", ((string)(null)), table913, "And ");
 #line 11
  testRunner.And("the workflow contains Count Record \"CountRec\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12

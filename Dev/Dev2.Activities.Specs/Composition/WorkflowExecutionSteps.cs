@@ -2771,7 +2771,6 @@ namespace Dev2.Activities.Specs.Composition
             {
                 id = Guid.NewGuid();
                 _scenarioContext.Add("SavedId", id);
-
             }
             Save(workflowName, count, id);
         }

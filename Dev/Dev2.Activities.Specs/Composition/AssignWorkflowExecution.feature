@@ -8,6 +8,24 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
+Scenario: Simple workflow executing against the server
+	 Given I have a workflow "WorkflowWithAssign"
+	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec().a]] | yes   |
+	  | [[rec().a]] | no    |	 
+	  When "WorkflowWithAssign" is executed
+	  Then the workflow execution has "NO" error
+	  And the "WorkflowWithAssign" has a start and end duration
+	  And the "Rec To Convert" in WorkFlow "WorkflowWithAssign" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | yes       |
+	  | 2 | [[rec().a]] = | no        |
+	  And the "Rec To Convert" in Workflow "WorkflowWithAssign" debug outputs as    
+	  | # |                    |
+	  | 1 | [[rec(1).a]] = yes |
+	  | 2 | [[rec(2).a]] = no  |
+
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
 	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as

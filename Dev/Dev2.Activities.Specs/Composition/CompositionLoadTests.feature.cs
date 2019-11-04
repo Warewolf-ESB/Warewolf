@@ -111,14 +111,14 @@ this.FeatureBackground();
     testRunner.And("\"WFWithAsyncLoggingForEach\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" " +
                     "executions \"2000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table585 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table585.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "[[Warewolf]]",
                         "bob"});
 #line 14
- testRunner.And("\"ForEachTest\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table585, "And ");
+ testRunner.And("\"ForEachTest\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table588, "And ");
 #line 17
  testRunner.When("\"WFWithAsyncLoggingForEach\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
@@ -132,7 +132,7 @@ this.FeatureBackground();
 #line 22
  testRunner.And("I set logging to \"OFF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
-   testRunner.When("\"WFWithAsyncLoggingForEach\" is executed \"second time\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("\"WFWithAsyncLoggingForEach\" is executed \"second time\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
@@ -143,12 +143,12 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow executing against the server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow assigning to 100 records executing against the server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CompositionLoadTests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CompositionLoadTests")]
-        public virtual void SimpleWorkflowExecutingAgainstTheServer()
+        public virtual void SimpleWorkflowAssigningTo100RecordsExecutingAgainstTheServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow executing against the server", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow assigning to 100 records executing against the server", ((string[])(null)));
 #line 27
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -156,50 +156,1030 @@ this.FeatureBackground();
 #line 28
   testRunner.Given("I have a workflow \"WorkflowWithAssign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table589 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table586.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "[[rec().a]]",
                         "yes"});
-            table586.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "[[rec().a]]",
                         "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "monkey"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "probably"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "certainly"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "maybe"});
+            table589.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "possibly"});
 #line 29
-  testRunner.And("\"WorkflowWithAssign\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table586, "And ");
-#line 33
+  testRunner.And("\"WorkflowWithAssign\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table589, "And ");
+#line 131
    testRunner.When("\"WorkflowWithAssign\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
+#line 132
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 35
+#line 133
    testRunner.And("the \"WorkflowWithAssign\" has a start and end duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table590 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table587.AddRow(new string[] {
+            table590.AddRow(new string[] {
                         "1",
                         "[[rec().a]] =",
                         "yes"});
-            table587.AddRow(new string[] {
+            table590.AddRow(new string[] {
                         "2",
                         "[[rec().a]] =",
                         "no"});
-#line 36
-   testRunner.And("the \"Rec To Convert\" in WorkFlow \"WorkflowWithAssign\" debug inputs as", ((string)(null)), table587, "And ");
+            table590.AddRow(new string[] {
+                        "3",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "4",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "5",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "6",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "7",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "8",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "9",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "10",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "11",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "12",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "13",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "14",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "15",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "16",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "17",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "18",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "19",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "20",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "21",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "22",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "23",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "24",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "25",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "26",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "27",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "28",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "29",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "30",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "31",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "32",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "33",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "34",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "35",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "36",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "37",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "38",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "39",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "40",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "41",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "42",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "43",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "44",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "45",
+                        "[[rec().a]] =",
+                        "monkey"});
+            table590.AddRow(new string[] {
+                        "46",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "47",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "48",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "49",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "50",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "51",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "52",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "53",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "54",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "55",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "56",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "57",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "58",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "59",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "60",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "61",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "62",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "63",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "64",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "65",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "66",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "67",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "68",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "69",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "70",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "71",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "72",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "73",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "74",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "75",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "76",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "77",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "78",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "79",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "80",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "81",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "82",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "83",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "84",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "85",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "86",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "87",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "88",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "89",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "90",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "91",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "92",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "93",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "94",
+                        "[[rec().a]] =",
+                        "possibly"});
+            table590.AddRow(new string[] {
+                        "95",
+                        "[[rec().a]] =",
+                        "probably"});
+            table590.AddRow(new string[] {
+                        "96",
+                        "[[rec().a]] =",
+                        "certainly"});
+            table590.AddRow(new string[] {
+                        "97",
+                        "[[rec().a]] =",
+                        "yes"});
+            table590.AddRow(new string[] {
+                        "98",
+                        "[[rec().a]] =",
+                        "no"});
+            table590.AddRow(new string[] {
+                        "99",
+                        "[[rec().a]] =",
+                        "maybe"});
+            table590.AddRow(new string[] {
+                        "100",
+                        "[[rec().a]] =",
+                        "possibly"});
+#line 134
+   testRunner.And("the \"Rec To Convert\" in WorkFlow \"WorkflowWithAssign\" debug inputs as", ((string)(null)), table590, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table591 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table588.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = yes"});
-            table588.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = no"});
-#line 40
-   testRunner.And("the \"Rec To Convert\" in Workflow \"WorkflowWithAssign\" debug outputs as", ((string)(null)), table588, "And ");
+            table591.AddRow(new string[] {
+                        "3",
+                        "[[rec(3).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "4",
+                        "[[rec(4).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "5",
+                        "[[rec(5).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "6",
+                        "[[rec(6).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "7",
+                        "[[rec(7).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "8",
+                        "[[rec(8).a]] = no"});
+            table591.AddRow(new string[] {
+                        "9",
+                        "[[rec(9).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "10",
+                        "[[rec(10).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "11",
+                        "[[rec(11).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "12",
+                        "[[rec(12).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "13",
+                        "[[rec(13).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "14",
+                        "[[rec(14).a]] = no"});
+            table591.AddRow(new string[] {
+                        "15",
+                        "[[rec(15).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "16",
+                        "[[rec(16).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "17",
+                        "[[rec(17).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "18",
+                        "[[rec(18).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "19",
+                        "[[rec(19).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "20",
+                        "[[rec(20).a]] = no"});
+            table591.AddRow(new string[] {
+                        "21",
+                        "[[rec(21).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "22",
+                        "[[rec(22).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "23",
+                        "[[rec(23).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "24",
+                        "[[rec(24).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "25",
+                        "[[rec(25).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "26",
+                        "[[rec(26).a]] = no"});
+            table591.AddRow(new string[] {
+                        "27",
+                        "[[rec(27).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "28",
+                        "[[rec(28).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "29",
+                        "[[rec(29).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "30",
+                        "[[rec(30).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "31",
+                        "[[rec(31).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "32",
+                        "[[rec(32).a]] = no"});
+            table591.AddRow(new string[] {
+                        "33",
+                        "[[rec(33).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "34",
+                        "[[rec(34).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "35",
+                        "[[rec(35).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "36",
+                        "[[rec(36).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "37",
+                        "[[rec(37).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "38",
+                        "[[rec(38).a]] = no"});
+            table591.AddRow(new string[] {
+                        "39",
+                        "[[rec(39).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "40",
+                        "[[rec(40).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "41",
+                        "[[rec(41).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "42",
+                        "[[rec(42).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "43",
+                        "[[rec(43).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "44",
+                        "[[rec(44).a]] = no"});
+            table591.AddRow(new string[] {
+                        "45",
+                        "[[rec(45).a]] = monkey"});
+            table591.AddRow(new string[] {
+                        "46",
+                        "[[rec(46).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "47",
+                        "[[rec(47).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "48",
+                        "[[rec(48).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "49",
+                        "[[rec(49).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "50",
+                        "[[rec(50).a]] = no"});
+            table591.AddRow(new string[] {
+                        "51",
+                        "[[rec(51).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "52",
+                        "[[rec(52).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "53",
+                        "[[rec(53).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "54",
+                        "[[rec(54).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "55",
+                        "[[rec(55).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "56",
+                        "[[rec(56).a]] = no"});
+            table591.AddRow(new string[] {
+                        "57",
+                        "[[rec(57).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "58",
+                        "[[rec(58).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "59",
+                        "[[rec(59).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "60",
+                        "[[rec(60).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "61",
+                        "[[rec(61).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "62",
+                        "[[rec(62).a]] = no"});
+            table591.AddRow(new string[] {
+                        "63",
+                        "[[rec(63).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "64",
+                        "[[rec(64).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "65",
+                        "[[rec(65).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "66",
+                        "[[rec(66).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "67",
+                        "[[rec(67).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "68",
+                        "[[rec(68).a]] = no"});
+            table591.AddRow(new string[] {
+                        "69",
+                        "[[rec(69).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "70",
+                        "[[rec(70).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "71",
+                        "[[rec(71).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "72",
+                        "[[rec(72).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "73",
+                        "[[rec(73).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "74",
+                        "[[rec(74).a]] = no"});
+            table591.AddRow(new string[] {
+                        "75",
+                        "[[rec(75).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "76",
+                        "[[rec(76).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "77",
+                        "[[rec(77).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "78",
+                        "[[rec(78).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "79",
+                        "[[rec(79).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "80",
+                        "[[rec(80).a]] = no"});
+            table591.AddRow(new string[] {
+                        "81",
+                        "[[rec(81).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "82",
+                        "[[rec(82).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "83",
+                        "[[rec(83).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "84",
+                        "[[rec(84).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "85",
+                        "[[rec(85).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "86",
+                        "[[rec(86).a]] = no"});
+            table591.AddRow(new string[] {
+                        "87",
+                        "[[rec(87).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "88",
+                        "[[rec(88).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "89",
+                        "[[rec(89).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "90",
+                        "[[rec(90).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "91",
+                        "[[rec(91).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "92",
+                        "[[rec(92).a]] = no"});
+            table591.AddRow(new string[] {
+                        "93",
+                        "[[rec(93).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "94",
+                        "[[rec(94).a]] = possibly"});
+            table591.AddRow(new string[] {
+                        "95",
+                        "[[rec(95).a]] = probably"});
+            table591.AddRow(new string[] {
+                        "96",
+                        "[[rec(96).a]] = certainly"});
+            table591.AddRow(new string[] {
+                        "97",
+                        "[[rec(97).a]] = yes"});
+            table591.AddRow(new string[] {
+                        "98",
+                        "[[rec(98).a]] = no"});
+            table591.AddRow(new string[] {
+                        "99",
+                        "[[rec(99).a]] = maybe"});
+            table591.AddRow(new string[] {
+                        "100",
+                        "[[rec(100).a]] = possibly"});
+#line 237
+   testRunner.And("the \"Rec To Convert\" in Workflow \"WorkflowWithAssign\" debug outputs as", ((string)(null)), table591, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
