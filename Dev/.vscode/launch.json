@@ -5,34 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launcher (AdminMode)",
+            "name": "Server (AcceptanceTesting Solution Wide Build Outputs)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Warewolf.Launcher/bin/Debug/Warewolf.Launcher.exe",
-            "args": ["--AdminMode"],
+            "program": "${workspaceFolder}/../bin/AcceptanceTesting/Warewolf Server.exe",
+            "args": ["--Interactive"],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
         {
-            "name": "Launch Server (ServerTests)",
+            "name": "Server (Server Solution Wide Build Outputs)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Warewolf.Launcher/bin/Debug/Warewolf.Launcher.exe",
-            "args": ["--StartServer", "--ResourcesType \"ServerTests\""],
+            "program": "${workspaceFolder}/../bin/Server/Warewolf Server.exe",
+            "args": ["--Interactive"],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
         {
-            "name": "Launch Server+Studio (UITests)",
+            "name": "Launch Studio (Solution Wide Build Outputs)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Warewolf.Launcher/bin/Debug/Warewolf.Launcher.exe",
-            "args": ["--StartStudio", "--ResourcesType \"UITests\""],
+            "program": "${workspaceFolder}/../bin/Studio/Warewolf Studio.exe",
+            "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
