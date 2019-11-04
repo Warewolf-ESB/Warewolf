@@ -16,7 +16,6 @@ GOTO exit
 :GitCommandline
 git -C "%~dp0.." fetch --all
 git -C "%~dp0.." reset --hard
-git -C "%~dp0.." branch
 if not %errorlevel%==0 pause & exit 1
 git -C "%~dp0.." clean -xdf --exclude Dev/packages/
 @echo off
