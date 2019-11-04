@@ -4,15 +4,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build AcceptanceTesting.sln",
             "type": "shell",
-            "command": "${workspaceFolder}\\..\\Compile.ps1",
-            "args": [
-                "-AcceptanceTesting",
-                "-UITesting",
-                "-MSBuildPath",
-                "D:\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe"
-            ],
+            "command": "${workspaceFolder}\\AcceptanceTesting.sln.Compile.bat",
+            "args": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -21,6 +16,86 @@
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build UITesting.sln",
+            "type": "shell",
+            "command": "${workspaceFolder}\\UITesting.sln.Compile.bat",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build Server.sln",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Server.sln.Compile.bat",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build Studio.sln",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Studio.sln.Compile.bat",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build Web.sln",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Web.sln.Compile.bat",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "deploy Server Testing Resources",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Resources - ServerTests\\Deploy.bat",
+            "args": []
+        },
+        {
+            "label": "deploy UI Testing Resources",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Resources - UITests\\Deploy.bat",
+            "args": []
+        },
+        {
+            "label": "deploy Release Resources",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Resources - Release\\Deploy.bat",
+            "args": []
+        },
+        {
+            "label": "deploy Load Testing Resources",
+            "type": "shell",
+            "command": "${workspaceFolder}\\Resources - Load\\Deploy.bat",
+            "args": []
         }
     ]
 }
