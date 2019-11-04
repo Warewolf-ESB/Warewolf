@@ -263,7 +263,6 @@
     <None Include="BrowserWebDrivers\Profiles\Opera\Login Data-journal" />
     <None Include="BrowserWebDrivers\Profiles\Opera\Network Action Predictor" />
     <None Include="BrowserWebDrivers\Profiles\Opera\Network Action Predictor-journal" />
-    <None Include="BrowserWebDrivers\Profiles\Opera\opera_autoupdate.log" />
     <None Include="BrowserWebDrivers\Profiles\Opera\Preferences" />
     <None Include="BrowserWebDrivers\Profiles\Opera\previews_opt_out.db" />
     <None Include="BrowserWebDrivers\Profiles\Opera\previews_opt_out.db-journal" />
