@@ -4,10 +4,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build AcceptanceTesting.sln",
-            "type": "shell",
-            "command": "${workspaceFolder}\\AcceptanceTesting.sln.Compile.bat",
-            "args": [],
+            "label": "build",
+            "windows": {
+                "command": "${workspaceFolder}\\AcceptanceTesting.sln.Compile.bat"
+            },
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -19,12 +19,8 @@
         },
         {
             "label": "build UITesting.sln",
-            "type": "shell",
-            "command": "${workspaceFolder}\\UITesting.sln.Compile.bat",
-            "args": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "windows": {
+                "command": "${workspaceFolder}\\UITesting.sln.Compile.bat"
             },
             "presentation": {
                 "reveal": "silent"
@@ -33,12 +29,8 @@
         },
         {
             "label": "build Server.sln",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Server.sln.Compile.bat",
-            "args": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "windows": {
+                "command": "${workspaceFolder}\\Server.sln.Compile.bat"
             },
             "presentation": {
                 "reveal": "silent"
@@ -47,12 +39,8 @@
         },
         {
             "label": "build Studio.sln",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Studio.sln.Compile.bat",
-            "args": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "windows": {
+                "command": "${workspaceFolder}\\Studio.sln.Compile.bat"
             },
             "presentation": {
                 "reveal": "silent"
@@ -61,12 +49,8 @@
         },
         {
             "label": "build Web.sln",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Web.sln.Compile.bat",
-            "args": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "windows": {
+                "command": "${workspaceFolder}\\Web.sln.Compile.bat"
             },
             "presentation": {
                 "reveal": "silent"
@@ -75,27 +59,28 @@
         },
         {
             "label": "deploy Server Testing Resources",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Resources - ServerTests\\Deploy.bat",
-            "args": []
+            "windows": {
+                "command": "${workspaceFolder}\\Resources - ServerTests\\Deploy.bat"
+            },
+            "problemMatcher": []
         },
         {
             "label": "deploy UI Testing Resources",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Resources - UITests\\Deploy.bat",
-            "args": []
+            "windows": {
+                "command": "${workspaceFolder}\\Resources - UITests\\Deploy.bat"
+            }
         },
         {
             "label": "deploy Release Resources",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Resources - Release\\Deploy.bat",
-            "args": []
+            "windows": {
+                "command": "${workspaceFolder}\\Resources - Release\\Deploy.bat"
+            }
         },
         {
             "label": "deploy Load Testing Resources",
-            "type": "shell",
-            "command": "${workspaceFolder}\\Resources - Load\\Deploy.bat",
-            "args": []
+            "windows": {
+                "command": "${workspaceFolder}\\Resources - Load\\Deploy.bat"
+            }
         }
     ]
 }
