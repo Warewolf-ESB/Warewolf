@@ -175,7 +175,7 @@ namespace Dev2.Activities.Specs.Permissions
         {
             if (!server.IsConnected)
             {
-                server.Connect();
+                server.ConnectAsync().Wait(60000);
             }
         }
 
