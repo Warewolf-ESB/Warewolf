@@ -73,6 +73,9 @@ using Dev2.Instrumentation;
 using Dev2.Triggers;
 using Dev2.Dialogs;
 using Dev2.Studio.Enums;
+using Warewolf.Data;
+using Dev2.Data;
+using Warewolf.Core;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -310,6 +313,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
+            
             if (_currentResourcePicker.ShowDialog(ServerRepository.ActiveServer))
             {
                 var optionView = item as Warewolf.UI.OptionView;
@@ -319,22 +323,42 @@ namespace Dev2.Studio.ViewModels
                 {
                     optionWorkflow.Value = selectedResource.ResourceId;
                     optionWorkflow.WorkflowName = selectedResource.ResourcePath;
+                    optionWorkflow.Inputs = GetInputsFromWorkflow(selectedResource.ResourceId);
                 }
-                
-                //SelectedQueue.GetInputsFromWorkflow();
             }
+        }
+
+        public List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId)
+        {
+            var inputs = new List<IServiceInputBase>();
+            var contextualResourceModel = ServerRepository.ActiveServer.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var dataList = new DataListModel();
+            var dataListConversionUtils = new DataListConversionUtils();
+            dataList.Create(contextualResourceModel.DataList, contextualResourceModel.DataList);
+            var inputList = dataListConversionUtils.GetInputs(dataList);
+            inputs = inputList.Select(sca =>
+            {
+                var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
+                return serviceTestInput.As<IServiceInputBase>();
+
+            }).ToList();
+            return inputs;
         }
 
         IResourcePickerDialog CreateResourcePickerDialog()
         {
-            var environmentViewModels = ExplorerViewModel?.Environments;
-            if (environmentViewModels != null)
+            if (_currentResourcePicker == null)
             {
-                var environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
-                var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
-                ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
+                var environmentViewModels = ExplorerViewModel?.Environments;
+                if (environmentViewModels != null)
+                {
+                    var environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
+                    var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
+                    ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
+                    return res;
+                }
             }
-            return null;
+            return _currentResourcePicker;
         }
 
         public IAuthorizeCommand SchedulerCommand
@@ -436,31 +460,31 @@ namespace Dev2.Studio.ViewModels
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, true, null, null, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, true, null, null, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, null, null, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, null, null, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, null, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, null, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController, IPopupController popupController)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, popupController, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, popupController, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController,
-            IPopupController popupController, IExplorerViewModel explorer)
+            IPopupController popupController, IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
             : base(eventPublisher)
         {
             _file = new FileWrapper();
@@ -488,6 +512,7 @@ namespace Dev2.Studio.ViewModels
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
+            _currentResourcePicker = currentResourcePicker;
             if (_currentResourcePicker == null)
             {
                 _currentResourcePicker = CreateResourcePickerDialog();
