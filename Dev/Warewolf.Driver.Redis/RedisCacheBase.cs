@@ -26,25 +26,13 @@ namespace Warewolf.Driver.Redis
        
         private IRedisCache Cache => _connection.Value.Cache;
 
-        public void Set<T>(string key, T value)
+        public void Set(string key, IDictionary<string, string> dictionary, TimeSpan timeSpan)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            switch (value)
-            {
-                case string s:
-                    Cache.Set(key, s);
-                    break;
-                case IDictionary<string,string> dict:
-                    Cache.HashSet(key,dict);
-                    break;
-                case object _:
-                    throw new InvalidOperationException(nameof(value));
-                default:
-                    throw new ArgumentNullException(nameof(value));
-            }            
+            Cache.Set(key, dictionary, timeSpan);
         }
 
-        public string Get(string key)
+        public IDictionary<string,string> Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.Get(key);

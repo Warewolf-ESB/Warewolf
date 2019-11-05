@@ -8,12 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace Warewolf.Interfaces
 {
     public interface IRedisCache
     {
-        bool Set(string key, string value);
-        string Get(string key);
-        bool HashSet(string key, System.Collections.Generic.IDictionary<string, string> dictionary);
+        bool Set(string key, IDictionary<string, string> disctionary, TimeSpan timeSpan);
+        IDictionary<string, string> Get(string key);
     }
 }
