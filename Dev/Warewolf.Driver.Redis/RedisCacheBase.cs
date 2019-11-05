@@ -23,7 +23,11 @@ namespace Warewolf.Driver.Redis
             if (createConnection is null) throw new ArgumentNullException(nameof(createConnection));
             _connection = new Lazy<IRedisConnection>(() => createConnection?.Invoke());
         }
-       
+
+        public RedisCacheBase()
+        {
+        }
+
         private IRedisCache Cache => _connection.Value.Cache;
 
         public void Set<T>(string key, T value)
@@ -53,6 +57,7 @@ namespace Warewolf.Driver.Redis
 
     public class RedisCacheImpl : RedisCacheBase
     {
+        public RedisCacheImpl() { }
         public RedisCacheImpl(string hostName) : this(() => new RedisConnection(hostName)) { }
         public RedisCacheImpl(Func<IRedisConnection> createConnection) : base(createConnection)
         {
