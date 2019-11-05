@@ -6,7 +6,13 @@
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                    xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI">
+                    xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    mc:Ignorable="d" 
+                    xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
+                    >
     <!--xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"-->
 
     <ResourceDictionary.MergedDictionaries>
@@ -18,6 +24,8 @@
     <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector" />
 
     <ColumnDefinition x:Key="MasterColumnDefinition" Width="100" />
+    <DataGridTemplateColumn x:Key="MasterColumnDefinition1" Width="*" MinWidth="160" />
+    <DataGridTemplateColumn x:Key="MasterColumnDefinition2" Width="*" MinWidth="160" />
 
     <DataTemplate x:Key="DefaultDefaultTextTemplate">
         <ContentControl Content="{Binding}"
@@ -112,45 +120,54 @@
 
     <DataTemplate x:Key="OptionAddWorkflowStyle" DataType="{x:Type options:OptionWorkflow}">
         <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
-            <Grid Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" 
-                         x:Name="WorkflowTextBox"
-                         Text="{Binding Path=DataContext.WorkflowName}"
-                         Style="{StaticResource ReadOnlyTextBoxStyle}"
-                         ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipWorkFlow}"
-                         HorizontalAlignment="Stretch"
-                         AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
-                         IsReadOnly="True">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextWorkFlow}"
+
+                <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+                <Grid Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" 
+                             x:Name="WorkflowTextBox"
+                             Text="{Binding Path=DataContext.WorkflowName}"
+                             Style="{StaticResource ReadOnlyTextBoxStyle}"
+                             ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipWorkFlow}"
+                             HorizontalAlignment="Stretch"
+                             AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
+                             IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextWorkFlow}"
                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                    </i:Interaction.Behaviors>
-                </TextBox>
-                <!--, diag:PresentationTraceSources.TraceLevel=High-->
-                <Button Grid.Column="1" 
-                        Content="..."
-                        Margin="{StaticResource ControlBorderLeft}"
-                        Style="{StaticResource ButtonStyle}"
-                        ToolTip="{x:Static languages:Tooltips.QueueAddWorkflowCommandToolTip}"
-                        CommandParameter="{Binding .}"
-                        Command="{Binding Path=DataContext.AddWorkflowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}" 
-                        AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.QueueAddWorkflowCommandHelpText}"
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <!--, diag:PresentationTraceSources.TraceLevel=High-->
+                    <Button Grid.Column="1" 
+                            Content="..."
+                            Margin="{StaticResource ControlBorderLeft}"
+                            Style="{StaticResource ButtonStyle}"
+                            ToolTip="{x:Static languages:Tooltips.QueueAddWorkflowCommandToolTip}"
+                            CommandParameter="{Binding .}"
+                            Command="{Binding Path=DataContext.AddWorkflowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}" 
+                            AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.QueueAddWorkflowCommandHelpText}"
                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                    </i:Interaction.Behaviors>
-                </Button>
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </Grid>
             </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ContentPresenter ContentTemplate="{StaticResource OptionInputsStyle}" DataContext="{Binding .}"/>
+            </StackPanel>
         </Grid>
     </DataTemplate>
 
@@ -220,6 +237,79 @@
                      BorderBrush="Transparent"
                      Margin="0,0,-1,0">
             </ListBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionInputsStyle" DataType="{x:Type options:OptionWorkflow}">
+        <Grid DataContext="{Binding Path=DataContext}">
+            <ui1:InputsDataGrid x:Name="InputsDataGrid"
+                                ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ActivityMappingDataGridStyle}"
+                                Height="Auto"
+                                MinHeight="100"
+                                Margin="{StaticResource ControlBorderTop}">
+
+                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="{Binding Source={StaticResource MasterColumnDefinition1}, Path=Width, Mode=TwoWay}"
+                                            Header="Parameter"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=ui1:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <TextBlock Text="{Binding Path=Name}"
+                                               TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center"
+                                               Padding="3,0"
+                                               ToolTip="{Binding OutputColumn.ColumnName}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Source={StaticResource MasterColumnDefinition2}, Path=Width, Mode=TwoWay}"
+                                            Header="Value"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=ui1:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:IntellisenseTextBox DefaultText="Test Data"
+                                                        AllowMultilinePaste="True"
+                                                        AcceptsReturn="True"
+                                                        AllowUserInsertLine="True"
+                                                        MaxHeight="80"
+                                                        Margin="0,0,1,1"
+                                                        TextWrapping="Wrap"
+                                                        WrapInBrackets="False"
+                                                        ToolTip="{x:Static languages:Tooltips.WebInsertToolTipColumn}"
+                                                        Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        <ui1:ErrorsSetter Source="{Binding}"
+                                                          SourcePropertyName="Value"
+                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                    <AutomationProperties.AutomationId>
+                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                            <Binding Path="IndexNumber" />
+                                        </MultiBinding>
+                                    </AutomationProperties.AutomationId>
+                                </ui:IntellisenseTextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </ui1:InputsDataGrid>
         </Grid>
     </DataTemplate>
 

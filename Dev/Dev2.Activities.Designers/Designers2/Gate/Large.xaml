@@ -20,7 +20,7 @@
                                Width="350"
                                MinHeight="440"
                                Height="440"
-                               MaxWidth="Infinity"
+                               MaxWidth="350"
                                mc:Ignorable="d" 
                                d:DesignHeight="450" 
                                d:DesignWidth="800"
@@ -38,7 +38,7 @@
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
