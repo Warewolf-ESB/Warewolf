@@ -48,6 +48,11 @@ namespace Warewolf.Driver.RabbitMQ
 
                     var resultTask = consumer.Consume(body);
                     resultTask.Wait();
+                    if (resultTask.IsFaulted)
+                    {
+                        Console.WriteLine($"consumer failure while consuming message, task.status:'{resultTask.Status}' exception:{resultTask.Exception}'");
+                        return;
+                    }
                     if (resultTask.Result == Data.ConsumerResult.Success)
                     {
                         channel.BasicAck(eventArgs.DeliveryTag, false);

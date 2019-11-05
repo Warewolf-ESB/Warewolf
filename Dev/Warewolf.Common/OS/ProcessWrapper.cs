@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Warewolf.OS
 {
@@ -31,6 +32,9 @@ namespace Warewolf.OS
                 }
             }
         }
+
+        public StreamReader StandardOutput { get => _process.StandardOutput; }
+        public StreamReader StandardError { get => _process.StandardError; }
 
         public ProcessWrapper(Process process)
         {

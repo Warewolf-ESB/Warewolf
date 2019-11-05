@@ -37,7 +37,7 @@ namespace QueueWorker
         public Task<ConsumerResult> Consume(byte[] body)
         {
             var executionId = Guid.NewGuid();
-            _logger.StartExecution("processing {body}");
+            _logger.StartExecution($"processing {body}");
             var startDate = DateTime.UtcNow;
 
             return _consumer.Consume(body)
@@ -50,22 +50,23 @@ namespace QueueWorker
 
                         if (requestForwarderResult.Result == ConsumerResult.Success)
                         {
-                            _logger.Info("success");
+                            _logger.Info($"success processing {body}");
                             var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
                             var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
 
                             _logger.ExecutionSucceeded(executionEntry);
+                            return requestForwarderResult.Result;
                         }
-                        else
+                        else if (requestForwarderResult.Result == ConsumerResult.Failed)
                         {
-                            _logger.Warn("failure");
+                            _logger.Warn($"failure processing {body}");
                             var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
                             var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
 
                             _logger.ExecutionFailed(executionEntry);
                         }
                     }
-                    return requestForwarderResult.Result;
+                    return ConsumerResult.Failed;
                 });
         }
     }

@@ -8,8 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Warewolf.OS
 {
@@ -71,14 +73,29 @@ namespace Warewolf.OS
                 try
                 {
                     var startInfo = GetProcessStartInfo();
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.RedirectStandardError = true;
+                    startInfo.RedirectStandardInput = true;
                     using (var process = _processFactory.Start(startInfo))
                     {
                         _childProcessTracker.Add(process);
                         Process = process;
-                        while (!process.WaitForExit(1000))
+                        var stdCopyTask = Task.Run(async () =>
                         {
-                            //TODO: check queue progress, kill if necessary
-                        }
+                            while (!process.StandardOutput.EndOfStream)
+                            {
+                                await process.StandardOutput.ReadLineAsync().ContinueWith((line) => Console.WriteLine(line.Result));
+                            }
+                        });
+                        var errCopyTask = Task.Run(async () =>
+                        {
+                            while (!process.StandardError.EndOfStream)
+                            {
+                                await process.StandardError.ReadLineAsync().ContinueWith((line) => Console.WriteLine(line.Result));
+                            }
+                        });
+                        Task.WaitAll(stdCopyTask, errCopyTask);
                         OnProcessDied?.Invoke(Config);
                     }
                 }

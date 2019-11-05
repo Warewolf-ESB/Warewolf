@@ -17,6 +17,7 @@ using Dev2.Common.ExtMethods;
 using System.Linq;
 using Warewolf.Data;
 using Warewolf.Streams;
+using System;
 
 namespace Warewolf.Common
 {
@@ -56,6 +57,8 @@ namespace Warewolf.Common
                 if (!execution.IsSuccessStatusCode)
                 {
                     _publisher.Publish(Encoding.UTF8.GetBytes(postBody));
+                    Console.WriteLine($"failed executing workflow: {execution.StatusCode} {execution.ReasonPhrase}");
+                    Console.WriteLine($"failed executing workflow: {execution.Content.ReadAsStringAsync().Result}");
                     return ConsumerResult.Failed;
                 }
             }
