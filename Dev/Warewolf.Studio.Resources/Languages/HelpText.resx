@@ -2303,4 +2303,25 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="LoggingViewAuditsFilePathHelpText" xml:space="preserve">
     <value>The Folder Path to store the audit database. The default Folder Path is C:\ProgramData\Warewolf\Audits</value>
   </data>
+  <data name="OptionAutocompleteHelpText" xml:space="preserve">
+    <value>OptionAutocompleteHelpText</value>
+  </data>
+  <data name="OptionIntHelpText" xml:space="preserve">
+    <value>OptionIntHelpText</value>
+  </data>
+  <data name="OptionBoolHelpText" xml:space="preserve">
+    <value>OptionBoolHelpText</value>
+  </data>
+  <data name="OptionEnumHelpText" xml:space="preserve">
+    <value>OptionEnumHelpText</value>
+  </data>
+  <data name="OptionEnumGenHelpText" xml:space="preserve">
+    <value>OptionEnumGenHelpText</value>
+  </data>
+  <data name="OptionComboboxHelpText" xml:space="preserve">
+    <value>OptionComboboxHelpText</value>
+  </data>
+  <data name="OptionWorkflowHelpText" xml:space="preserve">
+    <value>OptionWorkflowHelpText</value>
+  </data>
 </root>

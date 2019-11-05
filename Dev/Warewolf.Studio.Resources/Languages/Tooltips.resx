@@ -2369,4 +2369,25 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
+  <data name="OptionAutocompleteTooltip" xml:space="preserve">
+    <value>OptionAutocompleteTooltip</value>
+  </data>
+  <data name="OptionIntTooltip" xml:space="preserve">
+    <value>OptionIntTooltip</value>
+  </data>
+  <data name="OptionBoolTooltip" xml:space="preserve">
+    <value>OptionBoolTooltip</value>
+  </data>
+  <data name="OptionEnumTooltip" xml:space="preserve">
+    <value>OptionEnumTooltip</value>
+  </data>
+  <data name="OptionEnumGenTooltip" xml:space="preserve">
+    <value>OptionEnumGenTooltip</value>
+  </data>
+  <data name="OptionComboboxTooltip" xml:space="preserve">
+    <value>OptionComboboxTooltip</value>
+  </data>
+  <data name="OptionWorkflowTooltip" xml:space="preserve">
+    <value>OptionWorkflowTooltip</value>
+  </data>
 </root>

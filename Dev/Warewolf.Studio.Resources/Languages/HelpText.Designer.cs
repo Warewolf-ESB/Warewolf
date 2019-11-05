@@ -2330,6 +2330,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OptionAutocompleteHelpText.
+        /// </summary>
+        public static string OptionAutocompleteHelpText {
+            get {
+                return ResourceManager.GetString("OptionAutocompleteHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionBoolHelpText.
+        /// </summary>
+        public static string OptionBoolHelpText {
+            get {
+                return ResourceManager.GetString("OptionBoolHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionComboboxHelpText.
+        /// </summary>
+        public static string OptionComboboxHelpText {
+            get {
+                return ResourceManager.GetString("OptionComboboxHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumGenHelpText.
+        /// </summary>
+        public static string OptionEnumGenHelpText {
+            get {
+                return ResourceManager.GetString("OptionEnumGenHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumHelpText.
+        /// </summary>
+        public static string OptionEnumHelpText {
+            get {
+                return ResourceManager.GetString("OptionEnumHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionIntHelpText.
+        /// </summary>
+        public static string OptionIntHelpText {
+            get {
+                return ResourceManager.GetString("OptionIntHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionWorkflowHelpText.
+        /// </summary>
+        public static string OptionWorkflowHelpText {
+            get {
+                return ResourceManager.GetString("OptionWorkflowHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the password for the account you want to use for authenticating..
         /// </summary>
         public static string PasswordAuthenticationHelp {

@@ -10,11 +10,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 
 namespace Warewolf.Options
 {
-    public interface IOption : ICloneable, IComparable
+    public interface IOptionHelp
+    {
+        string HelpText { get; }
+        string Tooltip { get; }
+    }
+
+    public interface IOption : ICloneable, IComparable, IOptionHelp
     {
         string Name { get; set; }
     }
