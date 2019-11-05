@@ -49,12 +49,12 @@ namespace Warewolf.Options
 
     public interface IOptionEnum : IOptionBasic<int>
     {
-        IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+        IEnumerable<KeyValuePair<string, int>> Values { get; set; }
     }
 
     public interface IOptionEnumGen : IOptionBasic<string, int>
     {
-        IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+        IEnumerable<KeyValuePair<string, int>> Values { get; set; }
     }
 
     public interface IOptionInt : IOptionBasic<int>

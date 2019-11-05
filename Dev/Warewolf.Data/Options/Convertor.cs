@@ -79,13 +79,13 @@ namespace Warewolf.Options
                     Name = prop.Name,
                     Value = (int)prop.GetValue(instance)
                 };
-                var options = new List<KeyValuePair<string, int>>();
+                var values = new List<KeyValuePair<string, int>>();
                 foreach (var option in Enum.GetValues(prop.PropertyType))
                 {
                     var key = Enum.GetName(prop.PropertyType, option);
-                    options.Add(new KeyValuePair<string, int>(key, (int)option));
+                    values.Add(new KeyValuePair<string, int>(key, (int)option));
                 }
-                result.Options = options;
+                result.Values = values;
                 return result;
             }
             else
