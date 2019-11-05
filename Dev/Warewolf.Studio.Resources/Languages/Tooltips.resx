@@ -1152,6 +1152,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisKeyToolTip" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
+  <data name="RedisTimeOutToolTip" xml:space="preserve">
+    <value>Redis TimeOut for stored data</value>
+  </data>
   <data name="ManageWebSourceDefaultQueryTooltip" xml:space="preserve">
     <value>Optional default query</value>
   </data>
