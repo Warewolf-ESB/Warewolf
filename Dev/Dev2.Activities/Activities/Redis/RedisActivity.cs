@@ -120,6 +120,7 @@ namespace Dev2.Activities.Redis
         {
             try
             {
+                var cacheTimeOut = TimeSpan.Parse(TimeOut);
                 var act = ActivityFunc.Handler as IDev2Activity;
                 act.Execute(DataObject, 0);
                 var outputVars = act.GetOutputs();
@@ -128,7 +129,7 @@ namespace Dev2.Activities.Redis
                 {
                     data.Add(output, DataObject.Environment.Eval(output, 0).ToString());
                 }
-                _redisCache.Set(Key, data);
+                _redisCache.Set(Key, data, cacheTimeOut);
                 return new List<string> { _result };
             }
             catch (Exception ex)

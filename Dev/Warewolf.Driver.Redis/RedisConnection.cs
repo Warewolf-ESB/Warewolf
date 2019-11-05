@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using ServiceStack.Redis;
 using Warewolf.Interfaces;
@@ -43,13 +44,8 @@ namespace Warewolf.Driver.Redis
             _client = client;
         }
 
-        public bool HashSet(string key, IDictionary<string, string> dictionary)
-        {
-            _client.SetRangeInHash(key, dictionary);
-            return true;
-        }
+        public IDictionary<string, string> Get(string key) => _client.Get<IDictionary<string, string>>(key);
 
-        public string Get(string key) => _client.Get<string>(key);
-        public bool Set(string key, string value) => _client.Set(key, value);
+        public bool Set(string key, IDictionary<string, string> value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
     }
 }

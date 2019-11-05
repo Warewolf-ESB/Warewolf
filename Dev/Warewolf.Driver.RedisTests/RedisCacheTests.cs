@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ServiceStack.Redis;
@@ -40,13 +41,13 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<IDictionary<string,string>>(), It.IsAny<TimeSpan>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Set<string>("bob", "the builder");
+            redis.Set("bob", new Dictionary<string, string> { { "test", "the builder" } }, It.IsAny<TimeSpan>());
             //--------------Assert-------------------------------
-            mockDatabase.Verify(db => db.Set(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockDatabase.Verify(db => db.Set(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>(), It.IsAny<TimeSpan>()), Times.Once);
 
         }
 
@@ -59,11 +60,11 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>(), It.IsAny<TimeSpan>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Set<string>("bob", null);
+            redis.Set("bob", null, It.IsAny<TimeSpan>());
             //--------------Assert-------------------------------
 
         }
@@ -77,11 +78,11 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>(), It.IsAny<TimeSpan>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Set<object>("bob", new object());
+            redis.Set("bob", new Dictionary<string, string>(), It.IsAny<TimeSpan>());
             //--------------Assert-------------------------------
 
         }
@@ -95,11 +96,11 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>(), It.IsAny<TimeSpan>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Set<object>(null, new object());
+            redis.Set(null, new Dictionary<string, string>(), It.IsAny<TimeSpan>());
             //--------------Assert-------------------------------
 
         }
@@ -162,7 +163,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------          
             var redis = new RedisCacheImpl("localhost:6379");
             //--------------Act----------------------------------
-            redis.Set<string>("bob", "the builder");         
+            redis.Set("bob", new Dictionary<string, string> { { "test", "the builder" } }, It.IsAny<TimeSpan>());         
             //--------------Assert-------------------------------
             Assert.AreEqual("the builder", redis.Get("bob"));
         }
