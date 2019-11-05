@@ -3260,6 +3260,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OptionAutocompleteTooltip.
+        /// </summary>
+        public static string OptionAutocompleteTooltip {
+            get {
+                return ResourceManager.GetString("OptionAutocompleteTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionBoolTooltip.
+        /// </summary>
+        public static string OptionBoolTooltip {
+            get {
+                return ResourceManager.GetString("OptionBoolTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionComboboxTooltip.
+        /// </summary>
+        public static string OptionComboboxTooltip {
+            get {
+                return ResourceManager.GetString("OptionComboboxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumGenTooltip.
+        /// </summary>
+        public static string OptionEnumGenTooltip {
+            get {
+                return ResourceManager.GetString("OptionEnumGenTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumTooltip.
+        /// </summary>
+        public static string OptionEnumTooltip {
+            get {
+                return ResourceManager.GetString("OptionEnumTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionIntTooltip.
+        /// </summary>
+        public static string OptionIntTooltip {
+            get {
+                return ResourceManager.GetString("OptionIntTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionWorkflowTooltip.
+        /// </summary>
+        public static string OptionWorkflowTooltip {
+            get {
+                return ResourceManager.GetString("OptionWorkflowTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the corresponding password.
         /// </summary>
         public static string PasswordToolTip {

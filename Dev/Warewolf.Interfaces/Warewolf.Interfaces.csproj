@@ -6,6 +6,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>Warewolf</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

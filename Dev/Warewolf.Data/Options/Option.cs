@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,10 @@ namespace Warewolf.Options
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionAutocompleteHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionAutocompleteTooltip;
 
         private string _value;
 
@@ -72,6 +77,10 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionIntHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionIntTooltip;
+
         private int _value;
 
         public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
@@ -116,6 +125,10 @@ namespace Warewolf.Options
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionBoolHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionBoolTooltip;
 
         private bool _value;
 
@@ -167,6 +180,10 @@ namespace Warewolf.Options
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionEnumHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionEnumTooltip;
 
         private int _value;
 
@@ -234,6 +251,10 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionEnumGenHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionEnumGenTooltip;
+
         private KeyValuePair<string, int> _value;
 
         public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
@@ -286,6 +307,11 @@ namespace Warewolf.Options
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+
         public Dictionary<string, IEnumerable<IOption>> Options { get; } = new Dictionary<string, IEnumerable<IOption>>();
 
         public List<string> OptionNames
@@ -357,6 +383,10 @@ namespace Warewolf.Options
                 SetProperty(ref _value, value);
             }
         }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionWorkflowHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionWorkflowTooltip;
 
         public Guid Default;
 

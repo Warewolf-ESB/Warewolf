@@ -29,7 +29,6 @@ using System.Windows.Input;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 using Warewolf.Service;
-using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Gate
 {
