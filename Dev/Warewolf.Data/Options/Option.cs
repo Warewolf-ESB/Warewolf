@@ -187,14 +187,14 @@ namespace Warewolf.Options
 
         private int _value;
 
-        public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+        public IEnumerable<KeyValuePair<string, int>> Values { get; set; }
 
         public List<string> OptionNames
         {
             get
             {
                 var optionNames = new List<string>();
-                foreach (var opt in Options)
+                foreach (var opt in Values)
                 {
                     optionNames.Add(opt.Key.ToString());
                 }
@@ -257,7 +257,7 @@ namespace Warewolf.Options
 
         private KeyValuePair<string, int> _value;
 
-        public IEnumerable<KeyValuePair<string, int>> Options { get; set; }
+        public IEnumerable<KeyValuePair<string, int>> Values { get; set; }
 
         public event EventHandler<OptionValueChangedArgs<KeyValuePair<string, int>>> ValueUpdated;
 
