@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -43,9 +43,10 @@ namespace Dev2.Activities.Redis
         string _result = "Success";
         int _timeOut;
         private RedisCacheBase _redisCache;
+        internal List<string> _messages;
 
         public RedisActivity()
-            : this(new ResponseManager(),new RedisCacheImpl("localhost:6379"))
+             : this(new ResponseManager())
         {
             DisplayName = "Redis";
             ActivityFunc = new ActivityFunc<string, bool>
@@ -55,17 +56,22 @@ namespace Dev2.Activities.Redis
 
             };
         }
-
-        public RedisActivity(IResourceCatalog resourceCatalog,RedisCacheBase redisCache)
+        public string HostName { get; set; }
+        public RedisActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
         {
             DisplayName = "Redis";
             ResourceCatalog = resourceCatalog;
         }
 
-        public RedisActivity(IResponseManager responseManager,RedisCacheBase redisCache)
+        public RedisActivity(IResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
             _redisCache = redisCache;
+        }
+
+        public RedisActivity(ResponseManager responseManager)
+        {
+            ResponseManager = responseManager;
         }
 
         public Guid SourceId { get; set; }
@@ -79,7 +85,7 @@ namespace Dev2.Activities.Redis
 
         [FindMissing]
         public string TimeOut { get; set; }
-        
+
         public bool ShouldSerializeConsumer() => false;
 
         public bool ShouldSerializeConnectionFactory() => false;
@@ -111,20 +117,33 @@ namespace Dev2.Activities.Redis
                     Name="Response",
                     Value = Response,
                     Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = "SourceId",
+                    Value = SourceId.ToString(),
+                    Type = StateVariable.StateType.Input
                 }
             };
         }
-
-
+       
+        public RedisSource RedisSource { get; set; }
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
+                RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
+                if (RedisSource == null || RedisSource.ResourceType != enSourceType.RedisSource.ToString())
+                {
+                    _messages.Add(ErrorResource.RedisSourceHasBeenDeleted);
+                    return _messages;
+                }
+                _redisCache = new RedisCacheImpl(RedisSource.HostName);
                 var act = ActivityFunc.Handler as IDev2Activity;
                 act.Execute(DataObject, 0);
                 var outputVars = act.GetOutputs();
                 var data = new Dictionary<string, string>();
-                foreach(var output in outputVars)
+                foreach (var output in outputVars)
                 {
                     data.Add(output, DataObject.Environment.Eval(output, 0).ToString());
                 }
@@ -133,7 +152,7 @@ namespace Dev2.Activities.Redis
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("RedisActivity", ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
         }
@@ -148,7 +167,7 @@ namespace Dev2.Activities.Redis
                 return new List<DebugItem>();
             }
             var debugItem = new DebugItem();
-            AddDebugItem(new DebugEvalResult(Key, "Key",env,update), debugItem);
+            AddDebugItem(new DebugEvalResult(Key, "Key", env, update), debugItem);
             _debugInputs.Add(debugItem);
             return _debugInputs;
         }
