@@ -32,7 +32,10 @@ namespace Warewolf.Driver.Redis
 
         public void Set(string key, IDictionary<string, string> dictionary, TimeSpan timeSpan)
         {
-            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrWhiteSpace(key)) { throw new ArgumentNullException(nameof(key)); }
+            if (dictionary is null) { throw new ArgumentNullException(nameof(dictionary)); }
+            if (dictionary.Count is 0) { throw new InvalidOperationException(nameof(dictionary)); }
+
             Cache.Set(key, dictionary, timeSpan);
         }
 
