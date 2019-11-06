@@ -34,6 +34,9 @@ namespace Warewolf.Data.Tests
             Assert.IsTrue(optionBool.Value);
 
             Assert.IsTrue(optionBool.Default);
+
+            Assert.AreEqual("OptionBoolHelpText", optionBool.HelpText);
+            Assert.AreEqual("OptionBoolTooltip", optionBool.Tooltip);
         }
 
         [TestMethod]
@@ -89,6 +92,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(10, optionInt.Value);
 
             Assert.AreEqual(0, optionInt.Default);
+
+            Assert.AreEqual("OptionIntHelpText", optionInt.HelpText);
+            Assert.AreEqual("OptionIntTooltip", optionInt.Tooltip);
         }
 
         [TestMethod]
@@ -145,6 +151,9 @@ namespace Warewolf.Data.Tests
 
             Assert.AreEqual(string.Empty, optionAutocomplete.Default);
             Assert.IsNull(optionAutocomplete.Suggestions);
+
+            Assert.AreEqual("OptionAutocompleteHelpText", optionAutocomplete.HelpText);
+            Assert.AreEqual("OptionAutocompleteTooltip", optionAutocomplete.Tooltip);
         }
 
         [TestMethod]
@@ -202,6 +211,9 @@ namespace Warewolf.Data.Tests
             Assert.IsNotNull(optionEnum.Default);
             optionEnum.Default = (int)MyEnum.Option1;
             Assert.AreEqual((int)MyEnum.Option1, optionEnum.Default);
+
+            Assert.AreEqual("OptionEnumHelpText", optionEnum.HelpText);
+            Assert.AreEqual("OptionEnumTooltip", optionEnum.Tooltip);
         }
 
         [TestMethod]
@@ -282,6 +294,9 @@ namespace Warewolf.Data.Tests
             optionEnum.Value = new KeyValuePair<string, int>(MyEnum.Option2.ToString(), (int)MyEnum.Option2);
             Assert.AreEqual(MyEnum.Option2.ToString(), optionEnum.Value.Key);
             Assert.AreEqual(1, optionEnum.Value.Value);
+
+            Assert.AreEqual("OptionEnumGenHelpText", optionEnum.HelpText);
+            Assert.AreEqual("OptionEnumGenTooltip", optionEnum.Tooltip);
         }
 
         [TestMethod]
@@ -322,17 +337,40 @@ namespace Warewolf.Data.Tests
         }
 
         [TestMethod]
+        [TestCategory(nameof(OptionEnumGen))]
+        [Owner("Pieter Terblanche")]
+        public void OptionCombobox_Default()
+        {
+            var optionCombobox = new OptionCombobox();
+
+            Assert.IsNotNull(optionCombobox.Options);
+            Assert.IsNotNull(optionCombobox.OptionNames);
+            Assert.IsNotNull(optionCombobox.SelectedOptions);
+
+            Assert.IsNull(optionCombobox.Name);
+            optionCombobox.Name = "Name";
+            Assert.AreEqual("Name", optionCombobox.Name);
+
+            Assert.IsNull(optionCombobox.Value);
+            optionCombobox.Value = "Item1";
+            Assert.AreEqual("Item1", optionCombobox.Value);
+
+            Assert.AreEqual("OptionComboboxHelpText", optionCombobox.HelpText);
+            Assert.AreEqual("OptionComboboxTooltip", optionCombobox.Tooltip);
+        }
+
+        [TestMethod]
         [TestCategory(nameof(OptionCombobox))]
         [Owner("Siphamandla Dube")]
         public void OptionCombobox_Clone()
         {
-            var optionAutocomplete = new OptionCombobox
+            var optionCombobox = new OptionCombobox
             {
                 Name = "MyEnum",
                 Value = MyEnum.Option1.ToString()
             };
 
-            Assert.ThrowsException<NotImplementedException>(() => optionAutocomplete.Clone() as OptionCombobox);
+            Assert.ThrowsException<NotImplementedException>(() => optionCombobox.Clone() as OptionCombobox);
         }
 
         [TestMethod]
