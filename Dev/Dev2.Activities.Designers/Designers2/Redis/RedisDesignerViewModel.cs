@@ -59,6 +59,14 @@ namespace Dev2.Activities.Designers2.Redis
             LoadRedisServers();
             EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
             NewRedisServerCommand = new RelayCommand(o => NewRedisServerSource());
+            if (modelItem.Properties["Key"]?.ComputedValue != null)
+            {
+                Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
+            }
+            if (modelItem.Properties["Timeout"]?.ComputedValue != null)
+            {
+                Timeout = modelItem.Properties["Timeout"]?.ComputedValue.ToString();
+            }
         }
 
         public ObservableCollection<RedisSource> RedisServers { get; private set; }
@@ -66,10 +74,7 @@ namespace Dev2.Activities.Designers2.Redis
         public RedisSource SelectedRedisServer
         {
             get => (RedisSource)GetValue(SelectedRedisServerProperty);
-            set
-            {
-                SetValue(SelectedRedisServerProperty, value);
-            }
+            set => SetValue(SelectedRedisServerProperty, value);
         }
 
         public static readonly DependencyProperty SelectedRedisServerProperty =
@@ -91,6 +96,46 @@ namespace Dev2.Activities.Designers2.Redis
         public RelayCommand NewRedisServerCommand { get; set; }
 
         public bool IsRedisServerSelected => SelectedRedisServer != null;
+
+        public string Key
+        {
+            get => (string)GetValue(KeyProperty);
+            set => SetValue(KeyProperty, value);
+        }
+
+        public static readonly DependencyProperty KeyProperty =
+            DependencyProperty.Register("Key", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
+
+        private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (RedisDesignerViewModel)d;
+            viewModel.OnKeyChanged();
+        }
+
+        protected virtual void OnKeyChanged()
+        {
+            ModelItem.SetProperty("Key", Timeout);
+        }
+
+        public string Timeout
+        {
+            get => (string)GetValue(TimeoutProperty);
+            set => SetValue(TimeoutProperty, value);
+        }
+
+        public static readonly DependencyProperty TimeoutProperty =
+            DependencyProperty.Register("Timeout", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTimeoutChanged));
+
+        private static void OnTimeoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (RedisDesignerViewModel)d;
+            viewModel.OnTimeoutChanged();
+        }
+
+        protected virtual void OnTimeoutChanged()
+        {
+            ModelItem.SetProperty("Timeout", int.Parse(Timeout));
+        }
 
         private void EditRedisServerSource()
         {

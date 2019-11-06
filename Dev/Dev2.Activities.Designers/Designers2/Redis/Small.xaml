@@ -90,7 +90,7 @@
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
                                     Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=ModelItem.Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Text="{Binding Path=Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisKeyTextbox_AutoID}"
                                     ToolTip="{x:Static languages:Tooltips.RedisKeyToolTip}">
                 <i:Interaction.Behaviors>
@@ -112,14 +112,14 @@
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
                                     Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=ModelItem.TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Text="{Binding Path=Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTimeOutTextbox_AutoID}"
                                     ToolTip="{x:Static languages:Tooltips.RedisTimeoutToolTip}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTimeoutHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.TimeOut"
-                                         SourcePropertyValue="{Binding ModelItem.TimeOut, UpdateSourceTrigger=PropertyChanged}"
+                                         SourcePropertyValue="{Binding ModelItem.Timeout, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
