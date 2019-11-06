@@ -102,12 +102,12 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="TimeOut" />
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Timeout" />
             <ui:IntellisenseTextBox Grid.Column="1"
                                     Grid.ColumnSpan="3"
                                     Grid.Row="2"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="TimeOut" 
+                                    DefaultText="Timeout" 
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
