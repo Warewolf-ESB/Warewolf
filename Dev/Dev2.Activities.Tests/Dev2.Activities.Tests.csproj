@@ -223,6 +223,7 @@
     <Compile Include="ActivityTests\ReadFolderNewTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetTests.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
+    <Compile Include="ActivityTests\Redis\RedisActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfJavascriptActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfPythonActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfRubyActivityTests.cs" />
@@ -545,9 +546,7 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activities\Redis\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
