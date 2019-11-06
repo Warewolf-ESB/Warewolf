@@ -779,7 +779,7 @@
   </data>
   <data name="DeadLetterQueueHelp" xml:space="preserve">
     <value>The name of the queue you want to post the dead-letter onto</value>
-  </data> 
+  </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
   </data>
@@ -1394,7 +1394,7 @@
   </data>
   <data name="QueueMapEntireMessageHelpTextTrigger" xml:space="preserve">
     <value>Map the entire message. This will put the full response from the queue into one variable for you to unpack in your workflow.</value>
-  </data>  
+  </data>
   <data name="QueuePasteInputHelp" xml:space="preserve">
     <value>Paste the XML, JSON or plain text message received from the queue here.</value>
   </data>
@@ -1825,7 +1825,7 @@ A test must be ignored/disabled before it can be deleted.</value>
   </data>
   <data name="WebServicePasteInputHelp" xml:space="preserve">
     <value>Paste the XML, JSON or plain text response of the web service call here.&lt;br/&gt;	&lt;br/&gt;	If you do not know the response body exactly, rather execute the Test execution.</value>
-  </data>  
+  </data>
   <data name="WebServiceRequestBodyHelp" xml:space="preserve">
     <value>The request body.&lt;br/&gt;	&lt;br/&gt;	This is typically directly after the header text in the Request.</value>
   </data>
@@ -1865,8 +1865,8 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisKeyHelp" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
-  <data name="RedisTimeOutHelp" xml:space="preserve">
-    <value>Redis TimeOut to expire stored data for a given Key</value>
+  <data name="RedisTimeoutHelp" xml:space="preserve">
+    <value>Redis Timeout to expire stored data for a given Key</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>

@@ -3806,12 +3806,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TimeOut for stored data.
+        ///   Looks up a localized string similar to Redis Timeout for stored data.
         /// </summary>
-        public static string RedisTimeOutToolTip
-        {
+        public static string RedisTimeoutToolTip {
             get {
-                return ResourceManager.GetString("RedisTimeOutToolTip", resourceCulture);
+                return ResourceManager.GetString("RedisTimeoutToolTip", resourceCulture);
             }
         }
         
