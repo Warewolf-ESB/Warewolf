@@ -2969,11 +2969,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TimeOut to expire stored data for a given Key.
+        ///   Looks up a localized string similar to Redis Timeout to expire stored data for a given Key.
         /// </summary>
-        public static string RedisTimeOutHelp {
+        public static string RedisTimeoutHelp {
             get {
-                return ResourceManager.GetString("RedisTimeOutHelp", resourceCulture);
+                return ResourceManager.GetString("RedisTimeoutHelp", resourceCulture);
             }
         }
         

@@ -114,9 +114,9 @@
                                     Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding Path=ModelItem.TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTimeOutTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisTimeOutToolTip}">
+                                    ToolTip="{x:Static languages:Tooltips.RedisTimeoutToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTimeOutHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTimeoutHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.TimeOut"
                                          SourcePropertyValue="{Binding ModelItem.TimeOut, UpdateSourceTrigger=PropertyChanged}"

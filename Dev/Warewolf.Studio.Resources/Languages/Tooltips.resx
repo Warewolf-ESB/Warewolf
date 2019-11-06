@@ -722,7 +722,7 @@ Returns the output of the script, if any.</value>
     <value>Map the entire message</value>
   </data>
   <data name="QueueNameTooltip" xml:space="preserve">
-    <value>Provide a name of the Queue</value>
+    <value>Save the queue as</value>
   </data>
   <data name="DeadLetterQueueTooltip" xml:space="preserve">
     <value>The dead-letter queue name</value>
@@ -977,9 +977,6 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
     <value>Create a new rabbitmq source</value>
   </data>
-  <data name="QueueNameTooltip" xml:space="preserve">
-    <value>Save the queue as</value>
-  </data>
   <data name="QueueSourceTooltip" xml:space="preserve">
     <value>Select the source message queue</value>
   </data>
@@ -1152,8 +1149,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisKeyToolTip" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
-  <data name="RedisTimeOutToolTip" xml:space="preserve">
-    <value>Redis TimeOut for stored data</value>
+  <data name="RedisTimeoutToolTip" xml:space="preserve">
+    <value>Redis Timeout for stored data</value>
   </data>
   <data name="ManageWebSourceDefaultQueryTooltip" xml:space="preserve">
     <value>Optional default query</value>
