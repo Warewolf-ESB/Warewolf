@@ -20,7 +20,8 @@ public class Depends : Attribute, IDisposable
         PostGreSQL = 2,
         Warewolf = 3,
         RabbitMQ = 4,
-        CIRemote = 5
+        CIRemote = 5,
+        Redis = 6
     }
 
     string ConvertToString(ContainerType containerType)
@@ -39,6 +40,8 @@ public class Depends : Attribute, IDisposable
                 return "RabbitMQ";
             case ContainerType.CIRemote:
                 return "CIRemote";
+            case ContainerType.Redis:
+                return "Redis";
         }
         throw new ArgumentOutOfRangeException();
     }
