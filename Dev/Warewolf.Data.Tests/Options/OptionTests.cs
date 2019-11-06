@@ -394,6 +394,76 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
+        [TestMethod]
+        [TestCategory(nameof(OptionWorkflow))]
+        [Owner("Pieter Terblanche")]
+        public void OptionWorkflow_Default()
+        {
+            var guid = Guid.NewGuid();
+            var optionWorkflow = new OptionWorkflow();
+
+            Assert.IsNull(optionWorkflow.Name);
+            optionWorkflow.Name = "Name";
+            Assert.AreEqual("Name", optionWorkflow.Name);
+
+            Assert.IsNotNull(optionWorkflow.Value);
+            Assert.AreEqual(Guid.Empty, optionWorkflow.Value);
+            optionWorkflow.Value = guid;
+            Assert.AreEqual(guid, optionWorkflow.Value);
+
+            Assert.IsNull(optionWorkflow.WorkflowName);
+            optionWorkflow.WorkflowName = "WorkflowName";
+            Assert.AreEqual("WorkflowName", optionWorkflow.WorkflowName);
+
+            Assert.AreEqual(Guid.Empty, optionWorkflow.Default);
+
+            Assert.IsNull(optionWorkflow.Inputs);
+            optionWorkflow.Inputs = new List<IServiceInputBase>();
+            Assert.IsNotNull(optionWorkflow.Inputs);
+
+            Assert.AreEqual("OptionWorkflowHelpText", optionWorkflow.HelpText);
+            Assert.AreEqual("OptionWorkflowTooltip", optionWorkflow.Tooltip);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionWorkflow))]
+        [Owner("Pieter Terblanche")]
+        public void OptionWorkflow_Clone()
+        {
+            var guid = Guid.NewGuid();
+            var optionWorkflow = new OptionWorkflow
+            {
+                Name = "Suggestions",
+                Value = guid
+            };
+
+            var cloneWorkflow = optionWorkflow.Clone() as OptionWorkflow;
+            Assert.AreEqual(optionWorkflow.Name, cloneWorkflow.Name);
+            Assert.AreEqual(optionWorkflow.Value, cloneWorkflow.Value);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionWorkflow))]
+        [Owner("Pieter Terblanche")]
+        public void OptionWorkflow_CompareTo()
+        {
+            var guid = Guid.NewGuid();
+            var optionWorkflow = new OptionWorkflow
+            {
+                Name = "Suggestions",
+                Value = guid
+            };
+
+            var expectedValue = optionWorkflow.CompareTo(null);
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionWorkflow.CompareTo(new object { });
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionWorkflow.CompareTo(optionWorkflow);
+            Assert.AreEqual(0, expectedValue);
+        }
+
         enum MyEnum
         {
             Option1,
