@@ -10,6 +10,9 @@
 
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
+using System;
+using Warewolf.Common;
 
 namespace Warewolf.OS
 {
@@ -18,7 +21,6 @@ namespace Warewolf.OS
         Thread _thread;
         private readonly IProcessFactory _processFactory;
         public IJobConfig Config { get; }
-
         public event ProcessDiedEvent OnProcessDied;
 
         public int Pid => Process?.Id ?? 0;
@@ -71,14 +73,35 @@ namespace Warewolf.OS
                 try
                 {
                     var startInfo = GetProcessStartInfo();
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.RedirectStandardError = true;
+                    startInfo.RedirectStandardInput = true;
+
                     using (var process = _processFactory.Start(startInfo))
                     {
                         _childProcessTracker.Add(process);
                         Process = process;
-                        while (!process.WaitForExit(1000))
+
+                        var successTask = Task.Run(async() =>
+                         {
+                             while (!process.StandardOutput.EndOfStream)
+                             {
+                                 var result = await process.StandardOutput.ReadLineAsync();
+                                 WarewolfLogger.Info(result, startInfo.FileName);
+                             }
+                         });
+
+                        var errorTask = Task.Run(async () =>
                         {
-                            //TODO: check queue progress, kill if necessary
-                        }
+                            while (!process.StandardError.EndOfStream)
+                            {
+                                var result = await process.StandardError.ReadLineAsync();
+                                WarewolfLogger.Error(result, startInfo.FileName);
+                            }
+                        });
+
+                        Task.WaitAll(successTask, errorTask);
                         OnProcessDied?.Invoke(Config);
                     }
                 }
