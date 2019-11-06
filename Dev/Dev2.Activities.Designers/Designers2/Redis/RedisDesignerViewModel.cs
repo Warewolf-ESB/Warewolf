@@ -114,7 +114,7 @@ namespace Dev2.Activities.Designers2.Redis
 
         protected virtual void OnKeyChanged()
         {
-            ModelItem.SetProperty("Key", Timeout);
+            ModelItem.SetProperty("Key", Key);
         }
 
         public string Timeout
