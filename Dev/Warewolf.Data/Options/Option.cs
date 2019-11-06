@@ -202,6 +202,18 @@ namespace Warewolf.Options
             }
         }
 
+        private string _optionName;
+        public string OptionName
+        {
+            get => _optionName;
+            set
+            {
+                _optionName = value;
+                RaisePropertyChanged(nameof(OptionName));
+                Value = Values.First(o => o.Key == _optionName).Value;
+            }
+        }
+
         public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
 
         public int Value
