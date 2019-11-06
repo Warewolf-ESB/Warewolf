@@ -185,7 +185,7 @@
                           ItemsSource="{Binding Path=OptionNames}"
                           DisplayMemberPath="."
                           Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=OptionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource ComboBoxStyle}" 
                           ToolTip="{Binding Path=Tooltip}">
                     <i:Interaction.Behaviors>

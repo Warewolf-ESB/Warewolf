@@ -206,6 +206,32 @@ namespace Warewolf.Data.Tests
 
         [TestMethod]
         [TestCategory(nameof(OptionEnum))]
+        [Owner("Pieter Terblanche")]
+        public void OptionEnum_OptionNames()
+        {
+            var optionEnum = new OptionEnum();
+
+            var values = new List<KeyValuePair<string, int>>
+            {
+                new KeyValuePair<string, int>("Yes", 0),
+                new KeyValuePair<string, int>("No", 1)
+            };
+
+            optionEnum.Values = values;
+
+            Assert.AreEqual(2, optionEnum.OptionNames.Count);
+            Assert.AreEqual("Yes", optionEnum.OptionNames[0].ToString());
+            Assert.AreEqual("No", optionEnum.OptionNames[1].ToString());
+
+            Assert.IsNull(optionEnum.OptionName);
+
+            optionEnum.OptionName = "No";
+
+            Assert.AreEqual(1, optionEnum.Value);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionEnum))]
         [Owner("Siphamandla Dube")]
         public void OptionEnum_Clone()
         {
