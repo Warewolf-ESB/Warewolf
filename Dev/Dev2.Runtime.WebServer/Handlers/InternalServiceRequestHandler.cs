@@ -219,19 +219,26 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // Execute in its own thread to give proper context
                 var t = new Thread(() =>
                 {
-                    Thread.CurrentPrincipal = ExecutingUser;
-                    if (isManagementResource)
+                    try
                     {
-                        Thread.CurrentPrincipal = Common.Utilities.ServerUser;
-                        ExecutingUser = Common.Utilities.ServerUser;
-                        dataObject.ExecutingUser = Common.Utilities.ServerUser;
-                    }
-                    else
-                    {
-                        IsAuthorizedForServiceTestRun(dataObject);
-                    }
+                        Thread.CurrentPrincipal = ExecutingUser;
+                        if (isManagementResource)
+                        {
+                            Thread.CurrentPrincipal = Common.Utilities.ServerUser;
+                            ExecutingUser = Common.Utilities.ServerUser;
+                            dataObject.ExecutingUser = Common.Utilities.ServerUser;
+                        }
+                        else
+                        {
+                            IsAuthorizedForServiceTestRun(dataObject);
+                        }
 
-                    channel.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+                    }
                 });
 
                 t.Start();
