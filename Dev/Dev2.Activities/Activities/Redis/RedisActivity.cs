@@ -43,7 +43,7 @@ namespace Dev2.Activities.Redis
         public static readonly int DefaultTimeout = 10000; // (10 seconds)
         string _result = "Success";
         private RedisCacheBase _redisCache;
-        internal List<string> _messages;
+        internal List<string> _messages = new List<string>();
 
         public RedisActivity()
              : this(new ResponseManager())
@@ -148,7 +148,7 @@ namespace Dev2.Activities.Redis
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName);
 
-                var cacheTimeout = TimeSpan.Parse(Timeout.ToString());
+                var cacheTimeout = TimeSpan.FromMilliseconds(Timeout);
                 var activity = ActivityFunc.Handler as IDev2Activity;
                 if (activity is null)
                 {
