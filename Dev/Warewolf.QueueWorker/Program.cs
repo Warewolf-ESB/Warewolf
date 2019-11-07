@@ -89,7 +89,7 @@ namespace QueueWorker
                     {
                         var deadletterPublisher = CreateDeadLetterPublisher();
 
-                        var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.Username, _config.Password, _config.Inputs);
+                        var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.Username, _config.Password, _config.Inputs, _config.MapEntireMessage);
                         var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder, _config.TriggerId, _config.Username);
 
                         var queue = _config.Source;
@@ -102,7 +102,7 @@ namespace QueueWorker
                     }
                     else
                     {
-                        Console.WriteLine("Failed to start queue worker.");
+                        Console.WriteLine("Failed to start queue worker: No queue source.");
                     }
                 }
                 catch (Exception ex)
@@ -131,7 +131,7 @@ namespace QueueWorker
                 {
                     var deadLetterSource = _config.DeadLetterSink;
                     var deadLetterConnection = deadLetterSource.NewConnection();
-                    var publisher = deadLetterConnection.NewPublisher(_config.QueueConfig);
+                    var publisher = deadLetterConnection.NewPublisher(_config.DeadLetterConfig);
                     publisher.Publish(value);
                 }
             }
