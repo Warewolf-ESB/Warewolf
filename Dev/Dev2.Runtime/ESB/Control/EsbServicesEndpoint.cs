@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Control
             if (dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 var resource = GetResource(dataObject, workspaceId, errors);
-                if (resource?.DataList != null)
+                if (resource?.HasDataList ?? false)
                 {
                     Dev2Logger.Debug("Remote Invoke", dataObject.ExecutionID.ToString());
                     Dev2Logger.Debug("Mapping Inputs from Environment", dataObject.ExecutionID.ToString());

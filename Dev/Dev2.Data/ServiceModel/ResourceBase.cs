@@ -162,6 +162,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public abstract bool IsServer { get; }
         public abstract bool IsResourceVersion { get; }
 
+        public bool HasDataList => DataList != null && !string.IsNullOrWhiteSpace(DataList.ToString());
+
         public string GetResourcePath(Guid workspaceID)
         {
             if (FilePath == null && IsReservedService)
