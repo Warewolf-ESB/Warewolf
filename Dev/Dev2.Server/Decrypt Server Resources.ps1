@@ -13,11 +13,11 @@ if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.S
 }
 Write-Host Assembly loaded.
 
-Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.dll`".
-if (Test-Path "$SolutionDirectory\Warewolf.Security\bin\Debug\Warewolf.Security.dll") {
-    Add-Type -Path "$SolutionDirectory\Warewolf.Security\bin\Debug\Warewolf.Security.dll"
+Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll`".
+if (Test-Path "$SolutionDirectory\Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll") {
+    Add-Type -Path "$SolutionDirectory\Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll"
 } else {
-    Write-Host Cannot find assembly at "$SolutionDirectory\Warewolf.Security\bin\Debug\Warewolf.Security.dll", please compile that before running this tool.
+    Write-Host Cannot find assembly at "$SolutionDirectory\Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll", please compile that before running this tool.
     pause
     exit 1
 }
