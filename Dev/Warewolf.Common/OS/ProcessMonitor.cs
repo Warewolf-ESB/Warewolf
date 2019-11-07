@@ -83,29 +83,32 @@ namespace Warewolf.OS
                         _childProcessTracker.Add(process);
                         Process = process;
 
+                        var successTask = Task.Run(async () =>
+                        {
+                            var stream = process.StandardOutput;
+                            while (!stream.EndOfStream)
+                            {
+                                var result = await stream.ReadLineAsync();
+                                WarewolfLogger.Info(result, startInfo.FileName);
+                            }
+                        });
+
+                        var errorTask = Task.Run(async () =>
+                        {
+                            var stream = process.StandardError;
+                            while (!stream.EndOfStream)
+                            {
+                                var result = await stream.ReadLineAsync();
+                                WarewolfLogger.Error(result, startInfo.FileName);
+                            }
+                        });
+
                         while (!process.WaitForExit(1000))
                         {
-                            var successTask = Task.Run(async () =>
-                            {
-                                while (!process.StandardOutput.EndOfStream)
-                                {
-                                    var result = await process.StandardOutput.ReadLineAsync();
-                                    WarewolfLogger.Info(result, startInfo.FileName);
-                                }
-                            });
-
-                            var errorTask = Task.Run(async () =>
-                            {
-                                while (!process.StandardError.EndOfStream)
-                                {
-                                    var result = await process.StandardError.ReadLineAsync();
-                                    WarewolfLogger.Error(result, startInfo.FileName);
-                                }
-                            });
-
-                            Task.WaitAll(successTask, errorTask);
+                            //
                         }
-                    
+                        Task.WaitAll(successTask, errorTask);
+
                         OnProcessDied?.Invoke(Config);
                     }
                 }
