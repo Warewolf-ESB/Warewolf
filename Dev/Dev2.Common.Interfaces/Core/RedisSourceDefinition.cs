@@ -30,6 +30,7 @@ namespace Dev2.Common.Interfaces.Core
             Name = redisSource.ResourceName;
             Password = redisSource.Password;
             HostName = redisSource.HostName;
+            Port = redisSource.Port;
             Path = redisSource.GetSavePath();
         }
 
