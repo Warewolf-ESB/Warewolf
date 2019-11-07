@@ -11,9 +11,7 @@
 using System;
 using System.Threading.Tasks;
 using Warewolf.Auditing;
-using Warewolf.Common;
 using Warewolf.Data;
-using Warewolf.Logging;
 using Warewolf.Streams;
 
 namespace QueueWorker
@@ -65,7 +63,7 @@ namespace QueueWorker
 
                 if (requestForwarderResult.Result == ConsumerResult.Success)
                 {
-                    _logger.Info($"success processing body{strBody}");
+                    _logger.Info($"success processing body {strBody}");
                     var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
                     var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
 
@@ -75,9 +73,13 @@ namespace QueueWorker
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
             if (task.IsFaulted)
+            {
                 return Task.Run(() => ConsumerResult.Failed);
+            }
             else
+            {
                 return Task.Run(() => ConsumerResult.Success);
+            }
         }
     }
 }
