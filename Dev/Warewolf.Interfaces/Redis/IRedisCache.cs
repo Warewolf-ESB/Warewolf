@@ -15,7 +15,7 @@ namespace Warewolf.Interfaces
 {
     public interface IRedisCache
     {
-        bool Set(string key, IDictionary<string, string> disctionary, TimeSpan timeSpan);
-        IDictionary<string, string> Get(string key);
+        bool Set(string key, string disctionary, TimeSpan timeSpan);
+        string Get(string key);
     }
 }

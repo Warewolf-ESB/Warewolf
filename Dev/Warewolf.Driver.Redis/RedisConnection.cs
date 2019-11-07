@@ -34,8 +34,8 @@ namespace Warewolf.Driver.Redis
             _client = client;
         }
 
-        public IDictionary<string, string> Get(string key) => _client.Get<IDictionary<string, string>>(key);
+        public string Get(string key) => _client.Get<string>(key);
 
-        public bool Set(string key, IDictionary<string, string> value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
+        public bool Set(string key, string value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
     }
 }
