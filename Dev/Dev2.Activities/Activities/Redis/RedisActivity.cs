@@ -34,6 +34,8 @@ using Dev2.Common.State;
 using Warewolf.Interfaces;
 using Warewolf.Driver.Redis;
 using System.Activities;
+using Dev2.Common.Serializers;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Redis
 {
@@ -149,19 +151,29 @@ namespace Dev2.Activities.Redis
                 _redisCache = new RedisCacheImpl(RedisSource.HostName);
 
                 var cacheTimeout = TimeSpan.FromMilliseconds(Timeout);
+
                 var activity = ActivityFunc.Handler as IDev2Activity;
                 if (activity is null)
                 {
-
+                    throw new InvalidOperationException($"Activity drop box cannot be null");
+                }
+                if (string.IsNullOrWhiteSpace(activity.GetOutputs()[0]))
+                {
+                    throw new InvalidOperationException($"{activity.GetDisplayName()} activity must have at least one output variable.");
                 }
                 activity.Execute(DataObject, 0);
                 var outputVars = activity.GetOutputs();
+
                 var data = new Dictionary<string, string>();
                 foreach (var output in outputVars)
                 {
-                    data.Add(output, DataObject.Environment.Eval(output, 0).ToString());
+                    var key = output;
+                    var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
+                    
+                    data.Add(key, value);
                 }
-                _redisCache.Set(Key, data, cacheTimeout);
+                var serializer = new Dev2JsonSerializer();
+                _redisCache.Set(Key, serializer.Serialize<Dictionary<string, string>>(data), cacheTimeout);
                 return new List<string> { _result };
             }
             catch (Exception ex)
