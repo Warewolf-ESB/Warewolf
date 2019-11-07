@@ -39,8 +39,11 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.Test.Agent;
 using Warewolf.UIBindingTests.Core;
+using Dev2.Data.ServiceModel;
+using Dev2.Common;
+using Dev2.Common.Serializers;
 
-namespace Warewolf.UIBindingTests.RedisSource
+namespace Warewolf.UIBindingTests
 {
     [Binding]
     public class RedisSourceSteps
@@ -384,10 +387,12 @@ namespace Warewolf.UIBindingTests.RedisSource
                 Password = password,
                 Port = "6379"
             };
+
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(redisSourceDefinition);
             var redisSourceViewModel = new RedisSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, redisSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
             redisSourceControl.DataContext = redisSourceViewModel;
+
             _scenarioContext.Remove("viewModel");
             _scenarioContext.Add("viewModel", redisSourceViewModel);
 
@@ -412,7 +417,11 @@ namespace Warewolf.UIBindingTests.RedisSource
             var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
             var hostName = _scenarioContext.Get<string>("hostName");
 
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockDataobject = new Mock<IDSFDataObject>();
+            var redisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName };
+            mockResourceCatalog.Setup(o => o.GetResource<Dev2.Data.ServiceModel.RedisSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(redisSource);
+
             var impl = new RedisCacheImpl(hostName);
             var environment = new ExecutionEnvironment();
 
@@ -422,28 +431,30 @@ namespace Warewolf.UIBindingTests.RedisSource
             mockDataobject.Setup(o => o.IsDebugMode()).Returns(true);
             mockDataobject.Setup(o => o.Environment).Returns(environment);
 
-            var assignActivity = new DsfMultiAssignActivity();
+            var actual = impl.Get(redisActivityOld.Key);
 
-            var redisActivityNew = new SpecRedisActivity(new Mock<IResponseManager>().Object, impl)
-            {
-                Key = redisActivityOld.Key,
-                ActivityFunc = new ActivityFunc<string, bool> { Handler = assignActivity }
-            };
-            
-            redisActivityNew.SpecExecuteTool(mockDataobject.Object);
+            Assert.IsNull(actual);
 
-            _scenarioContext.Remove(nameof(RedisActivity));
-            _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
-
+            _scenarioContext.Add(nameof(RedisCacheImpl), impl);
         }
 
+        private static SpecRedisActivity GetRedisActivity(IResourceCatalog resourceCatalog, string key, int timeout, string hostName, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
+        {
+            return new SpecRedisActivity(resourceCatalog, impl)
+            {
+                Key = key,
+                ActivityFunc = new ActivityFunc<string, bool> { Handler = assignActivity },
+                Timeout = timeout,
+                RedisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName },
+            };
+        }
 
         [Given(@"an assign ""(.*)"" as")]
         public void GivenAnAssignAs(string data, Table table)
         {
             var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
 
-            var assignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "Test1", 1) } };
+            var assignActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "Test1", 1) } };
 
             redisActivity.ActivityFunc = new ActivityFunc<string, bool> { Handler = assignActivity };
 
@@ -463,50 +474,91 @@ namespace Warewolf.UIBindingTests.RedisSource
             _scenarioContext.Remove(nameof(RedisActivity));
             _scenarioContext.Add(nameof(RedisActivity), redisActivity);
             _scenarioContext.Add(data, dic);
+            _scenarioContext.Add(nameof(DsfMultiAssignActivity), assignActivity);
 
         }
 
         [When(@"I execute the tool")]
         public void WhenIExecuteTheTool()
         {
-            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
-            var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore"); 
+            var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
+            var assignActivity = _scenarioContext.Get<DsfMultiAssignActivity>(nameof(DsfMultiAssignActivity));
+            var hostName = _scenarioContext.Get<string>("hostName");
+            var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
 
-            var result = redisActivity.SpecPerformExecution(dataToStore);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockDataobject = new Mock<IDSFDataObject>();
+
+            var redisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName };
+            mockResourceCatalog.Setup(o => o.GetResource<Dev2.Data.ServiceModel.RedisSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(redisSource);
+            
+            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, redisActivityOld.Key, 35000, hostName, impl, assignActivity);
+
+            var environment = new ExecutionEnvironment();
+
+            environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
+            environment.EvalToExpression(redisActivityOld.Key, 0);
+
+            mockDataobject.Setup(o => o.IsDebugMode()).Returns(true);
+            mockDataobject.Setup(o => o.Environment).Returns(environment);
+
+            redisActivityNew.SpecExecuteTool(mockDataobject.Object);
+
+            var result = redisActivityNew.SpecPerformExecution(dataToStore);
 
             Assert.IsNotNull(result, "Redis execution results can not be null");
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("Success", result[0]);
 
-            _scenarioContext.Add(key: redisActivity.Key, value: result);
+            var actual = environment.FetchErrors();
+
+            Assert.AreEqual("", actual);
+
+            var data = impl.Get(redisActivityOld.Key);
+
+            Assert.IsNotNull(actual);
+
+            _scenarioContext.Add(redisActivityOld.Key, data);
+
         }
 
         [Then(@"the cache will contain")]
         public void ThenTheCacheWillContain(Table table)
         {
-            var redisActivity = _scenarioContext.Get<RedisActivity>(nameof(RedisActivity));
-            var actual = _scenarioContext.Get<List<string>>(redisActivity.Key);
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var actualCacheData = _scenarioContext.Get<string>(redisActivity.Key);
 
-            var expected = table.CreateSet<List<string>>();
+            var expectedRow = table.Rows[0].Values.ToList();
 
-            Assert.AreEqual(expected.Count(), actual.Count());
-            Assert.AreEqual(expected, actual);
+            var expectedKey = expectedRow[0];
+            var expectedValue = expectedRow[1];
+
+            var serializer = new Dev2JsonSerializer();
+            var keyValue = serializer.Deserialize<IDictionary<string, string>>(actualCacheData);
+
+            Assert.IsTrue(expectedValue.Contains(keyValue.Keys.ToList()[0]));
+            Assert.IsTrue(expectedValue.Contains(keyValue.Values.ToList()[0]));
         }
 
         [Then(@"output variables have the following values")]
         public void ThenOutputVariablesHaveTheFollowingValues(Table table)
         {
             var redisActivity = _scenarioContext.Get<RedisActivity>(nameof(RedisActivity));
-            var actual = _scenarioContext.Get<List<string>>(redisActivity.Key);
+            var actualCacheData = _scenarioContext.Get<string>(redisActivity.Key);
 
-            var expected = table.CreateSet<List<string>>();
+            var expectedRow = table.Rows[0].Values.ToList();
 
-            foreach (var item in actual)
-            {
+            var expectedKey = expectedRow[0];
+            var expectedValue = expectedRow[1];
 
-            }
+            var serializer = new Dev2JsonSerializer();
+            var keyValue = serializer.Deserialize<IDictionary<string, string>>(actualCacheData);
+
+            Assert.AreEqual(expected: expectedKey, actual: keyValue.Keys.ToArray()[0]);
+            Assert.IsTrue(expectedValue.Contains(keyValue.Values.ToArray()[0]));
+
         }
-
 
         class SpecRedisActivity : RedisActivity
         {
