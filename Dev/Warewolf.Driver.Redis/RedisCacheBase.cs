@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
@@ -30,16 +29,15 @@ namespace Warewolf.Driver.Redis
 
         private IRedisCache Cache => _connection.Value.Cache;
 
-        public void Set(string key, IDictionary<string, string> dictionary, TimeSpan timeSpan)
+        public void Set(string key, string value, TimeSpan timeSpan)
         {
             if (string.IsNullOrWhiteSpace(key)) { throw new ArgumentNullException(nameof(key)); }
-            if (dictionary is null) { throw new ArgumentNullException(nameof(dictionary)); }
-            if (dictionary.Count is 0) { throw new InvalidOperationException(nameof(dictionary)); }
+            if (string.IsNullOrWhiteSpace(value)) { throw new ArgumentNullException($"Data input {nameof(value)} can not be null."); }
 
-            Cache.Set(key, dictionary, timeSpan);
+            Cache.Set(key, value, timeSpan);
         }
 
-        public IDictionary<string,string> Get(string key)
+        public string Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.Get(key);
