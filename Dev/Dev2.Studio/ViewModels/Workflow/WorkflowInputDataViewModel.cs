@@ -269,7 +269,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
                 DoSaveActions();
-                var payload = BuildInputDataList();
+                var payload = BuildInputDataList(true);
                 OpenUriInBrowser(payload);
                 SendFinishedMessage();
                 RequestClose();
@@ -285,7 +285,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!IsInError)
             {              
                 DoSaveActions();
-                var inputDataList = BuildInputDataList();
+                var inputDataList = BuildInputDataList(true);
                 OpenUriInBrowser(inputDataList);
                 SendFinishedMessage();
                 RequestClose();
@@ -296,12 +296,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string BuildInputDataList()
+        public string BuildInputDataList(bool isUrlEncode=false)
         {
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
             {
-                return WorkflowInputs.Aggregate(string.Empty, (current, workflowInput) => current + workflowInput.Field + @"=" + workflowInput.Value + @"&").TrimEnd('&');
+                return WorkflowInputs.Aggregate(string.Empty, (current, workflowInput) => current + workflowInput.Field + @"=" + (isUrlEncode == true ? System.Web.HttpUtility.UrlEncode(workflowInput.Value) : workflowInput.Value) + @"&").TrimEnd('&');
             }
             try
             {

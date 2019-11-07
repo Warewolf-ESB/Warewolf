@@ -995,6 +995,51 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_CheckInputDataWithSpecialCharacters_InvokesSendViewInBrowserRequest_ScalarsOnly()
+        {
+            //------------Setup for test--------------------------
+            const string datalist = @"<DataList><val IsEditable=""True"" ColumnIODirection=""Input""/><res IsEditable=""True"" ColumnIODirection=""Input""/></DataList>";
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns("AnotherWorkflow");
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(datalist);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = datalist
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            {
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.XmlData = @"<DataList><val>Dev#Chotaliya</val><res>2</res></DataList>";
+                workflowInputDataViewModel.SetWorkflowInputData();
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.ViewInBrowser();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, workflowInputDataViewModel.SendViewInBrowserRequestHitCount);
+                Assert.IsNotNull(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+                const string expectedPayload = @"val=Dev#Chotaliya&res=2";
+                var actualPayload = System.Web.HttpUtility.UrlDecode(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+                Assert.AreEqual(expectedPayload, actualPayload);
+            }
+        }
+
         static OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
         {
             const int numberOfRecords = 6;
