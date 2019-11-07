@@ -183,7 +183,7 @@ public class Depends : Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"HostName={RigOpsHost}.{RigOpsDomain};Port={Container.Port};UserName=guest;Password=guest;VirtualHost=/", knownServerSources);
+            UpdateSourcesConnectionStrings($"HostName={RigOpsHost}.{RigOpsDomain};Port={Container.Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
             Thread.Sleep(120000);
         }
         else
