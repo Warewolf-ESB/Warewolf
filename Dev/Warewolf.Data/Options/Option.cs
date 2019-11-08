@@ -210,7 +210,10 @@ namespace Warewolf.Options
             {
                 _optionName = value;
                 RaisePropertyChanged(nameof(OptionName));
-                Value = Values.First(o => o.Key == _optionName).Value;
+                if (_optionName != null)
+                {
+                    Value = Values.First(o => o.Key == _optionName).Value;
+                }
             }
         }
 
