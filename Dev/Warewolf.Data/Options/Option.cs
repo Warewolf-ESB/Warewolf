@@ -403,8 +403,6 @@ namespace Warewolf.Options
 
         public string Tooltip => Studio.Resources.Languages.Tooltips.OptionWorkflowTooltip;
 
-        public Guid Default;
-
         public string Name { get; set; }
 
         Guid IOptionBasic<Guid>.Default => Guid.Empty;

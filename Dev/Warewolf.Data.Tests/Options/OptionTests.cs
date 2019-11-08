@@ -415,7 +415,7 @@ namespace Warewolf.Data.Tests
             optionWorkflow.WorkflowName = "WorkflowName";
             Assert.AreEqual("WorkflowName", optionWorkflow.WorkflowName);
 
-            Assert.AreEqual(Guid.Empty, optionWorkflow.Default);
+            Assert.AreEqual(Guid.Empty, ((IOptionBasic<Guid>)optionWorkflow).Default);
 
             Assert.IsNull(optionWorkflow.Inputs);
             optionWorkflow.Inputs = new List<IServiceInputBase>();
