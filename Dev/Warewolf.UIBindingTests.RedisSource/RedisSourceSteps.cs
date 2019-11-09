@@ -43,6 +43,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Warewolf.UIBindingTests
 {
@@ -412,11 +413,13 @@ namespace Warewolf.UIBindingTests
             mockDataobject.Setup(o => o.IsDebugMode()).Returns(true);
             mockDataobject.Setup(o => o.Environment).Returns(environment);
 
-            if (Stoptime.ElapsedMilliseconds > timeout)
+            do
             {
-                var actualCachedData = GetCachedData(impl, redisActivityOld.Key);
-                Assert.IsNull(actualCachedData);
-            }
+                Thread.Sleep(1000);
+            } while (Stoptime.ElapsedMilliseconds < timeout);
+
+            var actualCachedData = GetCachedData(impl, redisActivityOld.Key);
+            Assert.IsNull(actualCachedData);
         }
 
         [Given(@"an assign ""(.*)"" as")]
@@ -526,6 +529,34 @@ namespace Warewolf.UIBindingTests
             var dataToStore = _scenarioContext.Get<IDictionary<string, string>>(key);
 
             Assert.IsNotNull(dataToStore);
+        }
+
+        [Given(@"data does not exist \(TTE exceeded\) for key ""(.*)"" as")]
+        public void GivenDataDoesNotExistTTEExceededForKeyAs(string p0, Table table)
+        {
+            var timeout = _scenarioContext.Get<int>("timeout");
+            var redisActivity = _scenarioContext.Get<RedisActivity>(nameof(RedisActivity));
+            var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
+
+            do
+            {
+                Thread.Sleep(1000);
+            } while (Stoptime.ElapsedMilliseconds < timeout);
+            
+            var actualCachedData = GetCachedData(impl, redisActivity.Key);
+
+            Assert.IsNull(actualCachedData);
+        }
+
+        [Then(@"the assign ""(.*)"" is executed")]
+        public void ThenTheAssignIsExecuted(string p0)
+        {
+            var dataToStore = _scenarioContext.Get<Dictionary<string, string>>(p0);
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+
+            var executioResult = redisActivity.SpecPerformExecution(dataToStore);
+
+            Assert.AreEqual("Success", executioResult[0]);
         }
 
 
