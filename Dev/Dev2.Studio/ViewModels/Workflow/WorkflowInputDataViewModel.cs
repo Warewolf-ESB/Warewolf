@@ -34,6 +34,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Studio.Resources.Languages;
@@ -51,12 +52,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         static DataListConversionUtils _dataListConversionUtils = new DataListConversionUtils();
         bool _canViewInBrowser;
         bool _canDebug;
+        int queryStringMaxLength;
         readonly IPopupController _popupController;
         RelayCommand _cancelCommand;
         readonly IApplicationTracker _applicationTracker;
 
         public event Action DebugExecutionStart;
         public event Action DebugExecutionFinished;
+
+
+
 
         void OnDebugExecutionFinished()
         {
@@ -100,18 +105,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             _resourceModel = input.ResourceModel;
-            
+
             DisplayName = @"Debug input data";
-            
+
             _popupController = CustomContainer.Get<IPopupController>();
         }
 
         IDev2StudioSessionBroker Broker { get; set; }
 
         IDataListModel DataList { get; set; }
-        
+
         public DebugTO DebugTo { get; private set; }
-        
+
         public OptomizedObservableCollection<IDataListItem> WorkflowInputs
         {
             get
@@ -137,9 +142,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 wd.GetAndUpdateWorkflowLinkWithWorkspaceID();
             }
         }
-        
+
         public int WorkflowInputCount => _workflowInputs.Count;
-        
+
         public bool RememberInputs
         {
             get => _rememberInputs;
@@ -149,7 +154,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 OnPropertyChanged(@"RememberInputs");
             }
         }
-        
+
         public string XmlData
         {
             get => _xmlData;
@@ -198,7 +203,24 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         // Set to true in case of any error popup message.
         public bool IsInError { private get; set; }
-        
+
+        private int QueryStringMaxLength
+        {
+            get
+            {
+                if (int.TryParse(AppUsageStats.QueryStringMaxLength, out int result))
+                {
+                    queryStringMaxLength = result;
+                }
+                else
+                {
+                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength.ToString() + " value.", GlobalConstants.WarewolfError);
+                }
+
+                return queryStringMaxLength;
+            }
+        }
+
         public void Save()
         {
             if (!IsInError)
@@ -259,7 +281,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                                   StringResources.DataInput_Error_Title,
                                   MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
 
+
             IsInError = true;
+        }
+
+        public void ShowMaximumLimitDataPopupMessage()
+        {
+            _popupController.Show(StringResources.DataInput_Warning,
+                                  StringResources.DataInput_Warning_Title,
+                MessageBoxButton.OK, MessageBoxImage.Warning, string.Empty, false, false, true, false, false, false);
+
         }
 
         public void ViewInBrowser()
@@ -267,12 +298,19 @@ namespace Dev2.Studio.ViewModels.Workflow
             // Do not log user action in case of error.
             if (!IsInError)
             {
-                _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
-                DoSaveActions();
-                var payload = BuildInputDataList(true);
-                OpenUriInBrowser(payload);
-                SendFinishedMessage();
-                RequestClose();
+                if (IsEmptyWorkflowInputData() || CheckWorkflowInputDataLimits())
+                {
+                    _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
+                    DoSaveActions();
+                    var payload = BuildInputDataList(true);
+                    OpenUriInBrowser(payload);
+                    SendFinishedMessage();
+                    RequestClose();
+                }
+                else
+                {
+                    ShowMaximumLimitDataPopupMessage();
+                }
             }
             else
             {
@@ -283,12 +321,19 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void WithoutActionTrackingViewInBrowser()
         {
             if (!IsInError)
-            {              
-                DoSaveActions();
-                var inputDataList = BuildInputDataList(true);
-                OpenUriInBrowser(inputDataList);
-                SendFinishedMessage();
-                RequestClose();
+            {
+                if (IsEmptyWorkflowInputData() || CheckWorkflowInputDataLimits())
+                {
+                    DoSaveActions();
+                    var inputDataList = BuildInputDataList(true);
+                    OpenUriInBrowser(inputDataList);
+                    SendFinishedMessage();
+                    RequestClose();
+                }
+                else
+                {
+                    ShowMaximumLimitDataPopupMessage();
+                }
             }
             else
             {
@@ -296,7 +341,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string BuildInputDataList(bool isUrlEncode=false)
+        public string BuildInputDataList(bool isUrlEncode = false)
         {
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
@@ -305,11 +350,33 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             try
             {
-                return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
+                var document = XDocument.Parse(XmlData);
+
+                foreach (var node in document.Document.Element("DataList").Elements())
+                {
+                    EncodeXmlElementValue(node);
+                }
+
+                return XElement.Parse(document.ToString()).ToString(SaveOptions.DisableFormatting);
             }
             catch (Exception)
             {
                 return string.Empty;
+            }
+        }
+
+        protected void EncodeXmlElementValue(XElement element)
+        {
+            if (element.HasElements)
+            {
+                foreach (var childElement in element.Elements())
+                {
+                    EncodeXmlElementValue(childElement);
+                }
+            }
+            else
+            {
+                element.SetValue(System.Web.HttpUtility.UrlEncode(element.Value));
             }
         }
 
@@ -328,7 +395,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             OnDebugExecutionFinished();
         }
-        
+
         public void Cancel()
         {
             SetXmlData();
@@ -342,7 +409,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SendFinishedMessage();
             RequestClose(ViewModelDialogResults.Cancel);
         }
-        
+
         public void LoadWorkflowInputs()
         {
             WorkflowInputs.Clear();
@@ -436,6 +503,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
             JsonData = dataListString;
             var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", false);
+
             try
             {
                 if (xml.Descendants().Count() == 1)
@@ -501,7 +569,23 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataList.PopulateWithData(XmlData);
             _dataListConversionUtils.CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
         }
-        
+
+        private bool CheckWorkflowInputDataLimits()
+        {
+            var data = XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
+
+            if (data.Length > QueryStringMaxLength)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsEmptyWorkflowInputData()
+        {
+            return string.IsNullOrEmpty(XmlData);
+        }
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -594,7 +678,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return null;
         }
-        
+
         protected override void OnDispose()
         {
         }
