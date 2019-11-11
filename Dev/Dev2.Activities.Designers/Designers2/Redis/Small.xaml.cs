@@ -20,11 +20,10 @@ namespace Dev2.Activities.Designers2.Redis
         public Small()
         {
             InitializeComponent();
-            DropPoint.PreviewDrop += DoDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
+        protected override IInputElement GetInitialFocusElement() => null;
 
         void DoDrop(object sender, DragEventArgs e)
         {

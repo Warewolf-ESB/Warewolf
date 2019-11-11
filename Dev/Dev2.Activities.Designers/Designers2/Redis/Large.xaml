@@ -97,7 +97,7 @@
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="1"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="Key" 
@@ -117,10 +117,10 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="TTE" />
-            <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="3"
-                                    Grid.Row="2"
+            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTE" />
+            <ui:IntellisenseTextBox Grid.Column="3"
+                                    Grid.ColumnSpan="1"
+                                    Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="TTE" 
                                     AcceptsReturn="False"
