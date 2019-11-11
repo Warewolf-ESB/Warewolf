@@ -63,9 +63,9 @@ namespace Dev2.Activities.Designers2.Redis
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
             }
-            if (modelItem.Properties["Timeout"]?.ComputedValue != null)
+            if (modelItem.Properties["TTE"]?.ComputedValue != null)
             {
-                Timeout = modelItem.Properties["Timeout"]?.ComputedValue.ToString();
+                TTE = modelItem.Properties["TTE"]?.ComputedValue.ToString();
             }
         }
 
@@ -117,24 +117,24 @@ namespace Dev2.Activities.Designers2.Redis
             ModelItem.SetProperty("Key", Key);
         }
 
-        public string Timeout
+        public string TTE
         {
-            get => (string)GetValue(TimeoutProperty);
-            set => SetValue(TimeoutProperty, value);
+            get => (string)GetValue(TTEProperty);
+            set => SetValue(TTEProperty, value);
         }
 
-        public static readonly DependencyProperty TimeoutProperty =
-            DependencyProperty.Register("Timeout", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTimeoutChanged));
+        public static readonly DependencyProperty TTEProperty =
+            DependencyProperty.Register("TTE", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTTEChanged));
 
-        private static void OnTimeoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTTEChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RedisDesignerViewModel)d;
-            viewModel.OnTimeoutChanged();
+            viewModel.OnTTEChanged();
         }
 
-        protected virtual void OnTimeoutChanged()
+        protected virtual void OnTTEChanged()
         {
-            ModelItem.SetProperty("Timeout", int.Parse(Timeout));
+            ModelItem.SetProperty("TTE", int.Parse(TTE));
         }
 
         private void EditRedisServerSource()
