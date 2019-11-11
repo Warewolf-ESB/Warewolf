@@ -661,10 +661,6 @@ namespace Warewolf.UIBindingTests
             {
             }
 
-            public SpecRedisActivity(IResponseManager responseManager, RedisCacheBase redisCache) : base(responseManager, redisCache)
-            {
-            }
-
             public List<string> SpecPerformExecution(Dictionary<string,string> evaluatedValues)
             {
                 return base.PerformExecution(evaluatedValues);
@@ -676,7 +672,6 @@ namespace Warewolf.UIBindingTests
             }
 
         }
-
 
 
         [AfterScenario(@"RedisSource")]

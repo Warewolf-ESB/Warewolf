@@ -36,6 +36,7 @@ using Warewolf.Driver.Redis;
 using System.Activities;
 using Dev2.Common.Serializers;
 using Warewolf.Storage;
+using Dev2.Common.Interfaces.Communication;
 
 namespace Dev2.Activities.Redis
 {
@@ -44,38 +45,38 @@ namespace Dev2.Activities.Redis
     {
         public static readonly int DefaultTimeout = 10000; // (10 seconds)
         string _result = "Success";
+        private readonly ISerializer _serializer; 
+
         private RedisCacheBase _redisCache;
         internal List<string> _messages = new List<string>();
 
         public RedisActivity()
-             : this(new ResponseManager())
+             : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
+            
+        }
+
+        public RedisActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
+            : this(resourceCatalog, new ResponseManager(), redisCache)
+        {
+        }
+
+        public RedisActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
+        {
+            ResponseManager = responseManager;
+            Timeout = DefaultTimeout;
+            _redisCache = redisCache;
+            ResourceCatalog = resourceCatalog;
+
             DisplayName = "Redis";
             ActivityFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
             };
-            Timeout = DefaultTimeout;
-        }
 
-        public RedisActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
-        {
-            DisplayName = "Redis";
-            ResourceCatalog = resourceCatalog;
-            Timeout = DefaultTimeout;
-        }
+            _serializer = new Dev2JsonSerializer();
 
-        public RedisActivity(IResponseManager responseManager, RedisCacheBase redisCache)
-        {
-            ResponseManager = responseManager;
-            _redisCache = redisCache;
-            Timeout = DefaultTimeout;
-        }
-
-        public RedisActivity(ResponseManager responseManager)
-        {
-            ResponseManager = responseManager;
         }
 
         public Guid SourceId { get; set; }
@@ -161,19 +162,22 @@ namespace Dev2.Activities.Redis
                 {
                     throw new InvalidOperationException($"{activity.GetDisplayName()} activity must have at least one output variable.");
                 }
-                activity.Execute(DataObject, 0);
-                var outputVars = activity.GetOutputs();
 
-                var data = new Dictionary<string, string>();
-                foreach (var output in outputVars)
+                IDictionary<string, string> cachedData = GetCachedOutputs();
+                if (cachedData != null)
                 {
-                    var key = output;
-                    var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
-                    
-                    data.Add(key, value);
+                    foreach (var item in cachedData)
+                    {
+                        DataObject.Environment.Assign(item.Key, item.Value, 0);
+                    }
                 }
-                var serializer = new Dev2JsonSerializer();
-                _redisCache.Set(Key, serializer.Serialize<Dictionary<string, string>>(data), cacheTimeout);
+                else
+                {
+                    activity.Execute(DataObject, 0);
+                    var outputVars = activity.GetOutputs();
+
+                    CacheOutputs(cacheTimeout, outputVars);
+                }
                 return new List<string> { _result };
             }
             catch (Exception ex)
@@ -181,6 +185,31 @@ namespace Dev2.Activities.Redis
                 Dev2Logger.Error( nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
+        }
+
+        private IDictionary<string, string> GetCachedOutputs()
+        {
+            var cachedData = _redisCache.Get(Key);
+            if (cachedData is null)
+            {
+                return null;
+            }
+            var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
+            return outputs;
+        }
+
+        private void CacheOutputs(TimeSpan cacheTimeout, List<string> outputVars)
+        {
+            var data = new Dictionary<string, string>();
+            foreach (var output in outputVars)
+            {
+                var key = output;
+                var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
+
+                data.Add(key, value);
+            }
+
+            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), cacheTimeout);
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
