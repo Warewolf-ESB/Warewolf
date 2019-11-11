@@ -179,7 +179,7 @@ Scenario: No data in Cache
 	And I have a key "MyData"
 	And data exists (TTE not hit) for key "MyData" as
 	| Key | Data |
-	| MyData | “[[Var1]],Data in cache” |
+	| MyData | "[[Var1]],Data in cache" |
 	And an assign "dataToStore" as
 	| var | value |
 	| [[Var1]] | "Test1" |
@@ -187,7 +187,7 @@ Scenario: No data in Cache
 	Then the assign "dataToStore" is not executed
 	And output variables have the following values
 	| var | value |
-	| [[Var1]] | "Test1" |
+	| [[Var1]] | "[[Var1]],Data in cache" |
 
 @RedisSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll

@@ -454,7 +454,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Data"});
             table4.AddRow(new string[] {
                         "MyData",
-                        "“[[Var1]],Data in cache”"});
+                        "\"[[Var1]],Data in cache\""});
 #line 180
  testRunner.And("data exists (TTE not hit) for key \"MyData\" as", ((string)(null)), table4, "And ");
 #line hidden
@@ -476,7 +476,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table6.AddRow(new string[] {
                         "[[Var1]]",
-                        "\"Test1\""});
+                        "\"[[Var1]],Data in cache\""});
 #line 188
  testRunner.And("output variables have the following values", ((string)(null)), table6, "And ");
 #line hidden
