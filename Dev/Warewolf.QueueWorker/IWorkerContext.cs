@@ -10,6 +10,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Resources;
+using Warewolf.Common;
 using Warewolf.Data;
 using Warewolf.OS.IO;
 using Warewolf.Streams;
@@ -28,5 +29,7 @@ namespace QueueWorker
         string QueueName { get; }
         IServiceInputBase[] Inputs { get; }
         Guid TriggerId { get; }
+        IStreamConfig DeadLetterConfig { get; }
+        bool MapEntireMessage { get; }
     }
 }

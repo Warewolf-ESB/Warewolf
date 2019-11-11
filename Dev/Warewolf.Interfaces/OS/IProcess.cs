@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Warewolf.OS
 {
@@ -20,6 +21,8 @@ namespace Warewolf.OS
         bool WaitForExit(int milliseconds);
         int Id { get; }
         bool HasExited { get; }
+        StreamReader StandardOutput { get; }
+        StreamReader StandardError { get; }
     }
     public interface IProcessFactory
     {

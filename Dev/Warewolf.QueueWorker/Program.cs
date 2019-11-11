@@ -80,21 +80,36 @@ namespace QueueWorker
 
             public void Run()
             {
-                var logger = new ExecutionLogger(Config.Auditing.Endpoint, new JsonSerializer());
-                logger.Info("Starting queue worker", _config.QueueName);
+                try
+                {
+                    var logger = new ExecutionLogger(Config.Auditing.Endpoint, new JsonSerializer());
+                    logger.Info("Starting queue worker", _config.QueueName);
 
-                var deadletterPublisher = CreateDeadLetterPublisher();
+                    if (_config.Source != null)
+                    {
+                        var deadletterPublisher = CreateDeadLetterPublisher();
 
-                var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl,_config.Username,_config.Password, _config.Inputs);
-                var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder, _config.TriggerId, _config.Username);
+                        var requestForwarder = new WarewolfWebRequestForwarder(new HttpClientFactory(), deadletterPublisher, _config.WorkflowUrl, _config.Username, _config.Password, _config.Inputs, _config.MapEntireMessage);
+                        var loggingForwarder = new LoggingConsumerWrapper(logger, requestForwarder, _config.TriggerId, _config.Username);
 
-                var queue = _config.Source;
+                        var queue = _config.Source;
 
-                Console.WriteLine($"Starting listening: {queue.ResourceName} Queue: {_config.QueueName}");
-                Console.WriteLine($"Workflow: {_config.WorkflowUrl} Inputs: {_config.Inputs}");
+                        Console.WriteLine($"Starting listening: {queue.ResourceName} Queue: {_config.QueueName}");
+                        Console.WriteLine($"Workflow: {_config.WorkflowUrl} Inputs: {_config.Inputs}");
 
-                var connection = queue.NewConnection();
-                connection.StartConsuming(_config.QueueConfig, loggingForwarder);
+                        var connection = queue.NewConnection();
+                        connection.StartConsuming(_config.QueueConfig, loggingForwarder);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to start queue worker: No queue source.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+               
             }
 
             private IPublisher CreateDeadLetterPublisher()
@@ -116,7 +131,7 @@ namespace QueueWorker
                 {
                     var deadLetterSource = _config.DeadLetterSink;
                     var deadLetterConnection = deadLetterSource.NewConnection();
-                    var publisher = deadLetterConnection.NewPublisher(_config.QueueConfig);
+                    var publisher = deadLetterConnection.NewPublisher(_config.DeadLetterConfig);
                     publisher.Publish(value);
                 }
             }
