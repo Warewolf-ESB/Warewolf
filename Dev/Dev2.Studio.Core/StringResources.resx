@@ -423,4 +423,10 @@ You need Administrator permission.</value>
   <data name="TriggersHeader" xml:space="preserve">
     <value>Triggers</value>
   </data>
+  <data name="DataInput_Warning" xml:space="preserve">
+    <value>You have reached maximum limits of input data.</value>
+  </data>
+  <data name="DataInput_Warning_Title" xml:space="preserve">
+    <value>Maximum Input Data</value>
+  </data>
 </root>
