@@ -117,24 +117,24 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Timeout" />
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="TTE" />
             <ui:IntellisenseTextBox Grid.Column="1"
                                     Grid.ColumnSpan="3"
                                     Grid.Row="2"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="Timeout" 
+                                    DefaultText="TTE" 
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
                                     Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTimeOutTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisTimeoutToolTip}">
+                                    Text="{Binding Path=TTE, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTETextbox_AutoID}"
+                                    ToolTip="{x:Static languages:Tooltips.RedisTTEToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTimeoutHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTEHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.TimeOut"
-                                         SourcePropertyValue="{Binding ModelItem.Timeout, UpdateSourceTrigger=PropertyChanged}"
+                                         SourcePropertyName="ModelItem.TTE"
+                                         SourcePropertyValue="{Binding ModelItem.TTE, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>

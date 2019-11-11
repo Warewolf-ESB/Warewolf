@@ -1865,8 +1865,8 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisKeyHelp" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
-  <data name="RedisTimeoutHelp" xml:space="preserve">
-    <value>Redis Timeout to expire stored data for a given Key</value>
+  <data name="RedisTTEHelp" xml:space="preserve">
+    <value>Redis TTE time till expire stored data for a given Key</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
