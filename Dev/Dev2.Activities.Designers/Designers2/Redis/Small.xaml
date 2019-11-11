@@ -19,19 +19,14 @@
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:RedisDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </core:ActivityDesignerTemplate.Resources>
-    
+
+
     <StackPanel>
-        <Grid Margin="{StaticResource ElementBorder}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="159*" />
+                <ColumnDefinition Width="15*"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -41,106 +36,18 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
-            <ComboBox Grid.Column="1"
-                      Grid.Row="0"
-                      x:Name="InitialFocusElement"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                      ItemsSource="{Binding RedisServers}"
-                      DisplayMemberPath="ResourceName"
-                      Margin="{StaticResource ControlBorderRight}"
-                      IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
-                      SelectedItem="{Binding SelectedRedisServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Tooltips.RedisServersToolTip}"
-                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisServers_AutoID}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisServerHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
-            <Button Grid.Column="2"
-                    Grid.Row="0"
-                    Content="..."
-                    Margin="{StaticResource ControlBorderRight}"
-                    Command="{Binding EditRedisServerCommand}"
-                    ToolTip="{x:Static languages:Tooltips.RedisEditServerToolTip}"
-                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRedisServerCommand_AutoID}" >
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisEditServerHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            <Button x:Name="RedisNewButton" 
-                        Grid.Column="3"
-                        Content="{x:Static languages:Core.New}" 
-                        Width="Auto"
-                        Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static languages:Tooltips.RedisNewServerToolTip}"
-                        Command="{Binding NewRedisServerCommand}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisNewServerHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server:" />
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" TextTrimming="CharacterEllipsis" Text="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
-            <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="3"
-                                    Grid.Row="1"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="Key" 
-                                    AcceptsReturn="False"
-                                    AllowUserInsertLine="False"
-                                    WrapInBrackets="False" 
-                                    Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisKeyTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisKeyToolTip}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisKeyHelp}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.Key"
-                                         SourcePropertyValue="{Binding ModelItem.Key, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Key:" />
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="TTE" />
-            <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="3"
-                                    Grid.Row="2"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="TTE" 
-                                    AcceptsReturn="False"
-                                    AllowUserInsertLine="False"
-                                    WrapInBrackets="False" 
-                                    Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=TTE, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTETextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisTTEToolTip}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTEHelp}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.TTE"
-                                         SourcePropertyValue="{Binding ModelItem.TTE, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
+            <TextBlock Grid.Column="3" Grid.Row="1" Text="TTE:" />
+            <TextBlock Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=TTE, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=TTE, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Action:" />
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="3" TextTrimming="CharacterEllipsis" Text="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
-        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="5,0,5,5" CornerRadius="12">
-            <sap:WorkflowItemPresenter x:Name="DropPoint"
-                                       AllowDrop="False"
-                                       Margin="3"
-                                       HintText="Drop Activity Here"
-                                       BorderBrush="Black"
-                                       BorderThickness="2"
-                                       Item="{Binding Path=ModelItem.ActivityFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
-                                       MinHeight="50"
-                                       attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
-                        <Binding Path="ModelItem.AutomationID" />
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
-            </sap:WorkflowItemPresenter>
-        </Border>
     </StackPanel>
 </core:ActivityDesignerTemplate>
