@@ -43,7 +43,7 @@ namespace Dev2.Activities.Redis
     [ToolDescriptorInfo("Redis", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
     public class RedisActivity : DsfBaseActivity, IEquatable<RedisActivity>
     {
-        public static readonly int DefaultTimeout = 10000; // (10 seconds)
+        public static readonly int DefaultTTE = 10000; // (10 seconds)
         string _result = "Success";
         private readonly ISerializer _serializer; 
 
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Redis
         public RedisActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
-            Timeout = DefaultTimeout;
+            TTE = DefaultTTE;
             _redisCache = redisCache;
             ResourceCatalog = resourceCatalog;
 
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Redis
         public string Response { get; set; }
 
         [FindMissing]
-        public int Timeout { get; set; }
+        public int TTE { get; set; }
 
         public bool ShouldSerializeConsumer() => false;
 
@@ -112,8 +112,8 @@ namespace Dev2.Activities.Redis
                 },
                 new StateVariable
                 {
-                    Name = "Timeout",
-                    Value = Timeout.ToString(),
+                    Name = "TTE",
+                    Value = TTE.ToString(),
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
@@ -151,7 +151,7 @@ namespace Dev2.Activities.Redis
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName);
 
-                var cacheTimeout = TimeSpan.FromMilliseconds(Timeout);
+                var cacheTTE = TimeSpan.FromMilliseconds(TTE);
 
                 var activity = ActivityFunc.Handler as IDev2Activity;
                 if (activity is null)
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Redis
                     activity.Execute(DataObject, 0);
                     var outputVars = activity.GetOutputs();
 
-                    CacheOutputs(cacheTimeout, outputVars);
+                    CacheOutputs(cacheTTE, outputVars);
                 }
                 return new List<string> { _result };
             }
@@ -198,7 +198,7 @@ namespace Dev2.Activities.Redis
             return outputs;
         }
 
-        private void CacheOutputs(TimeSpan cacheTimeout, List<string> outputVars)
+        private void CacheOutputs(TimeSpan cacheTTE, List<string> outputVars)
         {
             var data = new Dictionary<string, string>();
             foreach (var output in outputVars)
@@ -209,7 +209,7 @@ namespace Dev2.Activities.Redis
                 data.Add(key, value);
             }
 
-            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), cacheTimeout);
+            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), cacheTTE);
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
@@ -258,7 +258,7 @@ namespace Dev2.Activities.Redis
 
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
-                && Timeout == other.Timeout
+                && TTE == other.TTE
                 && SourceId.Equals(other.SourceId)
                 && string.Equals(Key, other.Key)
                 && string.Equals(DisplayName, other.DisplayName)
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Redis
                 hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Timeout != null ? Timeout.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TTE != null ? TTE.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
                 return hashCode;
             }
