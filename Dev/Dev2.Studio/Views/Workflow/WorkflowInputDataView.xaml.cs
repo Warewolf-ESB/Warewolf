@@ -400,13 +400,14 @@ namespace Dev2.Studio.Views.Workflow
                     vm.IsInError = true;
                 }
             }
+            else if (tabItem.Header.ToString() == "JSON")
+            {
+                vm.XmlData = GetXmlDataFromJson();
+                vm.SetWorkflowInputData();
+            }
             else
             {
-                if (tabItem.Header.ToString() == "JSON")
-                {
-                    vm.XmlData = GetXmlDataFromJson();
-                    vm.SetWorkflowInputData();
-                }
+                vm.SetXmlData();
             }
         }
 
