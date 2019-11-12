@@ -3,32 +3,19 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Redis"
-                               
-                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                               xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
-                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="260"
+                               MaxWidth="260"
                                mc:Ignorable="d"
-                               d:DesignWidth="250"
+                               d:DesignWidth="260"
                                d:DataContext="{d:DesignInstance local:RedisDesignerViewModel}">
-
-
 
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="159*" />
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -37,16 +24,49 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Server:" />
-            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" TextTrimming="CharacterEllipsis" Text="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="1" Grid.Row="0" 
+                       TextTrimming="CharacterEllipsis" 
+                       Text="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" 
+                       ToolTip="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Key:" />
-            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
+            <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="3" Grid.Row="1" Text="TTE:" />
-            <TextBlock Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=TTE, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=TTE, UpdateSourceTrigger=PropertyChanged}" />
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding ElementName=RedisActionTextBlock, Path=ActualWidth}" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Action:" />
-            <TextBlock Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="3" TextTrimming="CharacterEllipsis" Text="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Grid.Column="0" Text="Key:" />
+                    <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" 
+                               Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" 
+                               ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="TTL:" />
+                    <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" 
+                               Text="{Binding Path=TTE, UpdateSourceTrigger=PropertyChanged}" 
+                               ToolTip="{Binding Path=TTE, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Grid.Column="2" Text="(ms)" ToolTip="Time To Live" />
+                </Grid>
+            </Grid>
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Action:" x:Name="RedisActionTextBlock" />
+            <TextBlock Grid.Column="1" Grid.Row="2" 
+                       TextTrimming="CharacterEllipsis" 
+                       Text="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" 
+                       ToolTip="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
     </StackPanel>
