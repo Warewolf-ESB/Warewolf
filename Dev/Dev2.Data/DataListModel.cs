@@ -54,6 +54,7 @@ namespace Dev2.Data
             var xDoc = new XmlDocument();
             try
             {
+                xDoc.PreserveWhitespace = true;
                 xDoc.LoadXml(toLoad);
             }
             catch (Exception ex)
