@@ -346,7 +346,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
             {
-                return WorkflowInputs.Aggregate(string.Empty, (current, workflowInput) => current + workflowInput.Field + @"=" + (isUrlEncode == true ? System.Web.HttpUtility.UrlEncode(workflowInput.Value) : workflowInput.Value) + @"&").TrimEnd('&');
+                return WorkflowInputs.Aggregate(string.Empty, (current, workflowInput) => current + workflowInput.Field + @"=" + (string.IsNullOrEmpty(workflowInput.Value.TrimEnd(' ')) ? string.Empty : (isUrlEncode == true ? System.Web.HttpUtility.UrlEncode(workflowInput.Value) : workflowInput.Value)) + @"&").TrimEnd('&');
             }
             try
             {
@@ -510,7 +510,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     xml = XDocument.Parse(@"<DataList></DataList>");
                 }
-                XmlData = XElement.Parse(xml.ToString()).ToString();
+                XmlData = XElement.Parse(xml.ToString(), LoadOptions.PreserveWhitespace).ToString();
             }
             catch (Exception e)
             {
