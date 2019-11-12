@@ -382,12 +382,12 @@ namespace Warewolf.UIBindingTests
             GenResourceAndDataobject(key, hostName, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
             var assignActivity = new DsfMultiAssignActivity();
-            var tte = 3000;
-            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, tte, hostName, redisImpl, assignActivity);
+            var ttl = 3000;
+            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
             _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
-            _scenarioContext.Add(nameof(tte), tte);
+            _scenarioContext.Add(nameof(ttl), ttl);
 
             Assert.IsNotNull(redisActivityNew.Key);
         }
@@ -397,7 +397,7 @@ namespace Warewolf.UIBindingTests
         {
             var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
-            var tte = _scenarioContext.Get<int>("tte");
+            var ttl = _scenarioContext.Get<int>("ttl");
 
             var environment = new ExecutionEnvironment();
 
@@ -406,7 +406,7 @@ namespace Warewolf.UIBindingTests
             do
             {
                 Thread.Sleep(1000);
-            } while (Stoptime.ElapsedMilliseconds < tte);
+            } while (Stoptime.ElapsedMilliseconds < ttl);
 
             var actualCachedData = GetCachedData(impl, key);
             Assert.IsNull(actualCachedData);
@@ -481,8 +481,8 @@ namespace Warewolf.UIBindingTests
 
         }
 
-        [Given(@"data exists \(TTE not hit\) for key ""(.*)"" as")]
-        public void GivenDataExistsTTENotHitForKeyAs(string key, Table table)
+        [Given(@"data exists \(TTL not hit\) for key ""(.*)"" as")]
+        public void GivenDataExistsTTLNotHitForKeyAs(string key, Table table)
         {
             var hostName = _scenarioContext.Get<string>("hostName");
             var redisImpl = GetRedisCacheImpl(hostName);
@@ -493,8 +493,8 @@ namespace Warewolf.UIBindingTests
 
             var assignActivity = GetDsfMultiAssignActivity(dataStored.Keys.ToArray()[0], dataStored.Values.ToArray()[0]);
 
-            var tte = 3000;
-            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, tte, hostName, redisImpl, assignActivity);
+            var ttl = 3000;
+            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
             ExecuteTool(redisActivityNew, mockDataobject);
 
@@ -521,17 +521,17 @@ namespace Warewolf.UIBindingTests
             Assert.IsNotNull(dataToStore);
         }
 
-        [Given(@"data does not exist \(TTE exceeded\) for key ""(.*)"" as")]
-        public void GivenDataDoesNotExistTTEExceededForKeyAs(string p0, Table table)
+        [Given(@"data does not exist \(TTL exceeded\) for key ""(.*)"" as")]
+        public void GivenDataDoesNotExistTTLExceededForKeyAs(string p0, Table table)
         {
-            var tte = _scenarioContext.Get<int>("tte");
+            var ttl = _scenarioContext.Get<int>("ttl");
             var redisActivity = _scenarioContext.Get<RedisActivity>(nameof(RedisActivity));
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
 
             do
             {
                 Thread.Sleep(1000);
-            } while (Stoptime.ElapsedMilliseconds < tte);
+            } while (Stoptime.ElapsedMilliseconds < ttl);
             
             var actualCachedData = GetCachedData(impl, redisActivity.Key);
 
@@ -595,14 +595,14 @@ namespace Warewolf.UIBindingTests
             return new RedisCacheImpl(hostName);
         }
 
-        private static SpecRedisActivity GetRedisActivity(IResourceCatalog resourceCatalog, string key, int tte, string hostName, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
+        private static SpecRedisActivity GetRedisActivity(IResourceCatalog resourceCatalog, string key, int ttl, string hostName, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
         {
             Stoptime = Stopwatch.StartNew();
             return new SpecRedisActivity(resourceCatalog, impl)
             {
                 Key = key,
                 ActivityFunc = new ActivityFunc<string, bool> { Handler = assignActivity },
-                TTE = tte,
+                TTL = ttl,
                 RedisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName },
             };
         }

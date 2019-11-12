@@ -63,9 +63,9 @@ namespace Dev2.Activities.Designers2.Redis
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
             }
-            if (modelItem.Properties["TTE"]?.ComputedValue != null)
+            if (modelItem.Properties["TTL"]?.ComputedValue != null)
             {
-                TTE = modelItem.Properties["TTE"]?.ComputedValue.ToString();
+                TTL = int.Parse(modelItem.Properties["TTL"]?.ComputedValue.ToString());
             }
         }
 
@@ -117,24 +117,24 @@ namespace Dev2.Activities.Designers2.Redis
             ModelItem.SetProperty("Key", Key);
         }
 
-        public string TTE
+        public int TTL
         {
-            get => (string)GetValue(TTEProperty);
-            set => SetValue(TTEProperty, value);
+            get => (int)GetValue(TTLProperty);
+            set => SetValue(TTLProperty, value);
         }
 
-        public static readonly DependencyProperty TTEProperty =
-            DependencyProperty.Register("TTE", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTTEChanged));
+        public static readonly DependencyProperty TTLProperty =
+            DependencyProperty.Register("TTL", typeof(int), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTTLChanged));
 
-        private static void OnTTEChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RedisDesignerViewModel)d;
-            viewModel.OnTTEChanged();
+            viewModel.OnTTLChanged();
         }
 
-        protected virtual void OnTTEChanged()
+        protected virtual void OnTTLChanged()
         {
-            ModelItem.SetProperty("TTE", int.Parse(TTE));
+            ModelItem.SetProperty("TTL", TTL);
         }
 
         private void EditRedisServerSource()
