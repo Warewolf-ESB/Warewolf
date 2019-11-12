@@ -117,24 +117,24 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTE" />
+            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTL" />
             <ui:IntellisenseTextBox Grid.Column="3"
                                     Grid.ColumnSpan="1"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="TTE" 
+                                    DefaultText="TTL (ms)" 
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
                                     Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=TTE, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTETextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisTTEToolTip}">
+                                    Text="{Binding Path=TTL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
+                                    ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTEHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTLHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.TTE"
-                                         SourcePropertyValue="{Binding ModelItem.TTE, UpdateSourceTrigger=PropertyChanged}"
+                                         SourcePropertyName="ModelItem.TTL"
+                                         SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>

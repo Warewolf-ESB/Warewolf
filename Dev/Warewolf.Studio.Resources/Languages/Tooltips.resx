@@ -2396,4 +2396,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
+  <data name="RedisTTLToolTip" xml:space="preserve">
+    <value>Redis TTL (Time To Live)</value>
+  </data>
 </root>

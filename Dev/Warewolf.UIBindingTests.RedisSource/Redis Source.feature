@@ -174,10 +174,10 @@ Scenario: No data in Cache
 @MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt	
-	Scenario: Data exists for given TTE not hit
+	Scenario: Data exists for given TTL not hit
 	Given Redis source "localhost" 
 	And I have a key "MyData"
-	And data exists (TTE not hit) for key "MyData" as
+	And data exists (TTL not hit) for key "MyData" as
 	| Key | Data |
 	| MyData | "[[Var1]],Data in cache" |
 	And an assign "dataToStore" as
@@ -199,10 +199,10 @@ Scenario: No data in Cache
 @MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt	
-	Scenario: Data Not Exist For Given Key (TTE exceeded) Spec
+	Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 	Given Redis source "localhost" 
 	And I have a key "MyData"
-	And data does not exist (TTE exceeded) for key "MyData" as
+	And data does not exist (TTL exceeded) for key "MyData" as
 	| | |
 	And an assign "dataToStore" as
 	| var | value |

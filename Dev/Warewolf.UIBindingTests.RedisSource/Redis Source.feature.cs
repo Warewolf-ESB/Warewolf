@@ -423,14 +423,14 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data exists for given TTE not hit")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data exists for given TTL not hit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Redis Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
-        public virtual void DataExistsForGivenTTENotHit()
+        public virtual void DataExistsForGivenTTLNotHit()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data exists for given TTE not hit", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data exists for given TTL not hit", new string[] {
                         "RedisSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
@@ -456,7 +456,7 @@ this.ScenarioSetup(scenarioInfo);
                         "MyData",
                         "\"[[Var1]],Data in cache\""});
 #line 180
- testRunner.And("data exists (TTE not hit) for key \"MyData\" as", ((string)(null)), table4, "And ");
+ testRunner.And("data exists (TTL not hit) for key \"MyData\" as", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
@@ -484,14 +484,14 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Not Exist For Given Key (TTE exceeded) Spec")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Not Exist For Given Key (TTL exceeded) Spec")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Redis Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
-        public virtual void DataNotExistForGivenKeyTTEExceededSpec()
+        public virtual void DataNotExistForGivenKeyTTLExceededSpec()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Not Exist For Given Key (TTE exceeded) Spec", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Not Exist For Given Key (TTL exceeded) Spec", new string[] {
                         "RedisSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
@@ -514,7 +514,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
 #line 205
- testRunner.And("data does not exist (TTE exceeded) for key \"MyData\" as", ((string)(null)), table7, "And ");
+ testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",

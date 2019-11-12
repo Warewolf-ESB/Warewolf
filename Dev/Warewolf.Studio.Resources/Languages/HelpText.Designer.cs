@@ -2969,11 +2969,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TTE time till expire stored data for a given Key.
+        ///   Looks up a localized string similar to Redis TTL (Time To Live) stored data for a given Key.
         /// </summary>
-        public static string RedisTTEHelp {
+        public static string RedisTTLHelp {
             get {
-                return ResourceManager.GetString("RedisTTEHelp", resourceCulture);
+                return ResourceManager.GetString("RedisTTLHelp", resourceCulture);
             }
         }
         

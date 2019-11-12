@@ -349,7 +349,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ComManagePluginSourceRefreshTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database command timeout.
         /// </summary>
@@ -405,7 +405,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ConnectControlToggleConnectionToolTip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database connection timeout.
         /// </summary>
@@ -2030,7 +2030,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageDbSourceCancelTestTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Set the connection timeout of the database data source.
         /// </summary>
@@ -2039,7 +2039,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageDbSourceConnectionTimeoutTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select the database you want to use.
         /// </summary>
@@ -2201,7 +2201,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageEmailSendTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Timeout in seconds when trying to send email.
         /// </summary>
@@ -2210,7 +2210,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageEmailTimeoutTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Email address to send the test email to.
         /// </summary>
@@ -3806,11 +3806,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TTE for stored data.
+        ///   Looks up a localized string similar to Redis Timeout for stored data.
         /// </summary>
-        public static string RedisTTEToolTip {
+        public static string RedisTimeoutToolTip {
             get {
-                return ResourceManager.GetString("RedisTTEToolTip", resourceCulture);
+                return ResourceManager.GetString("RedisTimeoutToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis TTL (Time To Live).
+        /// </summary>
+        public static string RedisTTLToolTip {
+            get {
+                return ResourceManager.GetString("RedisTTLToolTip", resourceCulture);
             }
         }
         
@@ -5163,7 +5172,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("SQLBulkInsertToolTipTable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
         ///All batches in total must complete within this time period.
@@ -5176,7 +5185,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("SqlBulkInsertToolTipTimeout", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction..
         /// </summary>
