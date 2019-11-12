@@ -396,29 +396,19 @@ namespace Warewolf.UIBindingTests
         public void GivenNoDataInTheCache()
         {
             var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
-            var hostName = _scenarioContext.Get<string>("hostName");
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
             var tte = _scenarioContext.Get<int>("tte");
 
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockDataobject = new Mock<IDSFDataObject>();
-            var redisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName };
-            mockResourceCatalog.Setup(o => o.GetResource<Dev2.Data.ServiceModel.RedisSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(redisSource);
-
             var environment = new ExecutionEnvironment();
 
-            environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
-            environment.EvalToExpression(redisActivityOld.Key, 0);
-
-            mockDataobject.Setup(o => o.IsDebugMode()).Returns(true);
-            mockDataobject.Setup(o => o.Environment).Returns(environment);
+            var key = environment.EvalToExpression(redisActivityOld.Key, 0);
 
             do
             {
                 Thread.Sleep(1000);
             } while (Stoptime.ElapsedMilliseconds < tte);
 
-            var actualCachedData = GetCachedData(impl, redisActivityOld.Key);
+            var actualCachedData = GetCachedData(impl, key);
             Assert.IsNull(actualCachedData);
         }
 
