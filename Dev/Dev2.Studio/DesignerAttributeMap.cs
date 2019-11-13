@@ -107,7 +107,8 @@ using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Redis;
 using Dev2.Activities.Designers2.Redis;
-
+using Dev2.Activities.RedisDelete;
+using Dev2.Activities.Designers2.RedisDelete;
 namespace Dev2
 {
     public static class DesignerAttributeMap
@@ -207,6 +208,7 @@ namespace Dev2
                 { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesignerViewModel) },
                 { typeof(RedisActivity), typeof(RedisDesigner) },
+                { typeof(RedisDeleteActivity), typeof(RedisDeleteDesigner) },
             };
     }
 }

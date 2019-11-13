@@ -1149,6 +1149,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisKeyToolTip" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
+  <data name="RedisDeleteKeyToolTip" xml:space="preserve">
+    <value>Redis Key to delete data</value>
+  </data>
   <data name="RedisTimeoutToolTip" xml:space="preserve">
     <value>Redis Timeout for stored data</value>
   </data>

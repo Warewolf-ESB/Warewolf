@@ -211,7 +211,6 @@
     <EmbeddedResource Include="Languages\Tooltips.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\TrackEventDebugOutput.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
