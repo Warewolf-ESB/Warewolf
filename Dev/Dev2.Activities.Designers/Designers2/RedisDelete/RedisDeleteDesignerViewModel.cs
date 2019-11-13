@@ -12,8 +12,6 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
-using System.Activities;
-using System.Windows.Media;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Collections.ObjectModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -48,13 +46,7 @@ namespace Dev2.Activities.Designers2.RedisDelete
             _shellViewModel = shellViewModel;
 
             AddTitleBarLargeToggle();
-            var dataFunc = modelItem.Properties["ActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
-            ActivityFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
-            var type = dataFunc?.Handler?.GetType();
-            if (type != null)
-            {
-                ActivityFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
-            }
+           
             RedisServers = new ObservableCollection<RedisSource>();
             LoadRedisServers();
             EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
@@ -62,11 +54,7 @@ namespace Dev2.Activities.Designers2.RedisDelete
             if (modelItem.Properties["Key"]?.ComputedValue != null)
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
-            }
-            if (modelItem.Properties["TTL"]?.ComputedValue != null)
-            {
-                TTL = int.Parse(modelItem.Properties["TTL"]?.ComputedValue.ToString());
-            }
+            }            
         }
 
         public ObservableCollection<RedisSource> RedisServers { get; private set; }
@@ -117,26 +105,6 @@ namespace Dev2.Activities.Designers2.RedisDelete
             ModelItem.SetProperty("Key", Key);
         }
 
-        public int TTL
-        {
-            get => (int)GetValue(TTLProperty);
-            set => SetValue(TTLProperty, value);
-        }
-
-        public static readonly DependencyProperty TTLProperty =
-            DependencyProperty.Register("TTL", typeof(int), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(0, OnTTLChanged));
-
-        private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = (RedisDeleteDesignerViewModel)d;
-            viewModel.OnTTLChanged();
-        }
-
-        protected virtual void OnTTLChanged()
-        {
-            ModelItem.SetProperty("TTL", TTL);
-        }
-
         private void EditRedisServerSource()
         {
             _shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
@@ -162,24 +130,6 @@ namespace Dev2.Activities.Designers2.RedisDelete
             var selectedRedisServer = RedisServers.FirstOrDefault(redisServer => redisServer.ResourceID == sourceId);
             SelectedRedisServer = selectedRedisServer;
         }
-
-        public string ActivityFuncDisplayName
-        {
-            get => (string)GetValue(ActivityFuncDisplayNameProperty);
-            set => SetValue(ActivityFuncDisplayNameProperty, value);
-        }
-
-        public static readonly DependencyProperty ActivityFuncDisplayNameProperty =
-            DependencyProperty.Register("ActivityFuncDisplayName", typeof(string), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(null));
-
-        public ImageSource ActivityFuncIcon
-        {
-            get => (ImageSource)GetValue(ActivityFuncIconProperty);
-            set => SetValue(ActivityFuncIconProperty, value);
-        }
-
-        public static readonly DependencyProperty ActivityFuncIconProperty =
-            DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(null));
 
         [ExcludeFromCodeCoverage]
         public override void Validate()

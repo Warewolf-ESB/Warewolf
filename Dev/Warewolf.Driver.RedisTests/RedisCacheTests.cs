@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Driver.Redis;
@@ -44,7 +43,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Set("bob",  "the builder" , It.IsAny<TimeSpan>());
+            redis.Set("bob", "the builder", It.IsAny<TimeSpan>());
             //--------------Assert-------------------------------
             mockDatabase.Verify(db => db.Set(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>()), Times.Once);
 
@@ -140,6 +139,39 @@ namespace Dev2.Tests.Activities.Activities.Redis
             mockDatabase.Verify(db => db.Get("bob"), Times.Once);
         }
 
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RedisCache_Delete_NullKey_ShouldThrowArgumentNullException()
+        {
+            //--------------Arrange------------------------------
+            var ext = System.Threading.Tasks.TaskExtensions.Unwrap(new System.Threading.Tasks.Task<System.Threading.Tasks.Task>(() => System.Threading.Tasks.Task.FromResult(true)));
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+            mockDatabase.Setup(db => db.Delete(It.IsAny<string>())).Verifiable();
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
+            //--------------Act----------------------------------
+            redis.Delete(null);
+            //--------------Assert-------------------------------
+        }
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        public void RedisCache_Delete_ValidKey_ShouldReturn()
+        {
+            //--------------Arrange------------------------------
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+            mockDatabase.Setup(db => db.Delete("bob")).Verifiable();
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
+            //--------------Act----------------------------------
+            redis.Delete("bob");
+            //--------------Assert-------------------------------
+            mockDatabase.Verify(db => db.Delete("bob"), Times.Once);
+        }
     }
 
     internal class RedisCacheStub : RedisCacheBase
