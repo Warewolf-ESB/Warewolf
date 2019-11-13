@@ -293,40 +293,17 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         }
 
-        public void ViewInBrowser()
+        public void ViewInBrowser(bool isEventTracking = true)
         {
             // Do not log user action in case of error.
             if (!IsInError)
             {
                 if (IsEmptyWorkflowInputData() || CheckWorkflowInputDataLimits())
                 {
-                    _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
+                    LogViewInBrowserAction(isEventTracking);
                     DoSaveActions();
                     var payload = BuildInputDataList(true);
                     OpenUriInBrowser(payload);
-                    SendFinishedMessage();
-                    RequestClose();
-                }
-                else
-                {
-                    ShowMaximumLimitDataPopupMessage();
-                }
-            }
-            else
-            {
-                ShowInvalidDataPopupMessage();
-            }
-        }
-
-        public void WithoutActionTrackingViewInBrowser()
-        {
-            if (!IsInError)
-            {
-                if (IsEmptyWorkflowInputData() || CheckWorkflowInputDataLimits())
-                {
-                    DoSaveActions();
-                    var inputDataList = BuildInputDataList(true);
-                    OpenUriInBrowser(inputDataList);
                     SendFinishedMessage();
                     RequestClose();
                 }
@@ -585,6 +562,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool IsEmptyWorkflowInputData()
         {
             return string.IsNullOrEmpty(XmlData);
+        }
+
+        private void LogViewInBrowserAction(bool isEventTracking)
+        {
+            if(isEventTracking)
+            {
+                _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
+            }
         }
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
