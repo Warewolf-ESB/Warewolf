@@ -67,6 +67,8 @@ namespace Dev2.Studio.Views.Workflow
             _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
             _jsonEditor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
+            _editor.TextChanged += _editor_TextChanged;
+            _jsonEditor.TextChanged += _jsonEditor_TextChanged;
             _foldingUpdateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
             _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Start();
@@ -482,6 +484,32 @@ namespace Dev2.Studio.Views.Workflow
                 mainViewModel?.ResetMainView();
             }
         }
+
+        private void _editor_TextChanged(object sender, EventArgs e)
+        {
+            var vm = DataContext as WorkflowInputDataViewModel;
+
+            try
+            {
+                vm.IsInError = false;
+                vm.XmlData = _editor.Text;
+                vm.SetWorkflowInputData();
+            }
+            catch (Exception ex)
+            {
+                vm.IsInError = true;
+            }
+        }
+
+        private void _jsonEditor_TextChanged(object sender, EventArgs e)
+        {
+            var vm = DataContext as WorkflowInputDataViewModel;
+
+            vm.IsInError = false;
+            vm.XmlData = GetXmlDataFromJson();
+            vm.SetWorkflowInputData();
+        }
+
     }
 
     public enum InputTab
