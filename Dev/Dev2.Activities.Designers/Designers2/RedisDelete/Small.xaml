@@ -46,27 +46,7 @@
                                Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" 
                                ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
-
-                <Grid Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text="TTL:" ToolTip="Time To Live" />
-                    <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" 
-                               Text="{Binding Path=TTL, UpdateSourceTrigger=PropertyChanged}" 
-                               ToolTip="{Binding Path=TTL, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Grid.Column="2" Text="(ms)" />
-                </Grid>
             </Grid>
-
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Action:" x:Name="RedisDeleteActionTextBlock" />
-            <TextBlock Grid.Column="1" Grid.Row="2" 
-                       TextTrimming="CharacterEllipsis" 
-                       Text="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" 
-                       ToolTip="{Binding Path=ModelItem.ActivityFunc.Handler.DisplayName, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
     </StackPanel>

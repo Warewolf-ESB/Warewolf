@@ -15,31 +15,12 @@ namespace Dev2.Activities.Designers2.RedisDelete
 {
     public partial class Small
     {
-        readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
-
         public Small()
         {
             InitializeComponent();
-            _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
         protected override IInputElement GetInitialFocusElement() => null;
-
-        void DoDrop(object sender, DragEventArgs e)
-        {
-            var dataObject = e.Data;
-
-            if (_dropEnabledActivityDesignerUtils != null)
-            {
-                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(dataObject);
-                if (!dropEnabled)
-                {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-            }
-            
-        }
 
     }
 }
