@@ -14,7 +14,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="320"
-                               MinHeight="240"
+                               MinHeight="180"
                                Height="Auto"
                                MaxWidth="600"
                                MaxHeight="Infinity"
@@ -116,47 +116,9 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
-
-            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTL" />
-            <ui:IntellisenseTextBox Grid.Column="3"
-                                    Grid.ColumnSpan="1"
-                                    Grid.Row="1"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="TTL (ms)" 
-                                    AcceptsReturn="False"
-                                    AllowUserInsertLine="False"
-                                    WrapInBrackets="False" 
-                                    Margin="{StaticResource ControlBorderTop}"
-                                    Text="{Binding Path=TTL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTLHelp}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.TTL"
-                                         SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
         </Grid>
-
-        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="{StaticResource ControlBorderTop}" CornerRadius="12" Grid.Row="1">
-            <sap:WorkflowItemPresenter x:Name="DropPoint"
-                                       AllowDrop="False"
-                                       Margin="3"
-                                       HintText="Drop Activity Here"
-                                       BorderBrush="Black"
-                                       BorderThickness="2"
-                                       Item="{Binding Path=ModelItem.ActivityFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
-                                       MinHeight="50"
-                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
-                        <Binding Path="ModelItem.AutomationID" />
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
-            </sap:WorkflowItemPresenter>
-        </Border>
-        <errors:OnError Grid.Row="2" />
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
