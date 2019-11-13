@@ -3750,7 +3750,13 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("RedisKeyToolTip", resourceCulture);
             }
         }
-        
+        public static string RedisDeleteKeyToolTip
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisDeleteKeyToolTip", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to Create a new Redis Server Source.
         /// </summary>
