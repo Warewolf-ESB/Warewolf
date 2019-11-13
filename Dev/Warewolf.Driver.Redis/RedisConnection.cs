@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using ServiceStack.Redis;
 using Warewolf.Interfaces;
 
@@ -37,5 +36,17 @@ namespace Warewolf.Driver.Redis
         public string Get(string key) => _client.Get<string>(key);
 
         public bool Set(string key, string value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
+
+        public bool Delete(string key)
+        {
+            if (_client.ContainsKey(key))
+            {
+                return _client.Remove(key);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

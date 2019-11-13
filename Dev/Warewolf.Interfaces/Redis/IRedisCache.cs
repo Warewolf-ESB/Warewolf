@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 
 namespace Warewolf.Interfaces
 {
@@ -17,5 +16,6 @@ namespace Warewolf.Interfaces
     {
         bool Set(string key, string disctionary, TimeSpan timeSpan);
         string Get(string key);
+        bool Delete(string key);
     }
 }

@@ -9,43 +9,42 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Activities.Debug;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Data.ServiceModel;
-using Dev2.Diagnostics;
-using Dev2.Util;
-using RabbitMQ.Client;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Activities.Debug;
+using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Serializers;
+using Dev2.Common.State;
+using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
+using Dev2.Util;
+using RabbitMQ.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
-using Warewolf.Resource.Errors;
-using Warewolf.Storage.Interfaces;
-using Dev2.Common.State;
-using Warewolf.Interfaces;
 using Warewolf.Driver.Redis;
-using System.Activities;
-using Dev2.Common.Serializers;
+using Warewolf.Interfaces;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-using Dev2.Common.Interfaces.Communication;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisDelete
 {
     [ToolDescriptorInfo("RedisDelete", "Redis Delete", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisDelete")]
     public class RedisDeleteActivity : DsfBaseActivity, IEquatable<RedisDeleteActivity>
     {
-        public static readonly int DefaultTTL = 10000; // (10 seconds)
         string _result = "Success";
-        private readonly ISerializer _serializer; 
+        private readonly ISerializer _serializer;
 
         private RedisCacheBase _redisCache;
         internal List<string> _messages = new List<string>();
@@ -53,7 +52,7 @@ namespace Dev2.Activities.RedisDelete
         public RedisDeleteActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
-            
+
         }
 
         public RedisDeleteActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
@@ -64,19 +63,10 @@ namespace Dev2.Activities.RedisDelete
         public RedisDeleteActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
-            TTL = DefaultTTL;
-            _redisCache = redisCache;
             ResourceCatalog = resourceCatalog;
-
             DisplayName = "Redis Delete";
-            ActivityFunc = new ActivityFunc<string, bool>
-            {
-                DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
-            };
-
+            _redisCache = redisCache;
             _serializer = new Dev2JsonSerializer();
-
         }
 
         public Guid SourceId { get; set; }
@@ -88,9 +78,6 @@ namespace Dev2.Activities.RedisDelete
         [FindMissing]
         public string Response { get; set; }
 
-        [FindMissing]
-        public int TTL { get; set; }
-
         public bool ShouldSerializeConsumer() => false;
 
         public bool ShouldSerializeConnectionFactory() => false;
@@ -99,8 +86,6 @@ namespace Dev2.Activities.RedisDelete
 
         public bool ShouldSerializeConnection() => false;
 
-        public ActivityFunc<string, bool> ActivityFunc { get; set; }
-
         public override IEnumerable<StateVariable> GetState()
         {
             return new[] {
@@ -108,12 +93,6 @@ namespace Dev2.Activities.RedisDelete
                 {
                     Name = "Key",
                     Value = Key,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = "TTL",
-                    Value = TTL.ToString(),
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
@@ -137,7 +116,7 @@ namespace Dev2.Activities.RedisDelete
                 }
             };
         }
-       
+
         public RedisSource RedisSource { get; set; }
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
@@ -150,66 +129,14 @@ namespace Dev2.Activities.RedisDelete
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName);
-
-                var cacheTTL = TimeSpan.FromMilliseconds(TTL);
-
-                var activity = ActivityFunc.Handler as IDev2Activity;
-                if (activity is null)
-                {
-                    throw new InvalidOperationException($"Activity drop box cannot be null");
-                }
-                if (string.IsNullOrWhiteSpace(activity.GetOutputs()[0]))
-                {
-                    throw new InvalidOperationException($"{activity.GetDisplayName()} activity must have at least one output variable.");
-                }
-
-                IDictionary<string, string> cachedData = GetCachedOutputs();
-                if (cachedData != null)
-                {
-                    foreach (var item in cachedData)
-                    {
-                        DataObject.Environment.Assign(item.Key, item.Value, 0);
-                    }
-                }
-                else
-                {
-                    activity.Execute(DataObject, 0);
-                    var outputVars = activity.GetOutputs();
-
-                    CacheOutputs(cacheTTL, outputVars);
-                }
+                _redisCache.Delete(Key);
                 return new List<string> { _result };
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error( nameof(RedisDeleteActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(RedisDeleteActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
-        }
-
-        private IDictionary<string, string> GetCachedOutputs()
-        {
-            var cachedData = _redisCache.Get(Key);
-            if (cachedData is null)
-            {
-                return null;
-            }
-            var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
-            return outputs;
-        }
-
-        private void CacheOutputs(TimeSpan cacheTTL, List<string> outputVars)
-        {
-            var data = new Dictionary<string, string>();
-            foreach (var output in outputVars)
-            {
-                var key = output;
-                var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
-
-                data.Add(key, value);
-            }
-
-            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), cacheTTL);
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
@@ -258,7 +185,6 @@ namespace Dev2.Activities.RedisDelete
 
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
-                && TTL == other.TTL
                 && SourceId.Equals(other.SourceId)
                 && string.Equals(Key, other.Key)
                 && string.Equals(DisplayName, other.DisplayName)
@@ -297,7 +223,6 @@ namespace Dev2.Activities.RedisDelete
                 hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (TTL != null ? TTL.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
                 return hashCode;
             }

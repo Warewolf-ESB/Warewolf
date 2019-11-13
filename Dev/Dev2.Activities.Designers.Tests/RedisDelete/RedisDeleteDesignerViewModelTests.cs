@@ -85,8 +85,6 @@ namespace Dev2.Activities.Designers.Tests.RedisDelete
             var redisDeleteDesignerViewModel = new RedisDeleteDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(redisDeleteDesignerViewModel.HasLargeView);
-            Assert.AreEqual(string.Empty, redisDeleteDesignerViewModel.ActivityFuncDisplayName);
-            Assert.IsNull(redisDeleteDesignerViewModel.ActivityFuncIcon);
             Assert.AreEqual(1, redisDeleteDesignerViewModel.RedisServers.Count);
             Assert.AreEqual(expectedId, redisDeleteDesignerViewModel.RedisServers[0].ResourceID);
             Assert.AreEqual("ResourceName", redisDeleteDesignerViewModel.RedisServers[0].ResourceName);
