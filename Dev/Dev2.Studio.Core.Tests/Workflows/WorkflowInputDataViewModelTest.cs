@@ -122,7 +122,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_WithoutActionTrackingViewInBrowser_Expected_ErrorNotShown()
+        public void WorkflowInputDataViewModel_ViewInBrowser_Expected_ErrorNotShown()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.LoadWorkflowInputs();
-                workflowInputDataviewModel.WithoutActionTrackingViewInBrowser();
+                workflowInputDataviewModel.ViewInBrowser(false);
                 Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
                 popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Never);
             }
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_WithoutActionTrackingViewInBrowser_Expected_ErrorShown()
+        public void WorkflowInputDataViewModel_ViewInBrowser_Expected_ErrorShown()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.IsInError = true;
-                workflowInputDataviewModel.WithoutActionTrackingViewInBrowser();
+                workflowInputDataviewModel.ViewInBrowser(false);
                 popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
             }
         }
