@@ -124,7 +124,7 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty TTLProperty =
-            DependencyProperty.Register("TTL", typeof(int), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTTLChanged));
+            DependencyProperty.Register("TTL", typeof(int), typeof(RedisDesignerViewModel), new PropertyMetadata(0, OnTTLChanged));
 
         private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
