@@ -371,6 +371,7 @@ namespace Warewolf.UIBindingTests
             SetUpRedisSourceViewModel(hostName);
         }
 
+        [Then(@"I have a key ""(.*)""")]
         [Given(@"I have a key ""(.*)""")]
         public void GivenIHaveAKey(string key)
         {
@@ -381,6 +382,28 @@ namespace Warewolf.UIBindingTests
             var assignActivity = new DsfMultiAssignActivity();
             var ttl = 3000;
             var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+
+            _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
+            _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
+            _scenarioContext.Add(nameof(ttl), ttl);
+
+            Assert.IsNotNull(redisActivityNew.Key);
+        }
+        [Then(@"I add another key ""(.*)""")]
+        [Given(@"I add another key ""(.*)""")]
+        public void GivenIAddAnotherKey(string key)
+        {
+            var hostName = _scenarioContext.Get<string>("hostName");
+            var redisImpl = GetRedisCacheImpl(hostName);
+            GenResourceAndDataobject(key, hostName, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+
+            var assignActivity = new DsfMultiAssignActivity();
+            var ttl = 3000;
+            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            
+            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheImpl));
+            _scenarioContext.Remove(nameof(ttl));
 
             _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
@@ -423,17 +446,17 @@ namespace Warewolf.UIBindingTests
             Assert.IsNull(actualCachedData);
         }
 
-        [Then(@"Cache has been deleted")]
-        public void CacheHasBeenDeleted()
+        [Then(@"The ""(.*)"" Cache has been deleted")]
+        public void CacheHasBeenDeleted(string key)
         {
-            var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
-            var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
-            var environment = new ExecutionEnvironment();
-            var key = environment.EvalToExpression(redisActivityOld.Key, 0);
-            var actualCachedData = GetCachedData(impl, key);
+            var hostName = _scenarioContext.Get<string>("hostName");
+            var redisImpl = GetRedisCacheImpl(hostName);
+
+            var actualCachedData = GetCachedData(redisImpl, key);
             Assert.IsNull(actualCachedData);
         }
         [Given(@"an assign ""(.*)"" as")]
+        [Then(@"an assign ""(.*)"" as")]
         public void GivenAnAssignAs(string data, Table table)
         {
             var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
@@ -458,7 +481,46 @@ namespace Warewolf.UIBindingTests
 
         }
 
-        [When(@"I execute the tool")]
+        [Given(@"another assign ""(.*)"" as")]
+        [Then(@"another assign ""(.*)"" as")]
+        public void GivenAnotherAssignAs(string data, Table table)
+        {
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+
+            var assignActivity = GetDsfMultiAssignActivity("[[Var3]]", "Test4");
+
+            redisActivity.ActivityFunc = new ActivityFunc<string, bool> { Handler = assignActivity };
+
+            var assignOutputs = assignActivity.GetForEachOutputs();
+
+            GetExpectedTableData(table, 0, out string expectedKey, out string expectedValue);
+
+            Assert.AreEqual(expectedKey, assignOutputs[0].Value);
+            Assert.IsTrue(expectedValue.Contains(assignOutputs[0].Name));
+
+            var dic = new Dictionary<string, string> { { assignOutputs[0].Value, assignOutputs[0].Name } };
+
+            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(DsfMultiAssignActivity));
+
+            _scenarioContext.Add(nameof(RedisActivity), redisActivity);
+            _scenarioContext.Add(data, dic);
+            _scenarioContext.Add(nameof(DsfMultiAssignActivity), assignActivity);
+
+        }
+
+        [Then(@"The ""(.*)"" Cache still exists")]
+        public void ThenTheStillExists(string key)
+        {
+            var hostName = _scenarioContext.Get<string>("hostName");
+            var redisImpl = GetRedisCacheImpl(hostName);
+            var actualCachedData = GetCachedData(redisImpl, key);
+
+            Assert.IsNotNull(actualCachedData);
+        }
+
+        [Then(@"I execute the get/set tool")]
+        [When(@"I execute the get/set tool")]
         public void WhenIExecuteTheTool()
         {
             var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
@@ -472,6 +534,7 @@ namespace Warewolf.UIBindingTests
             ExecuteGetSetTool(redisActivityOld, mockDataobject);
         }
         [When(@"I execute the delete tool")]
+        [Then(@"I execute the delete tool")]
         public void WhenIExecuteTheDeleteTool()
         {
             var redisActivityOld = _scenarioContext.Get<SpecRedisDeleteActivity>(nameof(RedisDeleteActivity));
@@ -483,6 +546,7 @@ namespace Warewolf.UIBindingTests
 
             ExecuteDeleteTool(redisActivityOld, mockDataobject);
         }
+
         [Then(@"the cache will contain")]
         public void ThenTheCacheWillContain(Table table)
         {
