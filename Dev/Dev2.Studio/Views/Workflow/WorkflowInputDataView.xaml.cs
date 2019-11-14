@@ -197,18 +197,16 @@ namespace Dev2.Studio.Views.Workflow
                 }
             }
 
-            if (!string.IsNullOrEmpty(vm.JsonData))
+            if (xml.FirstChild != null)
             {
-                _jsonEditor.Text = vm.JsonData;
+                var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
+                _jsonEditor.Text = json;
             }
             else
             {
-                if (xml.FirstChild != null)
-                {
-                    var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
-                    _jsonEditor.Text = json;
-                }
+                _jsonEditor.Text = vm.JsonData;
             }
+
             JsonOutput.Content = _jsonEditor;
             _currentTab = InputTab.Json;
         }
