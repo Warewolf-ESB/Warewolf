@@ -8,13 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Options;
+
 namespace Dev2.Activities.Designers2.Gate
 {
-    public partial class GateDesigner
+    public partial class GateDesigner : IEnabled
     {
+
         public GateDesigner()
         {
             InitializeComponent();
         }
+
+        public bool Enabled { get; set; }
     }
 }

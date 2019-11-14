@@ -15,6 +15,7 @@ using Moq;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Warewolf.Options;
 
 namespace Dev2.Activities.Designers.Tests.Gate
@@ -56,7 +57,9 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.IsTrue(gateDesignerViewModel.HasLargeView);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure);
             Assert.AreEqual(retryStrategy, gateDesignerViewModel.SelectedRetryStrategy);
-            Assert.IsFalse(gateDesignerViewModel.GateSelectionVisible);
+            Assert.IsFalse(gateDesignerViewModel.Enabled);
+            Assert.IsTrue(gateDesignerViewModel.ShowLarge);
+            Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
         }
 
         [TestMethod]
@@ -74,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             //------------Assert Results-------------------------
             Assert.AreEqual("Retry: Retry execution on error", gateDesignerViewModel.SelectedGateFailure);
-            Assert.IsTrue(gateDesignerViewModel.GateSelectionVisible);
+            Assert.IsTrue(gateDesignerViewModel.Enabled);
         }
 
         [TestMethod]
@@ -92,7 +95,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             //------------Assert Results-------------------------
             Assert.AreEqual("StopOnError: Stop execution on error", gateDesignerViewModel.SelectedGateFailure);
-            Assert.IsFalse(gateDesignerViewModel.GateSelectionVisible);
+            Assert.IsFalse(gateDesignerViewModel.Enabled);
         }
 
         [TestMethod]
