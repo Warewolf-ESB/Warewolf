@@ -44,7 +44,6 @@ namespace Dev2.Activities.RedisDelete
     public class RedisDeleteActivity : DsfBaseActivity, IEquatable<RedisDeleteActivity>
     {
         string _result = "Success";
-        private readonly ISerializer _serializer;
 
         private RedisCacheBase _redisCache;
         internal List<string> _messages = new List<string>();
@@ -66,7 +65,6 @@ namespace Dev2.Activities.RedisDelete
             ResourceCatalog = resourceCatalog;
             DisplayName = "Redis Delete";
             _redisCache = redisCache;
-            _serializer = new Dev2JsonSerializer();
         }
 
         public Guid SourceId { get; set; }
@@ -129,8 +127,14 @@ namespace Dev2.Activities.RedisDelete
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName);
-                _redisCache.Delete(Key);
-                return new List<string> { _result };
+                if (_redisCache.Delete(Key))
+                {
+                    return new List<string> { _result };
+                }
+                else
+                {
+                    return new List<string> { "Failed" };
+                }
             }
             catch (Exception ex)
             {

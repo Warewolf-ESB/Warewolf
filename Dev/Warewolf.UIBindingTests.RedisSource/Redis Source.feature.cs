@@ -549,6 +549,53 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Key From Cache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Redis Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
+        public virtual void DeleteKeyFromCache()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Key From Cache", new string[] {
+                        "RedisSource",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll",
+                        "MSTest:DeploymentItem:Warewolf_Studio.exe",
+                        "MSTest:DeploymentItem:Newtonsoft.Json.dll",
+                        "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
+                        "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
+                        "MSTest:DeploymentItem:EnableDocker.txt"});
+#line 229
+this.ScenarioSetup(scenarioInfo);
+#line 230
+ testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 231
+ testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 232
+ testRunner.And("No data in the cache", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "var",
+                        "value"});
+            table11.AddRow(new string[] {
+                        "[[Var1]]",
+                        "\"Test1\""});
+#line 233
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table11, "And ");
+#line 236
+ testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 237
+ testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 238
+ testRunner.Then("Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

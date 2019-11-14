@@ -39,14 +39,7 @@ namespace Warewolf.Driver.Redis
 
         public bool Delete(string key)
         {
-            if (_client.ContainsKey(key))
-            {
-                return _client.Remove(key);
-            }
-            else
-            {
-                return false;
-            }
+            return _client.Remove(key);
         }
     }
 }
