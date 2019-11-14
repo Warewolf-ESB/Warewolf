@@ -1033,9 +1033,8 @@ namespace Dev2.Core.Tests.Workflows
                 //------------Assert Results-------------------------
                 Assert.AreEqual(1, workflowInputDataViewModel.SendViewInBrowserRequestHitCount);
                 Assert.IsNotNull(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
-                const string expectedPayload = @"<DataList><rs><val>1#</val></rs><rs><val>2+2</val></rs></DataList>";
-                var actualPayload = System.Web.HttpUtility.UrlDecode(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
-                Assert.AreEqual(expectedPayload, actualPayload);
+                const string expectedPayload = @"<DataList><rs><val>1%23</val></rs><rs><val>2%2b2</val></rs></DataList>";
+                Assert.AreEqual(expectedPayload, workflowInputDataViewModel.SendViewInBrowserRequestPayload);
             }
         }
 
@@ -1078,9 +1077,8 @@ namespace Dev2.Core.Tests.Workflows
                 //------------Assert Results-------------------------
                 Assert.AreEqual(1, workflowInputDataViewModel.SendViewInBrowserRequestHitCount);
                 Assert.IsNotNull(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
-                const string expectedPayload = @"val=Dev#Chotaliya&res=2";
-                var actualPayload = System.Web.HttpUtility.UrlDecode(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
-                Assert.AreEqual(expectedPayload, actualPayload);
+                const string expectedPayload = @"val=Dev%23Chotaliya&res=2";
+                Assert.AreEqual(expectedPayload, workflowInputDataViewModel.SendViewInBrowserRequestPayload);
             }
         }
 
