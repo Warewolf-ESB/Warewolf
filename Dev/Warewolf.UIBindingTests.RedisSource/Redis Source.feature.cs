@@ -108,41 +108,41 @@ namespace Warewolf.UIBindingTests.RedisSource
 #line 18
 this.ScenarioSetup(scenarioInfo);
 #line 19
-   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
-   testRunner.Then("\"New Redis Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"New Redis Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 21
-   testRunner.And("title is \"New Redis Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("title is \"New Redis Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
-   testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
-   testRunner.And("server port is \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("server port is \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
-   testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
-   testRunner.Then("\"New Redis Source *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"New Redis Source *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
-   testRunner.And("\"Cancel Test\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Cancel Test\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
-   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 32
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
-   testRunner.When("I save as \"Testing Redis Source Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I save as \"Testing Redis Source Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
-   testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
-   testRunner.Then("title is \"Testing Redis Source Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("title is \"Testing Redis Source Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
-   testRunner.And("\"Testing Redis Source Save\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Testing Redis Source Save\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -170,29 +170,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 48
 this.ScenarioSetup(scenarioInfo);
 #line 49
-   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 50
-   testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
-   testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54
-   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
-   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
-   testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 58
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
-   testRunner.When("I save the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I save the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
-   testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -220,23 +220,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 72
 this.ScenarioSetup(scenarioInfo);
 #line 73
-   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 74
-   testRunner.And("I type HostName as \"sdfsdfd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type HostName as \"sdfsdfd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
-   testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 78
-   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 79
-   testRunner.When("Test Connecton is \"UnSuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Test Connecton is \"UnSuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 80
-   testRunner.And("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -264,45 +264,45 @@ this.ScenarioSetup(scenarioInfo);
 #line 93
 this.ScenarioSetup(scenarioInfo);
 #line 94
-   testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I open New Redis Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 95
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
-   testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type HostName as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
-   testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
-   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
-   testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type Password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 103
-   testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
-   testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 107
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
-   testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 109
-   testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validation message is Not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111
-   testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"Password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
-   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -330,33 +330,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 125
 this.ScenarioSetup(scenarioInfo);
 #line 126
-   testRunner.Given("I open \"Test-Redis\" redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I open \"Test-Redis\" redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 127
-   testRunner.Then("\"Test-Redis\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"Test-Redis\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 128
-   testRunner.And("title is \"Test-Redis\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("title is \"Test-Redis\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
-   testRunner.And("HostName is \"http://RSAKLFSVRTFSBLD/IntegrationTestSite\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("HostName is \"http://RSAKLFSVRTFSBLD/IntegrationTestSite\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
-   testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type port number as \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 131
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 133
-   testRunner.And("Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Select Authentication Type as \"Anonymous\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
-   testRunner.When("I change HostName to \"anotherredisserver\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I change HostName to \"anotherredisserver\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 137
-   testRunner.Then("\"Test-Redis *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"Test-Redis *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 138
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
-   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -399,7 +399,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 155
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table1, "And ");
 #line 158
- testRunner.When("I execute the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
@@ -442,11 +442,11 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
+#line 176
+this.ScenarioSetup(scenarioInfo);
 #line 177
- this.ScenarioSetup(scenarioInfo);
-#line 178
  testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 179
+#line 178
  testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -455,7 +455,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Data in cache\""});
-#line 180
+#line 179
  testRunner.And("data exists (TTL not hit) for key \"MyData\" as", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -464,11 +464,11 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 183
+#line 182
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table5, "And ");
+#line 185
+ testRunner.When("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 186
- testRunner.When("I execute the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 187
  testRunner.Then("the assign \"dataToStore\" is not executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -477,7 +477,7 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Var1]]",
                         "\"[[Var1]],Data in cache\""});
-#line 188
+#line 187
  testRunner.And("output variables have the following values", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -503,17 +503,17 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
+#line 201
+this.ScenarioSetup(scenarioInfo);
 #line 202
- this.ScenarioSetup(scenarioInfo);
-#line 203
  testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 204
+#line 203
  testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
-#line 205
+#line 204
  testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -522,11 +522,11 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 207
+#line 206
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table8, "And ");
+#line 209
+ testRunner.When("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 210
- testRunner.When("I execute the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
  testRunner.Then("the assign \"dataToStore\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -535,7 +535,7 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Test1\""});
-#line 212
+#line 211
  testRunner.Then("the cache will contain", ((string)(null)), table9, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -544,7 +544,7 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 215
+#line 214
  testRunner.And("output variables have the following values", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -570,14 +570,12 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
-#line 229
+#line 228
 this.ScenarioSetup(scenarioInfo);
-#line 230
+#line 229
  testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 231
+#line 230
  testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
- testRunner.And("No data in the cache", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
@@ -585,14 +583,76 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 233
+#line 231
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table11, "And ");
-#line 236
+#line 234
  testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 237
+#line 235
  testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 238
- testRunner.Then("Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 236
+ testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Specific Key From Cache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Redis Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisSource")]
+        public virtual void DeleteSpecificKeyFromCache()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Specific Key From Cache", new string[] {
+                        "RedisSource",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll",
+                        "MSTest:DeploymentItem:Warewolf_Studio.exe",
+                        "MSTest:DeploymentItem:Newtonsoft.Json.dll",
+                        "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
+                        "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
+                        "MSTest:DeploymentItem:EnableDocker.txt"});
+#line 248
+this.ScenarioSetup(scenarioInfo);
+#line 249
+ testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 250
+ testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "var",
+                        "value"});
+            table12.AddRow(new string[] {
+                        "[[Var1]]",
+                        "\"Test1\""});
+#line 251
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table12, "And ");
+#line 254
+ testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 255
+ testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "var",
+                        "value"});
+            table13.AddRow(new string[] {
+                        "[[Var3]]",
+                        "\"Test4\""});
+#line 256
+ testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table13, "And ");
+#line 259
+ testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 260
+ testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 261
+ testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 262
+ testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 263
+ testRunner.And("The \"MyData2\" Cache still exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
