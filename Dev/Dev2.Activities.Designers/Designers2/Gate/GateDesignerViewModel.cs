@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
@@ -32,10 +33,10 @@ using Warewolf.Service;
 
 namespace Dev2.Activities.Designers2.Gate
 {
-    public class GateDesignerViewModel : ActivityCollectionDesignerObservableViewModel<DecisionTO>, INotifyPropertyChanged
+    public class GateDesignerViewModel : ActivityCollectionDesignerObservableViewModel<DecisionTO>, INotifyPropertyChanged, IEnabled
     {
         private string _selectedGateFailure;
-        private bool _gateSelectionVisible;
+        private bool _enabled;
         private string _selectedRetryStrategy;
         private IEnumerable<IOption> _options;
         private IServer _server;
@@ -45,6 +46,8 @@ namespace Dev2.Activities.Designers2.Gate
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
+            ShowLarge = true;
+            ThumbVisibility = Visibility.Visible;
             SelectedGateFailure = GetGateFailure(GateFailureAction.StopOnError.ToString()).ToString();
             SelectedRetryStrategy = GetRetryAlgorithm(RetryAlgorithm.NoBackoff.ToString()).ToString();
             Collection = new ObservableCollection<IDev2TOFn>();
@@ -171,7 +174,7 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
                 _selectedGateFailure = gateFailure;
-                GateSelectionVisible = GetGateFailure(_selectedGateFailure) == GateFailureAction.Retry;
+                Enabled = GetGateFailure(_selectedGateFailure) == GateFailureAction.Retry;
                 OnPropertyChanged(nameof(SelectedGateFailure));
             }
         }
@@ -198,13 +201,13 @@ namespace Dev2.Activities.Designers2.Gate
             return GateOptionsHelper<RetryAlgorithm>.GetEnumFromDescription(retryAlgorithm);
         }
 
-        public bool GateSelectionVisible
+        public bool Enabled
         {
-            get => _gateSelectionVisible;
+            get => _enabled;
             set
             {
-                _gateSelectionVisible = value;
-                OnPropertyChanged(nameof(GateSelectionVisible));
+                _enabled = value;
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 

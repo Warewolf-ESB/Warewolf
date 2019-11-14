@@ -20,7 +20,7 @@
                                Width="350"
                                MinHeight="440"
                                Height="440"
-                               MaxWidth="350"
+                               MaxWidth="450"
                                mc:Ignorable="d" 
                                d:DesignHeight="450" 
                                d:DesignWidth="800"
@@ -304,7 +304,7 @@
                           SelectedValuePath="GateFailureAction"
                           ToolTip="{x:Static languages:Tooltips.ExistingGatesToolTip}"
                           IsEditable="False"
-                          Visibility="{Binding GateSelectionVisible, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding GateFailureAction, Mode=TwoWay}">
                     <i:Interaction.Behaviors>
                         <core1:HelpSetter Text="{x:Static languages:HelpText.ExistingGatesHelp}" DataContext="{Binding}" />

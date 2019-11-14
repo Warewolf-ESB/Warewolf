@@ -9,6 +9,7 @@
                     xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                     xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                     xmlns:di="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+                    xmlns:wi="clr-namespace:Warewolf.Options;assembly=Warewolf.Interfaces"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                     mc:Ignorable="d" >
@@ -72,7 +73,8 @@
 
             <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
             <CheckBox Grid.Column="1" IsChecked="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="-6,0,0,0" 
-                      ToolTip="{Binding Path=DataContext.Tooltip}">
+                      ToolTip="{Binding Path=DataContext.Tooltip}" 
+                      IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
@@ -89,7 +91,8 @@
 
             <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
             <TextBox Grid.Column="1" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     ToolTip="{Binding Path=Tooltip}">
+                     ToolTip="{Binding Path=Tooltip}" 
+                     IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
@@ -112,7 +115,8 @@
                                       ItemsSource="{Binding Path=Suggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource AutoCompleteBoxStyle}" 
-                                      ToolTip="{Binding Path=DataContext.Tooltip}">
+                                      ToolTip="{Binding Path=DataContext.Tooltip}"
+                                      IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
@@ -145,7 +149,8 @@
                              HorizontalAlignment="Stretch"
                              AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
                              IsReadOnly="True"
-                             ToolTip="{Binding Path=DataContext.WorkflowName}"/>
+                             ToolTip="{Binding Path=DataContext.WorkflowName}"
+                             IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}"/>
 
                     <!--, diag:PresentationTraceSources.TraceLevel=High-->
                     <Button Grid.Column="1" 
@@ -155,7 +160,8 @@
                             CommandParameter="{Binding .}"
                             Command="{Binding Path=DataContext.AddWorkflowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}" 
                             AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID"
-                            ToolTip="{Binding Path=DataContext.Tooltip}">
+                            ToolTip="{Binding Path=DataContext.Tooltip}"
+                            IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=DataContext.HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
@@ -187,7 +193,8 @@
                           Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           SelectedValue="{Binding Path=OptionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource ComboBoxStyle}" 
-                          ToolTip="{Binding Path=Tooltip}">
+                          ToolTip="{Binding Path=Tooltip}"
+                          IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                     </i:Interaction.Behaviors>
@@ -215,7 +222,8 @@
                           Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource ComboBoxStyle}" 
-                          ToolTip="{Binding Path=Tooltip}">
+                          ToolTip="{Binding Path=Tooltip}"
+                          IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                     </i:Interaction.Behaviors>
@@ -246,7 +254,8 @@
                                 Style="{StaticResource ActivityMappingDataGridStyle}"
                                 Height="Auto"
                                 MinHeight="100"
-                                Margin="{StaticResource ControlBorderTop}">
+                                Margin="{StaticResource ControlBorderTop}"
+                                IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                 <DataGrid.Columns>

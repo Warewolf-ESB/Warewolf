@@ -13,6 +13,11 @@ using System.Collections.Generic;
 
 namespace Warewolf.Options
 {
+    public interface IEnabled
+    {
+        bool Enabled { get; set; }
+    }
+
     public interface IOptionHelp
     {
         string HelpText { get; }
