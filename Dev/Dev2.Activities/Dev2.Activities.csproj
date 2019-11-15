@@ -446,6 +446,10 @@
       <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
       <Name>Warewolf.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj">
       <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
       <Name>Warewolf.Exchange.Email.Wrapper</Name>
