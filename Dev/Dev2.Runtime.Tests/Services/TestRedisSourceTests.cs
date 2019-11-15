@@ -120,7 +120,7 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Password = password,
-                Port = "6379",
+                Port = "55196",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
