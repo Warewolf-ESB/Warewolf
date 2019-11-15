@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var source = new RedisSource
             {               
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
-                Port = "6379"
+                Port = "55196"
             }.ToString();
 
             var handler = new RedisSources();
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Password = password,
-                Port = "6379",
+                Port = "55196",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password               
             }.ToString();
 
