@@ -57,9 +57,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var username = @"dev2\IntegrationTester";
             var password = TestEnvironmentVariables.GetVar(username);
             var source = new RedisSource
-            {               
+            {
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
-                Port = "55196"
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
+                Port = "6379"
             }.ToString();
 
             var handler = new RedisSources();
@@ -94,13 +95,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Password = password,
-                Port = "55196",
+                Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password               
             }.ToString();
 
             var handler = new RedisSources();
             var result = handler.Test(source);
-            Assert.IsTrue(result.IsValid);
+            Assert.IsTrue(result.IsValid,result.ErrorMessage);
         }
         [TestMethod]
         [Owner("Candice Daniel")]

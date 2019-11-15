@@ -120,7 +120,7 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Password = password,
-                Port = "55196",
+                Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
@@ -133,7 +133,7 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = testRedisSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
-            Assert.IsFalse(result.HasError);
+            Assert.IsFalse(result.HasError,result.Message.ToString());
         }
     }
 }
