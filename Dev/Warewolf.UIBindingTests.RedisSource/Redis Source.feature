@@ -231,6 +231,7 @@ Scenario: Delete Key From Cache
 	And an assign "dataToStore" as
 		| var      | value   |
 		| [[Var1]] | "Test1" |
+	Then The "MyData" Cache exists
 	Then I have an existing key to delete "MyData"
 	When I execute the delete tool
 	Then The "MyData" Cache has been deleted
@@ -257,7 +258,9 @@ Scenario: Delete Specific Key From Cache
 		| var      | value   |
 		| [[Var3]] | "Test4" |
 	Then I execute the get/set tool
+	Then The "MyData" Cache exists
+	Then The "MyData2" Cache exists
 	Then I have an existing key to delete "MyData"
 	When I execute the delete tool
 	Then The "MyData" Cache has been deleted
-	And The "MyData2" Cache still exists
+	Then The "MyData2" Cache exists

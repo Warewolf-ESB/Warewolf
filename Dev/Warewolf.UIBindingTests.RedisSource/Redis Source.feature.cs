@@ -586,10 +586,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 231
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table11, "And ");
 #line 234
- testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \"MyData\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 235
- testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 236
+ testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 237
  testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -615,11 +617,11 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
-#line 248
-this.ScenarioSetup(scenarioInfo);
 #line 249
- testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 250
+ testRunner.Given("Redis source \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 251
  testRunner.And("I have a key \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -628,11 +630,11 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 251
+#line 252
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table12, "And ");
-#line 254
- testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 255
+ testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 256
  testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -641,18 +643,22 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "[[Var3]]",
                         "\"Test4\""});
-#line 256
+#line 257
  testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table13, "And ");
-#line 259
- testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 260
- testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 261
- testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("The \"MyData\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 262
- testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 263
- testRunner.And("The \"MyData2\" Cache still exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 264
+ testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 265
+ testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 266
+ testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -400,7 +400,7 @@ namespace Warewolf.UIBindingTests
             var assignActivity = new DsfMultiAssignActivity();
             var ttl = 3000;
             var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
-            
+
             _scenarioContext.Remove(nameof(RedisActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
             _scenarioContext.Remove(nameof(ttl));
@@ -453,7 +453,17 @@ namespace Warewolf.UIBindingTests
             var redisImpl = GetRedisCacheImpl(hostName);
 
             var actualCachedData = GetCachedData(redisImpl, key);
-            Assert.IsNull(actualCachedData);
+            Assert.IsNull(actualCachedData, key + ": Cache still exists");
+        }
+
+        [Then(@"The ""(.*)"" Cache exists")]
+        public void CacheExists(string key)
+        {
+            var hostName = _scenarioContext.Get<string>("hostName");
+            var redisImpl = GetRedisCacheImpl(hostName);
+
+            var actualCachedData = GetCachedData(redisImpl, key);
+            Assert.IsNotNull(actualCachedData, key + ": Cache does not exists");
         }
         [Given(@"an assign ""(.*)"" as")]
         [Then(@"an assign ""(.*)"" as")]
@@ -509,15 +519,6 @@ namespace Warewolf.UIBindingTests
 
         }
 
-        [Then(@"The ""(.*)"" Cache still exists")]
-        public void ThenTheStillExists(string key)
-        {
-            var hostName = _scenarioContext.Get<string>("hostName");
-            var redisImpl = GetRedisCacheImpl(hostName);
-            var actualCachedData = GetCachedData(redisImpl, key);
-
-            Assert.IsNotNull(actualCachedData);
-        }
 
         [Then(@"I execute the get/set tool")]
         [When(@"I execute the get/set tool")]
@@ -727,7 +728,14 @@ namespace Warewolf.UIBindingTests
                 Password = password,
                 Port = "6379"
             };
-
+            //Test Locally
+            //var redisSourceDefinition = new RedisSourceDefinition
+            //{
+            //    Name = "localhost",
+            //    HostName = "127.0.0.1",
+            //    Password = "",
+            //    Port = "6379"
+            //};
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(redisSourceDefinition);
             var redisSourceViewModel = new RedisSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, redisSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
