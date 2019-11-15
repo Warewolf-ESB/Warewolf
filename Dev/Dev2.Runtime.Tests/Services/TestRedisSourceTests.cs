@@ -15,6 +15,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
+using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -111,12 +112,15 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
+            var username = @"dev2\IntegrationTester";
+            var password = TestEnvironmentVariables.GetVar(username);
             var source = new RedisSourceDefinition()
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = "HostName",
-                Port = "3679",
+                HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
+                Password = password,
+                Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
