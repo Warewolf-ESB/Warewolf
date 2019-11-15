@@ -117,7 +117,7 @@ namespace Dev2.Activities.RedisDelete
 
         public RedisSource RedisSource { get; set; }
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
-        {
+        {           
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -127,14 +127,12 @@ namespace Dev2.Activities.RedisDelete
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName);
-                if (_redisCache.Delete(Key))
+                if (!_redisCache.Delete(Key))
                 {
-                    return new List<string> { _result };
+                    _result = "Failed";
                 }
-                else
-                {
-                    return new List<string> { "Failed" };
-                }
+                Dev2Logger.Debug($"Cache {Key} deleted: {_result}", GlobalConstants.WarewolfDebug);
+                return new List<string> { _result };
             }
             catch (Exception ex)
             {
@@ -144,18 +142,6 @@ namespace Dev2.Activities.RedisDelete
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
-
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            if (env == null)
-            {
-                return new List<DebugItem>();
-            }
-            var debugItem = new DebugItem();
-            AddDebugItem(new DebugEvalResult(Key, "Key", env, update), debugItem);
-            _debugInputs.Add(debugItem);
-            return _debugInputs;
-        }
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
