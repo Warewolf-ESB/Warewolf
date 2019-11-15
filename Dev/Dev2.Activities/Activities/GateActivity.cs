@@ -15,19 +15,26 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Data;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Data.Options.Enums;
+using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
-    public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IDisposable
+    public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>
     {
         private string _gateFailureOption;
         private string _retryStrategy;
@@ -63,6 +70,81 @@ namespace Dev2.Activities
                 _retryStrategy = value;
             }
         }
+
+        public Dev2DecisionStack Conditions { get; set; }
+        /// <summary>
+        /// Returns true if all conditions are passing
+        /// Returns true if there are no conditions
+        /// Returns false if any condition is failing
+        /// Returns false if any variable does not exist
+        /// Returns false if there is an exception of any kind
+        /// </summary>
+        private bool Passing
+        {
+            get
+            {
+                const bool errorIfNull = true;
+                try
+                {
+                    if (!Conditions.TheStack.Any())
+                    {
+                        return true;
+                    }
+                    var stack = Conditions.TheStack.Select(a => ParseDecision(_dataObject.Environment, a, errorIfNull));
+
+                    var factory = Dev2DecisionFactory.Instance();
+
+                    var res = stack.SelectMany(a =>
+                    {
+                        if (a.EvaluationFn == enDecisionType.IsError)
+                        {
+                            return new[] { _dataObject.Environment.AllErrors.Count > 0 };
+                        }
+                        if (a.EvaluationFn == enDecisionType.IsNotError)
+                        {
+                            return new[] { _dataObject.Environment.AllErrors.Count == 0 };
+                        }
+                        IList<bool> ret = new List<bool>();
+                        var iter = new WarewolfListIterator();
+                        var c1 = new WarewolfAtomIterator(a.Cols1);
+                        var c2 = new WarewolfAtomIterator(a.Cols2);
+                        var c3 = new WarewolfAtomIterator(a.Cols3);
+                        iter.AddVariableToIterateOn(c1);
+                        iter.AddVariableToIterateOn(c2);
+                        iter.AddVariableToIterateOn(c3);
+                        while (iter.HasMoreData())
+                        {
+                            try
+                            {
+                                ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
+                            }
+                            catch (Exception)
+                            {
+                                ret.Add(false);
+                            }
+                        }
+                        return ret;
+                    });
+                    return res.All(o => o);
+                } catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
+        static Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
+        {
+            var col1 = env.EvalAsList(decision.Col1, 0, errorIfNull);
+            var col2 = env.EvalAsList(decision.Col2 ?? "", 0, errorIfNull);
+            var col3 = env.EvalAsList(decision.Col3 ?? "", 0, errorIfNull);
+            return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
+        }
+        /// <summary>
+        /// Where should we send execution if this gate fails and not set to StopOnFailure
+        /// </summary>
+        public IDev2Activity RetryEntryPoint { get; set; }
+
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             throw new NotImplementedException();
@@ -93,7 +175,95 @@ namespace Dev2.Activities
             throw new NotImplementedException();
         }
 
+        IDSFDataObject _dataObject;
+        public override IDev2Activity Execute(IDSFDataObject data, int update)
+        {
+            _dataObject = data;
+            IDev2Activity next = null;
+            try
+            {
+                _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+                //ExecuteTool(data, update);
+
+                //----------ExecuteTool--------------
+                if (!Passing)
+                {
+                    return null;
+                }
+                var gateFailure = GateFailure ?? nameof(GateFailureAction.StopOnError);
+                switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
+                {
+                    case GateFailureAction.StopOnError:
+                        ExecuteStopOnError();
+                        break;
+                    case GateFailureAction.Retry:
+                        next = ExecuteRetry();
+                        break;
+                    default:
+                        throw new Exception("unknown gate failure option");
+                }
+                //------------------------
+
+                if (!data.IsDebugMode())
+                {
+                    UpdateWithAssertions(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Environment.AddError(ex.Message);
+                Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
+
+            }
+            finally
+            {
+                if (!_isExecuteAsync || _isOnDemandSimulation)
+                {
+                    DoErrorHandling(data, update);
+                }
+            }
+            if (next != null)
+            {
+                return next; // retry has set a node that we should go back to retry
+            }
+            if (NextNodes != null && NextNodes.Any())
+            {
+                return NextNodes.First();
+            }
+            return null;
+        }
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            
+        }
+
+        private IDev2Activity ExecuteRetry()
+        {
+            var goBackToActivity = RetryEntryPoint.As<GateActivity>();
+
+            goBackToActivity.UpdateRetryState(this);
+            return goBackToActivity;
+        }
+
+        private static void ExecuteStopOnError() => throw new Exception("stopped");
+
+
+        class RetryState
+        {
+            public int NumberOfRetries { get; set; }
+        }
+        readonly RetryState _retryState = new RetryState();
+        private void UpdateRetryState(GateActivity gateActivity)
+        {
+            _retryState.NumberOfRetries++;
+        }
+
+
+
+
+        /*protected override void OldExecuteTool(IDSFDataObject dataObject, int update)
         {
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
@@ -149,7 +319,7 @@ namespace Dev2.Activities
                 stateNotifier?.Dispose();
                 dataObject.StateNotifier = outerStateLogger;
             }
-        }
+        }*/
 
         protected override void OnExecute(NativeActivityContext context)
         {
