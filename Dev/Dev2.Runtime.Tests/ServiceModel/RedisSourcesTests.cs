@@ -10,6 +10,7 @@
 
 using System;
 using Dev2.Data.ServiceModel;
+using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -53,9 +54,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(RedisSources))]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
+            var username = @"dev2\IntegrationTester";
+            var password = TestEnvironmentVariables.GetVar(username);
             var source = new RedisSource
-            {
-                HostName = "rsaklfsvrhst1.dev2.local",
+            {               
+                HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Port = "6379"
             }.ToString();
 
@@ -85,12 +88,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(RedisSources))]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
+            var username = @"dev2\IntegrationTester";
+            var password = TestEnvironmentVariables.GetVar(username);
             var source = new RedisSource
             {
-                HostName = "rsaklfsvrhst1.dev2.local",
+                HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
+                Password = password,
                 Port = "6379",
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "Password"
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password               
             }.ToString();
 
             var handler = new RedisSources();

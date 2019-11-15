@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,43 +9,33 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Common.Serializers;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
-using Dev2.Data.Util;
 using Dev2.Diagnostics;
-using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Util;
-using RabbitMQ.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Driver.Redis;
 using Warewolf.Interfaces;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisDelete
 {
-    [ToolDescriptorInfo("RedisDelete", "Redis Delete", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisDelete")]
+    [ToolDescriptorInfo(nameof(RedisDelete), "Redis Delete", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisDelete")]
     public class RedisDeleteActivity : DsfBaseActivity, IEquatable<RedisDeleteActivity>
     {
         string _result = "Success";
 
         private RedisCacheBase _redisCache;
-        internal List<string> _messages = new List<string>();
+        internal readonly List<string> _messages = new List<string>();
 
         public RedisDeleteActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
@@ -76,39 +65,33 @@ namespace Dev2.Activities.RedisDelete
         [FindMissing]
         public string Response { get; set; }
 
-        public bool ShouldSerializeConsumer() => false;
-
-        public bool ShouldSerializeConnectionFactory() => false;
-
         internal IRedisConnection Connection { get; set; }
-
-        public bool ShouldSerializeConnection() => false;
 
         public override IEnumerable<StateVariable> GetState()
         {
             return new[] {
                 new StateVariable
                 {
-                    Name = "Key",
+                    Name = nameof(Key),
                     Value = Key,
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
                 {
-                    Name="Result",
+                    Name=nameof(Result),
                     Value = Result,
                     Type = StateVariable.StateType.Output
                 }
                 ,
                 new StateVariable
                 {
-                    Name="Response",
+                    Name=nameof(Response),
                     Value = Response,
                     Type = StateVariable.StateType.Output
                 },
                 new StateVariable
                 {
-                    Name = "SourceId",
+                    Name = nameof(SourceId),
                     Value = SourceId.ToString(),
                     Type = StateVariable.StateType.Input
                 }
@@ -117,7 +100,7 @@ namespace Dev2.Activities.RedisDelete
 
         public RedisSource RedisSource { get; set; }
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
-        {           
+        {
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
