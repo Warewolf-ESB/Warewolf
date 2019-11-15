@@ -17,6 +17,7 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
@@ -586,6 +587,23 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             return string.IsNullOrEmpty(XmlData);
         }
+        public bool CheckHasUnicodeInWorkflowInputData(string text)
+        {
+            var hasUnicode = text.ContainsUnicodeCharacter();
+            if (hasUnicode)
+            {
+                var previousInput = text;
+                var characterWithoutAnsiCodes = text.Where(a => a <= 255).Select(a => a).ToArray();
+                XmlData = new string(characterWithoutAnsiCodes);
+
+                CustomContainer.Get<IPopupController>()
+                    .ShowInvalidCharacterMessage(previousInput);
+
+                return true;
+            }
+            return false;
+        }
+       
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
