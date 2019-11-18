@@ -19,6 +19,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         Windows,
         User,
         Anonymous,
-        Public
+        Public,
+        Password
     }
 }

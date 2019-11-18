@@ -1,4 +1,15 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,6 +85,8 @@ namespace Dev2.Studio.Core
 
         public void TestConnection(IWebServiceSource serverSource) => UpdateManagerProxy.TestConnection(serverSource);
 
+        public void TestConnection(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.TestConnection(redisServiceSource);
+
         public void TestConnection(ISharepointServerSource sharePointServiceSource) => UpdateManagerProxy.TestConnection(sharePointServiceSource);
 
         public IList<string> TestDbConnection(IDbSource serverSource) => UpdateManagerProxy.TestDbConnection(serverSource);
@@ -94,6 +107,8 @@ namespace Dev2.Studio.Core
                 //
             }
         }
+
+        public void Save(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.SaveRedisServiceSource(redisServiceSource, GlobalConstants.ServerWorkspaceID);
 
         public void Save(ISharepointServerSource sharePointServiceSource)
         {
