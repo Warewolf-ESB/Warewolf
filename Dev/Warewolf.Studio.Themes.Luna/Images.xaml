@@ -28,6 +28,7 @@
         <ResourceDictionary Source="Images/WebMethods.xaml" />
         <ResourceDictionary Source="Images/Redis.xaml" />
         <ResourceDictionary Source="Images/RedisDelete.xaml" />
+        <ResourceDictionary Source="Images/RedisCounter.xaml" />
         <ResourceDictionary Source="Images/MicrosoftSQL.xaml" />
 		<ResourceDictionary Source="Images/AdvancedRecordset.xaml" />
         <ResourceDictionary Source="Images/Dropbox.xaml" />

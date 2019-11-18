@@ -109,6 +109,9 @@ using Dev2.Activities.Redis;
 using Dev2.Activities.Designers2.Redis;
 using Dev2.Activities.RedisDelete;
 using Dev2.Activities.Designers2.RedisDelete;
+using Dev2.Activities.Designers2.RedisCounter;
+using Dev2.Activities.RedisCounter;
+
 namespace Dev2
 {
     public static class DesignerAttributeMap
@@ -209,6 +212,7 @@ namespace Dev2
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesignerViewModel) },
                 { typeof(RedisActivity), typeof(RedisDesigner) },
                 { typeof(RedisDeleteActivity), typeof(RedisDeleteDesigner) },
+                { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
             };
     }
 }

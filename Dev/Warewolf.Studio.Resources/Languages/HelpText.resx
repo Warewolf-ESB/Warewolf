@@ -1868,6 +1868,18 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisDeleteKeyHelp" xml:space="preserve">
     <value>Redis Key to delete data</value>
   </data>
+  <data name="RedisCounterKeyHelp" xml:space="preserve">
+    <value>Redis Key to create a counter</value>
+  </data>
+  <data name="RedisCounterStepSizeHelp" xml:space="preserve">
+    <value>Redis Step Size to increment or decrement a counter</value>
+  </data>
+  <data name="RedisCounterTypeIncrementHelpText" xml:space="preserve">
+    <value>Redis Increment counter</value>
+  </data>
+  <data name="RedisCounterTypeDecrementHelpText" xml:space="preserve">
+    <value>Redis Decrement counter</value>
+  </data>
   <data name="RedisTTLHelp" xml:space="preserve">
     <value>Redis TTL (Time To Live) stored data for a given Key</value>
   </data>
@@ -1985,6 +1997,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Utility_RedisDelete" xml:space="preserve">
     <value>Use the Redis Delete tool to delete existing data in-memory.</value>
+  </data>
+  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+    <value>Use the Redis Counter tool to increment or decrement values in-memory.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">
     <value>Use the format number tool for rounding and showing decimals.</value>

@@ -41,5 +41,15 @@ namespace Warewolf.Driver.Redis
         {
             return _client.Remove(key);
         }
+
+        public long Increment(string key, string value)
+        {
+            return _client.Increment(key, uint.Parse(value));
+        }
+
+        public long Decrement(string key, string value)
+        {
+            return _client.Decrement(key, uint.Parse(value));
+        }
     }
 }
