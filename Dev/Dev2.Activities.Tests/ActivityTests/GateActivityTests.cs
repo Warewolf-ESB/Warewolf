@@ -9,7 +9,6 @@
 */
 using Dev2.Activities;
 using Dev2.Activities.Gates;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
@@ -17,6 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -143,10 +143,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_GetHashCode()
         {
-            var gateActivityActivity = new GateActivity();
-
-            var hashCode = gateActivityActivity.GetHashCode();
-            Assert.IsNotNull(hashCode);
+            var gateActivityActivity = new GateActivity { };
+            {
+                var hashCode = gateActivityActivity.GetHashCode();
+                Assert.IsNotNull(hashCode);
+            }
         }
 
         [TestMethod]
@@ -243,7 +244,49 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Execute_GivenFailingConditionWithRetry_ExpectRetryGate()
+        public void GateActivity_Execute_GivenFailingConditionVarNotExistsWithRetry_ExpectRetryGate()
+        {
+            var expectedNextActivity = new Mock<IDev2Activity>();
+            var expectedRetryActivity = new GateActivity();
+
+            //---------------Set up test pack-------------------
+            var conditions = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>()
+            };
+            conditions.AddModelItem(new Dev2Decision
+            {
+                Col1 = "[[a]]",
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
+                Col2 = "bob"
+            });
+
+            //------------Setup for test--------------------------
+            var act = new GateActivity
+            {
+                GateFailure = GateFailureAction.Retry.ToString(),
+                RetryEntryPoint = expectedRetryActivity,
+                Conditions = conditions,
+                NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
+            };
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.Environment.Assign("[[nota]]", "bob", 0);
+
+            var result = act.Execute(dataObject, 0);
+
+            Assert.AreNotEqual(expectedNextActivity.Object, result, "execution should not proceed as normal if gate fails and Retry is set");
+            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
+
+            Assert.AreEqual("1", numberOfRetries);
+
+            Assert.AreNotEqual(expectedNextActivity.Object, result, "execution should not proceed as normal if gate fails and Retry is set");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GivenFailingConditionWithStopOnError_ExpectRetryGate()
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
 
@@ -267,11 +310,52 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
-            //dataObject.Environment.Assign("[[a]]", "bob", 0);
+            dataObject.Environment.Assign("[[a]]", "notbob", 0);
 
             var result = act.Execute(dataObject, 0);
 
-            Assert.IsNull(result);
+            Assert.IsNull(result, "execution should stop if gate fails and StopOnError is set");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GivenFailingConditionWithRetry_ExpectRetryGate()
+        {
+            var expectedNextActivity = new Mock<IDev2Activity>();
+            var expectedRetryActivity = new GateActivity();
+
+            //---------------Set up test pack-------------------
+            var conditions = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>()
+            };
+            conditions.AddModelItem(new Dev2Decision
+            {
+                Col1 = "[[a]]",
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
+                Col2 = "bob"
+            });
+
+            //------------Setup for test--------------------------
+            var act = new GateActivity
+            {
+                GateFailure = GateFailureAction.Retry.ToString(),
+                RetryEntryPoint = expectedRetryActivity,
+                Conditions = conditions,
+                NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
+            };
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "notbob", 0);
+
+            var result = act.Execute(dataObject, 0);
+
+            Assert.AreNotEqual(expectedNextActivity.Object, result, "execution should not proceed as normal if gate fails and StopOnError is set");
+            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
+
+            Assert.AreEqual("1", numberOfRetries);
+            Assert.AreEqual(expectedRetryActivity, result);
         }
 
         [TestMethod]
@@ -279,6 +363,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditions_ExpectDetailedLog()
         {
+            var expectedNextActivity = new Mock<IDev2Activity>();
+            var expectedRetryActivity = new GateActivity();
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack();
             conditions.TheStack = new List<Dev2Decision>();
@@ -290,14 +376,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             });
 
             //------------Setup for test--------------------------
-            var act = new GateActivity { Conditions = conditions };
+            var act = new GateActivity
+            {
+                GateFailure = GateFailureAction.Retry.ToString(),
+                Conditions = conditions,
+                RetryEntryPoint = expectedRetryActivity,
+                NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
+            };
 
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "bob", 0);
 
             var result = act.Execute(dataObject, 0);
 
-            Assert.AreEqual("", result);
+            Assert.AreNotEqual(expectedRetryActivity, result, "execution should proceed as normal if gate passes and Retry is set");
+            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
+
+            Assert.AreEqual("0", numberOfRetries, "number of retries should not change if gate passes");
+            Assert.AreEqual(expectedNextActivity.Object, result);
         }
     }
 }

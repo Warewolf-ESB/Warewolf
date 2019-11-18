@@ -126,8 +126,10 @@ namespace Dev2.Activities
                         return ret;
                     });
                     return res.All(o => o);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
+                    Dev2Logger.Warn("failed checking passing state of gate", e, _dataObject?.ExecutionID?.ToString());
                     return false;
                 }
             }
@@ -140,6 +142,7 @@ namespace Dev2.Activities
             var col3 = env.EvalAsList(decision.Col3 ?? "", 0, errorIfNull);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
+
         /// <summary>
         /// Where should we send execution if this gate fails and not set to StopOnFailure
         /// </summary>
@@ -178,30 +181,69 @@ namespace Dev2.Activities
         IDSFDataObject _dataObject;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            if (_retryState.NumberOfRetries <= 0)
+            {
+                return ExecuteNormal(data, update);
+            }
+            return ExecuteRetry(data, update);
+        }
+        /// <summary>
+        /// This Gate is being executed again due to some other Gate selecting this Gate to be
+        /// executed again.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
+        {
+            _dataObject = data;
+
+            // load selected retry algorithm
+
+            // if allowed to retry and its time for a retry return NextNode
+            // otherwise schedule this environment and current activity to 
+            // be executed at the calculated latter time
+
+
+            // Gate has reached maximum retries.
+            return null;
+        }
+
+        /// <summary>
+        /// This Gate is being executed for the first time
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        public IDev2Activity ExecuteNormal(IDSFDataObject data, int update)
+        {
             _dataObject = data;
             IDev2Activity next = null;
+            bool stop = false;
             try
             {
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
-                //ExecuteTool(data, update);
 
                 //----------ExecuteTool--------------
                 if (!Passing)
                 {
-                    return null;
-                }
-                var gateFailure = GateFailure ?? nameof(GateFailureAction.StopOnError);
-                switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
-                {
-                    case GateFailureAction.StopOnError:
-                        ExecuteStopOnError();
-                        break;
-                    case GateFailureAction.Retry:
-                        next = ExecuteRetry();
-                        break;
-                    default:
-                        throw new Exception("unknown gate failure option");
+                    var gateFailure = GateFailure ?? nameof(GateFailureAction.StopOnError);
+                    switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
+                    {
+                        case GateFailureAction.StopOnError:
+                            stop = true;
+                            Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
+                            break;
+                        case GateFailureAction.Retry:
+                            var goBackToActivity = RetryEntryPoint.As<GateActivity>();
+
+                            goBackToActivity.UpdateRetryState(this);
+                            next = goBackToActivity;
+                            break;
+                        default:
+                            throw new Exception("unknown gate failure option");
+                    }
                 }
                 //------------------------
 
@@ -227,6 +269,10 @@ namespace Dev2.Activities
             {
                 return next; // retry has set a node that we should go back to retry
             }
+            if (stop)
+            {
+                return null;
+            }
             if (NextNodes != null && NextNodes.Any())
             {
                 return NextNodes.First();
@@ -236,18 +282,8 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            
+            throw new Exception("this should not be reached");
         }
-
-        private IDev2Activity ExecuteRetry()
-        {
-            var goBackToActivity = RetryEntryPoint.As<GateActivity>();
-
-            goBackToActivity.UpdateRetryState(this);
-            return goBackToActivity;
-        }
-
-        private static void ExecuteStopOnError() => throw new Exception("stopped");
 
 
         class RetryState
@@ -259,9 +295,6 @@ namespace Dev2.Activities
         {
             _retryState.NumberOfRetries++;
         }
-
-
-
 
         /*protected override void OldExecuteTool(IDSFDataObject dataObject, int update)
         {
