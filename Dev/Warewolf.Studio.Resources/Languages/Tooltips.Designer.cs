@@ -349,7 +349,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ComManagePluginSourceRefreshTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Database command timeout.
         /// </summary>
@@ -405,7 +405,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ConnectControlToggleConnectionToolTip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Database connection timeout.
         /// </summary>
@@ -2030,7 +2030,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageDbSourceCancelTestTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Set the connection timeout of the database data source.
         /// </summary>
@@ -2039,7 +2039,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageDbSourceConnectionTimeoutTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Select the database you want to use.
         /// </summary>
@@ -2201,7 +2201,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageEmailSendTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Timeout in seconds when trying to send email.
         /// </summary>
@@ -2210,7 +2210,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("ManageEmailTimeoutTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Email address to send the test email to.
         /// </summary>
@@ -3170,6 +3170,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new redis source.
+        /// </summary>
+        public static string NewRedisSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewRedisSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
         public static string NewServerSourceTooltip {
@@ -3238,6 +3247,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string OpenVersionTooltip {
             get {
                 return ResourceManager.GetString("OpenVersionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using a specific account.
+        /// </summary>
+        public static string PasswordAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("PasswordAuthenticationToolTip", resourceCulture);
             }
         }
         
@@ -3703,6 +3721,96 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ReadLocalFolderToolTipFolder {
             get {
                 return ResourceManager.GetString("ReadLocalFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the test execution.
+        /// </summary>
+        public static string RedisCancelTestTooltip {
+            get {
+                return ResourceManager.GetString("RedisCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Redis Server Source.
+        /// </summary>
+        public static string RedisEditServerToolTip {
+            get {
+                return ResourceManager.GetString("RedisEditServerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Key to store data.
+        /// </summary>
+        public static string RedisKeyToolTip {
+            get {
+                return ResourceManager.GetString("RedisKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new Redis Server Source.
+        /// </summary>
+        public static string RedisNewServerToolTip {
+            get {
+                return ResourceManager.GetString("RedisNewServerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The account password.
+        /// </summary>
+        public static string RedisPasswordTooltip {
+            get {
+                return ResourceManager.GetString("RedisPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured redis source..
+        /// </summary>
+        public static string RedisServersToolTip {
+            get {
+                return ResourceManager.GetString("RedisServersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RedisSourceHostNameTooltip.
+        /// </summary>
+        public static string RedisSourceHostNameTooltip {
+            get {
+                return ResourceManager.GetString("RedisSourceHostNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RedisSourcePortTooltip.
+        /// </summary>
+        public static string RedisSourcePortTooltip {
+            get {
+                return ResourceManager.GetString("RedisSourcePortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the redis source connection.
+        /// </summary>
+        public static string RedisTestTooltip {
+            get {
+                return ResourceManager.GetString("RedisTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis TTE for stored data.
+        /// </summary>
+        public static string RedisTTEToolTip {
+            get {
+                return ResourceManager.GetString("RedisTTEToolTip", resourceCulture);
             }
         }
         
@@ -5055,7 +5163,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("SQLBulkInsertToolTipTable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
         ///All batches in total must complete within this time period.
@@ -5068,7 +5176,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("SqlBulkInsertToolTipTimeout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction..
         /// </summary>

@@ -2915,6 +2915,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit the selected redis connection properties.
+        /// </summary>
+        public static string RedisEditServerHelp {
+            get {
+                return ResourceManager.GetString("RedisEditServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Key to store data.
+        /// </summary>
+        public static string RedisKeyHelp {
+            get {
+                return ResourceManager.GetString("RedisKeyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new redis connection.
+        /// </summary>
+        public static string RedisNewServerHelp {
+            get {
+                return ResourceManager.GetString("RedisNewServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured redis source..
+        /// </summary>
+        public static string RedisServerHelp {
+            get {
+                return ResourceManager.GetString("RedisServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Redis server name to connect to..
+        /// </summary>
+        public static string RedisSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("RedisSourceHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which Redis listens is 6379..
+        /// </summary>
+        public static string RedisSourcePortHelp {
+            get {
+                return ResourceManager.GetString("RedisSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis TTE time till expire stored data for a given Key.
+        /// </summary>
+        public static string RedisTTEHelp {
+            get {
+                return ResourceManager.GetString("RedisTTEHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpFileFolder {
@@ -4909,6 +4972,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Utility_Random {
             get {
                 return ResourceManager.GetString("Tool_Utility_Random", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Redis tool to store data in-memory..
+        /// </summary>
+        public static string Tool_Utility_Redis {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
             }
         }
         

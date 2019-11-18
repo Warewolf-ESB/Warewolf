@@ -293,6 +293,17 @@
                                                 <Image Style="{StaticResource NewWebSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
+                                        <MenuItem Name="NewRedisSource"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewRedisSourceCommand}"
+                                                  CommandParameter="RedisSource"
+                                                  Header="New Redis Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding ExplorerTooltips.NewRedisSourceTooltip}">
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewRedisSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
                                         <MenuItem Name="NewPluginSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewPluginSourceCommand}"
@@ -890,6 +901,17 @@
 									                      ToolTip="{Binding ExplorerTooltips.NewWebSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewWebSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewRedisSourceItem"
+                                                          Style="{StaticResource MenuItemStyle}"
+                                                          Command="{Binding NewRedisSourceCommand}"
+                                                          CommandParameter="RedisSource"
+                                                          Header="New Redis Source"
+                                                          IsEnabled="{Binding CanCreateSource}"
+                                                          ToolTip="{Binding ExplorerTooltips.NewRedisSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewRedisSourceIcon}"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem Name="NewPluginSourceItem"

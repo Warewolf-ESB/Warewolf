@@ -10,7 +10,6 @@
 */
 
 using System;
-using Dev2.Common.Container;
 using Dev2.Interfaces;
 using Dev2.Common.Interfaces.Logging;
 using Warewolf.Logger;

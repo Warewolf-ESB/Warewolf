@@ -96,6 +96,8 @@ using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.AdvancedRecordset;
+using Dev2.Activities.Redis;
+using Dev2.Activities.Designers2.Redis;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -192,7 +194,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
-                { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) }
+                { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) },
+                { typeof(RedisActivity), typeof(RedisDesigner) }
             };
         static Hashtable _hashTable;
 

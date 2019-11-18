@@ -20,6 +20,7 @@ namespace Dev2.Studio.Interfaces
         string NewOracleSourceTooltip { get; set; }
         string NewOdbcSourceTooltip { get; set; }
         string NewWebSourceTooltip { get; set; }
+        string NewRedisSourceTooltip { get; set; }
         string NewPluginSourceTooltip { get; set; }
         string NewComPluginSourceTooltip { get; set; }
         string NewWcfSourceTooltip { get; set; }

@@ -1,5 +1,15 @@
 #pragma warning disable
-﻿using System;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -16,8 +26,7 @@ using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
-
-
+using Warewolf.Service;
 
 namespace Dev2.Studio.Core
 {
@@ -65,7 +74,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfTestException(output.Message.ToString(), null);
             }
         }
-        
+
         public IList<string> TestDbConnection(IDbSource resource)
         {
             var con = Connection;
@@ -171,6 +180,37 @@ namespace Dev2.Studio.Core
             var comsController = CommunicationControllerFactory.CreateController("TestWebserviceSource");
             var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+        }
+
+        public void SaveRedisServiceSource(IRedisServiceSource redisServiceSource, Guid serverWorkspaceId)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveRedisSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument(SaveRedisSource.RedisSource, serialiser.SerializeToBuilder(redisServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+        }
+
+        public void TestConnection(IRedisServiceSource redisServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestRedisSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument(TestRedisSource.RedisSource, serialiser.SerializeToBuilder(redisServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {

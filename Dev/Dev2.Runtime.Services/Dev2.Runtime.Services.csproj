@@ -65,6 +65,9 @@
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\Binaries\ServiceStack.Redis.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -117,7 +120,9 @@
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
+    <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
+    <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
     <Compile Include="ESB\Management\Services\GetFilterListService.cs" />
     <Compile Include="ESB\Management\Services\GetServerSettings.cs" />
@@ -352,6 +357,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\SqliteDatabaseBroker.cs" />
     <Compile Include="ServiceModel\HubFactory.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
+    <Compile Include="ServiceModel\RedisSources.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />

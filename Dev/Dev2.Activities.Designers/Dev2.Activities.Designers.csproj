@@ -144,6 +144,16 @@
     <Compile Include="Designers2\ExchangeNewEmail\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Redis\RedisDesigner.xaml.cs">
+      <DependentUpon>RedisDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Redis\RedisDesignerViewModel.cs" />
+    <Compile Include="Designers2\Redis\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Redis\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
@@ -1512,6 +1522,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\FindIndex\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Redis\RedisDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Redis\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Redis\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
