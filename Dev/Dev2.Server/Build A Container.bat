@@ -1,0 +1,1 @@
+docker build -t warewolfserver/warewolfserver "%~dp0."

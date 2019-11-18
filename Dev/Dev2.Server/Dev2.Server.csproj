@@ -242,6 +242,12 @@
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
     <Compile Include="ServerLifeCycleWorkers\RegisterDependenciesWorker.cs" />
+    <None Include="Build A Container.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Deploy As Container.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
