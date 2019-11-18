@@ -419,7 +419,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             //check if quick debug called then dont log view in browser event 
             if (quickDebugClicked)
             {
-                workflowInputDataViewModel.WithoutActionTrackingViewInBrowser();
+                workflowInputDataViewModel.ViewInBrowser(false);
             }
             else
             {
