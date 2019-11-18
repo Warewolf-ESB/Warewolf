@@ -172,6 +172,72 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Assert-------------------------------
             mockDatabase.Verify(db => db.Delete("bob"), Times.Once);
         }
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RedisCache_Increment_NullKey_ShouldThrowArgumentNullException()
+        {
+            //--------------Arrange------------------------------
+            var ext = System.Threading.Tasks.TaskExtensions.Unwrap(new System.Threading.Tasks.Task<System.Threading.Tasks.Task>(() => System.Threading.Tasks.Task.FromResult(true)));
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+            mockDatabase.Setup(db => db.Increment(It.IsAny<string>(),"1")).Verifiable();
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
+            //--------------Act----------------------------------
+            redis.Increment(null,"1");
+            //--------------Assert-------------------------------
+        }
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RedisCache_Decrement_NullKey_ShouldThrowArgumentNullException()
+        {
+            //--------------Arrange------------------------------
+            var ext = System.Threading.Tasks.TaskExtensions.Unwrap(new System.Threading.Tasks.Task<System.Threading.Tasks.Task>(() => System.Threading.Tasks.Task.FromResult(true)));
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+            mockDatabase.Setup(db => db.Decrement(It.IsAny<string>(), "1")).Verifiable();
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
+            //--------------Act----------------------------------
+            redis.Decrement(null, "1");
+            //--------------Assert-------------------------------
+        }
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        public void RedisCache_Increment_ValidKey_ShouldIncrement()
+        {
+            //--------------Arrange------------------------------
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+            mockDatabase.Setup(db => db.Increment("bob", "1")).Verifiable();
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
+            //--------------Act----------------------------------
+            redis.Increment("bob", "1");
+            //--------------Assert-------------------------------
+            mockDatabase.Verify(db => db.Increment("bob", "1"), Times.Once);
+        }
+        [TestMethod]
+        [TestCategory("RedisCache")]
+        [Owner("Candice Daniel")]
+        public void RedisCache_Decrement_ValidKey_ShouldDecrement()
+        {
+            //--------------Arrange------------------------------
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+            mockDatabase.Setup(db => db.Decrement("bob", "1")).Verifiable();
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+            var redis = new RedisCacheStub(() => mockConnection.Object);
+            //--------------Act----------------------------------
+            redis.Decrement("bob", "1");
+            //--------------Assert-------------------------------
+            mockDatabase.Verify(db => db.Decrement("bob", "1"), Times.Once);
+        }
     }
 
     internal class RedisCacheStub : RedisCacheBase

@@ -47,6 +47,16 @@ namespace Warewolf.Driver.Redis
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.Delete(key);
         }
+        public long Increment(string key, string value)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            return Cache.Increment(key,value);
+        }
+        public long Decrement(string key, string value)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            return Cache.Decrement(key, value); ;
+        }
     }
 
     public class RedisCacheImpl : RedisCacheBase
