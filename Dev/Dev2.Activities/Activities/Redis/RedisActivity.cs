@@ -52,7 +52,7 @@ namespace Dev2.Activities.Redis
     {
         public static readonly int DefaultTTL = 10000; // (10 seconds)
         string _result = "Success";
-        private readonly ISerializer _serializer; 
+        private readonly ISerializer _serializer;
 
         private RedisCacheBase _redisCache;
         internal List<string> _messages = new List<string>();
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Redis
         public RedisActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
-            
+
         }
 
         public RedisActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
@@ -146,7 +146,7 @@ namespace Dev2.Activities.Redis
                 }
             };
         }
-       
+
         public RedisSource RedisSource { get; set; }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
@@ -192,7 +192,7 @@ namespace Dev2.Activities.Redis
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error( nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
         }
@@ -226,6 +226,11 @@ namespace Dev2.Activities.Redis
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
+            if (update == 0 && _debugInputs.Count > 1)
+            {
+                return _debugInputs;
+            }
+
             if (env == null)
             {
                 return new List<DebugItem>();
