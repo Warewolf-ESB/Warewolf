@@ -83,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
             Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(4, debugInputs.Count); //should be 3, but by design the tool needs to call ExecuteTool. This make double call when call is made by test
+            Assert.AreEqual(3, debugInputs.Count); 
 
             Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
             AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
             Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(5, debugInputs.Count); //should be 4, but by design the tool needs to call ExecuteTool. This make double call when call is made by test
+            Assert.AreEqual(4, debugInputs.Count);
 
             Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
             AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
@@ -134,6 +134,44 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
             AssertDebugItems(debugInputs, 3, 0, "3", null, "", "");
             AssertDebugItems(debugInputs, 3, 1, null, isCalValue, "=", isCalValue);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisActivity))]
+        public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs()
+        {
+            //----------------------Arrange----------------------
+            var key = "key1";
+            var hostName = "localhost";
+            var redisSource = new RedisSource { HostName = hostName };
+            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+
+
+            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            //----------------------Act--------------------------
+            sut.TestExecuteTool(mockDataObject.Object);
+            sut.TestPerformExecution(evel);
+
+            var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+            //----------------------Assert-----------------------
+            var actualInnerActivity = sut.ActivityFunc.Handler;
+
+            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+
+            Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+            Assert.AreEqual(3, debugOutputs.Count);
+
+            Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
+            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+
+            AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
+            AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+
+            AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
+            AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
         }
 
