@@ -5344,7 +5344,18 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("Tool_Data_Assign_Object", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: s.
+        /// </summary>
+        public static string Tool_Utility_Redis
+        {
+            get
+            {
+                return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Tags: text binary base 64 base64 hex.
         /// </summary>
