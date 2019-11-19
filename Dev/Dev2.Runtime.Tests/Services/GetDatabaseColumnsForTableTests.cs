@@ -322,7 +322,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = _containerOps.RigOpsHost + "." + _containerOps.RigOpsDomain,
+                Server = Depends.RigOpsHost + "." + Depends.RigOpsDomain,
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
