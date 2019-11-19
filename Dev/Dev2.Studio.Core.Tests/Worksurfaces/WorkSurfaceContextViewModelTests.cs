@@ -1408,5 +1408,10 @@ namespace Dev2.Core.Tests
         {
             return "";
         }
+
+        public List<(string uniqueId, string activityName)> GetGates(string uniqueId)
+        {
+            return new List<(string uniqueId, string activityName)>();
+        }
     }
 }

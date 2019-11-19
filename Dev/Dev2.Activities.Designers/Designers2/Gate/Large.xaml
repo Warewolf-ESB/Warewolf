@@ -300,12 +300,12 @@
                 </ComboBox>
                 <ComboBox x:Name="cbExistingGates"
                           Grid.Column="1"
-                          ItemsSource="{Binding GateFailureOptions}"
-                          SelectedValuePath="GateFailureAction"
+                          ItemsSource="{Binding GatesView, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="SelectedGate"
                           ToolTip="{x:Static languages:Tooltips.ExistingGatesToolTip}"
                           IsEditable="False"
                           IsEnabled="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding GateFailureAction, Mode=TwoWay}">
+                          SelectedItem="{Binding SelectedGate, Mode=TwoWay}">
                     <i:Interaction.Behaviors>
                         <core1:HelpSetter Text="{x:Static languages:HelpText.ExistingGatesHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>

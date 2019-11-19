@@ -12,6 +12,8 @@ using Dev2.Activities.Designers2.Gate;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,6 +152,41 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             //------------Assert Results-------------------------
             Assert.AreEqual("ConstantBackoff: Add a fixed delay after every attempt", gateDesignerViewModel.SelectedRetryStrategy);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateDesignerViewModel))]
+        public void GateDesignerViewModel_GatesView()
+        {
+            var expected = string.Empty;
+            var uniqueId = Guid.NewGuid().ToString();
+            var activityName = "testActivity";
+            var gates = new List<(string uniqueId, string activityName)>
+            {
+                (uniqueId, activityName)
+            };
+
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.Setup(workflowDesigner => workflowDesigner.GetGates(uniqueId)).Returns(gates);
+
+            var mockModelProperty = new Mock<ModelProperty>();
+            mockModelProperty.Setup(p => p.SetValue(expected)).Verifiable();
+            var properties = new Dictionary<string, Mock<ModelProperty>>
+            {
+                { uniqueId, mockModelProperty }
+            };
+
+            var mockPropertyCollection = new Mock<ModelPropertyCollection>();
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", uniqueId, true).Returns(mockModelProperty.Object);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockPropertyCollection.Object);
+
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
+
+            Assert.AreEqual(0, gateDesignerViewModel.Gates.Count);
+            Assert.AreEqual(0, gateDesignerViewModel.GatesView.Count);
         }
     }
 }
