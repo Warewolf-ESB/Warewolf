@@ -374,7 +374,7 @@
     <None Include="Dockerfile.deploy.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="StartAs.bat">
+    <None Include="StartAs.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="userServerSettings.config">
