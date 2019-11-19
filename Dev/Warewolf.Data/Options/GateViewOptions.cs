@@ -16,19 +16,6 @@ namespace Warewolf.Data.Options
 {
     public class GateViewOptions 
     {
-        [DataValue(nameof(GateFailureActionBase.GateFailureAction))]
-        [MultiDataProvider(typeof(Retry))]
-        public GateFailureActionBase GateFailureAction { get; set; }
-
-    }
-
-    public class GateFailureActionBase
-    {
-        public GateFailureAction GateFailureAction { get; set; }
-    }
-
-    public class Retry : GateFailureActionBase
-    {
         public YesNo Resume { get; set; } = YesNo.No;
         public Guid ResumeEndpoint { get; set; } = Guid.Empty;
         public int Count { get; set; } = 2;
@@ -44,12 +31,10 @@ namespace Warewolf.Data.Options
         No
     }
 
-
     public class RetryAlgorithmBase
     {
         public RetryAlgorithm RetryAlgorithm { get; set; }
     }
-
         
     public class NoBackoff : RetryAlgorithmBase
     {
