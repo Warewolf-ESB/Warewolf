@@ -62,7 +62,7 @@ namespace Warewolf.Driver.Redis
     public class RedisCacheImpl : RedisCacheBase
     {
         public RedisCacheImpl() { }
-        public RedisCacheImpl(string hostName) : this(() => new RedisConnection(hostName)) { }
+        public RedisCacheImpl(string hostName, int port, string password) : this(() => new RedisConnection(hostName, port, password)) { }
         public RedisCacheImpl(Func<IRedisConnection> createConnection) : base(createConnection)
         {
         }

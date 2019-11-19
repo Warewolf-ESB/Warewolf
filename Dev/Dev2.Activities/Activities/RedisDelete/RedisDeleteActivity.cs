@@ -109,7 +109,7 @@ namespace Dev2.Activities.RedisDelete
                     _messages.Add(ErrorResource.RedisSourceHasBeenDeleted);
                     return _messages;
                 }
-                _redisCache = new RedisCacheImpl(RedisSource.HostName);
+                _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
                 if (!_redisCache.Delete(Key))
                 {
                     _result = "Failed";
