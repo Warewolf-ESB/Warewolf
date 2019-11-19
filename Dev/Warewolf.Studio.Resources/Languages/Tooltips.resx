@@ -2294,6 +2294,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Utility_RedisDelete" xml:space="preserve">
     <value>Tags: removes the specified key</value>
   </data>
+  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+    <value>increment/decrement the number stored at key by one</value>
+  </data>
   <data name="Tool_Ruby" xml:space="preserve">
     <value>Tags: ruby script</value>
   </data>
