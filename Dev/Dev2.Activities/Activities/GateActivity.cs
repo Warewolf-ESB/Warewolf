@@ -10,60 +10,115 @@
 
 using Dev2.Activities.Gates;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
-using Dev2.Data;
-using Dev2.Data.TO;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Data.Options.Enums;
+using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
-    public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IDisposable
+    public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>
     {
-        private string _gateFailureOption;
-        private string _retryStrategy;
-        IGateActivityWorker _worker;
         public GateActivity()
         {
-            Construct(new GateActivityWorker(this));
-        }
-        public GateActivity(IGateActivityWorker worker)
-        {
-            Construct(worker);
-        }
-
-        private void Construct(IGateActivityWorker worker)
-        {
-            _worker = worker;
             DisplayName = nameof(Gate);
             IsGate = true;
         }
-        public string GateFailure
+
+        public string GateFailure { get; set; }
+
+        public string GateRetryStrategy { get; set; }
+
+        public Dev2DecisionStack Conditions { get; set; }
+        /// <summary>
+        /// Returns true if all conditions are passing
+        /// Returns true if there are no conditions
+        /// Returns false if any condition is failing
+        /// Returns false if any variable does not exist
+        /// Returns false if there is an exception of any kind
+        /// </summary>
+        private bool Passing
         {
-            get => _gateFailureOption;
-            set
+            get
             {
-                _gateFailureOption = value;
+                const bool errorIfNull = true;
+                try
+                {
+                    if (!Conditions.TheStack.Any())
+                    {
+                        return true;
+                    }
+                    var stack = Conditions.TheStack.Select(a => ParseDecision(_dataObject.Environment, a, errorIfNull));
+
+                    var factory = Dev2DecisionFactory.Instance();
+
+                    var res = stack.SelectMany(a =>
+                    {
+                        if (a.EvaluationFn == enDecisionType.IsError)
+                        {
+                            return new[] { _dataObject.Environment.AllErrors.Count > 0 };
+                        }
+                        if (a.EvaluationFn == enDecisionType.IsNotError)
+                        {
+                            return new[] { _dataObject.Environment.AllErrors.Count == 0 };
+                        }
+                        IList<bool> ret = new List<bool>();
+                        var iter = new WarewolfListIterator();
+                        var c1 = new WarewolfAtomIterator(a.Cols1);
+                        var c2 = new WarewolfAtomIterator(a.Cols2);
+                        var c3 = new WarewolfAtomIterator(a.Cols3);
+                        iter.AddVariableToIterateOn(c1);
+                        iter.AddVariableToIterateOn(c2);
+                        iter.AddVariableToIterateOn(c3);
+                        while (iter.HasMoreData())
+                        {
+                            try
+                            {
+                                ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
+                            }
+                            catch (Exception)
+                            {
+                                ret.Add(false);
+                            }
+                        }
+                        return ret;
+                    });
+                    return res.All(o => o);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn("failed checking passing state of gate", e, _dataObject?.ExecutionID?.ToString());
+                    return false;
+                }
             }
         }
 
-        public string GateRetryStrategy
+        static Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
-            get => _retryStrategy;
-            set
-            {
-                _retryStrategy = value;
-            }
+            var col1 = env.EvalAsList(decision.Col1, 0, errorIfNull);
+            var col2 = env.EvalAsList(decision.Col2 ?? "", 0, errorIfNull);
+            var col3 = env.EvalAsList(decision.Col3 ?? "", 0, errorIfNull);
+            return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
+
+        /// <summary>
+        /// Where should we send execution if this gate fails and not set to StopOnFailure
+        /// </summary>
+        public IDev2Activity RetryEntryPoint { get; set; }
+
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             throw new NotImplementedException();
@@ -81,7 +136,45 @@ namespace Dev2.Activities
 
         public override IEnumerable<StateVariable> GetState()
         {
-            throw new NotImplementedException();
+           return new StateVariable[]
+           {
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.Conditions),
+                    Value = JsonConvert.SerializeObject(Conditions),
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.GateFailure),
+                    Value = this.GateFailure,
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.GateRetryStrategy),
+                    Value = this.GateRetryStrategy,
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.Passing),
+                    Value = this.Passing ? "true" : "false",
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.RetryEntryPoint),
+                    Value = this.RetryEntryPoint?.UniqueID,
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this._retryState.NumberOfRetries),
+                    Value = this._retryState.NumberOfRetries.ToString(),
+                }
+           };
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -94,7 +187,125 @@ namespace Dev2.Activities
             throw new NotImplementedException();
         }
 
+        IDSFDataObject _dataObject;
+        public override IDev2Activity Execute(IDSFDataObject data, int update)
+        {
+            if (_retryState.NumberOfRetries <= 0)
+            {
+                return ExecuteNormal(data, update);
+            }
+            return ExecuteRetry(data, update);
+        }
+        /// <summary>
+        /// This Gate is being executed again due to some other Gate selecting this Gate to be
+        /// executed again.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
+        {
+            _dataObject = data;
+
+            // load selected retry algorithm
+
+            // if allowed to retry and its time for a retry return NextNode
+            // otherwise schedule this environment and current activity to 
+            // be executed at the calculated latter time
+
+
+            // Gate has reached maximum retries.
+            return null;
+        }
+
+        /// <summary>
+        /// This Gate is being executed for the first time
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        public IDev2Activity ExecuteNormal(IDSFDataObject data, int update)
+        {
+            _dataObject = data;
+            IDev2Activity next = null;
+            bool stop = false;
+            try
+            {
+                _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+
+                //----------ExecuteTool--------------
+                if (!Passing)
+                {
+                    var gateFailure = GateFailure ?? nameof(GateFailureAction.StopOnError);
+                    switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
+                    {
+                        case GateFailureAction.StopOnError:
+                            stop = true;
+                            Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
+                            break;
+                        case GateFailureAction.Retry:
+                            var goBackToActivity = RetryEntryPoint.As<GateActivity>();
+
+                            goBackToActivity.UpdateRetryState(this);
+                            next = goBackToActivity;
+                            break;
+                        default:
+                            throw new Exception("unknown gate failure option");
+                    }
+                }
+                //------------------------
+
+                if (!data.IsDebugMode())
+                {
+                    UpdateWithAssertions(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Environment.AddError(ex.Message);
+                Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
+
+            }
+            finally
+            {
+                if (!_isExecuteAsync || _isOnDemandSimulation)
+                {
+                    DoErrorHandling(data, update);
+                }
+            }
+            if (next != null)
+            {
+                return next; // retry has set a node that we should go back to retry
+            }
+            if (stop)
+            {
+                return null;
+            }
+            if (NextNodes != null && NextNodes.Any())
+            {
+                return NextNodes.First();
+            }
+            return null;
+        }
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            throw new Exception("this should not be reached");
+        }
+
+
+        class RetryState
+        {
+            public int NumberOfRetries { get; set; }
+        }
+        readonly RetryState _retryState = new RetryState();
+        private void UpdateRetryState(GateActivity gateActivity)
+        {
+            _retryState.NumberOfRetries++;
+        }
+
+        /*protected override void OldExecuteTool(IDSFDataObject dataObject, int update)
         {
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
@@ -150,19 +361,14 @@ namespace Dev2.Activities
                 stateNotifier?.Dispose();
                 dataObject.StateNotifier = outerStateLogger;
             }
-        }
+        }*/
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
         }
 
         public static void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update)
         {
-
-
-
         }
 
         public bool Equals(GateActivity other)
@@ -176,8 +382,10 @@ namespace Dev2.Activities
             {
                 return true;
             }
-
-            return base.Equals(other) && string.Equals(GateFailure, other.GateFailure) && string.Equals(GateRetryStrategy, other.GateRetryStrategy);
+            var eq = base.Equals(other);
+            eq &= string.Equals(GateFailure, other.GateFailure);
+            eq &= string.Equals(GateRetryStrategy, other.GateRetryStrategy);
+            return eq;
         }
 
         public override bool Equals(object obj)
@@ -198,65 +406,6 @@ namespace Dev2.Activities
 
                 return hashCode;
             }
-        }
-
-        public void Dispose()
-        {
-            if (_worker != null)
-            {
-                _worker.Dispose();
-                _worker = null;
-            }
-        }
-    }
-
-    public interface IGateActivityWorker : IDisposable
-    {
-        IGate Gate { get; set; }
-        void ExecuteGate(IDSFDataObject dataObject, int update);
-        void AddValidationErrors(ErrorResultTO allErrors);
-    }
-    internal class GateActivityWorker : IGateActivityWorker
-    {
-        private GateActivity _activity;
-        private IGate _gate;
-        private readonly IGateFactory _gateFactory;
-
-        [ExcludeFromCodeCoverage]
-        public GateActivityWorker(GateActivity activity)
-           : this(activity, new Gate(), new GateFactory())
-        {
-        }
-        public GateActivityWorker(GateActivity activity, IGate gate)
-           : this(activity, gate, new GateFactory())
-        {
-        }
-
-        public GateActivityWorker(GateActivity activity, IGate gate, IGateFactory gateFactory)
-        {
-            _activity = activity;
-            _gate = gate;
-            _gateFactory = gateFactory;
-        }
-
-        public IGate Gate
-        {
-            get => _gate;
-            set => _gate = value;
-        }
-
-        public void ExecuteGate(IDSFDataObject dataObject, int update)
-        {
-            var env = dataObject.Environment;
-            Gate = _gateFactory.New(env);
-        }
-
-        public void AddValidationErrors(ErrorResultTO allErrors)
-        {
-        }
-        public void Dispose()
-        {
-            _activity = null;
         }
     }
 }
