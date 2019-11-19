@@ -44,6 +44,7 @@ namespace Dev2.Activities.Designers2.Gate
         private IEnumerable<IOption> _options;
         private IServer _server;
         private IResourceRepository _resourceRepository;
+        private ModelItem _modelItem;
 
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -51,6 +52,7 @@ namespace Dev2.Activities.Designers2.Gate
             AddTitleBarLargeToggle();
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
+            _modelItem = modelItem;
             SelectedGateFailure = GetGateFailure(GateFailureAction.StopOnError.ToString()).ToString();
             SelectedRetryStrategy = GetRetryAlgorithm(RetryAlgorithm.NoBackoff.ToString()).ToString();
             Collection = new ObservableCollection<IDev2TOFn>();
@@ -68,16 +70,16 @@ namespace Dev2.Activities.Designers2.Gate
 
             LoadOptions();
             ClearGates();
-            LoadGates(modelItem);
+            LoadGates();
         }
 
-        private void LoadGates(ModelItem modelItem)
+        private void LoadGates()
         {
-            var designerView = FindDependencyParent.FindParent<System.Activities.Presentation.View.DesignerView>(modelItem.View);
+            var designerView = FindDependencyParent.FindParent<System.Activities.Presentation.View.DesignerView>(_modelItem.View);
 
             if (designerView != null && designerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
             {
-                Gates = workflowDesignerViewModel.GetGates(modelItem.Properties["UniqueID"].ComputedValue.ToString());
+                Gates = workflowDesignerViewModel.GetGates(_modelItem.Properties["UniqueID"].ComputedValue.ToString());
             }
         }
 
@@ -223,8 +225,9 @@ namespace Dev2.Activities.Designers2.Gate
             get => _selectedGate;
             set
             {
+                _selectedGate = value;
                 var (uniqueId, activityName) = Gates.Single(o => o.ToString().Contains(value));
-                _selectedGate = activityName;
+                _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Parse(uniqueId));
                 OnPropertyChanged(nameof(SelectedGate));
             }
         }

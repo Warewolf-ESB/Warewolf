@@ -119,6 +119,8 @@ namespace Dev2.Activities
         /// </summary>
         public IDev2Activity RetryEntryPoint { get; set; }
 
+        public Guid RetryEntryPointId { get; set; }
+
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             throw new NotImplementedException();
@@ -165,8 +167,8 @@ namespace Dev2.Activities
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.RetryEntryPoint),
-                    Value = this.RetryEntryPoint?.UniqueID,
+                    Name = nameof(this.RetryEntryPointId),
+                    Value = this.RetryEntryPointId.ToString()
                 },
                 new StateVariable
                 {
