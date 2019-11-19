@@ -10,8 +10,8 @@ using System.Web.Script.Serialization;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public class Depends : Attribute, IDisposable
 {
-    public readonly string RigOpsHost = "RSAKLFSVRHST1";
-    public readonly string RigOpsDomain = "dev2.local";
+    public static readonly string RigOpsHost = "RSAKLFSVRHST1";
+    public static readonly string RigOpsDomain = "dev2.local";
 
     public enum ContainerType
     {
