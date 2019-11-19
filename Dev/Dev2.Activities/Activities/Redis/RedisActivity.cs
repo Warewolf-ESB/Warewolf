@@ -159,7 +159,7 @@ namespace Dev2.Activities.Redis
                     _messages.Add(ErrorResource.RedisSourceHasBeenDeleted);
                     return _messages;
                 }
-                _redisCache = new RedisCacheImpl(RedisSource.HostName);
+                _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
 
                 var cacheTTL = TimeSpan.FromMilliseconds(TTL);
 

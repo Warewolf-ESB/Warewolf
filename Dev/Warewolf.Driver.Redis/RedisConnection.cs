@@ -16,9 +16,9 @@ namespace Warewolf.Driver.Redis
 {
     public class RedisConnection : IRedisConnection
     {
-        public RedisConnection(string hostName)
+        public RedisConnection(string hostName, int port, string password)
         {
-            IRedisClient client = new RedisClient(hostName);
+            IRedisClient client = new RedisClient(hostName, port, password);
             Cache = new RedisCache(client);
         }
 

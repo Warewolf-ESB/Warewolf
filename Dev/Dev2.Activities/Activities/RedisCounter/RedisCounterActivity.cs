@@ -129,7 +129,7 @@ namespace Dev2.Activities.RedisCounter
                     _messages.Add(ErrorResource.RedisSourceHasBeenDeleted);
                     return _messages;
                 }
-                _redisCache = new RedisCacheImpl(RedisSource.HostName);
+                _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
                 if (CounterType == "Increment")
                 {
                     _result = _redisCache.Increment(Key, StepSize);

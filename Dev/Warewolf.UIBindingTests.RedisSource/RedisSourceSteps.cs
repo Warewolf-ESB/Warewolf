@@ -689,7 +689,7 @@ namespace Warewolf.UIBindingTests
 
         private RedisCacheImpl GetRedisCacheImpl(string hostName)
         {
-            return new RedisCacheImpl(hostName);
+            return new RedisCacheImpl(hostName, 6379, "");
         }
 
         private static SpecRedisActivity GetRedisActivity(IResourceCatalog resourceCatalog, string key, int ttl, string hostName, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)

@@ -227,7 +227,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         private static void GenerateSUTInstance(string key, string hostName, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)
         {
             evel = new Dictionary<string, string> { { "", "" } };
-            var impl = new RedisCacheImpl(hostName);
+            var impl = new RedisCacheImpl(hostName, 6379, "");
             sut = new TestRedisActivity(mockResourceCatalog.Object, impl)
             {
                 Key = key,
