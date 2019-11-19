@@ -36,6 +36,9 @@ namespace Dev2.Activities.Designers2.Gate
     public class GateDesignerViewModel : ActivityCollectionDesignerObservableViewModel<DecisionTO>, INotifyPropertyChanged, IEnabled
     {
         private string _selectedGateFailure;
+        List<(string uniqueId, string activityName)> _gates;
+        List<string> _gatesView;
+        private string _selectedGate;
         private bool _enabled;
         private string _selectedRetryStrategy;
         private IEnumerable<IOption> _options;
@@ -64,6 +67,18 @@ namespace Dev2.Activities.Designers2.Gate
             });
 
             LoadOptions();
+            ClearGates();
+            LoadGates(modelItem);
+        }
+
+        private void LoadGates(ModelItem modelItem)
+        {
+            var designerView = FindDependencyParent.FindParent<System.Activities.Presentation.View.DesignerView>(modelItem.View);
+
+            if (designerView != null && designerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
+            {
+                Gates = workflowDesignerViewModel.GetGates(modelItem.Properties["UniqueID"].ComputedValue.ToString());
+            }
         }
 
         private void LoadOptions()
@@ -179,6 +194,41 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
+        public List<(string uniqueId, string activityName)> Gates
+        {
+            get => _gates;
+            set
+            {
+                _gates = value;
+                foreach (var (uniqueId, activityName) in Gates)
+                {
+                    GatesView.Add(activityName);
+                }
+                OnPropertyChanged(nameof(Gates));
+            }
+        }
+
+        public List<string> GatesView
+        {
+            get => _gatesView;
+            set
+            {
+                _gatesView = value;
+                OnPropertyChanged(nameof(GatesView));
+            }
+        }
+
+        public string SelectedGate
+        {
+            get => _selectedGate;
+            set
+            {
+                var (uniqueId, activityName) = Gates.Single(o => o.ToString().Contains(value));
+                _selectedGate = activityName;
+                OnPropertyChanged(nameof(SelectedGate));
+            }
+        }
+
         private static GateFailureAction GetGateFailure(string gateFailure)
         {
             return GateOptionsHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
@@ -246,6 +296,12 @@ namespace Dev2.Activities.Designers2.Gate
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
             yield break;
+        }
+
+        public void ClearGates()
+        {
+            Gates = new List<(string uniqueId, string activityName)>();
+            GatesView = new List<string>();
         }
     }
 }

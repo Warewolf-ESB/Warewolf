@@ -45,6 +45,7 @@ namespace Dev2.Activities
         {
             _worker = worker;
             DisplayName = nameof(Gate);
+            IsGate = true;
         }
         public string GateFailure
         {

@@ -93,6 +93,7 @@ using System.IO;
 using Dev2.Common.Interfaces;
 using System.Xml;
 using Dev2.Common.ExtMethods;
+using Dev2.Activities.Designers2.Gate;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -1987,6 +1988,50 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public List<(string uniqueId, string activityName)> GetGates(string uniqueId)
+        {
+            var serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
+            var treeNodes = serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
+
+            var list = new List<(string uniqueId, string activityName)>();
+
+            IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
+            {
+                var ret = new List<IDev2Activity>();
+                ret.Add(activity);
+                if (activity.NextNodes is null)
+                {
+                    return ret;
+                }
+
+                foreach (var nextActivity in activity.NextNodes)
+                {
+                    ret.AddRange(connectedList(nextActivity));
+                }
+                return ret;
+            }
+            
+            bool found = false;
+            var allGates = connectedList(treeNodes[0].Activity)
+                .Where(o1 => o1.IsGate);
+            if (!allGates.Any(o => o.UniqueID == uniqueId))
+            {
+                return list;
+            }
+
+            var selectableGates = allGates
+                .TakeWhile(o2 => !(found = (o2.UniqueID == uniqueId)));
+
+            foreach (var gate in selectableGates)
+            {
+                var id = gate.UniqueID;
+                var activityName = gate.GetDisplayName();
+                list.Add((id, activityName));
+            }
+
+            return list;
+        }
+
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
             if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
@@ -2205,6 +2250,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     mvm.RefreshActiveServer();
                 }
+            }
+
+            if (dp is Border border && border.DataContext is GateDesignerViewModel gateDesignerViewModel)
+            {
+                gateDesignerViewModel.ClearGates();
+                string uniqueId = gateDesignerViewModel.ModelItem.Properties["UniqueID"].ComputedValue.ToString();
+                var gates = GetGates(uniqueId);
+                gateDesignerViewModel.Gates = gates;
             }
 
             var dp1 = dp as Run;
