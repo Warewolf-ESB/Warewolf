@@ -188,5 +188,51 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(0, gateDesignerViewModel.Gates.Count);
             Assert.AreEqual(0, gateDesignerViewModel.GatesView.Count);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateDesignerViewModel))]
+        public void GateDesignerViewModel_Gates_SelectedGate()
+        {
+            var expected = string.Empty;
+            var uniqueId = Guid.NewGuid().ToString();
+            var activityName = "testActivity";
+            var gates = new List<(string uniqueId, string activityName)>
+            {
+                (uniqueId, activityName)
+            };
+
+            var mockModelProperty = new Mock<ModelProperty>();
+            mockModelProperty.Setup(p => p.SetValue(expected)).Verifiable();
+            var properties = new Dictionary<string, Mock<ModelProperty>>
+            {
+                { uniqueId, mockModelProperty }
+            };
+
+            var mockPropertyCollection = new Mock<ModelPropertyCollection>();
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", uniqueId, true).Returns(mockModelProperty.Object);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockPropertyCollection.Object);
+
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
+
+            Assert.AreEqual(0, gateDesignerViewModel.Gates.Count);
+            Assert.AreEqual(0, gateDesignerViewModel.GatesView.Count);
+
+            gateDesignerViewModel.Gates = gates;
+
+            Assert.AreEqual(1, gateDesignerViewModel.Gates.Count);
+            Assert.AreEqual(1, gateDesignerViewModel.GatesView.Count);
+
+            Assert.AreEqual(uniqueId, gateDesignerViewModel.Gates[0].uniqueId);
+            Assert.AreEqual(activityName, gateDesignerViewModel.Gates[0].activityName);
+            
+            Assert.AreEqual(activityName, gateDesignerViewModel.GatesView[0]);
+
+            gateDesignerViewModel.SelectedGate = gateDesignerViewModel.GatesView[0];
+
+            Assert.AreEqual(activityName, gateDesignerViewModel.SelectedGate);
+        }
     }
 }

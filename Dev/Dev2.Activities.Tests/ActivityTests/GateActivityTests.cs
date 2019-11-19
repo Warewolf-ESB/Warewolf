@@ -219,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
+            var expectedRetryActivityId = Guid.NewGuid();
 
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack
@@ -237,6 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 GateFailure = GateFailureAction.Retry.ToString(),
                 RetryEntryPoint = expectedRetryActivity,
+                RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
@@ -295,6 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
+            var expectedRetryActivityId = Guid.NewGuid();
 
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack
@@ -313,6 +316,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 GateFailure = GateFailureAction.Retry.ToString(),
                 RetryEntryPoint = expectedRetryActivity,
+                RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
@@ -336,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
+            var expectedRetryActivityId = Guid.NewGuid();
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack();
             conditions.TheStack = new List<Dev2Decision>();
@@ -352,6 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GateFailure = GateFailureAction.Retry.ToString(),
                 Conditions = conditions,
                 RetryEntryPoint = expectedRetryActivity,
+                RetryEntryPointId = expectedRetryActivityId,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
 
