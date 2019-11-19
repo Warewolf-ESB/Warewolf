@@ -26,23 +26,9 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class GateActivityTests : BaseActivityTests
     {
-        static GateActivity CreateGateActivity()
-        {
-            return new GateActivity();
-        }
-        static GateActivity GetGateActivity(Mock<IGateActivityWorker> worker)
-        {
-            var activity = new GateActivity(worker.Object);
-            return activity;
-        }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
-        }
-        static GateActivityWorker GetGateWorker(Mock<IGate> worker)
-        {
-            var gate = new GateActivityWorker(null, worker.Object, null);
-            return gate;
         }
 
         [TestMethod]
@@ -56,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.Environment).Returns(env);
             dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
-            var activity = GetGateActivity(new Mock<IGateActivityWorker>());
+            var activity = new GateActivity();
             activity.Execute(dataObject.Object, 0);
             Assert.AreEqual("Gate", activity.DisplayName);
         }
@@ -72,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.Environment).Returns(env);
             dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
-            var activity = GetGateActivity(new Mock<IGateActivityWorker>());
+            var activity = new GateActivity();
             activity.GateRetryStrategy = RetryAlgorithm.LinearBackoff.ToString();
             activity.GateFailure = GateFailureAction.StopOnError.ToString(); ;
 
@@ -83,24 +69,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Worker_Dispose()
-        {
-            var mockGate = new Mock<IGate>();
-            mockGate.Setup(o => o.Dispose());
-
-            var workerInvoker = GetGateWorker(mockGate);
-            mockGate.Object.Dispose();
-            workerInvoker.Dispose();
-
-            mockGate.Verify(r => r.Dispose());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherIsNull_Returns_IsFalse()
         {
-            var gateActivity = CreateGateActivity();
+            var gateActivity = new GateActivity();
             var gateActivityEqual = gateActivity.Equals(null);
             Assert.IsFalse(gateActivityEqual);
         }
@@ -110,7 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherisEqual_Returns_IsTrue()
         {
-            var gateActivity = CreateGateActivity();
+            var gateActivity = new GateActivity();
             var gateActivityOther = gateActivity;
             var gateActivityEqual = gateActivity.Equals(gateActivityOther);
             Assert.IsTrue(gateActivityEqual);
@@ -121,7 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_BothAreObjects_Returns_IsFalse()
         {
-            object gateActivity = CreateGateActivity();
+            object gateActivity = new GateActivity();
             var other = new object();
             var gateActivityEqual = gateActivity.Equals(other);
             Assert.IsFalse(gateActivityEqual);
@@ -132,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherisObjectofGateActivityEqual_Returns_IsFalse()
         {
-            var gateActivity = CreateGateActivity();
+            var gateActivity = new GateActivity();
             object other = new GateActivity();
             var gateActivityEqual = gateActivity.Equals(other);
             Assert.IsFalse(gateActivityEqual);
