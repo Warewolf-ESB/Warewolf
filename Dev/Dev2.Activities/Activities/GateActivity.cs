@@ -20,6 +20,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -165,7 +166,45 @@ namespace Dev2.Activities
 
         public override IEnumerable<StateVariable> GetState()
         {
-            throw new NotImplementedException();
+           return new StateVariable[]
+           {
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.Conditions),
+                    Value = JsonConvert.SerializeObject(Conditions),
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.GateFailure),
+                    Value = this.GateFailure,
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.GateRetryStrategy),
+                    Value = this.GateRetryStrategy,
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.Passing),
+                    Value = this.Passing ? "true" : "false",
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.RetryEntryPoint),
+                    Value = this.RetryEntryPoint?.UniqueID,
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this._retryState.NumberOfRetries),
+                    Value = this._retryState.NumberOfRetries.ToString(),
+                }
+           };
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
