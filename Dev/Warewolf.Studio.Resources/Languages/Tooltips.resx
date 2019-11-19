@@ -2402,4 +2402,16 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="RedisTTLToolTip" xml:space="preserve">
     <value>Redis TTL (Time To Live)</value>
   </data>
+  <data name="RedisCounterKeyToolTip" xml:space="preserve">
+    <value>Redis Key to create a counter</value>
+  </data>
+  <data name="RedisCounterStepSizeToolTip" xml:space="preserve">
+    <value>Redis Step Size to increment or decrement a counter</value>
+  </data>
+  <data name="RedisCounterTypeIncrementToolTip" xml:space="preserve">
+    <value>Redis Increment a counter</value>
+  </data>
+  <data name="RedisCounterTypeDecrementToolTip" xml:space="preserve">
+    <value>Redis Decrement a counter</value>
+  </data>
 </root>
