@@ -3177,7 +3177,42 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("NewRedisSourceTooltip", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new counter key.
+        /// </summary>
+        public static string RedisCounterKeyToolTip
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisCounterKeyToolTip", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Create a step size for the Redis Counter.
+        /// </summary>
+        public static string RedisCounterStepSizeToolTip
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisCounterStepSizeToolTip", resourceCulture);
+            }
+        }
+        public static string RedisCounterTypeIncrementToolTip
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisCounterTypeIncrementToolTip", resourceCulture);
+            }
+        }
+        public static string RedisCounterTypeDecrementToolTip
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisCounterTypeDecrementToolTip", resourceCulture);
+            }
+        }
         
+            
         /// <summary>
         ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
