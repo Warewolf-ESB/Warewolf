@@ -345,6 +345,9 @@
   <data name="Tool_Utility_RedisDelete" xml:space="preserve">
     <value>removes the specified key</value>
   </data>
+  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+    <value>increment/decrement the number stored at key by one</value>
+  </data>
   <data name="Tool_Data_Assign_Object" xml:space="preserve">
     <value>json array declare setup variable set</value>
   </data>
