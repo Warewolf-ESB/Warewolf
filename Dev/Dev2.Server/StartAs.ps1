@@ -30,16 +30,5 @@ if ($WarewolfServerProcess) {
 	sc.exe start "Warewolf Server"
 	if ($NoExit.IsPresent) {
 		ping -t localhost
-	} else {
-		$Counter = 0
-		$CounterMax = 300
-		while (!(Test-Path "C:\Server\serverstarted") -and $Counter -lt $CounterMax) {
-			Start-Sleep 1000
-			$Counter = $Counter + 1
-		}
-		if ($Counter -eq $CounterMax) {
-			Write-Error -Message "Timed out waiting for server to start."
-			exit 1
-		}
 	}
 }
