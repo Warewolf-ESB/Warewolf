@@ -17,17 +17,46 @@ using Warewolf.Options;
 
 namespace Warewolf.UI
 {
+    public delegate void OptionChangedHandler();
+    public class OptionsWithNotifier
+    {
+        public event OptionChangedHandler OptionChanged;
+        public IEnumerable<IOption> Options { get; set; }
+        public void Notify()
+        {
+            OptionChanged?.Invoke();
+        }
+    }
+
     public class OptionViewConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var options = value as IEnumerable<IOption>;
-
-            if (options == null)
+            if (value is OptionsWithNotifier optionsWithNotifier)
             {
-                return Binding.DoNothing;
+                return Convert(optionsWithNotifier, targetType, parameter, culture);
+            }
+            if (value is IEnumerable<IOption> options)
+            {
+                return Convert(options, targetType, parameter, culture);
             }
 
+            return Binding.DoNothing;
+        }
+
+        object Convert(OptionsWithNotifier options, Type targetType, object parameter, CultureInfo culture)
+        {
+            var optionViews = new ObservableCollection<OptionView>();
+            foreach (var option in options.Options)
+            {
+                var optionView = new OptionView(option, () => { options.Notify(); });
+                optionViews.Add(optionView);
+            }
+
+            return optionViews;
+        }
+        object Convert(IEnumerable<IOption> options, Type targetType, object parameter, CultureInfo culture)
+        {
             var optionViews = new ObservableCollection<OptionView>();
             foreach (var option in options)
             {

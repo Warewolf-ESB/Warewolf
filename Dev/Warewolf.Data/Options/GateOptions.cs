@@ -14,7 +14,7 @@ using Warewolf.Options;
 
 namespace Warewolf.Data.Options
 {
-    public class GateViewOptions 
+    public class GateOptions 
     {
         public YesNo Resume { get; set; } = YesNo.No;
         public Guid ResumeEndpoint { get; set; } = Guid.Empty;

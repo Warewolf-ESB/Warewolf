@@ -48,10 +48,13 @@ namespace Warewolf.UI
             get
             {
                 string dataTemplateName = "OptionNoneStyle";
+                if (DataContext is BindableBase bindableBase)
+                {
+                    bindableBase.PropertyChanged += BindableBase_PropertyChanged;
+                }
                 if (DataContext is IOptionBool optionBool)
                 {
                     dataTemplateName = "OptionBoolStyle";
-                    optionBool.ValueUpdated += Item_ValueUpdatedBool;
                 }
                 if (DataContext is IOptionInt)
                 {
@@ -68,12 +71,10 @@ namespace Warewolf.UI
                 if (DataContext is IOptionEnum optionEnum)
                 {
                     dataTemplateName = "OptionEnumComboBoxStyle";
-                    optionEnum.ValueUpdated += Item_ValueUpdated;
                 }
                 if (DataContext is IOptionComboBox optionComboBox)
                 {
-                    dataTemplateName = "OptionComboBoxStyle"; 
-                    optionComboBox.ValueUpdated += Item_ValueUpdatedComboBox;
+                    dataTemplateName = "OptionComboBoxStyle";
                 }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
@@ -82,17 +83,7 @@ namespace Warewolf.UI
             }
         }
 
-        private void Item_ValueUpdated(object sender, OptionValueChangedArgs<int> e)
-        {
-            _valueUpdatedAction();
-        }
-
-        private void Item_ValueUpdatedComboBox(object sender, OptionValueChangedArgs<string> e)
-        {
-            _valueUpdatedAction();
-        }
-
-        private void Item_ValueUpdatedBool(object sender, OptionValueChangedArgs<bool> e)
+        private void BindableBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _valueUpdatedAction();
         }
