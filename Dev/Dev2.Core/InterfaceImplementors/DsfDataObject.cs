@@ -327,6 +327,7 @@ namespace Dev2.DynamicServices
         public IDev2WorkflowSettings Settings { get; set; }
         public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
         public Exception ExecutionException { get; set; }
+        public IList<IDev2Activity> Gates { get; } = new List<IDev2Activity>();
 
         #endregion Properties
 

@@ -118,7 +118,7 @@ namespace Dev2.Activities
         /// <summary>
         /// Where should we send execution if this gate fails and not set to StopOnFailure
         /// </summary>
-        public IDev2Activity RetryEntryPoint { get; set; }
+        public IDev2Activity RetryEntryPoint { get => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString()); }
 
         public Guid RetryEntryPointId { get; set; }
 
@@ -201,10 +201,20 @@ namespace Dev2.Activities
         IDSFDataObject _dataObject;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            _dataObject = data;
+            _dataObject.Gates.Add(this);
+
             if (_retryState.NumberOfRetries <= 0)
             {
                 return ExecuteNormal(data, update);
             }
+
+            // execute workflow that should be called on resume
+
+            // reset Environment to state it was in the first time we executed this Gate
+
+            // load selected retry algorithm
+
             return ExecuteRetry(data, update);
         }
         /// <summary>
@@ -214,12 +224,8 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
+        private static IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
         {
-            _dataObject = data;
-
-            // load selected retry algorithm
-
             // if allowed to retry and its time for a retry return NextNode
             // otherwise schedule this environment and current activity to 
             // be executed at the calculated latter time
@@ -237,7 +243,6 @@ namespace Dev2.Activities
         /// <returns></returns>
         public IDev2Activity ExecuteNormal(IDSFDataObject data, int update)
         {
-            _dataObject = data;
             IDev2Activity next = null;
             bool stop = false;
             try
