@@ -22,10 +22,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void RedisSources_ConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
-        {
-            var handler = new RedisSources(null);
-        }
+        public void RedisSources_ConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException() => new RedisSources(null);
 
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -44,10 +41,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void RedisSources_Test_With_InValidArgs_Expected_Valid_InValidationResult()
         {
             var handler = new RedisSources();
-
             var result = handler.Test("asd");
             Assert.IsFalse(result.IsValid);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
@@ -64,6 +61,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = handler.Test(source);
             Assert.IsTrue(result.IsValid, result.ErrorMessage);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
@@ -81,6 +79,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("could not connect to redis Instance at ddd:222:6379\r\nNo such host is known", result.ErrorMessage);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
@@ -99,6 +98,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = handler.Test(source);
             Assert.IsTrue(result.IsValid);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
