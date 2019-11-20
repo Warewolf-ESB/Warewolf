@@ -120,5 +120,6 @@ namespace Dev2.Interfaces
         IDev2WorkflowSettings Settings { get; set; }
         IStateNotifier StateNotifier { get; set; }
         Exception ExecutionException { get; set; }
+        IList<IDev2Activity> Gates { get; }
     }
 }

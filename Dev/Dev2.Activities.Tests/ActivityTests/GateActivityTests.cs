@@ -41,10 +41,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
             dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
+            var gatesList = new List<IDev2Activity>();
+            dataObject.Setup(o => o.Gates).Returns(gatesList);
 
             var activity = new GateActivity();
             activity.Execute(dataObject.Object, 0);
             Assert.AreEqual("Gate", activity.DisplayName);
+            Assert.AreEqual(1, gatesList.Count);
+            Assert.AreEqual(activity, gatesList[0]);
         }
 
         [TestMethod]
@@ -220,6 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
             var expectedRetryActivityId = Guid.NewGuid();
+            expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack
@@ -237,7 +242,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new GateActivity
             {
                 GateFailure = GateFailureAction.Retry.ToString(),
-                RetryEntryPoint = expectedRetryActivity,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -245,6 +249,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[nota]]", "bob", 0);
+            dataObject.Gates.Add(expectedRetryActivity);
 
             var result = act.Execute(dataObject, 0);
 
@@ -298,6 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
             var expectedRetryActivityId = Guid.NewGuid();
+            expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack
@@ -315,7 +321,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new GateActivity
             {
                 GateFailure = GateFailureAction.Retry.ToString(),
-                RetryEntryPoint = expectedRetryActivity,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -323,6 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "notbob", 0);
+            dataObject.Gates.Add(expectedRetryActivity);
 
             var result = act.Execute(dataObject, 0);
 
@@ -341,6 +347,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
             var expectedRetryActivityId = Guid.NewGuid();
+            expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
+
             //---------------Set up test pack-------------------
             var conditions = new Dev2DecisionStack();
             conditions.TheStack = new List<Dev2Decision>();
@@ -356,14 +364,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 GateFailure = GateFailureAction.Retry.ToString(),
                 Conditions = conditions,
-                RetryEntryPoint = expectedRetryActivity,
                 RetryEntryPointId = expectedRetryActivityId,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
 
-
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "bob", 0);
+            dataObject.Gates.Add(expectedRetryActivity);
 
             var result = act.Execute(dataObject, 0);
 
