@@ -27,9 +27,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 using Warewolf.Service;
+using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Gate
 {
@@ -40,24 +42,34 @@ namespace Dev2.Activities.Designers2.Gate
         List<string> _gatesView;
         private string _selectedGate;
         private bool _enabled;
-        private string _selectedRetryStrategy;
-        private IEnumerable<IOption> _options;
+        private bool _isExpanded;
+        private OptionsWithNotifier _options;
         private IServer _server;
         private IResourceRepository _resourceRepository;
-        private ModelItem _modelItem;
+        private readonly ModelItem _modelItem;
 
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            LoadDefaults();
+            _modelItem = modelItem;
+            LoadOptions();
+            ClearGates();
+            LoadGates();
+
+            PopulateFields();
+        }
+
+        private void LoadDefaults()
+        {
             AddTitleBarLargeToggle();
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
-            _modelItem = modelItem;
-            SelectedGateFailure = GetGateFailure(GateFailureAction.StopOnError.ToString()).ToString();
-            SelectedRetryStrategy = GetRetryAlgorithm(RetryAlgorithm.NoBackoff.ToString()).ToString();
+            IsExpanded = false;
+            Enabled = true;
+
             Collection = new ObservableCollection<IDev2TOFn>();
             Collection.CollectionChanged += CollectionCollectionChanged;
-
             LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone();
 
             var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
@@ -67,10 +79,39 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 DeleteRow(x as DecisionTO);
             });
+        }
 
-            LoadOptions();
-            ClearGates();
-            LoadGates();
+        private void PopulateFields()
+        {
+            var conditions = _modelItem.Properties["Conditions"].ComputedValue;
+
+            var gateFailure = _modelItem.Properties["GateFailure"].ComputedValue;
+            if (gateFailure is null)
+            {
+                SelectedGateFailure = GetGateFailure(GateFailureAction.StopOnError.ToString()).ToString();
+            }
+            else
+            {
+                SelectedGateFailure = GetGateFailure(gateFailure.ToString()).ToString();
+                IsExpanded = true;
+            }
+
+            var id = _modelItem.Properties["RetryEntryPointId"].ComputedValue;
+            if (id != null && id.ToString() != Guid.Empty.ToString())
+            {
+                var (uniqueId, activityName) = Gates.Single(o => o.ToString().Contains(id.ToString()));
+                SelectedGate = activityName;
+            }
+        }
+
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged(nameof(IsExpanded));
+            }
         }
 
         private void LoadGates()
@@ -85,11 +126,20 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void LoadOptions()
         {
-            var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
-            _server = activeServer;
-            _resourceRepository = _server.ResourceRepository;
+            var gateOptions = _modelItem.Properties["GateOptions"].ComputedValue as GateOptions;
+            if (gateOptions != null)
+            {
+                Options = new OptionsWithNotifier { Options = OptionConvertor.Convert(gateOptions) };
+            }
+            else
+            {
 
-            Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume);
+                var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
+                _server = activeServer;
+                _resourceRepository = _server.ResourceRepository;
+
+                Options = new OptionsWithNotifier{ Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume)};
+            }
         }
 
         private void LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone()
@@ -191,7 +241,6 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
                 _selectedGateFailure = gateFailure;
-                Enabled = GetGateFailure(_selectedGateFailure) == GateFailureAction.Retry;
                 OnPropertyChanged(nameof(SelectedGateFailure));
             }
         }
@@ -226,32 +275,18 @@ namespace Dev2.Activities.Designers2.Gate
             set
             {
                 _selectedGate = value;
-                var (uniqueId, activityName) = Gates.Single(o => o.ToString().Contains(value));
-                _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Parse(uniqueId));
                 OnPropertyChanged(nameof(SelectedGate));
             }
+        }
+
+        private void UpdateModelItem()
+        {
+            _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
         }
 
         private static GateFailureAction GetGateFailure(string gateFailure)
         {
             return GateOptionsHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
-        }
-
-        public IEnumerable<string> GateRetryStrategies => GateOptionsHelper<RetryAlgorithm>.GetDescriptionsAsList(typeof(RetryAlgorithm)).ToList();
-        public string SelectedRetryStrategy
-        {
-            get => _selectedRetryStrategy;
-            set
-            {
-                _selectedRetryStrategy = value;
-                GetRetryAlgorithm(_selectedRetryStrategy);
-                OnPropertyChanged(nameof(SelectedRetryStrategy));
-            }
-        }
-
-        private static RetryAlgorithm GetRetryAlgorithm(string retryAlgorithm)
-        {
-            return GateOptionsHelper<RetryAlgorithm>.GetEnumFromDescription(retryAlgorithm);
         }
 
         public bool Enabled
@@ -265,13 +300,14 @@ namespace Dev2.Activities.Designers2.Gate
         }
 
 
-        public IEnumerable<IOption> Options
+        public OptionsWithNotifier Options
         {
             get => _options;
             set
             {
                 _options = value;
                 OnPropertyChanged(nameof(Options));
+                _options.OptionChanged += UpdateModelItem;
             }
         }
 

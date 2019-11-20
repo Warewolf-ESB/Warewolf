@@ -208,11 +208,14 @@ namespace Warewolf.Options
             get => _optionName;
             set
             {
-                _optionName = value;
-                RaisePropertyChanged(nameof(OptionName));
-                if (_optionName != null)
+                if (value is null)
                 {
-                    Value = Values.First(o => o.Key == _optionName).Value;
+                    value = Values?.First().Key ?? string.Empty;
+                }
+
+                if (SetProperty(ref _optionName, value))
+                {
+                    Value = Values?.First(o => o.Key == value).Value ?? 0;
                 }
             }
         }
@@ -225,9 +228,11 @@ namespace Warewolf.Options
             set
             {
                 var eventArgs = new OptionValueChangedArgs<int>(_name, _value, value);
-                _value = value;
-                RaisePropertyChanged(nameof(Value));
-                ValueUpdated?.Invoke(this, eventArgs);
+
+                if (SetProperty(ref _value, value))
+                {
+                    OptionName = Values?.First(o => o.Value == value).Key;
+                }
             }
         }
 

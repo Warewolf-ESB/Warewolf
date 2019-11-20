@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -121,6 +122,8 @@ namespace Dev2.Activities
 
         public Guid RetryEntryPointId { get; set; }
 
+        public GateOptions GateOptions { get; set; }
+
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             throw new NotImplementedException();
@@ -169,6 +172,12 @@ namespace Dev2.Activities
                     Type = StateVariable.StateType.Input,
                     Name = nameof(this.RetryEntryPointId),
                     Value = this.RetryEntryPointId.ToString()
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(this.GateOptions),
+                    Value = this.GateOptions.ToString()
                 },
                 new StateVariable
                 {
