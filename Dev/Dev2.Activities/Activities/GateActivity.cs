@@ -141,49 +141,49 @@ namespace Dev2.Activities
 
         public override IEnumerable<StateVariable> GetState()
         {
-           return new StateVariable[]
+           return new[]
            {
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.Conditions),
+                    Name = nameof(Conditions),
                     Value = JsonConvert.SerializeObject(Conditions),
                 },
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.GateFailure),
-                    Value = this.GateFailure,
+                    Name = nameof(GateFailure),
+                    Value = GateFailure,
                 },
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.GateRetryStrategy),
-                    Value = this.GateRetryStrategy,
+                    Name = nameof(GateRetryStrategy),
+                    Value = GateRetryStrategy,
                 },
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.Passing),
-                    Value = this.Passing ? "true" : "false",
+                    Name = nameof(Passing),
+                    Value = Passing ? "true" : "false",
                 },
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.RetryEntryPointId),
-                    Value = this.RetryEntryPointId.ToString()
+                    Name = nameof(RetryEntryPointId),
+                    Value = RetryEntryPointId.ToString()
                 },
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this.GateOptions),
-                    Value = this.GateOptions.ToString()
+                    Name = nameof(GateOptions),
+                    Value = GateOptions.ToString()
                 },
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
-                    Name = nameof(this._retryState.NumberOfRetries),
-                    Value = this._retryState.NumberOfRetries.ToString(),
+                    Name = nameof(_retryState.NumberOfRetries),
+                    Value = _retryState.NumberOfRetries.ToString(),
                 }
            };
         }
