@@ -51,11 +51,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
+        [Depends(Depends.ContainerType.Redis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             var source = new RedisSource
             {
-                HostName = "rsaklfsvrhst1.dev2.local",
+                HostName = $"{Depends.RigOpsHost}.{Depends.RigOpsDomain}",
                 Port = "6379"
             }.ToString();
 
@@ -83,11 +84,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
+        [Depends(Depends.ContainerType.Redis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
             var source = new RedisSource
             {
-                HostName = "rsaklfsvrhst1.dev2.local",
+                HostName = $"{Depends.RigOpsHost}.{Depends.RigOpsDomain}",
                 Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "Password"
