@@ -52,13 +52,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Setup for test--------------------------
             var mockModelItem = new Mock<ModelItem>();
             var expectedGateFailure = "StopOnError: Stop execution on error";
-            var retryStrategy = "NoBackoff";
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(gateDesignerViewModel.HasLargeView);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure);
-            Assert.AreEqual(retryStrategy, gateDesignerViewModel.SelectedRetryStrategy);
             Assert.IsFalse(gateDesignerViewModel.Enabled);
             Assert.IsTrue(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
@@ -115,43 +113,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(2, gateFailureOptions.Count);
             Assert.AreEqual("Retry: Retry execution on error", gateFailureOptions[0]);
             Assert.AreEqual("StopOnError: Stop execution on error", gateFailureOptions[1]);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_GateRetryStrategies_List()
-        {
-            //------------Setup for test--------------------------
-            var mockModelItem = new Mock<ModelItem>();
-            CustomContainer.Register(mockModelItem.Object);
-            //------------Execute Test---------------------------
-            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
-            var gateRetryStrategies = gateDesignerViewModel.GateRetryStrategies.ToList();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(5, gateRetryStrategies.Count);
-            Assert.AreEqual("NoBackoff: On Error Retry Immediately", gateRetryStrategies[0]);
-            Assert.AreEqual("ConstantBackoff: Add a fixed delay after every attempt", gateRetryStrategies[1]);
-            Assert.AreEqual("LinearBackoff: Delay increases along with every attempt on Linear curve", gateRetryStrategies[2]);
-            Assert.AreEqual("FibonacciBackoff: Delays based on the sum of the Fibonacci series", gateRetryStrategies[3]);
-            Assert.AreEqual("QuadraticBackoff: Delay increases along with every attempt on Quadratic curve", gateRetryStrategies[4]);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_GateRetryStrategies_SelectedGateFailure()
-        {
-            //------------Setup for test--------------------------
-            var mockModelItem = new Mock<ModelItem>();
-            CustomContainer.Register(mockModelItem.Object);
-            //------------Execute Test---------------------------
-            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
-            {
-                SelectedRetryStrategy = "ConstantBackoff: Add a fixed delay after every attempt"
-            };
-            //------------Assert Results-------------------------
-            Assert.AreEqual("ConstantBackoff: Add a fixed delay after every attempt", gateDesignerViewModel.SelectedRetryStrategy);
         }
 
         [TestMethod]

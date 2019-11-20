@@ -314,7 +314,8 @@
         </Grid>
 
         <Expander Grid.Row="2" Header="Resume"
-                  Style="{StaticResource ServiceTestTestStepExpander}" >
+                  Style="{StaticResource ServiceTestTestStepExpander}" 
+                  IsExpanded="{Binding IsExpanded}">
             <ListBox x:Name="OptionsListBox" 
                          ItemsSource="{Binding Options, Converter={StaticResource OptionViewConverter}}" 
                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
