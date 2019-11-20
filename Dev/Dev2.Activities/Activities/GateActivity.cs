@@ -272,7 +272,7 @@ namespace Dev2.Activities
             {
                 data.Environment.AddError(ex.Message);
                 Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
-
+                stop = true;
             }
             finally
             {
