@@ -48,7 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.Execute(dataObject.Object, 0);
             Assert.AreEqual("Gate", activity.DisplayName);
             Assert.AreEqual(1, gatesList.Count);
-            Assert.AreEqual(activity, gatesList[0]);
+            Assert.AreEqual(activity, gatesList.First());
         }
 
         [TestMethod]
@@ -298,7 +298,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Execute_GivenFailingConditionWithRetry_ExpectRetryGate()
+        public void GateActivity_Execute_GivenFailingConditionWithRetry_ExpectRetryGateAsNext()
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
@@ -379,6 +379,69 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual("0", numberOfRetries, "number of retries should not change if gate passes");
             Assert.AreEqual(expectedNextActivity.Object, result);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndFailingSecondGate_ExpectDetailedLog()
+        {
+            var firstGateId = Guid.NewGuid();
+            var secondGateId = Guid.NewGuid();
+
+            var failingConditions = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>()
+            };
+            failingConditions.AddModelItem(new Dev2Decision
+            {
+                Col1 = "[[somebob]]",
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
+                Col2 = "notbob"
+            });
+
+            var thirdNode = new Mock<IDev2Activity>().Object;
+            var secondGate = new GateActivity
+            {
+                UniqueID = secondGateId.ToString(),
+                GateFailure = GateFailureAction.Retry.ToString(),
+                RetryEntryPointId = firstGateId,
+                Conditions = failingConditions,
+                NextNodes = new List<IDev2Activity> { thirdNode },
+            };
+
+            //---------------Set up test pack-------------------
+            var passingConditions = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>()
+            };
+            passingConditions.AddModelItem(new Dev2Decision
+            {
+                Col1 = "[[a]]",
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
+                Col2 = "bob"
+            });
+
+            //------------Setup for test--------------------------
+            var firstGate = new GateActivity
+            {
+                UniqueID = firstGateId.ToString(),
+                GateFailure = GateFailureAction.StopOnError.ToString(),
+                Conditions = passingConditions,
+                NextNodes = new List<IDev2Activity> { secondGate },
+            };
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "bob", 0);
+
+            var result = firstGate.Execute(dataObject, 0);
+
+            Assert.AreEqual(secondGate, result);
+
+            result = result.Execute(dataObject, 0);
+
+            Assert.AreEqual(firstGate, result);
+            //Assert.AreEqual(thirdNode, result);
         }
     }
 }
