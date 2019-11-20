@@ -4,6 +4,8 @@
     <TargetFrameworks>netcoreapp2.2;net48</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
