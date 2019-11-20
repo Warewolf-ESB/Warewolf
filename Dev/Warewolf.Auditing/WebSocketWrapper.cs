@@ -70,7 +70,8 @@ namespace Warewolf.Auditing
 
         public IWebSocketWrapper Close()
         {
-            _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            var task = _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            task.Wait();
             return this;
         }
 
@@ -88,12 +89,14 @@ namespace Warewolf.Auditing
 
         public void SendMessage(string message)
         {
-            SendMessageAsync(message);
+            var task = SendMessageAsync(message);
+            task.Wait();
         }
 
-        public async void SendMessage(byte[] message)
+        public void SendMessage(byte[] message)
         {
-            await SendMessageAsync(message);
+            var task = SendMessageAsync(message);
+            task.Wait();
         }
 
         public bool IsOpen()
@@ -101,7 +104,7 @@ namespace Warewolf.Auditing
             return _ws.State == WebSocketState.Open;
         }
 
-        private void SendMessageAsync(string message)
+        private async Task SendMessageAsync(string message)
         {
             if (_ws.State != WebSocketState.Open)
             {
@@ -109,7 +112,7 @@ namespace Warewolf.Auditing
             }
 
             var messageBuffer = Encoding.UTF8.GetBytes(message);
-            SendMessageAsync(messageBuffer).Wait();
+            await SendMessageAsync(messageBuffer);
         }
 
         private async Task SendMessageAsync(byte[] messageBuffer)
@@ -138,7 +141,7 @@ namespace Warewolf.Auditing
             WatchForMessagesFromServer();
         }
 
-        private async void WatchForMessagesFromServer()
+        private async Task WatchForMessagesFromServer()
         {
             var buffer = new byte[ReceiveChunkSize];
 
