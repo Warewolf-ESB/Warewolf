@@ -166,6 +166,7 @@ namespace Dev2.Data.Tests.Util
             Assert.AreEqual("ab", instance.ExtractFieldNameOnlyFromValue("[[rec().ab"));
             Assert.AreEqual("", instance.ExtractFieldNameOnlyFromValue("[[rec()."));
             Assert.AreEqual("", instance.ExtractFieldNameOnlyFromValue("[[rec()"));
+            Assert.AreEqual("Name", instance.ExtractFieldNameOnlyFromValue("[[rec().Name]].sdgager()"));
         }
 
         [TestMethod]
