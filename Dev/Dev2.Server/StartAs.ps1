@@ -3,12 +3,18 @@ Param(
 )
 $WarewolfServerProcess =  Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 if ($WarewolfServerProcess) {
-	Write-Warning -Message "Warewolf server has started."
+	Write-Warning -Message "Warewolf server is now running."
 } else {
+	Remove-Item "C:\ProgramData\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue
+	Write-Host Create Warewolf Administrators group.
 	NET localgroup "Warewolf Administrators" /ADD
+	Write-Host Create Warewolf Administrator.
 	NET user "$env:SERVER_USERNAME" "$env:SERVER_PASSWORD" /ADD /Y
+	Write-Host Add Warewolf Administrator to Administrators group.
 	NET localgroup "Administrators" "$env:SERVER_USERNAME" /ADD
+	Write-Host Add Warewolf Administrator to Warewolf Administrators group.
 	NET localgroup "Warewolf Administrators" "$env:SERVER_USERNAME" /ADD
+	Write-Host Grant Warewolf Administrator logon as a batch job rights.
 	Import-Module C:\Server\UserRights.psm1
 	Grant-UserRight -Account "$env:SERVER_USERNAME" -Right SeServiceLogonRight
 	if (Test-Path "C:\Server\Warewolf Server.exe") {
