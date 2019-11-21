@@ -133,7 +133,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             dateTimeTO.TimeModifierAmount = 23;
             _formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
 
-            Assert.AreEqual(result, "1988/10/14");
+            Assert.IsTrue(result == "1988/10/14");
 
         }
         
@@ -279,7 +279,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "w", "", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2");
+            Assert.IsTrue(result == "2");
         }
 
         //27.09.2012: massimo.guerrera - Added after bug was found
@@ -295,7 +295,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "ww", "", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "02");
+            Assert.IsTrue(result == "02");
         }
 
         #endregion Format Tests
@@ -304,6 +304,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         #region Blank Tests
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Blank_Positive_Expected_No_Change()
         {
@@ -313,9 +314,10 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", 25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2012/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2012/02/15 11:21:51 AM");
         }
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Blank_Negative_Expected_No_Change()
         {
@@ -325,9 +327,10 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", -25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Blank_Zero_Expected_No_Change()
         {
@@ -337,13 +340,14 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Blank Tests
 
         #region Years Tests
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Years_Positive_Expected_Correct_Addition()
         {
@@ -353,9 +357,10 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", 25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2037/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2037/02/15 11:21:51 AM");
         }
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Years_Negative_Expected_Correct_Subtraction()
         {
@@ -365,9 +370,10 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", -25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2000/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2000/02/15 11:21:51 AM");
         }
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Years_Zero_Expected_No_Change()
         {
@@ -377,7 +383,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Years Tests
@@ -394,7 +400,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", 12, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2026/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2026/02/15 11:21:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -407,7 +413,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", -12, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2024/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2024/02/15 11:21:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -420,7 +426,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Months Tests
@@ -437,7 +443,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", 30, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/07/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/07/15 11:21:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -450,7 +456,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", -30, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/05/16 11:21:51 am");
+            Assert.IsTrue(result == "2025/05/16 11:21:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -463,7 +469,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Days Tests
@@ -480,7 +486,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/03/01 11:21:51 am");
+            Assert.IsTrue(result == "2025/03/01 11:21:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -493,7 +499,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/01 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/01 11:21:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -506,13 +512,14 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Week Tests
 
         #region Hours Tests
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Hours_Positive_Expected_Correct_Addition()
         {
@@ -522,9 +529,10 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 01:21:51 pm");
+            Assert.IsTrue(result == "2025/02/15 01:21:51 PM");
         }
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Hours_Negative_Expected_Correct_Subtraction()
         {
@@ -534,9 +542,10 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 09:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 09:21:51 AM");
         }
 
+        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Hours_Zero_Expected_No_Change()
         {
@@ -546,7 +555,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Hours Tests
@@ -563,7 +572,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:23:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:23:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -576,7 +585,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:19:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:19:51 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -589,7 +598,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Minutes Tests
@@ -606,7 +615,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:53 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:53 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -619,7 +628,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:49 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:49 AM");
         }
 
         //28.09.2012: massimo.guerrera - Added after bug was found
@@ -632,7 +641,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Seconds Tests
@@ -648,7 +657,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Milliseconds", 1000, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:52 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:52 AM");
         }
 
         [TestMethod]
@@ -660,7 +669,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Milliseconds", -1000, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:50 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:50 AM");
         }
 
         [TestMethod]
@@ -672,7 +681,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
             var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Milliseconds", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
-            Assert.AreEqual(result, "2025/02/15 11:21:51 am");
+            Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Milliseconds Tests
