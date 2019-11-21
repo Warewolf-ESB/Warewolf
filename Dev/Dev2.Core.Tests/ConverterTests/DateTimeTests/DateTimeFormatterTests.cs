@@ -13,23 +13,15 @@ using Dev2.Common.DateAndTime;
 using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Common;
 
 namespace Dev2.Tests.ConverterTests.DateTimeTests
 {
-    /// <summary>
-    /// Summary description for DateTimeFormatterTests
-    /// </summary>
     [TestClass]
     public class DateTimeFormatterTests
     {
 
         static IDateTimeFormatter _formatter;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         [TestInitialize]
@@ -647,7 +639,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
         #region Milliseconds Tests
 
-        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Split_Secs_Positive_Expected_Correct_Addition()
         {
@@ -660,7 +651,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.AreEqual(result, "2025/02/15 11:21:52 am");
         }
 
-        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Split_Secs_Negative_Expected_Correct_Subtraction()
         {
@@ -673,7 +663,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.AreEqual(result, "2025/02/15 11:21:50 am");
         }
 
-        //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
         public void TimeModifiers_Split_Secs_Zero_Expected_No_Change()
         {
