@@ -119,7 +119,7 @@ namespace Warewolf.Options
                 var returnVal = new OptionCombobox
                 {
                     Name = prop.Name,
-                    Value = Enum.GetName(fieldNameProp.PropertyType, enumValue), 
+                    Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
                 };
 
                 if (dataProviderAttr != null)
@@ -141,7 +141,76 @@ namespace Warewolf.Options
 
         public static object Convert(Type type, IEnumerable<IOption> options)
         {
-            return Activator.CreateInstance(type);
+            var optionsType = Activator.CreateInstance(type);
+
+            var gateOptions = new Data.Options.GateOptions();
+
+            if (optionsType is Data.Options.GateOptions)
+            {
+                foreach (var option in options)
+                {
+                    if (option is IOptionInt optionInt)
+                    {
+                        gateOptions.Count = optionInt.Value;
+                    }
+                    if (option is IOptionEnum optionEnum)
+                    {
+                        switch (optionEnum.Value)
+                        {
+                            case 0:
+                                gateOptions.Resume = Data.Options.YesNo.Yes;
+                                break;
+                            case 1:
+                                gateOptions.Resume = Data.Options.YesNo.No;
+                                break;
+                        }
+                    }
+                    if (option is IOptionWorkflow optionWorkflow)
+                    {
+                        gateOptions.ResumeEndpoint = optionWorkflow.Value;
+                    }
+                    if (option is IOptionComboBox optionCombobox)
+                    {
+                        switch (optionCombobox.Value)
+                        {
+                            case "NoBackoff":
+                                gateOptions.Strategy = new Data.Options.NoBackoff
+                                {
+                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.NoBackoff
+                                };
+                                break;
+                            case "ConstantBackoff":
+                                gateOptions.Strategy = new Data.Options.ConstantBackoff
+                                {
+                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.ConstantBackoff
+                                };
+                                break;
+                            case "LinearBackoff":
+                                gateOptions.Strategy = new Data.Options.LinearBackoff
+                                {
+                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.LinearBackoff
+                                };
+                                break;
+                            case "FibonacciBackoff":
+                                gateOptions.Strategy = new Data.Options.FibonacciBackoff
+                                {
+                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.FibonacciBackoff
+                                };
+                                break;
+                            case "QuadraticBackoff":
+                                gateOptions.Strategy = new Data.Options.QuadraticBackoff
+                                {
+                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.QuadraticBackoff
+                                };
+                                break;
+                        }
+                    }
+                }
+            }
+
+
+
+            return gateOptions;
         }
     }
 }
