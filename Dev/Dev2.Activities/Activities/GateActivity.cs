@@ -118,7 +118,7 @@ namespace Dev2.Activities
         /// <summary>
         /// Where should we send execution if this gate fails and not set to StopOnFailure
         /// </summary>
-        public IDev2Activity RetryEntryPoint { get => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString()); }
+        private IDev2Activity GetRetryEntryPoint => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString());
 
         public Guid RetryEntryPointId { get; set; }
 
@@ -261,7 +261,7 @@ namespace Dev2.Activities
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
                             break;
                         case GateFailureAction.Retry:
-                            var goBackToActivity = RetryEntryPoint.As<GateActivity>();
+                            var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
 
                             goBackToActivity.UpdateRetryState(this);
                             next = goBackToActivity;
