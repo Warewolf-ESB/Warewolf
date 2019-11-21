@@ -1,0 +1,37 @@
+﻿Feature: RedisDelete
+	In order to cleanup
+	As a Warewolf user
+	I want to be able to delete the key from cache
+
+@RedisDelete
+Scenario: Delete Key From Cache
+	Given Redis source "localhost"
+	And I have a key "MyData"
+	And an assign "dataToStore" as
+		| var      | value   |
+		| [[Var1]] | "Test1" |
+	Then The "MyData" Cache exists
+	Then I have an existing key to delete "MyData"
+	When I execute the delete tool
+	Then The "MyData" Cache has been deleted
+
+
+@RedisDelete
+Scenario: Delete Specific Key From Cache
+	Given Redis source "localhost"
+	And I have a key "MyData"
+	And an assign "dataToStore" as
+		| var      | value   |
+		| [[Var1]] | "Test1" |
+	Then I execute the get/set tool
+	Then I add another key "MyData2"
+	And another assign "dataToStore2" as
+		| var      | value   |
+		| [[Var3]] | "Test4" |
+	Then I execute the get/set tool
+	Then The "MyData" Cache exists
+	Then The "MyData2" Cache exists
+	Then I have an existing key to delete "MyData"
+	When I execute the delete tool
+	Then The "MyData" Cache has been deleted
+	Then The "MyData2" Cache exists
