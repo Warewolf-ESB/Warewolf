@@ -505,7 +505,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(firstGate, result);
 
-            result = firstGate.Execute(dataObject, 0);
+            result = result.Execute(dataObject, 0);
 
             Assert.AreEqual(secondGate, result);
             

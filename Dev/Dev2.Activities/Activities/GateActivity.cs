@@ -177,7 +177,7 @@ namespace Dev2.Activities
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(GateOptions),
-                    Value = GateOptions.ToString()
+                    Value = GateOptions?.ToString()
                 },
                 new StateVariable
                 {
