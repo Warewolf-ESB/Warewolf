@@ -44,7 +44,7 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            string destinationServer = Depends.RigOpsHost + '.' + Depends.RigOpsDomain + ':' + WorkflowExecutionSteps._containerOps.Container.Port;
+            string destinationServer = Depends.RigOpsIP + ':' + WorkflowExecutionSteps._containerOps.Container.Port;
 
             var formattableString = $"http://{destinationServer}";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))
