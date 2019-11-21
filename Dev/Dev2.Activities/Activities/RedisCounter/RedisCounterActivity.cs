@@ -29,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisCounter
 {
-    [ToolDescriptorInfo(nameof(RedisCounter), "Redis Counter", ToolType.Native, "3446a1fa-ea47-477f-8ee7-6eb72b0d41d9", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisCounter")]
+    //[ToolDescriptorInfo(nameof(RedisCounter), "Redis Counter", ToolType.Native, "3446a1fa-ea47-477f-8ee7-6eb72b0d41d9", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisCounter")]
     public class RedisCounterActivity : DsfBaseActivity, IEquatable<RedisCounterActivity>
     {
         long _result;
