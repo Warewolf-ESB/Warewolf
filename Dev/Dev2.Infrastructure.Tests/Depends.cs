@@ -12,6 +12,7 @@ public class Depends : Attribute, IDisposable
 {
     public static readonly string RigOpsHost = "RSAKLFSVRHST1";
     public static readonly string RigOpsDomain = "dev2.local";
+    public static readonly string RigOpsIP = "192.168.104.19";
 
     public enum ContainerType
     {
@@ -60,7 +61,7 @@ public class Depends : Attribute, IDisposable
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result = "";
             string containerType = ConvertToString(_containerType);
-            string address = $"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Start/{containerType}.json";
+            string address = $"http://{RigOpsIP}:3142/public/Container/Async/Start/{containerType}.json";
             var retryCount = 0;
             do
             {
@@ -73,6 +74,7 @@ public class Depends : Attribute, IDisposable
             }
             Container.Host = RigOpsHost;
             Container.Domain = RigOpsDomain;
+            Container.IP = RigOpsIP;
         }
         switch (_containerType)
         {
@@ -103,7 +105,7 @@ public class Depends : Attribute, IDisposable
     {
         using (var client = new WebClient { Credentials = CredentialCache.DefaultNetworkCredentials })
         {
-            var result = client.DownloadString($"http://{RigOpsHost}.{RigOpsDomain}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
+            var result = client.DownloadString($"http://{RigOpsIP}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             var JSONObj = javaScriptSerializer.Deserialize<StopContainer>(result);
             if (JSONObj.Result != "Success" && JSONObj.Result != "This API does not support stopping Linux containers." && JSONObj.Result != "")
@@ -134,7 +136,7 @@ public class Depends : Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsHost}.{RigOpsDomain}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
+            UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsIP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
         }
         else
         {
@@ -160,7 +162,7 @@ public class Depends : Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"Data Source={RigOpsHost}.{RigOpsDomain},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
+            UpdateSourcesConnectionStrings($"Data Source={RigOpsIP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
             Thread.Sleep(30000);
         }
         else
@@ -183,7 +185,7 @@ public class Depends : Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"HostName={RigOpsHost}.{RigOpsDomain};Port={Container.Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
+            UpdateSourcesConnectionStrings($"HostName={RigOpsIP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
             Thread.Sleep(120000);
         }
         else
@@ -206,7 +208,7 @@ public class Depends : Attribute, IDisposable
             };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"Host={RigOpsHost}.{RigOpsDomain};Port={Container.Port};UserName=guest;Password=guest;Database=TestDB", knownServerSources);
+            UpdateSourcesConnectionStrings($"Host={RigOpsIP};Port={Container.Port};UserName=guest;Password=guest;Database=TestDB", knownServerSources);
             Thread.Sleep(120000);
         }
         else
@@ -224,7 +226,7 @@ public class Depends : Attribute, IDisposable
     {
         if (EnableDocker)
         {
-            UpdateSourcesConnectionString($"{RigOpsHost}.{RigOpsDomain};Port={Container.Port}", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            UpdateSourcesConnectionString($"{RigOpsIP};Port={Container.Port}", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             Thread.Sleep(30000);
         }
         else

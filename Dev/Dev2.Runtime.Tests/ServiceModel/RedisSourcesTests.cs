@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new RedisSource
             {
-                HostName = $"{Depends.RigOpsHost}.{Depends.RigOpsDomain}",
+                HostName = $"{Depends.RigOpsIP}",
                 Port = "6379"
             }.ToString();
 
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new RedisSource
             {
-                HostName = $"{Depends.RigOpsHost}.{Depends.RigOpsDomain}",
+                HostName = $"{Depends.RigOpsIP}",
                 Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "Password"

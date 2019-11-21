@@ -193,7 +193,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = emptyDBName ? "" : "Dev2TestingDB",
-                Server = $"{Depends.RigOpsHost}.{Depends.RigOpsDomain}",
+                Server = $"{Depends.RigOpsIP}",
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
