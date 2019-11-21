@@ -18,7 +18,6 @@ using Dev2.Workspaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 
 namespace Dev2
 {
@@ -54,7 +53,6 @@ namespace Dev2
             _directory = directory;
             _resourceDirectory = resourceDirectory;
             _resourceCatalogFactory = resourceCatalogFactory;
-            Thread.Sleep(30000);
             _catalog = resourceCatalogFactory.New();
         }
 
