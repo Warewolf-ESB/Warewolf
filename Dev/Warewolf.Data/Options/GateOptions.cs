@@ -16,6 +16,8 @@ namespace Warewolf.Data.Options
 {
     public class GateOptions 
     {
+        public GateOptions()
+        { }
         public YesNo Resume { get; set; } = YesNo.No;
         public Guid ResumeEndpoint { get; set; } = Guid.Empty;
         public int Count { get; set; } = 2;

@@ -210,12 +210,15 @@ namespace Warewolf.Options
             {
                 if (value is null)
                 {
-                    value = Values?.First().Key ?? string.Empty;
+                    value = Values?.First().Key ?? "";
                 }
 
                 if (SetProperty(ref _optionName, value))
                 {
-                    Value = Values?.First(o => o.Key == value).Value ?? 0;
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        Value = Values?.First(o => o.Key == value).Value ?? 0;
+                    }
                 }
             }
         }

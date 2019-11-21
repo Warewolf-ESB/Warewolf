@@ -47,6 +47,10 @@ namespace Warewolf.UI
         object Convert(OptionsWithNotifier options, Type targetType, object parameter, CultureInfo culture)
         {
             var optionViews = new ObservableCollection<OptionView>();
+            if (options.Options is null)
+            {
+                return optionViews;
+            }
             foreach (var option in options.Options)
             {
                 var optionView = new OptionView(option, () => { options.Notify(); });

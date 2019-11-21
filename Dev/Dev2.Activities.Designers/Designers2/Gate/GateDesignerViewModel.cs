@@ -70,7 +70,6 @@ namespace Dev2.Activities.Designers2.Gate
 
             Collection = new ObservableCollection<IDev2TOFn>();
             Collection.CollectionChanged += CollectionCollectionChanged;
-            LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone();
 
             var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
             WhereOptions = new ObservableCollection<string>(collection);
@@ -129,7 +128,10 @@ namespace Dev2.Activities.Designers2.Gate
             var gateOptions = _modelItem.Properties["GateOptions"].ComputedValue as GateOptions;
             if (gateOptions != null)
             {
-                Options = new OptionsWithNotifier { Options = OptionConvertor.Convert(gateOptions) };
+                var result = new List<IOption>();
+                var failureOptions = OptionConvertor.Convert(gateOptions);
+                result.AddRange(failureOptions);
+                Options = new OptionsWithNotifier { Options = result };
             }
             else
             {
@@ -140,31 +142,6 @@ namespace Dev2.Activities.Designers2.Gate
 
                 Options = new OptionsWithNotifier{ Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume)};
             }
-        }
-
-        private void LoadDummyDataThatShouldBePopulatedWhenTheActivityIsDone()
-        {
-            var decisionTo = new DecisionTO
-            {
-                MatchValue = "[[name]]",
-                SearchType = "=",
-                SearchCriteria = "bob"
-            };
-            var decisionTo1 = new DecisionTO
-            {
-                MatchValue = "[[name1]]",
-                SearchType = "=",
-                SearchCriteria = "bob1"
-            };
-            var decisionTo2 = new DecisionTO
-            {
-                MatchValue = "[[name2]]",
-                SearchType = "=",
-                SearchCriteria = "bob2"
-            };
-            Collection.Add(decisionTo);
-            Collection.Add(decisionTo1);
-            Collection.Add(decisionTo2);
         }
 
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
