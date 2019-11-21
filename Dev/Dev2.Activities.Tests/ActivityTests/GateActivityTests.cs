@@ -384,6 +384,69 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndPassingSecondGate_ExpectThirdNode()
+        {
+            var firstGateId = Guid.NewGuid();
+            var secondGateId = Guid.NewGuid();
+
+            var failingConditions = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>()
+            };
+            failingConditions.AddModelItem(new Dev2Decision
+            {
+                Col1 = "[[somebob]]",
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
+                Col2 = "another bob"
+            });
+
+            var thirdNode = new Mock<IDev2Activity>().Object;
+            var secondGate = new GateActivity
+            {
+                UniqueID = secondGateId.ToString(),
+                GateFailure = GateFailureAction.Retry.ToString(),
+                RetryEntryPointId = firstGateId,
+                Conditions = failingConditions,
+                NextNodes = new List<IDev2Activity> { thirdNode },
+            };
+
+            //---------------Set up test pack-------------------
+            var passingConditions = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>()
+            };
+            passingConditions.AddModelItem(new Dev2Decision
+            {
+                Col1 = "[[a]]",
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
+                Col2 = "bob"
+            });
+
+            //------------Setup for test--------------------------
+            var firstGate = new GateActivity
+            {
+                UniqueID = firstGateId.ToString(),
+                GateFailure = GateFailureAction.StopOnError.ToString(),
+                Conditions = passingConditions,
+                NextNodes = new List<IDev2Activity> { secondGate },
+            };
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "bob", 0);
+
+            var result = firstGate.Execute(dataObject, 0);
+
+            Assert.AreEqual(secondGate, result);
+
+            dataObject.Environment.Assign("[[somebob]]", "another bob", 0);
+            result = result.Execute(dataObject, 0);
+
+            Assert.AreEqual(thirdNode, result);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndFailingSecondGate_ExpectDetailedLog()
         {
             var firstGateId = Guid.NewGuid();
@@ -441,7 +504,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             result = result.Execute(dataObject, 0);
 
             Assert.AreEqual(firstGate, result);
-            //Assert.AreEqual(thirdNode, result);
+
+            result = result.Execute(dataObject, 0);
+
+            Assert.AreEqual(secondGate, result);
+            
+            dataObject.Environment.Assign("[[somebob]]", "notbob", 0);
+
+            result = result.Execute(dataObject, 0);
+
+            Assert.AreEqual(thirdNode, result);
         }
     }
 }

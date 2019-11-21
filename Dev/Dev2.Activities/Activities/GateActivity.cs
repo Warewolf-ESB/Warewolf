@@ -177,7 +177,7 @@ namespace Dev2.Activities
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(GateOptions),
-                    Value = GateOptions.ToString()
+                    Value = GateOptions?.ToString()
                 },
                 new StateVariable
                 {
@@ -202,7 +202,10 @@ namespace Dev2.Activities
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
             _dataObject = data;
-            _dataObject.Gates.Add(this);
+            if (!_dataObject.Gates.Contains(this))
+            {
+                _dataObject.Gates.Add(this);
+            }
 
             if (_retryState.NumberOfRetries <= 0)
             {
@@ -224,12 +227,16 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private static IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
         {
             // if allowed to retry and its time for a retry return NextNode
             // otherwise schedule this environment and current activity to 
             // be executed at the calculated latter time
-
+            var allowed = data != null; // this is a place holder, this should be using an retry algorithm
+            if (allowed)
+            {
+                return NextNodes.First();
+            }
 
             // Gate has reached maximum retries.
             return null;
