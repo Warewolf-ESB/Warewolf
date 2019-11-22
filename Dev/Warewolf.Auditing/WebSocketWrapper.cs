@@ -119,18 +119,29 @@ namespace Warewolf.Auditing
         {
             var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / SendChunkSize);
 
-            for (var i = 0; i < messagesCount; i++)
+            try
             {
-                var offset = (SendChunkSize * i);
-                var count = SendChunkSize;
-                var lastMessage = ((i + 1) == messagesCount);
-
-                if ((count * (i + 1)) > messageBuffer.Length)
+                for (var i = 0; i < messagesCount; i++)
                 {
-                    count = messageBuffer.Length - offset;
-                }
+                    var offset = (SendChunkSize * i);
+                    var count = SendChunkSize;
+                    var lastMessage = ((i + 1) == messagesCount);
 
-                await _ws.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                    if ((count * (i + 1)) > messageBuffer.Length)
+                    {
+                        count = messageBuffer.Length - offset;
+                    }
+
+                    await _ws.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                }
+            }
+            catch (Exception)
+            {
+                CallOnDisconnected();
+            }
+            finally
+            {
+                _ws.Dispose();
             }
         }
 
