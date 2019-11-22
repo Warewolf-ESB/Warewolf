@@ -64,7 +64,6 @@
                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                       ItemsSource="{Binding RedisServers}"
                       DisplayMemberPath="ResourceName"
-                      Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedRedisServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static languages:Tooltips.RedisServersToolTip}"
@@ -76,7 +75,7 @@
             <Button Grid.Column="2"
                     Grid.Row="0"
                     Content="..."
-                    Margin="{StaticResource ControlBorderRight}"
+                    Margin="{StaticResource ControlBorderLeft}"
                     Command="{Binding EditRedisServerCommand}"
                     ToolTip="{x:Static languages:Tooltips.RedisEditServerToolTip}"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRedisServerCommand_AutoID}" >
@@ -85,12 +84,13 @@
                 </i:Interaction.Behaviors>
             </Button>
             <Button x:Name="RedisNewButton" 
-                        Grid.Column="3"
-                        Content="{x:Static languages:Core.New}" 
-                        Width="Auto"
-                        Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static languages:Tooltips.RedisNewServerToolTip}"
-                        Command="{Binding NewRedisServerCommand}">
+                    Grid.Column="3"
+                    Content="{x:Static languages:Core.New}" 
+                    Margin="{StaticResource ControlBorderLeft}"
+                    Width="Auto"
+                    Style="{StaticResource ButtonOrangeStyle}" 
+                    ToolTip="{x:Static languages:Tooltips.RedisNewServerToolTip}"
+                    Command="{Binding NewRedisServerCommand}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisNewServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -118,7 +118,7 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTL" />
+            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTL" Margin="{StaticResource ControlBorderTopLeft}" />
             <ui:IntellisenseTextBox Grid.Column="3"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -126,7 +126,7 @@
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False" 
-                                    Margin="{StaticResource ControlBorderTop}"
+                                    Margin="{StaticResource ControlBorderTopLeft}"
                                     Text="{Binding Path=TTL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
                                     ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
