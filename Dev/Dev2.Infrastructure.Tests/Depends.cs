@@ -22,7 +22,8 @@ public class Depends : Attribute, IDisposable
         Warewolf = 3,
         RabbitMQ = 4,
         CIRemote = 5,
-        Redis = 6
+        Redis = 6,
+        AnonymousRedis = 7
     }
 
     string ConvertToString(ContainerType containerType)
@@ -43,6 +44,8 @@ public class Depends : Attribute, IDisposable
                 return "CIRemote";
             case ContainerType.Redis:
                 return "Redis";
+            case ContainerType.AnonymousRedis:
+                return "AnonymousRedis";
         }
         throw new ArgumentOutOfRangeException();
     }

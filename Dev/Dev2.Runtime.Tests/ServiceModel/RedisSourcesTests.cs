@@ -48,13 +48,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
-        [Depends(Depends.ContainerType.Redis)]
+        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             var source = new RedisSource
             {
                 HostName = $"{Depends.RigOpsIP}",
-                Port = "6379"
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
+                Port = "6380"
             }.ToString();
 
             var handler = new RedisSources();
@@ -91,7 +92,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 HostName = $"{Depends.RigOpsIP}",
                 Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "Password"
+                Password = "pass123"
             }.ToString();
 
             var handler = new RedisSources();
