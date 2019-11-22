@@ -9,6 +9,7 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Redis"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                               xmlns:attachedProperties1="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -97,7 +98,6 @@
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="1"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="Key" 
@@ -107,7 +107,8 @@
                                     Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding Path=Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisKeyTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisKeyToolTip}">
+                                    ToolTip="{x:Static languages:Tooltips.RedisKeyToolTip}"
+                                    attachedProperties1:FocusSetter.IsFocused="{Binding IsKeyFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisKeyHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -119,7 +120,6 @@
 
             <TextBlock Grid.Column="2" Grid.Row="1" Text="TTL" />
             <ui:IntellisenseTextBox Grid.Column="3"
-                                    Grid.ColumnSpan="1"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="TTL (ms)" 
