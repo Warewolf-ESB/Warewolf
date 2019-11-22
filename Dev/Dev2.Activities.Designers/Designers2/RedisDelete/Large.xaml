@@ -8,7 +8,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.RedisDelete"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -40,7 +40,6 @@
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid>
@@ -97,7 +96,7 @@
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.ColumnSpan="1"
+                                    Grid.ColumnSpan="3"
                                     Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="Key" 
@@ -107,7 +106,8 @@
                                     Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding Path=Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisDeleteKeyTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.RedisDeleteKeyToolTip}">
+                                    ToolTip="{x:Static languages:Tooltips.RedisDeleteKeyToolTip}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsKeyFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisDeleteKeyHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -117,8 +117,6 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="2"
-                        Grid.ColumnSpan="2" />
+        <errors:OnError Grid.Row="1" />
     </Grid>
 </core:ActivityDesignerTemplate>

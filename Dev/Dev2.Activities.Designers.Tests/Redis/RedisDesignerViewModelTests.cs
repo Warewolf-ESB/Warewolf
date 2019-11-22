@@ -85,6 +85,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
             var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(redisDesignerViewModel.HasLargeView);
+            Assert.IsTrue(redisDesignerViewModel.ShowLarge);
             Assert.AreEqual(string.Empty, redisDesignerViewModel.ActivityFuncDisplayName);
             Assert.IsNull(redisDesignerViewModel.ActivityFuncIcon);
             Assert.AreEqual(1, redisDesignerViewModel.RedisServers.Count);

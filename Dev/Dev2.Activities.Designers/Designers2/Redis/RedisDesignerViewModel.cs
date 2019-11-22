@@ -24,6 +24,11 @@ using Dev2.Common.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Validation;
+using Dev2.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Redis
 {
@@ -48,6 +53,7 @@ namespace Dev2.Activities.Designers2.Redis
             _shellViewModel = shellViewModel;
 
             AddTitleBarLargeToggle();
+            ShowLarge = true;
             var dataFunc = modelItem.Properties["ActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             ActivityFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
             var type = dataFunc?.Handler?.GetType();
@@ -181,9 +187,28 @@ namespace Dev2.Activities.Designers2.Redis
         public static readonly DependencyProperty ActivityFuncIconProperty =
             DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
 
+        public bool IsKeyFocused { get => (bool)GetValue(IsKeyFocusedProperty); set { SetValue(IsKeyFocusedProperty, value); } }
+
+        public static readonly DependencyProperty IsKeyFocusedProperty =
+            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisDesignerViewModel), new PropertyMetadata(false));
+
         [ExcludeFromCodeCoverage]
         public override void Validate()
         {
+            Errors = null;
+            var errors = new List<IActionableErrorInfo>();
+
+            Action onError = () => IsKeyFocused = true;
+            var util = new VariableUtils();
+            util.AddError(errors, util.TryParseVariables(Key, out string keyValue, onError));
+
+            if (string.IsNullOrWhiteSpace(keyValue))
+            {
+                errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Key") });
+            }
+
+            // Always assign property otherwise binding does not update!
+            Errors = errors;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
