@@ -75,6 +75,10 @@ namespace Warewolf.Logger
                     _writer.WriteLine("Logging Server OnClose...");
                     clients.Remove(socket);
                 };
+                socket.OnError = exception =>
+                {
+                    _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
+                };
 
                 var consumer = new SeriLogConsumer(_loggerContext);
                 socket.StartConsuming(new AuditCommandConsumer(consumer, socket, _writer));
