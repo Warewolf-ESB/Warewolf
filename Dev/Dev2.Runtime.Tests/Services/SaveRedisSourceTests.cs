@@ -19,6 +19,8 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Serialization;
@@ -124,7 +126,7 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = "HostName",
                 Port = "3679",
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+                AuthenticationType = AuthenticationType.Anonymous
             };
             var compressedExecuteMessage = new CompressedExecuteMessage();
             var serializeToJsonString = source.SerializeToJsonString(new DefaultSerializationBinder());
@@ -143,7 +145,6 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
-            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.Name));
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()));
         }
 
@@ -160,7 +161,7 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = "HostName",
                 Port = "3679",
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+                AuthenticationType = AuthenticationType.Anonymous
             };
             var compressedExecuteMessage = new CompressedExecuteMessage();
             var serializeToJsonString = source.SerializeToJsonString(new DefaultSerializationBinder());
@@ -180,8 +181,36 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
-            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.Name));
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), redisSource, It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SaveRedisSource))]
+        public void SaveRedisSource_Execute_GivenResourceDefinition_ShouldSave()
+        {
+            //----------------------Arrange----------------------
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+
+            var redisSourceDefination = new RedisSourceDefinition
+            {
+                Name = "redisSource",
+                HostName = "testHost",
+                Password = "testPaass",
+                AuthenticationType = AuthenticationType.Password
+            };
+            
+            mockResourceCatalog.Setup(o => o.SaveResource(It.IsAny<Guid>(), redisSourceDefination.SerializeToJsonStringBuilder(), string.Empty));
+
+            var sut = new SaveRedisSource(mockResourceCatalog.Object);
+            //----------------------Act--------------------------
+            var result = sut.Execute(new Dictionary<string, StringBuilder> { { "RedisSource", redisSourceDefination.SerializeToJsonStringBuilder() } }, new Mock<IWorkspace>().Object);
+            //----------------------Assert-----------------------
+            var serializer = new Dev2JsonSerializer();
+
+            Assert.IsFalse(serializer.Deserialize<ExecuteMessage>(result).HasError);
+            mockResourceCatalog.Verify(o => o.SaveResource(It.IsAny<Guid>(), It.IsAny<RedisSource>(), It.IsAny<string>()), Times.Once);
+
         }
 
     }
