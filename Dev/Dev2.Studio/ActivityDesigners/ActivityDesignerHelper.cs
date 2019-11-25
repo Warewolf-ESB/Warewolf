@@ -98,6 +98,10 @@ using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Redis;
 using Dev2.Activities.Designers2.Redis;
+using Dev2.Activities.RedisDelete;
+using Dev2.Activities.Designers2.RedisDelete;
+using Dev2.Activities.RedisCounter;
+using Dev2.Activities.Designers2.RedisCounter;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -195,7 +199,9 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) },
-                { typeof(RedisActivity), typeof(RedisDesigner) }
+                { typeof(RedisDeleteActivity), typeof(RedisDeleteDesigner) },
+                { typeof(RedisActivity), typeof(RedisDesigner) },
+                { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) }
             };
         static Hashtable _hashTable;
 

@@ -1865,8 +1865,23 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisKeyHelp" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
-  <data name="RedisTTEHelp" xml:space="preserve">
-    <value>Redis TTE time till expire stored data for a given Key</value>
+  <data name="RedisDeleteKeyHelp" xml:space="preserve">
+    <value>Redis Key to delete data</value>
+  </data>
+  <data name="RedisCounterKeyHelp" xml:space="preserve">
+    <value>Redis Key to create a counter</value>
+  </data>
+  <data name="RedisCounterStepSizeHelp" xml:space="preserve">
+    <value>Redis Step Size to increment or decrement a counter</value>
+  </data>
+  <data name="RedisCounterTypeIncrementHelpText" xml:space="preserve">
+    <value>Redis Increment counter</value>
+  </data>
+  <data name="RedisCounterTypeDecrementHelpText" xml:space="preserve">
+    <value>Redis Decrement counter</value>
+  </data>
+  <data name="RedisTTLHelp" xml:space="preserve">
+    <value>Redis TTL (Time To Live) stored data for a given Key</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
@@ -1979,6 +1994,12 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Utility_Redis" xml:space="preserve">
     <value>Use the Redis tool to store data in-memory.</value>
+  </data>
+  <data name="Tool_Utility_RedisDelete" xml:space="preserve">
+    <value>Use the Redis Delete tool to delete existing data in-memory.</value>
+  </data>
+  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+    <value>Use the Redis Counter tool to increment or decrement values in-memory.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">
     <value>Use the format number tool for rounding and showing decimals.</value>

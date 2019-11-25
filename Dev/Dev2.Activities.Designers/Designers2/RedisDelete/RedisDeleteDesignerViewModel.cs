@@ -12,8 +12,6 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
-using System.Activities;
-using System.Windows.Media;
 using Dev2.Studio.Core.Activities.Utils;
 using System.Collections.ObjectModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -30,21 +28,21 @@ using Dev2.Validation;
 using Dev2.Providers.Errors;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.Activities.Designers2.Redis
+namespace Dev2.Activities.Designers2.RedisDelete
 {
-    public class RedisDesignerViewModel : ActivityDesignerViewModel
+    public class RedisDeleteDesignerViewModel : ActivityDesignerViewModel
     {
         readonly IServer _server;
         IShellViewModel _shellViewModel;
 
         [ExcludeFromCodeCoverage]
-        public RedisDesignerViewModel(ModelItem modelItem)
+        public RedisDeleteDesignerViewModel(ModelItem modelItem)
             : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
         {
 
         }
 
-        public RedisDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
+        public RedisDeleteDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("environmentModel", server);
@@ -54,13 +52,6 @@ namespace Dev2.Activities.Designers2.Redis
 
             AddTitleBarLargeToggle();
             ShowLarge = true;
-            var dataFunc = modelItem.Properties["ActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
-            ActivityFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
-            var type = dataFunc?.Handler?.GetType();
-            if (type != null)
-            {
-                ActivityFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
-            }
             RedisServers = new ObservableCollection<RedisSource>();
             LoadRedisServers();
             EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
@@ -68,11 +59,7 @@ namespace Dev2.Activities.Designers2.Redis
             if (modelItem.Properties["Key"]?.ComputedValue != null)
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
-            }
-            if (modelItem.Properties["TTL"]?.ComputedValue != null)
-            {
-                TTL = int.Parse(modelItem.Properties["TTL"]?.ComputedValue.ToString());
-            }
+            }            
         }
 
         public ObservableCollection<RedisSource> RedisServers { get; private set; }
@@ -84,11 +71,11 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty SelectedRedisServerProperty =
-            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
+            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
 
         private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDesignerViewModel)d;
+            var viewModel = (RedisDeleteDesignerViewModel)d;
             viewModel.OnSelectedRedisServerChanged();
             viewModel.EditRedisServerCommand?.RaiseCanExecuteChanged();
         }
@@ -110,37 +97,17 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty KeyProperty =
-            DependencyProperty.Register("Key", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
+            DependencyProperty.Register("Key", typeof(string), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
 
         private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDesignerViewModel)d;
+            var viewModel = (RedisDeleteDesignerViewModel)d;
             viewModel.OnKeyChanged();
         }
 
         protected virtual void OnKeyChanged()
         {
             ModelItem.SetProperty("Key", Key);
-        }
-
-        public int TTL
-        {
-            get => (int)GetValue(TTLProperty);
-            set => SetValue(TTLProperty, value);
-        }
-
-        public static readonly DependencyProperty TTLProperty =
-            DependencyProperty.Register("TTL", typeof(int), typeof(RedisDesignerViewModel), new PropertyMetadata(0, OnTTLChanged));
-
-        private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = (RedisDesignerViewModel)d;
-            viewModel.OnTTLChanged();
-        }
-
-        protected virtual void OnTTLChanged()
-        {
-            ModelItem.SetProperty("TTL", TTL);
         }
 
         private void EditRedisServerSource()
@@ -169,28 +136,10 @@ namespace Dev2.Activities.Designers2.Redis
             SelectedRedisServer = selectedRedisServer;
         }
 
-        public string ActivityFuncDisplayName
-        {
-            get => (string)GetValue(ActivityFuncDisplayNameProperty);
-            set => SetValue(ActivityFuncDisplayNameProperty, value);
-        }
-
-        public static readonly DependencyProperty ActivityFuncDisplayNameProperty =
-            DependencyProperty.Register("ActivityFuncDisplayName", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
-
-        public ImageSource ActivityFuncIcon
-        {
-            get => (ImageSource)GetValue(ActivityFuncIconProperty);
-            set => SetValue(ActivityFuncIconProperty, value);
-        }
-
-        public static readonly DependencyProperty ActivityFuncIconProperty =
-            DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
-
         public bool IsKeyFocused { get => (bool)GetValue(IsKeyFocusedProperty); set { SetValue(IsKeyFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsKeyFocusedProperty =
-            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(false));
 
         [ExcludeFromCodeCoverage]
         public override void Validate()

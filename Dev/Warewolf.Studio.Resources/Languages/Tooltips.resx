@@ -1149,6 +1149,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisKeyToolTip" xml:space="preserve">
     <value>Redis Key to store data</value>
   </data>
+  <data name="RedisDeleteKeyToolTip" xml:space="preserve">
+    <value>Redis Key to delete data</value>
+  </data>
   <data name="RedisTimeoutToolTip" xml:space="preserve">
     <value>Redis Timeout for stored data</value>
   </data>
@@ -2285,6 +2288,15 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Data_Assign_Object" xml:space="preserve">
     <value>Tags: json array declare setup variable set</value>
   </data>
+   <data name="Tool_Utility_Redis" xml:space="preserve">
+    <value>Tags: set/get data under a specified key</value>
+  </data>
+  <data name="Tool_Utility_RedisDelete" xml:space="preserve">
+    <value>Tags: removes the specified key</value>
+  </data>
+  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+    <value>increment/decrement the number stored at key by one</value>
+  </data>
   <data name="Tool_Ruby" xml:space="preserve">
     <value>Tags: ruby script</value>
   </data>
@@ -2395,5 +2407,20 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
+  </data>
+  <data name="RedisTTLToolTip" xml:space="preserve">
+    <value>Redis TTL (Time To Live)</value>
+  </data>
+  <data name="RedisCounterKeyToolTip" xml:space="preserve">
+    <value>Redis Key to create a counter</value>
+  </data>
+  <data name="RedisCounterStepSizeToolTip" xml:space="preserve">
+    <value>Redis Step Size to increment or decrement a counter</value>
+  </data>
+  <data name="RedisCounterTypeIncrementToolTip" xml:space="preserve">
+    <value>Redis Increment a counter</value>
+  </data>
+  <data name="RedisCounterTypeDecrementToolTip" xml:space="preserve">
+    <value>Redis Decrement a counter</value>
   </data>
 </root>

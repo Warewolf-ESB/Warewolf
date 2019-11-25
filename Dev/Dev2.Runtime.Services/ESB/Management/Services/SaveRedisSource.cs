@@ -63,9 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     redisSourceDef.Path = redisSourceDef.Path.Substring(0, redisSourceDef.Path.LastIndexOf("\\", StringComparison.Ordinal));
                 }
 
-                RedisSource redisSource;
-                var existingSource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, redisSourceDef.Name);
-                redisSource = existingSource != null ? existingSource as RedisSource : new RedisSource
+                var redisSource = new RedisSource
                 {
                     ResourceID = redisSourceDef.Id,
                     HostName = redisSourceDef.HostName,
