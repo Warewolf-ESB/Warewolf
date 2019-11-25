@@ -51,6 +51,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
@@ -62,6 +63,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual("TestRedisSource", testRedisSource.HandlesType());
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
@@ -89,6 +91,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
@@ -104,10 +107,12 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
-        public void TestRedisSource_Execute_GivenResourceDefination_ShouldTestNewSourceReturnResourceDefinationMsg()
+        [Depends(Depends.ContainerType.AnonymousRedis)]
+        public void TestRedisSource_Execute_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
@@ -115,8 +120,8 @@ namespace Dev2.Tests.Runtime.Services
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = "HostName",
-                Port = "3679",
+                HostName = $"{Depends.RigOpsIP}",
+                Port = "6380",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
@@ -129,7 +134,7 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = testRedisSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
-            Assert.IsFalse(result.HasError);
+            Assert.IsFalse(result.HasError, result.Message.ToString());
         }
     }
 }
