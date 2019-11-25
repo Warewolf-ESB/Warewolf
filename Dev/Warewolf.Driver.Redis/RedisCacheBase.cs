@@ -42,12 +42,27 @@ namespace Warewolf.Driver.Redis
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.Get(key);
         }
+        public bool Delete(string key)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            return Cache.Delete(key);
+        }
+        public long Increment(string key, string value)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            return Cache.Increment(key,value);
+        }
+        public long Decrement(string key, string value)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            return Cache.Decrement(key, value); ;
+        }
     }
 
     public class RedisCacheImpl : RedisCacheBase
     {
         public RedisCacheImpl() { }
-        public RedisCacheImpl(string hostName) : this(() => new RedisConnection(hostName)) { }
+        public RedisCacheImpl(string hostName, int port, string password) : this(() => new RedisConnection(hostName, port, password)) { }
         public RedisCacheImpl(Func<IRedisConnection> createConnection) : base(createConnection)
         {
         }

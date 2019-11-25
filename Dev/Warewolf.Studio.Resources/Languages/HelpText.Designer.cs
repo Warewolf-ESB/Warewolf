@@ -2915,6 +2915,51 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redis Key to create a counter.
+        /// </summary>
+        public static string RedisCounterKeyHelp {
+            get {
+                return ResourceManager.GetString("RedisCounterKeyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Step Size to increment or decrement a counter.
+        /// </summary>
+        public static string RedisCounterStepSizeHelp {
+            get {
+                return ResourceManager.GetString("RedisCounterStepSizeHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Decrement counter.
+        /// </summary>
+        public static string RedisCounterTypeDecrementHelpText {
+            get {
+                return ResourceManager.GetString("RedisCounterTypeDecrementHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Increment counter.
+        /// </summary>
+        public static string RedisCounterTypeIncrementHelpText {
+            get {
+                return ResourceManager.GetString("RedisCounterTypeIncrementHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Key to delete data.
+        /// </summary>
+        public static string RedisDeleteKeyHelp {
+            get {
+                return ResourceManager.GetString("RedisDeleteKeyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit the selected redis connection properties.
         /// </summary>
         public static string RedisEditServerHelp {
@@ -2969,11 +3014,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TTE time till expire stored data for a given Key.
+        ///   Looks up a localized string similar to Redis TTL (Time To Live) stored data for a given Key.
         /// </summary>
-        public static string RedisTTEHelp {
+        public static string RedisTTLHelp {
             get {
-                return ResourceManager.GetString("RedisTTEHelp", resourceCulture);
+                return ResourceManager.GetString("RedisTTLHelp", resourceCulture);
             }
         }
         
@@ -4981,6 +5026,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Utility_Redis {
             get {
                 return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Redis Counter tool to increment or decrement values in-memory..
+        /// </summary>
+        public static string Tool_Utility_RedisCounter {
+            get {
+                return ResourceManager.GetString("Tool_Utility_RedisCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Redis Delete tool to delete existing data in-memory..
+        /// </summary>
+        public static string Tool_Utility_RedisDelete {
+            get {
+                return ResourceManager.GetString("Tool_Utility_RedisDelete", resourceCulture);
             }
         }
         

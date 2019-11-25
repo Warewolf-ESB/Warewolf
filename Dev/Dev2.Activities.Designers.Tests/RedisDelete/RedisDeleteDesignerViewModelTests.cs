@@ -11,8 +11,8 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Dev2.Activities.Designers2.Redis;
-using Dev2.Activities.Redis;
+using Dev2.Activities.Designers2.RedisDelete;
+using Dev2.Activities.RedisDelete;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
@@ -21,45 +21,45 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Activities.Designers.Tests.Redis
+namespace Dev2.Activities.Designers.Tests.RedisDelete
 {
     [TestClass]
-    public class RedisDesignerViewModelTests
+    public class RedisDeleteDesignerViewModelTests
     {
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new RedisActivity());
+            return ModelItemUtils.CreateModelItem(new RedisDeleteActivity());
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisDeleteDesignerViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Null_EnvironmentModel()
+        public void RedisDeleteDesignerViewModel_Constructor_ModelItemIsValid_Null_EnvironmentModel()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            _ = new RedisDesignerViewModel(CreateModelItem(), null, null);
+            _ = new RedisDeleteDesignerViewModel(CreateModelItem(), null, null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisDeleteDesignerViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Null_ShellViewModel()
+        public void RedisDeleteDesignerViewModel_Constructor_ModelItemIsValid_Null_ShellViewModel()
         {
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
             //------------Execute Test---------------------------
-            _ = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, null);
+            _ = new RedisDeleteDesignerViewModel(CreateModelItem(), mockServer.Object, null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
-        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Constructor()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisDeleteDesignerViewModel))]
+        public void RedisDeleteDesignerViewModel_Constructor_ModelItemIsValid_Constructor()
         {
             //------------Setup for test--------------------------
             var expectedId = Guid.NewGuid();
@@ -82,37 +82,35 @@ namespace Dev2.Activities.Designers.Tests.Redis
             var mockShellViewModel = new Mock<IShellViewModel>();
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            var redisDeleteDesignerViewModel = new RedisDeleteDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             //------------Assert Results-------------------------
-            Assert.IsTrue(redisDesignerViewModel.HasLargeView);
-            Assert.IsTrue(redisDesignerViewModel.ShowLarge);
-            Assert.AreEqual(string.Empty, redisDesignerViewModel.ActivityFuncDisplayName);
-            Assert.IsNull(redisDesignerViewModel.ActivityFuncIcon);
-            Assert.AreEqual(1, redisDesignerViewModel.RedisServers.Count);
-            Assert.AreEqual(expectedId, redisDesignerViewModel.RedisServers[0].ResourceID);
-            Assert.AreEqual("ResourceName", redisDesignerViewModel.RedisServers[0].ResourceName);
-            Assert.AreEqual("HostName", redisDesignerViewModel.RedisServers[0].HostName);
-            Assert.AreEqual("6379", redisDesignerViewModel.RedisServers[0].Port);
-            Assert.AreEqual(Runtime.ServiceModel.Data.AuthenticationType.Anonymous, redisDesignerViewModel.RedisServers[0].AuthenticationType);
+            Assert.IsTrue(redisDeleteDesignerViewModel.HasLargeView);
+            Assert.IsTrue(redisDeleteDesignerViewModel.ShowLarge);
+            Assert.AreEqual(1, redisDeleteDesignerViewModel.RedisServers.Count);
+            Assert.AreEqual(expectedId, redisDeleteDesignerViewModel.RedisServers[0].ResourceID);
+            Assert.AreEqual("ResourceName", redisDeleteDesignerViewModel.RedisServers[0].ResourceName);
+            Assert.AreEqual("HostName", redisDeleteDesignerViewModel.RedisServers[0].HostName);
+            Assert.AreEqual("6379", redisDeleteDesignerViewModel.RedisServers[0].Port);
+            Assert.AreEqual(Runtime.ServiceModel.Data.AuthenticationType.Anonymous, redisDeleteDesignerViewModel.RedisServers[0].AuthenticationType);
 
-            Assert.IsNull(redisDesignerViewModel.SelectedRedisServer);
-            Assert.IsFalse(redisDesignerViewModel.IsRedisServerSelected);
-            Assert.IsFalse(redisDesignerViewModel.EditRedisServerCommand.CanExecute(null));
+            Assert.IsNull(redisDeleteDesignerViewModel.SelectedRedisServer);
+            Assert.IsFalse(redisDeleteDesignerViewModel.IsRedisServerSelected);
+            Assert.IsFalse(redisDeleteDesignerViewModel.EditRedisServerCommand.CanExecute(null));
 
-            redisDesignerViewModel.SelectedRedisServer = redisSource;
+            redisDeleteDesignerViewModel.SelectedRedisServer = redisSource;
 
-            Assert.IsNotNull(redisDesignerViewModel.SelectedRedisServer);
-            Assert.IsTrue(redisDesignerViewModel.IsRedisServerSelected);
-            Assert.AreEqual(redisSource.ResourceID, redisDesignerViewModel.SelectedRedisServer.ResourceID);
-            Assert.IsTrue(redisDesignerViewModel.EditRedisServerCommand.CanExecute(null));
+            Assert.IsNotNull(redisDeleteDesignerViewModel.SelectedRedisServer);
+            Assert.IsTrue(redisDeleteDesignerViewModel.IsRedisServerSelected);
+            Assert.AreEqual(redisSource.ResourceID, redisDeleteDesignerViewModel.SelectedRedisServer.ResourceID);
+            Assert.IsTrue(redisDeleteDesignerViewModel.EditRedisServerCommand.CanExecute(null));
 
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
-        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_UpdateHelpDescriptor()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisDeleteDesignerViewModel))]
+        public void RedisDeleteDesignerViewModel_Constructor_ModelItemIsValid_UpdateHelpDescriptor()
         {
             var expectedHelpText = "redis help text";
 
@@ -140,15 +138,15 @@ namespace Dev2.Activities.Designers.Tests.Redis
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
-            redisDesignerViewModel.UpdateHelpDescriptor(expectedHelpText);
+            var redisDeleteDesignerViewModel = new RedisDeleteDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            redisDeleteDesignerViewModel.UpdateHelpDescriptor(expectedHelpText);
 
             mockHelpViewModel.Verify(helpViewModel => helpViewModel.UpdateHelpText(expectedHelpText), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisDeleteDesignerViewModel))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_EditRedisServerSource()
         {
             var expectedId = Guid.NewGuid();
@@ -178,20 +176,20 @@ namespace Dev2.Activities.Designers.Tests.Redis
             CustomContainer.Register(mockShellViewModel.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object)
+            var redisDeleteDesignerViewModel = new RedisDeleteDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object)
             {
                 SelectedRedisServer = redisSource
             };
-            redisDesignerViewModel.EditRedisServerCommand.Execute(null);
+            redisDeleteDesignerViewModel.EditRedisServerCommand.Execute(null);
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.OpenResource(expectedId, environmentId, mockServer.Object), Times.Once);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
-        public void RedisDesignerViewModel_Constructor_ModelItemIsValid_NewRedisServerSource()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisDeleteDesignerViewModel))]
+        public void RedisDeleteDesignerViewModel_Constructor_ModelItemIsValid_NewRedisServerSource()
         {
             var expectedId = Guid.NewGuid();
             var redisSource = new RedisSource
@@ -220,8 +218,8 @@ namespace Dev2.Activities.Designers.Tests.Redis
             CustomContainer.Register(mockShellViewModel.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
-            redisDesignerViewModel.NewRedisServerCommand.Execute(null);
+            var redisDeleteDesignerViewModel = new RedisDeleteDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            redisDeleteDesignerViewModel.NewRedisServerCommand.Execute(null);
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.NewRedisSource(""), Times.Once);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));

@@ -10,6 +10,7 @@
 
 using System;
 using Dev2.Data.ServiceModel;
+using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -51,6 +52,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
+            var username = @"dev2\IntegrationTester";
+            var password = TestEnvironmentVariables.GetVar(username);
             var source = new RedisSource
             {
                 HostName = $"{Depends.RigOpsIP}",
@@ -97,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var handler = new RedisSources();
             var result = handler.Test(source);
-            Assert.IsTrue(result.IsValid);
+            Assert.IsTrue(result.IsValid,result.ErrorMessage);
         }
 
         [TestMethod]

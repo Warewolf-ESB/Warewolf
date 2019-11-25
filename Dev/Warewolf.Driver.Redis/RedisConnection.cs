@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using ServiceStack.Redis;
 using Warewolf.Interfaces;
 
@@ -17,9 +16,9 @@ namespace Warewolf.Driver.Redis
 {
     public class RedisConnection : IRedisConnection
     {
-        public RedisConnection(string hostName)
+        public RedisConnection(string hostName, int port, string password)
         {
-            IRedisClient client = new RedisClient(hostName);
+            IRedisClient client = new RedisClient(hostName, port, password);
             Cache = new RedisCache(client);
         }
 
@@ -37,5 +36,20 @@ namespace Warewolf.Driver.Redis
         public string Get(string key) => _client.Get<string>(key);
 
         public bool Set(string key, string value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
+
+        public bool Delete(string key)
+        {
+            return _client.Remove(key);
+        }
+
+        public long Increment(string key, string value)
+        {
+            return _client.Increment(key, uint.Parse(value));
+        }
+
+        public long Decrement(string key, string value)
+        {
+            return _client.Decrement(key, uint.Parse(value));
+        }
     }
 }

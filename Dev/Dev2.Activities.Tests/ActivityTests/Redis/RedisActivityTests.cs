@@ -9,12 +9,20 @@
 */
 
 using System;
+using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using Dev2.Activities.Redis;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Driver.Redis;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -27,11 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         {
             return new RedisActivity();
         }
-        static IExecutionEnvironment CreateExecutionEnvironment()
-        {
-            return new ExecutionEnvironment();
-        }
-       
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisActivity))]
@@ -56,6 +60,235 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugInputs.Count);
         }
-      
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisActivity))]
+        public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
+        {
+            //----------------------Arrange----------------------
+            var key = "key1";
+            var hostName = "localhost";
+            var redisSource = new RedisSource { HostName = hostName };
+            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+
+            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            //----------------------Act--------------------------
+            sut.TestExecuteTool(mockDataObject.Object);
+            sut.TestPerformExecution(evel);
+
+            var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
+            //----------------------Assert-----------------------
+            var actualInnerActivity = sut.ActivityFunc.Handler;
+
+            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+
+            Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+            Assert.AreEqual(3, debugInputs.Count);
+
+            Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
+            AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
+
+            AssertDebugItems(debugInputs, 1, 0, "1", null, "", "");
+            AssertDebugItems(debugInputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+
+            AssertDebugItems(debugInputs, 2, 0, "2", null, "", "");
+            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisActivity))]
+        public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
+        {
+            //----------------------Arrange----------------------
+            var key = "key1";
+            var hostName = "localhost";
+            var redisSource = new RedisSource { HostName = hostName };
+            var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
+            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2), new ActivityDTO(isCalValue, "ObjectName3", 3) } };
+
+            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            //----------------------Act--------------------------
+            sut.TestExecuteTool(mockDataObject.Object);
+            sut.TestPerformExecution(evel);
+
+            var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
+            //----------------------Assert-----------------------
+            var actualInnerActivity = sut.ActivityFunc.Handler;
+
+            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+
+            Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+            Assert.AreEqual(4, debugInputs.Count);
+
+            Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
+            AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
+
+            AssertDebugItems(debugInputs, 1, 0, "1", null, "", "");
+            AssertDebugItems(debugInputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+
+            AssertDebugItems(debugInputs, 2, 0, "2", null, "", "");
+            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+
+            AssertDebugItems(debugInputs, 3, 0, "3", null, "", "");
+            AssertDebugItems(debugInputs, 3, 1, null, isCalValue, "=", isCalValue);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisActivity))]
+        public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
+        {
+            //----------------------Arrange----------------------
+            var key = "key1";
+            var hostName = "localhost";
+            var redisSource = new RedisSource { HostName = hostName };
+            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+
+
+            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            //----------------------Act--------------------------
+            sut.TestExecuteTool(mockDataObject.Object);
+            sut.TestPerformExecution(evel);
+
+            var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+            //----------------------Assert-----------------------
+            var actualInnerActivity = sut.ActivityFunc.Handler;
+
+            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+
+            Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+            Assert.AreEqual(3, debugOutputs.Count);
+
+            Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
+            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+
+            AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
+            AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+
+            AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
+            AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisActivity))]
+        public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
+        {
+            //----------------------Arrange----------------------
+            var key = "key1";
+            var hostName = "localhost";
+            var redisSource = new RedisSource { HostName = hostName };
+            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+
+
+            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            //----------------------Act--------------------------
+            sut.TestExecuteTool(mockDataObject.Object);
+            sut.TestPerformExecution(evel);
+
+            var timer = new Stopwatch();
+            timer.Start();
+            do
+            {
+                Thread.Sleep(1000);
+            } while (timer.Elapsed < TimeSpan.FromMilliseconds(sut.TTL));
+            timer.Stop();
+
+            var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+            //----------------------Assert-----------------------
+            var actualInnerActivity = sut.ActivityFunc.Handler;
+
+            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+
+            Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+            Assert.AreEqual(3, debugOutputs.Count);
+
+            Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
+            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+
+            AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
+            AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+
+            AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
+            AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+
+        }
+
+
+        private static void GenerateSUTInstance(string key, string hostName, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)
+        {
+            evel = new Dictionary<string, string> { { "", "" } };
+            var impl = new RedisCacheImpl(hostName, 6379, "");
+            sut = new TestRedisActivity(mockResourceCatalog.Object, impl)
+            {
+                Key = key,
+                TTL = 3000,
+                ActivityFunc = new ActivityFunc<string, bool>
+                {
+                    Handler = innerActivity
+                }
+            };
+        }
+
+        private static void GenerateMocks(string key, RedisSource redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject)
+        {
+            mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockDataObject = new Mock<IDSFDataObject>();
+            var environment = new ExecutionEnvironment();
+            environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
+            environment.EvalToExpression(key, 0);
+            mockResourceCatalog.Setup(o => o.GetResource<RedisSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(redisSource);
+
+            mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+        }
+
+        private void AssertDebugItems(List<DebugItem> debugInputs, int listIndex, int resultListIndex, string expLabel, string expVariable, string expOparator, string expValue)
+        {
+            Assert.AreEqual(expLabel, debugInputs[listIndex].ResultsList[resultListIndex].Label);
+            Assert.AreEqual(expOparator, debugInputs[listIndex].ResultsList[resultListIndex].Operator);
+            Assert.AreEqual(expValue, debugInputs[listIndex].ResultsList[resultListIndex].Value);
+            Assert.AreEqual(expVariable, debugInputs[listIndex].ResultsList[resultListIndex].Variable);
+        }
+
     }
+
+    class TestRedisActivity : RedisActivity
+    {
+
+        public TestRedisActivity(IResourceCatalog resourceCatalog, RedisCacheImpl impl)
+            : base(resourceCatalog, impl)
+        {
+
+        }
+
+        public List<DebugItem> TestGetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            return base.GetDebugInputs(env, update);
+        }
+
+        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        {
+            return base.GetDebugOutputs(env, update);
+        }
+        public void TestExecuteTool(IDSFDataObject dataObject)
+        {
+            base.ExecuteTool(dataObject, 0);
+        }
+
+        public void TestPerformExecution(Dictionary<string, string> evaluatedValues)
+        {
+            base.PerformExecution(evaluatedValues);
+        }
+    }
+
 }

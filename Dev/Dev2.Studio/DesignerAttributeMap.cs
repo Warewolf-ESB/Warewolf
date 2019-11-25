@@ -107,6 +107,10 @@ using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Redis;
 using Dev2.Activities.Designers2.Redis;
+using Dev2.Activities.RedisDelete;
+using Dev2.Activities.Designers2.RedisDelete;
+using Dev2.Activities.Designers2.RedisCounter;
+using Dev2.Activities.RedisCounter;
 
 namespace Dev2
 {
@@ -207,6 +211,8 @@ namespace Dev2
                 { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesignerViewModel) },
                 { typeof(RedisActivity), typeof(RedisDesigner) },
+                { typeof(RedisDeleteActivity), typeof(RedisDeleteDesigner) },
+                { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
             };
     }
 }
