@@ -8,7 +8,8 @@ Feature: Settings Permissions
 	
 @ServerPermissionsSecurity
 Scenario Outline: Server Permissions 
-        Given I have Public with "<Given rights>" 
+        Given I have Public with "<Given rights>"
+		And I have waited 10 seconds for the rights to propogate to all the resources
         Then resources should have "<Rights>"
 Examples:
         | No |  Given rights                                      |  Rights                                            |
