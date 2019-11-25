@@ -29,24 +29,12 @@
                        Text="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" 
                        ToolTip="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
 
-            <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50*" />
-                    <ColumnDefinition Width="50*" />
-                </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding ElementName=RedisDeleteActionTextBlock, Path=ActualWidth}" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text="Key:" />
-                    <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" 
-                               Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" 
-                               ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
-                </Grid>
-            </Grid>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Key:" />
+            <TextBlock Grid.Column="1" Grid.Row="1" 
+                       TextTrimming="CharacterEllipsis" 
+                       Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" 
+                       ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
     </StackPanel>
