@@ -106,6 +106,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
         testRunner.Given(string.Format("I have Public with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
+  testRunner.And("I have waited 10 seconds for the rights to propogate to all the resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
         testRunner.Then(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -376,19 +378,19 @@ this.ServerPermissions("16", "Deploy To, Deploy From, Execute", "Deploy To, Depl
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for Users", @__tags);
-#line 33
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 34
-        testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
   testRunner.And(string.Format("resources should not have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -409,7 +411,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsers_1()
         {
-#line 33
+#line 34
 this.SettingSelectedResourcePermissionsForUsers("1", "View", "Users", "All", "None", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -429,7 +431,7 @@ this.SettingSelectedResourcePermissionsForUsers("1", "View", "Users", "All", "No
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsers_2()
         {
-#line 33
+#line 34
 this.SettingSelectedResourcePermissionsForUsers("2", "Execute", "Users", "All", "None", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -449,7 +451,7 @@ this.SettingSelectedResourcePermissionsForUsers("2", "Execute", "Users", "All", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsers_3()
         {
-#line 33
+#line 34
 this.SettingSelectedResourcePermissionsForUsers("3", "Contribute, View, Execute", "Users", "All", "None", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -469,7 +471,7 @@ this.SettingSelectedResourcePermissionsForUsers("3", "Contribute, View, Execute"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsers_4()
         {
-#line 33
+#line 34
 this.SettingSelectedResourcePermissionsForUsers("4", "View, Execute", "Users", "All", "None", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -483,19 +485,19 @@ this.SettingSelectedResourcePermissionsForUsers("4", "View, Execute", "Users", "
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for Users Overlapping Groups", @__tags);
-#line 47
+#line 48
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 48
-  testRunner.Given(string.Format("I have Public with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given(string.Format("I have Public with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 50
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 53
   testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -517,7 +519,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_1()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("1", "View", "View", "Users", "All", "View", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -538,7 +540,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("1", "View", "V
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_2()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("2", "Execute", "View", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -559,7 +561,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("2", "Execute",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_3()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("3", "Contribute, View, Execute", "View", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -580,7 +582,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("3", "Contribut
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_4()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("4", "View, Execute", "View", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -601,7 +603,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("4", "View, Exe
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_5()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("5", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "View", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -622,7 +624,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("5", "View, Exe
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_6()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("6", "View", "Execute", "Users", "All", "View", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -643,7 +645,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("6", "View", "E
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_7()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("7", "Execute", "Execute", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -664,7 +666,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("7", "Execute",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_8()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("8", "Contribute, View, Execute", "Execute", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -685,7 +687,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("8", "Contribut
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_9()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("9", "View, Execute", "Execute", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -706,7 +708,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("9", "View, Exe
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_10()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("10", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -727,7 +729,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("10", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_11()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("11", "View", "Contribute, View, Execute", "Users", "All", "View", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -748,7 +750,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("11", "View", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_12()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("12", "Execute", "Contribute, View, Execute", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -769,7 +771,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("12", "Execute"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_13()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("13", "Contribute, View, Execute", "Contribute, View, Execute", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -790,7 +792,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("13", "Contribu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_14()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("14", "View, Execute", "Contribute, View, Execute", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -811,7 +813,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("14", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_15()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("15", "View, Execute, Contribute, Deploy To, Deploy From", "Contribute, View, Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -832,7 +834,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("15", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_16()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("16", "View", "View, Execute", "Users", "All", "View", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -853,7 +855,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("16", "View", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_17()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("17", "Execute", "View, Execute", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -874,7 +876,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("17", "Execute"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_18()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("18", "Contribute, View, Execute", "View, Execute", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -895,7 +897,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("18", "Contribu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_19()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("19", "View, Execute", "View, Execute", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -916,7 +918,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("19", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_20()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("20", "View, Execute, Contribute, Deploy To, Deploy From", "View, Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -937,7 +939,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("20", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_21()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("21", "View", "None", "Users", "All", "View", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -958,7 +960,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("21", "View", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_22()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("22", "Execute", "None", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -979,7 +981,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("22", "Execute"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_23()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("23", "Contribute, View, Execute", "None", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -1000,7 +1002,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("23", "Contribu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_24()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("24", "View, Execute", "None", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -1021,7 +1023,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("24", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_25()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("25", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "None", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -1042,7 +1044,7 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("25", "View, Ex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_26()
         {
-#line 47
+#line 48
 this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("26", "None", "Contribute, View, Execute", "Users", "Users", "None", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -1057,21 +1059,21 @@ this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("26", "None", "
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users conflicting with View permissions" +
                     "", @__tags);
-#line 83
+#line 84
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 84
-        testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 85
-        testRunner.And(string.Format("it has \"{0}\" with \"{1}\"", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 86
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("it has \"{0}\" with \"{1}\"", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 89
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 90
   testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1095,7 +1097,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_1()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1", "Users", "Deploy To", "View", "Users", "All", "Deploy To", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1118,7 +1120,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_2()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("2", "Users", "Deploy From", "View", "Users", "All", "Deploy From", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1141,7 +1143,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_3()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("3", "Users", "View", "View", "Users", "All", "View", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1164,7 +1166,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("3
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_4()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("4", "Users", "Execute", "View", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1187,7 +1189,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("4
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_5()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("5", "Users", "Contribute, View, Execute", "View", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1210,7 +1212,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("5
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_6()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("6", "Users", "Deploy To, Deploy From", "View", "Users", "All", "Deploy To, Deploy From", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1233,7 +1235,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("6
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_7()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("7", "Users", "View, Execute", "View", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1256,7 +1258,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("7
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_8()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("8", "Users", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "View", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1279,7 +1281,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("8
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_9()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("9", "Users", "Deploy To, View", "View", "Users", "All", "Deploy To, View", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1302,7 +1304,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("9
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_10()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("10", "Users", "Deploy To, Execute", "View", "Users", "All", "Deploy To, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1325,7 +1327,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_11()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("11", "Users", "Deploy To, Contribute, View, Execute", "View", "Users", "All", "Deploy To, Contribute, View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1348,7 +1350,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_12()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("12", "Users", "Deploy From, View", "View", "Users", "All", "Deploy From, View", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1371,7 +1373,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_13()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("13", "Users", "Deploy From, Execute", "View", "Users", "All", "Deploy From, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1394,7 +1396,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_14()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("14", "Users", "Deploy From, Contribute, View, Execute", "View", "Users", "All", "Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1417,7 +1419,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_15()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("15", "Users", "Deploy To, Deploy From, View", "View", "Users", "All", "Deploy To, Deploy From , View", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1440,7 +1442,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_16()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("16", "Users", "Deploy To, Deploy From, Execute", "View", "Users", "All", "Deploy To, Deploy From , Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1463,7 +1465,7 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View")]
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions_17()
         {
-#line 83
+#line 84
 this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("17", "Users", "Deploy To, Deploy From, Contribute, View, Execute", "View", "Users", "All", "Deploy To, Deploy From , Contribute, View, Execute", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
@@ -1478,19 +1480,19 @@ this.SettingSelectedResourcePermissionsForUsersConflictingWithViewPermissions("1
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users and conflicting with Execute perm" +
                     "issions", @__tags);
-#line 111
+#line 112
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 112
-  testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 113
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 114
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 116
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 117
   testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1515,7 +1517,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_1()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("1", "Users", "Deploy To", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1539,7 +1541,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_2()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("2", "Users", "Deploy From", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy From", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1563,7 +1565,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_3()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("3", "Users", "View", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "View", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1587,7 +1589,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_4()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("4", "Users", "Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1611,7 +1613,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_5()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("5", "Users", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1635,7 +1637,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_6()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("6", "Users", "Deploy To, Deploy From", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, Deploy From", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1659,7 +1661,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_7()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("7", "Users", "View, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1683,7 +1685,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_8()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("8", "Users", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1707,7 +1709,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_9()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("9", "Users", "Deploy To, View", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, View", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1731,7 +1733,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_10()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("10", "Users", "Deploy To, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1755,7 +1757,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_11()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("11", "Users", "Deploy To, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1779,7 +1781,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_12()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("12", "Users", "Deploy From, View", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy From, View", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1803,7 +1805,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_13()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("13", "Users", "Deploy From, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy From, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1827,7 +1829,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_14()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("14", "Users", "Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1851,7 +1853,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_15()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("15", "Users", "Deploy To, Deploy From, View", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, Deploy From, View", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1875,7 +1877,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_16()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("16", "Users", "Deploy To, Deploy From, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, Deploy From, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1899,7 +1901,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions_17()
         {
-#line 111
+#line 112
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissions("17", "Users", "Deploy To, Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", "Users", "All", "Deploy To, Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Execute", ((string[])(null)));
 #line hidden
         }
@@ -1914,19 +1916,19 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithExecutePermissi
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users and conflicting with Contribute, " +
                     "View and Execute permissions", @__tags);
-#line 138
+#line 139
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 139
-       testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 140
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 141
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 143
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 144
   testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1949,7 +1951,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_1()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("1", "Deploy To", "Contribute, View, Execute", "Users", "All", "Deploy To", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -1971,7 +1973,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_2()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("2", "Deploy From", "Contribute, View, Execute", "Users", "All", "Deploy From", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -1993,7 +1995,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_3()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("3", "View", "Contribute, View, Execute", "Users", "All", "View", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2015,7 +2017,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_4()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("4", "Execute", "Contribute, View, Execute", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2037,7 +2039,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_5()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("5", "Contribute, View, Execute", "Contribute, View, Execute", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2059,7 +2061,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_6()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("6", "Deploy To, Deploy From", "Contribute, View, Execute", "Users", "All", "Deploy To, Deploy From", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2081,7 +2083,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_7()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("7", "View, Execute", "Contribute, View, Execute", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2103,7 +2105,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_8()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("8", "View, Execute, Contribute, Deploy To, Deploy From", "Contribute, View, Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2125,7 +2127,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_9()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("9", "Deploy To, View", "Contribute, View, Execute", "Users", "All", "Deploy To, View", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2147,7 +2149,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_10()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("10", "Deploy To, Execute", "Contribute, View, Execute", "Users", "All", "Deploy To, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2169,7 +2171,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_11()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("11", "Deploy To, Contribute, View, Execute", "Contribute, View, Execute", "Users", "All", "Deploy To, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2191,7 +2193,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_12()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("12", "Deploy From, View", "Contribute, View, Execute", "Users", "All", "Deploy From, View", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2213,7 +2215,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_13()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("13", "Deploy From, Execute", "Contribute, View, Execute", "Users", "All", "Deploy From, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2235,7 +2237,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_14()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("14", "Deploy From, Contribute, View, Execute", "Contribute, View, Execute", "Users", "All", "Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2257,7 +2259,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_15()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("15", "Deploy To, Deploy From, View", "Contribute, View, Execute", "Users", "All", "Deploy To, Deploy From, View", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2279,7 +2281,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_16()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("16", "Deploy To, Deploy From, Execute", "Contribute, View, Execute", "Users", "All", "Deploy To, Deploy From, Execute", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2301,7 +2303,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions_17()
         {
-#line 138
+#line 139
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewAndExecutePermissions("17", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Contribute, View, Execute", "Users", "All", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Examples\\Control Flow - Decision", "Contribute, View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2316,19 +2318,19 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithContributeViewA
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users and conflicting with View and Exe" +
                     "cute permissions", @__tags);
-#line 165
+#line 166
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 166
-        testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 167
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 168
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 170
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 171
   testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2351,7 +2353,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_1()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("1", "Deploy To", "View, Execute", "Users", "All", "Deploy To", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2373,7 +2375,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_2()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("2", "Deploy From", "View, Execute", "Users", "All", "Deploy From", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2395,7 +2397,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_3()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("3", "View", "View, Execute", "Users", "All", "View", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2417,7 +2419,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_4()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("4", "Contribute, View, Execute", "View, Execute", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2439,7 +2441,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_5()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("5", "Deploy To, Deploy From", "View, Execute", "Users", "All", "Deploy To, Deploy From", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2461,7 +2463,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_6()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("6", "View, Execute", "View, Execute", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2483,7 +2485,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_7()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("7", "View, Execute, Contribute, Deploy To, Deploy From", "View, Execute", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2505,7 +2507,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_8()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("8", "Deploy To, View", "View, Execute", "Users", "All", "Deploy To, View", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2527,7 +2529,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_9()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("9", "Deploy To, Execute", "View, Execute", "Users", "All", "Deploy To, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2549,7 +2551,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_10()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("10", "Deploy To, Contribute, View, Execute", "View, Execute", "Users", "All", "Deploy To, Contribute, View, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2571,7 +2573,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_11()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("11", "Deploy From, View", "View, Execute", "Users", "All", "Deploy From, View", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2593,7 +2595,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_12()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("12", "Deploy From, Execute", "View, Execute", "Users", "All", "Deploy From, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2615,7 +2617,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_13()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("13", "Deploy From, Contribute, View, Execute", "View, Execute", "Users", "All", "Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2637,7 +2639,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_14()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("14", "Deploy To, Deploy From, View", "View, Execute", "Users", "All", "Deploy To, Deploy From, View", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2659,7 +2661,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_15()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("15", "Deploy To, Deploy From, Execute", "View, Execute", "Users", "All", "Deploy To, Deploy From, Execute", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2681,7 +2683,7 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "View, Execute")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions_16()
         {
-#line 165
+#line 166
 this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecutePermissions("16", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "View, Execute", "Users", "All", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Examples\\Control Flow - Decision", "View, Execute", ((string[])(null)));
 #line hidden
         }
@@ -2695,19 +2697,19 @@ this.SettingSelectedResourcePermissionsForUsersAndConflictingWithViewAndExecuteP
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users and no conflicting permissions", @__tags);
-#line 191
+#line 192
 this.ScenarioSetup(scenarioInfo);
 #line 7
  this.FeatureBackground();
-#line 192
-        testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 193
-        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.Given(string.Format("I have Users with \"{0}\"", givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 194
-        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resource, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
-        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 196
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 197
   testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2730,7 +2732,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_1()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("1", "Deploy To", "None", "Users", "All", "Deploy To", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2752,7 +2754,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("1", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_2()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("2", "Deploy From", "None", "Users", "All", "Deploy From", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2774,7 +2776,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("2", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_3()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("3", "View", "None", "Users", "All", "View", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2796,7 +2798,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("3", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_4()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("4", "Execute", "None", "Users", "All", "Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2818,7 +2820,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("4", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_5()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("5", "Contribute, View, Execute", "None", "Users", "All", "Contribute, View, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2840,7 +2842,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("5", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_6()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("6", "Deploy To, Deploy From", "None", "Users", "All", "Deploy To, Deploy From", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2862,7 +2864,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("6", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_7()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("7", "View, Execute", "None", "Users", "All", "View, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2884,7 +2886,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("7", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_8()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("8", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "None", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2906,7 +2908,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("8", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_9()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("9", "Deploy To, View", "None", "Users", "All", "Deploy To, View", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2928,7 +2930,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("9", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_10()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("10", "Deploy To, Execute", "None", "Users", "All", "Deploy To, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2950,7 +2952,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("10",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_11()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("11", "Deploy To, Contribute, View, Execute", "None", "Users", "All", "Deploy To, Contribute, View, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2972,7 +2974,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("11",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_12()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("12", "Deploy From, View", "None", "Users", "All", "Deploy From, View", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -2994,7 +2996,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("12",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_13()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("13", "Deploy From, Execute", "None", "Users", "All", "Deploy From, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -3016,7 +3018,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("13",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_14()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("14", "Deploy From, Contribute, View, Execute", "None", "Users", "All", "Deploy From, Contribute, View, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -3038,7 +3040,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("14",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_15()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("15", "Deploy To, Deploy From, View", "None", "Users", "All", "Deploy To, Deploy From, View", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -3060,7 +3062,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("15",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_16()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("16", "Deploy To, Deploy From, Execute", "None", "Users", "All", "Deploy To, Deploy From, Execute", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }
@@ -3082,7 +3084,7 @@ this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("16",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "None")]
         public virtual void SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions_17()
         {
-#line 191
+#line 192
 this.SettingSelectedResourcePermissionsForUsersAndNoConflictingPermissions("17", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "None", "Users", "All", "Deploy To, Deploy From, Contribute, View, Execute, Administrator", "Examples\\Control Flow - Decision", "None", ((string[])(null)));
 #line hidden
         }

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
 using Dev2.Services.Security;
@@ -113,6 +114,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
         }
+
         [Given(@"I have Public with ""(.*)""")]
         public void GivenIHavePublicWith(string groupRights)
         {
@@ -204,8 +206,7 @@ namespace Dev2.Activities.Specs.Permissions
             var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
             try
             {
-                
-                reconnectModel.Connect();
+                reconnectModel.ConnectAsync().Wait(60000);
             }
             catch (UnauthorizedAccessException)
             {
@@ -225,6 +226,10 @@ namespace Dev2.Activities.Specs.Permissions
 
             return environmentModel;
         }
+
+        [Given(@"I have waited (.*) seconds for the rights to propogate to all the resources")]
+        public void GivenIHaveWaitedSeconds(int p0) => Thread.Sleep(p0 * 1000);
+
 
         [Then(@"resources should have ""(.*)""")]
         public static void ThenResourcesShouldHave(string resourcePerms)
