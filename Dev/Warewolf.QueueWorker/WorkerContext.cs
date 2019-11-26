@@ -104,9 +104,21 @@ namespace QueueWorker
             }
         }
 
+        public IStreamConfig DeadLetterConfig
+        {
+            get
+            {
+                var options = _triggerQueue.DeadLetterOptions;
+                var result = OptionTo<RabbitConfig>(options);
+                result.QueueName = _triggerQueue.DeadLetterQueue;
+                return result;
+            }
+        }
+        
         public string QueueName { get => _triggerQueue.QueueName; }
         public IServiceInputBase[] Inputs => _triggerQueue.Inputs.ToArray();
-        
+        public bool MapEntireMessage => _triggerQueue.MapEntireMessage;
+
         private static T OptionTo<T>(IOption[] options) where T : new()
         {
             var result = new T();

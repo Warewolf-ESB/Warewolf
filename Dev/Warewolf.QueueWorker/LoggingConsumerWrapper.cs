@@ -11,9 +11,7 @@
 using System;
 using System.Threading.Tasks;
 using Warewolf.Auditing;
-using Warewolf.Common;
 using Warewolf.Data;
-using Warewolf.Logging;
 using Warewolf.Streams;
 
 namespace QueueWorker
@@ -37,36 +35,51 @@ namespace QueueWorker
         public Task<ConsumerResult> Consume(byte[] body)
         {
             var executionId = Guid.NewGuid();
-            _logger.StartExecution("processing {body}");
+            string strBody = System.Text.Encoding.UTF8.GetString(body);
+
+            _logger.StartExecution($"processing body {strBody}");
             var startDate = DateTime.UtcNow;
 
-            return _consumer.Consume(body)
-                .ContinueWith((requestForwarderResult) =>
+            var task = _consumer.Consume(body);
+
+            task.ContinueWith((requestForwarderResult) =>
+            {
+                var endDate = DateTime.UtcNow;
+                var duration = endDate - startDate;
+
+                _logger.Warn($"failure processing body {strBody}");
+                var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId);
+                var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
+                executionEntry.Exception = requestForwarderResult.Exception;
+
+                _logger.ExecutionFailed(executionEntry);
+
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+            task.ContinueWith((requestForwarderResult) =>
+            {
+                var endDate = DateTime.UtcNow;
+                var duration = endDate - startDate;
+
+                if (requestForwarderResult.Result == ConsumerResult.Success)
                 {
-                    if (requestForwarderResult.Status == TaskStatus.RanToCompletion)
-                    {
-                        var endDate = DateTime.UtcNow;
-                        var duration = endDate - startDate;
+                    _logger.Info($"success processing body {strBody}");
+                    var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
+                    var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
 
-                        if (requestForwarderResult.Result == ConsumerResult.Success)
-                        {
-                            _logger.Info("success");
-                            var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
-                            var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
+                    _logger.ExecutionSucceeded(executionEntry);
+                }
 
-                            _logger.ExecutionSucceeded(executionEntry);
-                        }
-                        else
-                        {
-                            _logger.Warn("failure");
-                            var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
-                            var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
-                            _logger.ExecutionFailed(executionEntry);
-                        }
-                    }
-                    return requestForwarderResult.Result;
-                });
+            if (task.IsFaulted)
+            {
+                return Task.Run(() => ConsumerResult.Failed);
+            }
+            else
+            {
+                return Task.Run(() => ConsumerResult.Success);
+            }
         }
     }
 }
