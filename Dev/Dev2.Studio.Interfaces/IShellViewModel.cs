@@ -148,5 +148,6 @@ namespace Dev2.Studio.Interfaces
         void OpenMergeDialogView(IExplorerItemViewModel currentResource);
         void UpdateExplorerWorkflowChanges(Guid resourceId);
         IResource CreateResourceFromStreamContent(string resourceContent);
+        IResource GetResource(string resourceId);
     }
 }

@@ -56,6 +56,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" />
     <Compile Include="OptionViewConverter.cs" />
     <Compile Include="ValidatedObject.cs" />
+    <Compile Include="WorkflowNameConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -85,6 +86,10 @@
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
       <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>

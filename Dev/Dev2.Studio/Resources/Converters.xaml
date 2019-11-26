@@ -63,6 +63,7 @@
     <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
     <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
     <ui:OptionViewConverter x:Key="OptionViewConverter"/>
+    <ui:WorkflowNameConverter x:Key="WorkflowNameConverter"/>
 
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
