@@ -384,7 +384,8 @@ namespace Dev2.UI
             if (hasUnicode)
             {
                 var previousInput = inputText;
-                Text = "";
+                var characterWithoutAnsiCodes = inputText.Where(a => a <= 255).Select(a => a).ToArray();
+                Text = new string(characterWithoutAnsiCodes);
                 CustomContainer.Get<IPopupController>()
                     .ShowInvalidCharacterMessage(previousInput);
 
