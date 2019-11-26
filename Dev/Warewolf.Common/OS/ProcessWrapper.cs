@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Warewolf.OS
 {
@@ -25,12 +26,17 @@ namespace Warewolf.OS
                 try
                 {
                     return _process.HasExited;
-                } catch (InvalidOperationException)
+                }
+                catch (InvalidOperationException)
                 {
                     return true;
                 }
             }
         }
+
+        public StreamReader StandardOutput => _process.StandardOutput;
+
+        public StreamReader StandardError => _process.StandardError;
 
         public ProcessWrapper(Process process)
         {
@@ -55,7 +61,7 @@ namespace Warewolf.OS
         }
     }
     public class ProcessWrapperFactory : IProcessFactory
-    { 
+    {
         public IProcess Start(string fileName)
         {
             return new ProcessWrapper(Process.Start(fileName));
