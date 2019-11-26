@@ -270,10 +270,10 @@
       <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.111</Version>
+      <Version>1.0.112</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.111</Version>
+      <Version>1.0.112</Version>
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>
