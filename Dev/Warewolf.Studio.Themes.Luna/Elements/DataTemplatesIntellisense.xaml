@@ -144,7 +144,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" 
                              x:Name="WorkflowTextBox"
-                             Text="{Binding Path=DataContext.WorkflowName}"
+                             Text="{Binding Path=DataContext.WorkflowName, Converter={StaticResource WorkflowNameConverter}}"
                              Style="{StaticResource ReadOnlyTextBoxStyle}"
                              HorizontalAlignment="Stretch"
                              AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"

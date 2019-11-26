@@ -361,6 +361,19 @@ namespace Dev2.Studio.ViewModels
             return _currentResourcePicker;
         }
 
+        public IResource GetResource(string resourceId)
+        {
+            var explorerItem = ExplorerViewModel.Environments[0].AsList().First(o => o.ResourceId == Guid.Parse(resourceId));
+
+            IResource resource = new Resource
+            {
+                ResourceID = explorerItem.ResourceId,
+                ResourceName = explorerItem.ResourceName
+            };
+
+            return resource;
+        }
+
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));

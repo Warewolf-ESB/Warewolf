@@ -74,18 +74,20 @@ namespace Warewolf.Options
             }
             else if (prop.PropertyType.IsEnum)
             {
-                var result = new OptionEnum
-                {
-                    Name = prop.Name,
-                    Value = (int)prop.GetValue(instance)
-                };
                 var values = new List<KeyValuePair<string, int>>();
                 foreach (var option in Enum.GetValues(prop.PropertyType))
                 {
                     var key = Enum.GetName(prop.PropertyType, option);
                     values.Add(new KeyValuePair<string, int>(key, (int)option));
                 }
-                result.Values = values;
+
+                var result = new OptionEnum
+                {
+                    Values = values,
+                    Name = prop.Name,
+                    Value = (int)prop.GetValue(instance)
+                };
+
                 return result;
             }
             else
