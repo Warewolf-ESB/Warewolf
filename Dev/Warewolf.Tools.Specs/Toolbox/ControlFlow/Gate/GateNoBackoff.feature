@@ -3,7 +3,7 @@
 	As a Warewolf user
 	I want the tool to have a Gate selection to proceed
 
-Scenario: Gate tool has stop on error with no resume
+Scenario: Gate tool has no conditions
 	Given I have the following conditions
 		| match | matchtype | match |
 	And GateFailure has "StopOnError" selected
