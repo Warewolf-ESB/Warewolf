@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj" />
   </ItemGroup>
@@ -18,11 +17,5 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Prism.UnityExtensions">
-      <Version>5.0.1</Version>
-    </PackageReference>
   </ItemGroup>
 </Project>
