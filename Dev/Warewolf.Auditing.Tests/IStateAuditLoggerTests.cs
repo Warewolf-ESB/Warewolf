@@ -27,9 +27,9 @@ namespace Warewolf.Auditing.Tests
     {
         IDSFDataObject _dSFDataObject;
         Mock<IDev2Activity> _activity;
+        IStateAuditLogger _stateAuditLogger;
         IFile _fileWrapper;
         IDirectory _directoryWrapper;
-        IStateAuditLogger _stateAuditLogger;
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -84,6 +84,7 @@ namespace Warewolf.Auditing.Tests
 
             mockWebSocketFactory.VerifyAll();
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -103,6 +104,7 @@ namespace Warewolf.Auditing.Tests
 
             mockWebSocketFactory.VerifyAll();
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -121,6 +123,7 @@ namespace Warewolf.Auditing.Tests
 
             mockWebSocketFactory.VerifyAll();
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -139,6 +142,7 @@ namespace Warewolf.Auditing.Tests
 
             mockWebSocketFactory.VerifyAll();
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -158,6 +162,7 @@ namespace Warewolf.Auditing.Tests
 
             mockWebSocketFactory.VerifyAll();
         }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(IStateAuditLogger))]
@@ -185,18 +190,17 @@ namespace Warewolf.Auditing.Tests
             Assert.AreEqual(expected: expectedException.Message, actual: actualAudit.Exception.Message);
         }
 
-        private IStateAuditLogger GetIAuditStateLogger(IWebSocketFactory webSocketFactory)
+        IStateAuditLogger GetIAuditStateLogger(IWebSocketFactory webSocketFactory) => new StateAuditLogger(webSocketFactory);
+
+        void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
         {
-            return new StateAuditLogger(webSocketFactory);
-        }
-        private void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
-        {
-            var mockedDataObject = SetupDataObject();
+            SetupDataObject();
             fileWrapper = new FileWrapper();
             directoryWrapper = new DirectoryWrapper();
             activity = new Mock<IDev2Activity>();
         }
-        private Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
+
+        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
         {
             var mockedDataObject = new Mock<IDSFDataObject>();
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
@@ -212,7 +216,8 @@ namespace Warewolf.Auditing.Tests
 
             return mockedDataObject;
         }
-        private Mock<IDSFDataObject> SetupDataObject()
+
+        Mock<IDSFDataObject> SetupDataObject()
         {
             var mockedDataObject = new Mock<IDSFDataObject>();
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
@@ -227,12 +232,14 @@ namespace Warewolf.Auditing.Tests
 
             return mockedDataObject;
         }
-        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketFactory webSocketFactory)
+
+        void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketFactory webSocketFactory)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
             auditStateLogger = GetIAuditStateLogger(webSocketFactory);
         }
-        private void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
+
+        void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
         {
             var executionId = Guid.NewGuid();
             mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
