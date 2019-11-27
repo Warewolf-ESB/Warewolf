@@ -151,6 +151,19 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 case "NoBackoff":
                     gateActivity.GateOptions.Strategy = new NoBackoff();
                     break;
+                case "ConstantBackoff":
+                    gateActivity.GateOptions.Strategy = null;
+                    break;
+            }
+        }
+
+        [Given(@"Increment is set to ""(.*)""")]
+        public void GivenIncrementIsSetTo(int increment)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            if (gateActivity.GateOptions.Strategy is ConstantBackoff constantBackoff)
+            {
+                constantBackoff.Increment = increment;
             }
         }
 
