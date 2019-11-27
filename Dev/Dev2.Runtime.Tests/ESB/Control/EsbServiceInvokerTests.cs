@@ -882,7 +882,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void GetService_GivenGuid_ShouldFindByResourceId()
         {
             //---------------Set up test pack-------------------
-            //GetService(string serviceName, Guid resourceId, IServiceLocator sl)
             var newGuid = Guid.NewGuid();
             var _cache = new ConcurrentDictionary<Guid, ServiceAction>();
             _cache.TryAdd(newGuid, new ServiceAction
@@ -893,7 +892,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ,
                 DataListSpecification = new StringBuilder("<DataList></DataList>")
             });
-            //GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
             var channel = new Mock<IEsbChannel>();
             var workSpace = new Mock<IWorkspace>();
             var obj = new Mock<IDSFDataObject>();
@@ -925,7 +923,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 Assert.AreEqual("error", e.Message);
             }
             //---------------Test Result -----------------------
-
         }
 
         [TestMethod]
@@ -934,7 +931,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void Invoke_GivenHasErrors_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------
-            //Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
             var serviceId = Guid.NewGuid();
             var newGuid = Guid.NewGuid();
             var obj = new Mock<IDSFDataObject>();
@@ -956,13 +952,11 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var locater = new Mock<IServiceLocator>();
             locater.Setup(l => l.FindService(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new DynamicService
             {
-                Actions = new List<ServiceAction> { new ServiceAction { ActionType = enActionType.Workflow } },
-
+                Actions = new List<ServiceAction> { new ServiceAction { ActionType = enActionType.Workflow } }
             });
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService
             {
-                Actions = new List<ServiceAction> { new ServiceAction { ActionType = enActionType.Workflow } },
-
+                Actions = new List<ServiceAction> { new ServiceAction { ActionType = enActionType.Workflow } }
             });
 
             var privateObject = new PrivateObject(invoker);
@@ -970,23 +964,13 @@ namespace Dev2.Tests.Runtime.ESB.Control
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            try
-            {
-                obj.Setup(o => o.Environment.HasErrors()).Returns(true).Verifiable(); ;
-                obj.Setup(o => o.RemoteInvoke).Verifiable();
-                obj.Setup(o => o.Environment.FetchErrors()).Returns("Error").Verifiable();
-                invoker.Invoke(obj.Object, out ErrorResultTO errors);
-                //weird expetion on execution when getting errors
-                Assert.AreEqual("Object reference not set to an instance of an object.", errors.FetchErrors().Single());
-                //---------------Test Result -----------------------
-                obj.Verify(o => o.Environment.FetchErrors());
-                obj.VerifyGet(o => o.ResourceID);
-
-            }
-            catch (Exception exception)
-            {
-                Assert.Fail(exception.Message);
-            }
+            obj.Setup(o => o.Environment.HasErrors()).Returns(true).Verifiable(); ;
+            obj.Setup(o => o.RemoteInvoke).Verifiable();
+            obj.Setup(o => o.Environment.FetchErrors()).Returns("Error").Verifiable();
+            invoker.Invoke(obj.Object, out ErrorResultTO errors);
+            //---------------Test Result -----------------------
+            obj.Verify(o => o.Environment.FetchErrors());
+            obj.VerifyGet(o => o.ResourceID);
         }
     }
 }
