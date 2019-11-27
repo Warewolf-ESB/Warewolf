@@ -118,9 +118,9 @@ namespace Dev2.Tests.Runtime.Services
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
+                HostName = "192.168.104.19",
                 Password = password,
-                Port = "6379",
+                Port = "6380",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
