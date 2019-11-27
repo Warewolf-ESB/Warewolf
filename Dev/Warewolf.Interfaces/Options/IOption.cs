@@ -29,18 +29,18 @@ namespace Warewolf.Options
         string Name { get; set; }
     }
 
-    public interface IOptionComboBox : IOption, IOptionNotifyUpdate<string>
+    public interface IOptionComboBox : IOption
     {
         string Value { get; set; }
     }
 
-    public interface IOptionBasic<T> : IOption, IOptionNotifyUpdate<T>
+    public interface IOptionBasic<T> : IOption
     {
         T Value { get; set; }
         T Default { get; }
     }
 
-    public interface IOptionBasic<TKey, TValue> : IOption, IOptionNotifyUpdate<KeyValuePair<string, int>>
+    public interface IOptionBasic<TKey, TValue> : IOption
     {
         KeyValuePair<TKey, TValue> Value { get; set; }
         KeyValuePair<TKey, TValue> Default { get; }
@@ -75,24 +75,5 @@ namespace Warewolf.Options
     public interface IOptionWorkflow : IOptionBasic<Guid>
     {
         string WorkflowName { get; set; }
-    }
-
-    public interface IOptionNotifyUpdate<T>
-    {
-        event EventHandler<OptionValueChangedArgs<T>> ValueUpdated;
-    }
-
-    public class OptionValueChangedArgs<T>
-    {
-        public OptionValueChangedArgs(string name, T oldValue, T newValue)
-        {
-            Name = name;
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
-
-        public string Name { get; }
-        public T OldValue { get; }
-        public T NewValue { get; }
     }
 }
