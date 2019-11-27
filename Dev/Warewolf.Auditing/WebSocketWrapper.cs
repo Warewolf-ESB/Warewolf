@@ -70,7 +70,8 @@ namespace Warewolf.Auditing
 
         public IWebSocketWrapper Close()
         {
-            _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            var task = _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            task.Wait();
             return this;
         }
 
@@ -88,12 +89,14 @@ namespace Warewolf.Auditing
 
         public void SendMessage(string message)
         {
-            SendMessageAsync(message);
+            var task = SendMessageAsync(message);
+            task.Wait();
         }
 
-        public async void SendMessage(byte[] message)
+        public void SendMessage(byte[] message)
         {
-            await SendMessageAsync(message);
+            var task = SendMessageAsync(message);
+            task.Wait();
         }
 
         public bool IsOpen()
@@ -101,7 +104,7 @@ namespace Warewolf.Auditing
             return _ws.State == WebSocketState.Open;
         }
 
-        private void SendMessageAsync(string message)
+        private async Task SendMessageAsync(string message)
         {
             if (_ws.State != WebSocketState.Open)
             {
@@ -109,25 +112,36 @@ namespace Warewolf.Auditing
             }
 
             var messageBuffer = Encoding.UTF8.GetBytes(message);
-            SendMessageAsync(messageBuffer).Wait();
+            await SendMessageAsync(messageBuffer);
         }
 
         private async Task SendMessageAsync(byte[] messageBuffer)
         {
             var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / SendChunkSize);
 
-            for (var i = 0; i < messagesCount; i++)
+            try
             {
-                var offset = (SendChunkSize * i);
-                var count = SendChunkSize;
-                var lastMessage = ((i + 1) == messagesCount);
-
-                if ((count * (i + 1)) > messageBuffer.Length)
+                for (var i = 0; i < messagesCount; i++)
                 {
-                    count = messageBuffer.Length - offset;
-                }
+                    var offset = (SendChunkSize * i);
+                    var count = SendChunkSize;
+                    var lastMessage = ((i + 1) == messagesCount);
 
-                await _ws.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                    if ((count * (i + 1)) > messageBuffer.Length)
+                    {
+                        count = messageBuffer.Length - offset;
+                    }
+
+                    await _ws.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                }
+            }
+            catch (Exception)
+            {
+                CallOnDisconnected();
+            }
+            finally
+            {
+                _ws.Dispose();
             }
         }
 
@@ -138,7 +152,7 @@ namespace Warewolf.Auditing
             WatchForMessagesFromServer();
         }
 
-        private async void WatchForMessagesFromServer()
+        private async Task WatchForMessagesFromServer()
         {
             var buffer = new byte[ReceiveChunkSize];
 

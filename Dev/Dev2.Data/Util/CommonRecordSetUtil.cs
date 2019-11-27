@@ -151,9 +151,9 @@ namespace Dev2.Data.Util
         public string ExtractFieldNameOnlyFromValue(string value)
         {
             var result = string.Empty;
-            var dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
             var closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
-            if (dotIdx > 0)
+            var dotIdx = value.LastIndexOf(".", closeIdx, StringComparison.Ordinal);
+            if (dotIdx > 0 && closeIdx > dotIdx)
             {
                 result = value.Substring(dotIdx + 1, closeIdx - dotIdx - 1);
             }
