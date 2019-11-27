@@ -30,8 +30,6 @@ namespace Warewolf.Options
 
         private string _value;
 
-        public event EventHandler<OptionValueChangedArgs<string>> ValueUpdated;
-
         public string Value
         {
             get => _value;
@@ -82,8 +80,6 @@ namespace Warewolf.Options
 
         private int _value;
 
-        public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
-
         public int Value
         {
             get => _value;
@@ -131,18 +127,10 @@ namespace Warewolf.Options
 
         private bool _value;
 
-        public event EventHandler<OptionValueChangedArgs<bool>> ValueUpdated;
-
         public bool Value
         {
             get => _value;
-            set
-            {
-                var eventArgs = new OptionValueChangedArgs<bool>(_name, _value, value);
-                _value = value;
-                RaisePropertyChanged(nameof(Value));
-                ValueUpdated?.Invoke(this, eventArgs);
-            }
+            set => SetProperty(ref _value, value);
         }
 
         public bool Default => true;
@@ -222,15 +210,11 @@ namespace Warewolf.Options
             }
         }
 
-        public event EventHandler<OptionValueChangedArgs<int>> ValueUpdated;
-
         public int Value
         {
             get => _value;
             set
             {
-                var eventArgs = new OptionValueChangedArgs<int>(_name, _value, value);
-
                 if (SetProperty(ref _value, value))
                 {
                     OptionName = Values?.First(o => o.Value == value).Key;
@@ -281,18 +265,10 @@ namespace Warewolf.Options
 
         public IEnumerable<KeyValuePair<string, int>> Values { get; set; }
 
-        public event EventHandler<OptionValueChangedArgs<KeyValuePair<string, int>>> ValueUpdated;
-
         public KeyValuePair<string, int> Value
         {
             get => _value;
-            set
-            {
-                var eventArgs = new OptionValueChangedArgs<KeyValuePair<string, int>>(_name, _value, value);
-                _value = value;
-                RaisePropertyChanged(nameof(Value));
-                ValueUpdated?.Invoke(this, eventArgs);
-            }
+            set => SetProperty(ref _value, value);
         }
 
         KeyValuePair<string, int> IOptionBasic<string, int>.Default { get; }
@@ -357,8 +333,6 @@ namespace Warewolf.Options
         }
 
         private string _value;
-
-        public event EventHandler<OptionValueChangedArgs<string>> ValueUpdated;
 
         public string Value
         {
@@ -435,8 +409,6 @@ namespace Warewolf.Options
             }
         }
 
-        public event EventHandler<OptionValueChangedArgs<Guid>> ValueUpdated;
-
         public object Clone()
         {
             return new OptionWorkflow
@@ -446,7 +418,6 @@ namespace Warewolf.Options
                 Inputs = _inputs
             };
         }
-
         public int CompareTo(object obj)
         {
             if (obj is null)
