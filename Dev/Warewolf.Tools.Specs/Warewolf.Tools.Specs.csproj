@@ -472,6 +472,24 @@
       <DependentUpon>Random.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\Random\RandomSteps.cs" />
+    <Compile Include="Toolbox\Utility\Redis\Delete\DeleteRedis.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeleteRedis.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Redis\Delete\DeleteRedisSteps.cs" />
+    <Compile Include="Toolbox\Utility\Redis\GetSet\GetSetRedis.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GetSetRedis.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Redis\GetSet\GetSetRedisSteps.cs" />
+    <Compile Include="Toolbox\Utility\Redis\Source\RedisSource.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RedisSource.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Redis\Source\RedisSourceSteps.cs" />
     <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -769,6 +787,18 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Random.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Utility\Redis\Delete\DeleteRedis.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeleteRedis.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Redis\GetSet\GetSetRedis.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GetSetRedis.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Redis\Source\RedisSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RedisSource.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Utility\WebRequest\WebRequest.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebRequest.feature.cs</LastGenOutput>
@@ -974,6 +1004,7 @@
       <Version>1.0.111</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
