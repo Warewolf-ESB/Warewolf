@@ -69,7 +69,7 @@ namespace Warewolf.UIBindingTests
             Utils.SetupResourceDictionary();
             var redisSourceControl = new RedisSourceControl();
             var mockStudioUpdateManager = new Mock<IRedisSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
+            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("192.168.104.19");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
@@ -134,6 +134,7 @@ namespace Warewolf.UIBindingTests
         {
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
+            redisSourceControl.EnterPortNumber(port.ToString());
             Assert.AreEqual(port.ToString(), viewModel.Port);
             Assert.AreEqual(port.ToString(), redisSourceControl.GetPort());
         }
@@ -154,7 +155,7 @@ namespace Warewolf.UIBindingTests
         {
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<IRedisSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
+            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("192.168.104.19");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
@@ -165,7 +166,7 @@ namespace Warewolf.UIBindingTests
                 Name = "Test-Redis",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Password = password,
-                Port = "6379"
+                Port = "6380"
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(redisSourceDefinition);
@@ -726,7 +727,7 @@ namespace Warewolf.UIBindingTests
                 Name = "Test-Redis",
                 HostName = "http://RSAKLFSVRTFSBLD/IntegrationTestSite",
                 Password = password,
-                Port = "6379"
+                Port = "6380"
             };
             //Test Locally
             //var redisSourceDefinition = new RedisSourceDefinition
