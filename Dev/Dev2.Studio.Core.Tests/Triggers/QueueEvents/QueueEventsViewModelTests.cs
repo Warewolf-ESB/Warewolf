@@ -40,8 +40,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
     [TestCategory("Studio Triggers Queue Core")]
     public class QueueEventsViewModelTests
     {
-        Mock<IResource> _mockQueueSource;
-        Guid _queueResourceId = Guid.NewGuid();
         Guid _workflowResourceId = Guid.NewGuid();
         Mock<IResourcePickerDialog> _mockResourcePickerDialog;
 
@@ -588,7 +586,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             public void SetItem(ITriggerQueue item)
             {
             }
-            public new bool Equals(ITriggerQueue other)
+            public bool Equals(ITriggerQueue other)
             {
                 return !IsDirty;
             }
