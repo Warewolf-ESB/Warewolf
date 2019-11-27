@@ -15,13 +15,17 @@ using Dev2.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Tools.Specs.BaseTypes;
+using Moq.Language.Flow;
+using Moq.Language;
+using System.Reflection;
 
 namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
 {
     [Binding]
     public class ExchangeEmailSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext; 
+        delegate void myDelegate(IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors);
 
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -82,16 +86,17 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
-                .Returns("Success")
-                .Callback((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
-            {
-                listIterator.FetchNextValue(i1);
-                listIterator.FetchNextValue(i2);
-                listIterator.FetchNextValue(i3);
-                listIterator.FetchNextValue(i4);
-                listIterator.FetchNextValue(i5);
-                listIterator.FetchNextValue(i6);
-            });
+                .Callback(new myDelegate((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors)=>
+                {
+                    listIterator.FetchNextValue(i1);
+                    listIterator.FetchNextValue(i2);
+                    listIterator.FetchNextValue(i3);
+                    listIterator.FetchNextValue(i4);
+                    listIterator.FetchNextValue(i5);
+                    listIterator.FetchNextValue(i6);
+                    errors = null;
+                }))
+                .Returns("Success");
             var sendEmail = new DsfExchangeEmailActivity(emailSender.Object)
             {
                 Result = ResultVariable,
