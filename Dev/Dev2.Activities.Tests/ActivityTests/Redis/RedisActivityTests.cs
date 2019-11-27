@@ -67,13 +67,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
-            var key = "key1";
-            var hostName = "localhost";
-            var redisSource = new RedisSource { HostName = hostName };
+            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+
+            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
             GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
             //----------------------Act--------------------------
             sut.TestExecuteTool(mockDataObject.Object);
             sut.TestPerformExecution(evel);
@@ -104,14 +104,15 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
-            var key = "key1";
-            var hostName = "localhost";
-            var redisSource = new RedisSource { HostName = hostName };
+            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+
+            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2), new ActivityDTO(isCalValue, "ObjectName3", 3) } };
 
+
             GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
             //----------------------Act--------------------------
             sut.TestExecuteTool(mockDataObject.Object);
             sut.TestPerformExecution(evel);
@@ -145,14 +146,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
             //----------------------Arrange----------------------
-            var key = "key1";
-            var hostName = "localhost";
-            var redisSource = new RedisSource { HostName = hostName };
+                        TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+
+            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
 
             GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
             //----------------------Act--------------------------
             sut.TestExecuteTool(mockDataObject.Object);
             sut.TestPerformExecution(evel);
@@ -183,14 +184,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {
             //----------------------Arrange----------------------
-            var key = "key1";
-            var hostName = "localhost";
-            var redisSource = new RedisSource { HostName = hostName };
+            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+
+            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
 
             GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
             //----------------------Act--------------------------
             sut.TestExecuteTool(mockDataObject.Object);
             sut.TestPerformExecution(evel);
@@ -224,10 +225,18 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         }
 
 
-        private static void GenerateSUTInstance(string key, string hostName, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)
+        private static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
+        {
+            key = "key1";
+            hostName = "192.168.104.19";
+            password = "";
+            port = 6380;
+        }
+
+        private static void GenerateSUTInstance(string key, string hostName, int port, string password, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)
         {
             evel = new Dictionary<string, string> { { "", "" } };
-            var impl = new RedisCacheImpl(hostName, 6379, "");
+            var impl = new RedisCacheImpl(hostName, port, password);
             sut = new TestRedisActivity(mockResourceCatalog.Object, impl)
             {
                 Key = key,

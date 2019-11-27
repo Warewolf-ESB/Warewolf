@@ -19,9 +19,9 @@ Scenario: Creating New Redis Source
 	Given I open New Redis Source
 	Then "New Redis Source" tab is opened
 	And title is "New Redis Source"
-	And I type HostName as "localhost"
-	And server port is "6379"
-	And I type port number as "6379"
+	And I type HostName as "192.168.104.19"
+	And server port is "6380"
+	And I type port number as "6380"
 	Then "New Redis Source *" tab is opened
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
@@ -47,7 +47,7 @@ Scenario: Creating New Redis Source
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: Creating New Redis Source under password
 	Given I open New Redis Source
-	And I type HostName as "localhost"
+	And I type HostName as "192.168.104.19"
 	And I type port number as "6379"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
@@ -72,7 +72,7 @@ Scenario: Creating New Redis Source under password
 Scenario: Incorrect hostname anonymous auth type not allowing save
 	Given I open New Redis Source
 	And I type HostName as "sdfsdfd"
-	And I type port number as "6379"
+	And I type port number as "6380"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Anonymous"
@@ -93,8 +93,8 @@ Scenario: Incorrect hostname anonymous auth type not allowing save
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection
 	Given I open New Redis Source
 	And "Save" is "Disabled"
-	And I type HostName as "localhost"
-	And I type port number as "6379"
+	And I type HostName as "192.168.104.19"
+	And I type port number as "6380"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Password"
@@ -127,7 +127,7 @@ Scenario: Editing saved Redis Source
 	Then "Test-Redis" tab is opened
 	And title is "Test-Redis"
 	And HostName is "http://RSAKLFSVRTFSBLD/IntegrationTestSite"
-	And I type port number as "6379"
+	And I type port number as "6380"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And Select Authentication Type as "Anonymous"
@@ -149,7 +149,7 @@ Scenario: Editing saved Redis Source
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: No data in Cache
-	Given Redis source "localhost"
+	Given Redis source "192.168.104.19"
 	And I have a key "MyData"
 	And No data in the cache
 	And an assign "dataToStore" as
@@ -174,7 +174,7 @@ Scenario: No data in Cache
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: Data exists for given TTL not hit
-	Given Redis source "localhost"
+	Given Redis source "192.168.104.19"
 	And I have a key "MyData"
 	And data exists (TTL not hit) for key "MyData" as
 		| Key    | Data                     |
@@ -199,7 +199,7 @@ Scenario: Data exists for given TTL not hit
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
-	Given Redis source "localhost"
+	Given Redis source "192.168.104.19"
 	And I have a key "MyData"
 	And data does not exist (TTL exceeded) for key "MyData" as
 		| | |
@@ -226,7 +226,7 @@ Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: Delete Key From Cache
-	Given Redis source "localhost"
+	Given Redis source "192.168.104.19"
 	And I have a key "MyData"
 	And an assign "dataToStore" as
 		| var      | value   |
@@ -247,7 +247,7 @@ Scenario: Delete Key From Cache
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: Delete Specific Key From Cache
-	Given Redis source "localhost"
+	Given Redis source "192.168.104.19"
 	And I have a key "MyData"
 	And an assign "dataToStore" as
 		| var      | value   |
