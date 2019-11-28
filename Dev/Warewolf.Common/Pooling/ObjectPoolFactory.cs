@@ -9,12 +9,15 @@
 */
 
 using System;
+using Warewolf.Interfaces.Pooling;
 
-namespace Warewolf.Interfaces.Pooling
+namespace Warewolf.Pooling
 {
-    public interface IObjectPool<T> : IDisposable where T : class, new()
+    public class ObjectPoolFactory<T> : IObjectPoolFactory<T> where T : class, new()
     {
-        T AcquireObject();
-        void ReleaseObject(T concrete);
+        public IObjectPool<T> New(Func<T> objectCreator)
+        {
+            return new ObjectPool<T>(objectCreator);
+        }
     }
 }
