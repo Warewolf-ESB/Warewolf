@@ -83,6 +83,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GateConstantBackoff.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\ControlFlow\Gate\GateLinearBackoff.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GateLinearBackoff.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Gate\GateNoBackoff.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -516,6 +521,10 @@
     <None Include="Toolbox\ControlFlow\Gate\GateConstantBackoff.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>GateConstantBackoff.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Gate\GateLinearBackoff.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GateLinearBackoff.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Gate\GateNoBackoff.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
