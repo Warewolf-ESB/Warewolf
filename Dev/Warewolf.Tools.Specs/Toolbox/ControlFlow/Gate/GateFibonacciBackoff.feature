@@ -1,5 +1,5 @@
-﻿Feature: GateLinearBackoff
-	In order allow Linear backoff from a gate
+﻿Feature: GateFibonacciBackoff
+	In order allow Fibonacci backoff from a gate
 	As a Warewolf user
 	I want the tool to have a Gate selection to proceed
 
@@ -8,16 +8,15 @@ Scenario: Gate tool has no conditions
 		| match | matchtype | match |
 	And GateFailure has "StopOnError" selected
 	And Gates has "" selected
-	And GateRetryStrategy has "LinearBackoff" selected
-	And Linear Increment is set to "50"
-	And Linear Timeout is set to "60000"
-	And Linear Max Retries is set to "2"
+	And GateRetryStrategy has "FibonacciBackoff" selected
+	And Fibonacci Timeout is set to "60000"
+	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "No"
 	And the Gate tool is executed
 	Then the execution has errors
 		| error                                         |
 		| error: gate not executed, no conditions found |
-
+		
 Scenario: Gate tool has stop on error with no resume
 	Given I have the following conditions
 		| match | matchtype | match |
@@ -25,10 +24,9 @@ Scenario: Gate tool has stop on error with no resume
 		| [[b]] | =         | 20    |
 	And GateFailure has "StopOnError" selected
 	And Gates has "" selected
-	And GateRetryStrategy has "LinearBackoff" selected
-	And Linear Increment is set to "50"
-	And Linear Timeout is set to "60000"
-	And Linear Max Retries is set to "2"
+	And GateRetryStrategy has "FibonacciBackoff" selected
+	And Fibonacci Timeout is set to "60000"
+	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "No"
 	And the Gate tool is executed
 	Then the execution has errors
@@ -42,10 +40,9 @@ Scenario: Gate tool has stop on error with resume
 		| [[b]] | =         | 20    |
 	And GateFailure has "StopOnError" selected
 	And Gates has "" selected
-	And GateRetryStrategy has "LinearBackoff" selected
-	And Linear Increment is set to "50"
-	And Linear Timeout is set to "60000"
-	And Linear Max Retries is set to "2"
+	And GateRetryStrategy has "FibonacciBackoff" selected
+	And Fibonacci Timeout is set to "60000"
+	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "Yes"
 	And the Gate tool is executed
 	Then the execution has errors
@@ -59,10 +56,9 @@ Scenario: Gate tool has retry with no resume
 		| [[b]] | =         | 20    |
 	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
-	And GateRetryStrategy has "LinearBackoff" selected
-	And Linear Increment is set to "50"
-	And Linear Timeout is set to "60000"
-	And Linear Max Retries is set to "2"
+	And GateRetryStrategy has "FibonacciBackoff" selected
+	And Fibonacci Timeout is set to "60000"
+	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "No"
 	And the Gate tool is executed
 	Then the execution has errors
@@ -76,10 +72,9 @@ Scenario: Gate tool has retry with resume
 		| [[b]] | =         | 20    |
 	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
-	And GateRetryStrategy has "LinearBackoff" selected
-	And Linear Increment is set to "50"
-	And Linear Timeout is set to "60000"
-	And Linear Max Retries is set to "2"
+	And GateRetryStrategy has "FibonacciBackoff" selected
+	And Fibonacci Timeout is set to "60000"
+	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "Yes"
 	And the Gate tool is executed
 	Then the execution has errors
@@ -93,10 +88,9 @@ Scenario: Gate tool has retry with increment not allowed
 		| [[b]] | =         | 20    |
 	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
-	And GateRetryStrategy has "LinearBackoff" selected
-	And Linear Increment is set to "-1"
-	And Linear Timeout is set to "60000"
-	And Linear Max Retries is set to "2"
+	And GateRetryStrategy has "FibonacciBackoff" selected
+	And Fibonacci Timeout is set to "60000"
+	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "Yes"
 	And the Gate tool is executed
 	Then the execution has errors

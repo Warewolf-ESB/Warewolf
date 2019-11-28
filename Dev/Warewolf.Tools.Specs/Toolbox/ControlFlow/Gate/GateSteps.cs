@@ -176,6 +176,9 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 case "LinearBackoff":
                     gateActivity.GateOptions.Strategy = new LinearBackoff();
                     break;
+                case "FibonacciBackoff":
+                    gateActivity.GateOptions.Strategy = new FibonacciBackoff();
+                    break;
             }
         }
 
@@ -215,6 +218,24 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
             {
                 linearBackoff.MaxRetries = retries;
+            }
+        }
+        [Given(@"Fibonacci Timeout is set to ""(.*)""")]
+        public void GivenFibonacciTimeoutIsSetTo(int timeOut)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            if (gateActivity.GateOptions.Strategy is FibonacciBackoff fibonacciBackoff)
+            {
+                fibonacciBackoff.TimeOut = timeOut;
+            }
+        }
+        [Given(@"Fibonacci Max Retries is set to ""(.*)""")]
+        public void GivenFibonacciMaxRetriesIsSetTo(int retries)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            if (gateActivity.GateOptions.Strategy is FibonacciBackoff fibonacciBackoff)
+            {
+                fibonacciBackoff.MaxRetries = retries;
             }
         }
         [Given(@"Resume is set to ""(.*)""")]
