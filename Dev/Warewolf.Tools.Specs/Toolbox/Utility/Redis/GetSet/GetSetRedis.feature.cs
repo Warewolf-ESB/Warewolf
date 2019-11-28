@@ -101,34 +101,34 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("No data in the cache", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2772 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2769.AddRow(new string[] {
+            table2772.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 11
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2772, "And ");
 #line 14
  testRunner.When("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2773 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Data"});
-            table2770.AddRow(new string[] {
+            table2773.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Test1\""});
 #line 15
- testRunner.Then("the cache will contain", ((string)(null)), table2770, "Then ");
+ testRunner.Then("the cache will contain", ((string)(null)), table2773, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2771 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2774 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2771.AddRow(new string[] {
+            table2774.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 18
- testRunner.And("output variables have the following values", ((string)(null)), table2771, "And ");
+ testRunner.And("output variables have the following values", ((string)(null)), table2774, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -148,36 +148,36 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2772 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2775 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Data"});
-            table2772.AddRow(new string[] {
+            table2775.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Data in cache\""});
 #line 26
- testRunner.And("data exists (TTL not hit) for key \"MyData\" as", ((string)(null)), table2772, "And ");
+ testRunner.And("data exists (TTL not hit) for key \"MyData\" as", ((string)(null)), table2775, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2773 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2776 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2773.AddRow(new string[] {
+            table2776.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 29
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2773, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2776, "And ");
 #line 32
  testRunner.When("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 33
  testRunner.Then("the assign \"dataToStore\" is not executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2774 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2777 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2774.AddRow(new string[] {
+            table2777.AddRow(new string[] {
                         "[[Var1]]",
                         "\"[[Var1]],Data in cache\""});
 #line 34
- testRunner.And("output variables have the following values", ((string)(null)), table2774, "And ");
+ testRunner.And("output variables have the following values", ((string)(null)), table2777, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -197,42 +197,42 @@ this.ScenarioSetup(scenarioInfo);
 #line 41
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2775 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2778 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
 #line 42
- testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table2775, "And ");
+ testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table2778, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2776 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2779 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2776.AddRow(new string[] {
+            table2779.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 44
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2776, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2779, "And ");
 #line 47
  testRunner.When("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
  testRunner.Then("the assign \"dataToStore\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2777 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2780 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Data"});
-            table2777.AddRow(new string[] {
+            table2780.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Test1\""});
 #line 49
- testRunner.Then("the cache will contain", ((string)(null)), table2777, "Then ");
+ testRunner.Then("the cache will contain", ((string)(null)), table2780, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2778 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2781 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2778.AddRow(new string[] {
+            table2781.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 52
- testRunner.And("output variables have the following values", ((string)(null)), table2778, "And ");
+ testRunner.And("output variables have the following values", ((string)(null)), table2781, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
