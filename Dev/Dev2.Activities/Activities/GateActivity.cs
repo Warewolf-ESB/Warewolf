@@ -12,6 +12,7 @@ using Dev2.Activities.Gates;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
@@ -56,12 +57,12 @@ namespace Dev2.Activities
             get
             {
                 const bool errorIfNull = true;
+                if (!Conditions.TheStack.Any())
+                {
+                    return true;
+                }
                 try
                 {
-                    if (!Conditions.TheStack.Any())
-                    {
-                        return true;
-                    }
                     var stack = Conditions.TheStack.Select(a => ParseDecision(_dataObject.Environment, a, errorIfNull));
 
                     var factory = Dev2DecisionFactory.Instance();
@@ -141,13 +142,14 @@ namespace Dev2.Activities
 
         public override IEnumerable<StateVariable> GetState()
         {
-           return new[]
+            var serializer = new Dev2JsonSerializer();
+            return new[]
            {
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(Conditions),
-                    Value = JsonConvert.SerializeObject(Conditions),
+                    Value = serializer.Serialize(Conditions),
                 },
                 new StateVariable
                 {
@@ -264,8 +266,9 @@ namespace Dev2.Activities
                     switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
                     {
                         case GateFailureAction.StopOnError:
-                            stop = true;
+                            data.Environment.AddError("error: stop on error with no resume");
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
+                            stop = true;
                             break;
                         case GateFailureAction.Retry:
                             var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
