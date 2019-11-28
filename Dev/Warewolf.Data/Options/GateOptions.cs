@@ -92,5 +92,6 @@ namespace Warewolf.Data.Options
         }
 
         public int TimeOut { get; set; } = 60000;
+        public int MaxRetries { get; set; } = 2;
     }
 }
