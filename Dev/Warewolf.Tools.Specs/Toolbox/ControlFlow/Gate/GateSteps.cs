@@ -170,6 +170,34 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             }
         }
 
+        [Given(@"Linear Increment is set to ""(.*)""")]
+        public void GivenLinearIncrementIsSetTo(int increment)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
+            {
+                linearBackoff.Increment = increment;
+            }
+        }
+
+        [Given(@"Linear Timeout is set to ""(.*)""")]
+        public void GivenLinearTimeoutIsSetTo(int timeOut)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
+            {
+                linearBackoff.TimeOut = timeOut;
+            }
+        }
+        [Given(@"Linear Max Retries is set to ""(.*)""")]
+        public void GivenLinearMaxRetriesIsSetTo(int retries)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
+            {
+                linearBackoff.MaxRetries = retries;
+            }
+        }
         [Given(@"Resume is set to ""(.*)""")]
         public void GivenResumeIsSetTo(string resume)
         {
