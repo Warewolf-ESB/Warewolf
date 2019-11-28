@@ -22,6 +22,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Exchange
     public class ExchangeEmailSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
+        delegate void myDelegate(IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors, bool _isHtml);
 
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -84,7 +85,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Exchange
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR, It.IsAny<bool>()))
                 .Returns("Success")
-                .Callback((IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors, bool _isHtml) =>
+                .Callback(new myDelegate((IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors, bool _isHtml) =>
                 {
                     listIterator.FetchNextValue(i1);
                     listIterator.FetchNextValue(i2);
@@ -93,7 +94,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Exchange
                     listIterator.FetchNextValue(i5);
                     listIterator.FetchNextValue(i6);
                     isHtml = _isHtml ? "true" : "false";
-                });
+                    errors = null;
+                }));
             var sendEmail = new DsfExchangeEmailNewActivity(emailSender.Object)
             {
                 Result = ResultVariable,
