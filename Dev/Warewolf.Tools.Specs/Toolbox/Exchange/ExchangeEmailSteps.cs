@@ -1,7 +1,6 @@
 ﻿using Dev2.Activities.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;

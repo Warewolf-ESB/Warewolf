@@ -565,6 +565,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the result from the web service ""(.*)"" will have the same data as variable ""(.*)""")]
         public void ThenTheResultFromTheWebServiceWillHaveTheSameDataAsVariable(string webservice, string errorVariable)
         {
+            if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
+            {
+                webservice = webservice.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ':' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.Container.Port);
+            }
             var result = _scenarioContext.Get<IDSFDataObject>("result");
 
             //Get the error value
@@ -588,7 +592,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 retryCount++;
                 //Call the service and get the error back
                 webClient = WebRequest.Create(webservice);
-                webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                webClient.Credentials = new NetworkCredential("WarewolfAdmin", "W@rEw0lf@dm1n");
                 webClient.Timeout = Timeout.Infinite;
                 using (WebResponse response = (HttpWebResponse)webClient.GetResponse())
                 {
