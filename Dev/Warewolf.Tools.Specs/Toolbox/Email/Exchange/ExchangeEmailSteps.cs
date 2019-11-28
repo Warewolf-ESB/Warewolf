@@ -25,8 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
     public class ExchangeEmailSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext; 
-        delegate void sendIExchangeEmail(IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors);
-        delegate void sendIExchangeSourceEmail(IExchangeSource source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors);
+        delegate void myDelegate(IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors);
 
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -87,7 +86,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
-                .Callback(new sendIExchangeEmail((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors)=>
+                .Callback(new myDelegate((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors)=>
                 {
                     listIterator.FetchNextValue(i1);
                     listIterator.FetchNextValue(i2);
@@ -164,7 +163,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
-                .Callback(new sendIExchangeSourceEmail((IExchangeSource source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors)=>
+                .Callback(new myDelegate((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, out ErrorResultTO errors)=>
                 {
                     listIterator.FetchNextValue(i1);
                     listIterator.FetchNextValue(i2);
