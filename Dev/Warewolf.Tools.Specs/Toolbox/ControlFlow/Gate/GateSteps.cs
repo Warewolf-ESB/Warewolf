@@ -37,6 +37,51 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             scenarioContext.Add("activity", CreateActivity());
         }
 
+        private void BuildActivity()
+        {
+            BuildDataList();
+
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+
+            gateActivity.DisplayName = "Gate 1";
+            gateActivity.UniqueID = RetryEntryPointId.ToString();
+
+            TestStartNode = new FlowStep
+            {
+                Action = gateActivity
+            };
+        }
+
+        private void BuildNextActivity()
+        {
+            BuildDataList();
+
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+
+            gateActivity.DisplayName = "Gate 1";
+            gateActivity.UniqueID = RetryEntryPointId.ToString();
+
+            var nextGateActivity = CreateActivity();
+            nextGateActivity.UniqueID = Guid.NewGuid().ToString();
+            nextGateActivity.DisplayName = "Gate 2";
+
+            gateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
+            nextGateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
+
+            var gateOneFlowStep = new FlowStep { Action = gateActivity };
+
+            var gateTwoFlowStep = new FlowStep
+            {
+                Action = nextGateActivity
+            };
+
+            TestStartNode = new FlowStep
+            {
+                Action = gateActivity,
+                Next = gateTwoFlowStep
+            };
+        }
+
         protected override void BuildDataList()
         {
             scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
@@ -49,32 +94,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
-
-            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            
-            gateActivity.DisplayName = "Gate 1";
-            gateActivity.UniqueID = RetryEntryPointId.ToString();
-            
-            var nextGateActivity = CreateActivity();
-            nextGateActivity.UniqueID = Guid.NewGuid().ToString();
-            nextGateActivity.DisplayName = "Gate 2";
-            
-            gateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
-            nextGateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
-
-            var gateOneFlowStep = new FlowStep { Action = gateActivity };
-
-            var gateTwoFlowStep = new FlowStep 
-            { 
-                Action = nextGateActivity,
-                Next = gateOneFlowStep
-            };
-
-            TestStartNode = new FlowStep
-            {
-                Action = gateActivity, 
-                Next = gateTwoFlowStep
-            };
         }
 
         private GateActivity CreateActivity()
@@ -208,7 +227,15 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         [Given(@"the Gate tool is executed")]
         public void GivenTheGateToolIsExecuted()
         {
-            BuildDataList();
+            BuildActivity();
+            var result = ExecuteProcess(isDebug: true, throwException: false);
+            scenarioContext.Add("result", result);
+        }
+
+        [Given(@"the Gate tool is executed with next gate")]
+        public void GivenTheGateToolIsExecutedWithNextGate()
+        {
+            BuildNextActivity();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
@@ -229,6 +256,15 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
                 Assert.AreEqual(expectedError, error);
             }
+        }
+
+        [Then(@"the execution has no errors")]
+        public void ThenTheExecutionHasNoErrors()
+        {
+            var result = scenarioContext.Get<IDSFDataObject>("result");
+
+            Assert.AreEqual(0, result.Environment.Errors.Count);
+            Assert.AreEqual(0, result.Environment.AllErrors.Count);
         }
 
     }
