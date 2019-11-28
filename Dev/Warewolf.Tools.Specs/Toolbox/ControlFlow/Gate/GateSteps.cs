@@ -154,6 +154,9 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 case "ConstantBackoff":
                     gateActivity.GateOptions.Strategy = null;
                     break;
+                case "LinearBackoff":
+                    gateActivity.GateOptions.Strategy = new LinearBackoff();
+                    break;
             }
         }
 
