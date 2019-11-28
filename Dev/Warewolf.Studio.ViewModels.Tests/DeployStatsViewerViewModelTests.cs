@@ -294,7 +294,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
             var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            var mockServer = new Mock<IServer>();
             var mockShellViewModel = new Mock<IShellViewModel>();
 
             mockExplorerItemViewModel.Setup(o => o.ActivityName).Returns("tesssssss");
@@ -302,13 +301,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerItemViewModel.Setup(o => o.ResourcePath).Returns(@"Category\Testing");
             mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(new Guid("00000000-0000-0000-0000-000000000000"));
             mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
-            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
-            mockExplorerItemViewModel.Setup(o => o.Server.CanDeployTo).Returns(true);
 
             mockExplorerTreeItem.Setup(a => a.ResourceId).Returns(new Guid("00000000-0000-0000-0000-000000000001"));
-            mockExplorerTreeItem.Setup(a => a.Server).Returns(mockServer.Object);
-            mockExplorerTreeItem.Setup(a => a.Server.CanDeployFrom).Returns(false);
-            mockExplorerTreeItem.Setup(a => a.Server.CanDeployTo).Returns(false);
             mockExplorerTreeItem.Setup(a => a.CanDeploy).Returns(true);
 
             mockDeployDestinationExplorerViewModel.Setup(o => o.ConnectControlViewModel).Returns(mockConnectControlViewModel.Object);
@@ -320,7 +314,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //-------------------------Act--------------------------------
             deployStatsViewerViewModel.CheckDestinationPermissions();
             //-------------------------Assert-----------------------------
-            mockServer.VerifyAll();
             mockShellViewModel.VerifyAll();
             mockConnectControlViewModel.VerifyAll();
 
