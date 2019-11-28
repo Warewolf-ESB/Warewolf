@@ -67,6 +67,8 @@ namespace Dev2.Studio.Views.Workflow
             _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
             _jsonEditor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
+            _editor.Document.UpdateFinished += XmlOutputDocument_UpdateFinished;
+            _jsonEditor.Document.UpdateFinished += JsonOutputDocument_UpdateFinished;
             _foldingUpdateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
             _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Start();
@@ -85,6 +87,35 @@ namespace Dev2.Studio.Views.Workflow
         {
             _editor.Text = input;
             XmlOutput.Content = _editor;
+        }
+
+        void ShowDataInJsonOutputWindow(WorkflowInputDataViewModel vm, string input)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                var xml = new XmlDocument();
+
+                try
+                {
+                    xml.LoadXml(input);
+                }
+                catch (Exception ex)
+                {
+                    vm.ShowInvalidDataPopupMessage();
+                }
+
+                if (xml.FirstChild != null)
+                {
+                    var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
+                    _jsonEditor.Text = json;
+                }
+                else
+                {
+                    _jsonEditor.Text = vm.JsonData;
+                }
+
+                JsonOutput.Content = _jsonEditor;
+            }
         }
 
         void TryShowDataInOutputWindow(WorkflowInputDataViewModel vm)
@@ -174,40 +205,22 @@ namespace Dev2.Studio.Views.Workflow
 
         private void SetCurrentTabToJson(WorkflowInputDataViewModel vm)
         {
-            var xml = new XmlDocument();
+            string input = string.Empty;
+
             if (_currentTab == InputTab.Grid)
             {
                 vm.SetXmlData();
                 if (vm.XmlData != null)
                 {
-                    xml.LoadXml(vm.XmlData);
+                    input = vm.XmlData;
                 }
             }
             if (_currentTab == InputTab.Xml && !string.IsNullOrEmpty(_editor.Text))
             {
-                try
-                {
-                    xml.LoadXml(_editor.Text);
-                }
-                catch (Exception ex)
-                {
-                    vm.ShowInvalidDataPopupMessage();
-                }
+                input = _editor.Text;
             }
 
-            if (!string.IsNullOrEmpty(vm.JsonData))
-            {
-                _jsonEditor.Text = vm.JsonData;
-            }
-            else
-            {
-                if (xml.FirstChild != null)
-                {
-                    var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
-                    _jsonEditor.Text = json;
-                }
-            }
-            JsonOutput.Content = _jsonEditor;
+            ShowDataInJsonOutputWindow(vm, input);
             _currentTab = InputTab.Json;
         }
 
@@ -400,13 +413,14 @@ namespace Dev2.Studio.Views.Workflow
                     vm.IsInError = true;
                 }
             }
+            else if (tabItem.Header.ToString() == "JSON")
+            {
+                vm.XmlData = GetXmlDataFromJson();
+                vm.SetWorkflowInputData();
+            }
             else
             {
-                if (tabItem.Header.ToString() == "JSON")
-                {
-                    vm.XmlData = GetXmlDataFromJson();
-                    vm.SetWorkflowInputData();
-                }
+                vm.SetXmlData();
             }
         }
 
@@ -480,6 +494,43 @@ namespace Dev2.Studio.Views.Workflow
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 mainViewModel?.ResetMainView();
             }
+        }
+
+        private void XmlOutputDocument_UpdateFinished(object sender, EventArgs e)
+        {
+            var vm = DataContext as WorkflowInputDataViewModel;
+
+            try
+            {
+                if (vm.CheckHasUnicodeInWorkflowInputData(_editor.Text))
+                {
+                    ShowDataInOutputWindow(vm.XmlData);
+                    return;
+                }
+
+                vm.IsInError = false;
+                vm.XmlData = _editor.Text;
+                vm.SetWorkflowInputData();
+            }
+            catch (Exception ex)
+            {
+                vm.IsInError = true;
+            }
+        }
+
+        private void JsonOutputDocument_UpdateFinished(object sender, EventArgs e)
+        {
+            var vm = DataContext as WorkflowInputDataViewModel;
+
+            vm.XmlData = GetXmlDataFromJson();
+            if (vm.CheckHasUnicodeInWorkflowInputData(vm.XmlData))
+            {
+                ShowDataInJsonOutputWindow(vm, vm.XmlData);
+                return;
+            }
+
+            vm.IsInError = false;
+            vm.SetWorkflowInputData();
         }
     }
 
