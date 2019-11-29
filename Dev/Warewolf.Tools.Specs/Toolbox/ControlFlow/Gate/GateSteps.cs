@@ -10,6 +10,9 @@
 
 using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -46,6 +49,16 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             gateActivity.DisplayName = "Gate 1";
             gateActivity.UniqueID = RetryEntryPointId.ToString();
 
+            scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
+
+            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
+
+            var modelData = dds.ToVBPersistableModel();
+            scenarioContext.Add("modelData", modelData);
+
+            gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
             TestStartNode = new FlowStep
             {
                 Action = gateActivity
@@ -60,6 +73,30 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             gateActivity.DisplayName = "Gate 1";
             gateActivity.UniqueID = RetryEntryPointId.ToString();
+
+            scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
+
+            var decisionModels = scenarioContext.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
+            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
+
+            foreach (var dm in decisionModels)
+            {
+                var dev2Decision = new Dev2Decision
+                {
+                    Col1 = dm.Item1 ?? string.Empty,
+                    EvaluationFn = dm.Item2,
+                    Col2 = dm.Item3 ?? string.Empty,
+                    Col3 = dm.Item4 ?? string.Empty
+                };
+
+                dds.AddModelItem(dev2Decision);
+            }
+
+            var modelData = dds.ToVBPersistableModel();
+            scenarioContext.Add("modelData", modelData);
+
+            gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             var nextGateActivity = CreateActivity();
             nextGateActivity.UniqueID = Guid.NewGuid().ToString();
@@ -84,6 +121,25 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         protected override void BuildDataList()
         {
+            BuildShapeAndTestData();
+
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
+
+            if (decisionModels == null)
+            {
+                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                scenarioContext.Add("decisionModels", decisionModels);
+            }
+
+            var variable1 = "[[a]]";
+            var decision = enDecisionType.IsEqual.ToString();
+            var variable2 = "bob";
+
+            decisionModels.Add(
+                new Tuple<string, enDecisionType, string, string>(
+                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), variable2, null
+                    ));
+
             scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
@@ -93,7 +149,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
-            BuildShapeAndTestData();
         }
 
         private GateActivity CreateActivity()

@@ -13,9 +13,7 @@ Scenario: Gate tool has no conditions
 	And Fibonacci Max Retries is set to "2"
 	And Resume is set to "No"
 	And the Gate tool is executed
-	Then the execution has errors
-		| error                                         |
-		| error: gate not executed, no conditions found |
+	Then the execution has no errors
 		
 Scenario: Gate tool has stop on error with no resume
 	Given I have the following conditions
