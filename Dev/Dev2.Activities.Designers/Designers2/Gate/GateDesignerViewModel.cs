@@ -13,6 +13,11 @@ using Dev2.Common;
 using Dev2.Common.Gates;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Interfaces;
+using Dev2.Communication;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.Util;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -25,6 +30,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Warewolf.Data.Options;
@@ -46,13 +52,14 @@ namespace Dev2.Activities.Designers2.Gate
         private OptionsWithNotifier _options;
         private IServer _server;
         private IResourceRepository _resourceRepository;
+        private string expressionText;
         private readonly ModelItem _modelItem;
 
         public GateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            LoadDefaults();
             _modelItem = modelItem;
+            LoadDefaults();
             LoadOptions();
             ClearGates();
             LoadGates();
@@ -74,6 +81,9 @@ namespace Dev2.Activities.Designers2.Gate
             var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
             WhereOptions = new ObservableCollection<string>(collection);
             SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
+
+            ConfigureDecisionExpression(_modelItem);
+            InitializeItems(Tos);
             DeleteCommand = new DelegateCommand(x =>
             {
                 DeleteRow(x as DecisionTO);
@@ -140,11 +150,65 @@ namespace Dev2.Activities.Designers2.Gate
                 _server = activeServer;
                 _resourceRepository = _server.ResourceRepository;
 
-                Options = new OptionsWithNotifier{ Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume)};
+                Options = new OptionsWithNotifier { Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume) };
             }
         }
 
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
+
+        void ConfigureDecisionExpression(ModelItem modelItem)
+        {
+            var condition = modelItem;
+            var expression = condition.Properties[GlobalConstants.ExpressionPropertyText];
+            var defaultStack = DataListConstants.DefaultStack;
+
+            if (expression?.Value != null)
+            {
+                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.Value.ToString());
+
+                if (!string.IsNullOrEmpty(eval))
+                {
+                    ExpressionText = eval;
+                }
+            }
+            else
+            {
+                var ser = new Dev2JsonSerializer();
+                ExpressionText = ser.Serialize(defaultStack);
+            }
+
+            var displayName = modelItem.Properties[GlobalConstants.DisplayNamePropertyText];
+            if (displayName?.Value != null)
+            {
+                defaultStack.DisplayText = displayName.Value.ToString();
+            }
+            Tos = ToObservableCollection();
+        }
+
+        ObservableCollection<IDev2TOFn> ToObservableCollection()
+        {
+            if (!string.IsNullOrWhiteSpace(ExpressionText))
+            {
+                var val = new StringBuilder(ExpressionText);
+                var decisions = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+                if (decisions?.TheStack != null)
+                {
+                    var collection = decisions.TheStack.Select((a, i) => new DecisionTO(a, i + 1, null, DeleteRow));
+                    return new ObservableCollection<IDev2TOFn>(collection);
+                }
+            }
+            return new ObservableCollection<IDev2TOFn> { new DecisionTO() };
+        }
+
+        public string ExpressionText 
+        { 
+            get => expressionText;
+            set
+            {
+                expressionText = value;
+                _modelItem.Properties["ExpressionText"]?.SetValue(value);
+            }
+        }
         public ObservableCollection<IDev2TOFn> Tos
         {
             get => Collection;
@@ -153,8 +217,36 @@ namespace Dev2.Activities.Designers2.Gate
                 Collection.CollectionChanged -= CollectionCollectionChanged;
                 Collection = value;
                 Collection.CollectionChanged += CollectionCollectionChanged;
+                var stack = SetupTos(Collection);
+                ExpressionText = DataListUtil.ConvertModelToJson(stack).ToString();
             }
         }
+        static Dev2DecisionStack SetupTos(IEnumerable<IDev2TOFn> dev2TOs)
+        {
+            var dev2DecisionStack = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() };
+            var value = dev2TOs.Select(a => a as DecisionTO);
+            foreach (var decisionTo in value.Where(a => { return a != null && !a.IsEmpty(); }))
+            {
+                var dev2Decision = new Dev2Decision { Col1 = decisionTo.MatchValue };
+                if (!string.IsNullOrEmpty(decisionTo.SearchCriteria))
+                {
+                    dev2Decision.Col2 = decisionTo.SearchCriteria;
+                }
+                dev2Decision.EvaluationFn = DecisionDisplayHelper.GetValue(decisionTo.SearchType);
+                if (decisionTo.IsBetweenCriteriaVisible)
+                {
+                    dev2Decision.Col2 = decisionTo.From;
+                    dev2Decision.Col3 = decisionTo.To;
+                }
+                if (string.IsNullOrEmpty(dev2Decision.Col3))
+                {
+                    dev2Decision.Col3 = "";
+                }
+                dev2DecisionStack.TheStack.Add(dev2Decision);
+            }
+            return dev2DecisionStack;
+        }
+
         static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAll();
         public ObservableCollection<string> WhereOptions { get; private set; }
         public ICommand SearchTypeUpdatedCommand { get; private set; }
