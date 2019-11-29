@@ -376,10 +376,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [Given(@"use private public key for source is ""(.*)""")]
-        public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey)
-        {
-            _scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
-        }
+        public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey) => _scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
 
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
@@ -401,7 +398,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
             {
-                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ':' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.Container.Port);
+                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ":3144");
             }
             _scenarioContext.Add("webserviceToCall", onErrorWebserviceToCall);
         }
@@ -567,7 +564,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
             {
-                webservice = webservice.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ':' + Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps.Container.Port);
+                webservice = webservice.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ":3144");
             }
             var result = _scenarioContext.Get<IDSFDataObject>("result");
 
@@ -608,7 +605,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
-
 
         [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
         public void ThenTheResultVariableWillBe(string variable, string expectedValue)
