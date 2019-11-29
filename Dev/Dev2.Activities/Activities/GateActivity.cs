@@ -32,9 +32,10 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
-    public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>
+    public class GateActivity : DsfFlowNodeActivity<bool>, IEquatable<GateActivity>
     {
         public GateActivity()
+            : base(nameof(Gate))
         {
             DisplayName = nameof(Gate);
             IsGate = true;

@@ -134,7 +134,8 @@ namespace Warewolf.MergeParser
             foreach (var n in allNodes)
             {
                 var loc = GetShapeLocation(wd, n);
-                var id = _activityParser.Parse(new List<IDev2Activity>(), n)?.UniqueID;
+                IDev2Activity dev2Activity = _activityParser?.Parse(new List<IDev2Activity>(), n);
+                var id = dev2Activity?.UniqueID;
                 idsLocations.Add((id, loc));
             }
             return idsLocations;
