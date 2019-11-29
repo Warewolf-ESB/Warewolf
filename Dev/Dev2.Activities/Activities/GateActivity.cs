@@ -260,6 +260,8 @@ namespace Dev2.Activities
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
 
+                UpdateConditions();
+
                 //----------ExecuteTool--------------
                 if (!Passing)
                 {
@@ -267,7 +269,7 @@ namespace Dev2.Activities
                     switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
                     {
                         case GateFailureAction.StopOnError:
-                            data.Environment.AddError("error: stop on error with no resume");
+                            data.Environment.AddError("stop on error with no resume");
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
                             stop = true;
                             break;
@@ -314,6 +316,21 @@ namespace Dev2.Activities
                 return NextNodes.First();
             }
             return null;
+        }
+
+        private void UpdateConditions()
+        {
+            var rawText = ExpressionText;
+
+            if (rawText != null)
+            {
+                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
+
+                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
+                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
+
+                Conditions = decisionStack;
+            }
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
