@@ -112,13 +112,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("Resume is set to \"No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
  testRunner.And("the Gate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "error"});
-            table2.AddRow(new string[] {
-                        "error: gate not executed, no conditions found"});
 #line 16
- testRunner.Then("the execution has errors", ((string)(null)), table2, "Then ");
+ testRunner.Then("the execution has no errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -129,44 +124,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GateToolHasStopOnErrorWithNoResume()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has stop on error with no resume", ((string[])(null)));
-#line 20
+#line 18
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "match",
                         "matchtype",
                         "match"});
-            table3.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[a]]",
                         "=",
                         "10"});
-            table3.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[b]]",
                         "=",
                         "20"});
-#line 21
- testRunner.Given("I have the following conditions", ((string)(null)), table3, "Given ");
-#line 25
+#line 19
+ testRunner.Given("I have the following conditions", ((string)(null)), table2, "Given ");
+#line 23
  testRunner.And("GateFailure has \"StopOnError\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 24
  testRunner.And("Gates has \"\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 25
  testRunner.And("GateRetryStrategy has \"QuadraticBackoff\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 26
  testRunner.And("Quadratic Timeout is set to \"60000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 27
  testRunner.And("Quadratic Max Retries is set to \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 28
  testRunner.And("Resume is set to \"No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 29
  testRunner.And("the Gate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "error"});
-            table4.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "error: stop on error with no resume"});
-#line 32
- testRunner.Then("the execution has errors", ((string)(null)), table4, "Then ");
+#line 30
+ testRunner.Then("the execution has errors", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -177,44 +172,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GateToolHasStopOnErrorWithResume()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has stop on error with resume", ((string[])(null)));
-#line 36
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "match",
                         "matchtype",
                         "match"});
-            table5.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "[[a]]",
                         "=",
                         "10"});
-            table5.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "[[b]]",
                         "=",
                         "20"});
-#line 37
- testRunner.Given("I have the following conditions", ((string)(null)), table5, "Given ");
-#line 41
+#line 35
+ testRunner.Given("I have the following conditions", ((string)(null)), table4, "Given ");
+#line 39
  testRunner.And("GateFailure has \"StopOnError\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 40
  testRunner.And("Gates has \"\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 41
  testRunner.And("GateRetryStrategy has \"QuadraticBackoff\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 42
  testRunner.And("Quadratic Timeout is set to \"60000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 43
  testRunner.And("Quadratic Max Retries is set to \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 44
  testRunner.And("Resume is set to \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 45
  testRunner.And("the Gate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "error"});
-            table6.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "expected stop on error with resume"});
-#line 48
- testRunner.Then("the execution has errors", ((string)(null)), table6, "Then ");
+#line 46
+ testRunner.Then("the execution has errors", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -225,44 +220,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GateToolHasRetryWithNoResume()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has retry with no resume", ((string[])(null)));
-#line 52
+#line 50
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "match",
                         "matchtype",
                         "match"});
-            table7.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "[[a]]",
                         "=",
                         "10"});
-            table7.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "[[b]]",
                         "=",
                         "20"});
-#line 53
- testRunner.Given("I have the following conditions", ((string)(null)), table7, "Given ");
-#line 57
+#line 51
+ testRunner.Given("I have the following conditions", ((string)(null)), table6, "Given ");
+#line 55
  testRunner.And("GateFailure has \"Retry\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 56
  testRunner.And("Gates has \"Gate\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 57
  testRunner.And("GateRetryStrategy has \"QuadraticBackoff\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 58
  testRunner.And("Quadratic Timeout is set to \"60000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 59
  testRunner.And("Quadratic Max Retries is set to \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 60
  testRunner.And("Resume is set to \"No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 61
  testRunner.And("the Gate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "error"});
-            table8.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "error: retry with no resume"});
-#line 64
- testRunner.Then("the execution has errors", ((string)(null)), table8, "Then ");
+#line 62
+ testRunner.Then("the execution has errors", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -273,44 +268,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GateToolHasRetryWithResume()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has retry with resume", ((string[])(null)));
-#line 68
+#line 66
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "match",
                         "matchtype",
                         "match"});
-            table9.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "[[a]]",
                         "=",
                         "10"});
-            table9.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "[[b]]",
                         "=",
                         "20"});
-#line 69
- testRunner.Given("I have the following conditions", ((string)(null)), table9, "Given ");
-#line 73
+#line 67
+ testRunner.Given("I have the following conditions", ((string)(null)), table8, "Given ");
+#line 71
  testRunner.And("GateFailure has \"Retry\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 72
  testRunner.And("Gates has \"Gate\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 73
  testRunner.And("GateRetryStrategy has \"QuadraticBackoff\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 74
  testRunner.And("Quadratic Timeout is set to \"60000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 75
  testRunner.And("Quadratic Max Retries is set to \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 76
  testRunner.And("Resume is set to \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 77
  testRunner.And("the Gate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "error"});
-            table10.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "error: retry with resume"});
-#line 80
- testRunner.Then("the execution has errors", ((string)(null)), table10, "Then ");
+#line 78
+ testRunner.Then("the execution has errors", ((string)(null)), table9, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -321,44 +316,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GateToolHasRetryWithIncrementNotAllowed()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has retry with increment not allowed", ((string[])(null)));
-#line 84
+#line 82
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "match",
                         "matchtype",
                         "match"});
-            table11.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[a]]",
                         "=",
                         "10"});
-            table11.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[b]]",
                         "=",
                         "20"});
-#line 85
- testRunner.Given("I have the following conditions", ((string)(null)), table11, "Given ");
-#line 89
+#line 83
+ testRunner.Given("I have the following conditions", ((string)(null)), table10, "Given ");
+#line 87
  testRunner.And("GateFailure has \"Retry\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 88
  testRunner.And("Gates has \"Gate\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 89
  testRunner.And("GateRetryStrategy has \"QuadraticBackoff\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 90
  testRunner.And("Quadratic Timeout is set to \"60000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 91
  testRunner.And("Quadratic Max Retries is set to \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 92
  testRunner.And("Resume is set to \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 93
  testRunner.And("the Gate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "error"});
-            table12.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "error: increment index out of range exception"});
-#line 96
- testRunner.Then("the execution has errors", ((string)(null)), table12, "Then ");
+#line 94
+ testRunner.Then("the execution has errors", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
