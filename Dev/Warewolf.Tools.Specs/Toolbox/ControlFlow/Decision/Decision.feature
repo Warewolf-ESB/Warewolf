@@ -79,7 +79,7 @@ Feature: Decision
 ##decide if There Is No Error (True)
 ##decide if There Is No Error (False)
 ##decide if text with space is equal to same text with extra space (False)
-##Decision using recordset append notation
+##Decision using recordset append notationedis
 ##Executing Decision with malformed variables
 ##Executing Decision with malformed recordset
 ##Executing Decision with recordset contains spcl character as index

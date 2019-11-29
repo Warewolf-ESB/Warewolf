@@ -19,9 +19,9 @@ Scenario: Creating New Redis Source
 	Given I open New Redis Source
 	Then "New Redis Source" tab is opened
 	And title is "New Redis Source"
-	And I type HostName as "192.168.104.19"
-	And server port is "6380"
-	And I type port number as "6380"
+	And I type HostName as "localhost"
+	And server port is "6379"
+	And I type port number as "6379"
 	Then "New Redis Source *" tab is opened
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
@@ -47,7 +47,7 @@ Scenario: Creating New Redis Source
 @MSTest:DeploymentItem:EnableDocker.txt
 Scenario: Creating New Redis Source under password
 	Given I open New Redis Source
-	And I type HostName as "192.168.104.19"
+	And I type HostName as "localhost"
 	And I type port number as "6379"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
@@ -72,7 +72,7 @@ Scenario: Creating New Redis Source under password
 Scenario: Incorrect hostname anonymous auth type not allowing save
 	Given I open New Redis Source
 	And I type HostName as "sdfsdfd"
-	And I type port number as "6380"
+	And I type port number as "6379"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Anonymous"
@@ -93,8 +93,8 @@ Scenario: Incorrect hostname anonymous auth type not allowing save
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection
 	Given I open New Redis Source
 	And "Save" is "Disabled"
-	And I type HostName as "192.168.104.19"
-	And I type port number as "6380"
+	And I type HostName as "localhost"
+	And I type port number as "6379"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Password"
@@ -127,7 +127,7 @@ Scenario: Editing saved Redis Source
 	Then "Test-Redis" tab is opened
 	And title is "Test-Redis"
 	And HostName is "http://RSAKLFSVRTFSBLD/IntegrationTestSite"
-	And I type port number as "6380"
+	And I type port number as "6379"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And Select Authentication Type as "Anonymous"
@@ -137,130 +137,3 @@ Scenario: Editing saved Redis Source
 	Then "Test-Redis *" tab is opened
 	And "Test Connection" is "Enabled"
 	And "Save" is "Enabled"
-
-@RedisSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:EnableDocker.txt
-Scenario: No data in Cache
-	Given Redis source "192.168.104.19"
-	And I have a key "MyData"
-	And No data in the cache
-	And an assign "dataToStore" as
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-	When I execute the get/set tool
-	Then the cache will contain
-		| Key    | Data             |
-		| MyData | "[[Var1]],Test1" |
-	And output variables have the following values
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-
-@RedisSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:EnableDocker.txt
-Scenario: Data exists for given TTL not hit
-	Given Redis source "192.168.104.19"
-	And I have a key "MyData"
-	And data exists (TTL not hit) for key "MyData" as
-		| Key    | Data                     |
-		| MyData | "[[Var1]],Data in cache" |
-	And an assign "dataToStore" as
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-	When I execute the get/set tool
-	Then the assign "dataToStore" is not executed
-	And output variables have the following values
-		| var      | value                    |
-		| [[Var1]] | "[[Var1]],Data in cache" |
-
-@RedisSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:EnableDocker.txt
-Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
-	Given Redis source "192.168.104.19"
-	And I have a key "MyData"
-	And data does not exist (TTL exceeded) for key "MyData" as
-		| | |
-	And an assign "dataToStore" as
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-	When I execute the get/set tool
-	Then the assign "dataToStore" is executed
-	Then the cache will contain
-		| Key    | Data             |
-		| MyData | "[[Var1]],Test1" |
-	And output variables have the following values
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-
-@RedisSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:EnableDocker.txt
-Scenario: Delete Key From Cache
-	Given Redis source "192.168.104.19"
-	And I have a key "MyData"
-	And an assign "dataToStore" as
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-	Then The "MyData" Cache exists
-	Then I have an existing key to delete "MyData"
-	When I execute the delete tool
-	Then The "MyData" Cache has been deleted
-
-@RedisSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
-@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:EnableDocker.txt
-Scenario: Delete Specific Key From Cache
-	Given Redis source "192.168.104.19"
-	And I have a key "MyData"
-	And an assign "dataToStore" as
-		| var      | value   |
-		| [[Var1]] | "Test1" |
-	Then I execute the get/set tool
-	Then I add another key "MyData2"
-	And another assign "dataToStore2" as
-		| var      | value   |
-		| [[Var3]] | "Test4" |
-	Then I execute the get/set tool
-	Then The "MyData" Cache exists
-	Then The "MyData2" Cache exists
-	Then I have an existing key to delete "MyData"
-	When I execute the delete tool
-	Then The "MyData" Cache has been deleted
-	Then The "MyData2" Cache exists
