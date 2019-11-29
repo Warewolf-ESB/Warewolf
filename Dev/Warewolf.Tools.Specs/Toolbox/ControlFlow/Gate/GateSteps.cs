@@ -102,6 +102,9 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             nextGateActivity.UniqueID = Guid.NewGuid().ToString();
             nextGateActivity.DisplayName = "Gate 2";
 
+            nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
             gateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
             nextGateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
 
@@ -338,24 +341,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             scenarioContext.Add("result", result);
         }
 
-        [Then(@"the execution has errors")]
-        public void ThenTheExecutionHasErrors(Table table)
-        {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
-            var fetchErrors = result.Environment.FetchErrors();
-            var tableRows = table.Rows.ToList();
-
-            Assert.AreEqual(tableRows.Count, fetchErrors.Count());
-
-            foreach (TableRow tableRow in tableRows)
-            {
-                var expectedError = tableRow["error"];
-                var error = fetchErrors[0];
-
-                Assert.AreEqual(expectedError, error);
-            }
-        }
-
         [Then(@"the execution has no errors")]
         public void ThenTheExecutionHasNoErrors()
         {
@@ -365,5 +350,23 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             Assert.AreEqual(0, result.Environment.AllErrors.Count);
         }
 
+        [Then(@"the execution has errors")]
+        public void ThenTheExecutionHasErrors(Table table)
+        {
+            var result = scenarioContext.Get<IDSFDataObject>("result");
+            var fetchErrors = result.Environment.FetchErrors();
+            var tableRows = table.Rows.ToList();
+
+            Assert.AreEqual(tableRows.Count, result.Environment.Errors.Count);
+            Assert.AreEqual(tableRows.Count, result.Environment.AllErrors.Count);
+
+            foreach (TableRow tableRow in tableRows)
+            {
+                var expectedError = tableRow["error"];
+                var error = fetchErrors;
+
+                Assert.AreEqual(expectedError, error);
+            }
+        }
     }
 }

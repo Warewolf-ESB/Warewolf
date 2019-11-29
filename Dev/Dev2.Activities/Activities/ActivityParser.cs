@@ -326,27 +326,6 @@ namespace Dev2.Activities
                 return null;
             }
 
-            if (startNode.Action is GateActivity gate)
-            {
-                if (seenActivities.Contains(gate))
-                {
-                    return new List<IDev2Activity> { gate };
-                }
-                var rawText = gate.ExpressionText;
-
-                if (rawText != null)
-                {
-                    var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
-                    var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                    var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-
-                    gate.Conditions = decisionStack;
-                }
-
-                return new List<IDev2Activity> { gate };
-            }
-
             if (seenActivities.Contains(action))
             {
                 return new List<IDev2Activity> { action };
