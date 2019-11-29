@@ -44,20 +44,38 @@ namespace Dev2.Activities.Designers.Tests.Gate
             CustomContainer.Register(mockShellViewModel.Object);
         }
 
+        private Mock<ModelProperty> CreateModelProperty(string name, object value)
+        {
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.Name).Returns(name);
+            prop.Setup(p => p.ComputedValue).Returns(value);
+            return prop;
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(GateDesignerViewModel))]
         public void GateDesignerViewModel_Constructor()
         {
             //------------Setup for test--------------------------
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
             var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             var expectedGateFailure = "StopOnError: Stop execution on error";
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(gateDesignerViewModel.HasLargeView);
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure);
-            Assert.IsFalse(gateDesignerViewModel.Enabled);
+            Assert.IsTrue(gateDesignerViewModel.Enabled);
             Assert.IsTrue(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
         }
@@ -68,7 +86,17 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_GateFailureOptions_Retry()
         {
             //------------Setup for test--------------------------
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
             var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             CustomContainer.Register(mockModelItem.Object);
             //------------Execute Test---------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
@@ -78,6 +106,8 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Assert Results-------------------------
             Assert.AreEqual("Retry: Retry execution on error", gateDesignerViewModel.SelectedGateFailure);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
+            gateFailureProperty.Verify(prop => prop.SetValue("StopOnError"), Times.Exactly(1));
+            gateFailureProperty.Verify(prop => prop.SetValue("Retry"), Times.Exactly(1));
         }
 
         [TestMethod]
@@ -86,7 +116,17 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_GateFailureOptions_StopOnError()
         {
             //------------Setup for test--------------------------
+            var gateFailureProperty = CreateModelProperty("GateFailure", "Retry");
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
             var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             CustomContainer.Register(mockModelItem.Object);
             //------------Execute Test---------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
@@ -95,7 +135,9 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             //------------Assert Results-------------------------
             Assert.AreEqual("StopOnError: Stop execution on error", gateDesignerViewModel.SelectedGateFailure);
-            Assert.IsFalse(gateDesignerViewModel.Enabled);
+            Assert.IsTrue(gateDesignerViewModel.Enabled);
+            gateFailureProperty.Verify(prop => prop.SetValue("Retry"), Times.Exactly(1));
+            gateFailureProperty.Verify(prop => prop.SetValue("StopOnError"), Times.Exactly(1));
         }
 
         [TestMethod]
@@ -104,8 +146,17 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_GateFailureOptions_List()
         {
             //------------Setup for test--------------------------
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
             var mockModelItem = new Mock<ModelItem>();
-            CustomContainer.Register(mockModelItem.Object);
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             //------------Execute Test---------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             var gateFailureOptions = gateDesignerViewModel.GateFailureOptions.ToList();
@@ -138,8 +189,15 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 { uniqueId, mockModelProperty }
             };
 
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
             var mockPropertyCollection = new Mock<ModelPropertyCollection>();
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", uniqueId, true).Returns(mockModelProperty.Object);
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
 
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockPropertyCollection.Object);
@@ -170,8 +228,15 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 { uniqueId, mockModelProperty }
             };
 
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null);
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty);
+
             var mockPropertyCollection = new Mock<ModelPropertyCollection>();
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", uniqueId, true).Returns(mockModelProperty.Object);
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty.Object);
+            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty.Object);
 
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockPropertyCollection.Object);
@@ -194,6 +259,8 @@ namespace Dev2.Activities.Designers.Tests.Gate
             gateDesignerViewModel.SelectedGate = gateDesignerViewModel.GatesView[0];
 
             Assert.AreEqual(activityName, gateDesignerViewModel.SelectedGate);
+
+            retryEntryPointIdProperty.Verify(prop => prop.SetValue(Guid.Parse(uniqueId)), Times.Exactly(1));
         }
     }
 }

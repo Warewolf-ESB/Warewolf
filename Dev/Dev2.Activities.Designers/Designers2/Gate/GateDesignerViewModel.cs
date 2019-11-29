@@ -92,8 +92,6 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void PopulateFields()
         {
-            var conditions = _modelItem.Properties["Conditions"].ComputedValue;
-
             var gateFailure = _modelItem.Properties["GateFailure"].ComputedValue;
             if (gateFailure is null)
             {
@@ -311,6 +309,9 @@ namespace Dev2.Activities.Designers2.Gate
                 var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
                 _selectedGateFailure = gateFailure;
                 OnPropertyChanged(nameof(SelectedGateFailure));
+
+                var enumGateFailure = GateOptionsHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
+                _modelItem.Properties["GateFailure"]?.SetValue(enumGateFailure.ToString());
             }
         }
 
@@ -345,6 +346,9 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _selectedGate = value;
                 OnPropertyChanged(nameof(SelectedGate));
+
+                var retryEntryPointId = Gates.First(o => o.activityName == value).uniqueId;
+                _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Parse(retryEntryPointId));
             }
         }
 
