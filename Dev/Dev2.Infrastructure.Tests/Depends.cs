@@ -10,7 +10,7 @@ using System.Web.Script.Serialization;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public class Depends : Attribute, IDisposable
 {
-    public static readonly string RigOpsIP = "localhost";
+    public static readonly string RigOpsIP = "192.168.104.19";
 
     public enum ContainerType
     {
