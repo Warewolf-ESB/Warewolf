@@ -355,6 +355,10 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
+      <Project>{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}</Project>
+      <Name>Warewolf.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dev2.Studio\App.config">

@@ -18,6 +18,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Warewolf.Data.Options;
 using Warewolf.Options;
 
 namespace Dev2.Activities.Designers.Tests.Gate
@@ -261,6 +262,51 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(activityName, gateDesignerViewModel.SelectedGate);
 
             retryEntryPointIdProperty.Verify(prop => prop.SetValue(Guid.Parse(uniqueId)), Times.Exactly(1));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateDesignerViewModel))]
+        public void GateDesignerViewModel_LoadOptions()
+        {
+            //------------Setup for test--------------------------
+            var retryEntryPointId = Guid.NewGuid();
+            var gateOptions = new GateOptions
+            {
+                Resume = YesNo.Yes,
+                Count = 3,
+                ResumeEndpoint = retryEntryPointId,
+                Strategy = new NoBackoff()
+            };
+
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", gateOptions).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            //------------Execute Test---------------------------
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
+            var options = gateDesignerViewModel.Options.Options.ToList();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, options.Count);
+            Assert.AreEqual(typeof(OptionEnum), options[0].GetType());
+            Assert.AreEqual("Resume", options[0].Name);
+
+            Assert.AreEqual(typeof(OptionWorkflow), options[1].GetType());
+            Assert.AreEqual("ResumeEndpoint", options[1].Name);
+
+            Assert.AreEqual(typeof(OptionInt), options[2].GetType());
+            Assert.AreEqual("Count", options[2].Name);
+
+            Assert.AreEqual(typeof(OptionCombobox), options[3].GetType());
+            Assert.AreEqual("Strategy", options[3].Name);
+            
         }
     }
 }
