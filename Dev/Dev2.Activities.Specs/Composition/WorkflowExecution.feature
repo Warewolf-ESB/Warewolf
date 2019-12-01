@@ -1341,7 +1341,8 @@ Scenario: Executing unsaved workflow should execute by ID
 
 @WorkflowExecution
 Scenario:WF with RabbitMq Consume timeout 5
-	Given I have a workflow "RabbitMqConsume5mintimeout"
+	Given I depend on a valid RabbitMQ server
+	And I have a workflow "RabbitMqConsume5mintimeout"
 	And "RabbitMqConsume5mintimeout" contains RabbitMQPublish and Queue1 "DsfPublishRabbitMQActivity" into "[[result1]]"
 	And "RabbitMqConsume5mintimeout" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" with timeout 5 seconds into "[[result]]"
 	When "RabbitMqConsume5mintimeout" is executed

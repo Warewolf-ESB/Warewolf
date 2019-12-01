@@ -52,8 +52,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
             var source = new RedisSource
             {
                 HostName = $"{Depends.RigOpsIP}",
