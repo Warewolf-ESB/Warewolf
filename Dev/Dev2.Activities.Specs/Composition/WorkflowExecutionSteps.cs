@@ -316,6 +316,10 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         public static IServer LocalEnvModel { get; set; }
+
+        [Given("I depend on a valid RabbitMQ server")]
+        public void GivenIGetaValidRabbitMQServer() => _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {

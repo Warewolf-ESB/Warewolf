@@ -358,15 +358,16 @@ Scenario: Error not bubbling up error message
 	  | [[Result]] = Pass |
 
 Scenario: Rabbit MQ Test
-	  Given I have a workflow "RabbitMQ Tester WF"
-	  And "RabbitMQ Tester WF" contains "RabbitMQTest" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | result              | [[result]]  |
-	  When "RabbitMQ Tester WF" is executed
+	Given I depend on a valid RabbitMQ server
+	And I have a workflow "RabbitMQ Tester WF"
+	And "RabbitMQ Tester WF" contains "RabbitMQTest" from server "localhost" with mapping as
+    | Input to Service | From Variable | Output from Service | To Variable |
+	|                  |               | result              | [[result]]  |
+	When "RabbitMQ Tester WF" is executed
 	Then the workflow execution has "NO" error
-	  And the "RabbitMQTest" in Workflow "RabbitMQ Tester WF" debug outputs as
-	  |                   |
-	  | [[result]] = Pass |
+	And the "RabbitMQTest" in Workflow "RabbitMQ Tester WF" debug outputs as
+	|                   |
+	| [[result]] = Pass |
 
 	  
 Scenario: Executing WebGet Returning False
