@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var source = new RedisSource
             {
                 HostName = "ddd",
-                Port = "6379",
+                Port = "6380",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "Password"
             }.ToString();
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new RedisSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("could not connect to redis Instance at ddd:6379\r\nNo such host is known", result.ErrorMessage);
+            Assert.AreEqual("could not connect to redis Instance at ddd:6380\r\nNo such host is known", result.ErrorMessage);
         }
     }
 }

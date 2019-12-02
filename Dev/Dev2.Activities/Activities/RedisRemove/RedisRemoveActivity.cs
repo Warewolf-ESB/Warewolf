@@ -27,32 +27,32 @@ using Warewolf.Interfaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-namespace Dev2.Activities.RedisDelete
+namespace Dev2.Activities.RedisRemove
 {
-    [ToolDescriptorInfo(nameof(RedisDelete), "Redis Delete", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisDelete")]
-    public class RedisDeleteActivity : DsfBaseActivity, IEquatable<RedisDeleteActivity>
+    [ToolDescriptorInfo(nameof(RedisRemove), "Redis Remove", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisRemove")]
+    public class RedisRemoveActivity : DsfBaseActivity, IEquatable<RedisRemoveActivity>
     {
         string _result = "Success";
 
         private RedisCacheBase _redisCache;
         internal readonly List<string> _messages = new List<string>();
 
-        public RedisDeleteActivity()
+        public RedisRemoveActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
 
         }
 
-        public RedisDeleteActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
+        public RedisRemoveActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
             : this(resourceCatalog, new ResponseManager(), redisCache)
         {
         }
 
-        public RedisDeleteActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
+        public RedisRemoveActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
             ResourceCatalog = resourceCatalog;
-            DisplayName = "Redis Delete";
+            DisplayName = "Redis Remove";
             _redisCache = redisCache;
         }
 
@@ -106,20 +106,20 @@ namespace Dev2.Activities.RedisDelete
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
                 if (RedisSource == null || RedisSource.ResourceType != enSourceType.RedisSource.ToString())
                 {
-                    _messages.Add(ErrorResource.RedisSourceHasBeenDeleted);
+                    _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
-                if (!_redisCache.Delete(Key))
+                if (!_redisCache.Remove(Key))
                 {
                     _result = "Failed";
                 }
-                Dev2Logger.Debug($"Cache {Key} deleted: {_result}", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Cache {Key} removed: {_result}", GlobalConstants.WarewolfDebug);
                 return new List<string> { _result };
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(nameof(RedisDeleteActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(RedisRemoveActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
         }
@@ -143,7 +143,7 @@ namespace Dev2.Activities.RedisDelete
 
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(RedisDeleteActivity other)
+        public bool Equals(RedisRemoveActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
@@ -181,7 +181,7 @@ namespace Dev2.Activities.RedisDelete
                 return false;
             }
 
-            return Equals((RedisDeleteActivity)obj);
+            return Equals((RedisRemoveActivity)obj);
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex

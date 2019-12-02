@@ -126,7 +126,7 @@ namespace Dev2.Activities.RedisCounter
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
                 if (RedisSource == null || RedisSource.ResourceType != enSourceType.RedisSource.ToString())
                 {
-                    _messages.Add(ErrorResource.RedisSourceHasBeenDeleted);
+                    _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);

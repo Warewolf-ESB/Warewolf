@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -8,13 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Activities.Designers2.RedisDelete
+using System;
+
+namespace Warewolf.Interfaces.Pooling
 {
-    public partial class RedisDeleteDesigner
+    public interface IObjectPoolFactory<T> where T : class, new()
     {
-        public RedisDeleteDesigner()
-        {
-            InitializeComponent();
-        }
+        IObjectPool<T> New(Func<T> objectCreator);
     }
 }

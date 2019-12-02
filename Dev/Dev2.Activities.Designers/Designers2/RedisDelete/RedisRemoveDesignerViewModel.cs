@@ -28,21 +28,21 @@ using Dev2.Validation;
 using Dev2.Providers.Errors;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.Activities.Designers2.RedisDelete
+namespace Dev2.Activities.Designers2.RedisRemove
 {
-    public class RedisDeleteDesignerViewModel : ActivityDesignerViewModel
+    public class RedisRemoveDesignerViewModel : ActivityDesignerViewModel
     {
         readonly IServer _server;
         IShellViewModel _shellViewModel;
 
         [ExcludeFromCodeCoverage]
-        public RedisDeleteDesignerViewModel(ModelItem modelItem)
+        public RedisRemoveDesignerViewModel(ModelItem modelItem)
             : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
         {
 
         }
 
-        public RedisDeleteDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
+        public RedisRemoveDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("environmentModel", server);
@@ -71,11 +71,11 @@ namespace Dev2.Activities.Designers2.RedisDelete
         }
 
         public static readonly DependencyProperty SelectedRedisServerProperty =
-            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
+            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
 
         private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDeleteDesignerViewModel)d;
+            var viewModel = (RedisRemoveDesignerViewModel)d;
             viewModel.OnSelectedRedisServerChanged();
             viewModel.EditRedisServerCommand?.RaiseCanExecuteChanged();
         }
@@ -97,11 +97,11 @@ namespace Dev2.Activities.Designers2.RedisDelete
         }
 
         public static readonly DependencyProperty KeyProperty =
-            DependencyProperty.Register("Key", typeof(string), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
+            DependencyProperty.Register("Key", typeof(string), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
 
         private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDeleteDesignerViewModel)d;
+            var viewModel = (RedisRemoveDesignerViewModel)d;
             viewModel.OnKeyChanged();
         }
 
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers2.RedisDelete
         public bool IsKeyFocused { get => (bool)GetValue(IsKeyFocusedProperty); set { SetValue(IsKeyFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsKeyFocusedProperty =
-            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisDeleteDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(false));
 
         [ExcludeFromCodeCoverage]
         public override void Validate()
