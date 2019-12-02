@@ -22,8 +22,10 @@ Scenario: Gate tool has stop on error with no resume
 	And Gates has "" selected
 	And GateRetryStrategy has "NoBackoff" selected
 	And Resume is set to "No"
-	And the Gate tool is executed with next gate
-	Then the execution has no errors
+	And the Gate tool is executed
+	Then the execution has errors
+		| error                        |
+		| stop on error with no resume |
 
 Scenario: Gate tool has stop on error with resume
 	Given I have the following conditions
@@ -34,8 +36,10 @@ Scenario: Gate tool has stop on error with resume
 	And Gates has "" selected
 	And GateRetryStrategy has "NoBackoff" selected
 	And Resume is set to "Yes"
-	And the Gate tool is executed with next gate
-	Then the execution has no errors
+	And the Gate tool is executed
+	Then the execution has errors
+		| error                        |
+		| stop on error with no resume |
 
 Scenario: Gate tool has retry with no resume
 	Given I have the following conditions
