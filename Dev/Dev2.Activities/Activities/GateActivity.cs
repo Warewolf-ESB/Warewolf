@@ -265,8 +265,15 @@ namespace Dev2.Activities
                 //----------ExecuteTool--------------
                 if (!Passing)
                 {
-                    var gateFailure = GateFailure ?? nameof(GateFailureAction.StopOnError);
-                    switch (Enum.Parse(typeof(GateFailureAction), gateFailure))
+                    var canRetry = RetryEntryPointId != Guid.Empty;
+
+                    var gateFailure = GateFailureAction.StopOnError;
+                    if (GateFailure != null)
+                    {
+                        gateFailure = (GateFailureAction)Enum.Parse(typeof(GateFailureAction), GateFailure);
+                    }
+
+                    switch (gateFailure)
                     {
                         case GateFailureAction.StopOnError:
                             data.Environment.AddError("stop on error with no resume");
@@ -274,10 +281,20 @@ namespace Dev2.Activities
                             stop = true;
                             break;
                         case GateFailureAction.Retry:
-                            var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
+                            if (canRetry)
+                            {
+                                var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
 
-                            goBackToActivity.UpdateRetryState(this);
-                            next = goBackToActivity;
+                                goBackToActivity.UpdateRetryState(this);
+                                next = goBackToActivity;
+                            }
+                            else
+                            {
+                                const string msg = "invalid retry config: no gate selected";
+                                data.Environment.AddError(msg);
+                                Dev2Logger.Warn($"execution stopped! {msg}", _dataObject?.ExecutionID?.ToString());
+                                stop = true;
+                            }
                             break;
                         default:
                             throw new Exception("unknown gate failure option");

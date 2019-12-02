@@ -78,6 +78,11 @@
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
+    <Compile Include="Toolbox\ControlFlow\Gate\Gate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Gate.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Gate\GateConstantBackoff.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -527,6 +532,10 @@
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Gate\Gate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Gate.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Gate\GateConstantBackoff.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

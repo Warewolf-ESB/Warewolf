@@ -49,15 +49,15 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             gateActivity.DisplayName = "Gate 1";
             gateActivity.UniqueID = RetryEntryPointId.ToString();
 
-            scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
+            //scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
 
-            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
+            //var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
 
-            var modelData = dds.ToVBPersistableModel();
-            scenarioContext.Add("modelData", modelData);
+            //var modelData = dds.ToVBPersistableModel();
+            //scenarioContext.Add("modelData", modelData);
 
-            gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+            //gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+            //                                              "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             TestStartNode = new FlowStep
             {
@@ -93,17 +93,17 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             }
 
             var modelData = dds.ToVBPersistableModel();
-            scenarioContext.Add("modelData", modelData);
+            //scenarioContext.Add("modelData", modelData);
 
-            gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+            //gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+            //                                              "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             var nextGateActivity = CreateActivity();
             nextGateActivity.UniqueID = Guid.NewGuid().ToString();
             nextGateActivity.DisplayName = "Gate 2";
 
-            nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+            //nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+            //                                              "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             gateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
             nextGateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
@@ -202,6 +202,35 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 }
                 variableList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
             }
+
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
+            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
+
+            foreach (var dm in tableRows)
+            {
+                var evalFn = enDecisionType.IsEqual;
+                if (Enum.TryParse<enDecisionType>(dm[1], out var tmpEvalFn))
+                {
+                    evalFn = tmpEvalFn;
+                }
+
+                var dev2Decision = new Dev2Decision
+                {
+                    Col1 = dm[0] ?? string.Empty,
+                    EvaluationFn = evalFn,
+                    Col2 = dm[2] ?? string.Empty,
+                    Col3 = string.Empty
+                };
+
+                dds.AddModelItem(dev2Decision);
+            }
+
+            var modelData = dds.ToVBPersistableModel();
+            scenarioContext.Add("modelData", modelData);
+
+            gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
         }
 
         [Given(@"GateFailure has ""(.*)"" selected")]
@@ -358,7 +387,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             var tableRows = table.Rows.ToList();
 
             Assert.AreEqual(tableRows.Count, result.Environment.Errors.Count);
-            Assert.AreEqual(tableRows.Count, result.Environment.AllErrors.Count);
 
             foreach (TableRow tableRow in tableRows)
             {
