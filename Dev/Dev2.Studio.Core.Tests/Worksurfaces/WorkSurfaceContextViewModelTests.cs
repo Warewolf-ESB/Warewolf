@@ -1409,9 +1409,9 @@ namespace Dev2.Core.Tests
             return "";
         }
 
-        public List<(string uniqueId, string activityName)> GetGates(string uniqueId)
+        public List<NameValue> GetGates(string uniqueId)
         {
-            return new List<(string uniqueId, string activityName)>();
+            return new List<NameValue>();
         }
     }
 }
