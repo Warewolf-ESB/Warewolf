@@ -2789,11 +2789,11 @@ namespace Warewolf.Resource.Errors {
         /// <summary>
         ///   Looks up a localized string similar to Failure: Source has been deleted..
         /// </summary>
-        public static string RedisSourceHasBeenDeleted
+        public static string RedisSourceHasBeenRemoved
         {
             get
             {
-                return ResourceManager.GetString("RedisSourceHasBeenDeleted", resourceCulture);
+                return ResourceManager.GetString("RedisSourceHasBeenRemoved", resourceCulture);
             }
         }
         /// <summary>

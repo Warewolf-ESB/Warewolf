@@ -37,7 +37,7 @@ namespace Warewolf.Driver.Redis
 
         public bool Set(string key, string value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
 
-        public bool Delete(string key)
+        public bool Remove(string key)
         {
             return _client.Remove(key);
         }

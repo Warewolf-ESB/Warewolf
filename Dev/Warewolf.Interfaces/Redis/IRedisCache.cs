@@ -16,7 +16,7 @@ namespace Warewolf.Interfaces
     {
         bool Set(string key, string disctionary, TimeSpan timeSpan);
         string Get(string key);
-        bool Delete(string key);
+        bool Remove(string key);
         long Increment(string key, string Value);
         long Decrement(string key, string Value);
     }

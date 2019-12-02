@@ -3785,11 +3785,11 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("RedisKeyToolTip", resourceCulture);
             }
         }
-        public static string RedisDeleteKeyToolTip
+        public static string RedisRemoveKeyToolTip
         {
             get
             {
-                return ResourceManager.GetString("RedisDeleteKeyToolTip", resourceCulture);
+                return ResourceManager.GetString("RedisRemoveKeyToolTip", resourceCulture);
             }
         }
         /// <summary>

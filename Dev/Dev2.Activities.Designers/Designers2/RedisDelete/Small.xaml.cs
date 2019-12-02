@@ -11,7 +11,7 @@
 using Dev2.Activities.Utils;
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.RedisDelete
+namespace Dev2.Activities.Designers2.RedisRemove
 {
     public partial class Small
     {

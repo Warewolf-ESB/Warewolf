@@ -10,7 +10,7 @@
 
 
 using Dev2.Activities.Redis;
-using Dev2.Activities.RedisDelete;
+using Dev2.Activities.RedisRemove;
 using Dev2.Common.Serializers;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -26,14 +26,14 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
 
-namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
+namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
 {
     [Binding]
-    public class RedisDeleteSteps
+    public class RedisRemoveSteps
     {
 
         readonly ScenarioContext _scenarioContext;
-        public RedisDeleteSteps(ScenarioContext scenarioContext)
+        public RedisRemoveSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null)
             {
@@ -46,11 +46,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
         public static Stopwatch Stoptime { get; set; }
 
 
-        [When(@"I execute the delete tool")]
-        [Then(@"I execute the delete tool")]
-        public void WhenIExecuteTheDeleteTool()
+        [When(@"I execute the Remove tool")]
+        [Then(@"I execute the Remove tool")]
+        public void WhenIExecuteTheRemoveTool()
         {
-            var redisActivityOld = _scenarioContext.Get<SpecRedisDeleteActivity>(nameof(RedisDeleteActivity));
+            var redisActivityOld = _scenarioContext.Get<SpecRedisRemoveActivity>(nameof(RedisRemoveActivity));
             var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
@@ -59,7 +59,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
 
             GenResourceAndDataobject(redisActivityOld.Key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
-            ExecuteDeleteTool(redisActivityOld, mockDataobject);
+            ExecuteRemoveTool(redisActivityOld, mockDataobject);
         }
 
         [Then(@"The ""(.*)"" Cache exists")]
@@ -74,8 +74,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
             Assert.IsNotNull(actualCachedData, key + ": Cache does not exists");
         }
 
-        [Then(@"I have an existing key to delete ""(.*)""")]
-        public void ThenIHaveAnExistingKeyToDelete(string key)
+        [Then(@"I have an existing key to Remove ""(.*)""")]
+        public void ThenIHaveAnExistingKeyToRemove(string key)
         {
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
@@ -83,15 +83,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
             GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
-            var redisDeleteActivityNew = GetRedisDeleteActivity(mockResourceCatalog.Object, key, hostName, redisImpl);
+            var RedisRemoveActivityNew = GetRedisRemoveActivity(mockResourceCatalog.Object, key, hostName, redisImpl);
 
-            _scenarioContext.Add(nameof(RedisDeleteActivity), redisDeleteActivityNew);
+            _scenarioContext.Add(nameof(RedisRemoveActivity), RedisRemoveActivityNew);
 
-            Assert.IsNotNull(redisDeleteActivityNew.Key);
+            Assert.IsNotNull(RedisRemoveActivityNew.Key);
         }
 
-        [Then(@"The ""(.*)"" Cache has been deleted")]
-        public void ThenTheCacheHasBeenDeleted(string key)
+        [Then(@"The ""(.*)"" Cache has been Removed")]
+        public void ThenTheCacheHasBeenRemoved(string key)
         {
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
@@ -201,14 +201,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
             mockDataobject.Setup(o => o.Environment).Returns(environment);
         }
 
-        private static void ExecuteDeleteTool(SpecRedisDeleteActivity redisDeleteActivity, Mock<IDSFDataObject> mockDataobject)
+        private static void ExecuteRemoveTool(SpecRedisRemoveActivity RedisRemoveActivity, Mock<IDSFDataObject> mockDataobject)
         {
-            redisDeleteActivity.SpecExecuteTool(mockDataobject.Object);
+            RedisRemoveActivity.SpecExecuteTool(mockDataobject.Object);
         }
 
-        private static SpecRedisDeleteActivity GetRedisDeleteActivity(IResourceCatalog resourceCatalog, string key, string hostName, RedisCacheImpl impl)
+        private static SpecRedisRemoveActivity GetRedisRemoveActivity(IResourceCatalog resourceCatalog, string key, string hostName, RedisCacheImpl impl)
         {
-            return new SpecRedisDeleteActivity(resourceCatalog, impl)
+            return new SpecRedisRemoveActivity(resourceCatalog, impl)
             {
                 Key = key,
                 RedisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName },
@@ -227,13 +227,13 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
             };
         }
 
-        class SpecRedisDeleteActivity : RedisDeleteActivity
+        class SpecRedisRemoveActivity : RedisRemoveActivity
         {
-            public SpecRedisDeleteActivity()
+            public SpecRedisRemoveActivity()
             {
             }
 
-            public SpecRedisDeleteActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache) : base(resourceCatalog, redisCache)
+            public SpecRedisRemoveActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache) : base(resourceCatalog, redisCache)
             {
             }
 
@@ -250,12 +250,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
         }
 
 
-        [AfterScenario(@"RedisDelete")]
+        [AfterScenario(@"RedisRemove")]
         public void Cleanup()
         {
             _scenarioContext.Remove(nameof(RedisActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
-            _scenarioContext.Remove(nameof(RedisDeleteActivity));
+            _scenarioContext.Remove(nameof(RedisRemoveActivity));
             _scenarioContext.Remove("key");
             _scenarioContext.Remove("ttl");
             _scenarioContext.Remove("hostName");

@@ -98,8 +98,8 @@ using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Redis;
 using Dev2.Activities.Designers2.Redis;
-using Dev2.Activities.RedisDelete;
-using Dev2.Activities.Designers2.RedisDelete;
+using Dev2.Activities.RedisRemove;
+using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.RedisCounter;
 
@@ -199,7 +199,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) },
-                { typeof(RedisDeleteActivity), typeof(RedisDeleteDesigner) },
+                { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisActivity), typeof(RedisDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) }
             };
