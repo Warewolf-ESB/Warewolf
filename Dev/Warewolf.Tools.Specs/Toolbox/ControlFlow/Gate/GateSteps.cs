@@ -49,16 +49,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             gateActivity.DisplayName = "Gate 1";
             gateActivity.UniqueID = RetryEntryPointId.ToString();
 
-            //scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
-
-            //var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
-
-            //var modelData = dds.ToVBPersistableModel();
-            //scenarioContext.Add("modelData", modelData);
-
-            //gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-            //                                              "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-
             TestStartNode = new FlowStep
             {
                 Action = gateActivity
@@ -92,23 +82,18 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 dds.AddModelItem(dev2Decision);
             }
 
-            var modelData = dds.ToVBPersistableModel();
-            //scenarioContext.Add("modelData", modelData);
-
-            //gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-            //                                              "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+            scenarioContext.TryGetValue("modelData", out var modelData);
 
             var nextGateActivity = CreateActivity();
             nextGateActivity.UniqueID = Guid.NewGuid().ToString();
             nextGateActivity.DisplayName = "Gate 2";
 
-            //nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-            //                                              "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-
             gateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
             nextGateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
 
-            var gateOneFlowStep = new FlowStep { Action = gateActivity };
+            nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
 
             var gateTwoFlowStep = new FlowStep
             {
