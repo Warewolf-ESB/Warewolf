@@ -167,8 +167,6 @@ Scenario: Test WF with RabbitMq Consume object result
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeObjectTestFailWF" is deleted as cleanup
 
-
-	
 Scenario: Test WF with RabbitMq Consume object Array result 
 	Given I have a workflow "RabbitMqConsumeObjectResultTestFailWF"
 	And "RabbitMqConsumeObjectResultTestFailWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"		
@@ -192,7 +190,7 @@ Scenario: Test WF with RabbitMq Consume object Array result
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeObjectResultTestFailWF" is deleted as cleanup
 	
-	Scenario: Test WF with RabbitMq Consume and count Recordset
+Scenario: Test WF with RabbitMq Consume and count Recordset
 	Given I have a workflow "RabbitMqConsumeAndCountTestFailWF"
 	And "RabbitMqConsumeAndCountTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[msgRec().msgs]]" 
 	And Queue Name as "TestQuestForSpecsEmptyResults"
