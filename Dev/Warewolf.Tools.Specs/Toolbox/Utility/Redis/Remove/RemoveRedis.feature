@@ -11,7 +11,7 @@ Scenario: Remove Key From Cache
 	And an assign "dataToStore" as
 		| var      | value   |
 		| [[Var1]] | "Test1" |
-	Then I execute the get/set tool
+	Then I execute the cache tool
 	Then The "MyData" Cache exists
 	Then I have an existing key to Remove "MyData"
 	When I execute the Remove tool
@@ -24,13 +24,13 @@ Scenario: Remove Specific Key From Cache
 	And an assign "dataToStore" as
 		| var      | value   |
 		| [[Var1]] | "Test1" |
-	Then I execute the get/set tool 
+	Then I execute the cache tool 
 	Then I add another key "MyData2"
 	And another assign "dataToStore2" as
 		| var      | value   |
 		| [[Var3]] | "Test4" |
-	Then I execute the get/set tool
-	Then The "MyData" Cache exists
+	Then I execute the cache tool
+	Then The "MyData" Cache exists 
 	Then The "MyData2" Cache exists
 	Then I have an existing key to Remove "MyData"
 	When I execute the Remove tool

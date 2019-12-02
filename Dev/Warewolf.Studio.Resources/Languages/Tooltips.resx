@@ -1147,10 +1147,10 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Edit Redis Server Source</value>
   </data>
   <data name="RedisKeyToolTip" xml:space="preserve">
-    <value>Redis Key to store data</value>
+    <value>Redis Key to store data in cache</value>
   </data>
   <data name="RedisRemoveKeyToolTip" xml:space="preserve">
-    <value>Redis Key to remove in-memory data</value>
+    <value>Redis Key to remove data from cache</value>
   </data>
   <data name="RedisTimeoutToolTip" xml:space="preserve">
     <value>Redis Timeout for stored data</value>
@@ -2289,10 +2289,10 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Tags: json array declare setup variable set</value>
   </data>
    <data name="Tool_Utility_Redis" xml:space="preserve">
-    <value>Tags: set/get data under a specified key</value>
+    <value>Tags: set/get cache data under a specified key</value>
   </data>
   <data name="Tool_Utility_RedisRemove" xml:space="preserve">
-    <value>Tags: removes the specified key</value>
+    <value>Tags: removes the specified key and data from cache</value>
   </data>
   <data name="Tool_Utility_RedisCounter" xml:space="preserve">
     <value>increment/decrement the number stored at key by one</value>
