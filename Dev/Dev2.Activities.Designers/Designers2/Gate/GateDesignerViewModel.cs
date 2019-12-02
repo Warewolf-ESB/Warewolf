@@ -104,7 +104,7 @@ namespace Dev2.Activities.Designers2.Gate
             }
 
             var id = _modelItem.Properties["RetryEntryPointId"].ComputedValue;
-            if (id != null && id.ToString() != Guid.Empty.ToString())
+            if (id != null && id.ToString() != Guid.Empty.ToString() && Gates.Count > 1)
             {
                 var nameValue = Gates.First(o => o.Value == id.ToString());
                 SelectedGate = nameValue;
@@ -127,7 +127,7 @@ namespace Dev2.Activities.Designers2.Gate
 
             if (designerView != null && designerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
             {
-                Gates = workflowDesignerViewModel.GetGates(_modelItem.Properties["UniqueID"].ComputedValue.ToString());
+                Gates = workflowDesignerViewModel.GetSelectableGates(_modelItem.Properties["UniqueID"].ComputedValue.ToString());
             }
         }
 
@@ -405,7 +405,7 @@ namespace Dev2.Activities.Designers2.Gate
 
         public void ClearGates()
         {
-            Gates = new List<NameValue>();
+            Gates = new List<NameValue> { new NameValue { Name = " - Select Gate - ", Value = Guid.Empty.ToString() } };
         }
     }
 }
