@@ -246,6 +246,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
+            expectedRetryActivity.Conditions = conditions;
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[nota]]", "bob", 0);
@@ -325,6 +326,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
+            expectedRetryActivity.Conditions = conditions;
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "notbob", 0);
@@ -367,6 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 RetryEntryPointId = expectedRetryActivityId,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
+            expectedRetryActivity.Conditions = conditions;
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "bob", 0);
