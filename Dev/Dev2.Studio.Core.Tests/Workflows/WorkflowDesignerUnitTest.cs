@@ -2488,11 +2488,11 @@ namespace Dev2.Core.Tests.Workflows
 
             var wd = new WorkflowDesignerViewModelMock(crm.Object, mockWorkflowHelper.Object, new Mock<IEventAggregator>().Object, mockModelService.Object);
 
-            var list = wd.GetGates(uniqueId2);
+            var list = wd.GetSelectableGates(uniqueId2);
 
             Assert.AreEqual(1, list.Count);
-            Assert.AreEqual(uniqueId1, list[0].uniqueId);
-            Assert.AreEqual("Gate 1", list[0].activityName);
+            Assert.AreEqual(uniqueId1, list[0].Value);
+            Assert.AreEqual("Gate 1", list[0].Name);
         }
 
         #region TestModelServiceModelChangedNextReference

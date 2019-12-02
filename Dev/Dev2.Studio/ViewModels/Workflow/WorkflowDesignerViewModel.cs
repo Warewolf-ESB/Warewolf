@@ -1989,12 +1989,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public List<NameValue> GetGates(string uniqueId)
+        public List<NameValue> GetSelectableGates(string uniqueId)
         {
             var serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
             var treeNodes = serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
 
-            var list = new List<NameValue>();
+            var list = new List<NameValue> { new NameValue { Name = " - Select Gate - ", Value = Guid.Empty.ToString() } };
 
             IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
             {
@@ -2255,8 +2255,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 gateDesignerViewModel.ClearGates();
                 string uniqueId = gateDesignerViewModel.ModelItem.Properties["UniqueID"].ComputedValue.ToString();
-                var gates = GetGates(uniqueId);
-                gateDesignerViewModel.Gates = gates;
+                var gates = GetSelectableGates(uniqueId);
+                gateDesignerViewModel.Gates.AddRange(gates);
             }
 
             var dp1 = dp as Run;

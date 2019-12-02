@@ -1409,7 +1409,7 @@ namespace Dev2.Core.Tests
             return "";
         }
 
-        public List<NameValue> GetGates(string uniqueId)
+        public List<NameValue> GetSelectableGates(string uniqueId)
         {
             return new List<NameValue>();
         }

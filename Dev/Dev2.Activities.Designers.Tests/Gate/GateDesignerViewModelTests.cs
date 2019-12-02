@@ -181,7 +181,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
 
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
-            mockWorkflowDesignerViewModel.Setup(workflowDesigner => workflowDesigner.GetGates(uniqueId)).Returns(gates);
+            mockWorkflowDesignerViewModel.Setup(workflowDesigner => workflowDesigner.GetSelectableGates(uniqueId)).Returns(gates);
 
             var mockModelProperty = new Mock<ModelProperty>();
             mockModelProperty.Setup(p => p.SetValue(expected)).Verifiable();
