@@ -342,7 +342,7 @@
   <data name="Tool_Utility_Redis" xml:space="preserve">
     <value>set/get data under a specified key</value>
   </data>
-  <data name="Tool_Utility_RedisDelete" xml:space="preserve">
+  <data name="Tool_Utility_RedisRemove" xml:space="preserve">
     <value>removes the specified key</value>
   </data>
   <data name="Tool_Utility_RedisCounter" xml:space="preserve">

@@ -42,10 +42,10 @@ namespace Warewolf.Driver.Redis
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return Cache.Get(key);
         }
-        public bool Delete(string key)
+        public bool Remove(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            return Cache.Delete(key);
+            return Cache.Remove(key);
         }
         public long Increment(string key, string value)
         {

@@ -2951,15 +2951,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis Key to delete data.
-        /// </summary>
-        public static string RedisDeleteKeyHelp {
-            get {
-                return ResourceManager.GetString("RedisDeleteKeyHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit the selected redis connection properties.
         /// </summary>
         public static string RedisEditServerHelp {
@@ -2983,6 +2974,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RedisNewServerHelp {
             get {
                 return ResourceManager.GetString("RedisNewServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Key to remove in-memory data.
+        /// </summary>
+        public static string RedisRemoveKeyHelp {
+            get {
+                return ResourceManager.GetString("RedisRemoveKeyHelp", resourceCulture);
             }
         }
         
@@ -5039,11 +5039,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Redis Delete tool to delete existing data in-memory..
+        ///   Looks up a localized string similar to Use the Redis Remove tool to remove existing data in-memory..
         /// </summary>
-        public static string Tool_Utility_RedisDelete {
+        public static string Tool_Utility_RedisRemove {
             get {
-                return ResourceManager.GetString("Tool_Utility_RedisDelete", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_RedisRemove", resourceCulture);
             }
         }
         

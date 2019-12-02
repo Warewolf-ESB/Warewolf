@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
+namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
 {
     using TechTalk.SpecFlow;
     
@@ -18,14 +18,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class RedisDeleteFeature
+    public partial class RedisRemoveFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-#line 1 "DeleteRedis.feature"
+#line 1 "RemoveRedis.feature"
 #line hidden
         
         public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
@@ -44,7 +44,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RedisDelete", "\tIn order to avoid key conflicts\r\n\tAs a user\r\n\tI want to be able to delete keys w" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RedisRemove", "\tIn order to avoid key conflicts\r\n\tAs a user\r\n\tI want to be able to Remove keys w" +
                     "ithin the cache ", ProgrammingLanguage.CSharp, new string[] {
                         "Utility"});
             testRunner.OnFeatureStart(featureInfo);
@@ -61,9 +61,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "RedisDelete")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "RedisRemove")))
             {
-                global::Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete.RedisDeleteFeature.FeatureSetup(null);
+                global::Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove.RedisRemoveFeature.FeatureSetup(null);
             }
         }
         
@@ -85,14 +85,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Delete
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Key From Cache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove Key From Cache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisRemove")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisDelete")]
-        public virtual void DeleteKeyFromCache()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisRemove")]
+        public virtual void RemoveKeyFromCache()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Key From Cache", new string[] {
-                        "RedisDelete"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Key From Cache", new string[] {
+                        "RedisRemove"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
@@ -100,37 +100,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2769.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 11
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table1, "And ");
 #line 14
  testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
  testRunner.Then("The \"MyData\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
- testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I have an existing key to Remove \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 17
- testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I execute the Remove tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
- testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \"MyData\" Cache has been Removed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Specific Key From Cache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove Specific Key From Cache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisRemove")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisDelete")]
-        public virtual void DeleteSpecificKeyFromCache()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisRemove")]
+        public virtual void RemoveSpecificKeyFromCache()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Specific Key From Cache", new string[] {
-                        "RedisDelete"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Specific Key From Cache", new string[] {
+                        "RedisRemove"});
 #line 21
 this.ScenarioSetup(scenarioInfo);
 #line 22
@@ -138,27 +138,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2770.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 24
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2770, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2, "And ");
 #line 27
  testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
  testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2771 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2771.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "[[Var3]]",
                         "\"Test4\""});
 #line 29
- testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2771, "And ");
+ testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table3, "And ");
 #line 32
  testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
@@ -166,11 +166,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
- testRunner.Then("I have an existing key to delete \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I have an existing key to Remove \"MyData\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
- testRunner.When("I execute the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I execute the Remove tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
- testRunner.Then("The \"MyData\" Cache has been deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \"MyData\" Cache has been Removed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -180,3 +180,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+
