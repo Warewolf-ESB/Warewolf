@@ -2009,7 +2009,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     ret.AddRange(connectedList(nextActivity));
                 }
-                return ret;
+                return ret.Where(o => o.IsGate);
             }
             
             bool found = false;
@@ -2256,7 +2256,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 gateDesignerViewModel.ClearGates();
                 string uniqueId = gateDesignerViewModel.ModelItem.Properties["UniqueID"].ComputedValue.ToString();
                 var gates = GetSelectableGates(uniqueId);
-                gateDesignerViewModel.Gates.AddRange(gates);
+                gateDesignerViewModel.Gates = gates;
             }
 
             var dp1 = dp as Run;
