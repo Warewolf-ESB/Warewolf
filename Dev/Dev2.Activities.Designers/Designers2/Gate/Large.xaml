@@ -300,8 +300,9 @@
                 </ComboBox>
                 <ComboBox x:Name="cbExistingGates"
                           Grid.Column="1"
-                          ItemsSource="{Binding GatesView, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding Gates, UpdateSourceTrigger=PropertyChanged}"
                           SelectedValuePath="SelectedGate"
+                          DisplayMemberPath="Name"
                           ToolTip="{x:Static languages:Tooltips.ExistingGatesToolTip}"
                           IsEditable="False"
                           IsEnabled="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}"

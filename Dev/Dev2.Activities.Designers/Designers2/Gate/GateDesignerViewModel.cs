@@ -11,6 +11,7 @@
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Gates;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Communication;
@@ -44,9 +45,8 @@ namespace Dev2.Activities.Designers2.Gate
     public class GateDesignerViewModel : ActivityCollectionDesignerObservableViewModel<DecisionTO>, INotifyPropertyChanged, IEnabled
     {
         private string _selectedGateFailure;
-        List<(string uniqueId, string activityName)> _gates;
-        List<string> _gatesView;
-        private string _selectedGate;
+        List<NameValue> _gates;
+        private NameValue _selectedGate;
         private bool _enabled;
         private bool _isExpanded;
         private OptionsWithNotifier _options;
@@ -106,8 +106,8 @@ namespace Dev2.Activities.Designers2.Gate
             var id = _modelItem.Properties["RetryEntryPointId"].ComputedValue;
             if (id != null && id.ToString() != Guid.Empty.ToString())
             {
-                var (uniqueId, activityName) = Gates.Single(o => o.ToString().Contains(id.ToString()));
-                SelectedGate = activityName;
+                var nameValue = Gates.First(o => o.Value == id.ToString());
+                SelectedGate = nameValue;
             }
         }
 
@@ -315,31 +315,17 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
-        public List<(string uniqueId, string activityName)> Gates
+        public List<NameValue> Gates
         {
             get => _gates;
             set
             {
                 _gates = value;
-                foreach (var (uniqueId, activityName) in Gates)
-                {
-                    GatesView.Add(activityName);
-                }
                 OnPropertyChanged(nameof(Gates));
             }
         }
 
-        public List<string> GatesView
-        {
-            get => _gatesView;
-            set
-            {
-                _gatesView = value;
-                OnPropertyChanged(nameof(GatesView));
-            }
-        }
-
-        public string SelectedGate
+        public NameValue SelectedGate
         {
             get => _selectedGate;
             set
@@ -347,8 +333,15 @@ namespace Dev2.Activities.Designers2.Gate
                 _selectedGate = value;
                 OnPropertyChanged(nameof(SelectedGate));
 
-                var retryEntryPointId = Gates.First(o => o.activityName == value).uniqueId;
-                _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Parse(retryEntryPointId));
+                var retryEntryPointId = value?.Value;
+                if (retryEntryPointId is null)
+                {
+                    _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Empty);
+                }
+                else
+                {
+                    _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Parse(retryEntryPointId));
+                }
             }
         }
 
@@ -412,8 +405,7 @@ namespace Dev2.Activities.Designers2.Gate
 
         public void ClearGates()
         {
-            Gates = new List<(string uniqueId, string activityName)>();
-            GatesView = new List<string>();
+            Gates = new List<NameValue>();
         }
     }
 }
