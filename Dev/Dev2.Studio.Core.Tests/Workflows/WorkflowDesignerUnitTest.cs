@@ -2491,8 +2491,8 @@ namespace Dev2.Core.Tests.Workflows
             var list = wd.GetGates(uniqueId2);
 
             Assert.AreEqual(1, list.Count);
-            Assert.AreEqual(uniqueId1, list[0].uniqueId);
-            Assert.AreEqual("Gate 1", list[0].activityName);
+            Assert.AreEqual(uniqueId1, list[0].Value);
+            Assert.AreEqual("Gate 1", list[0].Name);
         }
 
         #region TestModelServiceModelChangedNextReference
