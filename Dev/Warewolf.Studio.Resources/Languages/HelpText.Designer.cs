@@ -2960,7 +2960,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis Key to store data.
+        ///   Looks up a localized string similar to Redis Key to store data by specified key.
         /// </summary>
         public static string RedisKeyHelp {
             get {
@@ -2978,7 +2978,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis Key to remove in-memory data.
+        ///   Looks up a localized string similar to Redis Key to remove cache data with specified key.
         /// </summary>
         public static string RedisRemoveKeyHelp {
             get {
@@ -5021,7 +5021,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Redis tool to store data in-memory..
+        ///   Looks up a localized string similar to Use the Redis tool to store data by key in the cache..
         /// </summary>
         public static string Tool_Utility_Redis {
             get {
@@ -5030,7 +5030,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Redis Counter tool to increment or decrement values in-memory..
+        ///   Looks up a localized string similar to Use the Redis Counter tool to increment or decrement values in the cache..
         /// </summary>
         public static string Tool_Utility_RedisCounter {
             get {
@@ -5039,7 +5039,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Redis Remove tool to remove existing data in-memory..
+        ///   Looks up a localized string similar to Use the Redis Remove tool to remove existing key with data from cache..
         /// </summary>
         public static string Tool_Utility_RedisRemove {
             get {

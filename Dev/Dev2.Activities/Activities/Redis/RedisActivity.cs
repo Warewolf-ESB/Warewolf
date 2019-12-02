@@ -47,7 +47,7 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Activities.Redis
 {
-    [ToolDescriptorInfo("Redis", "Redis Get/Set", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
+    [ToolDescriptorInfo("Redis", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
     public class RedisActivity : DsfBaseActivity, IEquatable<RedisActivity>
     {
         public static readonly int DefaultTTL = 10000; // (10 seconds)
@@ -75,7 +75,7 @@ namespace Dev2.Activities.Redis
             _redisCache = redisCache;
             ResourceCatalog = resourceCatalog;
 
-            DisplayName = "Redis Get/Set";
+            DisplayName = "Redis Cache";
             ActivityFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",

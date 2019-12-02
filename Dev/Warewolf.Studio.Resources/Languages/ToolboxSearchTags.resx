@@ -340,10 +340,10 @@
     <value>declare setup variable set</value>
   </data>
   <data name="Tool_Utility_Redis" xml:space="preserve">
-    <value>set/get data under a specified key</value>
+    <value>set/get cache under a specified key</value>
   </data>
   <data name="Tool_Utility_RedisRemove" xml:space="preserve">
-    <value>removes the specified key</value>
+    <value>removes the specified key from cache</value>
   </data>
   <data name="Tool_Utility_RedisCounter" xml:space="preserve">
     <value>increment/decrement the number stored at key by one</value>
