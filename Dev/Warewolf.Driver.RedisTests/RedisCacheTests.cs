@@ -149,11 +149,11 @@ namespace Dev2.Tests.Activities.Activities.Redis
             var ext = System.Threading.Tasks.TaskExtensions.Unwrap(new System.Threading.Tasks.Task<System.Threading.Tasks.Task>(() => System.Threading.Tasks.Task.FromResult(true)));
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.Delete(It.IsAny<string>())).Verifiable();
+            mockDatabase.Setup(db => db.Remove(It.IsAny<string>())).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Delete(null);
+            redis.Remove(null);
             //--------------Assert-------------------------------
         }
         [TestMethod]
@@ -164,13 +164,13 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Arrange------------------------------
             var mockConnection = new Mock<IRedisConnection>();
             var mockDatabase = new Mock<IRedisCache>();
-            mockDatabase.Setup(db => db.Delete("bob")).Verifiable();
+            mockDatabase.Setup(db => db.Remove("bob")).Verifiable();
             mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
             var redis = new RedisCacheStub(() => mockConnection.Object);
             //--------------Act----------------------------------
-            redis.Delete("bob");
+            redis.Remove("bob");
             //--------------Assert-------------------------------
-            mockDatabase.Verify(db => db.Delete("bob"), Times.Once);
+            mockDatabase.Verify(db => db.Remove("bob"), Times.Once);
         }
         [TestMethod]
         [TestCategory("RedisCache")]

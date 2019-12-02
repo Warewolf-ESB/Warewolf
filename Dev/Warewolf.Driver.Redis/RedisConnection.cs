@@ -18,7 +18,7 @@ namespace Warewolf.Driver.Redis
     {
         public RedisConnection(string hostName, int port, string password)
         {
-            IRedisClient client = new RedisClient(hostName, port, password);
+            IRedisClient client = !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port);
             Cache = new RedisCache(client);
         }
 
@@ -37,7 +37,7 @@ namespace Warewolf.Driver.Redis
 
         public bool Set(string key, string value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
 
-        public bool Delete(string key)
+        public bool Remove(string key)
         {
             return _client.Remove(key);
         }

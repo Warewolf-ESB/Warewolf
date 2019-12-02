@@ -720,9 +720,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to removes the specified key.
         /// </summary>
-        public static string Tool_Utility_RedisDelete {
+        public static string Tool_Utility_RedisRemove {
             get {
-                return ResourceManager.GetString("Tool_Utility_RedisDelete", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_RedisRemove", resourceCulture);
             }
         }
         
