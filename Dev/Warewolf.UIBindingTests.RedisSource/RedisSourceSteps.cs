@@ -384,21 +384,21 @@ namespace Warewolf.UIBindingTests
         [Given(@"Redis source ""(.*)""")]
         public void GivenRedisSource(string hostName)
         {
-            SetUpRedisSourceViewModel(hostName, "", "6379");
+            SetUpRedisSourceViewModel(hostName, "");
         }
 
         [Given(@"valid Redis source")]
         public void GivenValidRedisSource()
         {
             _containerOps = new Depends(Depends.ContainerType.Redis);
-            SetUpRedisSourceViewModel(Depends.RigOpsIP, "pass123", "6379");
+            SetUpRedisSourceViewModel(Depends.RigOpsIP, "pass123");
         }
 
         [Given(@"valid anonymous Redis source")]
         public void GivenAnonRedisSource()
         {
             _containerOps = new Depends(Depends.ContainerType.AnonymousRedis);
-            SetUpRedisSourceViewModel(Depends.RigOpsIP, "pass123", "6380");
+            SetUpRedisSourceViewModel(Depends.RigOpsIP, "");
         }
 
         [Then(@"I have a key ""(.*)""")]
@@ -730,18 +730,33 @@ namespace Warewolf.UIBindingTests
 
         RedisCacheImpl GetRedisCacheImpl(string hostName, string password)
         {
-            return new RedisCacheImpl(hostName, 6379, password);
+            int port = 6379;
+            if (string.IsNullOrEmpty(password))
+            {
+                port = 6380;
+            }
+            return new RedisCacheImpl(hostName, port, password);
         }
 
         static SpecRedisActivity GetRedisActivity(IResourceCatalog resourceCatalog, string key, int ttl, string hostName, string password, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
         {
+            int port = 6379;
+            if (string.IsNullOrEmpty(password))
+            {
+                port = 6380;
+            }
             Stoptime = Stopwatch.StartNew();
             return new SpecRedisActivity(resourceCatalog, impl)
             {
                 Key = key,
                 ActivityFunc = new ActivityFunc<string, bool> { Handler = assignActivity },
                 TTL = ttl,
-                RedisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName, Password = password },
+                RedisSource = new Dev2.Data.ServiceModel.RedisSource 
+                { 
+                    HostName = hostName, 
+                    Password = password, 
+                    Port = port.ToString() 
+                },
             };
         }
 
@@ -754,8 +769,13 @@ namespace Warewolf.UIBindingTests
             };
         }
 
-        void SetUpRedisSourceViewModel(string hostName, string password, string port)
+        void SetUpRedisSourceViewModel(string hostName, string password)
         {
+            int port = 6379;
+            if (string.IsNullOrEmpty(password))
+            {
+                port = 6380;
+            }
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<IRedisSourceModel>();
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns(hostName);
@@ -767,7 +787,7 @@ namespace Warewolf.UIBindingTests
                 Name = "Test-Redis",
                 HostName = hostName,
                 Password = password,
-                Port = port
+                Port = port.ToString()
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(redisSourceDefinition);
