@@ -94,6 +94,7 @@ using Dev2.Common.Interfaces;
 using System.Xml;
 using Dev2.Common.ExtMethods;
 using Dev2.Activities.Designers2.Gate;
+using Dev2.Activities;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -1988,12 +1989,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public List<(string uniqueId, string activityName)> GetGates(string uniqueId)
+        public List<NameValue> GetGates(string uniqueId)
         {
             var serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
             var treeNodes = serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
 
-            var list = new List<(string uniqueId, string activityName)>();
+            var list = new List<NameValue>();
 
             IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
             {
@@ -2013,20 +2014,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             
             bool found = false;
             var allGates = connectedList(treeNodes[0].Activity)
-                .Where(o1 => o1.IsGate);
-            if (!allGates.Any(o => o.UniqueID == uniqueId))
-            {
-                return list;
-            }
+                .Cast<GateActivity>()
+                .Where(gate => gate?.GateOptions != null && gate.GateOptions.Resume == Warewolf.Data.Options.YesNo.Yes);
 
             var selectableGates = allGates
-                .TakeWhile(o2 => !(found = (o2.UniqueID == uniqueId)));
+                .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));
 
             foreach (var gate in selectableGates)
             {
                 var id = gate.UniqueID;
                 var activityName = gate.GetDisplayName();
-                list.Add((id, activityName));
+                var nameValue = new NameValue { Name = activityName, Value = id };
+                list.Add(nameValue);
             }
 
             return list;

@@ -43,7 +43,7 @@ namespace Dev2.Studio.Interfaces
         void CreateBlankWorkflow();
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
         string GetAndUpdateWorkflowLinkWithWorkspaceID();
-        List<(string uniqueId, string activityName)> GetGates(string uniqueId);
+        List<NameValue> GetGates(string uniqueId);
     }
 
     public interface IMergePreviewWorkflowDesignerViewModel : IWorkflowDesignerViewModel

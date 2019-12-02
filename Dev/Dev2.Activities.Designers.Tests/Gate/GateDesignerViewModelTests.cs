@@ -175,9 +175,9 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var expected = string.Empty;
             var uniqueId = Guid.NewGuid().ToString();
             var activityName = "testActivity";
-            var gates = new List<(string uniqueId, string activityName)>
+            var gates = new List<Common.Interfaces.NameValue>
             {
-                (uniqueId, activityName)
+                new Common.Interfaces.NameValue { Name = activityName, Value = uniqueId }
             };
 
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
@@ -206,7 +206,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
 
             Assert.AreEqual(0, gateDesignerViewModel.Gates.Count);
-            Assert.AreEqual(0, gateDesignerViewModel.GatesView.Count);
         }
 
         [TestMethod]
@@ -217,9 +216,9 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var expected = string.Empty;
             var uniqueId = Guid.NewGuid().ToString();
             var activityName = "testActivity";
-            var gates = new List<(string uniqueId, string activityName)>
+            var gates = new List<Common.Interfaces.NameValue>
             {
-                (uniqueId, activityName)
+                new Common.Interfaces.NameValue { Name = activityName, Value = uniqueId }
             };
 
             var mockModelProperty = new Mock<ModelProperty>();
@@ -245,21 +244,15 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
 
             Assert.AreEqual(0, gateDesignerViewModel.Gates.Count);
-            Assert.AreEqual(0, gateDesignerViewModel.GatesView.Count);
 
             gateDesignerViewModel.Gates = gates;
 
             Assert.AreEqual(1, gateDesignerViewModel.Gates.Count);
-            Assert.AreEqual(1, gateDesignerViewModel.GatesView.Count);
 
-            Assert.AreEqual(uniqueId, gateDesignerViewModel.Gates[0].uniqueId);
-            Assert.AreEqual(activityName, gateDesignerViewModel.Gates[0].activityName);
+            Assert.AreEqual(uniqueId, gateDesignerViewModel.Gates[0].Value);
+            Assert.AreEqual(activityName, gateDesignerViewModel.Gates[0].Name);
             
-            Assert.AreEqual(activityName, gateDesignerViewModel.GatesView[0]);
-
-            gateDesignerViewModel.SelectedGate = gateDesignerViewModel.GatesView[0];
-
-            Assert.AreEqual(activityName, gateDesignerViewModel.SelectedGate);
+            Assert.AreEqual(uniqueId, gateDesignerViewModel.SelectedGate);
 
             retryEntryPointIdProperty.Verify(prop => prop.SetValue(Guid.Parse(uniqueId)), Times.Exactly(1));
         }
