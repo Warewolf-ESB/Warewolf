@@ -322,7 +322,7 @@ namespace Dev2.Studio.ViewModels
                 if (optionView.DataContext is Warewolf.Options.OptionWorkflow optionWorkflow)
                 {
                     optionWorkflow.Value = selectedResource.ResourceId;
-                    optionWorkflow.WorkflowName = selectedResource.ResourcePath;
+                    optionWorkflow.Workflow = new NamedGuid { Name = selectedResource.ResourcePath, Value = selectedResource.ResourceId };
                     optionWorkflow.Inputs = GetInputsFromWorkflow(selectedResource.ResourceId);
                 }
             }
@@ -363,15 +363,23 @@ namespace Dev2.Studio.ViewModels
 
         public IResource GetResource(string resourceId)
         {
-            var explorerItem = ExplorerViewModel.Environments[0].AsList().First(o => o.ResourceId == Guid.Parse(resourceId));
-
-            IResource resource = new Resource
+            try
             {
-                ResourceID = explorerItem.ResourceId,
-                ResourceName = explorerItem.ResourceName
-            };
+                var explorerItem = ExplorerViewModel.Environments[0].AsList().First(o => o.ResourceId == Guid.Parse(resourceId));
 
-            return resource;
+                IResource resource = new Resource
+                {
+                    ResourceID = explorerItem.ResourceId,
+                    ResourceName = explorerItem.ResourceName
+                };
+
+                return resource;
+            }
+            finally
+            {
+                Dev2Logger.Error($"Could not find resource for - { resourceId }", GlobalConstants.WarewolfError);
+            }
+            return null;
         }
 
         public IAuthorizeCommand SchedulerCommand

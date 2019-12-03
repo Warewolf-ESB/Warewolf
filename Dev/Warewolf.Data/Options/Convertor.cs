@@ -61,7 +61,8 @@ namespace Warewolf.Options
                 return new OptionWorkflow
                 {
                     Name = prop.Name,
-                    Value = (Guid)prop.GetValue(instance)
+                    Value = (Guid)prop.GetValue(instance),
+                    Workflow = new NamedGuid { Name = "", Value = (Guid)prop.GetValue(instance) }
                 };
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(bool)))
