@@ -306,7 +306,10 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 var current = next;
                 lastActivity = current;
-
+                if (current is IStateNotifierRequired stateNotifierRequired)
+                {
+                    stateNotifierRequired.SetStateNotifier(dsfDataObject.StateNotifier);
+                }
                 next = current.Execute(dsfDataObject, update);
 
                 environment.AllErrors.UnionWith(environment.Errors);
