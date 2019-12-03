@@ -35,15 +35,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
         readonly ScenarioContext _scenarioContext;
         private Depends _containerOps;
 
-        public RedisGetSetSteps(ScenarioContext scenarioContext)
-        {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this._scenarioContext = scenarioContext;
-        }
+        public RedisGetSetSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
         public static Stopwatch Stoptime { get; set; }
 
         [Given(@"Redis source ""(.*)"" with password ""(.*)"" and port ""(.*)""")]

@@ -100,14 +100,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table1.AddRow(new string[] {
+            table2769.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 11
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table1, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
 #line 14
  testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
@@ -138,27 +138,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2.AddRow(new string[] {
+            table2770.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 24
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2770, "And ");
 #line 27
  testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
  testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2771 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table3.AddRow(new string[] {
+            table2771.AddRow(new string[] {
                         "[[Var3]]",
                         "\"Test4\""});
 #line 29
- testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table3, "And ");
+ testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2771, "And ");
 #line 32
  testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
@@ -180,4 +180,3 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
-
