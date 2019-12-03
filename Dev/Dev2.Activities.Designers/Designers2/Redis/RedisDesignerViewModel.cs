@@ -123,14 +123,14 @@ namespace Dev2.Activities.Designers2.Redis
             ModelItem.SetProperty("Key", Key);
         }
 
-        public int TTL
+        public int? TTL
         {
-            get => (int)GetValue(TTLProperty);
+            get => (int?)GetValue(TTLProperty);
             set => SetValue(TTLProperty, value);
         }
 
         public static readonly DependencyProperty TTLProperty =
-            DependencyProperty.Register("TTL", typeof(int), typeof(RedisDesignerViewModel), new PropertyMetadata(0, OnTTLChanged));
+            DependencyProperty.Register("TTL", typeof(int?), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTTLChanged));
 
         private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

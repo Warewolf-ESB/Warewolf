@@ -35,7 +35,7 @@ namespace Warewolf.Driver.Redis
 
         public string Get(string key) => _client.Get<string>(key);
 
-        public bool Set(string key, string value, TimeSpan timeSpan) => _client.Set(key, value, timeSpan);
+        public bool Set(string key, string value, TimeSpan timeSpan) => timeSpan.TotalSeconds == 0 ? _client.Set(key, value) : _client.Set(key, value, timeSpan);
 
         public bool Remove(string key)
         {

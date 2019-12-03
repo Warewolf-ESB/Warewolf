@@ -50,7 +50,6 @@ namespace Dev2.Activities.Redis
     [ToolDescriptorInfo("Redis", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
     public class RedisActivity : DsfBaseActivity, IEquatable<RedisActivity>
     {
-        public static readonly int DefaultTTL = 10000; // (10 seconds)
         string _result = "Success";
         private readonly ISerializer _serializer;
 
@@ -71,7 +70,6 @@ namespace Dev2.Activities.Redis
         public RedisActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
-            TTL = DefaultTTL;
             _redisCache = redisCache;
             ResourceCatalog = resourceCatalog;
 

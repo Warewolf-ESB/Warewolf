@@ -29,12 +29,12 @@ namespace Warewolf.Driver.Redis
 
         private IRedisCache Cache => _connection.Value.Cache;
 
-        public void Set(string key, string value, TimeSpan timeSpan)
+        public bool Set(string key, string value, TimeSpan timeSpan)
         {
             if (string.IsNullOrWhiteSpace(key)) { throw new ArgumentNullException(nameof(key)); }
             if (string.IsNullOrWhiteSpace(value)) { throw new ArgumentNullException($"Data input {nameof(value)} can not be null."); }
 
-            Cache.Set(key, value, timeSpan);
+            return Cache.Set(key, value, timeSpan);
         }
 
         public string Get(string key)
