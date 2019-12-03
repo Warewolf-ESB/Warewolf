@@ -52,17 +52,19 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
         }
 
         [Given(@"I have a key ""(.*)"" and ttl of ""(.*)"" milliseconds")]
-        public void GivenIHaveAKeyAndTtlOfMilliseconds(string key, int ttl)
+        public void GivenIHaveAKeyAndTtlOfMilliseconds(string key, int ttl) => GenerateResourceAndDataObject(key, ttl);
+
+        private void GenerateResourceAndDataObject(string myKey, int ttl)
         {
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
             var port = _scenarioContext.Get<int>("port");
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
 
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+            GenResourceAndDataobject(myKey, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
             var assignActivity = new DsfMultiAssignActivity();
-            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, myKey, ttl, hostName, redisImpl, assignActivity);
 
             _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
@@ -71,6 +73,13 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
             Assert.IsNotNull(redisActivityNew.Key);
         }
 
+        [Given(@"I have a key ""(.*)"" with GUID and ttl of ""(.*)"" milliseconds")]
+        public void GivenIHaveAKeyWithGUIDAndTtlOfMilliseconds(string key, int ttl)
+        {
+            var myNewKey = key + Guid.NewGuid();
+            GenerateResourceAndDataObject(myNewKey, ttl);
+            _scenarioContext.Add("key", myNewKey);
+        }
 
         [Given(@"No data in the cache")]
         public void GivenNoDataInTheCache()
@@ -165,15 +174,42 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
 
         }
 
-        private void SetUpRedisClientConnection(string hostName, string password, int port)
+        void SetUpRedisClientConnection(string hostName, string password, int port)
         {
             _scenarioContext.Add("hostName", hostName);
             _scenarioContext.Add("password", password);
             _scenarioContext.Add("port", port);
         }
 
+        [Given(@"data exists \(TTL not hit\) for key ""(.*)"" with GUID as")]
+        public void GivenDataExistsTTLNotHitForKeyWithGUIDAs(string key, Table table)
+        {
+            var myKey = _scenarioContext.Get<string>("key");
+            if (!string.IsNullOrEmpty(myKey))
+            {
+                GetExpectedTableData(table, 0, out string expectedKey, out string expectedValue);
+                if (expectedKey == key)
+                {
+                    expectedKey = myKey;
+                }
+                VerifyKey(myKey, expectedKey, expectedValue);
+            }
+            else
+            {
+                GetExpectedTableData(table, 0, out string expectedKey, out string expectedValue);
+                VerifyKey(key, expectedKey, expectedValue);
+            }
+        }
+
+
         [Given(@"data exists \(TTL not hit\) for key ""(.*)"" as")]
         public void GivenDataExistsTTLNotHitForKeyAs(string key, Table table)
+        {
+            GetExpectedTableData(table, 0, out string expectedKey, out string expectedValue);
+            VerifyKey(key, expectedKey, expectedValue);
+        }
+
+        void VerifyKey(string myKey, string expectedKey, string expectedValue)
         {
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
@@ -181,23 +217,22 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
             var ttl = _scenarioContext.Get<int>("ttl");
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
 
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+            GenResourceAndDataobject(myKey, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
             var dataStored = new Dictionary<string, string> { { "[[Var1]]", "Data in cache" } };
 
             var assignActivity = GetDsfMultiAssignActivity(dataStored.Keys.ToArray()[0], dataStored.Values.ToArray()[0]);
 
-            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, myKey, ttl, hostName, redisImpl, assignActivity);
 
             ExecuteGetSetTool(redisActivityNew, mockDataobject);
 
             var sdfsf = redisActivityNew.SpecPerformExecution(dataStored);
 
-            var actualDataStored = GetCachedData(redisImpl, key);
+            var actualDataStored = GetCachedData(redisImpl, myKey);
 
-            GetExpectedTableData(table, 0, out string expectedKey, out string expectedValue);
 
-            Assert.AreEqual(expectedKey, key);
+            Assert.AreEqual(expectedKey, myKey);
             Assert.IsTrue(expectedValue.Contains(actualDataStored.Keys.ToArray()[0]), $"Actual key {actualDataStored.Keys.ToArray()[0]} is not in expected {expectedValue}");
             Assert.IsTrue(expectedValue.Contains(actualDataStored.Values.ToArray()[0]), $"Actual value {actualDataStored.Values.ToArray()[0]} is not in expected {expectedValue}");
 
@@ -205,7 +240,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
             _scenarioContext.Remove(nameof(RedisActivity));
             _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
         }
-
 
         [Then(@"the assign ""(.*)"" is not executed")]
         public void ThenTheAssignIsNotExecuted(string key)
@@ -260,7 +294,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
             return new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO(fieldName, fieldValue, 1) } };
         }
 
-        private static void GetExpectedTableData(Table table, int rowNumber, out string expectedKey, out string expectedValue)
+        static void GetExpectedTableData(Table table, int rowNumber, out string expectedKey, out string expectedValue)
         {
             var expectedRow = table.Rows[rowNumber].Values.ToList();
 

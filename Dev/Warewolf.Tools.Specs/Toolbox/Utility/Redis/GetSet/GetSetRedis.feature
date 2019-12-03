@@ -22,8 +22,8 @@ Scenario: No data in cache
 @RedisGetSet
 Scenario: Data exists for given TTL not hit
 	Given valid Redis source
-	And I have a key "MyData" and ttl of "9000" milliseconds
-	And data exists (TTL not hit) for key "MyData" as
+	And I have a key "MyData" with GUID and ttl of "9000" milliseconds
+	And data exists (TTL not hit) for key "MyData" with GUID as
 		| Key    | Data                     |
 		| MyData | "[[Var1]],Data in cache" |
 	And an assign "dataToStore" as
