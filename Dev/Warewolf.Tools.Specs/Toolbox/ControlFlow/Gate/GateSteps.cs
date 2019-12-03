@@ -106,7 +106,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 Next = gateTwoFlowStep
             };
         }
-
+       
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -339,6 +339,13 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             gateActivity.GateOptions.Resume = resume == "Yes" ? YesNo.Yes : YesNo.No;
         }
 
+        [Given(@"ResumeEndpoint is set to ""(.*)""")]
+        public void GivenResumeEndpointIsSetTo(string resumptionWorkflow)
+        {
+            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            gateActivity.GateOptions.ResumeEndpoint = Guid.Parse(resumptionWorkflow);
+        }
+
         [Given(@"the Gate tool is executed")]
         public void GivenTheGateToolIsExecuted()
         {
@@ -351,6 +358,14 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenTheGateToolIsExecutedWithNextGate()
         {
             BuildNextActivity();
+            var result = ExecuteProcess(isDebug: true, throwException: false);
+            scenarioContext.Add("result", result);
+        }
+
+        [Given(@"the Gate tool is executed with resumption endpoint")]
+        public void GivenTheGateToolIsExecutedWithResumptionEndpoint()
+        {
+            BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }

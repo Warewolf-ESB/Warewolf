@@ -108,6 +108,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GateQuadraticBackoff.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\ControlFlow\Gate\GateResumption.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GateResumption.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Gate\GateSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
       <AutoGen>True</AutoGen>
@@ -556,6 +561,10 @@
     <None Include="Toolbox\ControlFlow\Gate\GateQuadraticBackoff.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>GateQuadraticBackoff.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Gate\GateResumption.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GateResumption.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Sequence\Sequence.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
