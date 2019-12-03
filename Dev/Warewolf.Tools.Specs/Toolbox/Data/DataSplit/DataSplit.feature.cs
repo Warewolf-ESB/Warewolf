@@ -1751,7 +1751,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Timeout(30000)]
         public virtual void SendingErrorInErrorVariableAndCallingWebservice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sending Error in error variable and calling webservice", ((string[])(null)));

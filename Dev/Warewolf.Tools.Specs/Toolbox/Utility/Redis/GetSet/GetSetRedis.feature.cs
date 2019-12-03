@@ -95,7 +95,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("Redis source \"localhost\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
@@ -144,7 +144,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
 this.ScenarioSetup(scenarioInfo);
 #line 24
- testRunner.Given("Redis source \"localhost\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -193,7 +193,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
 this.ScenarioSetup(scenarioInfo);
 #line 40
- testRunner.Given("Redis source \"localhost\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 41
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
