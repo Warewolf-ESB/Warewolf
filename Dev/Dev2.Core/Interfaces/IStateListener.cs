@@ -16,4 +16,8 @@ namespace Dev2.Interfaces
     {
         void Subscribe(IStateListener listener);
     }
+    public interface IStateNotifierRequired
+    {
+        void SetStateNotifier(IStateNotifier stateNotifier);
+    }
 }
