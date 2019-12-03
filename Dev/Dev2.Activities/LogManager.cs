@@ -78,7 +78,7 @@ namespace Dev2
             }
         }
 
-        internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
+        public static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
             return Instance.CreateStateNotifierImpl(dsfDataObject);
         }
