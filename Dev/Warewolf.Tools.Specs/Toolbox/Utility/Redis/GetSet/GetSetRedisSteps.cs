@@ -198,8 +198,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
             GetExpectedTableData(table, 0, out string expectedKey, out string expectedValue);
 
             Assert.AreEqual(expectedKey, key);
-            Assert.IsTrue(expectedValue.Contains(actualDataStored.Keys.ToArray()[0]));
-            Assert.IsTrue(expectedValue.Contains(actualDataStored.Values.ToArray()[0]));
+            Assert.IsTrue(expectedValue.Contains(actualDataStored.Keys.ToArray()[0]), $"Actual key {actualDataStored.Keys.ToArray()[0]} is not in expected key {expectedKey}");
+            Assert.IsTrue(expectedValue.Contains(actualDataStored.Values.ToArray()[0]), $"Actual value {actualDataStored.Keys.ToArray()[0]} is not in expected value {expectedKey}");
 
             _scenarioContext.Add(redisActivityNew.Key, actualDataStored);
             _scenarioContext.Remove(nameof(RedisActivity));
