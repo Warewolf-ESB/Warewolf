@@ -38,6 +38,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         {
             this.scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
             scenarioContext.Add("activity", CreateActivity());
+            scenarioContext.Add("nextActivity", CreateActivity());
         }
 
         private void BuildActivity()
@@ -60,6 +61,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             BuildDataList();
 
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            scenarioContext.TryGetValue("nextActivity", out GateActivity nextGateActivity);
 
             gateActivity.DisplayName = "Gate 1";
             gateActivity.UniqueID = RetryEntryPointId.ToString();
@@ -84,7 +86,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             scenarioContext.TryGetValue("modelData", out var modelData);
 
-            var nextGateActivity = CreateActivity();
             nextGateActivity.UniqueID = Guid.NewGuid().ToString();
             nextGateActivity.DisplayName = "Gate 2";
 
@@ -93,7 +94,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
                                                           "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-
 
             var gateTwoFlowStep = new FlowStep
             {
@@ -189,6 +189,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             }
 
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            scenarioContext.TryGetValue("nextActivity", out GateActivity nextGateActivity);
             scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
             var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
 
@@ -216,12 +217,22 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
                                                           "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
+            nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
         }
 
         [Given(@"GateFailure has ""(.*)"" selected")]
         public void GivenGateFailureHasSelected(string gateFailure)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            gateActivity.GateFailure = gateFailure;
+        }
+
+        [Given(@"next gate GateFailure has ""(.*)"" selected")]
+        public void GivenNextGateGateFailureHasSelected(string gateFailure)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
             gateActivity.GateFailure = gateFailure;
         }
 
@@ -232,18 +243,36 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             gateActivity.RetryEntryPointId = string.IsNullOrEmpty(retryEntryPointId) ? Guid.Empty : RetryEntryPointId;
         }
 
+        [Given(@"next gate Gates has ""(.*)"" selected")]
+        public void GivenNextGateGatesHasSelected(string retryEntryPointId)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
+            gateActivity.RetryEntryPointId = string.IsNullOrEmpty(retryEntryPointId) ? Guid.Empty : RetryEntryPointId;
+        }
+
         [Given(@"GateRetryStrategy has ""(.*)"" selected")]
         public void GivenGateRetryStrategyHasSelected(string retryStrategy)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            SetGateStrategy(retryStrategy, gateActivity);
+        }
 
+        [Given(@"next gate GateRetryStrategy has ""(.*)"" selected")]
+        public void GivenNextGateGateRetryStrategyHasSelected(string retryStrategy)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
+            SetGateStrategy(retryStrategy, gateActivity);
+        }
+
+        private static void SetGateStrategy(string retryStrategy, GateActivity gateActivity)
+        {
             switch (retryStrategy)
             {
                 case "NoBackoff":
                     gateActivity.GateOptions.Strategy = new NoBackoff();
                     break;
                 case "ConstantBackoff":
-                    gateActivity.GateOptions.Strategy = null;
+                    gateActivity.GateOptions.Strategy = new ConstantBackoff();
                     break;
                 case "LinearBackoff":
                     gateActivity.GateOptions.Strategy = new LinearBackoff();
@@ -261,19 +290,32 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenIncrementIsSetTo(int increment)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            if (gateActivity.GateOptions.Strategy is ConstantBackoff constantBackoff)
-            {
-                constantBackoff.Increment = increment;
-            }
+            SetIncrement(increment, gateActivity);
         }
 
         [Given(@"Linear Increment is set to ""(.*)""")]
         public void GivenLinearIncrementIsSetTo(int increment)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            SetIncrement(increment, gateActivity);
+        }
+
+        [Given(@"next gate Linear Increment is set to ""(.*)""")]
+        public void GivenNextGateLinearIncrementIsSetTo(int increment)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
+            SetIncrement(increment, gateActivity);
+        }
+
+        private static void SetIncrement(int increment, GateActivity gateActivity)
+        {
             if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
             {
                 linearBackoff.Increment = increment;
+            }
+            if (gateActivity.GateOptions.Strategy is ConstantBackoff constantBackoff)
+            {
+                constantBackoff.Increment = increment;
             }
         }
 
@@ -281,20 +323,46 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenLinearTimeoutIsSetTo(int timeOut)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            SetTimeout(timeOut, gateActivity);
+        }
+
+        [Given(@"next gate Linear Timeout is set to ""(.*)""")]
+        public void GivenNextGateLinearTimeoutIsSetTo(int timeOut)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
+            SetTimeout(timeOut, gateActivity);
+        }
+
+        private static void SetTimeout(int timeOut, GateActivity gateActivity)
+        {
             if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
             {
                 linearBackoff.TimeOut = timeOut;
             }
         }
+
         [Given(@"Linear Max Retries is set to ""(.*)""")]
         public void GivenLinearMaxRetriesIsSetTo(int retries)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            SetMaxRetries(retries, gateActivity);
+        }
+
+        [Given(@"next gate Linear Max Retries is set to ""(.*)""")]
+        public void GivenNextGateLinearMaxRetriesIsSetTo(int retries)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
+            SetMaxRetries(retries, gateActivity);
+        }
+
+        private static void SetMaxRetries(int retries, GateActivity gateActivity)
+        {
             if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
             {
                 linearBackoff.MaxRetries = retries;
             }
         }
+
         [Given(@"Fibonacci Timeout is set to ""(.*)""")]
         public void GivenFibonacciTimeoutIsSetTo(int timeOut)
         {
@@ -338,6 +406,14 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
             gateActivity.GateOptions.Resume = resume == "Yes" ? YesNo.Yes : YesNo.No;
         }
+
+        [Given(@"next gate Resume is set to ""(.*)""")]
+        public void GivenNextGateResumeIsSetTo(string resume)
+        {
+            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
+            gateActivity.GateOptions.Resume = resume == "Yes" ? YesNo.Yes : YesNo.No;
+        }
+
 
         [Given(@"ResumeEndpoint is set to ""(.*)""")]
         public void GivenResumeEndpointIsSetTo(string resumptionWorkflow)
