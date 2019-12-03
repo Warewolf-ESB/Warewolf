@@ -411,9 +411,14 @@ namespace Warewolf.Data.Tests
             optionWorkflow.Value = guid;
             Assert.AreEqual(guid, optionWorkflow.Value);
 
-            Assert.IsNull(optionWorkflow.WorkflowName);
-            optionWorkflow.WorkflowName = "WorkflowName";
-            Assert.AreEqual("WorkflowName", optionWorkflow.WorkflowName);
+            var expectedGuid = Guid.NewGuid();
+            var expectedWorkflowName = "WorkflowName";
+            var namedGuid = new NamedGuid { Name = expectedWorkflowName, Value = expectedGuid };
+
+            Assert.IsNull(optionWorkflow.Workflow);
+            optionWorkflow.Workflow = namedGuid;
+            Assert.AreEqual(expectedWorkflowName, optionWorkflow.Workflow.Name);
+            Assert.AreEqual(expectedGuid, optionWorkflow.Workflow.Value);
 
             Assert.AreEqual(Guid.Empty, ((IOptionBasic<Guid>)optionWorkflow).Default);
 

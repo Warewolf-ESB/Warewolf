@@ -388,14 +388,14 @@ namespace Warewolf.Options
 
         Guid IOptionBasic<Guid>.Default => Guid.Empty;
 
-        private string _workflowName;
+        private NamedGuid _workflow;
 
-        public string WorkflowName 
+        public NamedGuid Workflow 
         {
-            get => _workflowName;
+            get => _workflow;
             set
             {
-                SetProperty(ref _workflowName, value);
+                SetProperty(ref _workflow, value);
             }
         }
 

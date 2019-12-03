@@ -144,12 +144,12 @@
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" 
                              x:Name="WorkflowTextBox"
-                             Text="{Binding Path=DataContext.WorkflowName, Converter={StaticResource WorkflowNameConverter}}"
+                             Text="{Binding Path=DataContext.Workflow, Converter={StaticResource WorkflowNameConverter}}"
                              Style="{StaticResource ReadOnlyTextBoxStyle}"
                              HorizontalAlignment="Stretch"
                              AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
                              IsReadOnly="True"
-                             ToolTip="{Binding Path=DataContext.WorkflowName}"
+                             ToolTip="{Binding Path=DataContext.Workflow.Name}"
                              IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}"/>
 
                     <!--, diag:PresentationTraceSources.TraceLevel=High-->

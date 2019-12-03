@@ -74,6 +74,6 @@ namespace Warewolf.Options
 
     public interface IOptionWorkflow : IOptionBasic<Guid>
     {
-        string WorkflowName { get; set; }
+        //NamedGuid WorkflowName { get; set; }
     }
 }
