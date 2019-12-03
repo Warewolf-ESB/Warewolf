@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
- testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a key \"MyData\" and ttl of \"9000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2775 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
