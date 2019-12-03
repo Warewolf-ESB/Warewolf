@@ -159,7 +159,7 @@ namespace Dev2.Activities.Redis
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
 
-                var cacheTTL = TimeSpan.FromMilliseconds(TTL);
+                var cacheTTL = TimeSpan.FromSeconds(TTL);
 
                 _innerActivity = ActivityFunc.Handler as IDev2Activity;
                 if (_innerActivity is null)
