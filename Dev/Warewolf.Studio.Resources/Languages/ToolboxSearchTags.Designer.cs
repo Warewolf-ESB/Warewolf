@@ -700,7 +700,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to set/get data under a specified key.
+        ///   Looks up a localized string similar to cache data under a specified key.
         /// </summary>
         public static string Tool_Utility_Redis {
             get {
@@ -718,7 +718,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to removes the specified key.
+        ///   Looks up a localized string similar to removes the specified key from cache.
         /// </summary>
         public static string Tool_Utility_RedisRemove {
             get {

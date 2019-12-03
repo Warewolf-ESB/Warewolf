@@ -26,10 +26,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
 
-namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
+namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 {
     [Binding]
-    public class RedisGetSetSteps
+    public class RedisCacheSteps
     {
 
         readonly ScenarioContext _scenarioContext;
@@ -127,9 +127,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
 
         }
 
-        [Then(@"I execute the get/set tool")]
-        [When(@"I execute the get/set tool")]
-        public void WhenIExecuteTheGetSetTool()
+        [Then(@"I execute the cache tool")]
+        [When(@"I execute the cache tool")]
+        public void WhenIExecuteThecacheTool()
         {
             var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
             var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
@@ -141,7 +141,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
 
             GenResourceAndDataobject(redisActivityOld.Key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
-            ExecuteGetSetTool(redisActivityOld, mockDataobject);
+            ExecuteCacheTool(redisActivityOld, mockDataobject);
         }
 
         [Then(@"the cache will contain")]
@@ -225,7 +225,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
 
             var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, myKey, ttl, hostName, redisImpl, assignActivity);
 
-            ExecuteGetSetTool(redisActivityNew, mockDataobject);
+            ExecuteCacheTool(redisActivityNew, mockDataobject);
 
             var sdfsf = redisActivityNew.SpecPerformExecution(dataStored);
 
@@ -279,7 +279,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
         }
 
 
-        private static void ExecuteGetSetTool(SpecRedisActivity redisActivity, Mock<IDSFDataObject> mockDataobject)
+        private static void ExecuteCacheTool(SpecRedisActivity redisActivity, Mock<IDSFDataObject> mockDataobject)
         {
             redisActivity.SpecExecuteTool(mockDataobject.Object);
         }
@@ -341,7 +341,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
             };
         }
 
-        [AfterScenario(@"RedisGetSet")]
+        [AfterScenario(@"RedisCache")]
         public void Cleanup()
         {
 

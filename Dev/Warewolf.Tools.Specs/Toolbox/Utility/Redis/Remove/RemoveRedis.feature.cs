@@ -109,7 +109,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
 #line 14
- testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
  testRunner.Then("The \"MyData\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
@@ -147,7 +147,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2770, "And ");
 #line 27
- testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
  testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -160,7 +160,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
  testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2771, "And ");
 #line 32
- testRunner.Then("I execute the get/set tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
  testRunner.Then("The \"MyData\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 34
