@@ -153,7 +153,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         private void CreateGateOptions(GateActivity noBackoffGateActivity)
         {
-            var noBackoffAlgorithm = new RetryAlgorithmBase();
+            var noBackoffAlgorithm = new NoBackoff();
 
             var gateOptions = new GateOptions
             {
