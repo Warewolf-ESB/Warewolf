@@ -155,7 +155,7 @@ this.ScenarioSetup(scenarioInfo);
                         "MyData",
                         "\"[[Var1]],Data in cache\""});
 #line 26
- testRunner.And("data exists (TTL not hit) for key \"MyData\" with GUID as", ((string)(null)), table2775, "And ");
+ testRunner.And("data exists (TTL not hit) for key \"MyData\" with GUID as", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
