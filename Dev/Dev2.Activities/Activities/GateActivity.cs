@@ -10,9 +10,11 @@
 
 using Dev2.Activities.Gates;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
@@ -32,8 +34,17 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
-    public class GateActivity : DsfFlowNodeActivity<bool>, IEquatable<GateActivity>
+    public class GateActivity : DsfFlowNodeActivity<bool>, IEquatable<GateActivity>, IStateNotifierRequired
     {
+        private IStateNotifier _stateNotifier = null;
+        public void SetStateNotifier(IStateNotifier stateNotifier)
+        {
+            if (_stateNotifier is null)
+            {
+                _stateNotifier = stateNotifier;
+            }
+        }
+
         public GateActivity()
             : base(nameof(Gate))
         {
@@ -42,6 +53,7 @@ namespace Dev2.Activities
         }
 
         public string GateFailure { get; set; }
+
 
         public string GateRetryStrategy { get; set; }
 
@@ -202,26 +214,37 @@ namespace Dev2.Activities
         }
 
         IDSFDataObject _dataObject;
+        IEnumerator<bool> _algo;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
-            _dataObject = data;
-            if (!_dataObject.Gates.Contains(this))
+            try
             {
-                _dataObject.Gates.Add(this);
-            }
+                _stateNotifier?.LogPreExecuteState(this);
 
-            if (_retryState.NumberOfRetries <= 0)
+                _dataObject = data;
+                if (!_dataObject.Gates.Contains(this))
+                {
+                    _dataObject.Gates.Add(this);
+                    _algo = GateOptions.Strategy.Create().GetEnumerator();
+                }
+
+                if (_retryState.NumberOfRetries <= 0)
+                {
+                    return ExecuteNormal(data, update);
+                }
+
+                // execute workflow that should be called on resume
+
+                // reset Environment to state it was in the first time we executed this Gate
+
+                // load selected retry algorithm
+
+                return ExecuteRetry(data, update);
+            } catch (Exception e)
             {
-                return ExecuteNormal(data, update);
+                _stateNotifier?.LogExecuteException(e, this);
+                throw;
             }
-
-            // execute workflow that should be called on resume
-
-            // reset Environment to state it was in the first time we executed this Gate
-
-            // load selected retry algorithm
-
-            return ExecuteRetry(data, update);
         }
         /// <summary>
         /// This Gate is being executed again due to some other Gate selecting this Gate to be
@@ -235,8 +258,7 @@ namespace Dev2.Activities
             // if allowed to retry and its time for a retry return NextNode
             // otherwise schedule this environment and current activity to 
             // be executed at the calculated latter time
-            var allowed = data != null; // this is a place holder, this should be using an retry algorithm
-            if (allowed)
+            if (_algo.MoveNext() && _algo.Current)
             {
                 return NextNodes.First();
             }
@@ -361,68 +383,11 @@ namespace Dev2.Activities
             public int NumberOfRetries { get; set; }
         }
         readonly RetryState _retryState = new RetryState();
+
         private void UpdateRetryState(GateActivity gateActivity)
         {
             _retryState.NumberOfRetries++;
         }
-
-        /*protected override void OldExecuteTool(IDSFDataObject dataObject, int update)
-        {
-            var allErrors = new ErrorResultTO();
-            InitializeDebug(dataObject);
-
-            dataObject.Settings = new Dev2WorkflowSettingsTO
-            {
-                EnableDetailedLogging = Config.Server.EnableDetailedLogging,
-                LoggerType = LoggerType.JSON,
-                KeepLogsForDays = 2,
-                CompressOldLogFiles = true
-            };
-            IStateNotifier stateNotifier = null;
-            var outerStateLogger = dataObject.StateNotifier;
-            if (dataObject.Settings.EnableDetailedLogging)
-            {
-                stateNotifier = LogManager.CreateStateNotifier(dataObject);
-                dataObject.StateNotifier = stateNotifier;
-                stateNotifier?.LogPreExecuteState(this);
-            }
-            try
-            {
-                _worker.AddValidationErrors(allErrors);
-                if (!allErrors.HasErrors())
-                {
-                    if (dataObject.IsDebugMode())
-                    {
-                        ExecuteToolAddDebugItems(dataObject, update);
-                    }
-                    _worker.ExecuteGate(dataObject, update);
-                    stateNotifier?.LogPostExecuteState(this, null);
-                }
-            }
-            catch (Exception e)
-            {
-                stateNotifier?.LogExecuteException(e, this);
-                Dev2Logger.Error(nameof(Gate), e, GlobalConstants.WarewolfError);
-                allErrors.AddError(e.Message);
-            }
-            finally
-            {
-                var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
-                {
-                    DisplayAndWriteError(nameof(GateActivity), allErrors);
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
-                }
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
-                }
-                stateNotifier?.Dispose();
-                dataObject.StateNotifier = outerStateLogger;
-            }
-        }*/
 
         protected override void OnExecute(NativeActivityContext context)
         {

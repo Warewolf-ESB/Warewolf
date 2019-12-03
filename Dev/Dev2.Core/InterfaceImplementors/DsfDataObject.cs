@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -152,7 +151,7 @@ namespace Dev2.DynamicServices
                 BookmarkExecutionCallbackID = ExecutionCallbackID;
             }
 
-            Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid parentInstanceId);
+            Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out var _);
 
             ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
 

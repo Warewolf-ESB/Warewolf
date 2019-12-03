@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 
@@ -33,11 +35,13 @@ namespace Warewolf.Data.Options
         No
     }
 
-    public class RetryAlgorithmBase
+    public abstract class RetryAlgorithmBase
     {
         public RetryAlgorithm RetryAlgorithm { get; set; }
+
+        public abstract IEnumerable<bool> Create();
     }
-        
+
     public class NoBackoff : RetryAlgorithmBase
     {
         public NoBackoff()
@@ -46,6 +50,16 @@ namespace Warewolf.Data.Options
         }
 
         public int TimeOut { get; set; } = 60000;
+        public int MaxRetries { get; set; } = 3;
+        public override IEnumerable<bool> Create()
+        {
+            for (var i = 0; i < MaxRetries; i++)
+            {
+                yield return true;
+            }
+
+            yield return false;
+        }
     }
 
     public class ConstantBackoff : RetryAlgorithmBase
@@ -58,6 +72,17 @@ namespace Warewolf.Data.Options
         public int TimeOut { get; set; } = 60000;
 
         public int Increment { get; set; } = 100;
+        public int MaxRetries { get; set; } = 2;
+        public override IEnumerable<bool> Create()
+        {
+            for (var i = 0; i < MaxRetries; i++)
+            {
+                Task.Delay(Increment).Wait();
+                yield return true;
+            }
+
+            yield return false;
+        }
     }
 
     public class LinearBackoff : RetryAlgorithmBase
@@ -71,6 +96,17 @@ namespace Warewolf.Data.Options
         public int Increment { get; set; } = 50;
 
         public int MaxRetries { get; set; } = 2;
+
+        public override IEnumerable<bool> Create()
+        {
+            for (var i=0; i < MaxRetries; i++)
+            {
+                Task.Delay(i * Increment).Wait();
+                yield return true;
+            }
+
+            yield return false;
+        }
     }
 
     public class FibonacciBackoff : RetryAlgorithmBase
@@ -82,6 +118,17 @@ namespace Warewolf.Data.Options
 
         public int TimeOut { get; set; } = 60000;
         public int MaxRetries { get; set; } = 2;
+        public override IEnumerable<bool> Create()
+        {
+            var increment = 0;
+            for (var i = 0; i < MaxRetries; i++)
+            {
+                Task.Delay(i * increment).Wait();
+                yield return true;
+            }
+
+            yield return false;
+        }
     }
 
     public class QuadraticBackoff : RetryAlgorithmBase
@@ -93,5 +140,16 @@ namespace Warewolf.Data.Options
 
         public int TimeOut { get; set; } = 60000;
         public int MaxRetries { get; set; } = 2;
+        public override IEnumerable<bool> Create()
+        {
+            var increment = 0;
+            for (var i = 0; i < MaxRetries; i++)
+            {
+                Task.Delay(i * increment).Wait();
+                yield return true;
+            }
+
+            yield return false;
+        }
     }
 }
