@@ -44,8 +44,8 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "GateResumption", "\tIn order allow gate resumption via workflow url\r\n\tAs a Warewolf user\r\n\tI want th" +
-                    "e tool to have a Gate selection to proceed", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "GateResumption", "\tIn order allow gate resumption retry via workflow url\r\n\tAs a Warewolf user\r\n\tI w" +
+                    "ant the tool to have a Gate selection to proceed", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,28 +84,28 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Gate tool has retry with resume set to ResumeEndpoint")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Gate tool has retry with resume and ResumeEndpoint set to API")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GateResumption")]
-        public virtual void GateToolHasRetryWithResumeSetToResumeEndpoint()
+        public virtual void GateToolHasRetryWithResumeAndResumeEndpointSetToAPI()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has retry with resume set to ResumeEndpoint", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gate tool has retry with resume and ResumeEndpoint set to API", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table230 = new TechTalk.SpecFlow.Table(new string[] {
                         "match",
                         "matchtype",
                         "match"});
-            table1.AddRow(new string[] {
+            table230.AddRow(new string[] {
                         "[[a]]",
                         "=",
                         "10"});
-            table1.AddRow(new string[] {
+            table230.AddRow(new string[] {
                         "[[b]]",
                         "=",
                         "20"});
 #line 7
- testRunner.Given("I have the following conditions", ((string)(null)), table1, "Given ");
+ testRunner.Given("I have the following conditions", ((string)(null)), table230, "Given ");
 #line 11
  testRunner.And("GateFailure has \"Retry\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
@@ -117,14 +117,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("ResumeEndpoint is set to \"acb75027-ddeb-47d7-814e-a54c37247ec1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.And("the Gate tool is executed with resumption endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the Gate tool is executed with next gate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table231 = new TechTalk.SpecFlow.Table(new string[] {
                         "error"});
-            table2.AddRow(new string[] {
+            table231.AddRow(new string[] {
                         "stop on error with no resume"});
 #line 17
- testRunner.Then("the execution has errors", ((string)(null)), table2, "Then ");
+ testRunner.Then("the execution has errors", ((string)(null)), table231, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -132,4 +132,3 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
-
