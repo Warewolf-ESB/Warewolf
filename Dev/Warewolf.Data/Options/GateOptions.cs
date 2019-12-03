@@ -29,8 +29,8 @@ namespace Warewolf.Data.Options
 
     public enum YesNo
     {
-        Yes,
-        No
+        Yes = 1,
+        No = 0
     }
 
     public class RetryAlgorithmBase
