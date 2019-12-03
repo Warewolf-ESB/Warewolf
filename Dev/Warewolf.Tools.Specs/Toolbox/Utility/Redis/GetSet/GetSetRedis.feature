@@ -5,7 +5,7 @@
 
 @RedisGetSet
 Scenario: No data in cache
-	Given Redis source "localhost" with password "pass123" and port "6379"
+	Given valid Redis source
 	And I have a key "MyData" and ttl of "3000" milliseconds
 	And No data in the cache
 	And an assign "dataToStore" as
@@ -21,7 +21,7 @@ Scenario: No data in cache
 
 @RedisGetSet
 Scenario: Data exists for given TTL not hit
-	Given Redis source "localhost" with password "pass123" and port "6379"
+	Given valid Redis source
 	And I have a key "MyData" and ttl of "3000" milliseconds
 	And data exists (TTL not hit) for key "MyData" as
 		| Key    | Data                     |
@@ -37,7 +37,7 @@ Scenario: Data exists for given TTL not hit
 
 @RedisGetSet
 Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
-	Given Redis source "localhost" with password "pass123" and port "6379"
+	Given valid Redis source
 	And I have a key "MyData" and ttl of "3000" milliseconds
 	And data does not exist (TTL exceeded) for key "MyData" as
 		| | |
