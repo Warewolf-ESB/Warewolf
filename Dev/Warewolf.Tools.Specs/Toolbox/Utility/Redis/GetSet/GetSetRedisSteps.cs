@@ -33,6 +33,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
     {
 
         readonly ScenarioContext _scenarioContext;
+        private Depends _containerOps;
+
         public RedisGetSetSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null)
@@ -48,6 +50,13 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.GetSet
         public void GivenRedisSourceWithPasswordAndPort(string hostName, string password, int port)
         {
             SetUpRedisClientConnection(hostName, password, port);
+        }
+
+        [Given(@"valid Redis source")]
+        public void GivenValidRedisSource()
+        {
+            _containerOps = new Depends(Depends.ContainerType.AnonymousRedis);
+            SetUpRedisClientConnection(Depends.RigOpsIP, "", 6380);
         }
 
         [Given(@"I have a key ""(.*)"" and ttl of ""(.*)"" milliseconds")]
