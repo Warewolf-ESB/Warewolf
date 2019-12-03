@@ -13,9 +13,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
-using System.Net.WebSockets.Managed;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Common;
+using Warewolf.Interfaces.Pooling;
+using Warewolf.Pooling;
 
 namespace Warewolf.Auditing
 {
@@ -23,17 +24,18 @@ namespace Warewolf.Auditing
     {
         public IWebSocketWrapper New()
         {
-            return WebSocketWrapper.Create(Config.Auditing.Endpoint);
+            return new WebSocketWrapper(Config.Auditing.Endpoint);
         }
     }
 
     // TODO: move to Warewolf.Common and rewrite the class
-    public class WebSocketWrapper : IWebSocketWrapper
+    internal class WebSocketWrapper : IWebSocketWrapper
     {
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
 
-        private readonly System.Net.WebSockets.Managed.ClientWebSocket _ws;
+        private static readonly IObjectPool<System.Net.WebSockets.Managed.ClientWebSocket> objectPool = new ObjectPoolFactory<System.Net.WebSockets.Managed.ClientWebSocket>().New(() => new System.Net.WebSockets.Managed.ClientWebSocket());
+        private readonly System.Net.WebSockets.Managed.ClientWebSocket clientWebSocket;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
@@ -42,24 +44,30 @@ namespace Warewolf.Auditing
         private Action<string, WebSocketWrapper> _onMessage;
         private Action<WebSocketWrapper> _onDisconnected;
 
-        protected WebSocketWrapper(string uri)
+        public WebSocketWrapper() { }
+        public WebSocketWrapper(string uri)
         {
-            _ws = new System.Net.WebSockets.Managed.ClientWebSocket();
-            _ws.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+            clientWebSocket = objectPool.AcquireObject(); //new System.Net.WebSockets.Managed.ClientWebSocket();
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
-        }
 
-        public static IWebSocketWrapper Create(string uri)
-        {
-            return new WebSocketWrapper(uri);
+            if (clientWebSocket.State == WebSocketState.None)
+            {
+                clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+            }
         }
-
         public IWebSocketWrapper Connect()
         {
-            var task = ConnectAsync();
-            task.Wait();
-            return this;
+            if (!IsOpen())
+            {
+                var task = ConnectAsync();
+                task.Wait();
+                return this;
+            }
+            else
+            {
+                return this;
+            }
         }
 
         public IWebSocketWrapper OnConnect(Action<IWebSocketWrapper> onConnect)
@@ -70,7 +78,7 @@ namespace Warewolf.Auditing
 
         public IWebSocketWrapper Close()
         {
-            var task = _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            var task = clientWebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
             task.Wait();
             return this;
         }
@@ -101,16 +109,11 @@ namespace Warewolf.Auditing
 
         public bool IsOpen()
         {
-            return _ws.State == WebSocketState.Open;
+            return clientWebSocket.State == WebSocketState.Open;
         }
 
         private async Task SendMessageAsync(string message)
         {
-            if (_ws.State != WebSocketState.Open)
-            {
-                throw new WebSocketException("Connection is not open.");
-            }
-
             var messageBuffer = Encoding.UTF8.GetBytes(message);
             await SendMessageAsync(messageBuffer);
         }
@@ -121,6 +124,11 @@ namespace Warewolf.Auditing
 
             try
             {
+                if (clientWebSocket.State != WebSocketState.Open)
+                {
+                    throw new WebSocketException("Connection is not open.");
+                }
+
                 for (var i = 0; i < messagesCount; i++)
                 {
                     var offset = (SendChunkSize * i);
@@ -132,7 +140,7 @@ namespace Warewolf.Auditing
                         count = messageBuffer.Length - offset;
                     }
 
-                    await _ws.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                    await clientWebSocket.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
                 }
             }
             catch (Exception)
@@ -141,13 +149,16 @@ namespace Warewolf.Auditing
             }
             finally
             {
-                _ws.Dispose();
+                if (IsOpen())
+                {
+                    objectPool.ReleaseObject(clientWebSocket);
+                }
             }
         }
 
         private async Task ConnectAsync()
         {
-            await _ws.ConnectAsync(_uri, _cancellationToken);
+            await clientWebSocket.ConnectAsync(_uri, _cancellationToken);
             CallOnConnected();
             WatchForMessagesFromServer();
         }
@@ -158,7 +169,7 @@ namespace Warewolf.Auditing
 
             try
             {
-                while (_ws.State == WebSocketState.Open)
+                while (clientWebSocket.State == WebSocketState.Open)
                 {
                     var stringResult = new StringBuilder();
 
@@ -166,11 +177,11 @@ namespace Warewolf.Auditing
                     WebSocketReceiveResult result;
                     do
                     {
-                        result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), _cancellationToken);
+                        result = await clientWebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), _cancellationToken);
 
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
-                            await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                            await clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                             CallOnDisconnected();
                         }
                         else
@@ -191,7 +202,7 @@ namespace Warewolf.Auditing
             }
             finally
             {
-                _ws.Dispose();
+                clientWebSocket.Dispose();
             }
         }
         private void CallOnMessage(StringBuilder stringResult)
