@@ -2289,7 +2289,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Tags: json array declare setup variable set</value>
   </data>
    <data name="Tool_Utility_Redis" xml:space="preserve">
-    <value>Tags: set/get cache data under a specified key</value>
+    <value>Tags: cache data under a specified key</value>
   </data>
   <data name="Tool_Utility_RedisRemove" xml:space="preserve">
     <value>Tags: removes the specified key and data from cache</value>

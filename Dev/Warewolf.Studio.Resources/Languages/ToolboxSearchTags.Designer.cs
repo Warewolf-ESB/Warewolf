@@ -700,7 +700,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to set/get cache under a specified key.
+        ///   Looks up a localized string similar to cache data under a specified key.
         /// </summary>
         public static string Tool_Utility_Redis {
             get {
