@@ -86,6 +86,25 @@ namespace Dev2.Tests.Activities.Activities.Redis
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RedisCache")]
+        public void RedisCache_Set_DataToCacheWithNoTTL_CachedDataShouldNotExpire()
+        {
+            //----------------------Arrange----------------------
+            var mockConnection = new Mock<IRedisConnection>();
+            var mockDatabase = new Mock<IRedisCache>();
+
+            mockDatabase.Setup(db => db.Set(It.IsAny<string>(), It.IsAny<string>(), TimeSpan.FromMilliseconds(0))).Returns(true);
+            mockConnection.Setup(conn => conn.Cache).Returns(mockDatabase.Object);
+
+            var sut = new RedisCacheStub(() => mockConnection.Object);
+            //----------------------Act--------------------------
+            var result = sut.Set("key1", "data to store in cache", TimeSpan.FromMilliseconds(0));
+            //----------------------Assert-----------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
         [TestCategory("RedisCache")]
         [Owner("Hagashen Naidu")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -102,6 +121,7 @@ namespace Dev2.Tests.Activities.Activities.Redis
             //--------------Assert-------------------------------
 
         }
+
 
         [TestMethod]
         [TestCategory("RedisCache")]
