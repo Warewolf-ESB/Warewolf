@@ -11,7 +11,7 @@ Scenario: No data in cache
 	And an assign "dataToStore" as
 		| var      | value   |
 		| [[Var1]] | "Test1" |
-	When I execute the get/set tool
+	When I execute the cache tool
 	Then the cache will contain
 		| Key    | Data             |
 		| MyData | "[[Var1]],Test1" |
@@ -29,7 +29,7 @@ Scenario: Data exists for given TTL not hit
 	And an assign "dataToStore" as
 		| var      | value   |
 		| [[Var1]] | "Test1" |
-	When I execute the get/set tool
+	When I execute the cache tool
 	Then the assign "dataToStore" is not executed
 	And output variables have the following values
 		| var      | value                    |
@@ -44,8 +44,8 @@ Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 	And an assign "dataToStore" as
 		| var      | value   |
 		| [[Var1]] | "Test1" |
-	When I execute the get/set tool
-	Then the assign "dataToStore" is executed
+	When I execute the cache tool
+	Then the assign "dataToStore" is executed 
 	Then the cache will contain
 		| Key    | Data             |
 		| MyData | "[[Var1]],Test1" |
