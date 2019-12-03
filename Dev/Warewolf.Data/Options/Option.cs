@@ -215,7 +215,7 @@ namespace Warewolf.Options
             get => _value;
             set
             {
-                if (SetProperty(ref _value, value))
+                if (SetProperty(ref _value, value) || OptionName is null)
                 {
                     OptionName = Values?.First(o => o.Value == value).Key;
                 }
