@@ -43,18 +43,18 @@
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="41" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -97,52 +97,76 @@
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisNewServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
+        </Grid>
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Key" />
-            <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.Row="1"
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="41"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Key"/>
+                <ui:IntellisenseTextBox Grid.Column="1"
+                                    Grid.Row="0" 
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     DefaultText="Key" 
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
-                                    WrapInBrackets="False" 
+                                    WrapInBrackets="False"
                                     Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding Path=Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisKeyTextbox_AutoID}"
                                     ToolTip="{x:Static languages:Tooltips.RedisKeyToolTip}"
                                     attachedProperties1:FocusSetter.IsFocused="{Binding IsKeyFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisKeyHelp}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
+                    <i:Interaction.Behaviors>
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.RedisKeyHelp}" DataContext="{Binding}" />
+                        <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Key"
                                          SourcePropertyValue="{Binding ModelItem.Key, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+                
+            </Grid>
 
-            <TextBlock Grid.Column="2" Grid.Row="1" Text="TTL" Margin="{StaticResource ControlBorderTopLeft}" />
-            <TextBox Grid.Column="3"
-                     Grid.Row="1"
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="Time To Live" />
+                <TextBox Grid.Column="1"
+                     Grid.Row="0"
                      AcceptsReturn="False" 
-                     customControls:WatermarkTextBox.Watermark=" (s)"
-                     Style="{StaticResource StretchedTextBoxStyle}"
-                     Width="40"
-                     MaxWidth="40"
-                     Margin="{StaticResource ControlBorderTopLeft}"
+                     customControls:WatermarkTextBox.Watermark="seconds"
+                     MinWidth="50"
+                     MaxWidth="50"
                      Text="{Binding Path=TTL, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static sys:String.Empty}}" 
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
                      ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTLHelp}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
+                    <i:Interaction.Behaviors>
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTLHelp}" DataContext="{Binding}" />
+                        <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.TTL"
                                          SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </TextBox>
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                
+            </Grid>
         </Grid>
 
-        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="{StaticResource ControlBorderTop}" CornerRadius="12" Grid.Row="1">
+        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="{StaticResource ControlBorderTop}" CornerRadius="12" Grid.Row="2">
             <sap:WorkflowItemPresenter x:Name="DropPoint"
                                        AllowDrop="False"
                                        Margin="3"
@@ -159,6 +183,6 @@
                 </AutomationProperties.AutomationId>
             </sap:WorkflowItemPresenter>
         </Border>
-        <errors:OnError Grid.Row="2" />
+        <errors:OnError Grid.Row="3" />
     </Grid>
 </core:ActivityDesignerTemplate>
