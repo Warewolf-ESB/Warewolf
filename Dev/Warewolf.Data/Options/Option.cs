@@ -527,10 +527,19 @@ namespace Warewolf.Options
         public bool IsSingleOperand => MatchType.IsSingleOperand();
 
 
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
-
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
         public object Clone()
         {
             return new OptionConditionExpression
