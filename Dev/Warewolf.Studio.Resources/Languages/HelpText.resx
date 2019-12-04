@@ -779,7 +779,7 @@
   </data>
   <data name="DeadLetterQueueHelp" xml:space="preserve">
     <value>The name of the queue you want to post the dead-letter onto</value>
-  </data> 
+  </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
     <value>Enter the path to the attachments you want to send, separated by a semicolon ;</value>
   </data>
@@ -1186,12 +1186,12 @@
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
   </data>
   <data name="GateFailuresHelp" xml:space="preserve">
-     <value>If the gate conditions fail, this is the action will be executed. 
+    <value>If the gate conditions fail, this is the action will be executed. 
     	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
     	&lt;br/&gt;StopOnError: will stop the execution.</value>
   </data>
   <data name="ExistingGatesHelp" xml:space="preserve">
-      <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
+    <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)	This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5	Preview (scalar field - including indexed recordsets and ())	This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
@@ -1402,7 +1402,7 @@
   </data>
   <data name="QueueMapEntireMessageHelpTextTrigger" xml:space="preserve">
     <value>Map the entire message. This will put the full response from the queue into one variable for you to unpack in your workflow.</value>
-  </data>  
+  </data>
   <data name="QueuePasteInputHelp" xml:space="preserve">
     <value>Paste the XML, JSON or plain text message received from the queue here.</value>
   </data>
@@ -1833,7 +1833,7 @@ A test must be ignored/disabled before it can be deleted.</value>
   </data>
   <data name="WebServicePasteInputHelp" xml:space="preserve">
     <value>Paste the XML, JSON or plain text response of the web service call here.&lt;br/&gt;	&lt;br/&gt;	If you do not know the response body exactly, rather execute the Test execution.</value>
-  </data>  
+  </data>
   <data name="WebServiceRequestBodyHelp" xml:space="preserve">
     <value>The request body.&lt;br/&gt;	&lt;br/&gt;	This is typically directly after the header text in the Request.</value>
   </data>
@@ -2328,5 +2328,26 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="OptionWorkflowHelpText" xml:space="preserve">
     <value>OptionWorkflowHelpText</value>
+  </data>
+  <data name="OptionGateCountHelpText" xml:space="preserve">
+    <value>Set the retry count. </value>
+  </data>
+  <data name="OptionGateStrategyHelpText" xml:space="preserve">
+    <value>Retry strategy that will be actioned &lt;br/&gt;&lt;br/&gt;&lt;b&gt;NoBackoff: &lt;/b&gt;On Error Retry Immediately&lt;br/&gt;&lt;br/&gt;&lt;b&gt;LinearBackoff:&lt;/b&gt; Delay increases along with every attempt on Linear curve</value>
+  </data>
+  <data name="OptionGateResumeHelpText" xml:space="preserve">
+    <value>Select whether the Gate Tool will resume on error</value>
+  </data>
+  <data name="OptionGateIncrementHelpText" xml:space="preserve">
+    <value>Set the delay increment between every retry attempt</value>
+  </data>
+  <data name="OptionGateMaxRetriesHelpText" xml:space="preserve">
+    <value>Set maximum retries. The tool will keep retrying until the maximum retry count is hit</value>
+  </data>
+  <data name="OptionGateTimeoutHelpText" xml:space="preserve">
+    <value>Set the Timeout of each retry</value>
+  </data>
+  <data name="OptionGateResumeEndpointHelpText" xml:space="preserve">
+    <value>Select the resume workflow or API that will be executed on retry</value>
   </data>
 </root>

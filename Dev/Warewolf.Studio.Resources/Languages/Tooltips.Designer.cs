@@ -1690,9 +1690,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the gate conditions fail, this is the action will be executed. 
-        ///    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
-        ///    	&lt;br/&gt;StopOnError: will stop the execution..
+        ///   Looks up a localized string similar to If the gate conditions fail, this is the action will be executed..
         /// </summary>
         public static string GateFailuresToolTip {
             get {
@@ -3303,6 +3301,69 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string OptionEnumTooltip {
             get {
                 return ResourceManager.GetString("OptionEnumTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the retry count..
+        /// </summary>
+        public static string OptionGateCountToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the delay increment between every retry attempt.
+        /// </summary>
+        public static string OptionGateIncrementToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateIncrementToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the maximum retry count. The tool will keep retrying until the maximum retry count is hit.
+        /// </summary>
+        public static string OptionGateMaxRetriesToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateMaxRetriesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the resume workflow or API that will be executed on retry.
+        /// </summary>
+        public static string OptionGateResumeEndpointToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateResumeEndpointToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select whether the Gate Tool will resume on error.
+        /// </summary>
+        public static string OptionGateResumeToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateResumeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the retry strategy that will be actioned.
+        /// </summary>
+        public static string OptionGateStrategyToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateStrategyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the Timeout of each retry.
+        /// </summary>
+        public static string OptionGateTimeoutToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateTimeoutToolTip", resourceCulture);
             }
         }
         

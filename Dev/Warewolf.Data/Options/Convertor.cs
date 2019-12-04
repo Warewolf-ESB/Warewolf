@@ -50,10 +50,33 @@ namespace Warewolf.Options
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
             {
+                var helpText = Studio.Resources.Languages.HelpText.OptionIntHelpText;
+                var Tooltip = Studio.Resources.Languages.Tooltips.OptionIntTooltip;
+                switch (prop.Name)
+                {
+                    case "Count":
+                        helpText = Studio.Resources.Languages.HelpText.OptionGateCountHelpText;
+                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateCountToolTip;
+                        break;
+                    case "TimeOut":
+                        helpText = Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText;
+                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip;
+                        break;
+                    case "MaxRetries":
+                        helpText = Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText;
+                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip;
+                        break;
+                    case "Increment":
+                        helpText = Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText;
+                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip;
+                        break;
+                }
                 return new OptionInt
                 {
                     Name = prop.Name,
-                    Value = (int)prop.GetValue(instance)
+                    Value = (int)prop.GetValue(instance),
+                    HelpText = helpText,
+                    Tooltip = Tooltip
                 };
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(Guid)))
@@ -62,7 +85,9 @@ namespace Warewolf.Options
                 {
                     Name = prop.Name,
                     Value = (Guid)prop.GetValue(instance),
-                    Workflow = new NamedGuid { Name = "", Value = (Guid)prop.GetValue(instance) }
+                    Workflow = new NamedGuid { Name = "", Value = (Guid)prop.GetValue(instance) },
+                    HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText,
+                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip
                 };
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(bool)))
@@ -70,7 +95,7 @@ namespace Warewolf.Options
                 return new OptionBool
                 {
                     Name = prop.Name,
-                    Value = (bool)prop.GetValue(instance)
+                    Value = (bool)prop.GetValue(instance),
                 };
             }
             else if (prop.PropertyType.IsEnum)
@@ -86,7 +111,9 @@ namespace Warewolf.Options
                 {
                     Values = values,
                     Name = prop.Name,
-                    Value = (int)prop.GetValue(instance)
+                    Value = (int)prop.GetValue(instance),
+                    HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeHelpText,
+                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip
                 };
 
                 return result;
@@ -123,6 +150,8 @@ namespace Warewolf.Options
                 {
                     Name = prop.Name,
                     Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
+                    HelpText = Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText,
+                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip
                 };
 
                 if (dataProviderAttr != null)
@@ -155,9 +184,30 @@ namespace Warewolf.Options
                     if (option is IOptionInt optionInt)
                     {
                         gateOptions.Count = optionInt.Value;
+                        switch (optionInt.Name)
+                        {
+                            case "Count":
+                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateCountHelpText;
+                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateCountToolTip;
+                                break;
+                            case "TimeOut":
+                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText;
+                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip;
+                                break;
+                            case "MaxRetries":
+                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText;
+                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip;
+                                break;
+                            case "Increment":
+                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText;
+                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip;
+                                break;
+                        }
                     }
                     if (option is IOptionEnum optionEnum)
                     {
+                        optionEnum.HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeHelpText;
+                        optionEnum.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip;
                         switch (optionEnum.Value)
                         {
                             case 1:
@@ -171,16 +221,20 @@ namespace Warewolf.Options
                     }
                     if (option is IOptionWorkflow optionWorkflow)
                     {
+                        optionWorkflow.HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText;
+                        optionWorkflow.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip;
                         gateOptions.ResumeEndpoint = optionWorkflow.Value;
                     }
                     if (option is IOptionComboBox optionCombobox)
                     {
+                        optionCombobox.HelpText = Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText;
+                        optionCombobox.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip;
                         switch (optionCombobox.Value)
                         {
                             case "NoBackoff":
                                 gateOptions.Strategy = new Data.Options.NoBackoff
                                 {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.NoBackoff
+                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.NoBackoff,
                                 };
                                 break;
                             case "ConstantBackoff":
@@ -211,9 +265,6 @@ namespace Warewolf.Options
                     }
                 }
             }
-
-
-
             return gateOptions;
         }
     }
