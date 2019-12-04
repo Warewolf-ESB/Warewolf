@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Data;
+using Warewolf.Data;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -149,5 +150,6 @@ namespace Dev2.Studio.Interfaces
         void UpdateExplorerWorkflowChanges(Guid resourceId);
         IResource CreateResourceFromStreamContent(string resourceContent);
         IResource GetResource(string resourceId);
+        List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId);
     }
 }

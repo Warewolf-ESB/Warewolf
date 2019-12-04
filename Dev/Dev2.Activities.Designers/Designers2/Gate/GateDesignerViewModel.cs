@@ -60,11 +60,11 @@ namespace Dev2.Activities.Designers2.Gate
         {
             _modelItem = modelItem;
             LoadDefaults();
-            LoadOptions();
             ClearGates();
             LoadGates();
 
             PopulateFields();
+            LoadOptions();
         }
 
         private void LoadDefaults()
@@ -150,6 +150,7 @@ namespace Dev2.Activities.Designers2.Gate
                 _resourceRepository = _server.ResourceRepository;
 
                 Options = new OptionsWithNotifier { Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume) };
+                UpdateModelItem();
             }
         }
 

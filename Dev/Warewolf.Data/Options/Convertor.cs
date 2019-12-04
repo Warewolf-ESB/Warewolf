@@ -160,10 +160,11 @@ namespace Warewolf.Options
                     {
                         switch (optionEnum.Value)
                         {
-                            case 0:
+                            case 1:
                                 gateOptions.Resume = Data.Options.YesNo.Yes;
                                 break;
-                            case 1:
+                            case 0:
+                            default:
                                 gateOptions.Resume = Data.Options.YesNo.No;
                                 break;
                         }
