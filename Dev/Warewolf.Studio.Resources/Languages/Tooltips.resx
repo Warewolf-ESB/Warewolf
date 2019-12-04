@@ -942,10 +942,12 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Select constructor to execute.</value>
   </data>
   <data name="GateFailuresToolTip" xml:space="preserve">
-    <value>GateFailuresToolTip</value>
+     <value>If the gate conditions fail, this is the action will be executed. 
+    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
+    	&lt;br/&gt;StopOnError: will stop the execution.</value>
   </data>
   <data name="ExistingGatesToolTip" xml:space="preserve">
-    <value>ExistingGatesToolTip</value>
+      <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PasswordToolTip" xml:space="preserve">
     <value>Enter the corresponding password</value>
@@ -2236,6 +2238,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Data_Replace" xml:space="preserve">
     <value>Tags: find</value>
+  </data>
+  <data name="Tool_Flow_Gate" xml:space="preserve">
+    <value>Tags: gate retry stop end</value>
   </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
     <value>Tags: search string position</value>

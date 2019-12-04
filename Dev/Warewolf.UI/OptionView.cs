@@ -76,6 +76,10 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionComboBoxStyle";
                 }
+                if (DataContext is OptionConditionExpression optionConditionList)
+                {
+                    dataTemplateName = "ConditionExpressionStyle";
+                }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
 
