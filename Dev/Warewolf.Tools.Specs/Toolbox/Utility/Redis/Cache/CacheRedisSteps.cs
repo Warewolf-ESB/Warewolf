@@ -261,10 +261,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
                 Thread.Sleep(1000);
             } while (Stoptime.ElapsedMilliseconds < ttl);
 
+            var guidKey = _scenarioContext.Get<string>("key");
+            if (!string.IsNullOrEmpty(guidKey))
+            {
+                key = guidKey;
+            }
             var actualCachedData = GetCachedData(impl, key);
 
             Assert.AreEqual(0, table.RowCount);
-            Assert.IsNull(actualCachedData);
+            Assert.IsNull(actualCachedData, $"Key=Value exists: {actualCachedData?.Keys?.FirstOrDefault()}={actualCachedData?.Values?.FirstOrDefault()}");
         }
 
         [Then(@"the assign ""(.*)"" is executed")]
