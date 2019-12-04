@@ -13,7 +13,6 @@ using System.Globalization;
 using System.Windows.Data;
 using Dev2;
 using Dev2.Studio.Interfaces;
-using Warewolf.Data;
 
 namespace Warewolf.UI
 {
@@ -21,15 +20,17 @@ namespace Warewolf.UI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is NamedGuid namedGuid && namedGuid.Value != Guid.Empty)
+            if (value is Options.OptionWorkflow optionWorkflow && optionWorkflow.Workflow.Value != Guid.Empty)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var resource = shellViewModel?.GetResource(namedGuid.Value.ToString());
+                var resource = shellViewModel?.GetResource(optionWorkflow.Workflow.Value.ToString());
                 if (resource is null)
                 {
                     return Binding.DoNothing;
                 }
-                namedGuid.Name = resource.ResourceName;
+                optionWorkflow.Workflow.Name = resource.ResourceName;
+                optionWorkflow.Inputs = shellViewModel?.GetInputsFromWorkflow(optionWorkflow.Workflow.Value);
+
                 return resource.ResourceName;
             }
 
