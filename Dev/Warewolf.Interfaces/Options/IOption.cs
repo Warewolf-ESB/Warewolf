@@ -74,13 +74,9 @@ namespace Warewolf.Options
 
     public interface IOptionWorkflow : IOptionBasic<Guid>
     {
-        //NamedGuid WorkflowName { get; set; }
+        
     }
 
-    //public interface IOptionConditionList : IOption
-    //{
-    //    IList<IEnumerable<IOption>> Values { get; set; }
-    //}
     public interface IOptionConvertable
     {
         IOption[] ToOptions();
