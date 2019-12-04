@@ -88,6 +88,7 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 DeleteRow(x as DecisionTO);
             });
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Gate;
         }
 
         private void PopulateFields()
