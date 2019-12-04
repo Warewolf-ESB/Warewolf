@@ -8,6 +8,7 @@
                     xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                     xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                     xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
                     xmlns:di="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                     xmlns:wi="clr-namespace:Warewolf.Options;assembly=Warewolf.Interfaces"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -121,6 +122,73 @@
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ConditionExpressionStyle" DataType="{x:Type options:OptionConditionExpression}">
+        <Grid Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Stretch" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Text="{Binding Path=Left}" Grid.Column="0" Margin="3,0,3,0" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
+
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding Path=MatchTypes}"
+                      DisplayMemberPath="Name"
+                      Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValue="{Binding Path=SelectedMatchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource ComboBoxStyle}" 
+                      Margin="{StaticResource ControlBorderRight}"
+                      ToolTip="{Binding Path=Tooltip}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+
+            <Grid Grid.Column="2" 
+                  Visibility="{Binding IsSingleOperand, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding Path=Right}"
+                         Grid.Column="0"
+                         Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+
+                <Grid Grid.Column="0" 
+                      Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding Path=From}"
+                             Grid.Column="0"
+                             Margin="{StaticResource ControlBorderRight}">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBox Text="{Binding Path=To}" 
+                             Grid.Column="1">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                </Grid>
+            </Grid>
         </Grid>
     </DataTemplate>
 

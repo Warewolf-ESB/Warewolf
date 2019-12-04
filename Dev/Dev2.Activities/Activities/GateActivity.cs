@@ -8,8 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Debug;
 using Dev2.Activities.Gates;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
@@ -17,6 +20,8 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
@@ -217,6 +222,11 @@ namespace Dev2.Activities
         IEnumerator<bool> _algo;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            if (GateOptions is null)
+            {
+                GateOptions = new GateOptions();
+            }
+            
             try
             {
                 _stateNotifier?.LogPreExecuteState(this);
@@ -283,6 +293,11 @@ namespace Dev2.Activities
                 _debugOutputs = new List<DebugItem>();
 
                 UpdateConditions();
+                if (data.IsDebugMode())
+                {
+                    _debugInputs = CreateDebugInputs(data.Environment);
+                    DispatchDebugState(data, StateType.Before, 0);
+                }
 
                 //----------ExecuteTool--------------
                 if (!Passing)
@@ -371,6 +386,116 @@ namespace Dev2.Activities
                 Conditions = decisionStack;
             }
         }
+
+        List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
+        {
+            var result = new List<IDebugItem>();
+
+            var allErrors = new ErrorResultTO();
+
+            try
+            {
+                var dds = Conditions;
+                var userModel = dds.GenerateToolLabel(env, dds.Mode, out ErrorResultTO error);
+                allErrors.MergeErrors(error);
+
+                foreach (Dev2Decision dev2Decision in dds.TheStack)
+                {
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col1, out error);
+                    allErrors.MergeErrors(error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col2, out error);
+                    allErrors.MergeErrors(error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col3, out error);
+                    allErrors.MergeErrors(error);
+                }
+
+                var itemToAdd = new DebugItem();
+
+                userModel = userModel.Replace("OR", " OR\r\n")
+                                     .Replace("AND", " AND\r\n")
+                                     .Replace("\r\n ", "\r\n")
+                                     .Replace("\r\n\r\n", "\r\n")
+                                     .Replace("  ", " ");
+
+                AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
+                result.Add(itemToAdd);
+
+                itemToAdd = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
+                result.Add(itemToAdd);
+            }
+            catch (JsonSerializationException e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+            }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                if (allErrors.HasErrors())
+                {
+                    var serviceName = GetType().Name;
+                    DisplayAndWriteError(serviceName, allErrors);
+                }
+            }
+
+            var val = result.Select(a => a as DebugItem).ToList();
+            return val;
+        }
+
+        static void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
+        {
+            error = new ErrorResultTO();
+            if (expression != null && DataListUtil.IsEvaluated(expression))
+            {
+                DebugOutputBase debugResult;
+                if (error.HasErrors())
+                {
+                    debugResult = new DebugItemStaticDataParams("", expression, "");
+                }
+                else
+                {
+                    string expressiomToStringValue;
+                    try
+                    {
+                        expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));
+                    }
+                    catch (NullValueInVariableException)
+                    {
+                        expressiomToStringValue = "";
+                    }
+                    userModel = userModel.Replace(expression, expressiomToStringValue);
+                    debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
+                }
+
+                var itemResults = debugResult.GetDebugItemResult();
+
+                var allReadyAdded = new List<IDebugItemResult>();
+
+                itemResults.ForEach(a =>
+                {
+                    var found = result.SelectMany(r => r.FetchResultsList()).SingleOrDefault(r => r.Variable.Equals(a.Variable));
+                    if (found != null)
+                    {
+                        allReadyAdded.Add(a);
+                    }
+                });
+
+                allReadyAdded.ForEach(i => itemResults.Remove(i));
+
+                if (parent == null)
+                {
+                    result.Add(new DebugItem(itemResults));
+                }
+                else
+                {
+                    parent.AddRange(itemResults);
+                }
+            }
+        }
+
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

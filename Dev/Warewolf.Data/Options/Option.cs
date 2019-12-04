@@ -497,4 +497,60 @@ namespace Warewolf.Options
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
         }
     }
+
+    public class OptionConditionExpression : BindableBase, IOption
+    {
+        public string Name { get  ; set; }
+
+        public string Left { get; set; }
+        public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(enDecisionType)).ToArray();
+        
+        private INamedInt _selectedMatchType;
+        public INamedInt SelectedMatchType 
+        {
+            get => _selectedMatchType;
+            set
+            {
+                if (value != null && SetProperty(ref _selectedMatchType, value))
+                {
+                    MatchType = (enDecisionType)value.Value;
+                    RaisePropertyChanged(nameof(IsBetween));
+                    RaisePropertyChanged(nameof(IsSingleOperand));
+                }
+            }
+        }
+        public enDecisionType MatchType { get; set; }
+        public string Right { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
+        public bool IsBetween => MatchType.IsTripleOperand();
+        public bool IsSingleOperand => MatchType.IsSingleOperand();
+
+
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+
+        public object Clone()
+        {
+            return new OptionConditionExpression
+            {
+                Name = Name,
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionConditionExpression;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture);
+        }
+    }
 }

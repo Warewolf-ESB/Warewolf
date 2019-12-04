@@ -40,6 +40,10 @@ namespace Warewolf.UI
             {
                 return Convert(options, targetType, parameter, culture);
             }
+            if (value is object)
+            {
+                return Convert(OptionConvertor.Convert(value), targetType, parameter, culture);
+            }
 
             return Binding.DoNothing;
         }
