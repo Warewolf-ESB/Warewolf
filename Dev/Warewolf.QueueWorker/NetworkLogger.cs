@@ -26,7 +26,7 @@ namespace QueueWorker
         {
             _endpoint = endpoint;
             _serializer = serializer;
-            _ws = WebSocketWrapper.Create(endpoint);
+            _ws = new WebSocketFactory().New(); 
             _ws.Connect();
         }
 
@@ -34,7 +34,7 @@ namespace QueueWorker
         {
             if (!_ws.IsOpen())
             {
-                _ws = WebSocketWrapper.Create(_endpoint);
+                _ws = new WebSocketFactory().New();
                 _ws.Connect();
             }
 
