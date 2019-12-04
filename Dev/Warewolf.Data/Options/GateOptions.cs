@@ -153,7 +153,6 @@ namespace Warewolf.Data.Options
         }
     }
 
-    //[OptionDirection(Horizontal)]
     public class ConditionExpression : IOptionConvertable
     {
         public string Left { get; set; }

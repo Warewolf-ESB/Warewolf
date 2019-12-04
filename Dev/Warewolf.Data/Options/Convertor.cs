@@ -28,7 +28,6 @@ namespace Warewolf.Options
             }
             else
             {
-
                 var type = o.GetType();
                 var properties = type.GetProperties();
                 foreach (var prop in properties)
@@ -81,13 +80,6 @@ namespace Warewolf.Options
                     Value = (bool)prop.GetValue(instance)
                 };
             }
-            //else if (prop.PropertyType.IsAssignableFrom(typeof(Guid)))
-            //{
-            //    return new OptionConditionList
-            //    {
-            //        Name = prop.Name
-            //    };
-            //}
             else if (prop.PropertyType.IsEnum)
             {
                 var values = new List<KeyValuePair<string, int>>();

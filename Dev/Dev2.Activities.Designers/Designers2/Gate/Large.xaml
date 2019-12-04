@@ -54,23 +54,16 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <!--<ContentControl Grid.Column="0"
-                            Grid.ColumnSpan="2" 
-                            ContentTemplate="{StaticResource OptionConditionStyle}"
-                            DataContext="{Binding Path=OptionConditionList}"
-                            >
-                
-            </ContentControl>-->
 
             <ListBox x:Name="ConditionsListBox" 
                      Grid.Column="0"
-                            Grid.ColumnSpan="2" 
-                         ItemsSource="{Binding ConditionExpression, Converter={StaticResource OptionViewConverter}}" 
-                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
-                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
-                         Padding="0,3,3,3"></ListBox>
+                     Grid.ColumnSpan="2" 
+                     ItemsSource="{Binding ConditionExpression, Converter={StaticResource OptionViewConverter}}" 
+                     ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                     Padding="0,3,3,3"/>
 
-                <TextBlock Grid.Row="1" 
+            <TextBlock Grid.Row="1" 
                        Grid.Column="0"
                        Text="Gate Failure"/>
 
