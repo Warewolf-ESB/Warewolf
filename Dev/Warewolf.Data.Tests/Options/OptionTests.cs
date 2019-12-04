@@ -469,6 +469,68 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
+        [TestMethod]
+        //[TestCategory(nameof(OptionCondition))]
+        [Owner("Pieter Terblanche")]
+        public void OptionCondition_Default()
+        {
+            //var value = new KeyValuePair<string, (string, enDecisionType, string)>("Name", ("MatchVar", enDecisionType.IsEqual, "MatchVal"));
+            //var optionCondition = new OptionCondition();
+
+            //Assert.IsNull(optionCondition.Name);
+            //optionCondition.Name = "Name";
+            //Assert.AreEqual("Name", optionCondition.Name);
+
+            //Assert.IsNotNull(optionCondition.Value);
+            //Assert.AreEqual(new KeyValuePair<string, (string, enDecisionType, string)>(), optionCondition.Value);
+            //optionCondition.Value = value;
+            //Assert.AreEqual(value, optionCondition.Value);
+
+            //Assert.AreEqual(new KeyValuePair<string, (string, enDecisionType, string)>(), optionCondition.Default);
+
+            //Assert.AreEqual("OptionConditionHelpText", optionCondition.HelpText);
+            //Assert.AreEqual("OptionConditionTooltip", optionCondition.Tooltip);
+        }
+
+        [TestMethod]
+        //[TestCategory(nameof(OptionCondition))]
+        [Owner("Pieter Terblanche")]
+        public void OptionCondition_Clone()
+        {
+            //var value = new KeyValuePair<string, (string, enDecisionType, string)>();
+            //var optionCondition = new OptionCondition
+            //{
+            //    Name = "Condition",
+            //    Value = value
+            //};
+
+            //var cloneCondition = optionCondition.Clone() as OptionCondition;
+            //Assert.AreEqual(optionCondition.Name, cloneCondition.Name);
+            //Assert.AreEqual(optionCondition.Value, cloneCondition.Value);
+        }
+
+        [TestMethod]
+        //[TestCategory(nameof(OptionCondition))]
+        [Owner("Pieter Terblanche")]
+        public void OptionCondition_CompareTo()
+        {
+            //var value = new KeyValuePair<string, (string, enDecisionType, string)>();
+            //var optionCondition = new OptionCondition
+            //{
+            //    Name = "Condition",
+            //    Value = value
+            //};
+
+            //var expectedValue = optionCondition.CompareTo(null);
+            //Assert.AreEqual(-1, expectedValue);
+
+            //expectedValue = optionCondition.CompareTo(new object { });
+            //Assert.AreEqual(-1, expectedValue);
+
+            //expectedValue = optionCondition.CompareTo(optionCondition);
+            //Assert.AreEqual(0, expectedValue);
+        }
+
         enum MyEnum
         {
             Option1,

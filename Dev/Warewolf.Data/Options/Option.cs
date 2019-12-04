@@ -433,4 +433,188 @@ namespace Warewolf.Options
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
         }
     }
+
+    /*public class OptionCondition : BindableBase, IOptionCondition
+    {
+        public IOptionInt Index { get; set; }
+        public IOptionAutocomplete MatchVariable { get; set; }
+        public IOptionEnum DecisionType { get; set; }
+        public IOptionAutocomplete MatchValue { get; set; }
+        public IOptionAutocomplete From { get; set; }
+        public IOptionAutocomplete To { get; set; }
+
+        //                     #1    MatchVar enDecisionType  MatchVal
+        private KeyValuePair<string, (string, enDecisionType, string)> _value;
+        public KeyValuePair<string, (string, enDecisionType, string)> Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value);
+        }
+
+        public KeyValuePair<string, (string, enDecisionType, string)> Default { get; }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+
+        public object Clone()
+        {
+            return new OptionCondition
+            {
+                Name = Name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionCondition;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value.Equals(Value) ? 0 : -1);
+        }
+    }
+
+    public class OptionConditionList : BindableBase, IOptionConditionList
+    {
+        private IEnumerable<IOptionCondition> _conditionList;
+
+        public IEnumerable<IOptionCondition> ConditionList
+        { 
+            get => _conditionList; 
+            set => _conditionList = value; 
+        }
+
+        public IEnumerable<KeyValuePair<string, (string, enDecisionType, string)>> Values { get; set; }
+
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+
+        public object Clone()
+        {
+            return new OptionConditionList
+            {
+                Name = Name,
+                ConditionList = _conditionList
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionConditionList;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.ConditionList.Equals(ConditionList) ? 0 : -1);
+        }
+    }*/
+
+    public class OptionConditionExpression : BindableBase, IOption
+    {
+        public string Name { get  ; set; }
+
+        public string Left { get; set; }
+        public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(enDecisionType)).ToArray();
+        
+        private INamedInt _selectedMatchType;
+        public INamedInt SelectedMatchType 
+        {
+            get => _selectedMatchType;
+            set
+            {
+                if (value != null && SetProperty(ref _selectedMatchType, value))
+                {
+                    MatchType = (enDecisionType)value.Value;
+                    RaisePropertyChanged(nameof(IsBetween));
+                    RaisePropertyChanged(nameof(IsSingleOperand));
+                }
+            }
+        }
+        public enDecisionType MatchType { get; set; }
+        public string Right { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
+        public bool IsBetween => MatchType.IsTripleOperand();
+        public bool IsSingleOperand => MatchType.IsSingleOperand();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+
+        public object Clone()
+        {
+            return new OptionConditionExpression
+            {
+                Name = Name,
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionConditionExpression;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture);
+        }
+    }
 }

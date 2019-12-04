@@ -75,6 +75,53 @@ namespace Dev2.Activities.Designers2.Gate
             IsExpanded = false;
             Enabled = true;
 
+
+
+            var decisionOptions = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
+            var values = new List<KeyValuePair<string, int>>();
+            int i = 0;
+            foreach (var decisionOption in decisionOptions)
+            {
+                var opt = new KeyValuePair<string, int>(decisionOption, i);
+                values.Add(opt);
+                i++;
+            }
+
+            var matchVar = new OptionAutocomplete { Suggestions = new string[] { "[[a]]" }, Name = "MatchVariable" };
+            var decType = new OptionEnum { Values = values, Name = "DecisionType" };
+            var matchVal = new OptionAutocomplete { Suggestions = new string[] { "[[a]]" }, Name = "MatchValue" };
+
+            //var optionCondition = new OptionCondition
+            //{
+            //    Index = new OptionInt { Name = "Index", Value = 0 },
+            //    MatchVariable = matchVar,
+            //    DecisionType = decType,
+            //    MatchValue = matchVal,
+            //    From = new OptionAutocomplete { Suggestions = new string[] { "[[a]]" }, Name = "From" },
+            //    To = new OptionAutocomplete { Suggestions = new string[] { "[[a]]" }, Name = "To" },
+
+
+            //    Name = "OptionCondition",
+            //    Value = new KeyValuePair<string, (string, Warewolf.Options.enDecisionType, string)>("1", ("[[a]]", Warewolf.Options.enDecisionType.IsBetween, "10"))
+            //};
+
+            ConditionExpression = new ConditionExpression();
+            //{
+            //    Name = "Allow through the gate if",
+            //    ConditionList = new List<IOptionCondition> { optionCondition },
+            //    Values = new List<KeyValuePair<string, (string, Warewolf.Options.enDecisionType, string)>> { optionCondition.Value }
+            //};
+
+
+            DeleteConditionCommand = new DelegateCommand(o =>
+            {
+
+            });
+
+
+
+
+
             Collection = new ObservableCollection<IDev2TOFn>();
             Collection.CollectionChanged += CollectionCollectionChanged;
 
@@ -89,6 +136,8 @@ namespace Dev2.Activities.Designers2.Gate
                 DeleteRow(x as DecisionTO);
             });
         }
+
+        public ConditionExpression ConditionExpression { get; set; }
 
         private void PopulateFields()
         {
@@ -153,8 +202,11 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
+        public ICommand DeleteConditionCommand { get; set; }
 
+
+
+        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
         void ConfigureDecisionExpression(ModelItem modelItem)
         {
             var condition = modelItem;
@@ -183,7 +235,6 @@ namespace Dev2.Activities.Designers2.Gate
             }
             Tos = ToObservableCollection();
         }
-
         ObservableCollection<IDev2TOFn> ToObservableCollection()
         {
             if (!string.IsNullOrWhiteSpace(ExpressionText))
@@ -198,9 +249,8 @@ namespace Dev2.Activities.Designers2.Gate
             }
             return new ObservableCollection<IDev2TOFn> { new DecisionTO() };
         }
-
-        public string ExpressionText 
-        { 
+        public string ExpressionText
+        {
             get => expressionText;
             set
             {
@@ -245,12 +295,10 @@ namespace Dev2.Activities.Designers2.Gate
             }
             return dev2DecisionStack;
         }
-
         static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAll();
         public ObservableCollection<string> WhereOptions { get; private set; }
         public ICommand SearchTypeUpdatedCommand { get; private set; }
         public ICommand DeleteCommand { get; set; }
-
         void CollectionCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
@@ -300,6 +348,9 @@ namespace Dev2.Activities.Designers2.Gate
                 Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
             }
         }
+
+
+
 
         public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureAction>.GetDescriptionsAsList(typeof(GateFailureAction)).ToList();
         public string SelectedGateFailure
@@ -365,7 +416,6 @@ namespace Dev2.Activities.Designers2.Gate
                 OnPropertyChanged(nameof(Enabled));
             }
         }
-
 
         public OptionsWithNotifier Options
         {
