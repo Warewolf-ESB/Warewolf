@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using ServiceStack.Redis;
 using Warewolf.Interfaces;
 
@@ -16,9 +17,12 @@ namespace Warewolf.Driver.Redis
 {
     public class RedisConnection : IRedisConnection
     {
+        private static readonly ConcurrentDictionary<(string, int, string), IRedisClient> RedisConnectionPool = new ConcurrentDictionary<(string, int, string), IRedisClient>();
+
         public RedisConnection(string hostName, int port, string password)
         {
-            IRedisClient client = !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port);
+            IRedisClient client = RedisConnectionPool.GetOrAdd((hostName, port, password), !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port));
+
             Cache = new RedisCache(client);
         }
 
