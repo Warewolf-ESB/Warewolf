@@ -22,14 +22,22 @@ namespace Warewolf.Options
         {
             var result = new List<IOption>();
 
-            var type = o.GetType();
-            var properties = type.GetProperties();
-            foreach (var prop in properties)
+            if (o is IOptionConvertable convertable)
             {
-                result.Add(PropertyToOption(o, prop));
+                return convertable.ToOptions();
             }
+            else
+            {
 
-            return result.ToArray();
+                var type = o.GetType();
+                var properties = type.GetProperties();
+                foreach (var prop in properties)
+                {
+                    result.Add(PropertyToOption(o, prop));
+                }
+
+                return result.ToArray();
+            }
         }
 
         private static IOption PropertyToOption(object instance, PropertyInfo prop)
@@ -73,6 +81,13 @@ namespace Warewolf.Options
                     Value = (bool)prop.GetValue(instance)
                 };
             }
+            //else if (prop.PropertyType.IsAssignableFrom(typeof(Guid)))
+            //{
+            //    return new OptionConditionList
+            //    {
+            //        Name = prop.Name
+            //    };
+            //}
             else if (prop.PropertyType.IsEnum)
             {
                 var values = new List<KeyValuePair<string, int>>();
