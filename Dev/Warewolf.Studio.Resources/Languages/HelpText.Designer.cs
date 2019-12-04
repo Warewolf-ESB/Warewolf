@@ -2377,6 +2377,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set the retry count. .
+        /// </summary>
+        public static string OptionGateCountHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateCountHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the delay increment between every retry attempt.
+        /// </summary>
+        public static string OptionGateIncrementHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateIncrementHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set maximum retries. The tool will keep retrying until the maximum retry count is hit.
+        /// </summary>
+        public static string OptionGateMaxRetriesHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateMaxRetriesHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the resume workflow or API that will be executed on retry.
+        /// </summary>
+        public static string OptionGateResumeEndpointHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateResumeEndpointHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select whether the Gate Tool will resume on error.
+        /// </summary>
+        public static string OptionGateResumeHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateResumeHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry strategy that will be actioned &lt;br/&gt;&lt;br/&gt;&lt;b&gt;NoBackoff: &lt;/b&gt;On Error Retry Immediately&lt;br/&gt;&lt;br/&gt;&lt;b&gt;LinearBackoff:&lt;/b&gt; Delay increases along with every attempt on Linear curve.
+        /// </summary>
+        public static string OptionGateStrategyHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateStrategyHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the Timeout of each retry.
+        /// </summary>
+        public static string OptionGateTimeoutHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateTimeoutHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OptionIntHelpText.
         /// </summary>
         public static string OptionIntHelpText {

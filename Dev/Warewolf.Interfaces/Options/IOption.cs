@@ -20,8 +20,8 @@ namespace Warewolf.Options
 
     public interface IOptionHelp
     {
-        string HelpText { get; }
-        string Tooltip { get; }
+        string HelpText { get; set; }
+        string Tooltip { get; set; }
     }
 
     public interface IOption : ICloneable, IComparable, IOptionHelp

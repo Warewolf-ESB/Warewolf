@@ -719,7 +719,7 @@ Returns the output of the script, if any.</value>
     <value>Map the entire message</value>
   </data>
   <data name="QueueNameTooltip" xml:space="preserve">
-    <value>Provide a name of the Queue</value>
+    <value>Save the queue as</value>
   </data>
   <data name="DeadLetterQueueTooltip" xml:space="preserve">
     <value>The dead-letter queue name</value>
@@ -942,12 +942,10 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Select constructor to execute.</value>
   </data>
   <data name="GateFailuresToolTip" xml:space="preserve">
-     <value>If the gate conditions fail, this is the action will be executed. 
-    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
-    	&lt;br/&gt;StopOnError: will stop the execution.</value>
+    <value>If the gate conditions fail, this is the action will be executed.</value>
   </data>
   <data name="ExistingGatesToolTip" xml:space="preserve">
-      <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
+    <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PasswordToolTip" xml:space="preserve">
     <value>Enter the corresponding password</value>
@@ -978,9 +976,6 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   </data>
   <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
     <value>Create a new rabbitmq source</value>
-  </data>
-  <data name="QueueNameTooltip" xml:space="preserve">
-    <value>Save the queue as</value>
   </data>
   <data name="QueueSourceTooltip" xml:space="preserve">
     <value>Select the source message queue</value>
@@ -2394,5 +2389,26 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="OptionWorkflowTooltip" xml:space="preserve">
     <value>OptionWorkflowTooltip</value>
+  </data>
+  <data name="OptionGateCountToolTip" xml:space="preserve">
+    <value>Set the retry count.</value>
+  </data>
+  <data name="OptionGateStrategyToolTip" xml:space="preserve">
+    <value>Select the retry strategy that will be actioned</value>
+  </data>
+  <data name="OptionGateResumeToolTip" xml:space="preserve">
+    <value>Select whether the Gate Tool will resume on error</value>
+  </data>
+  <data name="OptionGateMaxRetriesToolTip" xml:space="preserve">
+    <value>Set the maximum retry count. The tool will keep retrying until the maximum retry count is hit</value>
+  </data>
+  <data name="OptionGateTimeoutToolTip" xml:space="preserve">
+    <value>Set the Timeout of each retry</value>
+  </data>
+  <data name="OptionGateResumeEndpointToolTip" xml:space="preserve">
+    <value>Select the resume workflow or API that will be executed on retry</value>
+  </data>
+  <data name="OptionGateIncrementToolTip" xml:space="preserve">
+    <value>Set the delay increment between every retry attempt</value>
   </data>
 </root>

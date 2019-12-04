@@ -24,10 +24,19 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionAutocompleteHelpText;
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionAutocompleteHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionAutocompleteTooltip;
-
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionAutocompleteTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
         private string _value;
 
         public string Value
@@ -74,9 +83,19 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionIntHelpText;
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionIntHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionIntTooltip;
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionIntTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
 
         private int _value;
 
@@ -121,12 +140,20 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionBoolHelpText;
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionBoolHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionBoolTooltip;
-
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionBoolTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
         private bool _value;
-
         public bool Value
         {
             get => _value;
@@ -167,11 +194,19 @@ namespace Warewolf.Options
             get => _name;
             set => SetProperty(ref _name, value);
         }
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionEnumHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionEnumHelpText;
-
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionEnumTooltip;
-
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionEnumTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
         private int _value;
 
         public IEnumerable<KeyValuePair<string, int>> Values { get; set; }
@@ -257,10 +292,19 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionEnumGenHelpText;
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionEnumGenHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionEnumGenTooltip;
-
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionEnumGenTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
         private KeyValuePair<string, int> _value;
 
         public IEnumerable<KeyValuePair<string, int>> Values { get; set; }
@@ -306,9 +350,20 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
 
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
+
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
 
         public Dictionary<string, IEnumerable<IOption>> Options { get; } = new Dictionary<string, IEnumerable<IOption>>();
 
@@ -321,7 +376,7 @@ namespace Warewolf.Options
         }
 
         public IEnumerable<IOption> SelectedOptions
-        { 
+        {
             get
             {
                 if (string.IsNullOrEmpty(Value))
@@ -380,17 +435,26 @@ namespace Warewolf.Options
             }
         }
 
-        public string HelpText => Studio.Resources.Languages.HelpText.OptionWorkflowHelpText;
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionWorkflowHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
 
-        public string Tooltip => Studio.Resources.Languages.Tooltips.OptionWorkflowTooltip;
-
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionWorkflowTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
         public string Name { get; set; }
 
         Guid IOptionBasic<Guid>.Default => Guid.Empty;
 
         private NamedGuid _workflow;
 
-        public NamedGuid Workflow 
+        public NamedGuid Workflow
         {
             get => _workflow;
             set
