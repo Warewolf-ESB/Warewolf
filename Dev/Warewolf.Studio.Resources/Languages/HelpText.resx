@@ -1186,10 +1186,12 @@
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
   </data>
   <data name="GateFailuresHelp" xml:space="preserve">
-    <value>GateFailuresHelp</value>
+     <value>If the gate conditions fail, this is the action will be executed. 
+    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
+    	&lt;br/&gt;StopOnError: will stop the execution.</value>
   </data>
   <data name="ExistingGatesHelp" xml:space="preserve">
-    <value>ExistingGatesHelp</value>
+      <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)	This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5	Preview (scalar field - including indexed recordsets and ())	This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
@@ -2054,6 +2056,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_LoopConstruct_For_Each" xml:space="preserve">
     <value>Use the For Each tool to run something a few times. Very handy for processing recordset or specific records.</value>
+  </data>
+  <data name="Tool_Flow_Gate" xml:space="preserve">
+    <value>Use the Gate tool when you need to stop, retry, rollback to previous gates on error.</value>
   </data>
   <data name="Tool_Flow_Switch" xml:space="preserve">
     <value>Use the Switch tool when you need to take a different action depending on the value of a variable. Just drag another flow arm to add another possibility.</value>
