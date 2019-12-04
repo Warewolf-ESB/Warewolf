@@ -1432,7 +1432,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExistingGatesToolTip.
+        ///   Looks up a localized string similar to If the gate conditions fail and &quot;Retry&quot; has been selected, then select an existing gate to roll back to..
         /// </summary>
         public static string ExistingGatesToolTip {
             get {
@@ -1690,7 +1690,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GateFailuresToolTip.
+        ///   Looks up a localized string similar to If the gate conditions fail, this is the action will be executed. 
+        ///    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
+        ///    	&lt;br/&gt;StopOnError: will stop the execution..
         /// </summary>
         public static string GateFailuresToolTip {
             get {
@@ -5526,6 +5528,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Decision {
             get {
                 return ResourceManager.GetString("Tool_Flow_Decision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: gate retry stop end.
+        /// </summary>
+        public static string Tool_Flow_Gate {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Gate", resourceCulture);
             }
         }
         
