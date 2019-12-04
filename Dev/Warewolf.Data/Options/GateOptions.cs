@@ -152,4 +152,53 @@ namespace Warewolf.Data.Options
             yield return false;
         }
     }
+
+    public class ConditionExpression : IOptionConvertable
+    {
+        public string Left { get; set; }
+
+        [DataValue(nameof(Condition.MatchType))]
+        [MultiDataProvider(typeof(ConditionMatch), typeof(ConditionBetween))]
+        public Condition Cond { get; set; }
+
+        public IOption[] ToOptions()
+        {
+            var option = new OptionConditionExpression
+            {
+                Left = Left
+            };
+            Cond?.SetOptions(option);
+            return new[] {
+                option
+            };
+        }
+    }
+
+    public abstract class Condition
+    {
+        public enDecisionType MatchType { get; set; }
+        public abstract void SetOptions(OptionConditionExpression option);
+    }
+    public class ConditionMatch : Condition
+    {
+        public string Right { get; set; }
+        public override void SetOptions(OptionConditionExpression option)
+        {
+            option.MatchType = MatchType;
+            option.Right = Right;
+        }
+    }
+
+    public class ConditionBetween : Condition
+    {
+        public string From { get; set; }
+        public string To { get; set; }
+        public override void SetOptions(OptionConditionExpression option)
+        {
+            option.MatchType = MatchType;
+            option.From = From;
+            option.To= To;
+        }
+    }
+
 }

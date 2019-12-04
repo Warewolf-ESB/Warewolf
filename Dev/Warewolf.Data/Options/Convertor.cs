@@ -22,14 +22,21 @@ namespace Warewolf.Options
         {
             var result = new List<IOption>();
 
-            var type = o.GetType();
-            var properties = type.GetProperties();
-            foreach (var prop in properties)
+            if (o is IOptionConvertable convertable)
             {
-                result.Add(PropertyToOption(o, prop));
+                return convertable.ToOptions();
             }
+            else
+            {
+                var type = o.GetType();
+                var properties = type.GetProperties();
+                foreach (var prop in properties)
+                {
+                    result.Add(PropertyToOption(o, prop));
+                }
 
-            return result.ToArray();
+                return result.ToArray();
+            }
         }
 
         private static IOption PropertyToOption(object instance, PropertyInfo prop)
