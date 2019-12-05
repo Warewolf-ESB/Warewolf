@@ -21,7 +21,7 @@ namespace Warewolf.UI
     public class OptionsWithNotifier
     {
         public event OptionChangedHandler OptionChanged;
-        public IEnumerable<IOption> Options { get; set; }
+        public IList<IOption> Options { get; set; }
         public void Notify()
         {
             OptionChanged?.Invoke();
