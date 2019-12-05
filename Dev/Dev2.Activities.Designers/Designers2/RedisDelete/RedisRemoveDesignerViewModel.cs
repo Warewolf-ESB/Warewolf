@@ -110,6 +110,26 @@ namespace Dev2.Activities.Designers2.RedisRemove
             ModelItem.SetProperty("Key", Key);
         }
 
+        public string Result
+        {
+            get => (string)GetValue(ResultProperty);
+            set => SetValue(ResultProperty, value);
+        }
+
+        public static readonly DependencyProperty ResultProperty =
+            DependencyProperty.Register("Result", typeof(string), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(null, OnResultChanged));
+
+        private static void OnResultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (RedisRemoveDesignerViewModel)d;
+            viewModel.OnResultChanged();
+        }
+
+        protected virtual void OnResultChanged()
+        {
+            ModelItem.SetProperty("Result", Result);
+        }
+
         private void EditRedisServerSource()
         {
             _shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
