@@ -58,8 +58,12 @@ namespace Warewolf.Data.Options
         {
             RetryAlgorithm = RetryAlgorithm.NoBackoff;
         }
-
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
         public int TimeOut { get; set; } = 60000;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
         public int MaxRetries { get; set; } = 3;
         public override IEnumerable<bool> Create()
         {
