@@ -3377,6 +3377,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set if the queue is durable.
+        /// </summary>
+        public static string OptionRabbitMqDurableToolTip {
+            get {
+                return ResourceManager.GetString("OptionRabbitMqDurableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OptionWorkflowTooltip.
         /// </summary>
         public static string OptionWorkflowTooltip {

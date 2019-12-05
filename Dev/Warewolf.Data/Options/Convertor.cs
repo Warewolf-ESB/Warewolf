@@ -41,6 +41,8 @@ namespace Warewolf.Options
 
         private static IOption PropertyToOption(object instance, PropertyInfo prop)
         {
+            var helptextAttr = prop.GetCustomAttributes().Where(o => o is HelpTextAttribute).Cast<HelpTextAttribute>().FirstOrDefault();
+            var tooltipAttr = prop.GetCustomAttributes().Where(o => o is TooltipAttribute).Cast<TooltipAttribute>().FirstOrDefault();
             if (prop.PropertyType.IsAssignableFrom(typeof(string)))
             {
                 var attr = prop.GetCustomAttributes().Where(o => o is DataProviderAttribute).Cast<DataProviderAttribute>().FirstOrDefault();
@@ -53,57 +55,68 @@ namespace Warewolf.Options
                 {
                     result.Suggestions = ((IOptionDataList)attr.Get()).Options;
                 }
+                if (helptextAttr != null)
+                {
+                    result.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    result.Tooltip = tooltipAttr.Get();
+                }
                 return result;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
-            {
-                var helpText = Studio.Resources.Languages.HelpText.OptionIntHelpText;
-                var Tooltip = Studio.Resources.Languages.Tooltips.OptionIntTooltip;
-                switch (prop.Name)
-                {
-                    case "Count":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateCountHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateCountToolTip;
-                        break;
-                    case "TimeOut":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip;
-                        break;
-                    case "MaxRetries":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip;
-                        break;
-                    case "Increment":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip;
-                        break;
-                }
-                return new OptionInt
+            {              
+                var optionInt = new OptionInt
                 {
                     Name = prop.Name,
-                    Value = (int)prop.GetValue(instance),
-                    HelpText = helpText,
-                    Tooltip = Tooltip
+                    Value = (int)prop.GetValue(instance)                    
                 };
+                if (helptextAttr != null)
+                {
+                    optionInt.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionInt.Tooltip = tooltipAttr.Get();
+                }
+                return optionInt;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(Guid)))
             {
-                return new OptionWorkflow
+               var optionWorkflow = new OptionWorkflow
                 {
                     Name = prop.Name,
                     Value = (Guid)prop.GetValue(instance),
                     Workflow = new NamedGuid { Name = "", Value = (Guid)prop.GetValue(instance) },
-                    HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText,
-                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip
+                   
                 };
+                if (helptextAttr != null)
+                {
+                    optionWorkflow.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionWorkflow.Tooltip = tooltipAttr.Get();
+                }
+                return optionWorkflow;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(bool)))
             {
-                return new OptionBool
+                var optionBool = new OptionBool
                 {
                     Name = prop.Name,
                     Value = (bool)prop.GetValue(instance),
                 };
+                if (helptextAttr != null)
+                {
+                    optionBool.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionBool.Tooltip = tooltipAttr.Get();
+                }
+                return optionBool;
             }
             else if (prop.PropertyType.IsEnum)
             {
@@ -119,10 +132,15 @@ namespace Warewolf.Options
                     Values = values,
                     Name = prop.Name,
                     Value = (int)prop.GetValue(instance),
-                    HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeHelpText,
-                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip
                 };
-
+                if (helptextAttr != null)
+                {
+                    result.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    result.Tooltip = tooltipAttr.Get();
+                }
                 return result;
             }
             else
@@ -157,10 +175,15 @@ namespace Warewolf.Options
                 {
                     Name = prop.Name,
                     Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
-                    HelpText = Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText,
-                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip
                 };
-
+                if (helptextAttr != null)
+                {
+                    returnVal.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    returnVal.Tooltip = tooltipAttr.Get();
+                }
                 if (dataProviderAttr != null)
                 {
                     var optionTypes = dataProviderAttr.Get();
@@ -186,7 +209,7 @@ namespace Warewolf.Options
 
             if (optionsType is Data.Options.GateOptions)
             {
-                foreach (var option in options)
+                foreach (var option in options) 
                 {
                     if (option is IOptionInt optionInt)
                     {
