@@ -213,31 +213,11 @@ namespace Warewolf.Options
                 {
                     if (option is IOptionInt optionInt)
                     {
-                        gateOptions.Count = optionInt.Value;
-                        switch (optionInt.Name)
-                        {
-                            case "Count":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateCountHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateCountToolTip;
-                                break;
-                            case "TimeOut":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip;
-                                break;
-                            case "MaxRetries":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip;
-                                break;
-                            case "Increment":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip;
-                                break;
-                        }
+                        gateOptions.Count = optionInt.Value;                       
                     }
                     if (option is IOptionEnum optionEnum)
                     {
-                        optionEnum.HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeHelpText;
-                        optionEnum.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip;
+                        
                         switch (optionEnum.Value)
                         {
                             case 1:
@@ -250,15 +230,11 @@ namespace Warewolf.Options
                         }
                     }
                     if (option is IOptionWorkflow optionWorkflow)
-                    {
-                        optionWorkflow.HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText;
-                        optionWorkflow.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip;
+                    {                       
                         gateOptions.ResumeEndpoint = optionWorkflow.Value;
                     }
                     if (option is IOptionComboBox optionCombobox)
-                    {
-                        optionCombobox.HelpText = Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText;
-                        optionCombobox.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip;
+                    {                     
                         switch (optionCombobox.Value)
                         {
                             case "NoBackoff":
