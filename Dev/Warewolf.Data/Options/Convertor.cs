@@ -41,6 +41,8 @@ namespace Warewolf.Options
 
         private static IOption PropertyToOption(object instance, PropertyInfo prop)
         {
+            var helptextAttr = prop.GetCustomAttributes().Where(o => o is HelpTextAttribute).Cast<HelpTextAttribute>().FirstOrDefault();
+            var tooltipAttr = prop.GetCustomAttributes().Where(o => o is TooltipAttribute).Cast<TooltipAttribute>().FirstOrDefault();
             if (prop.PropertyType.IsAssignableFrom(typeof(string)))
             {
                 var attr = prop.GetCustomAttributes().Where(o => o is DataProviderAttribute).Cast<DataProviderAttribute>().FirstOrDefault();
@@ -53,57 +55,68 @@ namespace Warewolf.Options
                 {
                     result.Suggestions = ((IOptionDataList)attr.Get()).Options;
                 }
+                if (helptextAttr != null)
+                {
+                    result.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    result.Tooltip = tooltipAttr.Get();
+                }
                 return result;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
-            {
-                var helpText = Studio.Resources.Languages.HelpText.OptionIntHelpText;
-                var Tooltip = Studio.Resources.Languages.Tooltips.OptionIntTooltip;
-                switch (prop.Name)
-                {
-                    case "Count":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateCountHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateCountToolTip;
-                        break;
-                    case "TimeOut":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip;
-                        break;
-                    case "MaxRetries":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip;
-                        break;
-                    case "Increment":
-                        helpText = Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText;
-                        Tooltip = Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip;
-                        break;
-                }
-                return new OptionInt
+            {              
+                var optionInt = new OptionInt
                 {
                     Name = prop.Name,
-                    Value = (int)prop.GetValue(instance),
-                    HelpText = helpText,
-                    Tooltip = Tooltip
+                    Value = (int)prop.GetValue(instance)                    
                 };
+                if (helptextAttr != null)
+                {
+                    optionInt.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionInt.Tooltip = tooltipAttr.Get();
+                }
+                return optionInt;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(Guid)))
             {
-                return new OptionWorkflow
+               var optionWorkflow = new OptionWorkflow
                 {
                     Name = prop.Name,
                     Value = (Guid)prop.GetValue(instance),
                     Workflow = new NamedGuid { Name = "", Value = (Guid)prop.GetValue(instance) },
-                    HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText,
-                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip
+                   
                 };
+                if (helptextAttr != null)
+                {
+                    optionWorkflow.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionWorkflow.Tooltip = tooltipAttr.Get();
+                }
+                return optionWorkflow;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(bool)))
             {
-                return new OptionBool
+                var optionBool = new OptionBool
                 {
                     Name = prop.Name,
                     Value = (bool)prop.GetValue(instance),
                 };
+                if (helptextAttr != null)
+                {
+                    optionBool.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionBool.Tooltip = tooltipAttr.Get();
+                }
+                return optionBool;
             }
             else if (prop.PropertyType.IsEnum)
             {
@@ -119,10 +132,15 @@ namespace Warewolf.Options
                     Values = values,
                     Name = prop.Name,
                     Value = (int)prop.GetValue(instance),
-                    HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeHelpText,
-                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip
                 };
-
+                if (helptextAttr != null)
+                {
+                    result.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    result.Tooltip = tooltipAttr.Get();
+                }
                 return result;
             }
             else
@@ -157,10 +175,15 @@ namespace Warewolf.Options
                 {
                     Name = prop.Name,
                     Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
-                    HelpText = Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText,
-                    Tooltip = Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip
                 };
-
+                if (helptextAttr != null)
+                {
+                    returnVal.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    returnVal.Tooltip = tooltipAttr.Get();
+                }
                 if (dataProviderAttr != null)
                 {
                     var optionTypes = dataProviderAttr.Get();
@@ -175,104 +198,67 @@ namespace Warewolf.Options
             throw UnhandledException;
         }
 
+        public static readonly System.Exception FailedMappingException = new System.Exception("option to property conversion failed");
         public static readonly System.Exception UnhandledException = new System.Exception("unhandled property type for option conversion");
         public static readonly System.Exception NullException = new System.NullReferenceException("property value null for option conversion");
 
         public static object Convert(Type type, IEnumerable<IOption> options)
         {
-            var optionsType = Activator.CreateInstance(type);
-
-            var gateOptions = new Data.Options.GateOptions();
-
-            if (optionsType is Data.Options.GateOptions)
+            var instance = Activator.CreateInstance(type);
+            if (instance is IOptionConvertable convertable)
+            {
+                convertable.FromOption(options.First());
+            }
+            else
             {
                 foreach (var option in options)
                 {
-                    if (option is IOptionInt optionInt)
-                    {
-                        gateOptions.Count = optionInt.Value;
-                        switch (optionInt.Name)
-                        {
-                            case "Count":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateCountHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateCountToolTip;
-                                break;
-                            case "TimeOut":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip;
-                                break;
-                            case "MaxRetries":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip;
-                                break;
-                            case "Increment":
-                                optionInt.HelpText = Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText;
-                                optionInt.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip;
-                                break;
-                        }
-                    }
-                    if (option is IOptionEnum optionEnum)
-                    {
-                        optionEnum.HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeHelpText;
-                        optionEnum.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip;
-                        switch (optionEnum.Value)
-                        {
-                            case 1:
-                                gateOptions.Resume = Data.Options.YesNo.Yes;
-                                break;
-                            case 0:
-                            default:
-                                gateOptions.Resume = Data.Options.YesNo.No;
-                                break;
-                        }
-                    }
-                    if (option is IOptionWorkflow optionWorkflow)
-                    {
-                        optionWorkflow.HelpText = Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText;
-                        optionWorkflow.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip;
-                        gateOptions.ResumeEndpoint = optionWorkflow.Value;
-                    }
-                    if (option is IOptionComboBox optionCombobox)
-                    {
-                        optionCombobox.HelpText = Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText;
-                        optionCombobox.Tooltip = Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip;
-                        switch (optionCombobox.Value)
-                        {
-                            case "NoBackoff":
-                                gateOptions.Strategy = new Data.Options.NoBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.NoBackoff,
-                                };
-                                break;
-                            case "ConstantBackoff":
-                                gateOptions.Strategy = new Data.Options.ConstantBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.ConstantBackoff
-                                };
-                                break;
-                            case "LinearBackoff":
-                                gateOptions.Strategy = new Data.Options.LinearBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.LinearBackoff
-                                };
-                                break;
-                            case "FibonacciBackoff":
-                                gateOptions.Strategy = new Data.Options.FibonacciBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.FibonacciBackoff
-                                };
-                                break;
-                            case "QuadraticBackoff":
-                                gateOptions.Strategy = new Data.Options.QuadraticBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.QuadraticBackoff
-                                };
-                                break;
-                        }
-                    }
+                    var prop = type.GetProperty(option.Name);
+
+                    SetProperty(instance, prop, option);
                 }
             }
-            return gateOptions;
+
+            return instance;
+        }
+        private static void SetProperty(object instance, PropertyInfo prop, IOption option)
+        {
+            if (prop.PropertyType.IsAssignableFrom(typeof(string)))
+            {
+                if (option is IOptionAutocomplete optionAutocomplete)
+                {
+                    prop.SetValue(instance, optionAutocomplete.Value);
+                }
+                else
+                {
+                    throw FailedMappingException;
+                }
+            }
+            else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
+            {
+                if (option is IOptionInt optionInt)
+                {
+                    prop.SetValue(instance, optionInt.Value);
+                }
+                else
+                {
+                    throw FailedMappingException;
+                }
+            }
+            else if (option is OptionCombobox optionComboBox)
+            {
+                var value = Convert(prop.PropertyType, optionComboBox.SelectedOptions);
+                prop.SetValue(instance, value);
+            }
+            else if (option is OptionEnum optionEnum)
+            {
+                prop.SetValue(instance, optionEnum.Value);
+            }
+            else
+            {
+                // unhandled
+
+            }
         }
     }
 }

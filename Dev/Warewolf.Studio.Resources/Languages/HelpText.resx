@@ -2350,4 +2350,7 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="OptionGateResumeEndpointHelpText" xml:space="preserve">
     <value>Select the resume workflow or API that will be executed on retry</value>
   </data>
+  <data name="OptionRabbitMqDurableHelpText" xml:space="preserve">
+    <value>Set if the queue is durable</value>
+  </data>
 </root>

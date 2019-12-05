@@ -57,6 +57,35 @@ namespace Warewolf.Options
             return _valueFieldName;
         }
     }
+    public class HelpTextAttribute : Attribute
+    {
+        private string _helpTextValue;
 
+        public HelpTextAttribute(string v)
+        {
+            var prop = typeof(Studio.Resources.Languages.HelpText).GetProperty(v);
+            this._helpTextValue = prop.GetValue(null).ToString();
+        }
+
+        internal string Get()
+        {
+            return _helpTextValue;
+        }
+    }
+    public class TooltipAttribute : Attribute
+    {
+        private string _tooltipValue;
+
+        public TooltipAttribute(string v)
+        {
+            var prop = typeof(Studio.Resources.Languages.Tooltips).GetProperty(v);
+            this._tooltipValue = prop.GetValue(null).ToString();
+        }
+
+        internal string Get()
+        {
+            return _tooltipValue;
+        }
+    }
 
 }
