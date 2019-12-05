@@ -2411,4 +2411,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="OptionGateIncrementToolTip" xml:space="preserve">
     <value>Set the delay increment between every retry attempt</value>
   </data>
+  <data name="OptionRabbitMqDurableToolTip" xml:space="preserve">
+    <value>Set if the queue is durable</value>
+  </data>
 </root>
