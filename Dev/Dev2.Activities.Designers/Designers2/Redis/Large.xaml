@@ -14,7 +14,6 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                MinWidth="320"
                                MinHeight="240"
@@ -145,12 +144,13 @@
                 </Grid.ColumnDefinitions>
                 
                 <TextBlock Grid.Column="0" Text="Time To Live" />
-                <TextBox Grid.Column="1"
+                <ui:IntellisenseTextBox Grid.Column="1"
                      Grid.Row="0"
                      AcceptsReturn="False" 
-                     customControls:WatermarkTextBox.Watermark="seconds"
+                     DefaultText ="seconds"
                      MinWidth="50"
                      MaxWidth="50"
+                     Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Path=TTL, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static sys:String.Empty}}" 
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
                      ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
@@ -161,7 +161,7 @@
                                          SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                     </i:Interaction.Behaviors>
-                </TextBox>
+                </ui:IntellisenseTextBox>
                 
             </Grid>
         </Grid>
