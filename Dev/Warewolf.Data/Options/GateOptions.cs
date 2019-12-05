@@ -20,12 +20,22 @@ namespace Warewolf.Data.Options
     {
         public GateOptions()
         { }
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
         public YesNo Resume { get; set; } = YesNo.No;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip))]
         public Guid ResumeEndpoint { get; set; } = Guid.Empty;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateCountHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateCountToolTip))]
         public int Count { get; set; } = 2;
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
         [MultiDataProvider(typeof(NoBackoff), typeof(ConstantBackoff), typeof(LinearBackoff), typeof(FibonacciBackoff), typeof(QuadraticBackoff))]
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip))]
         public RetryAlgorithmBase Strategy { get; set; } = new NoBackoff();
     }
 
@@ -69,10 +79,18 @@ namespace Warewolf.Data.Options
             RetryAlgorithm = RetryAlgorithm.ConstantBackoff;
         }
 
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
         public int TimeOut { get; set; } = 60000;
 
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip))]
         public int Increment { get; set; } = 100;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
         public int MaxRetries { get; set; } = 2;
+
         public override IEnumerable<bool> Create()
         {
             for (var i = 0; i < MaxRetries; i++)
@@ -91,10 +109,16 @@ namespace Warewolf.Data.Options
         {
             RetryAlgorithm = RetryAlgorithm.LinearBackoff;
         }
-
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
         public int TimeOut { get; set; } = 60000;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip))]
         public int Increment { get; set; } = 50;
 
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
         public int MaxRetries { get; set; } = 2;
 
         public override IEnumerable<bool> Create()
@@ -116,7 +140,12 @@ namespace Warewolf.Data.Options
             RetryAlgorithm = RetryAlgorithm.FibonacciBackoff;
         }
 
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
         public int TimeOut { get; set; } = 60000;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
         public int MaxRetries { get; set; } = 2;
         public override IEnumerable<bool> Create()
         {
@@ -138,7 +167,12 @@ namespace Warewolf.Data.Options
             RetryAlgorithm = RetryAlgorithm.QuadraticBackoff;
         }
 
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
         public int TimeOut { get; set; } = 60000;
+
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
         public int MaxRetries { get; set; } = 2;
         public override IEnumerable<bool> Create()
         {
