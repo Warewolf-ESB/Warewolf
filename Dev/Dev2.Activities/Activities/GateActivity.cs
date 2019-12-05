@@ -63,6 +63,7 @@ namespace Dev2.Activities
         public string GateRetryStrategy { get; set; }
 
         public Dev2DecisionStack Conditions { get; set; }
+        public ConditionExpression ConditionExpression { get; set; }
         /// <summary>
         /// Returns true if all conditions are passing
         /// Returns true if there are no conditions
