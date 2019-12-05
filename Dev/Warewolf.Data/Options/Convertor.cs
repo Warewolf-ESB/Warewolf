@@ -204,18 +204,11 @@ namespace Warewolf.Options
 
         public static object Convert(Type type, IEnumerable<IOption> options)
         {
-            return Convert(type, options, null);
-        }
-        public static object Convert(Type type, IEnumerable<IOption> options, object instance)
-        {
-            var firstOption = options.FirstOrDefault();
-            if (instance is null)
-            {
-                instance = Activator.CreateInstance(type);
-            }
+            var instance = Activator.CreateInstance(type);
 
             if (instance is IOptionConvertable convertable)
             {
+                var firstOption = options.First();
                 convertable.FromOption(firstOption);
             }
             else
@@ -257,9 +250,9 @@ namespace Warewolf.Options
             else if (option is OptionCombobox optionComboBox)
             {
                 var name = optionComboBox.Value;
-                //var newInstance = Activator.CreateInstance(prop.PropertyType.Assembly.GetType(prop.PropertyType.Namespace + "." + name)).GetType();
-                var t = prop.PropertyType.Assembly.GetType(prop.PropertyType.Namespace + "." + name);
-                var value = Convert(t, optionComboBox.SelectedOptions);
+                var propertyType = prop.PropertyType;
+                var type = propertyType.Assembly.GetType(propertyType.Namespace + "." + name);
+                var value = Convert(type, optionComboBox.SelectedOptions);
                 prop.SetValue(instance, value);
             }
             else if (option is OptionEnum optionEnum)
