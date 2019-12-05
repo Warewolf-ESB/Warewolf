@@ -80,5 +80,6 @@ namespace Warewolf.Options
     public interface IOptionConvertable
     {
         IOption[] ToOptions();
+        void FromOption(IOption option);
     }
 }
