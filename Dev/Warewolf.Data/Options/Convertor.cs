@@ -198,80 +198,67 @@ namespace Warewolf.Options
             throw UnhandledException;
         }
 
+        public static readonly System.Exception FailedMappingException = new System.Exception("option to property conversion failed");
         public static readonly System.Exception UnhandledException = new System.Exception("unhandled property type for option conversion");
         public static readonly System.Exception NullException = new System.NullReferenceException("property value null for option conversion");
 
         public static object Convert(Type type, IEnumerable<IOption> options)
         {
-            var optionsType = Activator.CreateInstance(type);
-
-            var gateOptions = new Data.Options.GateOptions();
-
-            if (optionsType is Data.Options.GateOptions)
+            var instance = Activator.CreateInstance(type);
+            if (instance is IOptionConvertable convertable)
             {
-                foreach (var option in options) 
+                convertable.FromOption(options.First());
+            }
+            else
+            {
+                foreach (var option in options)
                 {
-                    if (option is IOptionInt optionInt)
-                    {
-                        gateOptions.Count = optionInt.Value;                       
-                    }
-                    if (option is IOptionEnum optionEnum)
-                    {
-                        
-                        switch (optionEnum.Value)
-                        {
-                            case 1:
-                                gateOptions.Resume = Data.Options.YesNo.Yes;
-                                break;
-                            case 0:
-                            default:
-                                gateOptions.Resume = Data.Options.YesNo.No;
-                                break;
-                        }
-                    }
-                    if (option is IOptionWorkflow optionWorkflow)
-                    {                       
-                        gateOptions.ResumeEndpoint = optionWorkflow.Value;
-                    }
-                    if (option is IOptionComboBox optionCombobox)
-                    {                     
-                        switch (optionCombobox.Value)
-                        {
-                            case "NoBackoff":
-                                gateOptions.Strategy = new Data.Options.NoBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.NoBackoff,
-                                };
-                                break;
-                            case "ConstantBackoff":
-                                gateOptions.Strategy = new Data.Options.ConstantBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.ConstantBackoff
-                                };
-                                break;
-                            case "LinearBackoff":
-                                gateOptions.Strategy = new Data.Options.LinearBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.LinearBackoff
-                                };
-                                break;
-                            case "FibonacciBackoff":
-                                gateOptions.Strategy = new Data.Options.FibonacciBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.FibonacciBackoff
-                                };
-                                break;
-                            case "QuadraticBackoff":
-                                gateOptions.Strategy = new Data.Options.QuadraticBackoff
-                                {
-                                    RetryAlgorithm = Data.Options.Enums.RetryAlgorithm.QuadraticBackoff
-                                };
-                                break;
-                        }
-                    }
+                    var prop = type.GetProperty(option.Name);
+
+                    SetProperty(instance, prop, option);
                 }
             }
-            return gateOptions;
+
+            return instance;
+        }
+        private static void SetProperty(object instance, PropertyInfo prop, IOption option)
+        {
+            if (prop.PropertyType.IsAssignableFrom(typeof(string)))
+            {
+                if (option is IOptionAutocomplete optionAutocomplete)
+                {
+                    prop.SetValue(instance, optionAutocomplete.Value);
+                }
+                else
+                {
+                    throw FailedMappingException;
+                }
+            }
+            else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
+            {
+                if (option is IOptionInt optionInt)
+                {
+                    prop.SetValue(instance, optionInt.Value);
+                }
+                else
+                {
+                    throw FailedMappingException;
+                }
+            }
+            else if (option is OptionCombobox optionComboBox)
+            {
+                var value = Convert(prop.PropertyType, optionComboBox.SelectedOptions);
+                prop.SetValue(instance, value);
+            }
+            else if (option is OptionEnum optionEnum)
+            {
+                prop.SetValue(instance, optionEnum.Value);
+            }
+            else
+            {
+                // unhandled
+
+            }
         }
     }
 }

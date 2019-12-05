@@ -210,6 +210,22 @@ namespace Warewolf.Data.Options
                 option
             };
         }
+
+        public void FromOption(IOption option)
+        {
+            if (option is OptionConditionExpression optionConditionExpression)
+            {
+                this.Left = optionConditionExpression.Left;
+                if (optionConditionExpression.IsBetween)
+                {
+                    this.Cond = ConditionBetween.FromOption(optionConditionExpression);
+                }
+                else
+                {
+                    this.Cond = ConditionMatch.FromOption(optionConditionExpression);
+                }
+            }
+        }
     }
 
     public abstract class Condition
@@ -225,6 +241,15 @@ namespace Warewolf.Data.Options
             option.MatchType = MatchType;
             option.Right = Right;
         }
+
+        internal static Condition FromOption(OptionConditionExpression optionConditionExpression)
+        {
+            return new ConditionMatch
+            {
+                MatchType = optionConditionExpression.MatchType,
+                Right = optionConditionExpression.Right,
+            };
+        }
     }
 
     public class ConditionBetween : Condition
@@ -236,6 +261,16 @@ namespace Warewolf.Data.Options
             option.MatchType = MatchType;
             option.From = From;
             option.To= To;
+        }
+
+        internal static Condition FromOption(OptionConditionExpression optionConditionExpression)
+        {
+            return new ConditionBetween
+            {
+                MatchType = optionConditionExpression.MatchType,
+                From = optionConditionExpression.From,
+                To = optionConditionExpression.To,
+            };
         }
     }
 
