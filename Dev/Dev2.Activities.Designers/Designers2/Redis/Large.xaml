@@ -145,10 +145,10 @@
                 </Grid.ColumnDefinitions>
                 
                 <TextBlock Grid.Column="0" Text="Time To Live" />
-                <TextBox Grid.Column="1"
+                <ui:IntellisenseTextBox Grid.Column="1"
                      Grid.Row="0"
                      AcceptsReturn="False" 
-                     customControls:WatermarkTextBox.Watermark="seconds"
+                     DefaultText ="seconds"
                      MinWidth="50"
                      MaxWidth="50"
                      Text="{Binding Path=TTL, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static sys:String.Empty}}" 
@@ -161,7 +161,7 @@
                                          SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                     </i:Interaction.Behaviors>
-                </TextBox>
+                </ui:IntellisenseTextBox>
                 
             </Grid>
         </Grid>
