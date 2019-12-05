@@ -53,6 +53,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
@@ -113,6 +114,28 @@
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Key"
                                          SourcePropertyValue="{Binding ModelItem.Key, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" />
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Grid.ColumnSpan="3"
+                                    Grid.Row="2"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    DefaultText="[[Result]]" 
+                                    AcceptsReturn="False"
+                                    AllowUserInsertLine="False"
+                                    WrapInBrackets="True" 
+                                    Margin="{StaticResource ControlBorderTop}"
+                                    Text="{Binding Path=Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisResultTextbox_AutoID}"
+                                    ToolTip="{x:Static languages:Tooltips.RedisRemoveResultToolTip}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisRemoveResultHelp}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.Result"
+                                         SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
