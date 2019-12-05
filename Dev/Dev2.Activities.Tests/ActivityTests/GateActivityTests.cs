@@ -17,7 +17,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
+using Warewolf.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -163,15 +165,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedNextActivity = new Mock<IDev2Activity>();
 
             //---------------Set up test pack-------------------
-            var conditions = new Dev2DecisionStack
-            {
-                TheStack = new List<Dev2Decision>()
-            };
 
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                Conditions = conditions,
+                Conditions = new List<ConditionExpression>(),
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
             };
 
@@ -191,16 +189,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedNextActivity = new Mock<IDev2Activity>();
 
             //---------------Set up test pack-------------------
-            var conditions = new Dev2DecisionStack
+            var condition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            conditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+            var conditions = new List<ConditionExpression>();
+            conditions.Add(condition);
 
             //------------Setup for test--------------------------
             var act = new GateActivity
@@ -227,16 +222,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
             //---------------Set up test pack-------------------
-            var conditions = new Dev2DecisionStack
+            var condition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            conditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+            var conditions = new List<ConditionExpression>();
+            conditions.Add(condition);            
 
             //------------Setup for test--------------------------
             var act = new GateActivity
@@ -270,16 +262,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedNextActivity = new Mock<IDev2Activity>();
 
             //---------------Set up test pack-------------------
-            var conditions = new Dev2DecisionStack
+            var condition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            conditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+            var conditions = new List<ConditionExpression>();
+            conditions.Add(condition);
 
             //------------Setup for test--------------------------
             var act = new GateActivity
@@ -307,16 +296,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
             //---------------Set up test pack-------------------
-            var conditions = new Dev2DecisionStack
+            var condition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            conditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+            var conditions = new List<ConditionExpression>();
+            conditions.Add(condition);
 
             //------------Setup for test--------------------------
             var act = new GateActivity
@@ -352,14 +338,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
             //---------------Set up test pack-------------------
-            var conditions = new Dev2DecisionStack();
-            conditions.TheStack = new List<Dev2Decision>();
-            conditions.AddModelItem(new Dev2Decision
+            var condition = new ConditionExpression
             {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+            };
+            var conditions = new List<ConditionExpression>();
+            conditions.Add(condition);
 
             //------------Setup for test--------------------------
             var act = new GateActivity
@@ -391,17 +376,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var firstGateId = Guid.NewGuid();
             var secondGateId = Guid.NewGuid();
-
-            var failingConditions = new Dev2DecisionStack
+            var failingCondition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[somebob]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "another bob" }
             };
-            failingConditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[somebob]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "another bob"
-            });
+            var failingConditions = new List<ConditionExpression>();
+            failingConditions.Add(failingCondition);
 
             var thirdNode = new Mock<IDev2Activity>().Object;
             var secondGate = new GateActivity
@@ -414,16 +395,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             //---------------Set up test pack-------------------
-            var passingConditions = new Dev2DecisionStack
+            var passingCondition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            passingConditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+            var passingConditions = new List<ConditionExpression>();
+            passingConditions.Add(passingCondition);
 
             //------------Setup for test--------------------------
             var firstGate = new GateActivity
@@ -455,16 +433,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGateId = Guid.NewGuid();
             var secondGateId = Guid.NewGuid();
 
-            var failingConditions = new Dev2DecisionStack
+            var failingCondition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[somebob]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "notbob" }
             };
-            failingConditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[somebob]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "notbob"
-            });
+            var failingConditions = new List<ConditionExpression>();
+            failingConditions.Add(failingCondition);
 
             var thirdNode = new Mock<IDev2Activity>().Object;
             var secondGate = new GateActivity
@@ -477,16 +452,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             //---------------Set up test pack-------------------
-            var passingConditions = new Dev2DecisionStack
+            var passingCondition = new ConditionExpression
             {
-                TheStack = new List<Dev2Decision>()
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            passingConditions.AddModelItem(new Dev2Decision
-            {
-                Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
-                Col2 = "bob"
-            });
+            var passingConditions = new List<ConditionExpression>();
+            passingConditions.Add(passingCondition);
 
             //------------Setup for test--------------------------
             var firstGate = new GateActivity
@@ -511,7 +483,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             result = result.Execute(dataObject, 0);
 
             Assert.AreEqual(secondGate, result);
-            
+
             dataObject.Environment.Assign("[[somebob]]", "notbob", 0);
 
             result = result.Execute(dataObject, 0);

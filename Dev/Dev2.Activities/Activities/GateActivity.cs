@@ -18,7 +18,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Data;
-using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -33,6 +32,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
+using Warewolf.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -62,8 +62,8 @@ namespace Dev2.Activities
 
         public string GateRetryStrategy { get; set; }
 
-        public Dev2DecisionStack Conditions { get; set; }
-        public ConditionExpression ConditionExpression { get; set; }
+        public IList<ConditionExpression> Conditions { get; set; }
+
         /// <summary>
         /// Returns true if all conditions are passing
         /// Returns true if there are no conditions
@@ -75,46 +75,28 @@ namespace Dev2.Activities
         {
             get
             {
-                const bool errorIfNull = true;
-                if (!Conditions.TheStack.Any())
+                if (!Conditions.Any())
                 {
                     return true;
                 }
                 try
                 {
-                    var stack = Conditions.TheStack.Select(a => ParseDecision(_dataObject.Environment, a, errorIfNull));
-
-                    var factory = Dev2DecisionFactory.Instance();
-
-                    var res = stack.SelectMany(a =>
+                    var res = Conditions.SelectMany(a =>
                     {
-                        if (a.EvaluationFn == enDecisionType.IsError)
+                        if (a.Cond.MatchType == enDecisionType.IsError)
                         {
                             return new[] { _dataObject.Environment.AllErrors.Count > 0 };
                         }
-                        if (a.EvaluationFn == enDecisionType.IsNotError)
+                        if (a.Cond.MatchType == enDecisionType.IsNotError)
                         {
                             return new[] { _dataObject.Environment.AllErrors.Count == 0 };
                         }
                         IList<bool> ret = new List<bool>();
-                        var iter = new WarewolfListIterator();
-                        var c1 = new WarewolfAtomIterator(a.Cols1);
-                        var c2 = new WarewolfAtomIterator(a.Cols2);
-                        var c3 = new WarewolfAtomIterator(a.Cols3);
-                        iter.AddVariableToIterateOn(c1);
-                        iter.AddVariableToIterateOn(c2);
-                        iter.AddVariableToIterateOn(c3);
-                        while (iter.HasMoreData())
-                        {
-                            try
-                            {
-                                ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
-                            }
-                            catch (Exception)
-                            {
-                                ret.Add(false);
-                            }
-                        }
+                        var result = OptionConvertor.Convert(a);
+
+                        //TODO: go through the result and validate if they true
+                        ret.Add(true);
+
                         return ret;
                     });
                     return res.All(o => o);
@@ -227,7 +209,7 @@ namespace Dev2.Activities
             {
                 GateOptions = new GateOptions();
             }
-            
+
             try
             {
                 _stateNotifier?.LogPreExecuteState(this);
@@ -251,7 +233,8 @@ namespace Dev2.Activities
                 // load selected retry algorithm
 
                 return ExecuteRetry(data, update);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _stateNotifier?.LogExecuteException(e, this);
                 throw;
@@ -379,12 +362,13 @@ namespace Dev2.Activities
 
             if (rawText != null)
             {
+                //TODO: Not sure what is coming through so not what to do here
                 var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
 
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
+                var conditionStack = JsonConvert.DeserializeObject<List<ConditionExpression>>(activityText);
 
-                Conditions = decisionStack;
+                Conditions = conditionStack;
             }
         }
 
@@ -397,17 +381,19 @@ namespace Dev2.Activities
             try
             {
                 var dds = Conditions;
-                var userModel = dds.GenerateToolLabel(env, dds.Mode, out ErrorResultTO error);
-                allErrors.MergeErrors(error);
+                //ErrorResultTO error = null;  //TODO: Add Correctly
+                var userModel = "";          //TODO: Add Correctly
+                //allErrors.MergeErrors(error);
 
-                foreach (Dev2Decision dev2Decision in dds.TheStack)
+                foreach (ConditionExpression conditionExpression in dds)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col1, out error);
-                    allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col2, out error);
-                    allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col3, out error);
-                    allErrors.MergeErrors(error);
+                    //TODO: 
+                    //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Cond., out error);
+                    //allErrors.MergeErrors(error);
+                    //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Col2, out error);
+                    //allErrors.MergeErrors(error);
+                    //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Col3, out error);
+                    //allErrors.MergeErrors(error);
                 }
 
                 var itemToAdd = new DebugItem();
@@ -422,7 +408,8 @@ namespace Dev2.Activities
                 result.Add(itemToAdd);
 
                 itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
+                //TODO: 
+                //AddDebugItem(new DebugItemStaticDataParams(dds. == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
                 result.Add(itemToAdd);
             }
             catch (JsonSerializationException e)
