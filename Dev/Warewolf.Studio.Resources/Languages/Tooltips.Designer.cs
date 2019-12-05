@@ -3793,6 +3793,16 @@ namespace Warewolf.Studio.Resources.Languages {
             }
         }
         /// <summary>
+        /// Looks up a localized string similar to Redis Result 
+        /// </summary>
+        public static string RedisRemoveResultToolTip
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisRemoveResultToolTip", resourceCulture);
+            }
+        }
+        /// <summary>
         ///   Looks up a localized string similar to Create a new Redis Server Source.
         /// </summary>
         public static string RedisNewServerToolTip {

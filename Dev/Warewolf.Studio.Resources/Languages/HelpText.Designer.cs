@@ -2987,6 +2987,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success if the key to remove was found and removed or Failure otherwise..
+        /// </summary>
+        public static string RedisRemoveResultHelp {
+            get {
+                return ResourceManager.GetString("RedisRemoveResultHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a preconfigured redis source..
         /// </summary>
         public static string RedisServerHelp {
@@ -3014,7 +3023,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TTL (Time To Live) stored data for a given Key.
+        ///   Looks up a localized string similar to Time To Live is set on the given Key to dispose of data cached under the Key when the Time To Live has elapsed.
+        ///    
+        ///           If the Time To Live is not set, the cached data will remain cached until this key is removed..
         /// </summary>
         public static string RedisTTLHelp {
             get {
