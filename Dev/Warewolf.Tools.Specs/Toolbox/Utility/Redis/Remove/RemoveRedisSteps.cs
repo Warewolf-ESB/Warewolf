@@ -46,21 +46,24 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         public static Stopwatch Stoptime { get; set; }
 
 
-        [When(@"I execute the Remove tool")]
-        [Then(@"I execute the Remove tool")]
-        public void WhenIExecuteTheRemoveTool()
+        [When(@"I execute the Redis Remove ""(.*)"" tool")]
+        public void WhenIExecuteTheRedisRemoveTool(string key)
         {
-            var redisActivityOld = _scenarioContext.Get<SpecRedisRemoveActivity>(nameof(RedisRemoveActivity));
             var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
             var port = _scenarioContext.Get<int>("port");
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
 
-            GenResourceAndDataobject(redisActivityOld.Key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
-            ExecuteRemoveTool(redisActivityOld, mockDataobject);
+            var redisRemoveActivity = GetRedisRemoveActivity(mockResourceCatalog.Object, key, hostName, impl);
+
+            var executionResult = ExecuteRemoveTool(redisRemoveActivity, new Dictionary<string, string> { { "Key", key } });
+
+            _scenarioContext.Add("executionResult", executionResult);
         }
+
 
         [Then(@"The ""(.*)"" Cache exists")]
         public void CacheExists(string key)
@@ -74,32 +77,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             Assert.IsNotNull(actualCachedData, key + ": Cache does not exists");
         }
 
-        [Then(@"I have an existing key to Remove ""(.*)""")]
-        public void ThenIHaveAnExistingKeyToRemove(string key)
+        [Then(@"The Cache has been Removed with ""(.*)""")]
+        public void ThenTheCacheHasBeenRemovedWith(string expectedResult)
         {
-            var hostName = _scenarioContext.Get<string>("hostName");
-            var password = _scenarioContext.Get<string>("password");
-            var port = _scenarioContext.Get<int>("port");
-            var redisImpl = GetRedisCacheImpl(hostName, password, port);
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+            var executionResult = _scenarioContext.Get<List<string>>("executionResult");
 
-            var RedisRemoveActivityNew = GetRedisRemoveActivity(mockResourceCatalog.Object, key, hostName, redisImpl);
-
-            _scenarioContext.Add(nameof(RedisRemoveActivity), RedisRemoveActivityNew);
-
-            Assert.IsNotNull(RedisRemoveActivityNew.Key);
-        }
-
-        [Then(@"The ""(.*)"" Cache has been Removed")]
-        public void ThenTheCacheHasBeenRemoved(string key)
-        {
-            var hostName = _scenarioContext.Get<string>("hostName");
-            var password = _scenarioContext.Get<string>("password");
-            var port = _scenarioContext.Get<int>("port");
-            var redisImpl = GetRedisCacheImpl(hostName, password, port);
-
-            var actualCachedData = GetCachedData(redisImpl, key);
-            Assert.IsNull(actualCachedData, key + ": Cache still exists");
+            Assert.AreEqual(expectedResult, executionResult[0]);
         }
 
         [Then(@"I add another key ""(.*)""")]
@@ -201,9 +184,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             mockDataobject.Setup(o => o.Environment).Returns(environment);
         }
 
-        private static void ExecuteRemoveTool(SpecRedisRemoveActivity RedisRemoveActivity, Mock<IDSFDataObject> mockDataobject)
+        private static List<string> ExecuteRemoveTool(SpecRedisRemoveActivity RedisRemoveActivity, Dictionary<string,string> evaluatedValues)
         {
-            RedisRemoveActivity.SpecExecuteTool(mockDataobject.Object);
+            return RedisRemoveActivity.SpecPerformExecution(evaluatedValues);
         }
 
         private static SpecRedisRemoveActivity GetRedisRemoveActivity(IResourceCatalog resourceCatalog, string key, string hostName, RedisCacheImpl impl)
@@ -261,7 +244,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             _scenarioContext.Remove("hostName");
             _scenarioContext.Remove("password");
             _scenarioContext.Remove("port");
-
+            _scenarioContext.Remove("executionResult");
         }
     }
 }
