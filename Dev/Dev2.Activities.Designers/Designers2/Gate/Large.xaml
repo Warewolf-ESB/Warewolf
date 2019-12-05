@@ -6,15 +6,10 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Gate"
-                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:fa="http://schemas.fontawesome.io/icons/"
-                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                                MinWidth="350"
                                Width="350"
@@ -55,17 +50,53 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ListBox x:Name="ConditionsListBox" 
+            <Grid Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  HorizontalAlignment="Stretch" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="#" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="Match" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="Match Type" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="3" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="Match" HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
+                <ListBox x:Name="ConditionsListBox" 
+                         Grid.Row="1"
+                         ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}" 
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Padding="0,3,3,3">
+                </ListBox>
+            </Grid>
+
+            <!--<ListBox x:Name="ConditionsListBox" 
                      Grid.Column="0"
                      Grid.ColumnSpan="2" 
-                     ItemsSource="{Binding ConditionExpression, Converter={StaticResource OptionViewConverter}}" 
+                     ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}" 
                      ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                      ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
-                     Padding="0,3,3,3"/>
+                     Padding="0,3,3,3">
+            </ListBox>-->
 
-            <TextBlock Grid.Row="1" 
-                       Grid.Column="0"
-                       Text="Gate Failure"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Gate Failure"/>
 
             <Grid Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
                 <Grid.ColumnDefinitions>

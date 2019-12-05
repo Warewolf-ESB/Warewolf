@@ -126,41 +126,51 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ConditionExpressionStyle" DataType="{x:Type options:OptionConditionExpression}">
-        <Grid Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Stretch" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+        <Grid HorizontalAlignment="Stretch" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Text="{Binding Path=Left}" Grid.Column="0" Margin="3,0,3,0" >
+            <Button Style="{StaticResource ButtonOrangeTransparentStyle}" Command="{Binding DeleteCommand}">
+                <Button.Content>
+                    <fa:FontAwesome Icon="Close" FontSize="14"></fa:FontAwesome>
+                </Button.Content>
+            </Button>
+
+            <TextBox Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" 
+                     Margin="1.5,0,1.5,0" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </TextBox>
 
-            <ComboBox Grid.Column="1" 
+            <ComboBox Grid.Column="2" 
                       ItemsSource="{Binding Path=MatchTypes}"
                       DisplayMemberPath="Name"
                       Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       SelectedValue="{Binding Path=SelectedMatchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource ComboBoxStyle}" 
-                      Margin="{StaticResource ControlBorderRight}"
+                      Margin="1.5,0,1.5,0"
                       ToolTip="{Binding Path=Tooltip}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
 
-            <Grid Grid.Column="2" 
+            <Grid Grid.Column="3" 
+                  Margin="1.5,0,1.5,0"
                   Visibility="{Binding IsSingleOperand, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding Path=Right}"
+                <TextBox Text="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="0"
                          Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
@@ -174,14 +184,15 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding Path=From}"
+                    <TextBox Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Grid.Column="0"
                              Margin="{StaticResource ControlBorderRight}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
-                    <TextBox Text="{Binding Path=To}" 
+                    <TextBox Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             Margin="{StaticResource ControlBorderLeft}"
                              Grid.Column="1">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />

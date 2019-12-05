@@ -39,8 +39,10 @@ namespace Dev2.Activities.Designers2.Gate
         private bool _enabled;
         private bool _isExpanded;
         private OptionsWithNotifier _options;
+        private OptionsWithNotifier _conditionExpressionOptions;
         private IServer _server;
         private IResourceRepository _resourceRepository;
+        private ConditionExpression _conditionExpression;
         private readonly ModelItem _modelItem;
 
         public GateDesignerViewModel(ModelItem modelItem)
@@ -52,6 +54,7 @@ namespace Dev2.Activities.Designers2.Gate
             LoadGates();
 
             PopulateFields();
+            LoadConditionExpressionOptions();
             LoadOptions();
         }
 
@@ -72,7 +75,15 @@ namespace Dev2.Activities.Designers2.Gate
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Gate;
         }
 
-        public ConditionExpression ConditionExpression { get; set; }
+        public ConditionExpression ConditionExpression
+        {
+            get => _conditionExpression;
+            set
+            {
+                _conditionExpression = value;
+                OnPropertyChanged(nameof(ConditionExpression));
+            }
+        }
 
         private void PopulateFields()
         {
@@ -113,6 +124,18 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 Gates = workflowDesignerViewModel.GetSelectableGates(_modelItem.Properties["UniqueID"].ComputedValue.ToString());
             }
+        }
+
+        private void LoadConditionExpressionOptions()
+        {
+            var conditionExpression = _modelItem.Properties["ConditionExpression"].ComputedValue as ConditionExpression;
+            if (conditionExpression is null)
+            {
+                conditionExpression = new ConditionExpression();
+            }
+            var result = OptionConvertor.Convert(conditionExpression);
+            ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
+            UpdateModelItem();
         }
 
         private void LoadOptions()
@@ -186,7 +209,15 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void UpdateModelItem()
         {
-            _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
+            if (Options?.Options != null)
+            {
+                _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
+            }
+            if (ConditionExpressionOptions?.Options != null)
+            {
+                //_modelItem.Properties["ConditionExpression"]?.SetValue(OptionConvertor.Convert(typeof(ConditionExpression), ConditionExpressionOptions.Options));
+                AddEmptyConditionExpression();
+            }
         }
 
         private static GateFailureAction GetGateFailure(string gateFailure)
@@ -201,6 +232,30 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _enabled = value;
                 OnPropertyChanged(nameof(Enabled));
+            }
+        }
+
+        private void AddEmptyConditionExpression()
+        {
+            var emptyRows = ConditionExpressionOptions.Options.Where(o => o is OptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
+
+            if (!emptyRows.Any())
+            {
+                var index = ConditionExpressionOptions.Options.Count();
+                var conditionExpression = new OptionConditionExpression();
+                
+                _conditionExpressionOptions.Options.ToList().Add(conditionExpression);
+            }
+        }
+
+        public OptionsWithNotifier ConditionExpressionOptions
+        {
+            get => _conditionExpressionOptions;
+            set
+            {
+                _conditionExpressionOptions = value;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+                _conditionExpressionOptions.OptionChanged += UpdateModelItem;
             }
         }
 

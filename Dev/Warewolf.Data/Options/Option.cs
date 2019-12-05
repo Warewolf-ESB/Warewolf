@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Warewolf.Data;
 
 namespace Warewolf.Options
@@ -500,13 +501,23 @@ namespace Warewolf.Options
 
     public class OptionConditionExpression : BindableBase, IOption
     {
-        public string Name { get  ; set; }
+        public string Name { get; set; }
 
-        public string Left { get; set; }
+        public ICommand DeleteCommand { get; set; }
+
+        private string _left;
+        public string Left
+        {
+            get => _left;
+            set
+            {
+                SetProperty(ref _left, value);
+            }
+        }
         public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(enDecisionType)).ToArray();
-        
+
         private INamedInt _selectedMatchType;
-        public INamedInt SelectedMatchType 
+        public INamedInt SelectedMatchType
         {
             get => _selectedMatchType;
             set
@@ -520,12 +531,56 @@ namespace Warewolf.Options
             }
         }
         public enDecisionType MatchType { get; set; }
-        public string Right { get; set; }
-        public string From { get; set; }
-        public string To { get; set; }
+
+        private string _right;
+        public string Right 
+        { 
+            get => _right;
+            set
+            {
+                SetProperty(ref _right, value);
+            }
+        }
+
+        private string _from;
+        public string From 
+        { 
+            get => _from;
+            set
+            {
+                SetProperty(ref _from, value);
+            }
+        }
+
+        private string _to;
+        public string To 
+        { 
+            get => _to;
+            set
+            {
+                SetProperty(ref _to, value);
+            }
+        }
         public bool IsBetween => MatchType.IsTripleOperand();
         public bool IsSingleOperand => MatchType.IsSingleOperand();
-
+        public bool IsEmptyRow
+        {
+            get
+            {
+                var isEmptyRow = string.IsNullOrEmpty(Name);
+                isEmptyRow &= SelectedMatchType is null;
+                if (IsSingleOperand)
+                {
+                    isEmptyRow &= string.IsNullOrEmpty(Right);
+                }
+                if (IsBetween)
+                {
+                    isEmptyRow &= string.IsNullOrEmpty(From);
+                    isEmptyRow &= string.IsNullOrEmpty(To);
+                }
+                return isEmptyRow;
+            }
+        }
 
         private string _helpText = Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
         public string HelpText
@@ -535,6 +590,7 @@ namespace Warewolf.Options
         }
 
         private string _tooltip = Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+
         public string Tooltip
         {
             get => _tooltip;
