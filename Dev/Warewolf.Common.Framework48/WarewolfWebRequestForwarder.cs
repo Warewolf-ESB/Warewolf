@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Warewolf.Triggers;
 using Dev2.Common.ExtMethods;
 using System.Linq;
 using Warewolf.Data;
@@ -66,7 +65,7 @@ namespace Warewolf.Common
         {
             var returnedQueueMessage = Encoding.UTF8.GetString(body);
             var inputs = _valueKeys.Select(v => (v.Name, v.Value)).ToList();
-            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), returnedQueueMessage.IsXml(), _mapEntireMessage);
+            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), DataListUtilBase.IsXml(returnedQueueMessage), _mapEntireMessage);
             return mappedData;
         }
 

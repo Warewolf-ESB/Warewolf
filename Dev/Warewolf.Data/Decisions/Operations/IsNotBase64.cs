@@ -8,19 +8,26 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Patterns;
 using System;
+using Warewolf.Options;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Warewolf.Data.Decisions.Operations
 {
     /// <summary>
-    /// A common interface that all decision classes must extend ;)
+    /// Is Not Bse64 Decision
     /// </summary>
-    public interface IDecisionOperation : ISpookyLoadable<Enum>
+    public class IsNotBase64 : IDecisionOperation
     {
+        public bool Invoke(string[] cols)
+        {
+            if (!string.IsNullOrEmpty(cols[0]))
+            {
+                return !cols[0].IsBase64();
+            }
 
-        bool Invoke(string[] cols);
+            return false;
+        }
 
+        public Enum HandlesType() => enDecisionType.IsNotBase64;
     }
 }
- 

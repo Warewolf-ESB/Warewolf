@@ -64,6 +64,28 @@ namespace Dev2.Activities
 
         public IList<ConditionExpression> Conditions { get; set; }
 
+        private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
+        {
+            var col1 = _dataObject.Environment.EvalAsList(col1s, 0, false);
+            var col2 = _dataObject.Environment.EvalAsList(col2s ?? "", 0, false);
+            var col3 = _dataObject.Environment.EvalAsList(col3s ?? "", 0, false);
+
+            var iter = new WarewolfListIterator();
+            var c1 = new WarewolfAtomIterator(col1);
+            var c2 = new WarewolfAtomIterator(col2);
+            var c3 = new WarewolfAtomIterator(col3);
+            iter.AddVariableToIterateOn(c1);
+            iter.AddVariableToIterateOn(c2);
+            iter.AddVariableToIterateOn(c3);
+
+            while (iter.HasMoreData())
+            {
+                var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
+                yield return item;
+            }
+            yield break;
+        }
+
         /// <summary>
         /// Returns true if all conditions are passing
         /// Returns true if there are no conditions
@@ -81,23 +103,7 @@ namespace Dev2.Activities
             {
                 var res = Conditions.Select(a =>
                 {
-                    return a.Eval(_dataObject.Environment.EvalToExpression, update);
-                    /*
-                    if (a.Cond.MatchType == enDecisionType.IsError)
-                    {
-                        return new[] { _dataObject.Environment.AllErrors.Count > 0 };
-                    }
-                    if (a.Cond.MatchType == enDecisionType.IsNotError)
-                    {
-                        return new[] { _dataObject.Environment.AllErrors.Count == 0 };
-                    }
-                    IList<bool> ret = new List<bool>();
-                    var result = OptionConvertor.Convert(a);
-
-                    //TODO: go through the result and validate if they true
-                    ret.Add(true);
-
-                    return ret;*/
+                    return a.Eval(GetArgumentsFunc, _dataObject.Environment.HasErrors());
                 });
                 return res.All(o => o);
             }

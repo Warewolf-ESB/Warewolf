@@ -8,19 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Patterns;
 using System;
+using Warewolf.Options;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Warewolf.Data.Decisions.Operations
 {
     /// <summary>
-    /// A common interface that all decision classes must extend ;)
+    /// The is numeric decision function
     /// </summary>
-    public interface IDecisionOperation : ISpookyLoadable<Enum>
+    public class IsNumeric : IDecisionOperation
     {
+        public bool Invoke(string[] cols) => cols[0].IsNumeric();
 
-        bool Invoke(string[] cols);
-
+        public Enum HandlesType() => enDecisionType.IsNumeric;
     }
 }
- 
