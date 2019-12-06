@@ -226,11 +226,18 @@ namespace Warewolf.Data.Options
                 }
             }
         }
+        public bool Eval(Func<string, int, string> environmentEvalDg, int update)
+        {
+            return Cond.Eval(Left, environmentEvalDg, update);
+        }
+
     }
 
     public abstract class Condition
     {
         public enDecisionType MatchType { get; set; }
+
+        internal abstract bool Eval(string left, Func<string, int, string> environmentEvalDg, int update);
         public abstract void SetOptions(OptionConditionExpression option);
     }
     public class ConditionMatch : Condition
@@ -249,6 +256,22 @@ namespace Warewolf.Data.Options
                 MatchType = optionConditionExpression.MatchType,
                 Right = optionConditionExpression.Right,
             };
+        }
+
+        internal override bool Eval(string left, Func<string, int, string> environmentEvalDg, int update)
+        {
+            var lval = environmentEvalDg(left, update);
+            var rval = environmentEvalDg(Right, update);
+
+            switch (MatchType)
+            {
+                case enDecisionType.IsEqual:
+                    return lval.Equals(rval, StringComparison.InvariantCulture);
+                case enDecisionType.IsNotEqual:
+                    return !lval.Equals(rval, StringComparison.InvariantCulture);
+                default:
+                    return false;
+            }
         }
     }
 
@@ -271,6 +294,15 @@ namespace Warewolf.Data.Options
                 From = optionConditionExpression.From,
                 To = optionConditionExpression.To,
             };
+        }
+
+        internal override bool Eval(string left, Func<string, int, string> environmentEvalDg, int update)
+        {
+            var lval = environmentEvalDg(left, update);
+            var fromval = environmentEvalDg(From, update);
+            var toval = environmentEvalDg(To, update);
+
+            return false;
         }
     }
 
