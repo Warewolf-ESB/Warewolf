@@ -8,19 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Patterns;
-using System;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Warewolf.Data
 {
     /// <summary>
-    /// A common interface that all decision classes must extend ;)
+    ///     Used to represent an class that can be loaded via the spooky action at a distance pattern
     /// </summary>
-    public interface IDecisionOperation : ISpookyLoadable<Enum>
+    /// <typeparam name="T"></typeparam>
+    public interface ISpookyLoadable<out T>
     {
-
-        bool Invoke(string[] cols);
-
+        T HandlesType();
     }
 }
- 

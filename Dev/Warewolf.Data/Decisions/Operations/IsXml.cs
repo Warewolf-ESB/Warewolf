@@ -8,19 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Patterns;
 using System;
+using Warewolf.Options;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Warewolf.Data.Decisions.Operations
 {
-    /// <summary>
-    /// A common interface that all decision classes must extend ;)
-    /// </summary>
-    public interface IDecisionOperation : ISpookyLoadable<Enum>
+    public class IsXml : IDecisionOperation
     {
+        public Enum HandlesType() => enDecisionType.IsXML;
 
-        bool Invoke(string[] cols);
-
+        public bool Invoke(string[] cols)
+        {
+            var data = DataListUtilBase.AdjustForEncodingIssues(cols[0]);
+            var isXml = DataListUtilBase.IsXml(data, out bool isFragment);
+            return isXml || isFragment;
+        }
     }
 }
- 

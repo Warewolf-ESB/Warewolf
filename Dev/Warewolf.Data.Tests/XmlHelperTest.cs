@@ -8,10 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests
+namespace Warewolf.Data.Tests
 {
     [TestClass]
     public class XmlHelperTest

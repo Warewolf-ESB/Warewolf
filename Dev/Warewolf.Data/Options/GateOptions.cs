@@ -10,13 +10,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Warewolf.Data.Decisions.Operations;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Options
 {
-    public class GateOptions 
+    public class GateOptions
     {
         public GateOptions()
         { }
@@ -127,7 +129,7 @@ namespace Warewolf.Data.Options
 
         public override IEnumerable<bool> Create()
         {
-            for (var i=0; i < MaxRetries; i++)
+            for (var i = 0; i < MaxRetries; i++)
             {
                 Task.Delay(i * Increment).Wait();
                 yield return true;
@@ -226,9 +228,13 @@ namespace Warewolf.Data.Options
                 }
             }
         }
-        public bool Eval(Func<string, int, string> environmentEvalDg, int update)
+        public bool Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            return Cond.Eval(Left, environmentEvalDg, update);
+            if (string.IsNullOrWhiteSpace(Left))
+            {
+                return true;
+            }
+            return Cond.Eval(Left, getArgumentsFunc, hasError);
         }
 
     }
@@ -237,7 +243,7 @@ namespace Warewolf.Data.Options
     {
         public enDecisionType MatchType { get; set; }
 
-        internal abstract bool Eval(string left, Func<string, int, string> environmentEvalDg, int update);
+        internal abstract bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
         public abstract void SetOptions(OptionConditionExpression option);
     }
     public class ConditionMatch : Condition
@@ -258,20 +264,34 @@ namespace Warewolf.Data.Options
             };
         }
 
-        internal override bool Eval(string left, Func<string, int, string> environmentEvalDg, int update)
+        internal override bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            var lval = environmentEvalDg(left, update);
-            var rval = environmentEvalDg(Right, update);
+            var factory = Dev2DecisionFactory.Instance();
 
-            switch (MatchType)
+            if (MatchType == enDecisionType.IsError)
             {
-                case enDecisionType.IsEqual:
-                    return lval.Equals(rval, StringComparison.InvariantCulture);
-                case enDecisionType.IsNotEqual:
-                    return !lval.Equals(rval, StringComparison.InvariantCulture);
-                default:
-                    return false;
+                return hasError;
             }
+            if (MatchType == enDecisionType.IsNotError)
+            {
+                return !hasError;
+            }
+            IList<bool> ret = new List<bool>();
+            
+            var items = getArgumentsFunc(left, Right, null);
+            foreach (var arguments in items)
+            {
+                try
+                {
+                    ret.Add(factory.FetchDecisionFunction(MatchType).Invoke(arguments));
+
+                }
+                catch (Exception)
+                {
+                    ret.Add(false);
+                }
+            }
+            return ret.All(o => o);
         }
     }
 
@@ -283,7 +303,7 @@ namespace Warewolf.Data.Options
         {
             option.MatchType = MatchType;
             option.From = From;
-            option.To= To;
+            option.To = To;
         }
 
         internal static Condition FromOption(OptionConditionExpression optionConditionExpression)
@@ -296,13 +316,34 @@ namespace Warewolf.Data.Options
             };
         }
 
-        internal override bool Eval(string left, Func<string, int, string> environmentEvalDg, int update)
-        {
-            var lval = environmentEvalDg(left, update);
-            var fromval = environmentEvalDg(From, update);
-            var toval = environmentEvalDg(To, update);
 
-            return false;
+        internal override bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        {
+            var factory = Dev2DecisionFactory.Instance();
+
+            if (MatchType == enDecisionType.IsError)
+            {
+                return hasError;
+            }
+            if (MatchType == enDecisionType.IsNotError)
+            {
+                return !hasError;
+            }
+            IList<bool> ret = new List<bool>();
+
+            var items = getArgumentsFunc(left, From, To);
+            foreach (var arguments in items)
+            {
+                try
+                {
+                    ret.Add(factory.FetchDecisionFunction(MatchType).Invoke(arguments));
+                }
+                catch (Exception)
+                {
+                    ret.Add(false);
+                }
+            }
+            return ret.All(o => o);
         }
     }
 

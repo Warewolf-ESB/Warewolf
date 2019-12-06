@@ -8,19 +8,23 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Patterns;
 using System;
+using Warewolf.Options;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Warewolf.Data.Decisions.Operations
 {
-    /// <summary>
-    /// A common interface that all decision classes must extend ;)
-    /// </summary>
-    public interface IDecisionOperation : ISpookyLoadable<Enum>
+    public class IsNotAlphanumeric : IDecisionOperation
     {
+        public bool Invoke(string[] cols)
+        {
+            if(!string.IsNullOrEmpty(cols[0]))
+            {
+                return !cols[0].IsAlphaNumeric();
+            }
 
-        bool Invoke(string[] cols);
+            return true;
+        }
 
+        public Enum HandlesType() => enDecisionType.IsNotAlphanumeric;
     }
 }
- 

@@ -8,19 +8,27 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Patterns;
 using System;
+using Warewolf.Options;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Warewolf.Data.Decisions.Operations
 {
     /// <summary>
-    /// A common interface that all decision classes must extend ;)
+    /// Is Not Binary Decision
     /// </summary>
-    public interface IDecisionOperation : ISpookyLoadable<Enum>
+    public class IsNotBinary : IDecisionOperation
     {
 
-        bool Invoke(string[] cols);
+        public bool Invoke(string[] cols)
+        {
+            if (!string.IsNullOrEmpty(cols[0]))
+            {
+                return !cols[0].IsBinary();
+            }
 
+            return false;
+        }
+
+        public Enum HandlesType() => enDecisionType.IsNotBinary;
     }
 }
- 
