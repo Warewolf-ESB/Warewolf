@@ -97,12 +97,23 @@ namespace Dev2.Activities
         {
             if (!Conditions.Any())
             {
+                if (_dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(Passing), "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);                   
+                }
                 return true;
             }
             try
             {
                 var res = Conditions.Select(a =>
                 {
+                    if (_dataObject.IsDebugMode())
+                    {
+                        var debugItemStaticDataParams = new DebugItemStaticDataParams(a.Left, "", true);
+                        AddDebugOutputItem(debugItemStaticDataParams);                        
+                    }
+ 
                     return a.Eval(GetArgumentsFunc, _dataObject.Environment.HasErrors());
                 });
                 return res.All(o => o);
@@ -131,21 +142,8 @@ namespace Dev2.Activities
 
         public GateOptions GateOptions { get; set; }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<string> GetOutputs()
-        {
-            throw new NotImplementedException();
-        }
-
+        public override List<string> GetOutputs() => new List<string>();
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
         public override IEnumerable<StateVariable> GetState()
         {
             var serializer = new Dev2JsonSerializer();
@@ -192,7 +190,25 @@ namespace Dev2.Activities
                     Type = StateVariable.StateType.Input,
                     Name = nameof(_retryState.NumberOfRetries),
                     Value = _retryState.NumberOfRetries.ToString(),
-                }
+                },
+                 new StateVariable
+                {
+                    Name = "next",
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(Next)
+                },
+                  new StateVariable
+                {
+                    Name = "stop",
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(Stop)
+                },
+                 new StateVariable
+                {
+                    Name = nameof(NextNodes),
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(NextNodes)
+                },
            };
         }
 
@@ -205,7 +221,15 @@ namespace Dev2.Activities
         {
             throw new NotImplementedException();
         }
+        public void SetDebugInputs(List<DebugItem> debugInputs)
+        {
+            _debugInputs = debugInputs;
+        }
 
+        public void SetDebugOutputs(List<DebugItem> debugOutputs)
+        {
+            _debugOutputs = debugOutputs;
+        }
         IDSFDataObject _dataObject;
         IEnumerator<bool> _algo;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
@@ -225,9 +249,21 @@ namespace Dev2.Activities
                     _dataObject.Gates.Add(this);
                     _algo = GateOptions.Strategy.Create().GetEnumerator();
                 }
-
+                if (_dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Rerty: " + _retryState.NumberOfRetries.ToString(), "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                  
+                }
                 if (_retryState.NumberOfRetries <= 0)
                 {
+                    if (_dataObject.IsDebugMode())
+                    {
+                        var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteNormal), "", true);
+                        AddDebugOutputItem(debugItemStaticDataParams);
+                        DispatchDebugState(_dataObject, StateType.Before, update);
+                        DispatchDebugState(_dataObject, StateType.After, update);
+                    }
                     return ExecuteNormal(data, update);
                 }
 
@@ -236,7 +272,14 @@ namespace Dev2.Activities
                 // reset Environment to state it was in the first time we executed this Gate
 
                 // load selected retry algorithm
+                if (_dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteRetry), "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                    DispatchDebugState(_dataObject, StateType.Before, update);
+                    DispatchDebugState(_dataObject, StateType.After, update);
 
+                }
                 return ExecuteRetry(data, update);
             }
             catch (Exception e)
@@ -265,7 +308,8 @@ namespace Dev2.Activities
             // Gate has reached maximum retries.
             return null;
         }
-
+        public IDev2Activity Next { get; set; }
+        public bool Stop { get; set; } = false;
         /// <summary>
         /// This Gate is being executed for the first time
         /// </summary>
@@ -274,12 +318,9 @@ namespace Dev2.Activities
         /// <returns></returns>
         public IDev2Activity ExecuteNormal(IDSFDataObject data, int update)
         {
-            IDev2Activity next = null;
-            bool stop = false;
             try
             {
                 _debugInputs = new List<DebugItem>();
-                _debugOutputs = new List<DebugItem>();
 
                 UpdateConditions();
                 if (data.IsDebugMode())
@@ -304,40 +345,45 @@ namespace Dev2.Activities
                         case GateFailureAction.StopOnError:
                             data.Environment.AddError("stop on error with no resume");
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
-                            stop = true;
+                            Stop = true;
                             break;
                         case GateFailureAction.Retry:
                             if (canRetry)
                             {
                                 var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
-
                                 goBackToActivity.UpdateRetryState(this);
-                                next = goBackToActivity;
+                                Next = goBackToActivity;
                             }
                             else
                             {
                                 const string msg = "invalid retry config: no gate selected";
                                 data.Environment.AddError(msg);
                                 Dev2Logger.Warn($"execution stopped! {msg}", _dataObject?.ExecutionID?.ToString());
-                                stop = true;
+                                Stop = true;
                             }
                             break;
                         default:
                             throw new Exception("unknown gate failure option");
                     }
                 }
-                //------------------------
 
                 if (!data.IsDebugMode())
                 {
                     UpdateWithAssertions(data);
                 }
+                else
+                {
+                    Result = nameof(Execute);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                }
             }
             catch (Exception ex)
             {
+                Result = ex.Message;
                 data.Environment.AddError(ex.Message);
                 Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
-                stop = true;
+                Stop = true;
             }
             finally
             {
@@ -346,28 +392,47 @@ namespace Dev2.Activities
                     DoErrorHandling(data, update);
                 }
             }
-            if (next != null)
+            if (Next != null)
             {
-                return next; // retry has set a node that we should go back to retry
+                Result = nameof(Next);
+                if (data.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                }
+                return Next; // retry has set a node that we should go back to retry
             }
-            if (stop)
+            if (Stop)
             {
+                Result = nameof(Stop);
+                if (data.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                }
                 return null;
             }
             if (NextNodes != null && NextNodes.Any())
             {
+                Result = nameof(NextNodes);
+                if (data.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                }
                 return NextNodes.First();
             }
             return null;
         }
-
+        public new string Result { get; set; }
+       
         private void UpdateConditions()
         {
             var rawText = ExpressionText;
 
             if (rawText != null)
             {
-                //TODO: Not sure what is coming through so not what to do here
+                //  TODO: Not sure what is coming through so not what to do here
                 var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
 
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
