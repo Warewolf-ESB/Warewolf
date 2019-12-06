@@ -3023,9 +3023,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time To Live is set on the given Key to dispose of data cached under the Key when the Time To Live has elapsed.
-        ///    
-        ///           If the Time To Live is not set, the cached data will remain cached until this key is removed..
+        ///   Looks up a localized string similar to Time To Live is set on the given Key to dispose of data cached under the Key when the Time To Live has elapsed. If the Time To Live is not set, the data will remain cached until this key is removed..
         /// </summary>
         public static string RedisTTLHelp {
             get {
