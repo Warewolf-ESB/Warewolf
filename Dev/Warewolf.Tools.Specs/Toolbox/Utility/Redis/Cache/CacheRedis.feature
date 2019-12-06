@@ -1,9 +1,9 @@
-﻿Feature: GetSetRedis
+﻿Feature: RedisCache
 	In order to avoid rerunning the work-flow every time we need generated data
 	As a user
-	I want to be to set and get cached data while the Time To Live has not elapsed 
+	I want to be to cached data while the Time To Live has not elapsed 
 
-@RedisGetSet
+@RedisCache
 Scenario: No data in cache
 	Given Redis source "localhost" with password "pass123" and port "6379"
 	And I have a key "MyData" and ttl of "3000" milliseconds
@@ -19,7 +19,7 @@ Scenario: No data in cache
 		| var      | value   |
 		| [[Var1]] | "Test1" |
 
-@RedisGetSet
+@RedisCache
 Scenario: Data exists for given TTL not hit
 	Given Redis source "localhost" with password "pass123" and port "6379"
 	And I have a key "MyData" and ttl of "3000" milliseconds
@@ -35,7 +35,7 @@ Scenario: Data exists for given TTL not hit
 		| var      | value                    |
 		| [[Var1]] | "[[Var1]],Data in cache" |
 
-@RedisGetSet
+@RedisCache
 Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 	Given Redis source "localhost" with password "pass123" and port "6379"
 	And I have a key "MyData" and ttl of "3000" milliseconds
