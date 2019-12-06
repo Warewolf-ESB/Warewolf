@@ -1147,7 +1147,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Edit Redis Server Source</value>
   </data>
   <data name="RedisKeyToolTip" xml:space="preserve">
-    <value>Redis Key to store data in cache</value>
+    <value>Key to store data into Redis cache</value>
   </data>
   <data name="RedisRemoveKeyToolTip" xml:space="preserve">
     <value>Redis Key to remove data from cache</value>

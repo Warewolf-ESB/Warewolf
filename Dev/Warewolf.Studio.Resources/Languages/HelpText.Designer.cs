@@ -2960,7 +2960,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis Key to store data by specified key.
+        ///   Looks up a localized string similar to Key used to store and retrieve data from the Redis cache.
         /// </summary>
         public static string RedisKeyHelp {
             get {

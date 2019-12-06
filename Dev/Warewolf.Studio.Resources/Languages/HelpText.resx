@@ -1863,7 +1863,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Edit the selected redis connection properties</value>
   </data>
   <data name="RedisKeyHelp" xml:space="preserve">
-    <value>Redis Key to store data by specified key</value>
+    <value>Key used to store and retrieve data from the Redis cache</value>
   </data>
   <data name="RedisRemoveKeyHelp" xml:space="preserve">
     <value>Redis Key to remove cache data with specified key</value>
