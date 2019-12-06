@@ -1881,7 +1881,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Redis Decrement counter</value>
   </data>
   <data name="RedisTTLHelp" xml:space="preserve">
-    <value>Redis TTL (Time To Live) stored data for a given Key</value>
+    <value>Time To Live is set on the given Key to dispose of data cached under the Key when the Time To Live has elapsed. If the Time To Live is not set, the data will remain cached until this key is removed.</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
