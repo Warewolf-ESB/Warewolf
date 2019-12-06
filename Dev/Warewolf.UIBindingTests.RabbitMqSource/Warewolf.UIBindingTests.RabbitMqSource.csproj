@@ -61,7 +61,7 @@
     <Compile Include="BuildConfig.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="RabbitMq Source.feature.cs">
-      <AutoGen>True</AutoGen>
+      <AutoGen>False</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RabbitMq Source.feature</DependentUpon>
     </Compile>
