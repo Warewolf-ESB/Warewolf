@@ -71,41 +71,40 @@ namespace Dev2.Activities
         /// Returns false if any variable does not exist
         /// Returns false if there is an exception of any kind
         /// </summary>
-        private bool Passing
+        private bool Passing(int update)
         {
-            get
+            if (!Conditions.Any())
             {
-                if (!Conditions.Any())
+                return true;
+            }
+            try
+            {
+                var res = Conditions.Select(a =>
                 {
-                    return true;
-                }
-                try
-                {
-                    var res = Conditions.SelectMany(a =>
+                    return a.Eval(_dataObject.Environment.EvalToExpression, update);
+                    /*
+                    if (a.Cond.MatchType == enDecisionType.IsError)
                     {
-                        if (a.Cond.MatchType == enDecisionType.IsError)
-                        {
-                            return new[] { _dataObject.Environment.AllErrors.Count > 0 };
-                        }
-                        if (a.Cond.MatchType == enDecisionType.IsNotError)
-                        {
-                            return new[] { _dataObject.Environment.AllErrors.Count == 0 };
-                        }
-                        IList<bool> ret = new List<bool>();
-                        var result = OptionConvertor.Convert(a);
+                        return new[] { _dataObject.Environment.AllErrors.Count > 0 };
+                    }
+                    if (a.Cond.MatchType == enDecisionType.IsNotError)
+                    {
+                        return new[] { _dataObject.Environment.AllErrors.Count == 0 };
+                    }
+                    IList<bool> ret = new List<bool>();
+                    var result = OptionConvertor.Convert(a);
 
-                        //TODO: go through the result and validate if they true
-                        ret.Add(true);
+                    //TODO: go through the result and validate if they true
+                    ret.Add(true);
 
-                        return ret;
-                    });
-                    return res.All(o => o);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Warn("failed checking passing state of gate", e, _dataObject?.ExecutionID?.ToString());
-                    return false;
-                }
+                    return ret;*/
+                });
+                return res.All(o => o);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn("failed checking passing state of gate", e, _dataObject?.ExecutionID?.ToString());
+                return false;
             }
         }
 
@@ -168,7 +167,7 @@ namespace Dev2.Activities
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(Passing),
-                    Value = Passing ? "true" : "false",
+                    Value = Passing(0) ? "true" : "false",
                 },
                 new StateVariable
                 {
@@ -284,7 +283,7 @@ namespace Dev2.Activities
                 }
 
                 //----------ExecuteTool--------------
-                if (!Passing)
+                if (!Passing(update))
                 {
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
