@@ -285,7 +285,7 @@ namespace Dev2.Activities.Specs.Scheduler
                 } while (i < times);
                 if (task.LastTaskResult != 0)
                 {
-                    throw new Exception($"Error executing scheduled task: {task.Name}\n{task.Xml}");
+                    throw new Exception($"Warewolf Agent Exitted with exit code: {task.LastTaskResult} executing scheduled task: {task.Name}\n{task.Xml}");
                 }
             }
             catch (Exception e)
