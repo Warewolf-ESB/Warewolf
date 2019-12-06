@@ -2,7 +2,7 @@
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Warewolf Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
