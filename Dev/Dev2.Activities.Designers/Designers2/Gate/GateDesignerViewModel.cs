@@ -215,7 +215,8 @@ namespace Dev2.Activities.Designers2.Gate
             }
             if (ConditionExpressionOptions?.Options != null)
             {
-                //_modelItem.Properties["Conditions"]?.SetValue(OptionConvertor.Convert(typeof(OptionConditionExpression), ConditionExpressionOptions.Options));
+                var tmp = OptionConvertor.ConvertToListOfT<ConditionExpression>(ConditionExpressionOptions.Options);
+                _modelItem.Properties["Conditions"]?.SetValue(tmp);
                 AddEmptyConditionExpression();
                 foreach (var item in ConditionExpressionOptions.Options)
                 {
@@ -253,17 +254,28 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 var index = ConditionExpressionOptions.Options.Count();
                 var conditionExpression = new OptionConditionExpression();
-                var list = new List<IOption>(_conditionExpressionOptions.Options);
-                list.Add(conditionExpression);
+                var list = new List<IOption>(_conditionExpressionOptions.Options)
+                {
+                    conditionExpression
+                };
                 ConditionExpressionOptions.Options = list;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
             }
         }
 
         private void RemoveConditionExpression(OptionConditionExpression conditionExpression)
         {
-            var list = new List<IOption>(_conditionExpressionOptions.Options);
-            list.Remove(conditionExpression);
-            ConditionExpressionOptions.Options = list;
+            var count = ConditionExpressionOptions.Options.Count(o => o is OptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
+            var empty = conditionExpression.IsEmptyRow;
+            var allow = !empty || (empty && count > 1);
+
+            if (_conditionExpressionOptions.Options.Count > 1 && allow)
+            {
+                var list = new List<IOption>(_conditionExpressionOptions.Options);
+                list.Remove(conditionExpression);
+                ConditionExpressionOptions.Options = list;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+            }
         }
 
         public OptionsWithNotifier ConditionExpressionOptions

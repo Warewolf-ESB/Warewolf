@@ -202,6 +202,16 @@ namespace Warewolf.Options
         public static readonly System.Exception UnhandledException = new System.Exception("unhandled property type for option conversion");
         public static readonly System.Exception NullException = new System.NullReferenceException("property value null for option conversion");
 
+        public static IList<T> ConvertToListOfT<T>(IEnumerable<IOption> options)
+            where T : class, new()
+        {
+            var instance = new List<T>();
+            foreach (var option in options)
+            {
+                instance.Add(Convert(typeof(T), new[] { option }) as T);
+            }
+            return instance;
+        }
         public static object Convert(Type type, IEnumerable<IOption> options)
         {
             var instance = Activator.CreateInstance(type);
