@@ -149,6 +149,8 @@ namespace Dev2.Activities.Redis
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+            _errorsTo = new ErrorResultTO();
+
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -166,7 +168,7 @@ namespace Dev2.Activities.Redis
                 {
                     throw new InvalidOperationException($"Activity drop box cannot be null");
                 }
-                if (string.IsNullOrWhiteSpace(_innerActivity.GetOutputs()[0]))
+                if (_innerActivity.GetOutputs().Count() <= 0)
                 {
                     throw new InvalidOperationException($"{_innerActivity.GetDisplayName()} activity must have at least one output variable.");
                 }
@@ -174,9 +176,19 @@ namespace Dev2.Activities.Redis
                 IDictionary<string, string> cachedData = GetCachedOutputs();
                 if (cachedData != null)
                 {
-                    foreach (var item in cachedData)
+                    var outputVars = _innerActivity.GetOutputs();
+
+                    foreach (var outputVar in outputVars)
                     {
-                        DataObject.Environment.Assign(item.Key, item.Value, 0);
+                        if (cachedData.ContainsKey(outputVar))
+                        {
+                            var item = cachedData[outputVar];
+                            DataObject.Environment.Assign(outputVar, item, 0);
+                        }
+                        else
+                        {
+                            _errorsTo.AddError("cached data missing key: " + outputVar);
+                        }
                     }
                 }
                 else
@@ -192,6 +204,14 @@ namespace Dev2.Activities.Redis
             {
                 Dev2Logger.Error(nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
+            }
+            finally
+            {
+                if (_errorsTo.HasErrors())
+                {
+                    var errorString = _errorsTo.MakeDisplayReady();
+                    DataObject.Environment.AddError(errorString);
+                }
             }
         }
 
