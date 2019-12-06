@@ -61,7 +61,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="25" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
@@ -83,7 +83,7 @@
                          ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}" 
                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
-                         Padding="0,3,3,3">
+                         Padding="1,0,1,1">
                 </ListBox>
             </Grid>
 

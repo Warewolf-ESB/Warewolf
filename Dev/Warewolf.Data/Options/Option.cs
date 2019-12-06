@@ -567,7 +567,7 @@ namespace Warewolf.Options
         {
             get
             {
-                var isEmptyRow = string.IsNullOrEmpty(Name);
+                var isEmptyRow = string.IsNullOrEmpty(Left);
                 isEmptyRow &= SelectedMatchType is null;
                 if (IsSingleOperand)
                 {
