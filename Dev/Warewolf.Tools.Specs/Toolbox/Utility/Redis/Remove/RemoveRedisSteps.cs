@@ -49,11 +49,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         [When(@"I execute the Redis Remove ""(.*)"" tool")]
         public void WhenIExecuteTheRedisRemoveTool(string key)
         {
-            var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
             var port = _scenarioContext.Get<int>("port");
-            var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
+            var impl = GetRedisCacheImpl(hostName, password, port);
 
             GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 

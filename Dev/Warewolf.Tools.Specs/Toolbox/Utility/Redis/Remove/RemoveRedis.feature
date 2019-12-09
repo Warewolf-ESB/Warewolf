@@ -7,10 +7,6 @@ Feature: RedisRemove
 @RedisRemove
 Scenario: Remove Non Existing Key From Cache
 	Given Redis source "192.168.104.19" with password "pass123" and port "6379"
-	And I have a key "MyData" and ttl of "3000" milliseconds
-	And an assign "dataToStore" as
-		| var      | value   |
-		| [[Var1]] | "Test1" |
 	When I execute the Redis Remove "MyData" tool
 	Then The Cache has been Removed with "Failure"
 

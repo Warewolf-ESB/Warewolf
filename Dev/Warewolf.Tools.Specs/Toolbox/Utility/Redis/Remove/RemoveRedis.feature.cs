@@ -98,19 +98,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.Given("Redis source \"192.168.104.19\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
-                        "var",
-                        "value"});
-            table2769.AddRow(new string[] {
-                        "[[Var1]]",
-                        "\"Test1\""});
-#line 11
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
-#line 14
  testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
+#line 11
  testRunner.Then("The Cache has been Removed with \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -125,26 +114,26 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Existing Key From Cache", new string[] {
                         "RedisRemove"});
-#line 18
+#line 14
 this.ScenarioSetup(scenarioInfo);
-#line 19
+#line 15
  testRunner.Given("Redis source \"192.168.104.19\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
+#line 16
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2770.AddRow(new string[] {
+            table2769.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 21
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2770, "And ");
-#line 24
+#line 17
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
+#line 20
  testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 25
+#line 21
  testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 26
+#line 22
  testRunner.Then("The Cache has been Removed with \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -159,41 +148,41 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Specific Key From Cache", new string[] {
                         "RedisRemove"});
-#line 29
+#line 25
 this.ScenarioSetup(scenarioInfo);
-#line 30
+#line 26
  testRunner.Given("Redis source \"192.168.104.19\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 31
+#line 27
  testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
+                        "var",
+                        "value"});
+            table2770.AddRow(new string[] {
+                        "[[Var1]]",
+                        "\"Test1\""});
+#line 28
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2770, "And ");
+#line 31
+ testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 32
+ testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2771 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
             table2771.AddRow(new string[] {
-                        "[[Var1]]",
-                        "\"Test1\""});
-#line 32
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2771, "And ");
-#line 35
- testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 36
- testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table2772 = new TechTalk.SpecFlow.Table(new string[] {
-                        "var",
-                        "value"});
-            table2772.AddRow(new string[] {
                         "[[Var3]]",
                         "\"Test4\""});
-#line 37
- testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2772, "And ");
-#line 40
+#line 33
+ testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2771, "And ");
+#line 36
  testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 41
+#line 37
  testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 42
+#line 38
  testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 39
  testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
