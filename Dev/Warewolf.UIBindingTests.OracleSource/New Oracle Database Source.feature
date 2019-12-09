@@ -37,7 +37,7 @@ Scenario: Creating New DB Source General Testing
    | Options         |
    | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
-   | RSAKLFSVRTFSBLD |
+   | 172.27.14.55 |
    | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRDEV"
    And Database dropdown is "Collapsed"
@@ -94,7 +94,7 @@ Scenario: Creating New DB Source as User Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRTFSBLD"	  
+	  And I type Server as "172.27.14.55"	  
 	  When I type Username as "testuser"
 	  And I type Password as "test123"
 	  Then Database dropdown is "Collapsed"
