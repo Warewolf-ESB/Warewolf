@@ -100,7 +100,7 @@ namespace Dev2.Activities
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(Passing), "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);                   
+                    AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 return true;
             }
@@ -111,9 +111,9 @@ namespace Dev2.Activities
                     if (_dataObject.IsDebugMode())
                     {
                         var debugItemStaticDataParams = new DebugItemStaticDataParams(a.Left, "", true);
-                        AddDebugOutputItem(debugItemStaticDataParams);                        
+                        AddDebugOutputItem(debugItemStaticDataParams);
                     }
- 
+
                     return a.Eval(GetArgumentsFunc, _dataObject.Environment.HasErrors());
                 });
                 return res.All(o => o);
@@ -253,7 +253,7 @@ namespace Dev2.Activities
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("Rerty: " + _retryState.NumberOfRetries.ToString(), "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
-                  
+
                 }
                 if (_retryState.NumberOfRetries <= 0)
                 {
@@ -321,7 +321,10 @@ namespace Dev2.Activities
             try
             {
                 _debugInputs = new List<DebugItem>();
-
+                _debugOutputs = new List<DebugItem>();
+                Stop = false;
+                Next = null;
+               
                 UpdateConditions();
                 if (data.IsDebugMode())
                 {
@@ -425,7 +428,7 @@ namespace Dev2.Activities
             return null;
         }
         public new string Result { get; set; }
-       
+
         private void UpdateConditions()
         {
             var rawText = ExpressionText;
