@@ -18,13 +18,11 @@ namespace QueueWorker
     internal class NetworkLogger : ILoggerPublisher
     {
         private IWebSocketWrapper _ws;
-        private readonly string _endpoint;
         private readonly ISerializer _serializer;
         protected ISerializer Serializer { get => _serializer; }
 
-        public NetworkLogger(string endpoint, ISerializer serializer)
+        public NetworkLogger(ISerializer serializer)
         {
-            _endpoint = endpoint;
             _serializer = serializer;
             _ws = new WebSocketFactory().New(); 
             _ws.Connect();
