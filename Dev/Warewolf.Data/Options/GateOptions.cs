@@ -28,7 +28,7 @@ namespace Warewolf.Data.Options
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip))]
-        public Guid ResumeEndpoint { get; set; } = Guid.Empty;
+        public IWorkflow ResumeEndpoint { get; set; } = new WorkflowWithInputs();
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateCountHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateCountToolTip))]

@@ -20,6 +20,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
+using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -155,10 +156,18 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         {
             var noBackoffAlgorithm = new NoBackoff();
 
+            var expectedWorkflow = new WorkflowWithInputs
+            {
+                Name = "WorkflowName",
+                Value = ResumeEndpoint,
+                Inputs = new List<IServiceInputBase>()
+            };
+
             var gateOptions = new GateOptions
             {
                 Resume = YesNo.Yes,
-                ResumeEndpoint = ResumeEndpoint,
+                //ResumeEndpoint = ResumeEndpoint,
+                ResumeEndpoint = expectedWorkflow,
                 Count = 3,
                 Strategy = noBackoffAlgorithm
             };
@@ -419,7 +428,14 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenResumeEndpointIsSetTo(string resumptionWorkflow)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            gateActivity.GateOptions.ResumeEndpoint = Guid.Parse(resumptionWorkflow);
+            var expectedWorkflow = new WorkflowWithInputs
+            {
+                Name = "WorkflowName",
+                Value = Guid.Parse(resumptionWorkflow),
+                Inputs = new List<IServiceInputBase>()
+            };
+
+            gateActivity.GateOptions.ResumeEndpoint = expectedWorkflow;
         }
 
         [Given(@"the Gate tool is executed")]

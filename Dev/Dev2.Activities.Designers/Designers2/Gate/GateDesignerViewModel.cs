@@ -135,7 +135,7 @@ namespace Dev2.Activities.Designers2.Gate
             }
             var result = OptionConvertor.Convert(conditionExpression);
             ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
-            UpdateModelItem();
+            UpdateConditionExpressionOptionsModelItem();
         }
 
         private void LoadOptions()
@@ -150,14 +150,13 @@ namespace Dev2.Activities.Designers2.Gate
             }
             else
             {
-
                 var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
                 _server = activeServer;
                 _resourceRepository = _server.ResourceRepository;
 
                 Options = new OptionsWithNotifier { Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume) };
-                UpdateModelItem();
             }
+            UpdateOptionsModelItem();
         }
 
         public ICommand DeleteConditionCommand { get; set; }
@@ -207,12 +206,8 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
-        private void UpdateModelItem()
+        private void UpdateConditionExpressionOptionsModelItem()
         {
-            if (Options?.Options != null)
-            {
-                _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
-            }
             if (ConditionExpressionOptions?.Options != null)
             {
                 var tmp = OptionConvertor.ConvertToListOfT<ConditionExpression>(ConditionExpressionOptions.Options);
@@ -228,6 +223,15 @@ namespace Dev2.Activities.Designers2.Gate
                         });
                     }
                 }
+            }
+        }
+
+        private void UpdateOptionsModelItem()
+        {
+            if (Options?.Options != null)
+            {
+                _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
+                OnPropertyChanged(nameof(Options));
             }
         }
 
@@ -285,7 +289,7 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _conditionExpressionOptions = value;
                 OnPropertyChanged(nameof(ConditionExpressionOptions));
-                _conditionExpressionOptions.OptionChanged += UpdateModelItem;
+                _conditionExpressionOptions.OptionChanged += UpdateConditionExpressionOptionsModelItem;
             }
         }
 
@@ -296,7 +300,7 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _options = value;
                 OnPropertyChanged(nameof(Options));
-                _options.OptionChanged += UpdateModelItem;
+                _options.OptionChanged += UpdateOptionsModelItem;
             }
         }
 

@@ -321,9 +321,12 @@ namespace Dev2.Studio.ViewModels
 
                 if (optionView.DataContext is Warewolf.Options.OptionWorkflow optionWorkflow)
                 {
-                    optionWorkflow.Value = selectedResource.ResourceId;
-                    optionWorkflow.Workflow = new NamedGuid { Name = selectedResource.ResourcePath, Value = selectedResource.ResourceId };
-                    optionWorkflow.Inputs = GetInputsFromWorkflow(selectedResource.ResourceId);
+                    optionWorkflow.Workflow = new WorkflowWithInputs
+                    {
+                        Name = selectedResource.ResourcePath,
+                        Value = selectedResource.ResourceId,
+                        Inputs = GetInputsFromWorkflow(selectedResource.ResourceId)
+                    };
                 }
             }
         }

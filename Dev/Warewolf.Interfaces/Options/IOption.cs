@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Warewolf.Data;
 
 namespace Warewolf.Options
 {
@@ -72,9 +73,14 @@ namespace Warewolf.Options
 
     }
 
-    public interface IOptionWorkflow : IOptionBasic<Guid>
+    public interface IWorkflow : INamedGuid
     {
-        
+        ICollection<IServiceInputBase> Inputs { get; set; }
+    }
+
+    public interface IOptionWorkflow : IOption
+    {
+        IWorkflow Workflow { get; }
     }
 
     public interface IOptionConvertable

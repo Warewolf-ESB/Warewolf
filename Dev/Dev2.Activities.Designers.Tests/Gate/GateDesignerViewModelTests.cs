@@ -18,6 +18,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 
@@ -264,11 +265,17 @@ namespace Dev2.Activities.Designers.Tests.Gate
         {
             //------------Setup for test--------------------------
             var retryEntryPointId = Guid.NewGuid();
+            var expectedWorkflow = new WorkflowWithInputs
+            {
+                Name = "WorkflowName",
+                Value = retryEntryPointId,
+                Inputs = new List<IServiceInputBase>()
+            };
             var gateOptions = new GateOptions
             {
                 Resume = YesNo.Yes,
                 Count = 3,
-                ResumeEndpoint = retryEntryPointId,
+                ResumeEndpoint = expectedWorkflow,
                 Strategy = new NoBackoff()
             };
 
