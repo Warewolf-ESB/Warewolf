@@ -29,7 +29,7 @@ namespace Warewolf.UI
                     return Binding.DoNothing;
                 }
                 optionWorkflow.Workflow.Name = resource.ResourceName;
-                optionWorkflow.Inputs = shellViewModel?.GetInputsFromWorkflow(optionWorkflow.Workflow.Value);
+                optionWorkflow.Workflow.Inputs = shellViewModel?.GetInputsFromWorkflow(optionWorkflow.Workflow.Value);
 
                 return resource.ResourceName;
             }

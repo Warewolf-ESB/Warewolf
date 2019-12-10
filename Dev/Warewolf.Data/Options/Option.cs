@@ -425,17 +425,6 @@ namespace Warewolf.Options
 
     public class OptionWorkflow : BindableBase, IOptionWorkflow
     {
-        private Guid _value;
-
-        public Guid Value
-        {
-            get => _value;
-            set
-            {
-                SetProperty(ref _value, value);
-            }
-        }
-
         private string _helpText = Studio.Resources.Languages.HelpText.OptionWorkflowHelpText;
         public string HelpText
         {
@@ -451,27 +440,11 @@ namespace Warewolf.Options
         }
         public string Name { get; set; }
 
-        Guid IOptionBasic<Guid>.Default => Guid.Empty;
-
-        private NamedGuid _workflow;
-
-        public NamedGuid Workflow
+        private IWorkflow _workflow;
+        public IWorkflow Workflow
         {
             get => _workflow;
-            set
-            {
-                SetProperty(ref _workflow, value);
-            }
-        }
-
-        private ICollection<IServiceInputBase> _inputs;
-        public ICollection<IServiceInputBase> Inputs
-        {
-            get => _inputs;
-            set
-            {
-                SetProperty(ref _inputs, value);
-            }
+            set => SetProperty(ref _workflow, value);
         }
 
         public object Clone()
@@ -479,8 +452,7 @@ namespace Warewolf.Options
             return new OptionWorkflow
             {
                 Name = Name,
-                Value = _value,
-                Inputs = _inputs
+                Workflow = Workflow,
             };
         }
         public int CompareTo(object obj)
@@ -495,7 +467,7 @@ namespace Warewolf.Options
                 return -1;
             }
 
-            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Workflow == Workflow ? 0 : -1);
         }
     }
 

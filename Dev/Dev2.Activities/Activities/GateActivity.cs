@@ -321,6 +321,9 @@ namespace Dev2.Activities
             try
             {
                 _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+                Stop = false;
+                Next = null;
 
                 UpdateConditions();
                 if (data.IsDebugMode())

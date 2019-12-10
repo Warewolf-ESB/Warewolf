@@ -66,11 +66,11 @@ namespace Warewolf.Options
                 return result;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
-            {              
+            {
                 var optionInt = new OptionInt
                 {
                     Name = prop.Name,
-                    Value = (int)prop.GetValue(instance)                    
+                    Value = (int)prop.GetValue(instance)
                 };
                 if (helptextAttr != null)
                 {
@@ -82,14 +82,13 @@ namespace Warewolf.Options
                 }
                 return optionInt;
             }
-            else if (prop.PropertyType.IsAssignableFrom(typeof(Guid)))
+            else if (prop.PropertyType.IsAssignableFrom(typeof(IWorkflow)))
             {
-               var optionWorkflow = new OptionWorkflow
+                var workflow = (IWorkflow)prop.GetValue(instance);
+                var optionWorkflow = new OptionWorkflow
                 {
                     Name = prop.Name,
-                    Value = (Guid)prop.GetValue(instance),
-                    Workflow = new NamedGuid { Name = "", Value = (Guid)prop.GetValue(instance) },
-                   
+                    Workflow = new WorkflowWithInputs { Name = workflow.Name, Value = workflow.Value, Inputs = workflow.Inputs },
                 };
                 if (helptextAttr != null)
                 {
@@ -240,6 +239,17 @@ namespace Warewolf.Options
                 if (option is IOptionAutocomplete optionAutocomplete)
                 {
                     prop.SetValue(instance, optionAutocomplete.Value);
+                }
+                else
+                {
+                    throw FailedMappingException;
+                }
+            }
+            if (prop.PropertyType.IsAssignableFrom(typeof(IWorkflow)))
+            {
+                if (option is OptionWorkflow optionWorkflow)
+                {
+                    prop.SetValue(instance, optionWorkflow.Workflow);
                 }
                 else
                 {

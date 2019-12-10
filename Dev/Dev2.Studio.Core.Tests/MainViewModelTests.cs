@@ -4210,12 +4210,12 @@ namespace Dev2.Core.Tests
 
             mockResourcePicker.Verify(resourcePicker => resourcePicker.ShowDialog(mockServer.Object), Times.Once());
             mockResourceRepository.Verify(resourceRepo => resourceRepo.LoadContextualResourceModel(resourceId), Times.Once());
-            Assert.AreEqual(resourceId, optionWorkflow.Value);
+            Assert.AreEqual(resourceId, optionWorkflow.Workflow.Value);
             Assert.AreEqual(resourceId, optionWorkflow.Workflow.Value);
             Assert.AreEqual(resourceName, optionWorkflow.Workflow.Name);
-            Assert.AreEqual(2, optionWorkflow.Inputs.Count);
-            Assert.AreEqual("scalar1", optionWorkflow.Inputs.ToList()[0].Name);
-            Assert.AreEqual("scalar2", optionWorkflow.Inputs.ToList()[1].Name);
+            Assert.AreEqual(2, optionWorkflow.Workflow.Inputs.Count);
+            Assert.AreEqual("scalar1", optionWorkflow.Workflow.Inputs.ToList()[0].Name);
+            Assert.AreEqual("scalar2", optionWorkflow.Workflow.Inputs.ToList()[1].Name);
         }
 
         [TestMethod]

@@ -399,32 +399,29 @@ namespace Warewolf.Data.Tests
         [Owner("Pieter Terblanche")]
         public void OptionWorkflow_Default()
         {
-            var guid = Guid.NewGuid();
             var optionWorkflow = new OptionWorkflow();
 
             Assert.IsNull(optionWorkflow.Name);
+            Assert.IsNull(optionWorkflow.Workflow);
+            Assert.IsNull(optionWorkflow.Workflow.Inputs);
+
             optionWorkflow.Name = "Name";
             Assert.AreEqual("Name", optionWorkflow.Name);
 
-            Assert.IsNotNull(optionWorkflow.Value);
-            Assert.AreEqual(Guid.Empty, optionWorkflow.Value);
-            optionWorkflow.Value = guid;
-            Assert.AreEqual(guid, optionWorkflow.Value);
-
             var expectedGuid = Guid.NewGuid();
             var expectedWorkflowName = "WorkflowName";
-            var namedGuid = new NamedGuid { Name = expectedWorkflowName, Value = expectedGuid };
-
-            Assert.IsNull(optionWorkflow.Workflow);
-            optionWorkflow.Workflow = namedGuid;
+            var expectedInputs = new List<IServiceInputBase>();
+            var workflow = new WorkflowWithInputs
+            {
+                Name = expectedWorkflowName,
+                Value = expectedGuid,
+                Inputs = expectedInputs,
+            };
+            
+            optionWorkflow.Workflow = workflow;
             Assert.AreEqual(expectedWorkflowName, optionWorkflow.Workflow.Name);
             Assert.AreEqual(expectedGuid, optionWorkflow.Workflow.Value);
-
-            Assert.AreEqual(Guid.Empty, ((IOptionBasic<Guid>)optionWorkflow).Default);
-
-            Assert.IsNull(optionWorkflow.Inputs);
-            optionWorkflow.Inputs = new List<IServiceInputBase>();
-            Assert.IsNotNull(optionWorkflow.Inputs);
+            Assert.IsNotNull(optionWorkflow.Workflow.Inputs);
 
             Assert.AreEqual("OptionWorkflowHelpText", optionWorkflow.HelpText);
             Assert.AreEqual("OptionWorkflowTooltip", optionWorkflow.Tooltip);
@@ -435,16 +432,24 @@ namespace Warewolf.Data.Tests
         [Owner("Pieter Terblanche")]
         public void OptionWorkflow_Clone()
         {
-            var guid = Guid.NewGuid();
+            var expectedGuid = Guid.NewGuid();
+            var expectedWorkflowName = "WorkflowName";
+            var expectedInputs = new List<IServiceInputBase>();
+            var workflow = new WorkflowWithInputs
+            {
+                Name = expectedWorkflowName,
+                Value = expectedGuid,
+                Inputs = expectedInputs,
+            };
             var optionWorkflow = new OptionWorkflow
             {
                 Name = "Suggestions",
-                Value = guid
+                Workflow = workflow,
             };
 
             var cloneWorkflow = optionWorkflow.Clone() as OptionWorkflow;
             Assert.AreEqual(optionWorkflow.Name, cloneWorkflow.Name);
-            Assert.AreEqual(optionWorkflow.Value, cloneWorkflow.Value);
+            Assert.AreEqual(optionWorkflow.Workflow, cloneWorkflow.Workflow);
         }
 
         [TestMethod]
@@ -452,11 +457,19 @@ namespace Warewolf.Data.Tests
         [Owner("Pieter Terblanche")]
         public void OptionWorkflow_CompareTo()
         {
-            var guid = Guid.NewGuid();
+            var expectedGuid = Guid.NewGuid();
+            var expectedWorkflowName = "WorkflowName";
+            var expectedInputs = new List<IServiceInputBase>();
+            var workflow = new WorkflowWithInputs
+            {
+                Name = expectedWorkflowName,
+                Value = expectedGuid,
+                Inputs = expectedInputs,
+            };
             var optionWorkflow = new OptionWorkflow
             {
                 Name = "Suggestions",
-                Value = guid
+                Workflow = workflow,
             };
 
             var expectedValue = optionWorkflow.CompareTo(null);
