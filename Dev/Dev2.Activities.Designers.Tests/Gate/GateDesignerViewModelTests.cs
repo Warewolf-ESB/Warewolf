@@ -326,5 +326,114 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual("Strategy", options[3].Name);
             
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateDesignerViewModel))]
+        public void GateDesignerViewModel_LoadConditions()
+        {
+            //------------Setup for test--------------------------
+            var retryEntryPointId = Guid.NewGuid();
+
+            var conditionExpression = new ConditionExpression
+            {
+                Left = "[[a]]"
+            };
+            conditionExpression.Cond = new ConditionMatch
+            {
+                MatchType = enDecisionType.IsEqual,
+                Right = "10"
+            };
+
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpression);
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            //------------Execute Test---------------------------
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
+
+            var conditions = gateDesignerViewModel.ConditionExpressionOptions.Options.ToList();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, conditions.Count);
+
+            var condition = conditions[0] as OptionConditionExpression;
+            Assert.AreEqual("[[a]]", condition.Left);
+            Assert.AreEqual(enDecisionType.IsEqual, condition.MatchType);
+            Assert.AreEqual("10", condition.Right);
+
+            var emptyCondition = conditions[1] as OptionConditionExpression;
+            Assert.IsNull(emptyCondition.Left);
+            Assert.AreEqual(enDecisionType.Choose, emptyCondition.MatchType);
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateDesignerViewModel))]
+        public void GateDesignerViewModel_DeleteCondition()
+        {
+            //------------Setup for test--------------------------
+            var retryEntryPointId = Guid.NewGuid();
+
+            //var optionConditionExpression = new OptionConditionExpression
+            //{
+            //    Left = "[[a]]",
+            //    SelectedMatchType = new NamedInt { Name = "IsEqual", Value = 19 },
+            //    Right = "10"
+            //};
+            var conditionExpression = new ConditionExpression
+            {
+                Left = "[[a]]"
+            };
+            conditionExpression.Cond = new ConditionMatch
+            {
+                MatchType = enDecisionType.IsEqual,
+                Right = "10"
+            };
+
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpression);
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            //------------Execute Test---------------------------
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
+
+            var conditions = gateDesignerViewModel.ConditionExpressionOptions.Options.ToList();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, conditions.Count);
+
+            var optionConditionExpression = conditions[0] as OptionConditionExpression;
+            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "IsEqual", Value = 19 };
+            optionConditionExpression.DeleteCommand.Execute(optionConditionExpression);
+
+            conditions = gateDesignerViewModel.ConditionExpressionOptions.Options.ToList();
+
+            Assert.AreEqual(1, conditions.Count);
+
+            var emptyCondition = conditions[0] as OptionConditionExpression;
+            Assert.IsNull(emptyCondition.Left);
+            Assert.AreEqual(enDecisionType.Choose, emptyCondition.MatchType);
+
+        }
     }
 }
