@@ -144,13 +144,21 @@
                 </Button.Content>
             </Button>
 
-            <TextBox Text="{Binding Path=Left, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="-1,1,1,0"
-                     Grid.Column="1">
+            <ui:IntellisenseTextBox DefaultText="Match Value"
+                                    AllowUserCalculateMode="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                    TextWrapping="Wrap"
+                                    AllowMultilinePaste="True"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="True"
+                                    MaxHeight="52"
+                                    Text="{Binding Path=Left, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Margin="-1,1,1,0"
+                                    Grid.Column="1">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
-            </TextBox>
+            </ui:IntellisenseTextBox>
 
             <ComboBox Grid.Column="2" 
                       ItemsSource="{Binding Path=MatchTypes}"
@@ -171,13 +179,22 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding Path=Right, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Grid.Column="0"
-                         Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
+                <ui:IntellisenseTextBox DefaultText="Match"
+                                        FilterType="All"
+                                        AllowUserCalculateMode="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                        TextWrapping="Wrap"
+                                        AllowMultilinePaste="True"
+                                        AcceptsReturn="True"
+                                        AllowUserInsertLine="True"
+                                        MaxHeight="52"
+                                        Text="{Binding Path=Right, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Grid.Column="0"
+                                        Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                     </i:Interaction.Behaviors>
-                </TextBox>
+                </ui:IntellisenseTextBox>
 
                 <Grid Grid.Column="0" 
                       Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
@@ -185,19 +202,33 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding Path=From, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Grid.Column="0">
+                    <ui:IntellisenseTextBox DefaultText="From"
+                                            FilterType="All"
+                                            AllowUserCalculateMode="False"
+                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                            TextWrapping="NoWrap"
+                                            MaxHeight="52"
+                                            AllowUserInsertLine="False"
+                                            Text="{Binding Path=From, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Grid.Column="0">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
-                    </TextBox>
-                    <TextBox Text="{Binding Path=To, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                             Margin="1,0,0,0"
-                             Grid.Column="1">
+                    </ui:IntellisenseTextBox>
+                    <ui:IntellisenseTextBox DefaultText="From"
+                                            FilterType="All"
+                                            AllowUserCalculateMode="False"
+                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                            TextWrapping="NoWrap"
+                                            MaxHeight="52"
+                                            AllowUserInsertLine="False"
+                                            Text="{Binding Path=To, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            Margin="1,0,0,0"
+                                            Grid.Column="1">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
-                    </TextBox>
+                    </ui:IntellisenseTextBox>
                 </Grid>
             </Grid>
         </Grid>

@@ -87,15 +87,6 @@
                 </ListBox>
             </Grid>
 
-            <!--<ListBox x:Name="ConditionsListBox" 
-                     Grid.Column="0"
-                     Grid.ColumnSpan="2" 
-                     ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}" 
-                     ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
-                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
-                     Padding="0,3,3,3">
-            </ListBox>-->
-
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Gate Failure"/>
 
             <Grid Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
