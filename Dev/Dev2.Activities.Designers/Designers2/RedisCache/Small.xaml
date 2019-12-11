@@ -23,7 +23,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server:" />
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Source:" />
             <TextBlock Grid.Column="1" Grid.Row="0" 
                        TextTrimming="CharacterEllipsis" 
                        Text="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" 

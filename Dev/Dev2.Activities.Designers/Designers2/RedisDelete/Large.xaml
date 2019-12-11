@@ -56,31 +56,31 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Source" />
             <ComboBox Grid.Column="1"
                       Grid.Row="0"
                       x:Name="InitialFocusElement"
                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                      ItemsSource="{Binding RedisServers}"
+                      ItemsSource="{Binding RedisSources}"
                       DisplayMemberPath="ResourceName"
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
-                      SelectedItem="{Binding SelectedRedisServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Tooltips.RedisServersToolTip}"
-                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisServers_AutoID}">
+                      SelectedItem="{Binding SelectedRedisSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static languages:Tooltips.RedisSourcesToolTip}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisSources_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisServerHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
             <Button Grid.Column="2"
                     Grid.Row="0"
                     Content="..."
                     Margin="{StaticResource ControlBorderRight}"
-                    Command="{Binding EditRedisServerCommand}"
-                    ToolTip="{x:Static languages:Tooltips.RedisEditServerToolTip}"
-                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRedisServerCommand_AutoID}" >
+                    Command="{Binding EditRedisSourceCommand}"
+                    ToolTip="{x:Static languages:Tooltips.RedisEditSourceToolTip}"
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRedisSourceCommand_AutoID}" >
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisEditServerHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisEditSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button x:Name="RedisRemoveNewButton" 
@@ -88,10 +88,10 @@
                         Content="{x:Static languages:Core.New}" 
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static languages:Tooltips.RedisNewServerToolTip}"
-                        Command="{Binding NewRedisServerCommand}">
+                        ToolTip="{x:Static languages:Tooltips.RedisNewSourceToolTip}"
+                        Command="{Binding NewRedisSourceCommand}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisNewServerHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RedisNewSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
 
