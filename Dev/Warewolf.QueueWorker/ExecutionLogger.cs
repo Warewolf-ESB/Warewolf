@@ -15,8 +15,8 @@ namespace QueueWorker
 {
     internal class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
     {
-        public ExecutionLogger(string endpoint, ISerializer serializer)
-            : base(endpoint, serializer)
+        public ExecutionLogger(ISerializer serializer)
+            : base(serializer)
         {
         }
 
