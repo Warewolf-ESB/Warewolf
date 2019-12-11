@@ -915,6 +915,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
+        [Depends(Depends.ContainerType.RabbitMQ)]
         public void PerformSerialization_ShouldNotError()
         {
             //------------Setup for test--------------------------
@@ -924,7 +925,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new RabbitMQSource
             {
-                HostName = "rsaklfsvrdev",
+                HostName = Depends.RigOpsIP,
                 Port = 5672,
                 UserName = "test",
                 Password = "test"

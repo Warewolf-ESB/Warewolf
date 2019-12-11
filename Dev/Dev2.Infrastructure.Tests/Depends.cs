@@ -11,6 +11,8 @@ using System.Web.Script.Serialization;
 public class Depends : Attribute, IDisposable
 {
     public static readonly string RigOpsIP = "192.168.104.19";
+    public static readonly string SVRDEVIP = "172.27.14.50";
+    public static readonly string TFSBLDIP = "172.27.14.24";
 
     public enum ContainerType
     {
@@ -166,12 +168,8 @@ public class Depends : Attribute, IDisposable
         }
         else
         {
-            var defaultServer = GetIPAddress("RSAKLFSVRDEV");
-            if (defaultServer != null)
-            {
-                UpdateSourcesConnectionStrings($"Data Source={defaultServer},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
-                Thread.Sleep(30000);
-            }
+            UpdateSourcesConnectionStrings($"Data Source={SVRDEVIP},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
+            Thread.Sleep(30000);
         }
     }
 
@@ -185,16 +183,12 @@ public class Depends : Attribute, IDisposable
         if (EnableDocker)
         {
             UpdateSourcesConnectionStrings($"HostName={RigOpsIP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
-            Thread.Sleep(120000);
+            Thread.Sleep(30000);
         }
         else
         {
-            var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
-            if (defaultServer != null)
-            {
-                UpdateSourcesConnectionStrings($"HostName={defaultServer};UserName=test;Password=test;VirtualHost=/", knownServerSources);
-                Thread.Sleep(30000);
-            }
+            UpdateSourcesConnectionStrings($"HostName={SVRDEVIP};UserName=test;Password=test;VirtualHost=/", knownServerSources);
+            Thread.Sleep(30000);
         }
     }
 
@@ -212,12 +206,8 @@ public class Depends : Attribute, IDisposable
         }
         else
         {
-            var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
-            if (defaultServer != null)
-            {
-                UpdateSourcesConnectionStrings($"Host={defaultServer};UserName=test;Password=test;Database=TestDB", knownServerSources);
-                Thread.Sleep(30000);
-            }
+            UpdateSourcesConnectionStrings($"Host={SVRDEVIP};UserName=test;Password=test;Database=TestDB", knownServerSources);
+            Thread.Sleep(30000);
         }
     }
 
@@ -230,12 +220,8 @@ public class Depends : Attribute, IDisposable
         }
         else
         {
-            var defaultServer = GetIPAddress("RSAKLFSVRDEV.dev2.local");
-            if (defaultServer != null)
-            {
-                UpdateSourcesConnectionString(defaultServer, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-                Thread.Sleep(30000);
-            }
+            UpdateSourcesConnectionString(SVRDEVIP, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            Thread.Sleep(30000);
         }
     }
 

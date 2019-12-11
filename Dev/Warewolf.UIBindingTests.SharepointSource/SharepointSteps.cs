@@ -299,7 +299,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
             {
                 Name = "Test",
-                Server = "http://rsaklfsvrdev",
+                Server = $"http://{Depends.SVRDEVIP}",
                 AuthenticationType = AuthenticationType.Windows,
                 UserName = "IntegrationTester",
                 Password = password

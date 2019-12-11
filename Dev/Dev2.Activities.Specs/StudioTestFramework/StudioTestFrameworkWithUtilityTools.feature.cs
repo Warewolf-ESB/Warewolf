@@ -354,7 +354,7 @@ this.FeatureBackground();
                         "Url"});
             table1208.AddRow(new string[] {
                         "\"[[Result]]\"",
-                        "http://172.27.14.55:9810/api/products/Get"});
+                        "http://TFSBLD.dev2.local:9810/api/products/Get"});
 #line 92
  testRunner.And("\"WebRequestTestWF\" contains WebRequest \"TestWebRequest\" as", ((string)(null)), table1208, "And ");
 #line 95
