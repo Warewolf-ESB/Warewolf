@@ -24,15 +24,11 @@ namespace Warewolf.Data.Options
         { }
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
-        public YesNo Resume { get; set; } = YesNo.No;
+        public Resumable Resume { get; set; } = Resumable.ResumptionDisabled;
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip))]
         public IWorkflow ResumeEndpoint { get; set; } = new WorkflowWithInputs();
-
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateCountHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateCountToolTip))]
-        public int Count { get; set; } = 2;
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
         [MultiDataProvider(typeof(NoBackoff), typeof(ConstantBackoff), typeof(LinearBackoff), typeof(FibonacciBackoff), typeof(QuadraticBackoff))]
@@ -41,10 +37,10 @@ namespace Warewolf.Data.Options
         public RetryAlgorithmBase Strategy { get; set; } = new NoBackoff();
     }
 
-    public enum YesNo
+    public enum Resumable
     {
-        Yes = 1,
-        No = 0
+        AllowResumption = 1,
+        ResumptionDisabled = 0
     }
 
     public abstract class RetryAlgorithmBase

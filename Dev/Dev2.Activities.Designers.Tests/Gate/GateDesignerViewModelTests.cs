@@ -289,7 +289,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             var gateOptions = new GateOptions
             {
-                Resume = YesNo.Yes,
+                Resume = Resumable.AllowResumption,
                 Count = 3,
                 ResumeEndpoint = expectedWorkflow,
                 Strategy = new NoBackoff()
