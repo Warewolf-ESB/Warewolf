@@ -9,7 +9,7 @@
 */
 
 
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Activities.RedisRemove;
 using Dev2.Common.Serializers;
 using Dev2.Interfaces;
@@ -99,11 +99,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             var assignActivity = new DsfMultiAssignActivity();
             var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
             _scenarioContext.Remove(nameof(ttl));
 
-            _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
             _scenarioContext.Add(nameof(ttl), ttl);
 
@@ -114,7 +114,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         [Then(@"another assign ""(.*)"" as")]
         public void GivenAnotherAssignAs(string data, Table table)
         {
-            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
 
             var assignActivity = GetDsfMultiAssignActivity("[[Var3]]", "Test4");
 
@@ -129,10 +129,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
 
             var dic = new Dictionary<string, string> { { assignOutputs[0].Value, assignOutputs[0].Name } };
 
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(DsfMultiAssignActivity));
 
-            _scenarioContext.Add(nameof(RedisActivity), redisActivity);
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivity);
             _scenarioContext.Add(data, dic);
             _scenarioContext.Add(nameof(DsfMultiAssignActivity), assignActivity);
 
@@ -235,7 +235,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         [AfterScenario(@"RedisRemove")]
         public void Cleanup()
         {
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
             _scenarioContext.Remove(nameof(RedisRemoveActivity));
             _scenarioContext.Remove("key");
