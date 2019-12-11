@@ -82,7 +82,7 @@ namespace QueueWorker
             {
                 try
                 {
-                    var logger = new ExecutionLogger(Config.Auditing.Endpoint, new JsonSerializer());
+                    var logger = new ExecutionLogger(new JsonSerializer());
                     logger.Info("Starting queue worker", _config.QueueName);
 
                     if (_config.Source != null)
