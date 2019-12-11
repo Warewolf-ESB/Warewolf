@@ -67,7 +67,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             _dev2CountriesWebServiceWebSource = new WebServiceSourceDefinition
             {
                 Name = "Dev2CountriesWebService",
-                HostName = "http://172.27.14.55/integrationTestSite/GetCountries.ashx"
+                HostName = "http://TFSBLD.dev2.local/integrationTestSite/GetCountries.ashx"
             };
 
             _googleWebSource = new WebServiceSourceDefinition

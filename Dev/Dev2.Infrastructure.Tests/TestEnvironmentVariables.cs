@@ -356,7 +356,7 @@ namespace Dev2.Infrastructure.Tests
 
         public static string GetVar(string name)
         {
-            const string passwordsPath = @"\\rsaklfsvrdev.dev2.local\Git-Repositories\Warewolf\.testData";
+            string passwordsPath = $@"\\{Depends.RigOpsIP}\Git-Repositories\Warewolf\.testData";
             if (File.Exists(passwordsPath))
             {
                 var usernamesAndPasswords = File.ReadAllLines(passwordsPath);

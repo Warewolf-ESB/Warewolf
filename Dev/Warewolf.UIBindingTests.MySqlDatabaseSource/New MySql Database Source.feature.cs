@@ -117,7 +117,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table1.AddRow(new string[] {
-                        "172.27.14.55"});
+                        "TFSBLD.dev2.local"});
             table1.AddRow(new string[] {
                         "RSAKLFSVRWRWBLD"});
 #line 36
@@ -251,7 +251,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 100
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 101
-   testRunner.And("I type Server as \"172.27.14.55\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Server as \"TFSBLD.dev2.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
@@ -294,7 +294,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 119
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 120
-   testRunner.And("I type Server as \"172.27.14.55\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Server as \"TFSBLD.dev2.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
    testRunner.And("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
@@ -388,7 +388,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 161
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 162
-   testRunner.And("I type Server as \"172.27.14.55\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Server as \"TFSBLD.dev2.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 163
    testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 164
@@ -635,7 +635,7 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table2.AddRow(new string[] {
-                        "172.27.14.55"});
+                        "TFSBLD.dev2.local"});
             table2.AddRow(new string[] {
                         "RSAKLFSVRWRWBLD"});
 #line 272

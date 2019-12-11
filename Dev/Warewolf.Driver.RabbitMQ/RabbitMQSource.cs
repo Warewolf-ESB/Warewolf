@@ -21,7 +21,7 @@ namespace Warewolf.Driver.RabbitMQ
         public RabbitMQSource()
         {
             //TODO: Use a resource file configs here for Hostname, ect
-            _factory = new ConnectionFactory() { HostName = "rsaklfsvrdev.dev2.local", UserName = "test", Password = "test" };
+            _factory = new ConnectionFactory() { HostName = "172.27.14.50", UserName = "test", Password = "test" };
         }
 
         public IQueueConnection NewConnection(IStreamConfig config)

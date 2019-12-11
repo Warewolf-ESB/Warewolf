@@ -36,7 +36,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             Utils.SetupResourceDictionary();
             var manageDatabaseSourceControl = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "RSAKLFSVRDEV", "RSAKLFSVRPDC", "172.27.14.55", "RSAKLFSVRWRWBLD" });
+            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "RSAKLFSVRDEV", "RSAKLFSVRPDC", "TFSBLD.dev2.local", "RSAKLFSVRWRWBLD" });
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();

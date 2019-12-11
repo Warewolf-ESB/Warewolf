@@ -130,7 +130,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var webServiceSourceDefinition = new WebServiceSourceDefinition
             {
                 Name = "Test",
-                HostName = "http://172.27.14.55/IntegrationTestSite",
+                HostName = "http://TFSBLD.dev2.local/IntegrationTestSite",
                 DefaultQuery = "/GetCountries.ashx?extension=json&prefix=a",
                 UserName = "IntegrationTester",
                 Password = password
