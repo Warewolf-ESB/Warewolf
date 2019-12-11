@@ -385,12 +385,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Setup for test--------------------------
             var retryEntryPointId = Guid.NewGuid();
 
-            //var optionConditionExpression = new OptionConditionExpression
-            //{
-            //    Left = "[[a]]",
-            //    SelectedMatchType = new NamedInt { Name = "IsEqual", Value = 19 },
-            //    Right = "10"
-            //};
             var conditionExpression = new ConditionExpression
             {
                 Left = "[[a]]"

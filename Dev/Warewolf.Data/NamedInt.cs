@@ -9,7 +9,10 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using Warewolf.Options;
 
 namespace Warewolf.Data
 {
@@ -18,19 +21,65 @@ namespace Warewolf.Data
         public string Name { get; set; }
         public int Value { get; set; }
 
+        private static ConcurrentDictionary<Type, IEnumerable<INamedInt>> _cachedNamedInts = new ConcurrentDictionary<Type, IEnumerable<INamedInt>>();
         public static IEnumerable<INamedInt> GetAll(Type type)
         {
-            var enums = Enum.GetValues(type);
-            var result = new List<INamedInt>();
-            foreach (var entry in enums)
+            if (!_cachedNamedInts.ContainsKey(type))
             {
-                result.Add(new NamedInt
+                try
                 {
-                    Name = Enum.GetName(type, entry),
-                    Value = (int)entry,
-                });
+                    var enums = Enum.GetValues(type);
+                    var result = new List<(int, INamedInt)>();
+                    bool hadIndex = false;
+                    bool hadNoIndex = false;
+                    
+                    for (int i = 0; i < enums.Length; i++)
+                    {
+                        var entry = enums.GetValue(i);
+                        var enumName = Enum.GetName(type, entry);
+                        var actualEnum = type.GetMember(enumName)[0];
+                        var index = -1;
+                        if (actualEnum.GetCustomAttributes(typeof(IndexAttribute), false).FirstOrDefault() is IndexAttribute indexAttribute)
+                        {
+                            hadIndex = true;
+                            index = indexAttribute.Get();
+                        } 
+                        else
+                        {
+                            index = i;
+                            hadNoIndex = true;
+                        }
+                        if (index < 0 || (hadIndex && hadNoIndex))
+                        {
+                            throw new IndexAttributeException($"mixed use of enum IndexAttributes in {type}");
+                        }
+                        string displayValue = "";
+                        if (actualEnum.GetCustomAttributes(typeof(DecisionTypeDisplayValue), false).FirstOrDefault() is DecisionTypeDisplayValue displayValueAttribute)
+                        {
+                            displayValue = displayValueAttribute.Get();
+                        }
+
+                        result.Add((index, new NamedInt
+                        {
+                            Name = displayValue,
+                            Value = (int)entry,
+                        }));
+                    }
+                    var r = result
+                        .OrderBy(o => o.Item1)
+                        .Select(o => o.Item2);
+                    _ = _cachedNamedInts.TryAdd(type, r);
+                    return r;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
-            return result;
+            else
+            {
+                return _cachedNamedInts[type];
+            }
         }
     }
 }
