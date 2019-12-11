@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers2.Gate
             var gateFailure = _modelItem.Properties["GateFailure"].ComputedValue;
             if (gateFailure is null)
             {
-                SelectedGateFailure = GetGateFailure(GateFailureAction.StopOnError.ToString()).ToString();
+                SelectedGateFailure = GetGateFailure(GateFailureAction.StopProcessing.ToString()).ToString();
             }
             else
             {

@@ -15,9 +15,9 @@ namespace Warewolf.Data.Options.Enums
    
     public enum GateFailureAction
     {
-        [Description("Retry: Retry execution on error")]
+        [Description("Retry execution")]
         Retry,
-        [Description("StopOnError: Stop execution on error")]
-        StopOnError,
+        [Description("Stop processing")]
+        StopProcessing,
     }
 }

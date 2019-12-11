@@ -144,7 +144,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         {
             var noBackoffGateActivity = new GateActivity
             {
-                GateFailure = GateFailureAction.StopOnError.ToString()
+                GateFailure = GateFailureAction.StopProcessing.ToString()
             };
 
             CreateGateOptions(noBackoffGateActivity);
