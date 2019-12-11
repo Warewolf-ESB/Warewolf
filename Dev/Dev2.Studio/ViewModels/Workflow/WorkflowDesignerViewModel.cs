@@ -2015,7 +2015,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool found = false;
             var allGates = connectedList(treeNodes[0].Activity)
                 .Cast<GateActivity>()
-                .Where(gate => gate?.GateOptions != null && gate.GateOptions.Resume == Warewolf.Data.Options.YesNo.Yes);
+                .Where(gate => gate?.GateOptions != null && gate.GateOptions.Resume == Warewolf.Data.Options.Resumable.AllowResumption);
 
             var selectableGates = allGates
                 .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));

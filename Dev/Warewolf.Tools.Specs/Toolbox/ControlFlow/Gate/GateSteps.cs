@@ -165,7 +165,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             var gateOptions = new GateOptions
             {
-                Resume = YesNo.Yes,
+                Resume = Resumable.AllowResumption,
                 //ResumeEndpoint = ResumeEndpoint,
                 ResumeEndpoint = expectedWorkflow,
                 Count = 3,
@@ -413,14 +413,14 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenResumeIsSetTo(string resume)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            gateActivity.GateOptions.Resume = resume == "Yes" ? YesNo.Yes : YesNo.No;
+            gateActivity.GateOptions.Resume = resume == "Yes" ? Resumable.AllowResumption : Resumable.ResumptionDisabled;
         }
 
         [Given(@"next gate Resume is set to ""(.*)""")]
         public void GivenNextGateResumeIsSetTo(string resume)
         {
             scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
-            gateActivity.GateOptions.Resume = resume == "Yes" ? YesNo.Yes : YesNo.No;
+            gateActivity.GateOptions.Resume = resume == "Yes" ? Resumable.AllowResumption : Resumable.ResumptionDisabled;
         }
 
 
