@@ -12,7 +12,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Redis;
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
     {
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new RedisActivity());
+            return ModelItemUtils.CreateModelItem(new RedisCacheActivity());
         }
 
         [TestMethod]

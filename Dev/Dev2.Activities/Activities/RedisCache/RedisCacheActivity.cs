@@ -45,10 +45,10 @@ using Dev2.MathOperations;
 using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 
-namespace Dev2.Activities.Redis
+namespace Dev2.Activities.RedisCache
 {
-    [ToolDescriptorInfo("Redis", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
-    public class RedisActivity : DsfBaseActivity, IEquatable<RedisActivity>
+    [ToolDescriptorInfo("RedisCache", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
+    public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>
     {
         string _result = "Success";
         private readonly ISerializer _serializer;
@@ -56,18 +56,18 @@ namespace Dev2.Activities.Redis
         private RedisCacheBase _redisCache;
         internal List<string> _messages = new List<string>();
 
-        public RedisActivity()
+        public RedisCacheActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
 
         }
 
-        public RedisActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
             : this(resourceCatalog, new ResponseManager(), redisCache)
         {
         }
 
-        public RedisActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
             _redisCache = redisCache;
@@ -202,7 +202,7 @@ namespace Dev2.Activities.Redis
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(RedisCacheActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
             finally
@@ -464,7 +464,7 @@ namespace Dev2.Activities.Redis
 
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(RedisActivity other)
+        public bool Equals(RedisCacheActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
@@ -503,7 +503,7 @@ namespace Dev2.Activities.Redis
                 return false;
             }
 
-            return Equals((RedisActivity)obj);
+            return Equals((RedisCacheActivity)obj);
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex

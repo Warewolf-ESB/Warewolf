@@ -9,7 +9,7 @@
 */
 
 
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Common.Serializers;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -63,7 +63,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var assignActivity = new DsfMultiAssignActivity();
             var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
-            _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
             _scenarioContext.Add(nameof(ttl), ttl);
 
@@ -74,7 +74,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Given(@"No data in the cache")]
         public void GivenNoDataInTheCache()
         {
-            var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
             var ttl = _scenarioContext.Get<int>("ttl");
 
@@ -95,7 +95,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Then(@"an assign ""(.*)"" as")]
         public void GivenAnAssignAs(string data, Table table)
         {
-            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
 
             var assignActivity = GetDsfMultiAssignActivity("[[Var1]]", "Test1");
 
@@ -110,8 +110,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 
             var dic = new Dictionary<string, string> { { assignOutputs[0].Value, assignOutputs[0].Name } };
 
-            _scenarioContext.Remove(nameof(RedisActivity));
-            _scenarioContext.Add(nameof(RedisActivity), redisActivity);
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivity);
             _scenarioContext.Add(data, dic);
             _scenarioContext.Add(nameof(DsfMultiAssignActivity), assignActivity);
 
@@ -121,7 +121,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [When(@"I execute the cache tool")]
         public void WhenIExecuteThecacheTool()
         {
-            var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivityOld = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
             var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
             var assignActivity = _scenarioContext.Get<DsfMultiAssignActivity>(nameof(DsfMultiAssignActivity));
             var hostName = _scenarioContext.Get<string>("hostName");
@@ -137,7 +137,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Then(@"the cache will contain")]
         public void ThenTheCacheWillContain(Table table)
         {
-            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
 
             var actualCacheData = GetCachedData(impl, redisActivity.Key);
@@ -153,7 +153,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Then(@"output variables have the following values")]
         public void ThenOutputVariablesHaveTheFollowingValues(Table table)
         {
-            var redisActivity = _scenarioContext.Get<RedisActivity>(nameof(RedisActivity));
+            var redisActivity = _scenarioContext.Get<RedisCacheActivity>(nameof(RedisCacheActivity));
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
             var actualCacheData = GetCachedData(impl, redisActivity.Key);
 
@@ -201,8 +201,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             Assert.IsTrue(expectedValue.Contains(actualDataStored.Values.ToArray()[0]));
 
             _scenarioContext.Add(redisActivityNew.Key, actualDataStored);
-            _scenarioContext.Remove(nameof(RedisActivity));
-            _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivityNew);
         }
 
 
@@ -236,7 +236,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         public void ThenTheAssignIsExecuted(string dataToStoreKey)
         {
             var dataToStore = _scenarioContext.Get<Dictionary<string, string>>(dataToStoreKey);
-            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
 
             var executioResult = redisActivity.SpecPerformExecution(dataToStore);
 
@@ -314,11 +314,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             _scenarioContext.Remove("password");
             _scenarioContext.Remove("port");
 
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
             _scenarioContext.Remove("ttl");
 
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove("dataToStore");
             _scenarioContext.Remove(nameof(DsfMultiAssignActivity));
         }

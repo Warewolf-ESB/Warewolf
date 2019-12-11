@@ -13,7 +13,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
@@ -31,14 +31,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
     [TestClass]
     public class RedisActivityTests : BaseActivityTests
     {
-        static RedisActivity CreateRedisActivity()
+        static RedisCacheActivity CreateRedisActivity()
         {
-            return new RedisActivity();
+            return new RedisCacheActivity();
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_Equal_BothareObjects()
         {
             object redisActivity = CreateRedisActivity();
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
             //---------------Set up test pack-------------------
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
             //----------------------Arrange----------------------
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {
             //----------------------Arrange----------------------
@@ -271,7 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
     }
 
-    class TestRedisActivity : RedisActivity
+    class TestRedisActivity : RedisCacheActivity
     {
 
         public TestRedisActivity(IResourceCatalog resourceCatalog, RedisCacheImpl impl)
