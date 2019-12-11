@@ -121,6 +121,7 @@
                                     AcceptsReturn="False"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False"
+                                    IsEnabled="{Binding IsRedisSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding Path=Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisKeyTextbox_AutoID}"
@@ -149,6 +150,7 @@
                         x:Name="TTL"
                         Style="{StaticResource TextBoxStyle}"
                         Text="{Binding Path=TTL,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsRedisSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
                         ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
                     <i:Interaction.Behaviors>
@@ -169,6 +171,7 @@
                                        HintText="Drop Activity Here"
                                        BorderBrush="Black"
                                        BorderThickness="2"
+                                       IsEnabled="{Binding IsRedisSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                        Item="{Binding Path=ModelItem.ActivityFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
                                        MinHeight="50"
                                        attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
