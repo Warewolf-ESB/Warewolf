@@ -144,25 +144,21 @@
                 </Grid.ColumnDefinitions>
                 
                 <TextBlock Grid.Column="0" Text="Time To Live" />
-                <ui:IntellisenseTextBox Grid.Column="1"
-                     Grid.Row="0"
-                     AcceptsReturn="False" 
-                     DefaultText ="seconds"
-                     MinWidth="50"
-                     MaxWidth="50"
-                     Margin="{StaticResource ControlBorderTop}"
-                     Text="{Binding Path=TTL, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static sys:String.Empty}}" 
-                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
-                     ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
+                <TextBox Grid.Column="1"
+                        Margin="0,1,0,1"
+                        x:Name="TTL"
+                        Style="{StaticResource TextBoxStyle}"
+                        Text="{Binding Path=TTL,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisTTLTextbox_AutoID}"
+                        ToolTip="{x:Static languages:Tooltips.RedisTTLToolTip}">
                     <i:Interaction.Behaviors>
                         <core1:HelpSetter Text="{x:Static languages:HelpText.RedisTTLHelp}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.TTL"
-                                         SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
+                                             SourcePropertyName="ModelItem.TTL"
+                                             SourcePropertyValue="{Binding ModelItem.TTL, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding}" />
                     </i:Interaction.Behaviors>
-                </ui:IntellisenseTextBox>
-                
+                </TextBox>
             </Grid>
         </Grid>
 

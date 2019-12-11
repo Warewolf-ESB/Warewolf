@@ -3023,7 +3023,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time To Live is set on the given Key to dispose of data cached under the Key when the Time To Live has elapsed. If the Time To Live is not set, the data will remain cached until this key is removed..
+        ///   Looks up a localized string similar to Time To Live is set on the given Key to dispose of data cached until the Time To Live has elapsed.&lt;br/&gt;The default is 5 Seconds. &lt;br/&gt;&lt;br/&gt;If the Time To Live is set to 0, the data will remain cached until this key is removed using the Redis Remove Tool..
         /// </summary>
         public static string RedisTTLHelp {
             get {

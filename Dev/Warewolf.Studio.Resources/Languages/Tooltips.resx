@@ -2409,7 +2409,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Audits Folder Path</value>
   </data>
   <data name="RedisTTLToolTip" xml:space="preserve">
-    <value>Time before the key expires</value>
+    <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
   <data name="RedisCounterKeyToolTip" xml:space="preserve">
     <value>Redis Key to create a counter</value>
