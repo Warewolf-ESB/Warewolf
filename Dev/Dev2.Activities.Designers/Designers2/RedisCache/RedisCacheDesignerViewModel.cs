@@ -30,21 +30,21 @@ using Dev2.Validation;
 using Dev2.Providers.Errors;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.Activities.Designers2.Redis
+namespace Dev2.Activities.Designers2.RedisCache
 {
-    public class RedisDesignerViewModel : ActivityDesignerViewModel
+    public class RedisCacheDesignerViewModel : ActivityDesignerViewModel
     {
         readonly IServer _server;
         IShellViewModel _shellViewModel;
 
         [ExcludeFromCodeCoverage]
-        public RedisDesignerViewModel(ModelItem modelItem)
+        public RedisCacheDesignerViewModel(ModelItem modelItem)
             : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
         {
 
         }
 
-        public RedisDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
+        public RedisCacheDesignerViewModel(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("environmentModel", server);
@@ -84,11 +84,11 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty SelectedRedisServerProperty =
-            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
+            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
 
         private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDesignerViewModel)d;
+            var viewModel = (RedisCacheDesignerViewModel)d;
             viewModel.OnSelectedRedisServerChanged();
             viewModel.EditRedisServerCommand?.RaiseCanExecuteChanged();
         }
@@ -110,11 +110,11 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty KeyProperty =
-            DependencyProperty.Register("Key", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
+            DependencyProperty.Register("Key", typeof(string), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null, OnKeyChanged));
 
         private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDesignerViewModel)d;
+            var viewModel = (RedisCacheDesignerViewModel)d;
             viewModel.OnKeyChanged();
         }
 
@@ -130,11 +130,11 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty TTLProperty =
-            DependencyProperty.Register("TTL", typeof(int?), typeof(RedisDesignerViewModel), new PropertyMetadata(null, OnTTLChanged));
+            DependencyProperty.Register("TTL", typeof(int?), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null, OnTTLChanged));
 
         private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (RedisDesignerViewModel)d;
+            var viewModel = (RedisCacheDesignerViewModel)d;
             viewModel.OnTTLChanged();
         }
 
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty ActivityFuncDisplayNameProperty =
-            DependencyProperty.Register("ActivityFuncDisplayName", typeof(string), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("ActivityFuncDisplayName", typeof(string), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null));
 
         public ImageSource ActivityFuncIcon
         {
@@ -185,12 +185,12 @@ namespace Dev2.Activities.Designers2.Redis
         }
 
         public static readonly DependencyProperty ActivityFuncIconProperty =
-            DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("ActivityFuncIcon", typeof(ImageSource), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null));
 
         public bool IsKeyFocused { get => (bool)GetValue(IsKeyFocusedProperty); set { SetValue(IsKeyFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsKeyFocusedProperty =
-            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(false));
 
         [ExcludeFromCodeCoverage]
         public override void Validate()

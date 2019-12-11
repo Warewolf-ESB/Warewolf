@@ -1992,13 +1992,13 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
     <value>Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s Queue.</value>
   </data>
-  <data name="Tool_Utility_Redis" xml:space="preserve">
-    <value>Use the Redis tool to store data by key in the cache.</value>
+  <data name="Tool_Database_RedisCache" xml:space="preserve">
+    <value>Use the Redis Cache tool to store data by key in the cache.</value>
   </data>
-  <data name="Tool_Utility_RedisRemove" xml:space="preserve">
+  <data name="Tool_Database_RedisRemove" xml:space="preserve">
     <value>Use the Redis Remove tool to remove existing key with data from cache.</value>
   </data>
-  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+  <data name="Tool_Database_RedisCounter" xml:space="preserve">
     <value>Use the Redis Counter tool to increment or decrement values in the cache.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">

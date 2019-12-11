@@ -164,14 +164,14 @@
     <Compile Include="Designers2\RedisDelete\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Redis\RedisDesigner.xaml.cs">
-      <DependentUpon>RedisDesigner.xaml</DependentUpon>
+    <Compile Include="Designers2\RedisCache\RedisCacheDesigner.xaml.cs">
+      <DependentUpon>RedisCacheDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Redis\RedisDesignerViewModel.cs" />
-    <Compile Include="Designers2\Redis\Large.xaml.cs">
+    <Compile Include="Designers2\RedisCache\RedisCacheDesignerViewModel.cs" />
+    <Compile Include="Designers2\RedisCache\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Redis\Small.xaml.cs">
+    <Compile Include="Designers2\RedisCache\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
@@ -1569,15 +1569,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Redis\RedisDesigner.xaml">
+    <Page Include="Designers2\RedisCache\RedisCacheDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Redis\Large.xaml">
+    <Page Include="Designers2\RedisCache\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Redis\Small.xaml">
+    <Page Include="Designers2\RedisCache\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

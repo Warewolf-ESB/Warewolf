@@ -11,7 +11,7 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Dev2.Activities.Designers2.Redis;
+using Dev2.Activities.Designers2.RedisCache;
 using Dev2.Activities.RedisCache;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
@@ -24,7 +24,7 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Redis
 {
     [TestClass]
-    public class RedisDesignerViewModelTests
+    public class RedisCacheDesignerViewModelTests
     {
         static ModelItem CreateModelItem()
         {
@@ -33,32 +33,32 @@ namespace Dev2.Activities.Designers.Tests.Redis
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [TestCategory(nameof(RedisCacheDesignerViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Null_EnvironmentModel()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            _ = new RedisDesignerViewModel(CreateModelItem(), null, null);
+            _ = new RedisCacheDesignerViewModel(CreateModelItem(), null, null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [TestCategory(nameof(RedisCacheDesignerViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Null_ShellViewModel()
         {
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
             //------------Execute Test---------------------------
-            _ = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, null);
+            _ = new RedisCacheDesignerViewModel(CreateModelItem(), mockServer.Object, null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [TestCategory(nameof(RedisCacheDesignerViewModel))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_Constructor()
         {
             //------------Setup for test--------------------------
@@ -82,7 +82,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
             var mockShellViewModel = new Mock<IShellViewModel>();
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            var redisDesignerViewModel = new RedisCacheDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(redisDesignerViewModel.HasLargeView);
             Assert.IsTrue(redisDesignerViewModel.ShowLarge);
@@ -111,7 +111,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [TestCategory(nameof(RedisCacheDesignerViewModel))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_UpdateHelpDescriptor()
         {
             var expectedHelpText = "redis help text";
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            var redisDesignerViewModel = new RedisCacheDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             redisDesignerViewModel.UpdateHelpDescriptor(expectedHelpText);
 
             mockHelpViewModel.Verify(helpViewModel => helpViewModel.UpdateHelpText(expectedHelpText), Times.Once);
@@ -148,7 +148,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [TestCategory(nameof(RedisCacheDesignerViewModel))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_EditRedisServerSource()
         {
             var expectedId = Guid.NewGuid();
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
             CustomContainer.Register(mockShellViewModel.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object)
+            var redisDesignerViewModel = new RedisCacheDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object)
             {
                 SelectedRedisServer = redisSource
             };
@@ -190,7 +190,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(RedisDesignerViewModel))]
+        [TestCategory(nameof(RedisCacheDesignerViewModel))]
         public void RedisDesignerViewModel_Constructor_ModelItemIsValid_NewRedisServerSource()
         {
             var expectedId = Guid.NewGuid();
@@ -220,7 +220,7 @@ namespace Dev2.Activities.Designers.Tests.Redis
             CustomContainer.Register(mockShellViewModel.Object);
 
             //------------Execute Test---------------------------
-            var redisDesignerViewModel = new RedisDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            var redisDesignerViewModel = new RedisCacheDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
             redisDesignerViewModel.NewRedisServerCommand.Execute(null);
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.NewRedisSource(""), Times.Once);

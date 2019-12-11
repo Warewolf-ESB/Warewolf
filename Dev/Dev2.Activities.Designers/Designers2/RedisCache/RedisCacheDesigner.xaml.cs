@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Activities.Designers2.Redis
+namespace Dev2.Activities.Designers2.RedisCache
 {
-    public partial class RedisDesigner
+    public partial class RedisCacheDesigner
     {
-        public RedisDesigner()
+        public RedisCacheDesigner()
         {
             InitializeComponent();
         }
