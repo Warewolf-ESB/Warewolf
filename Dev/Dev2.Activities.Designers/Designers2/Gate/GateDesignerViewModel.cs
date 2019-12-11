@@ -256,7 +256,6 @@ namespace Dev2.Activities.Designers2.Gate
 
             if (!emptyRows.Any())
             {
-                var index = ConditionExpressionOptions.Options.Count();
                 var conditionExpression = new OptionConditionExpression();
                 var list = new List<IOption>(_conditionExpressionOptions.Options)
                 {

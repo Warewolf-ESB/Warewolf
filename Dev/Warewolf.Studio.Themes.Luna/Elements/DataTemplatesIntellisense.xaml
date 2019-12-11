@@ -152,7 +152,8 @@
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="True"
                                     MaxHeight="52"
-                                    Text="{Binding Path=Left, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Focusable="True"
+                                    Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
                                     Margin="-1,1,1,0"
                                     Grid.Column="1">
                 <i:Interaction.Behaviors>
@@ -167,6 +168,7 @@
                       SelectedValue="{Binding Path=SelectedMatchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource ComboBoxStyle}" 
                       Margin="0,1,1,0"
+                      Focusable="True"
                       ToolTip="{Binding Path=Tooltip}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
@@ -188,7 +190,8 @@
                                         AcceptsReturn="True"
                                         AllowUserInsertLine="True"
                                         MaxHeight="52"
-                                        Text="{Binding Path=Right, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Focusable="True"
+                                        Text="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         Grid.Column="0"
                                         Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
@@ -208,8 +211,9 @@
                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                             TextWrapping="NoWrap"
                                             MaxHeight="52"
+                                            Focusable="True"
                                             AllowUserInsertLine="False"
-                                            Text="{Binding Path=From, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                             Grid.Column="0">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
@@ -221,8 +225,9 @@
                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                             TextWrapping="NoWrap"
                                             MaxHeight="52"
+                                            Focusable="True"
                                             AllowUserInsertLine="False"
-                                            Text="{Binding Path=To, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
                                             Margin="1,0,0,0"
                                             Grid.Column="1">
                         <i:Interaction.Behaviors>
