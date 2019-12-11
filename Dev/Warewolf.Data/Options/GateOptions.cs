@@ -56,9 +56,6 @@ namespace Warewolf.Data.Options
         {
             RetryAlgorithm = RetryAlgorithm.NoBackoff;
         }
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
-        public int TimeOut { get; set; } = 60000;
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
@@ -80,10 +77,6 @@ namespace Warewolf.Data.Options
         {
             RetryAlgorithm = RetryAlgorithm.ConstantBackoff;
         }
-
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
-        public int TimeOut { get; set; } = 60000;
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip))]
@@ -111,9 +104,6 @@ namespace Warewolf.Data.Options
         {
             RetryAlgorithm = RetryAlgorithm.LinearBackoff;
         }
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
-        public int TimeOut { get; set; } = 60000;
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateIncrementHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateIncrementToolTip))]
@@ -142,10 +132,6 @@ namespace Warewolf.Data.Options
             RetryAlgorithm = RetryAlgorithm.FibonacciBackoff;
         }
 
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
-        public int TimeOut { get; set; } = 60000;
-
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
         public int MaxRetries { get; set; } = 2;
@@ -168,10 +154,6 @@ namespace Warewolf.Data.Options
         {
             RetryAlgorithm = RetryAlgorithm.QuadraticBackoff;
         }
-
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateTimeoutHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateTimeoutToolTip))]
-        public int TimeOut { get; set; } = 60000;
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
