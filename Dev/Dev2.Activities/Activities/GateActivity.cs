@@ -57,7 +57,7 @@ namespace Dev2.Activities
             IsGate = true;
         }
 
-        public string GateFailure { get; set; }
+        public GateFailureAction GateFailure { get; set; }
 
 
         public string GateRetryStrategy { get; set; }
@@ -159,7 +159,7 @@ namespace Dev2.Activities
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(GateFailure),
-                    Value = GateFailure,
+                    Value = GateFailure.ToString(),
                 },
                 new StateVariable
                 {
@@ -247,7 +247,10 @@ namespace Dev2.Activities
                 if (!_dataObject.Gates.Contains(this))
                 {
                     _dataObject.Gates.Add(this);
-                    _algo = GateOptions.Strategy.Create().GetEnumerator();
+                    if (GateOptions.GateOpts is AllowResumption gateOptionsResume)
+                    {
+                        _algo = gateOptionsResume.Strategy.Create().GetEnumerator();
+                    }
                 }
                 if (_dataObject.IsDebugMode())
                 {
@@ -297,6 +300,8 @@ namespace Dev2.Activities
         /// <returns></returns>
         private IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
         {
+            // todo: if _algo is null then this gate did not get set to a resumable gate?
+
             // if allowed to retry and its time for a retry return NextNode
             // otherwise schedule this environment and current activity to 
             // be executed at the calculated latter time
@@ -337,11 +342,7 @@ namespace Dev2.Activities
                 {
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
-                    var gateFailure = GateFailureAction.StopProcessing;
-                    if (GateFailure != null)
-                    {
-                        gateFailure = (GateFailureAction)Enum.Parse(typeof(GateFailureAction), GateFailure);
-                    }
+                    var gateFailure = GateFailure;
 
                     switch (gateFailure)
                     {

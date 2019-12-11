@@ -9,15 +9,16 @@
 */
 
 using System.ComponentModel;
+using Warewolf.Options;
 
 namespace Warewolf.Data.Options.Enums
 {
    
     public enum GateFailureAction
     {
-        [Description("Retry execution")]
-        Retry,
-        [Description("Stop processing")]
-        StopProcessing,
+        //[Description("Stop processing")]
+        [DecisionTypeDisplayValue("Stop processing")] StopProcessing,
+        //[Description("Retry execution")]
+        [DecisionTypeDisplayValue("Retry execution")] Retry,
     }
 }

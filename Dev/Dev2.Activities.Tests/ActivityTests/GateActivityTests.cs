@@ -66,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var activity = new GateActivity();
             activity.GateRetryStrategy = RetryAlgorithm.LinearBackoff.ToString();
-            activity.GateFailure = GateFailureAction.StopProcessing.ToString(); ;
+            activity.GateFailure = GateFailureAction.StopProcessing;
 
             Assert.AreEqual(RetryAlgorithm.LinearBackoff.ToString(), activity.GateRetryStrategy);
             Assert.AreEqual(GateFailureAction.StopProcessing.ToString(), activity.GateFailure);
@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry.ToString(),
+                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -307,7 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry.ToString(),
+                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -349,7 +349,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry.ToString(),
+                GateFailure = GateFailureAction.Retry,
                 Conditions = conditions,
                 RetryEntryPointId = expectedRetryActivityId,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -388,7 +388,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var secondGate = new GateActivity
             {
                 UniqueID = secondGateId.ToString(),
-                GateFailure = GateFailureAction.Retry.ToString(),
+                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = firstGateId,
                 Conditions = failingConditions,
                 NextNodes = new List<IDev2Activity> { thirdNode },
@@ -407,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGate = new GateActivity
             {
                 UniqueID = firstGateId.ToString(),
-                GateFailure = GateFailureAction.StopProcessing.ToString(),
+                GateFailure = GateFailureAction.StopProcessing,
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
             };
@@ -445,7 +445,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var secondGate = new GateActivity
             {
                 UniqueID = secondGateId.ToString(),
-                GateFailure = GateFailureAction.Retry.ToString(),
+                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = firstGateId,
                 Conditions = failingConditions,
                 NextNodes = new List<IDev2Activity> { thirdNode },
@@ -464,7 +464,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGate = new GateActivity
             {
                 UniqueID = firstGateId.ToString(),
-                GateFailure = GateFailureAction.StopProcessing.ToString(),
+                GateFailure = GateFailureAction.StopProcessing,
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
             };

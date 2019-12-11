@@ -22,9 +22,31 @@ namespace Warewolf.Data.Options
     {
         public GateOptions()
         { }
+
+
+        [DataValue(nameof(GateOptionsResumeBase.Resume))]
+        [MultiDataProvider(typeof(ResumptionDisabled), typeof(AllowResumption))]
+        public GateOptionsResumeBase GateOpts { get; set; } = new ResumptionDisabled();
+    }
+    public class GateOptionsResumeBase
+    {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
         public Resumable Resume { get; set; } = Resumable.ResumptionDisabled;
+    }
+    public class ResumptionDisabled : GateOptionsResumeBase
+    {
+        public ResumptionDisabled()
+        {
+            Resume = Resumable.ResumptionDisabled;
+        }
+    }
+    public class AllowResumption : GateOptionsResumeBase
+    {
+        public AllowResumption()
+        {
+            Resume = Resumable.AllowResumption;
+        }
 
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip))]

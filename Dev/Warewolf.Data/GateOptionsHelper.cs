@@ -8,22 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Common.Interfaces.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
-namespace Dev2.Common.Gates
+namespace Warewolf.Data
 {
-    public static class GateOptionsHelper<T>
+    public static class EnumHelper<T>
     {
-        public static string GetEnumDescription(string value)
+        public static string GetEnumDescription(T value)
         {
             var type = typeof(T);
-            var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
-
+            var name = Enum.GetName(type, value);
             if (name == null)
             {
                 return string.Empty;
@@ -54,9 +49,5 @@ namespace Dev2.Common.Gates
             }
             throw new Exception();
         }
-
-      
-
-        public static IEnumerable<string> GetDescriptionsAsList(Type type) => type.GetEnumNames().Select(GetEnumDescription).ToList();
     }
 }
