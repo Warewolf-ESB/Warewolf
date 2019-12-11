@@ -403,7 +403,6 @@ namespace Warewolf.Data.Tests
 
             Assert.IsNull(optionWorkflow.Name);
             Assert.IsNull(optionWorkflow.Workflow);
-            Assert.IsNull(optionWorkflow.Workflow.Inputs);
 
             optionWorkflow.Name = "Name";
             Assert.AreEqual("Name", optionWorkflow.Name);
@@ -483,65 +482,160 @@ namespace Warewolf.Data.Tests
         }
 
         [TestMethod]
-        //[TestCategory(nameof(OptionCondition))]
+        [TestCategory(nameof(OptionConditionExpression))]
         [Owner("Pieter Terblanche")]
-        public void OptionCondition_Default()
+        public void OptionConditionExpression_Default()
         {
-            //var value = new KeyValuePair<string, (string, enDecisionType, string)>("Name", ("MatchVar", enDecisionType.IsEqual, "MatchVal"));
-            //var optionCondition = new OptionCondition();
+            var optionConditionExpression = new OptionConditionExpression();
 
-            //Assert.IsNull(optionCondition.Name);
-            //optionCondition.Name = "Name";
-            //Assert.AreEqual("Name", optionCondition.Name);
+            Assert.IsNull(optionConditionExpression.Name);
+            Assert.IsNull(optionConditionExpression.Left);
+            Assert.IsNull(optionConditionExpression.SelectedMatchType);
+            Assert.AreEqual(enDecisionType.Choose, optionConditionExpression.MatchType);
+            Assert.IsNull(optionConditionExpression.Right);
+            Assert.IsNull(optionConditionExpression.From);
+            Assert.IsNull(optionConditionExpression.To);
+            Assert.IsTrue(optionConditionExpression.IsEmptyRow);
 
-            //Assert.IsNotNull(optionCondition.Value);
-            //Assert.AreEqual(new KeyValuePair<string, (string, enDecisionType, string)>(), optionCondition.Value);
-            //optionCondition.Value = value;
-            //Assert.AreEqual(value, optionCondition.Value);
-
-            //Assert.AreEqual(new KeyValuePair<string, (string, enDecisionType, string)>(), optionCondition.Default);
-
-            //Assert.AreEqual("OptionConditionHelpText", optionCondition.HelpText);
-            //Assert.AreEqual("OptionConditionTooltip", optionCondition.Tooltip);
+            Assert.AreEqual("OptionComboboxHelpText", optionConditionExpression.HelpText);
+            Assert.AreEqual("OptionComboboxTooltip", optionConditionExpression.Tooltip);
         }
 
         [TestMethod]
-        //[TestCategory(nameof(OptionCondition))]
+        [TestCategory(nameof(OptionConditionExpression))]
         [Owner("Pieter Terblanche")]
-        public void OptionCondition_Clone()
+        public void OptionConditionExpression_SetProperties()
         {
-            //var value = new KeyValuePair<string, (string, enDecisionType, string)>();
-            //var optionCondition = new OptionCondition
-            //{
-            //    Name = "Condition",
-            //    Value = value
-            //};
+            var optionConditionExpression = new OptionConditionExpression();
 
-            //var cloneCondition = optionCondition.Clone() as OptionCondition;
-            //Assert.AreEqual(optionCondition.Name, cloneCondition.Name);
-            //Assert.AreEqual(optionCondition.Value, cloneCondition.Value);
+            optionConditionExpression.Name = "Name";
+            Assert.AreEqual("Name", optionConditionExpression.Name);
+
+            optionConditionExpression.Left = "[[a]]";
+            Assert.AreEqual("[[a]]", optionConditionExpression.Left);
+
+            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "=", Value = 19 };
+            Assert.AreEqual("=", optionConditionExpression.SelectedMatchType.Name);
+            Assert.AreEqual(19, optionConditionExpression.SelectedMatchType.Value);
+            Assert.AreEqual(enDecisionType.IsEqual, optionConditionExpression.MatchType);
+
+            Assert.IsFalse(optionConditionExpression.IsBetween);
+            Assert.IsFalse(optionConditionExpression.IsSingleOperand);
+
+            Assert.IsFalse(optionConditionExpression.IsEmptyRow);
+
+            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is NULL", Value = 3 };
+            Assert.AreEqual("Is NULL", optionConditionExpression.SelectedMatchType.Name);
+            Assert.AreEqual(3, optionConditionExpression.SelectedMatchType.Value);
+            Assert.AreEqual(enDecisionType.IsNull, optionConditionExpression.MatchType);
+
+            Assert.IsFalse(optionConditionExpression.IsBetween);
+            Assert.IsTrue(optionConditionExpression.IsSingleOperand);
+
+            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is Between", Value = 31 };
+            Assert.AreEqual("Is Between", optionConditionExpression.SelectedMatchType.Name);
+            Assert.AreEqual(31, optionConditionExpression.SelectedMatchType.Value);
+            Assert.AreEqual(enDecisionType.IsBetween, optionConditionExpression.MatchType);
+
+            Assert.IsTrue(optionConditionExpression.IsBetween);
+            Assert.IsFalse(optionConditionExpression.IsSingleOperand);
+
+            optionConditionExpression.Right = "10";
+            Assert.AreEqual("10", optionConditionExpression.Right);
+
+            optionConditionExpression.From = "1";
+            Assert.AreEqual("1", optionConditionExpression.From);
+
+            optionConditionExpression.To = "5";
+            Assert.AreEqual("5", optionConditionExpression.To);
         }
 
         [TestMethod]
-        //[TestCategory(nameof(OptionCondition))]
+        [TestCategory(nameof(OptionConditionExpression))]
         [Owner("Pieter Terblanche")]
-        public void OptionCondition_CompareTo()
+        public void OptionConditionExpression_IsEmptyRow_IsSingleOperand()
         {
-            //var value = new KeyValuePair<string, (string, enDecisionType, string)>();
-            //var optionCondition = new OptionCondition
-            //{
-            //    Name = "Condition",
-            //    Value = value
-            //};
+            var optionConditionExpression = new OptionConditionExpression();
 
-            //var expectedValue = optionCondition.CompareTo(null);
-            //Assert.AreEqual(-1, expectedValue);
+            optionConditionExpression.Name = "Name";
+            Assert.AreEqual("Name", optionConditionExpression.Name);
 
-            //expectedValue = optionCondition.CompareTo(new object { });
-            //Assert.AreEqual(-1, expectedValue);
+            optionConditionExpression.Left = "[[a]]";
+            Assert.AreEqual("[[a]]", optionConditionExpression.Left);
 
-            //expectedValue = optionCondition.CompareTo(optionCondition);
-            //Assert.AreEqual(0, expectedValue);
+            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is NULL", Value = 3 };
+            Assert.AreEqual("Is NULL", optionConditionExpression.SelectedMatchType.Name);
+            Assert.AreEqual(3, optionConditionExpression.SelectedMatchType.Value);
+            Assert.AreEqual(enDecisionType.IsNull, optionConditionExpression.MatchType);
+
+            Assert.IsFalse(optionConditionExpression.IsBetween);
+            Assert.IsTrue(optionConditionExpression.IsSingleOperand);
+            Assert.IsFalse(optionConditionExpression.IsEmptyRow);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionConditionExpression))]
+        [Owner("Pieter Terblanche")]
+        public void OptionConditionExpression_IsEmptyRow_IsBetween()
+        {
+            var optionConditionExpression = new OptionConditionExpression();
+
+            optionConditionExpression.Name = "Name";
+            Assert.AreEqual("Name", optionConditionExpression.Name);
+
+            optionConditionExpression.Left = "[[a]]";
+            Assert.AreEqual("[[a]]", optionConditionExpression.Left);
+
+            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is Between", Value = 31 };
+            Assert.AreEqual("Is Between", optionConditionExpression.SelectedMatchType.Name);
+            Assert.AreEqual(31, optionConditionExpression.SelectedMatchType.Value);
+            Assert.AreEqual(enDecisionType.IsBetween, optionConditionExpression.MatchType);
+
+            Assert.IsTrue(optionConditionExpression.IsBetween);
+            Assert.IsFalse(optionConditionExpression.IsSingleOperand);
+            Assert.IsFalse(optionConditionExpression.IsEmptyRow);
+
+            optionConditionExpression.From = "1";
+            Assert.AreEqual("1", optionConditionExpression.From);
+            optionConditionExpression.To = "5";
+            Assert.AreEqual("5", optionConditionExpression.To);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionConditionExpression))]
+        [Owner("Pieter Terblanche")]
+        public void OptionConditionExpression_Clone()
+        {
+            var optionConditionExpression = new OptionConditionExpression
+            {
+                Name = "Name",
+                Left = "[[a]]",
+            };
+
+            var cloneOptionConditionExpression = optionConditionExpression.Clone() as OptionConditionExpression;
+            Assert.AreEqual(optionConditionExpression.Name, cloneOptionConditionExpression.Name);
+            Assert.AreEqual(optionConditionExpression.Left, cloneOptionConditionExpression.Left);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(OptionConditionExpression))]
+        [Owner("Pieter Terblanche")]
+        public void OptionConditionExpression_CompareTo()
+        {
+            var optionConditionExpression = new OptionConditionExpression
+            {
+                Name = "Name",
+                Left = "[[a]]",
+            };
+
+            var expectedValue = optionConditionExpression.CompareTo(null);
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionConditionExpression.CompareTo(new object { });
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionConditionExpression.CompareTo(optionConditionExpression);
+            Assert.AreEqual(0, expectedValue);
         }
 
         enum MyEnum

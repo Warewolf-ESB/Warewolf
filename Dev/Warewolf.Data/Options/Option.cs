@@ -573,6 +573,11 @@ namespace Warewolf.Options
             return new OptionConditionExpression
             {
                 Name = Name,
+                Left = Left,
+                SelectedMatchType = SelectedMatchType,
+                Right = Right,
+                From = From,
+                To = To,
             };
         }
 
@@ -587,7 +592,12 @@ namespace Warewolf.Options
             {
                 return -1;
             }
-            return string.Compare(item.Name, Name, StringComparison.InvariantCulture);
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) |
+                   string.Compare(item.Left, Left, StringComparison.InvariantCulture) |
+                   (item.SelectedMatchType == SelectedMatchType ? 0 : -1) |
+                   string.Compare(item.Right, Right, StringComparison.InvariantCulture) |
+                   string.Compare(item.From, From, StringComparison.InvariantCulture) |
+                   string.Compare(item.To, To, StringComparison.InvariantCulture);
         }
     }
 }
