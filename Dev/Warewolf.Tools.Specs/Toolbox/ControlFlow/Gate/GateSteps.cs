@@ -144,7 +144,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         {
             var noBackoffGateActivity = new GateActivity
             {
-                GateFailure = GateFailureAction.StopProcessing.ToString()
+                GateFailure = GateFailureAction.StopProcessing
             };
 
             CreateGateOptions(noBackoffGateActivity);
@@ -165,11 +165,12 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             var gateOptions = new GateOptions
             {
-                Resume = Resumable.AllowResumption,
-                //ResumeEndpoint = ResumeEndpoint,
-                ResumeEndpoint = expectedWorkflow,
-                Count = 3,
-                Strategy = noBackoffAlgorithm
+                GateOpts = new AllowResumption
+                {
+                    Resume = Resumable.AllowResumption,
+                    ResumeEndpoint = expectedWorkflow,
+                    Strategy = noBackoffAlgorithm
+                }
             };
 
             noBackoffGateActivity.GateOptions = gateOptions;
@@ -235,14 +236,14 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenGateFailureHasSelected(string gateFailure)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            gateActivity.GateFailure = gateFailure;
+            gateActivity.GateFailure = EnumHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
         }
 
         [Given(@"next gate GateFailure has ""(.*)"" selected")]
         public void GivenNextGateGateFailureHasSelected(string gateFailure)
         {
             scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
-            gateActivity.GateFailure = gateFailure;
+            gateActivity.GateFailure = EnumHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
         }
 
         [Given(@"Gates has ""(.*)"" selected")]
@@ -275,23 +276,26 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         private static void SetGateStrategy(string retryStrategy, GateActivity gateActivity)
         {
-            switch (retryStrategy)
+            if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
             {
-                case "NoBackoff":
-                    gateActivity.GateOptions.Strategy = new NoBackoff();
-                    break;
-                case "ConstantBackoff":
-                    gateActivity.GateOptions.Strategy = new ConstantBackoff();
-                    break;
-                case "LinearBackoff":
-                    gateActivity.GateOptions.Strategy = new LinearBackoff();
-                    break;
-                case "FibonacciBackoff":
-                    gateActivity.GateOptions.Strategy = new FibonacciBackoff();
-                    break;
-                case "QuadraticBackoff":
-                    gateActivity.GateOptions.Strategy = new QuadraticBackoff();
-                    break;
+                switch (retryStrategy)
+                {
+                    case "NoBackoff":
+                        optionsResume.Strategy = new NoBackoff();
+                        break;
+                    case "ConstantBackoff":
+                        optionsResume.Strategy = new ConstantBackoff();
+                        break;
+                    case "LinearBackoff":
+                        optionsResume.Strategy = new LinearBackoff();
+                        break;
+                    case "FibonacciBackoff":
+                        optionsResume.Strategy = new FibonacciBackoff();
+                        break;
+                    case "QuadraticBackoff":
+                        optionsResume.Strategy = new QuadraticBackoff();
+                        break;
+                }
             }
         }
 
@@ -318,13 +322,16 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         private static void SetIncrement(int increment, GateActivity gateActivity)
         {
-            if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
+            if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
             {
-                linearBackoff.Increment = increment;
-            }
-            if (gateActivity.GateOptions.Strategy is ConstantBackoff constantBackoff)
-            {
-                constantBackoff.Increment = increment;
+                if (optionsResume.Strategy is LinearBackoff linearBackoff)
+                {
+                    linearBackoff.Increment = increment;
+                }
+                if (optionsResume.Strategy is ConstantBackoff constantBackoff)
+                {
+                    constantBackoff.Increment = increment;
+                }
             }
         }
 
@@ -344,10 +351,13 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         private static void SetTimeout(int timeOut, GateActivity gateActivity)
         {
-            if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
-            {
-                linearBackoff.TimeOut = timeOut;
-            }
+            //if (gateActivity.GateOptions.GateOpts is GateOptionsResume optionsResume)
+            //{
+            //    if (optionsResume.Strategy is LinearBackoff linearBackoff)
+            //    {
+            //        linearBackoff.TimeOut = timeOut;
+            //    }
+            //}
         }
 
         [Given(@"Linear Max Retries is set to ""(.*)""")]
@@ -366,46 +376,55 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         private static void SetMaxRetries(int retries, GateActivity gateActivity)
         {
-            if (gateActivity.GateOptions.Strategy is LinearBackoff linearBackoff)
+            if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
             {
-                linearBackoff.MaxRetries = retries;
+                if (optionsResume.Strategy is LinearBackoff linearBackoff)
+                {
+                    linearBackoff.MaxRetries = retries;
+                }
             }
         }
 
         [Given(@"Fibonacci Timeout is set to ""(.*)""")]
         public void GivenFibonacciTimeoutIsSetTo(int timeOut)
         {
-            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            if (gateActivity.GateOptions.Strategy is FibonacciBackoff fibonacciBackoff)
-            {
-                fibonacciBackoff.TimeOut = timeOut;
-            }
+            //scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            //if (gateActivity.GateOptions.Strategy is FibonacciBackoff fibonacciBackoff)
+            //{
+            //    fibonacciBackoff.TimeOut = timeOut;
+            //}
         }
         [Given(@"Fibonacci Max Retries is set to ""(.*)""")]
         public void GivenFibonacciMaxRetriesIsSetTo(int retries)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            if (gateActivity.GateOptions.Strategy is FibonacciBackoff fibonacciBackoff)
+            if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
             {
-                fibonacciBackoff.MaxRetries = retries;
+                if (optionsResume.Strategy is FibonacciBackoff fibonacciBackoff)
+                {
+                    fibonacciBackoff.MaxRetries = retries;
+                }
             }
         }
         [Given(@"Quadratic Timeout is set to ""(.*)""")]
         public void GivenQuadraticTimeoutIsSetTo(int timeOut)
         {
-            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            if (gateActivity.GateOptions.Strategy is QuadraticBackoff quadraticBackoff)
-            {
-                quadraticBackoff.TimeOut = timeOut;
-            }
+            //scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
+            //if (gateActivity.GateOptions.Strategy is QuadraticBackoff quadraticBackoff)
+            //{
+            //    quadraticBackoff.TimeOut = timeOut;
+            //}
         }
         [Given(@"Quadratic Max Retries is set to ""(.*)""")]
         public void GivenQuadraticMaxRetriesIsSetTo(int retries)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            if (gateActivity.GateOptions.Strategy is QuadraticBackoff quadraticBackoff)
+            if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
             {
-                quadraticBackoff.MaxRetries = retries;
+                if (optionsResume.Strategy is QuadraticBackoff quadraticBackoff)
+                {
+                    quadraticBackoff.MaxRetries = retries;
+                }
             }
         }
 
@@ -413,14 +432,19 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
         public void GivenResumeIsSetTo(string resume)
         {
             scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            gateActivity.GateOptions.Resume = resume == "Yes" ? Resumable.AllowResumption : Resumable.ResumptionDisabled;
+
+            gateActivity.GateOptions.GateOpts = resume == "Yes"
+                                                        ? (GateOptionsResumeBase)new AllowResumption()
+                                                        : (GateOptionsResumeBase)new ResumptionDisabled();
         }
 
         [Given(@"next gate Resume is set to ""(.*)""")]
         public void GivenNextGateResumeIsSetTo(string resume)
         {
             scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
-            gateActivity.GateOptions.Resume = resume == "Yes" ? Resumable.AllowResumption : Resumable.ResumptionDisabled;
+            gateActivity.GateOptions.GateOpts = resume == "Yes"
+                                                        ? (GateOptionsResumeBase)new AllowResumption()
+                                                        : (GateOptionsResumeBase)new ResumptionDisabled();
         }
 
 
@@ -435,7 +459,10 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                 Inputs = new List<IServiceInputBase>()
             };
 
-            gateActivity.GateOptions.ResumeEndpoint = expectedWorkflow;
+            if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
+            {
+                optionsResume.ResumeEndpoint = expectedWorkflow;
+            }
         }
 
         [Given(@"the Gate tool is executed")]

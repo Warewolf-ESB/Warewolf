@@ -16,7 +16,7 @@ namespace Warewolf.Options
 {
     public class DecisionTypeDisplayValue : Attribute
     {
-        internal DecisionTypeDisplayValue(string displayValue)
+        public DecisionTypeDisplayValue(string displayValue)
         {
             DisplayValue = displayValue;
         }

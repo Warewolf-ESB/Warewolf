@@ -146,7 +146,6 @@
     <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="Gates\GateOptionsHelper.cs" />
     <Compile Include="Wrappers\FileSystemWatcherWrapper.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -249,6 +248,7 @@
   <ItemGroup>
     <Folder Include="DB Support\DB_Helper\" />
     <Folder Include="DB Support\DB_Sanity\" />
+    <Folder Include="Gates\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">

@@ -9,10 +9,7 @@
 */
 
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Gates;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using System;
@@ -23,6 +20,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using Warewolf;
+using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
@@ -33,7 +32,7 @@ namespace Dev2.Activities.Designers2.Gate
 {
     public class GateDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged, IEnabled
     {
-        private string _selectedGateFailure;
+        private NamedInt _selectedGateFailure;
         List<NameValue> _gates;
         private NameValue _selectedGate;
         private bool _enabled;
@@ -55,7 +54,6 @@ namespace Dev2.Activities.Designers2.Gate
 
             PopulateFields();
             LoadConditionExpressionOptions();
-            LoadOptions();
         }
 
         private void LoadDefaults()
@@ -87,14 +85,16 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void PopulateFields()
         {
+            var namedInts = NamedInt.GetAll(typeof(GateFailureAction)).ToArray();
+
             var gateFailure = _modelItem.Properties["GateFailure"].ComputedValue;
             if (gateFailure is null)
             {
-                SelectedGateFailure = GetGateFailure(GateFailureAction.StopProcessing.ToString()).ToString();
+                SelectedGateFailure = (NamedInt)namedInts[0];
             }
             else
             {
-                SelectedGateFailure = GetGateFailure(gateFailure.ToString()).ToString();
+                SelectedGateFailure = (NamedInt)namedInts.First(o => o.Value == (int)gateFailure);
                 IsExpanded = true;
             }
 
@@ -150,29 +150,30 @@ namespace Dev2.Activities.Designers2.Gate
             }
             else
             {
-                var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
-                _server = activeServer;
-                _resourceRepository = _server.ResourceRepository;
-
-                Options = new OptionsWithNotifier { Options = _resourceRepository.FindOptionsBy(_server, OptionsService.GateResume) };
+                Options = new OptionsWithNotifier { Options = OptionConvertor.Convert(new GateOptions()) };
             }
             UpdateOptionsModelItem();
         }
 
         public ICommand DeleteConditionCommand { get; set; }
 
-        public IEnumerable<string> GateFailureOptions => GateOptionsHelper<GateFailureAction>.GetDescriptionsAsList(typeof(GateFailureAction)).ToList();
-        public string SelectedGateFailure
+        public IEnumerable<INamedInt> GateFailureOptions => NamedInt.GetAll(typeof(GateFailureAction));
+        public NamedInt SelectedGateFailure
         {
             get => _selectedGateFailure;
             set
             {
-                var gateFailure = GateFailureOptions.Single(p => p.ToString().Contains(value));
-                _selectedGateFailure = gateFailure;
+                if (_selectedGateFailure == value)
+                {
+                    return;
+                }
+
+                _selectedGateFailure = value;
                 OnPropertyChanged(nameof(SelectedGateFailure));
 
-                var enumGateFailure = GateOptionsHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
-                _modelItem.Properties["GateFailure"]?.SetValue(enumGateFailure.ToString());
+                var enumGateFailure = (GateFailureAction)value.Value;
+                _modelItem.Properties["GateFailure"]?.SetValue(enumGateFailure);
+                LoadOptions();
             }
         }
 
@@ -233,11 +234,6 @@ namespace Dev2.Activities.Designers2.Gate
                 _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
                 OnPropertyChanged(nameof(Options));
             }
-        }
-
-        private static GateFailureAction GetGateFailure(string gateFailure)
-        {
-            return GateOptionsHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
         }
 
         public bool Enabled

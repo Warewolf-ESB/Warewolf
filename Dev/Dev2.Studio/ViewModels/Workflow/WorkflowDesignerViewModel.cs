@@ -95,6 +95,7 @@ using System.Xml;
 using Dev2.Common.ExtMethods;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities;
+using Warewolf.Data.Options;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -2015,7 +2016,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool found = false;
             var allGates = connectedList(treeNodes[0].Activity)
                 .Cast<GateActivity>()
-                .Where(gate => gate?.GateOptions != null && gate.GateOptions.Resume == Warewolf.Data.Options.Resumable.AllowResumption);
+                .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is AllowResumption);
 
             var selectableGates = allGates
                 .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));

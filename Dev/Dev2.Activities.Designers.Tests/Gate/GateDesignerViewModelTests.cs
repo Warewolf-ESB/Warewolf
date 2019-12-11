@@ -20,6 +20,7 @@ using System.Linq;
 using System.Windows;
 using Warewolf.Data;
 using Warewolf.Data.Options;
+using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 
 namespace Dev2.Activities.Designers.Tests.Gate
@@ -107,7 +108,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Execute Test---------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
             {
-                SelectedGateFailure = "Retry: Retry execution on error"
+                SelectedGateFailure = new NamedInt { Name = EnumHelper<GateFailureAction>.GetEnumDescription(GateFailureAction.Retry), Value = (int)GateFailureAction.Retry },
             };
             //------------Assert Results-------------------------
             Assert.AreEqual("Retry: Retry execution on error", gateDesignerViewModel.SelectedGateFailure);
@@ -139,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Execute Test---------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
             {
-                SelectedGateFailure = "StopOnError: Stop execution on error"
+                SelectedGateFailure = new NamedInt { Name = EnumHelper<GateFailureAction>.GetEnumDescription(GateFailureAction.StopProcessing), Value = (int)GateFailureAction.StopProcessing },
             };
             //------------Assert Results-------------------------
             Assert.AreEqual("StopOnError: Stop execution on error", gateDesignerViewModel.SelectedGateFailure);
@@ -289,10 +290,12 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             var gateOptions = new GateOptions
             {
-                Resume = Resumable.AllowResumption,
-                Count = 3,
-                ResumeEndpoint = expectedWorkflow,
-                Strategy = new NoBackoff()
+                GateOpts = new AllowResumption
+                {
+                    Resume = Resumable.AllowResumption,
+                    ResumeEndpoint = expectedWorkflow,
+                    Strategy = new NoBackoff(),
+                }
             };
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);

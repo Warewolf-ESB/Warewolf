@@ -97,7 +97,7 @@
                 <ComboBox x:Name="cbGateFailures"
                           Grid.Column="0"
                           ItemsSource="{Binding GateFailureOptions}"
-                          SelectedValuePath="SelectedGateFailure"
+                          SelectedValuePath="Name"
                           ToolTip="{x:Static languages:Tooltips.GateFailuresToolTip}"
                           IsEditable="False"
                           Margin="{StaticResource ControlBorderRight}"
