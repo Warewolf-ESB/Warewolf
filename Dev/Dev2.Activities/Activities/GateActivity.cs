@@ -337,7 +337,7 @@ namespace Dev2.Activities
                 {
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
-                    var gateFailure = GateFailureAction.StopOnError;
+                    var gateFailure = GateFailureAction.StopProcessing;
                     if (GateFailure != null)
                     {
                         gateFailure = (GateFailureAction)Enum.Parse(typeof(GateFailureAction), GateFailure);
@@ -345,7 +345,7 @@ namespace Dev2.Activities
 
                     switch (gateFailure)
                     {
-                        case GateFailureAction.StopOnError:
+                        case GateFailureAction.StopProcessing:
                             data.Environment.AddError("stop on error with no resume");
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
                             Stop = true;

@@ -66,10 +66,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var activity = new GateActivity();
             activity.GateRetryStrategy = RetryAlgorithm.LinearBackoff.ToString();
-            activity.GateFailure = GateFailureAction.StopOnError.ToString(); ;
+            activity.GateFailure = GateFailureAction.StopProcessing.ToString(); ;
 
             Assert.AreEqual(RetryAlgorithm.LinearBackoff.ToString(), activity.GateRetryStrategy);
-            Assert.AreEqual(GateFailureAction.StopOnError.ToString(), activity.GateFailure);
+            Assert.AreEqual(GateFailureAction.StopProcessing.ToString(), activity.GateFailure);
         }
 
         [TestMethod]
@@ -407,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGate = new GateActivity
             {
                 UniqueID = firstGateId.ToString(),
-                GateFailure = GateFailureAction.StopOnError.ToString(),
+                GateFailure = GateFailureAction.StopProcessing.ToString(),
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
             };
@@ -464,7 +464,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGate = new GateActivity
             {
                 UniqueID = firstGateId.ToString(),
-                GateFailure = GateFailureAction.StopOnError.ToString(),
+                GateFailure = GateFailureAction.StopProcessing.ToString(),
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
             };
