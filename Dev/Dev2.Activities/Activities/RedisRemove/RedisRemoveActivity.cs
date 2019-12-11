@@ -29,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisRemove
 {
-    [ToolDescriptorInfo(nameof(RedisRemove), "Redis Remove", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisRemove")]
+    [ToolDescriptorInfo(nameof(RedisRemove), "Redis Remove", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisRemove")]
     public class RedisRemoveActivity : DsfBaseActivity, IEquatable<RedisRemoveActivity>
     {
         string _result = "Success";

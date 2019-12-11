@@ -5358,11 +5358,11 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Tags: s.
         /// </summary>
-        public static string Tool_Utility_Redis
+        public static string Tool_Database_RedisCache
         {
             get
             {
-                return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
+                return ResourceManager.GetString("Tool_Database_RedisCache", resourceCulture);
             }
         }
 
