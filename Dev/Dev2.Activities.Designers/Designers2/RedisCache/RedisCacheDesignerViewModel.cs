@@ -123,14 +123,14 @@ namespace Dev2.Activities.Designers2.RedisCache
             ModelItem.SetProperty("Key", Key);
         }
 
-        public int? TTL
+        public int TTL
         {
-            get => (int?)GetValue(TTLProperty);
+            get => (int)GetValue(TTLProperty);
             set => SetValue(TTLProperty, value);
-        }
+        } 
 
         public static readonly DependencyProperty TTLProperty =
-            DependencyProperty.Register("TTL", typeof(int?), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null, OnTTLChanged));
+            DependencyProperty.Register("TTL", typeof(int), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(5, OnTTLChanged));
 
         private static void OnTTLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

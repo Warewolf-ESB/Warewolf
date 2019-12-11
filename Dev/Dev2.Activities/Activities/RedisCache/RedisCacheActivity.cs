@@ -96,7 +96,7 @@ namespace Dev2.Activities.RedisCache
         public string Response { get; set; }
 
         [FindMissing]
-        public int TTL { get; set; }
+        public int TTL { get; set; } = 5;
 
         public bool ShouldSerializeConsumer() => false;
 
