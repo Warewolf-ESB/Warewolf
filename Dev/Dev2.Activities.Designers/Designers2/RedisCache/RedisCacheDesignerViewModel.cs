@@ -29,10 +29,11 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Validation;
 using Dev2.Providers.Errors;
 using Warewolf.Resource.Errors;
+using System.ComponentModel;
 
 namespace Dev2.Activities.Designers2.RedisCache
 {
-    public class RedisCacheDesignerViewModel : ActivityDesignerViewModel
+    public class RedisCacheDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
         readonly IServer _server;
         IShellViewModel _shellViewModel;
@@ -96,6 +97,8 @@ namespace Dev2.Activities.Designers2.RedisCache
         protected virtual void OnSelectedRedisSourceChanged()
         {
             ModelItem.SetProperty("SourceId", SelectedRedisSource.ResourceID);
+
+            OnPropertyChanged(nameof(IsRedisSourceSelected));
         }
 
         public RelayCommand EditRedisSourceCommand { get; private set; }
@@ -191,6 +194,15 @@ namespace Dev2.Activities.Designers2.RedisCache
 
         public static readonly DependencyProperty IsKeyFocusedProperty =
             DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(false));
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         [ExcludeFromCodeCoverage]
         public override void Validate()
