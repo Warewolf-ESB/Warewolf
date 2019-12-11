@@ -86,23 +86,23 @@ namespace Dev2.Activities.Designers.Tests.RedisRemove
             //------------Assert Results-------------------------
             Assert.IsTrue(redisRemoveDesignerViewModel.HasLargeView);
             Assert.IsTrue(redisRemoveDesignerViewModel.ShowLarge);
-            Assert.AreEqual(1, redisRemoveDesignerViewModel.RedisServers.Count);
-            Assert.AreEqual(expectedId, redisRemoveDesignerViewModel.RedisServers[0].ResourceID);
-            Assert.AreEqual("ResourceName", redisRemoveDesignerViewModel.RedisServers[0].ResourceName);
-            Assert.AreEqual("HostName", redisRemoveDesignerViewModel.RedisServers[0].HostName);
-            Assert.AreEqual("6379", redisRemoveDesignerViewModel.RedisServers[0].Port);
-            Assert.AreEqual(Runtime.ServiceModel.Data.AuthenticationType.Anonymous, redisRemoveDesignerViewModel.RedisServers[0].AuthenticationType);
+            Assert.AreEqual(1, redisRemoveDesignerViewModel.RedisSources.Count);
+            Assert.AreEqual(expectedId, redisRemoveDesignerViewModel.RedisSources[0].ResourceID);
+            Assert.AreEqual("ResourceName", redisRemoveDesignerViewModel.RedisSources[0].ResourceName);
+            Assert.AreEqual("HostName", redisRemoveDesignerViewModel.RedisSources[0].HostName);
+            Assert.AreEqual("6379", redisRemoveDesignerViewModel.RedisSources[0].Port);
+            Assert.AreEqual(Runtime.ServiceModel.Data.AuthenticationType.Anonymous, redisRemoveDesignerViewModel.RedisSources[0].AuthenticationType);
 
-            Assert.IsNull(redisRemoveDesignerViewModel.SelectedRedisServer);
-            Assert.IsFalse(redisRemoveDesignerViewModel.IsRedisServerSelected);
-            Assert.IsFalse(redisRemoveDesignerViewModel.EditRedisServerCommand.CanExecute(null));
+            Assert.IsNull(redisRemoveDesignerViewModel.SelectedRedisSource);
+            Assert.IsFalse(redisRemoveDesignerViewModel.IsRedisSourceSelected);
+            Assert.IsFalse(redisRemoveDesignerViewModel.EditRedisSourceCommand.CanExecute(null));
 
-            redisRemoveDesignerViewModel.SelectedRedisServer = redisSource;
+            redisRemoveDesignerViewModel.SelectedRedisSource = redisSource;
 
-            Assert.IsNotNull(redisRemoveDesignerViewModel.SelectedRedisServer);
-            Assert.IsTrue(redisRemoveDesignerViewModel.IsRedisServerSelected);
-            Assert.AreEqual(redisSource.ResourceID, redisRemoveDesignerViewModel.SelectedRedisServer.ResourceID);
-            Assert.IsTrue(redisRemoveDesignerViewModel.EditRedisServerCommand.CanExecute(null));
+            Assert.IsNotNull(redisRemoveDesignerViewModel.SelectedRedisSource);
+            Assert.IsTrue(redisRemoveDesignerViewModel.IsRedisSourceSelected);
+            Assert.AreEqual(redisSource.ResourceID, redisRemoveDesignerViewModel.SelectedRedisSource.ResourceID);
+            Assert.IsTrue(redisRemoveDesignerViewModel.EditRedisSourceCommand.CanExecute(null));
 
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Once);
         }
@@ -178,9 +178,9 @@ namespace Dev2.Activities.Designers.Tests.RedisRemove
             //------------Execute Test---------------------------
             var redisRemoveDesignerViewModel = new RedisRemoveDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object)
             {
-                SelectedRedisServer = redisSource
+                SelectedRedisSource = redisSource
             };
-            redisRemoveDesignerViewModel.EditRedisServerCommand.Execute(null);
+            redisRemoveDesignerViewModel.EditRedisSourceCommand.Execute(null);
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.OpenResource(expectedId, environmentId, mockServer.Object), Times.Once);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));
@@ -219,7 +219,7 @@ namespace Dev2.Activities.Designers.Tests.RedisRemove
 
             //------------Execute Test---------------------------
             var redisRemoveDesignerViewModel = new RedisRemoveDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
-            redisRemoveDesignerViewModel.NewRedisServerCommand.Execute(null);
+            redisRemoveDesignerViewModel.NewRedisSourceCommand.Execute(null);
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.NewRedisSource(""), Times.Once);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));

@@ -2953,9 +2953,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Edit the selected redis connection properties.
         /// </summary>
-        public static string RedisEditServerHelp {
+        public static string RedisEditSourceHelp {
             get {
-                return ResourceManager.GetString("RedisEditServerHelp", resourceCulture);
+                return ResourceManager.GetString("RedisEditSourceHelp", resourceCulture);
             }
         }
         
@@ -2971,9 +2971,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Create a new redis connection.
         /// </summary>
-        public static string RedisNewServerHelp {
+        public static string RedisNewSourceHelp {
             get {
-                return ResourceManager.GetString("RedisNewServerHelp", resourceCulture);
+                return ResourceManager.GetString("RedisNewSourceHelp", resourceCulture);
             }
         }
         
@@ -2998,9 +2998,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Select a preconfigured redis source..
         /// </summary>
-        public static string RedisServerHelp {
+        public static string RedisSourceHelp {
             get {
-                return ResourceManager.GetString("RedisServerHelp", resourceCulture);
+                return ResourceManager.GetString("RedisSourceHelp", resourceCulture);
             }
         }
         

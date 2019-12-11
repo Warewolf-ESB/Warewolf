@@ -145,7 +145,7 @@
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="RedisRemove\RedisRemoveDesignerViewModelTests.cs" />
-    <Compile Include="Redis\RedisDesignerViewModelTests.cs" />
+    <Compile Include="RedisCache\RedisCacheDesignerViewModelTests.cs" />
     <Compile Include="Rename\RenameDesignerViewModelTests.cs" />
     <Compile Include="Rename\TestRenameDesignerViewModel.cs" />
     <Compile Include="ReadFile\ReadFileDesignerViewModelTests.cs" />

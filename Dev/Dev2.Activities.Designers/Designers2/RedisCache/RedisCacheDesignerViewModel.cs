@@ -61,10 +61,10 @@ namespace Dev2.Activities.Designers2.RedisCache
             {
                 ActivityFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
             }
-            RedisServers = new ObservableCollection<RedisSource>();
-            LoadRedisServers();
-            EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
-            NewRedisServerCommand = new RelayCommand(o => NewRedisServerSource());
+            RedisSources = new ObservableCollection<RedisSource>();
+            LoadRedisSources();
+            EditRedisSourceCommand = new RelayCommand(o => EditRedisSource(), o => IsRedisSourceSelected);
+            NewRedisSourceCommand = new RelayCommand(o => NewRedisSource());
             if (modelItem.Properties["Key"]?.ComputedValue != null)
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
@@ -75,33 +75,33 @@ namespace Dev2.Activities.Designers2.RedisCache
             }
         }
 
-        public ObservableCollection<RedisSource> RedisServers { get; private set; }
+        public ObservableCollection<RedisSource> RedisSources { get; private set; }
 
-        public RedisSource SelectedRedisServer
+        public RedisSource SelectedRedisSource
         {
-            get => (RedisSource)GetValue(SelectedRedisServerProperty);
-            set => SetValue(SelectedRedisServerProperty, value);
+            get => (RedisSource)GetValue(SelectedRedisSourceProperty);
+            set => SetValue(SelectedRedisSourceProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedRedisServerProperty =
-            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
+        public static readonly DependencyProperty SelectedRedisSourceProperty =
+            DependencyProperty.Register("SelectedRedisSource", typeof(RedisSource), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisSourceChanged));
 
-        private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectedRedisSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RedisCacheDesignerViewModel)d;
-            viewModel.OnSelectedRedisServerChanged();
-            viewModel.EditRedisServerCommand?.RaiseCanExecuteChanged();
+            viewModel.OnSelectedRedisSourceChanged();
+            viewModel.EditRedisSourceCommand?.RaiseCanExecuteChanged();
         }
 
-        protected virtual void OnSelectedRedisServerChanged()
+        protected virtual void OnSelectedRedisSourceChanged()
         {
-            ModelItem.SetProperty("SourceId", SelectedRedisServer.ResourceID);
+            ModelItem.SetProperty("SourceId", SelectedRedisSource.ResourceID);
         }
 
-        public RelayCommand EditRedisServerCommand { get; private set; }
-        public RelayCommand NewRedisServerCommand { get; set; }
+        public RelayCommand EditRedisSourceCommand { get; private set; }
+        public RelayCommand NewRedisSourceCommand { get; set; }
 
-        public bool IsRedisServerSelected => SelectedRedisServer != null;
+        public bool IsRedisSourceSelected => SelectedRedisSource != null;
 
         public string Key
         {
@@ -143,30 +143,30 @@ namespace Dev2.Activities.Designers2.RedisCache
             ModelItem.SetProperty("TTL", TTL);
         }
 
-        private void EditRedisServerSource()
+        private void EditRedisSource()
         {
-            _shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
-            LoadRedisServers();
+            _shellViewModel.OpenResource(SelectedRedisSource.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
+            LoadRedisSources();
         }
 
-        private void NewRedisServerSource()
+        private void NewRedisSource()
         {
             _shellViewModel.NewRedisSource("");
-            LoadRedisServers();
+            LoadRedisSources();
         }
 
-        private void LoadRedisServers()
+        private void LoadRedisSources()
         {
-            var redisServers = _server.ResourceRepository.FindSourcesByType<RedisSource>(_server, enSourceType.RedisSource);
-            RedisServers = redisServers.ToObservableCollection();
-            SetSelectedRedisServer();
+            var redisSources = _server.ResourceRepository.FindSourcesByType<RedisSource>(_server, enSourceType.RedisSource);
+            RedisSources = redisSources.ToObservableCollection();
+            SetSelectedRedisSource();
         }
 
-        void SetSelectedRedisServer()
+        void SetSelectedRedisSource()
         {
             var sourceId = Guid.Parse(ModelItem.Properties["SourceId"].ComputedValue.ToString());
-            var selectedRedisServer = RedisServers.FirstOrDefault(redisServer => redisServer.ResourceID == sourceId);
-            SelectedRedisServer = selectedRedisServer;
+            var selectedRedisSource = RedisSources.FirstOrDefault(redisSource => redisSource.ResourceID == sourceId);
+            SelectedRedisSource = selectedRedisSource;
         }
 
         public string ActivityFuncDisplayName

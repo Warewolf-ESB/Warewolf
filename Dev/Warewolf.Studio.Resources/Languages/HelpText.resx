@@ -1853,13 +1853,13 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisSourcePortHelp" xml:space="preserve">
     <value>The default port on which Redis listens is 6379.</value>
   </data>
-  <data name="RedisServerHelp" xml:space="preserve">
+  <data name="RedisSourceHelp" xml:space="preserve">
     <value>Select a preconfigured redis source.</value>
   </data>
-  <data name="RedisNewServerHelp" xml:space="preserve">
+  <data name="RedisNewSourceHelp" xml:space="preserve">
     <value>Create a new redis connection</value>
   </data>
-  <data name="RedisEditServerHelp" xml:space="preserve">
+  <data name="RedisEditSourceHelp" xml:space="preserve">
     <value>Edit the selected redis connection properties</value>
   </data>
   <data name="RedisKeyHelp" xml:space="preserve">
