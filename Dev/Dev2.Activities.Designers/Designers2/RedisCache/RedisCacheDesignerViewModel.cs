@@ -234,7 +234,7 @@ namespace Dev2.Activities.Designers2.RedisCache
 
             switch (propertyName)
             {
-                case "RabbitMQSource":
+                case "RedisSource":
                     ruleSet.Add(new IsNullRule(() => SelectedRedisSource));
                     break;
 
