@@ -26,10 +26,9 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Validation;
-using Dev2.Providers.Errors;
-using Warewolf.Resource.Errors;
 using System.ComponentModel;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Providers.Validation.Rules;
 
 namespace Dev2.Activities.Designers2.RedisCache
 {
@@ -195,6 +194,11 @@ namespace Dev2.Activities.Designers2.RedisCache
         public static readonly DependencyProperty IsKeyFocusedProperty =
             DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(false));
 
+        public bool IsRedisSourceFocused { get => (bool)GetValue(IsRedisSourceFocusedProperty); set { SetValue(IsRedisSourceFocusedProperty, value); } }
+
+        public static readonly DependencyProperty IsRedisSourceFocusedProperty =
+            DependencyProperty.Register("IsRedisSourceFocused", typeof(bool), typeof(RedisCacheDesignerViewModel), new PropertyMetadata(false));
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -207,20 +211,41 @@ namespace Dev2.Activities.Designers2.RedisCache
         [ExcludeFromCodeCoverage]
         public override void Validate()
         {
-            Errors = null;
-            var errors = new List<IActionableErrorInfo>();
+            var result = new List<IActionableErrorInfo>();
+            result.AddRange(ValidateThis());
+            Errors = result.Count == 0 ? null : result;
+        }
 
-            Action onError = () => IsKeyFocused = true;
-            var util = new VariableUtils();
-            util.AddError(errors, util.TryParseVariables(Key, out string keyValue, onError));
-
-            if (string.IsNullOrWhiteSpace(keyValue))
+        IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            foreach (var error in GetRuleSet("RedisSource").ValidateRules("'Redis Source'", () => IsRedisSourceFocused = true))
             {
-                errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Key") });
+                yield return error;
             }
+            foreach (var error in GetRuleSet("Key").ValidateRules("'Key'", () => IsKeyFocused = true))
+            {
+                yield return error;
+            }
+        }
 
-            // Always assign property otherwise binding does not update!
-            Errors = errors;
+        IRuleSet GetRuleSet(string propertyName)
+        {
+            var ruleSet = new RuleSet();
+
+            switch (propertyName)
+            {
+                case "RabbitMQSource":
+                    ruleSet.Add(new IsNullRule(() => SelectedRedisSource));
+                    break;
+
+                case "Key":
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Key));
+                    break;
+
+                default:
+                    break;
+            }
+            return ruleSet;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
