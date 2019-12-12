@@ -29,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests.Redis
 {
     [TestClass]
-    public class RedisActivityTests : BaseActivityTests
+    public class RedisCacheActivityTests : BaseActivityTests
     {
         static RedisCacheActivity CreateRedisActivity()
         {
@@ -223,7 +223,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
         }
-
 
         private static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
         {
