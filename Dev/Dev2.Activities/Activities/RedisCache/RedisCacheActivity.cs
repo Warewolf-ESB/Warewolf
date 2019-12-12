@@ -150,7 +150,7 @@ namespace Dev2.Activities.RedisCache
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             _errorsTo = new ErrorResultTO();
-           
+
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -177,13 +177,26 @@ namespace Dev2.Activities.RedisCache
                 if (cachedData != null)
                 {
                     _debugInputs = new List<DebugItem>();
-
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key {" + Key + "} found"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } found"), debugItem);
                     _debugOutputs.Add(debugItem);
 
-                    var outputVars = _innerActivity.GetOutputs();
+                    var outputIndex = 1;
+                    foreach (var item in cachedData)
+                    {
+                        DataObject.Environment.Assign(item.Key, item.Value, 0);
 
+                        var key = item.Key;
+                        var value = item.Value;
+                        if (!string.IsNullOrWhiteSpace(item.Key))
+                        {
+                            debugItem = new DebugItem();
+                            debugItem = TryCreateDebugItem(DataObject.Environment, outputIndex++, new AssignValue(key, value), 0);
+                            _debugOutputs.Add(debugItem);
+                        }
+                    }
+
+                    var outputVars = _innerActivity.GetOutputs();
                     foreach (var outputVar in outputVars)
                     {
                         if (cachedData.ContainsKey(outputVar))
@@ -201,7 +214,8 @@ namespace Dev2.Activities.RedisCache
                 {
                     base._debugOutputs.Clear();
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key {" + Key + "} not found"), debugItem);
+
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } not found"), debugItem);
                     _debugInputs.Add(debugItem);
 
                     _innerActivity.Execute(DataObject, 0);
@@ -209,7 +223,7 @@ namespace Dev2.Activities.RedisCache
                     var innerCount = 1;
                     foreach (var t in GetAssignValue(outputVars))
                     {
-                        debugItem = TryCreateDebugInput(DataObject.Environment, innerCount++, t, 0);
+                        debugItem = TryCreateDebugItem(DataObject.Environment, innerCount++, t, 0);
                         _debugInputs.Add(debugItem);
                     }
                     CacheOutputs(cacheTTL, outputVars);
@@ -279,7 +293,7 @@ namespace Dev2.Activities.RedisCache
             }
         }
 
-        DebugItem TryCreateDebugInput(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        DebugItem TryCreateDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
         {
             var debugItem = new DebugItem();
             const string VariableLabelText = "";
@@ -398,28 +412,6 @@ namespace Dev2.Activities.RedisCache
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugOutputs(env, update);
-            var debugItem = new DebugItem();
-            IDictionary<string, string> cachedData = GetCachedOutputs();
-            if (cachedData != null)
-            {
-                var count = 1;
-                var assignValues = new List<AssignValue>();
-                foreach (var item in cachedData)
-                {
-                    DataObject.Environment.Assign(item.Key, item.Value, 0);
-
-                    var key = item.Key;
-                    var value = item.Value;
-                    if (!string.IsNullOrWhiteSpace(item.Key))
-                    {
-                        debugItem = new DebugItem();
-                        debugItem = TryCreateDebugInput(DataObject.Environment, count++, new AssignValue(key, value), update);
-                        _debugOutputs.Add(debugItem);
-                    }
-                }
-            }
-            
-            base.GetDebugOutputs(env, update);
             return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }
         IDictionary<string, string> CachedData;
@@ -442,14 +434,11 @@ namespace Dev2.Activities.RedisCache
                 var innerCount = 1;
                 foreach (var t in GetAssignValue(_innerActivity.GetOutputs()))
                 {
-                    debugItem = TryCreateDebugInput(env, innerCount++, t, update);
+                    debugItem = TryCreateDebugItem(env, innerCount++, t, update);
                     _debugInputs.Add(debugItem);
                 }
             }
-            else
-            {
 
-            }
             base.GetDebugInputs(env, update);
             return _debugInputs?.Any() ?? false ? _debugInputs : new List<DebugItem>();
         }
