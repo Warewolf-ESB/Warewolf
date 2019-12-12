@@ -225,7 +225,7 @@
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\Redis\RedisCounterActivityTests.cs" />
     <Compile Include="ActivityTests\Redis\RedisDeleteActivityTests.cs" />
-    <Compile Include="ActivityTests\Redis\RedisActivityTests.cs" />
+    <Compile Include="ActivityTests\Redis\RedisCacheActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfJavascriptActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfPythonActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfRubyActivityTests.cs" />
