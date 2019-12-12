@@ -20,16 +20,16 @@ namespace Warewolf.UI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Options.OptionWorkflow optionWorkflow && optionWorkflow.Workflow.Value != Guid.Empty)
+            if (value is Data.WorkflowWithInputs workflowWithInputs && workflowWithInputs.Value != Guid.Empty)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var resource = shellViewModel?.GetResource(optionWorkflow.Workflow.Value.ToString());
+                var resource = shellViewModel?.GetResource(workflowWithInputs.Value.ToString());
                 if (resource is null)
                 {
                     return Binding.DoNothing;
                 }
-                optionWorkflow.Workflow.Name = resource.ResourceName;
-                optionWorkflow.Workflow.Inputs = shellViewModel?.GetInputsFromWorkflow(optionWorkflow.Workflow.Value);
+                workflowWithInputs.Name = resource.ResourceName;
+                workflowWithInputs.Inputs = shellViewModel?.GetInputsFromWorkflow(workflowWithInputs.Value);
 
                 return resource.ResourceName;
             }

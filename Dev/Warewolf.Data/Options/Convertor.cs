@@ -63,6 +63,8 @@ namespace Warewolf.Options
                 {
                     result.Tooltip = tooltipAttr.Get();
                 }
+                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionAutocomplete)o).Value); };
+
                 return result;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(int)))
@@ -80,6 +82,8 @@ namespace Warewolf.Options
                 {
                     optionInt.Tooltip = tooltipAttr.Get();
                 }
+
+                optionInt.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionInt)o).Value); };
                 return optionInt;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(IWorkflow)))
@@ -98,6 +102,12 @@ namespace Warewolf.Options
                 {
                     optionWorkflow.Tooltip = tooltipAttr.Get();
                 }
+                optionWorkflow.PropertyChanged += (o, e) => {
+                    if (e.PropertyName == nameof(OptionWorkflow.Workflow))
+                    {
+                        prop.SetValue(instance, ((OptionWorkflow)o).Workflow);
+                    }
+                };
                 return optionWorkflow;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(bool)))
@@ -115,6 +125,8 @@ namespace Warewolf.Options
                 {
                     optionBool.Tooltip = tooltipAttr.Get();
                 }
+                optionBool.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionBool)o).Value); };
+
                 return optionBool;
             }
             else if (prop.PropertyType.IsEnum)
@@ -140,6 +152,8 @@ namespace Warewolf.Options
                 {
                     result.Tooltip = tooltipAttr.Get();
                 }
+                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionEnum)o).Value); };
+
                 return result;
             }
             else
@@ -192,6 +206,7 @@ namespace Warewolf.Options
                         returnVal.Options[type.Name] = OptionConvertor.Convert(optionType).Where(o => o.Name != fieldValueName);
                     }
                 }
+                returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionCombobox(prop, (OptionCombobox)o)); };
                 return returnVal;
             }
             throw UnhandledException;
@@ -269,10 +284,7 @@ namespace Warewolf.Options
             }
             else if (option is OptionCombobox optionComboBox)
             {
-                var name = optionComboBox.Value;
-                var propertyType = prop.PropertyType;
-                var type = propertyType.Assembly.GetType(propertyType.Namespace + "." + name);
-                var value = Convert(type, optionComboBox.SelectedOptions);
+                object value = ExtractValueFromOptionCombobox(prop, optionComboBox);
                 prop.SetValue(instance, value);
             }
             else if (option is OptionEnum optionEnum)
@@ -284,6 +296,15 @@ namespace Warewolf.Options
                 // unhandled
 
             }
+        }
+
+        private static object ExtractValueFromOptionCombobox(PropertyInfo prop, OptionCombobox optionComboBox)
+        {
+            var name = optionComboBox.Value;
+            var propertyType = prop.PropertyType;
+            var type = propertyType.Assembly.GetType(propertyType.Namespace + "." + name);
+            var value = Convert(type, optionComboBox.SelectedOptions);
+            return value;
         }
     }
 }
