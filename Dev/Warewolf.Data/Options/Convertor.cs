@@ -206,7 +206,7 @@ namespace Warewolf.Options
                         returnVal.Options[type.Name] = OptionConvertor.Convert(optionType).Where(o => o.Name != fieldValueName);
                     }
                 }
-                returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionCombobox(prop, (OptionCombobox)o)); };
+                returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionCombobox(instance, prop, (OptionCombobox)o)); };
                 return returnVal;
             }
             throw UnhandledException;
@@ -229,8 +229,11 @@ namespace Warewolf.Options
         public static object Convert(Type type, IEnumerable<IOption> options)
         {
             var instance = Activator.CreateInstance(type);
-
-            if (instance is IOptionConvertable convertable)
+            return Convert(type, options, instance);
+        }
+        public static object Convert<T>(Type type, IEnumerable<IOption> options, T parentInstance)
+        {
+            if (parentInstance is IOptionConvertable convertable)
             {
                 var firstOption = options.First();
                 convertable.FromOption(firstOption);
@@ -241,19 +244,19 @@ namespace Warewolf.Options
                 {
                     var prop = type.GetProperty(option.Name);
 
-                    SetProperty(instance, prop, option);
+                    SetProperty(parentInstance, prop, option);
                 }
             }
 
-            return instance;
+            return parentInstance;
         }
-        private static void SetProperty(object instance, PropertyInfo prop, IOption option)
+        private static void SetProperty(object parentInstance, PropertyInfo prop, IOption option)
         {
             if (prop.PropertyType.IsAssignableFrom(typeof(string)))
             {
                 if (option is IOptionAutocomplete optionAutocomplete)
                 {
-                    prop.SetValue(instance, optionAutocomplete.Value);
+                    prop.SetValue(parentInstance, optionAutocomplete.Value);
                 }
                 else
                 {
@@ -264,7 +267,7 @@ namespace Warewolf.Options
             {
                 if (option is OptionWorkflow optionWorkflow)
                 {
-                    prop.SetValue(instance, optionWorkflow.Workflow);
+                    prop.SetValue(parentInstance, optionWorkflow.Workflow);
                 }
                 else
                 {
@@ -275,7 +278,7 @@ namespace Warewolf.Options
             {
                 if (option is IOptionInt optionInt)
                 {
-                    prop.SetValue(instance, optionInt.Value);
+                    prop.SetValue(parentInstance, optionInt.Value);
                 }
                 else
                 {
@@ -284,12 +287,12 @@ namespace Warewolf.Options
             }
             else if (option is OptionCombobox optionComboBox)
             {
-                object value = ExtractValueFromOptionCombobox(prop, optionComboBox);
-                prop.SetValue(instance, value);
+                object value = ExtractValueFromOptionCombobox(parentInstance, prop, optionComboBox);
+                prop.SetValue(parentInstance, value);
             }
             else if (option is OptionEnum optionEnum)
             {
-                prop.SetValue(instance, optionEnum.Value);
+                prop.SetValue(parentInstance, optionEnum.Value);
             }
             else
             {
@@ -298,13 +301,22 @@ namespace Warewolf.Options
             }
         }
 
-        private static object ExtractValueFromOptionCombobox(PropertyInfo prop, OptionCombobox optionComboBox)
+        private static object ExtractValueFromOptionCombobox(object parentInstance, PropertyInfo prop, OptionCombobox optionComboBox)
         {
             var name = optionComboBox.Value;
             var propertyType = prop.PropertyType;
             var type = propertyType.Assembly.GetType(propertyType.Namespace + "." + name);
-            var value = Convert(type, optionComboBox.SelectedOptions);
-            return value;
+            var currentValue = prop.GetValue(parentInstance);
+            if (currentValue.GetType() == type)
+            {
+                var value = Convert(type, optionComboBox.SelectedOptions, currentValue);
+                return value;
+            }
+            else
+            {
+                var value = Convert(type, optionComboBox.SelectedOptions);
+               return value;
+            }
         }
     }
 }
