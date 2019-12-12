@@ -491,6 +491,7 @@
     </Compile>
     <Compile Include="Toolbox\Utility\Redis\Source\RedisSourceSteps.cs" />
     <Compile Include="Toolbox\Utility\Redis\SpecRedisActivity.cs" />
+    <Compile Include="Toolbox\Utility\Redis\SpecAssignValue.cs" />
     <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
