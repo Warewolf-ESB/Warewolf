@@ -74,12 +74,13 @@ namespace Dev2.Activities.Designers.Tests.Gate
 
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
-            var expectedGateFailure = "StopOnError: Stop execution on error";
+            var expectedGateFailure = "Stop processing";
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(gateDesignerViewModel.HasLargeView);
-            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure);
+            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure.Name);
+            Assert.AreEqual(0, gateDesignerViewModel.SelectedGateFailure.Value);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
             Assert.IsTrue(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
@@ -111,19 +112,19 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 SelectedGateFailure = new NamedInt { Name = EnumHelper<GateFailureAction>.GetEnumDescription(GateFailureAction.Retry), Value = (int)GateFailureAction.Retry },
             };
             //------------Assert Results-------------------------
-            Assert.AreEqual("Retry: Retry execution on error", gateDesignerViewModel.SelectedGateFailure);
+            Assert.AreEqual("Retry", gateDesignerViewModel.SelectedGateFailure.Name);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
-            gateFailureProperty.Verify(prop => prop.SetValue("StopOnError"), Times.Exactly(1));
-            gateFailureProperty.Verify(prop => prop.SetValue("Retry"), Times.Exactly(1));
+            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.StopProcessing), Times.Exactly(1));
+            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.Retry), Times.Exactly(1));
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_GateFailureOptions_StopOnError()
+        public void GateDesignerViewModel_GateFailureOptions_StopProcessing()
         {
             //------------Setup for test--------------------------
-            var gateFailureProperty = CreateModelProperty("GateFailure", "Retry");
+            var gateFailureProperty = CreateModelProperty("GateFailure", GateFailureAction.Retry);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
             var conditionsProperty = CreateModelProperty("Conditions", null).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
@@ -143,10 +144,10 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 SelectedGateFailure = new NamedInt { Name = EnumHelper<GateFailureAction>.GetEnumDescription(GateFailureAction.StopProcessing), Value = (int)GateFailureAction.StopProcessing },
             };
             //------------Assert Results-------------------------
-            Assert.AreEqual("StopOnError: Stop execution on error", gateDesignerViewModel.SelectedGateFailure);
+            Assert.AreEqual("StopProcessing", gateDesignerViewModel.SelectedGateFailure.Name);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
-            gateFailureProperty.Verify(prop => prop.SetValue("Retry"), Times.Exactly(1));
-            gateFailureProperty.Verify(prop => prop.SetValue("StopOnError"), Times.Exactly(1));
+            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.Retry), Times.Exactly(1));
+            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.StopProcessing), Times.Exactly(1));
         }
 
         [TestMethod]
@@ -173,8 +174,10 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var gateFailureOptions = gateDesignerViewModel.GateFailureOptions.ToList();
             //------------Assert Results-------------------------
             Assert.AreEqual(2, gateFailureOptions.Count);
-            Assert.AreEqual("Retry: Retry execution on error", gateFailureOptions[0]);
-            Assert.AreEqual("StopOnError: Stop execution on error", gateFailureOptions[1]);
+            Assert.AreEqual("Stop processing", gateFailureOptions[0].Name);
+            Assert.AreEqual(0, gateFailureOptions[0].Value);
+            Assert.AreEqual("Retry execution", gateFailureOptions[1].Name);
+            Assert.AreEqual(1, gateFailureOptions[1].Value);
         }
 
         [TestMethod]
@@ -315,18 +318,15 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             var options = gateDesignerViewModel.Options.Options.ToList();
             //------------Assert Results-------------------------
-            Assert.AreEqual(4, options.Count);
-            Assert.AreEqual(typeof(OptionEnum), options[0].GetType());
-            Assert.AreEqual("Resume", options[0].Name);
+            Assert.AreEqual(1, options.Count);
+            Assert.AreEqual(typeof(OptionCombobox), options[0].GetType());
+            Assert.AreEqual("GateOpts", options[0].Name);
 
-            Assert.AreEqual(typeof(OptionWorkflow), options[1].GetType());
-            Assert.AreEqual("ResumeEndpoint", options[1].Name);
+            var comboOptions = (options[0] as OptionCombobox).Options.ToList();
 
-            Assert.AreEqual(typeof(OptionInt), options[2].GetType());
-            Assert.AreEqual("Count", options[2].Name);
-
-            Assert.AreEqual(typeof(OptionCombobox), options[3].GetType());
-            Assert.AreEqual("Strategy", options[3].Name);
+            Assert.AreEqual(2, comboOptions.Count);
+            Assert.AreEqual("ResumptionDisabled", comboOptions[0].Key);
+            Assert.AreEqual("AllowResumption", comboOptions[1].Key);
             
         }
 
