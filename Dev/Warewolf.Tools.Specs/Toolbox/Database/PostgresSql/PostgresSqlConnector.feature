@@ -71,9 +71,10 @@ Scenario: Change the recordset on existing PostgresSql tool
 	| fname | [[fname]] | false         |
 	And Validate PostgresSql Is Enabled
 
-@ExecutePostgresServerWithTimeout		
+@ExecutePostgresServerWithTimeout
 Scenario: Execute Postgres Server With Timeout
-    Given I have workflow "PostgreWorkflowForTimeout" with "PostgresActivity" Postgres database connector
+	Given this test depends on a remote Postgres database container
+    And I have workflow "PostgreWorkflowForTimeout" with "PostgresActivity" Postgres database connector
     And Postgres Server Source is Enabled
     And I Select "NewPostgresSource" as Postgres Source for "PostgresActivity"
     And I Select "get_countries_delayed" as Postgres Server Action for "PostgresActivity"

@@ -82,19 +82,19 @@ public class Depends : Attribute, IDisposable
         switch (_containerType)
         {
             case ContainerType.MySQL:
-                StartRemoteMySQLContainer(true);
+                InjectMySQLContainer(true);
                 break;
             case ContainerType.MSSQL:
-                StartRemoteMSSQLContainer(true);
+                InjectMSSQLContainer(true);
                 break;
             case ContainerType.RabbitMQ:
-                StartRemoteRabbitMQContainer(true);
+                InjectRabbitMQContainer(true);
                 break;
             case ContainerType.CIRemote:
-                StartRemoteCIRemoteContainer(true);
+                InjectCIRemoteContainer(true);
                 break;
             case ContainerType.PostGreSQL:
-                StartRemotePostGreSQLContainer(true);
+                InjectPostGreSQLContainer(true);
                 break;
         }
     }
@@ -118,7 +118,7 @@ public class Depends : Attribute, IDisposable
         }
     }
 
-    void StartRemoteCIRemoteContainer(bool EnableDocker)
+    void InjectCIRemoteContainer(bool EnableDocker)
     {
         var knownServerSources = new List<string>()
         {
@@ -152,7 +152,7 @@ public class Depends : Attribute, IDisposable
         }
     }
 
-    void StartRemoteMSSQLContainer(bool EnableDocker)
+    void InjectMSSQLContainer(bool EnableDocker)
     {
         var knownMssqlServerSources = new List<string>()
         {
@@ -175,7 +175,7 @@ public class Depends : Attribute, IDisposable
         }
     }
 
-    void StartRemoteRabbitMQContainer(bool EnableDocker)
+    void InjectRabbitMQContainer(bool EnableDocker)
     {
         var knownServerSources = new List<string>()
         {
@@ -194,7 +194,7 @@ public class Depends : Attribute, IDisposable
         }
     }
 
-    void StartRemotePostGreSQLContainer(bool EnableDocker)
+    void InjectPostGreSQLContainer(bool EnableDocker)
     {
         var knownServerSources = new List<string>()
         {
@@ -205,12 +205,12 @@ public class Depends : Attribute, IDisposable
         };
         if (EnableDocker)
         {
-            UpdateSourcesConnectionStrings($"Host={RigOpsIP};Port={Container.Port};UserName=guest;Password=guest;Database=TestDB", knownServerSources);
+            UpdateSourcesConnectionStrings($"Host={RigOpsIP};Username=postgres;Password=test123;Database=TestDB", knownServerSources);
             Thread.Sleep(30000);
         }
         else
         {
-            UpdateSourcesConnectionStrings($"Host={SVRDEVIP};UserName=test;Password=test;Database=TestDB", knownServerSources);
+            UpdateSourcesConnectionStrings($"Host={SVRDEVIP};UserName=postgres;Password=test123;Database=TestDB", knownServerSources);
             Thread.Sleep(30000);
         }
     }
@@ -226,11 +226,20 @@ public class Depends : Attribute, IDisposable
     void InjectSVRDEVIP()
     {
         UpdateSourcesConnectionString($"Server={SVRDEVIP};Database=test;Uid=root;Pwd=admin;", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.xml");
-        UpdateSourcesConnectionString($"User Id=Testuser;Password=test123;Data Source={SVRDEVIP};Database=HR;", @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.xml");
         UpdateSourcesConnectionString($"Server=http://{SVRDEVIP}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0", @"%programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.xml");
     }
 
-    void StartRemoteMySQLContainer(bool EnableDocker)
+    public static void InjectOracleSources()
+    {
+        var knownServerSources = new List<string>()
+        {
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.bite",
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.xml"
+        };
+        UpdateSourcesConnectionStrings($"User Id=Testuser;Password=test123;Data Source={SVRDEVIP};Database=HR;", knownServerSources);
+    }
+
+    void InjectMySQLContainer(bool EnableDocker)
     {
         if (EnableDocker)
         {

@@ -172,8 +172,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
     testRunner.Given("I have the url \"http://[[site]][[file]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.And("I have a web request variable \"[[site]]\" equal to \"TFSBLD.dev2.local:9810/api/products" +
-                    "/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[site]]\" equal to \"TFSBLD.dev2.local:9810/api/pro" +
+                    "ducts/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
  testRunner.And("I have a web request variable \"[[file]]\" equal to \"Get\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
@@ -727,8 +727,8 @@ this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3
 #line 182
 this.ScenarioSetup(scenarioInfo);
 #line 183
- testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://TFSBLD.dev2.local/Inte" +
-                    "grationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://TFSBLD.dev2.local" +
+                    "/IntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 184
  testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote:314" +
                     "2/secure/Wait?WaitSeconds=15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
