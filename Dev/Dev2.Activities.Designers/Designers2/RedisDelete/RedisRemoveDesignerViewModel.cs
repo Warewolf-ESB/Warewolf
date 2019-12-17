@@ -189,27 +189,31 @@ namespace Dev2.Activities.Designers2.RedisRemove
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            foreach (var error in GetRuleSet("RedisSource").ValidateRules("'Redis Source'", () => IsRedisSourceFocused = true))
+            foreach (var error in GetRuleSet(RuleSets.RedisSource).ValidateRules("'Redis Source'", () => IsRedisSourceFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Key").ValidateRules("'Key'", () => IsKeyFocused = true))
+            foreach (var error in GetRuleSet(RuleSets.Key).ValidateRules("'Key'", () => IsKeyFocused = true))
             {
                 yield return error;
             }
         }
 
-        IRuleSet GetRuleSet(string propertyName)
+	enum RuleSets {
+		RedisSource,
+		Key
+	}
+        IRuleSet GetRuleSet(RuleSets propertyName)
         {
             var ruleSet = new RuleSet();
 
             switch (propertyName)
             {
-                case "RedisSource":
+                case RuleSets.RedisSource:
                     ruleSet.Add(new IsNullRule(() => SelectedRedisSource));
                     break;
 
-                case "Key":
+                case RuleSets.Key:
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Key));
                     break;
 
