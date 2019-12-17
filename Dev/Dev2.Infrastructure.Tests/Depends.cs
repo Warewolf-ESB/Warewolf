@@ -23,7 +23,9 @@ public class Depends : Attribute, IDisposable
         RabbitMQ = 4,
         CIRemote = 5,
         Redis = 6,
-        AnonymousRedis = 7
+        AnonymousRedis = 7,
+        SVRDEV = 8,
+        TFSBLD = 9
     }
 
     string ConvertToString(ContainerType containerType)
@@ -119,22 +121,22 @@ public class Depends : Attribute, IDisposable
     void StartRemoteCIRemoteContainer(bool EnableDocker)
     {
         var knownServerSources = new List<string>()
-            {
-                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.bite",
-                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.xml",
-                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.bite",
-                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml",
-                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.bite",
-                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.xml",
-                @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.bite",
-                @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.xml",
-                @"%programdata%\Warewolf\Resources\Remote Container.bite",
-                @"%programdata%\Warewolf\Resources\Remote Container.xml",
-                @"%programdata%\Warewolf\Resources\RemoteServerToDelete.bite",
-                @"%programdata%\Warewolf\Resources\RemoteServerToDelete.xml",
-                @"%programdata%\Warewolf\Resources\Remote Connection Integration.bite",
-                @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
-            };
+        {
+            @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.bite",
+            @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.xml",
+            @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.bite",
+            @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml",
+            @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.bite",
+            @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.xml",
+            @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.bite",
+            @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.xml",
+            @"%programdata%\Warewolf\Resources\Remote Container.bite",
+            @"%programdata%\Warewolf\Resources\Remote Container.xml",
+            @"%programdata%\Warewolf\Resources\RemoteServerToDelete.bite",
+            @"%programdata%\Warewolf\Resources\RemoteServerToDelete.xml",
+            @"%programdata%\Warewolf\Resources\Remote Connection Integration.bite",
+            @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
+        };
         if (EnableDocker)
         {
             UpdateSourcesConnectionStrings($"AppServerUri=http://{RigOpsIP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;", knownServerSources);
@@ -153,14 +155,14 @@ public class Depends : Attribute, IDisposable
     void StartRemoteMSSQLContainer(bool EnableDocker)
     {
         var knownMssqlServerSources = new List<string>()
-            {
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.bite",
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
-                @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite",
-                @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.xml",
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.bite",
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
-            };
+        {
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.bite",
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
+            @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite",
+            @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.xml",
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.bite",
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
+        };
         if (EnableDocker)
         {
             UpdateSourcesConnectionStrings($"Data Source={RigOpsIP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
@@ -176,10 +178,10 @@ public class Depends : Attribute, IDisposable
     void StartRemoteRabbitMQContainer(bool EnableDocker)
     {
         var knownServerSources = new List<string>()
-            {
-                @"%programdata%\Warewolf\Resources\Sources\RabbitMq\testRabbitMQSource.bite",
-                @"%programdata%\Warewolf\Resources\Sources\RabbitMq\testRabbitMQSource.xml"
-            };
+        {
+            @"%programdata%\Warewolf\Resources\Sources\RabbitMq\testRabbitMQSource.bite",
+            @"%programdata%\Warewolf\Resources\Sources\RabbitMq\testRabbitMQSource.xml"
+        };
         if (EnableDocker)
         {
             UpdateSourcesConnectionStrings($"HostName={RigOpsIP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/", knownServerSources);
@@ -192,23 +194,40 @@ public class Depends : Attribute, IDisposable
         }
     }
 
-    private void StartRemotePostGreSQLContainer(bool EnableDocker)
+    void StartRemotePostGreSQLContainer(bool EnableDocker)
     {
         var knownServerSources = new List<string>()
-            {
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewPostgresSource.bite",
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewPostgresSource.xml"
-            };
+        {
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewPostgresSource.bite",
+            @"%programdata%\Warewolf\Resources\Sources\Database\NewPostgresSource.xml",
+            @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.bite",
+            @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.xml"
+        };
         if (EnableDocker)
         {
             UpdateSourcesConnectionStrings($"Host={RigOpsIP};Port={Container.Port};UserName=guest;Password=guest;Database=TestDB", knownServerSources);
-            Thread.Sleep(120000);
+            Thread.Sleep(30000);
         }
         else
         {
             UpdateSourcesConnectionStrings($"Host={SVRDEVIP};UserName=test;Password=test;Database=TestDB", knownServerSources);
             Thread.Sleep(30000);
         }
+    }
+
+    void InjectTFSBLDIP()
+    {
+        UpdateSourcesConnectionString($"Address=http://{TFSBLDIP}:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous", @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.xml");
+        UpdateSourcesConnectionString($"Address=http://{TFSBLDIP}:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous", @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.xml");
+        UpdateSourcesConnectionString($"Address=http://{TFSBLDIP}:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous", @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.xml");
+        UpdateSourcesConnectionString($"Address=http://{TFSBLDIP}:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous", @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml");
+    }
+
+    void InjectSVRDEVIP()
+    {
+        UpdateSourcesConnectionString($"Server={SVRDEVIP};Database=test;Uid=root;Pwd=admin;", @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.xml");
+        UpdateSourcesConnectionString($"User Id=Testuser;Password=test123;Data Source={SVRDEVIP};Database=HR;", @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.xml");
+        UpdateSourcesConnectionString($"Server=http://{SVRDEVIP}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0", @"%programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.xml");
     }
 
     void StartRemoteMySQLContainer(bool EnableDocker)
