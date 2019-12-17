@@ -525,8 +525,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var webClientCredentials = httpClient.DefaultRequestHeaders.Authorization;
             Assert.IsNotNull(webClientCredentials);
-            //Assert.AreEqual(webClientCredentials.Parameter, networkCredentialFromWebSource.UserName);
-            //Assert.AreEqual(webClientCredentials.Password, networkCredentialFromWebSource.Password);
         }
 
         [TestMethod]
@@ -576,9 +574,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var dsfWebPutActivity = new DsfWebPutActivity();
             dsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var webSource = new WebSource();
-            webSource.Address = "http://TFSBLD.dev2.local:9910/api/";
-            webSource.AuthenticationType = AuthenticationType.Anonymous;
+            var webSource = new WebSource
+            {
+                Address = $"http://{Depends.TFSBLDIP}:9910/api/",
+                AuthenticationType = AuthenticationType.Anonymous
+            };
             mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
             dsfWebPutActivity.ResourceCatalog = mockResourceCatalog.Object;
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
