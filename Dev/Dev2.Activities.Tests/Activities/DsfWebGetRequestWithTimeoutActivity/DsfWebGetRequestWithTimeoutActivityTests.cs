@@ -398,7 +398,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             var dataObjectMock = new Mock<IDSFDataObject>();
 
-            environment.Assign("[[URL]]", "http://TFSBLD.dev2.local:9910/api/values", 0);
+            environment.Assign("[[URL]]", $"http://{Depends.TFSBLDIP}:9910/api/values", 0);
 
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.IsDebugMode()).Returns(true);
