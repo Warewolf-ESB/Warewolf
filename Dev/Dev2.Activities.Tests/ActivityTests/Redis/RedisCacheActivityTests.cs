@@ -168,7 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual(3, debugOutputs.Count);
 
             Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
-            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+            AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
 
             AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
             AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
@@ -214,7 +214,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual(3, debugOutputs.Count);
 
             Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
-            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+            AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
 
             AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
             AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
@@ -279,7 +279,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         }
 
-        public List<DebugItem> TestGetDebugInputs(IExecutionEnvironment env, int update)
+        public List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return base.GetDebugInputs(env, update);
         }
