@@ -72,10 +72,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         }
 
         [Given(@"I have the url ""(.*)"" without timeout")]
-        public void GivenIHaveTheUrl(string url)
-        {
-            scenarioContext.Add("url", url);
-        }
+        public void GivenIHaveTheUrl(string url) => scenarioContext.Add("url", ResolveTFSBLDDependancy(url));
 
         [When(@"the web request tool is executed")]
         public void WhenTheWebRequestToolIsExecuted()
@@ -95,15 +92,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, value));
+            variableList.Add(new Tuple<string, string>(variable, ResolveTFSBLDDependancy(value)));
         }
 
         [Given(@"I have the Header ""(.*)""")]
-        public void GivenIHaveTheHeader(string header)
-        {
-            scenarioContext.Add("header", header);
-        }
+        public void GivenIHaveTheHeader(string header) => scenarioContext.Add("header", header);
 
+        string ResolveTFSBLDDependancy(string addressContainer)
+        {
+            var TFSBLDAddress = "TFSBLD.dev2.local";
+            if (addressContainer.Contains(TFSBLDAddress) && string.IsNullOrEmpty(Depends.GetIPAddress(TFSBLDAddress)))
+            {
+                return addressContainer.Replace("TFSBLD.dev2.local", Depends.TFSBLDIP);
+            }
+            return addressContainer;
+        }
 
         [Then(@"the result should contain the string ""(.*)""")]
         public void ThenTheResultShouldContainTheString(string expectedResult)

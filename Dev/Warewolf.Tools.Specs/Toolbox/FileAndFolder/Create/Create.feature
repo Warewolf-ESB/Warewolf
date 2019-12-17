@@ -28,8 +28,8 @@ Scenario Outline: Create file at location
 		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
 		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                   | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
 		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                   | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                            | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
-		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                           | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.dev2.local/test.txt                                                       | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
+		| 7  | SFTP       | [[path]]    | sftp://SVRDEV.dev2.local/test1.txt                                                      | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location with overwrite disabled
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -54,8 +54,8 @@ Scenario Outline: Create file at location with overwrite disabled
 		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | False    | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
 		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                   | False    | ""                           | ""       | [[result]] | Success | NO           |                           |
 		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                   | False    | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                            | False    | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
-		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                           | False    | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.dev2.local/test.txt                                                       | False    | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
+		| 7  | SFTP       | [[path]]    | sftp://SVRDEV.dev2.local/test1.txt                                                      | False    | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 
 Scenario Outline: Create file at location Nulls

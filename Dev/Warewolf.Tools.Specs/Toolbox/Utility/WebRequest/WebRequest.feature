@@ -11,7 +11,7 @@ Scenario: Enter a URL to download html
 	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                          | Header |
+	| URL                                            | Header |
 	| http://TFSBLD.dev2.local:9810/api/products/Get |        |
 	And the debug output as 
 	|                                                                                                                   |
@@ -37,7 +37,7 @@ Scenario: Enter a URL made up of text and variables with no header
 	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                                    | Header |
+	| URL                                                                      | Header |
 	| http://[[site]][[file]] = http://TFSBLD.dev2.local:9810/api/products/Get |        |
 	And the debug output as 
 	|                     |
@@ -53,7 +53,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (json)
 	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                          | Header                                                      |
+	| URL                                            | Header                                                      |
 	| http://TFSBLD.dev2.local:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/json" |
 	And the debug output as 
 	|                                                                                                                   |
@@ -68,7 +68,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (xml)
 	Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                          | Header                                                     |
+	| URL                                            | Header                                                     |
 	| http://TFSBLD.dev2.local:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
 	And the debug output as 
 	|                                                                                                                   |
@@ -80,7 +80,7 @@ Scenario: Enter a URL that returns json
 	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                          | Header |
+	| URL                                            | Header |
 	| http://TFSBLD.dev2.local:9810/api/products/Get |        |
 	And the debug output as 
 	|                                                                                                                   |
@@ -93,7 +93,7 @@ Scenario: Enter a URL that returns xml
 	Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                          | Header |
+	| URL                                            | Header |
 	| http://TFSBLD.dev2.local:9810/api/products/Get |        |
 	And the debug output as 
 	|                                                                                                                   |
