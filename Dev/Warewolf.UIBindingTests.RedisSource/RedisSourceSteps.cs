@@ -169,7 +169,7 @@ namespace Warewolf.UIBindingTests
             var redisSourceDefinition = new RedisSourceDefinition
             {
                 Name = "Test-Redis",
-                HostName = "http://TFSBLD.dev2.local/IntegrationTestSite",
+                HostName = "http://TFSBLD.premier.local/IntegrationTestSite",
                 Password = "pass123",
                 Port = "6379"
             };

@@ -91,7 +91,7 @@ Scenario: Test WF with WebRequest
 	Given I have a workflow "WebRequestTestWF"
 	And "WebRequestTestWF" contains WebRequest "TestWebRequest" as
 	| Result       | Url                                            |
-	| "[[Result]]" | http://TFSBLD.dev2.local:9810/api/products/Get |
+	| "[[Result]]" | http://TFSBLD.premier.local:9810/api/products/Get |
 	And I save workflow "WebRequestTestWF"
 	Then the test builder is open with "WebRequestTestWF"
 	And I click New Test

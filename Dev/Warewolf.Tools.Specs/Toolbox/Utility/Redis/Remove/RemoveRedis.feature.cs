@@ -127,9 +127,9 @@ this.ScenarioSetup(scenarioInfo);
             table2769.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 11
+#line 17
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
-#line 14
+#line 20
  testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 21
  testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -161,9 +161,9 @@ this.ScenarioSetup(scenarioInfo);
             table2770.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-#line 24
+#line 28
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2770, "And ");
-#line 27
+#line 31
  testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
  testRunner.Then("I add another key \"MyData2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -174,10 +174,6 @@ this.ScenarioSetup(scenarioInfo);
             table2771.AddRow(new string[] {
                         "[[Var3]]",
                         "\"Test4\""});
-#line 29
- testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2771, "And ");
-#line 32
- testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
  testRunner.And("another assign \"dataToStore2\" as", ((string)(null)), table2771, "And ");
 #line 36

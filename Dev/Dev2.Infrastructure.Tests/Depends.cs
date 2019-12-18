@@ -10,9 +10,9 @@ using System.Web.Script.Serialization;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public class Depends : Attribute, IDisposable
 {
-    public static readonly string RigOpsIP = "192.168.104.19";
-    public static readonly string SVRDEVIP = "SVRDEV.dev2.local";
-    public static readonly string TFSBLDIP = "172.27.14.41";
+    public static readonly string RigOpsIP = "T004124.premier.local";
+    public static readonly string SVRDEVIP = "SVRDEV.premier.local";
+    public static readonly string TFSBLDIP = "TFSBLD.premier.local";
 
     public enum ContainerType
     {

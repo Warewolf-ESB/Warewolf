@@ -27,8 +27,8 @@ Scenario Outline: Delete file at location
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | "Success" | NO           |                      |
 	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORDELETEFILETESTING/filetodelete.txt                                   | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORDELETEFILETESTING/filetodelet.txt                                    | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
-	| SFTP       | [[path]] | sftp://SVRDEV.dev2.local/filetodelete.txt                                                       | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://SVRDEV.dev2.local/filetodelete1.txt                                                      | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
+	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetodelete.txt                                                       | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
+	| SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetodelete1.txt                                                      | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Delete file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"

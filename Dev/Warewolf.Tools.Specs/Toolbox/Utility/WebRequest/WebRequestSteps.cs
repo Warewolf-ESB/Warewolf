@@ -100,10 +100,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
 
         string ResolveTFSBLDDependancy(string addressContainer)
         {
-            var TFSBLDAddress = "TFSBLD.dev2.local";
+            var TFSBLDAddress = "TFSBLD.premier.local";
             if (addressContainer.Contains(TFSBLDAddress) && string.IsNullOrEmpty(Depends.GetIPAddress(TFSBLDAddress)))
             {
-                return addressContainer.Replace("TFSBLD.dev2.local", Depends.TFSBLDIP);
+                return addressContainer.Replace("TFSBLD.premier.local", Depends.TFSBLDIP);
             }
             return addressContainer;
         }
