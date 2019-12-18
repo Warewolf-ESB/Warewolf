@@ -126,7 +126,7 @@ Scenario: Editing saved Redis Source
 	Given I open "Test-Redis" redis source
 	Then "Test-Redis" tab is opened
 	And title is "Test-Redis"
-	And HostName is "http://TFSBLD.dev2.local/IntegrationTestSite"
+	And HostName is "http://TFSBLD.premier.local/IntegrationTestSite"
 	And I type port number as "6379"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"

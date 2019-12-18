@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {

@@ -94,7 +94,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("I have the url \"http://TFSBLD.dev2.local:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://TFSBLD.premier.local:9810/api/products/Get\" without timeou" +
+                    "t", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
@@ -106,8 +107,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2789 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2782.AddRow(new string[] {
-                        "http://TFSBLD.dev2.local:9810/api/products/Get",
+            table2789.AddRow(new string[] {
+                        "http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 13
  testRunner.And("the debug inputs as", ((string)(null)), table2789, "And ");
@@ -172,8 +173,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
     testRunner.Given("I have the url \"http://[[site]][[file]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.And("I have a web request variable \"[[site]]\" equal to \"TFSBLD.dev2.local:9810/api/pro" +
-                    "ducts/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[site]]\" equal to \"TFSBLD.premier.local:9810/api/" +
+                    "products/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
  testRunner.And("I have a web request variable \"[[file]]\" equal to \"Get\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
@@ -187,8 +188,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2793 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2786.AddRow(new string[] {
-                        "http://[[site]][[file]] = http://TFSBLD.dev2.local:9810/api/products/Get",
+            table2793.AddRow(new string[] {
+                        "http://[[site]][[file]] = http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 39
  testRunner.And("the debug inputs as", ((string)(null)), table2793, "And ");
@@ -213,7 +214,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
 this.ScenarioSetup(scenarioInfo);
 #line 48
- testRunner.Given("I have the url \"http://TFSBLD.dev2.local:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://TFSBLD.premier.local:9810/api/products/Get\" without timeou" +
+                    "t", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
@@ -231,8 +233,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2795 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2788.AddRow(new string[] {
-                        "http://TFSBLD.dev2.local:9810/api/products/Get",
+            table2795.AddRow(new string[] {
+                        "http://TFSBLD.premier.local:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/json\""});
 #line 55
  testRunner.And("the debug inputs as", ((string)(null)), table2795, "And ");
@@ -258,7 +260,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
 this.ScenarioSetup(scenarioInfo);
 #line 63
- testRunner.Given("I have the url \"http://TFSBLD.dev2.local:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://TFSBLD.premier.local:9810/api/products/Get\" without timeou" +
+                    "t", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
@@ -276,8 +279,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2797 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2790.AddRow(new string[] {
-                        "http://TFSBLD.dev2.local:9810/api/products/Get",
+            table2797.AddRow(new string[] {
+                        "http://TFSBLD.premier.local:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/xml\""});
 #line 70
  testRunner.And("the debug inputs as", ((string)(null)), table2797, "And ");
@@ -303,7 +306,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
 this.ScenarioSetup(scenarioInfo);
 #line 78
- testRunner.Given("I have the url \"http://TFSBLD.dev2.local:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://TFSBLD.premier.local:9810/api/products/Get\" without timeou" +
+                    "t", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 80
@@ -315,8 +319,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2799 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2792.AddRow(new string[] {
-                        "http://TFSBLD.dev2.local:9810/api/products/Get",
+            table2799.AddRow(new string[] {
+                        "http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 82
  testRunner.And("the debug inputs as", ((string)(null)), table2799, "And ");
@@ -342,7 +346,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 89
 this.ScenarioSetup(scenarioInfo);
 #line 90
- testRunner.Given("I have the url \"http://TFSBLD.dev2.local:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://TFSBLD.premier.local:9810/api/products/Get\" without timeou" +
+                    "t", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 91
  testRunner.And("I have the Header \"Content-Type: application/xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
@@ -356,8 +361,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2801 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2794.AddRow(new string[] {
-                        "http://TFSBLD.dev2.local:9810/api/products/Get",
+            table2801.AddRow(new string[] {
+                        "http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 95
  testRunner.And("the debug inputs as", ((string)(null)), table2801, "And ");
@@ -727,8 +732,8 @@ this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3
 #line 182
 this.ScenarioSetup(scenarioInfo);
 #line 183
- testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://TFSBLD.dev2.local" +
-                    "/IntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://TFSBLD.premier.lo" +
+                    "cal/IntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 184
  testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote:314" +
                     "2/secure/Wait?WaitSeconds=15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -746,8 +751,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2813 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2806.AddRow(new string[] {
-                        "[[urls(1).url]] = http://TFSBLD.dev2.local/IntegrationTestSite/Proxy.ashx",
+            table2813.AddRow(new string[] {
+                        "[[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx",
                         ""});
             table2813.AddRow(new string[] {
                         "[[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15",

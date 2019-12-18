@@ -253,7 +253,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(vm);
             SetCommandTimeout(activityName, timeout);
             vm.InputArea.CommandTimeout = timeout;
-
         }
 
         [Given(@"I open workflow with database connector")]

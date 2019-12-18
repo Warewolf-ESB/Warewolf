@@ -327,8 +327,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 
 
             Assert.AreEqual(expectedKey, myKey);
-            Assert.IsTrue(expectedValue.Contains(actualDataStored.Keys.ToArray()[0]), $"Actual key {actualDataStored.Keys.ToArray()[0]} is not in expected {expectedValue}");
-            Assert.IsTrue(expectedValue.Contains(actualDataStored.Values.ToArray()[0]), $"Actual value {actualDataStored.Values.ToArray()[0]} is not in expected {expectedValue}");
+            Assert.IsTrue(expectedValue.Contains(actualDataStored[0].Name), $"Actual key {actualDataStored[0].Name} is not in expected {expectedValue}");
+            Assert.IsTrue(expectedValue.Contains(actualDataStored[0].Value), $"Actual value {actualDataStored[0].Value} is not in expected {expectedValue}");
 
             _scenarioContext.Add(redisActivityNew.Key, actualDataStored);
             _scenarioContext.Remove(nameof(RedisCacheActivity));
@@ -363,7 +363,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var actualCachedData = GetCachedData(impl, key);
 
             Assert.AreEqual(0, table.RowCount);
-            Assert.IsNull(actualCachedData, $"Key=Value exists: {actualCachedData?.Keys?.FirstOrDefault()}={actualCachedData?.Values?.FirstOrDefault()}");
+            Assert.IsNull(actualCachedData, $"Key=Value exists: {actualCachedData?.FirstOrDefault()}={actualCachedData?.FirstOrDefault()}");
         }
 
         [Then(@"the assign ""(.*)"" is executed")]
