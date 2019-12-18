@@ -59,9 +59,6 @@ namespace Dev2.Activities
 
         public GateFailureAction GateFailure { get; set; }
 
-
-        public string GateRetryStrategy { get; set; }
-
         public IList<ConditionExpression> Conditions { get; set; }
 
         private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
@@ -104,6 +101,7 @@ namespace Dev2.Activities
                 }
                 return true;
             }
+
             try
             {
                 var res = Conditions.Select(a =>
@@ -143,7 +141,6 @@ namespace Dev2.Activities
         public GateOptions GateOptions { get; set; }
 
         public override List<string> GetOutputs() => new List<string>();
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
         public override IEnumerable<StateVariable> GetState()
         {
             var serializer = new Dev2JsonSerializer();
@@ -160,12 +157,6 @@ namespace Dev2.Activities
                     Type = StateVariable.StateType.Input,
                     Name = nameof(GateFailure),
                     Value = GateFailure.ToString(),
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(GateRetryStrategy),
-                    Value = GateRetryStrategy,
                 },
                 new StateVariable
                 {
@@ -193,18 +184,6 @@ namespace Dev2.Activities
                 },
                  new StateVariable
                 {
-                    Name = "next",
-                    Type = StateVariable.StateType.Output,
-                    Value = serializer.Serialize(Next)
-                },
-                  new StateVariable
-                {
-                    Name = "stop",
-                    Type = StateVariable.StateType.Output,
-                    Value = serializer.Serialize(Stop)
-                },
-                 new StateVariable
-                {
                     Name = nameof(NextNodes),
                     Type = StateVariable.StateType.Output,
                     Value = serializer.Serialize(NextNodes)
@@ -221,15 +200,7 @@ namespace Dev2.Activities
         {
             throw new NotImplementedException();
         }
-        public void SetDebugInputs(List<DebugItem> debugInputs)
-        {
-            _debugInputs = debugInputs;
-        }
 
-        public void SetDebugOutputs(List<DebugItem> debugOutputs)
-        {
-            _debugOutputs = debugOutputs;
-        }
         IDSFDataObject _dataObject;
         IEnumerator<bool> _algo;
         //IExecutionEnvironment _originalExecutionEnvironment;
@@ -323,8 +294,7 @@ namespace Dev2.Activities
             // Gate has reached maximum retries.
             return null;
         }
-        public IDev2Activity Next { get; set; }
-        public bool Stop { get; set; } = false;
+
         /// <summary>
         /// This Gate is being executed for the first time
         /// </summary>
@@ -333,13 +303,14 @@ namespace Dev2.Activities
         /// <returns></returns>
         public IDev2Activity ExecuteNormal(IDSFDataObject data, int update)
         {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
+            var stop = false;
+            IDev2Activity next = null;
+            var resultText = "";
             try
             {
-                _debugInputs = new List<DebugItem>();
-                _debugOutputs = new List<DebugItem>();
-                Stop = false;
-                Next = null;
-
                 if (data.IsDebugMode())
                 {
                     _debugInputs = CreateDebugInputs(data.Environment);
@@ -360,21 +331,21 @@ namespace Dev2.Activities
                         case GateFailureAction.StopProcessing:
                             data.Environment.AddError("execution stopped");
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
-                            Stop = true;
+                            stop = true;
                             break;
                         case GateFailureAction.Retry:
                             if (canRetry)
                             {
                                 var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
                                 goBackToActivity.UpdateRetryState(this);
-                                Next = goBackToActivity;
+                                next = goBackToActivity;
                             }
                             else
                             {
                                 const string msg = "invalid retry config: no gate selected";
                                 data.Environment.AddError(msg);
                                 Dev2Logger.Warn($"execution stopped! {msg}", _dataObject?.ExecutionID?.ToString());
-                                Stop = true;
+                                stop = true;
                             }
                             break;
                         default:
@@ -388,17 +359,17 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    Result = nameof(Execute);
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    resultText = nameof(Execute);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
             }
             catch (Exception ex)
             {
-                Result = ex.Message;
+                resultText = ex.Message;
                 data.Environment.AddError(ex.Message);
                 Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
-                Stop = true;
+                stop = true;
             }
             finally
             {
@@ -407,39 +378,38 @@ namespace Dev2.Activities
                     DoErrorHandling(data, update);
                 }
             }
-            if (Next != null)
+            if (next != null)
             {
-                Result = nameof(Next);
+                resultText = nameof(next);
                 if (data.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
-                return Next; // retry has set a node that we should go back to retry
+                return next; // retry has set a node that we should go back to retry
             }
-            if (Stop)
+            if (stop)
             {
-                Result = nameof(Stop);
+                resultText = nameof(stop);
                 if (data.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 return null;
             }
             if (NextNodes != null && NextNodes.Any())
             {
-                Result = nameof(NextNodes);
+                resultText = nameof(NextNodes);
                 if (data.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(Result, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 return NextNodes.First();
             }
             return null;
         }
-        public new string Result { get; set; }
 
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
@@ -610,7 +580,7 @@ namespace Dev2.Activities
             }
             var eq = base.Equals(other);
             eq &= string.Equals(GateFailure, other.GateFailure);
-            eq &= string.Equals(GateRetryStrategy, other.GateRetryStrategy);
+            eq &= GateOptions.Equals(other.GateOptions);
             return eq;
         }
 
