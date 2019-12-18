@@ -122,7 +122,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_WithoutActionTrackingViewInBrowser_Expected_ErrorNotShown()
+        public void WorkflowInputDataViewModel_ViewInBrowser_Expected_ErrorNotShown()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.LoadWorkflowInputs();
-                workflowInputDataviewModel.WithoutActionTrackingViewInBrowser();
+                workflowInputDataviewModel.ViewInBrowser(false);
                 Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
                 popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Never);
             }
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_WithoutActionTrackingViewInBrowser_Expected_ErrorShown()
+        public void WorkflowInputDataViewModel_ViewInBrowser_Expected_ErrorShown()
         {
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.IsInError = true;
-                workflowInputDataviewModel.WithoutActionTrackingViewInBrowser();
+                workflowInputDataviewModel.ViewInBrowser(false);
                 popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
             }
         }
@@ -992,6 +992,182 @@ namespace Dev2.Core.Tests.Workflows
                 const string expectedPayload = @"val=1&res=2";
                 var actualPayload = workflowInputDataViewModel.SendViewInBrowserRequestPayload;
                 Assert.AreEqual(expectedPayload, actualPayload);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_CheckInputDataWithSpecialCharacters_InvokesSendViewInBrowserRequest_RecSet()
+        {
+            //------------Setup for test--------------------------
+            const string datalist = @"<DataList><notInput /><rs ColumnIODirection=""Input""><val ColumnIODirection=""Input""/></rs></DataList>";
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns("SomeOtherWorkflow");
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(datalist);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = datalist
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            {
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.XmlData = @"<DataList><rs><val>1#</val></rs><rs><val>2+2</val></rs></DataList>";
+                workflowInputDataViewModel.SetWorkflowInputData();
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.ViewInBrowser();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, workflowInputDataViewModel.SendViewInBrowserRequestHitCount);
+                Assert.IsNotNull(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+                const string expectedPayload = @"<DataList><rs><val>1%23</val></rs><rs><val>2%2b2</val></rs></DataList>";
+                Assert.AreEqual(expectedPayload, workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_CheckInputDataWithSpecialCharacters_InvokesSendViewInBrowserRequest_ScalarsOnly()
+        {
+            //------------Setup for test--------------------------
+            const string datalist = @"<DataList><val IsEditable=""True"" ColumnIODirection=""Input""/><res IsEditable=""True"" ColumnIODirection=""Input""/></DataList>";
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns("AnotherWorkflow");
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(datalist);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = datalist
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            {
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.XmlData = @"<DataList><val>Dev#Chotaliya</val><res>2</res></DataList>";
+                workflowInputDataViewModel.SetWorkflowInputData();
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.ViewInBrowser();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, workflowInputDataViewModel.SendViewInBrowserRequestHitCount);
+                Assert.IsNotNull(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+                const string expectedPayload = @"val=Dev%23Chotaliya&res=2";
+                Assert.AreEqual(expectedPayload, workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ViewInBrowser_CheckWorkflowInputDataLimits_InvokeSendViewInBrowserRequest_Expected_MaximumDataLimitsWarningNotShown()
+        {
+            //------------Setup for test--------------------------
+            const string datalist = @"<DataList><val IsEditable=""True"" ColumnIODirection=""Input""/><res IsEditable=""True"" ColumnIODirection=""Input""/></DataList>";
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns("AnotherWorkflow");
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(datalist);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = datalist
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            {
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.XmlData = @"<DataList><val>Dev Chotaliya</val><res>2</res></DataList>";
+                workflowInputDataViewModel.SetWorkflowInputData();
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.ViewInBrowser();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, workflowInputDataViewModel.SendViewInBrowserRequestHitCount);
+                Assert.IsNotNull(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+                const string expectedPayload = @"val=Dev Chotaliya&res=2";
+                var actualPayload = System.Web.HttpUtility.UrlDecode(workflowInputDataViewModel.SendViewInBrowserRequestPayload);
+                Assert.AreEqual(expectedPayload, actualPayload);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ViewInBrowser_CheckWorkflowInputDataLimits_Expected_MaximumDataLimitsWarningShown()
+        {
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(StringResources.DataInput_Warning, StringResources.DataInput_Warning_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning, string.Empty, false, false, true, false, false, false));
+            CustomContainer.Register(popupController.Object);
+
+            const string datalist = @"<DataList><val IsEditable=""True"" ColumnIODirection=""Input""/><res IsEditable=""True"" ColumnIODirection=""Input""/></DataList>";
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns("AnotherWorkflow");
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(datalist);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = datalist
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            {
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.XmlData = @"<DataList><val>Lorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctusLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptu copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptu</val><res>2</res></DataList>";
+                workflowInputDataViewModel.SetWorkflowInputData();
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.ViewInBrowser();
+                //------------Assert Results-------------------------
+                popupController.Verify(controller => controller.Show(StringResources.DataInput_Warning, StringResources.DataInput_Warning_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning, string.Empty, false, false, true, false, false, false), Times.Once);
             }
         }
 
