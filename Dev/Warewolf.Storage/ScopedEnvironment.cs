@@ -220,5 +220,10 @@ namespace Warewolf.Storage
         {
             return "";
         }
+
+        public IExecutionEnvironment Clone()
+        {
+            return _inner.Clone();
+        }
     }
 }

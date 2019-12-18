@@ -49,6 +49,22 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Clone()
+        {
+            var _environment = new ExecutionEnvironment();
+            var originalEnvironment = _environment.Clone();
+
+            _environment.Assign("[[rec().a]]", "bob", 0);
+            var recordSet = _environment.GetCount("rec");
+            Assert.AreEqual(1, recordSet);
+
+            var result = originalEnvironment.Eval("[[rec().a]]", 0);
+            Assert.AreEqual(null, result);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_Assign_NullExpression_DoesNotThrow()
         {
             var _environment = new ExecutionEnvironment();
