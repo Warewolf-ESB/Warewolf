@@ -42,45 +42,12 @@ namespace Dev2.Activities
     public class GateActivity : DsfFlowNodeActivity<bool>, IEquatable<GateActivity>, IStateNotifierRequired
     {
         private IStateNotifier _stateNotifier = null;
-        public void SetStateNotifier(IStateNotifier stateNotifier)
-        {
-            if (_stateNotifier is null)
-            {
-                _stateNotifier = stateNotifier;
-            }
-        }
 
         public GateActivity()
             : base(nameof(Gate))
         {
             DisplayName = nameof(Gate);
             IsGate = true;
-        }
-
-        public GateFailureAction GateFailure { get; set; }
-
-        public IList<ConditionExpression> Conditions { get; set; }
-
-        private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
-        {
-            var col1 = _dataObject.Environment.EvalAsList(col1s, 0, false);
-            var col2 = _dataObject.Environment.EvalAsList(col2s ?? "", 0, false);
-            var col3 = _dataObject.Environment.EvalAsList(col3s ?? "", 0, false);
-
-            var iter = new WarewolfListIterator();
-            var c1 = new WarewolfAtomIterator(col1);
-            var c2 = new WarewolfAtomIterator(col2);
-            var c3 = new WarewolfAtomIterator(col3);
-            iter.AddVariableToIterateOn(c1);
-            iter.AddVariableToIterateOn(c2);
-            iter.AddVariableToIterateOn(c3);
-
-            while (iter.HasMoreData())
-            {
-                var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
-                yield return item;
-            }
-            yield break;
         }
 
         /// <summary>
@@ -121,84 +88,6 @@ namespace Dev2.Activities
                 Dev2Logger.Warn("failed checking passing state of gate", e, _dataObject?.ExecutionID?.ToString());
                 return false;
             }
-        }
-
-        static Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
-        {
-            var col1 = env.EvalAsList(decision.Col1, 0, errorIfNull);
-            var col2 = env.EvalAsList(decision.Col2 ?? "", 0, errorIfNull);
-            var col3 = env.EvalAsList(decision.Col3 ?? "", 0, errorIfNull);
-            return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
-        }
-
-        /// <summary>
-        /// Where should we send execution if this gate fails and not set to StopOnFailure
-        /// </summary>
-        private IDev2Activity GetRetryEntryPoint => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString());
-
-        public Guid RetryEntryPointId { get; set; }
-
-        public GateOptions GateOptions { get; set; }
-
-        public override List<string> GetOutputs() => new List<string>();
-        public override IEnumerable<StateVariable> GetState()
-        {
-            var serializer = new Dev2JsonSerializer();
-            return new[]
-           {
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(Conditions),
-                    Value = serializer.Serialize(Conditions),
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(GateFailure),
-                    Value = GateFailure.ToString(),
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(Passing),
-                    Value = Passing(0) ? "true" : "false",
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(RetryEntryPointId),
-                    Value = RetryEntryPointId.ToString()
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(GateOptions),
-                    Value = GateOptions?.ToString()
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(_retryState.NumberOfRetries),
-                    Value = _retryState.NumberOfRetries.ToString(),
-                },
-                 new StateVariable
-                {
-                    Name = nameof(NextNodes),
-                    Type = StateVariable.StateType.Output,
-                    Value = serializer.Serialize(NextNodes)
-                },
-           };
-        }
-
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
-        {
-            throw new NotImplementedException();
         }
 
         IDSFDataObject _dataObject;
@@ -250,9 +139,9 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update);
                 }
 
-                // execute workflow that should be called on resume
+                // TODO: execute workflow that should be called on resume
 
-                // reset Environment to state it was in the first time we executed this Gate
+                // TODO: reset Environment to state it was in the first time we executed this Gate (requires environment deep clone)
                 //_dataObject.Environment = _originalExecutionEnvironment;
 
                 // load selected retry algorithm
@@ -411,6 +300,168 @@ namespace Dev2.Activities
             return null;
         }
 
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            throw new Exception("this should not be reached");
+        }
+
+
+        class RetryState
+        {
+            public int NumberOfRetries { get; set; }
+        }
+        readonly RetryState _retryState = new RetryState();
+
+        private void UpdateRetryState(GateActivity gateActivity)
+        {
+            if (GateOptions.GateOpts is AllowResumption allowResumption)
+            {
+
+                //if (_retryState.NumberOfRetries >= allowResumption.Strategy)
+                _retryState.NumberOfRetries++;
+            } else
+            {
+                throw new GateException("cannot update retry state of a non-resumable gate");
+            }
+        }
+
+        protected override void OnExecute(NativeActivityContext context)
+        {
+        }
+
+        public void SetStateNotifier(IStateNotifier stateNotifier)
+        {
+            if (_stateNotifier is null)
+            {
+                _stateNotifier = stateNotifier;
+            }
+        }
+
+        public bool Equals(GateActivity other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            var eq = base.Equals(other);
+            eq &= string.Equals(GateFailure, other.GateFailure);
+            eq &= GateOptions.Equals(other.GateOptions);
+            return eq;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GateActivity act)
+            {
+                return Equals(act);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397);
+
+                return hashCode;
+            }
+        }
+
+        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<StateVariable> GetState()
+        {
+            var serializer = new Dev2JsonSerializer();
+            return new[]
+           {
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(Conditions),
+                    Value = serializer.Serialize(Conditions),
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(GateFailure),
+                    Value = GateFailure.ToString(),
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(Passing),
+                    Value = Passing(0) ? "true" : "false",
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(RetryEntryPointId),
+                    Value = RetryEntryPointId.ToString()
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(GateOptions),
+                    Value = GateOptions?.ToString()
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(_retryState.NumberOfRetries),
+                    Value = _retryState.NumberOfRetries.ToString(),
+                },
+                 new StateVariable
+                {
+                    Name = nameof(NextNodes),
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(NextNodes)
+                },
+           };
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+            throw new NotImplementedException();
+        }
+        private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
+        {
+            var col1 = _dataObject.Environment.EvalAsList(col1s, 0, false);
+            var col2 = _dataObject.Environment.EvalAsList(col2s ?? "", 0, false);
+            var col3 = _dataObject.Environment.EvalAsList(col3s ?? "", 0, false);
+
+            var iter = new WarewolfListIterator();
+            var c1 = new WarewolfAtomIterator(col1);
+            var c2 = new WarewolfAtomIterator(col2);
+            var c3 = new WarewolfAtomIterator(col3);
+            iter.AddVariableToIterateOn(c1);
+            iter.AddVariableToIterateOn(c2);
+            iter.AddVariableToIterateOn(c3);
+
+            while (iter.HasMoreData())
+            {
+                var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
+                yield return item;
+            }
+            yield break;
+        }
+        /// <summary>
+        /// Where should we send execution if this gate fails and not set to StopOnFailure
+        /// </summary>
+        private IDev2Activity GetRetryEntryPoint => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString());
+
+
+        #region debugstuff
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
             var result = new List<IDebugItem>();
@@ -526,82 +577,22 @@ namespace Dev2.Activities
                 }
             }
         }
+        #endregion debugstuff
 
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+
+        public GateFailureAction GateFailure { get; set; }
+        public IList<ConditionExpression> Conditions { get; set; }
+
+        public Guid RetryEntryPointId { get; set; }
+
+        public GateOptions GateOptions { get; set; }
+    }
+
+    public class GateException : Exception
+    {
+        public GateException(string message) : base(message)
         {
-            throw new Exception("this should not be reached");
-        }
-
-
-        class RetryState
-        {
-            public int NumberOfRetries { get; set; }
-        }
-        readonly RetryState _retryState = new RetryState();
-
-        private void UpdateRetryState(GateActivity gateActivity)
-        {
-            if (GateOptions.GateOpts is AllowResumption allowResumption)
-            {
-
-                //if (_retryState.NumberOfRetries >= allowResumption.Strategy)
-                _retryState.NumberOfRetries++;
-            } else
-            {
-                throw new GateException("cannot update retry state of a non-resumable gate");
-            }
-        }
-        public class GateException : Exception
-        {
-            public GateException(string message) : base(message)
-            {
-            }
-        }
-
-        protected override void OnExecute(NativeActivityContext context)
-        {
-        }
-
-        public static void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update)
-        {
-        }
-
-        public bool Equals(GateActivity other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            var eq = base.Equals(other);
-            eq &= string.Equals(GateFailure, other.GateFailure);
-            eq &= GateOptions.Equals(other.GateOptions);
-            return eq;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is GateActivity act)
-            {
-                return Equals(act);
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397);
-
-                return hashCode;
-            }
         }
     }
 }
