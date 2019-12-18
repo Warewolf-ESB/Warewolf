@@ -34,9 +34,9 @@ namespace Warewolf.OS
             }
         }
 
-        public StreamReader StandardOutput { get { return _process.StandardOutput; } }
+        public StreamReader StandardOutput => _process.StandardOutput;
 
-        public StreamReader StandardError { get { return _process.StandardError; } }
+        public StreamReader StandardError => _process.StandardError;
 
         public ProcessWrapper(Process process)
         {

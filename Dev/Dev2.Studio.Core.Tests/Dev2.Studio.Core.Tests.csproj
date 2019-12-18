@@ -64,6 +64,7 @@
       <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
