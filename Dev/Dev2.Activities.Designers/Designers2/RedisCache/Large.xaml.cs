@@ -11,7 +11,7 @@
 using Dev2.Activities.Utils;
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.Redis
+namespace Dev2.Activities.Designers2.RedisCache
 {
     public partial class Large
     {

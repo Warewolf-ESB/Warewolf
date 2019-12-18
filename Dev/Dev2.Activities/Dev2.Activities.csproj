@@ -107,7 +107,7 @@
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
     <Compile Include="Activities\RedisCounter\RedisCounterActivity.cs" />
     <Compile Include="Activities\RedisRemove\RedisRemoveActivity.cs" />
-    <Compile Include="Activities\Redis\RedisActivity.cs" />
+    <Compile Include="Activities\RedisCache\RedisCacheActivity.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
     <Compile Include="Comparer\DataSplitDTOComparer.cs" />

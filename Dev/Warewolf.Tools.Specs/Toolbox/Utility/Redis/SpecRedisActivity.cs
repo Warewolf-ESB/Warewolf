@@ -9,7 +9,7 @@
 */
 
 
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using Warewolf.Driver.Redis;
 
 namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis
 {
-    public class SpecRedisActivity : RedisActivity
+    public class SpecRedisActivity : RedisCacheActivity
     {
         public SpecRedisActivity()
         {

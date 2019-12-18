@@ -17,13 +17,24 @@ namespace Warewolf.Driver.Redis
 {
     public class RedisConnection : IRedisConnection
     {
-        private static readonly ConcurrentDictionary<(string, int, string), IRedisClient> RedisConnectionPool = new ConcurrentDictionary<(string, int, string), IRedisClient>();
+        private static readonly ConcurrentDictionary<(string, int, string), RedisClient> RedisConnectionPool = new ConcurrentDictionary<(string, int, string), RedisClient>();
 
         public RedisConnection(string hostName, int port, string password)
         {
-            IRedisClient client = RedisConnectionPool.GetOrAdd((hostName, port, password), !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port));
+            try
+            {
+                RedisClient client = RedisConnectionPool.GetOrAdd((hostName, port, password), !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port));
 
-            Cache = new RedisCache(client);
+                if (client.ServerVersion != null)
+                {
+                    Cache = new RedisCache(client);
+                }
+            }
+            catch
+            {
+                RedisConnectionPool.TryRemove((hostName, port, password), out RedisClient redisClient);
+                throw;
+            }
         }
 
         public IRedisCache Cache { get; private set; }

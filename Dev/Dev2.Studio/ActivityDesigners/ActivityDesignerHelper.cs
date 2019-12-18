@@ -96,8 +96,8 @@ using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.AdvancedRecordset;
-using Dev2.Activities.Redis;
-using Dev2.Activities.Designers2.Redis;
+using Dev2.Activities.RedisCache;
+using Dev2.Activities.Designers2.RedisCache;
 using Dev2.Activities.RedisRemove;
 using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.RedisCounter;
@@ -200,7 +200,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) },
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
-                { typeof(RedisActivity), typeof(RedisDesigner) },
+                { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) }
             };
         static Hashtable _hashTable;

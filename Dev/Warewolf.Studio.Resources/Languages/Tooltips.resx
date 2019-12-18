@@ -1140,14 +1140,14 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisServersToolTip" xml:space="preserve">
     <value>Select a preconfigured redis source.</value>
   </data>
-  <data name="RedisNewServerToolTip" xml:space="preserve">
+  <data name="RedisNewSourceToolTip" xml:space="preserve">
     <value>Create a new Redis Server Source</value>
   </data>
-  <data name="RedisEditServerToolTip" xml:space="preserve">
+  <data name="RedisEditSourceToolTip" xml:space="preserve">
     <value>Edit Redis Server Source</value>
   </data>
   <data name="RedisKeyToolTip" xml:space="preserve">
-    <value>Redis Key to store data in cache</value>
+    <value>Key to store data into Redis cache</value>
   </data>
   <data name="RedisRemoveKeyToolTip" xml:space="preserve">
     <value>Redis Key to remove data from cache</value>
@@ -2288,13 +2288,13 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Data_Assign_Object" xml:space="preserve">
     <value>Tags: json array declare setup variable set</value>
   </data>
-   <data name="Tool_Utility_Redis" xml:space="preserve">
+  <data name="Tool_Database_RedisCache" xml:space="preserve">
     <value>Tags: cache data under a specified key</value>
   </data>
-  <data name="Tool_Utility_RedisRemove" xml:space="preserve">
+  <data name="Tool_Database_RedisRemove" xml:space="preserve">
     <value>Tags: removes the specified key and data from cache</value>
   </data>
-  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+  <data name="Tool_Database_RedisCounter" xml:space="preserve">
     <value>increment/decrement the number stored at key by one</value>
   </data>
   <data name="Tool_Ruby" xml:space="preserve">
@@ -2409,7 +2409,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Audits Folder Path</value>
   </data>
   <data name="RedisTTLToolTip" xml:space="preserve">
-    <value>Redis TTL (Time To Live)</value>
+    <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
   <data name="RedisCounterKeyToolTip" xml:space="preserve">
     <value>Redis Key to create a counter</value>
@@ -2422,5 +2422,8 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="RedisCounterTypeDecrementToolTip" xml:space="preserve">
     <value>Redis Decrement a counter</value>
+  </data>
+  <data name="RedisRemoveResultToolTip" xml:space="preserve">
+    <value>Returns Success if the key was found and removed or Failure otherwise.</value>
   </data>
 </root>

@@ -1853,17 +1853,17 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="RedisSourcePortHelp" xml:space="preserve">
     <value>The default port on which Redis listens is 6379.</value>
   </data>
-  <data name="RedisServerHelp" xml:space="preserve">
+  <data name="RedisSourceHelp" xml:space="preserve">
     <value>Select a preconfigured redis source.</value>
   </data>
-  <data name="RedisNewServerHelp" xml:space="preserve">
+  <data name="RedisNewSourceHelp" xml:space="preserve">
     <value>Create a new redis connection</value>
   </data>
-  <data name="RedisEditServerHelp" xml:space="preserve">
+  <data name="RedisEditSourceHelp" xml:space="preserve">
     <value>Edit the selected redis connection properties</value>
   </data>
   <data name="RedisKeyHelp" xml:space="preserve">
-    <value>Redis Key to store data by specified key</value>
+    <value>Key used to store and retrieve data from the Redis cache</value>
   </data>
   <data name="RedisRemoveKeyHelp" xml:space="preserve">
     <value>Redis Key to remove cache data with specified key</value>
@@ -1881,7 +1881,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Redis Decrement counter</value>
   </data>
   <data name="RedisTTLHelp" xml:space="preserve">
-    <value>Redis TTL (Time To Live) stored data for a given Key</value>
+    <value>Time To Live is set on the given Key to dispose of data cached until the Time To Live has elapsed.&lt;br/&gt;The default is 5 Seconds. &lt;br/&gt;&lt;br/&gt;If the Time To Live is set to 0, the data will remain cached until this key is removed using the Redis Remove Tool.</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
@@ -1992,13 +1992,13 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
     <value>Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s Queue.</value>
   </data>
-  <data name="Tool_Utility_Redis" xml:space="preserve">
-    <value>Use the Redis tool to store data by key in the cache.</value>
+  <data name="Tool_Database_RedisCache" xml:space="preserve">
+    <value>Use the Redis Cache tool to store data by key in the cache.</value>
   </data>
-  <data name="Tool_Utility_RedisRemove" xml:space="preserve">
+  <data name="Tool_Database_RedisRemove" xml:space="preserve">
     <value>Use the Redis Remove tool to remove existing key with data from cache.</value>
   </data>
-  <data name="Tool_Utility_RedisCounter" xml:space="preserve">
+  <data name="Tool_Database_RedisCounter" xml:space="preserve">
     <value>Use the Redis Counter tool to increment or decrement values in the cache.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">
@@ -2341,5 +2341,8 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="LoggingViewAuditsFilePathHelpText" xml:space="preserve">
     <value>The Folder Path to store the audit database. The default Folder Path is C:\ProgramData\Warewolf\Audits</value>
+  </data>
+  <data name="RedisRemoveResultHelp" xml:space="preserve">
+    <value>Only variables go in here.	Returns Success if the key to remove was found and removed or Failure otherwise.</value>
   </data>
 </root>

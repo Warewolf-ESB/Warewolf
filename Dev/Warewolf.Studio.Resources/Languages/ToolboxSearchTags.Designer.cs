@@ -178,6 +178,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cache data under a specified key.
+        /// </summary>
+        public static string Tool_Database_RedisCache {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to increment/decrement the number stored at key by one.
+        /// </summary>
+        public static string Tool_Database_RedisCounter {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to removes the specified key from cache.
+        /// </summary>
+        public static string Tool_Database_RedisRemove {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to source microsoft.
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert {
@@ -696,33 +723,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Utility_Random {
             get {
                 return ResourceManager.GetString("Tool_Utility_Random", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to cache data under a specified key.
-        /// </summary>
-        public static string Tool_Utility_Redis {
-            get {
-                return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to increment/decrement the number stored at key by one.
-        /// </summary>
-        public static string Tool_Utility_RedisCounter {
-            get {
-                return ResourceManager.GetString("Tool_Utility_RedisCounter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to removes the specified key from cache.
-        /// </summary>
-        public static string Tool_Utility_RedisRemove {
-            get {
-                return ResourceManager.GetString("Tool_Utility_RedisRemove", resourceCulture);
             }
         }
         

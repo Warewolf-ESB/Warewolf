@@ -45,10 +45,10 @@ using Dev2.MathOperations;
 using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 
-namespace Dev2.Activities.Redis
+namespace Dev2.Activities.RedisCache
 {
-    [ToolDescriptorInfo("Redis", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Redis")]
-    public class RedisActivity : DsfBaseActivity, IEquatable<RedisActivity>
+    [ToolDescriptorInfo("RedisCache", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisCache")]
+    public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>
     {
         string _result = "Success";
         private readonly ISerializer _serializer;
@@ -56,18 +56,18 @@ namespace Dev2.Activities.Redis
         private RedisCacheBase _redisCache;
         internal List<string> _messages = new List<string>();
 
-        public RedisActivity()
+        public RedisCacheActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
 
         }
 
-        public RedisActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
             : this(resourceCatalog, new ResponseManager(), redisCache)
         {
         }
 
-        public RedisActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
         {
             ResponseManager = responseManager;
             _redisCache = redisCache;
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Redis
         public string Response { get; set; }
 
         [FindMissing]
-        public int TTL { get; set; }
+        public int TTL { get; set; } = 5;
 
         public bool ShouldSerializeConsumer() => false;
 
@@ -147,8 +147,29 @@ namespace Dev2.Activities.Redis
 
         public RedisSource RedisSource { get; set; }
 
+        private TimeSpan CacheTTL
+        {
+            get
+            {
+                return TimeSpan.FromSeconds(TTL);
+            }
+        }
+
+        private IDSFDataObject DataObject
+        {
+            get; set;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            DataObject = dataObject;
+            base.ExecuteTool(dataObject, update);
+        }
+
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+            _errorsTo = new ErrorResultTO();
+
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -164,34 +185,70 @@ namespace Dev2.Activities.Redis
                 _innerActivity = ActivityFunc.Handler as IDev2Activity;
                 if (_innerActivity is null)
                 {
-                    throw new InvalidOperationException($"Activity drop box cannot be null");
+                    _errorsTo.AddError($"Activity drop box cannot be null");
                 }
-                if (string.IsNullOrWhiteSpace(_innerActivity.GetOutputs()[0]))
+                if (_innerActivity.GetOutputs().Count() <= 0)
                 {
-                    throw new InvalidOperationException($"{_innerActivity.GetDisplayName()} activity must have at least one output variable.");
+                    _errorsTo.AddError($"{_innerActivity.GetDisplayName()} activity must have at least one output variable.");
                 }
 
                 IDictionary<string, string> cachedData = GetCachedOutputs();
                 if (cachedData != null)
                 {
-                    foreach (var item in cachedData)
+                    base._debugOutputs.Clear();
+
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } found"), debugItem);
+                    _debugOutputs.Add(debugItem);
+
+                    var outputIndex = 1;
+                    var outputVars = _innerActivity.GetOutputs();
+                    foreach (var outputVar in outputVars)
                     {
-                        DataObject.Environment.Assign(item.Key, item.Value, 0);
+                        if (cachedData.ContainsKey(outputVar))
+                        {
+                            var item = cachedData[outputVar];
+                            DataObject.Environment.Assign(outputVar, item, 0);
+                            if (!string.IsNullOrWhiteSpace(outputVar))
+                            {
+                                debugItem = new DebugItem();
+                                debugItem = TryCreateDebugItem(DataObject.Environment, outputIndex++, new AssignValue(outputVar, item), 0);
+                                _debugOutputs.Add(debugItem);
+                            }
+                        }
+                        else
+                        {
+                            _errorsTo.AddError("cached data missing key: " + outputVar);
+                        }
                     }
                 }
                 else
                 {
-                    _innerActivity.Execute(DataObject, 0);
-                    var outputVars = _innerActivity.GetOutputs();
+                    base._debugOutputs.Clear();
 
-                    CacheOutputs(cacheTTL, outputVars);
+                    var debugItem = new DebugItem();
+
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } not found"), debugItem);
+                    _debugInputs.Add(debugItem);
+
+                    _innerActivity.Execute(DataObject, 0);
+
+                    CacheOutputs();
                 }
                 return new List<string> { _result };
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(nameof(RedisActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(RedisCacheActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
+            }
+            finally
+            {
+                if (_errorsTo.HasErrors())
+                {
+                    var errorString = _errorsTo.MakeDisplayReady();
+                    DataObject.Environment.AddError(errorString);
+                }
             }
         }
 
@@ -206,46 +263,27 @@ namespace Dev2.Activities.Redis
             return outputs;
         }
 
-        private void CacheOutputs(TimeSpan cacheTTL, List<string> outputVars)
+        private void CacheOutputs()
         {
             var data = new Dictionary<string, string>();
-            foreach (var output in outputVars)
+            var innerCount = 1;
+
+            foreach (var output in _innerActivity.GetOutputs())
             {
                 var key = output;
                 var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
 
+                var debugItem = TryCreateDebugItem(DataObject.Environment, innerCount++, new AssignValue(key, value), 0);
+                _debugInputs.Add(debugItem);
+
                 data.Add(key, value);
             }
 
-            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), cacheTTL);
+            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), CacheTTL);
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            if (update == 0 && _debugInputs.Count > 1)
-            {
-                return _debugInputs;
-            }
-
-            if (env == null)
-            {
-                return new List<DebugItem>();
-            }
-            var debugItem = new DebugItem();
-            AddDebugItem(new DebugEvalResult(Key, "Key", env, update), debugItem);
-
-            var debugItemm = new DebugItem();
-            var innerCount = 1;
-            foreach (var t in GetAssignValue(_innerActivity.GetOutputs()))
-            {
-                 debugItemm = TryCreateDebugInput(env, innerCount++, t, update);
-                _debugInputs.Add(debugItemm);
-            }
-
-            return _debugInputs;
-        }
 
         private void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
         {
@@ -267,7 +305,7 @@ namespace Dev2.Activities.Redis
             }
         }
 
-        DebugItem TryCreateDebugInput(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        DebugItem TryCreateDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
         {
             var debugItem = new DebugItem();
             const string VariableLabelText = "";
@@ -383,68 +421,29 @@ namespace Dev2.Activities.Redis
 
             return data;
         }
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
-            base._debugOutputs.Clear();
-
-            IDictionary<string, string> cachedData = GetCachedOutputs();
-            if (cachedData != null)
-            {
-                AddKeyToDebugOutputs(env, update);
-
-                var count = 1;
-                var assignValues = new List<AssignValue>();
-                foreach (var item in cachedData)
-                {
-                    DataObject.Environment.Assign(item.Key, item.Value, 0);
-
-                    var key = item.Key;
-                    var value = item.Value;
-                    var debugItem = new DebugItem();
-                    if (!string.IsNullOrWhiteSpace(item.Key))
-                    {
-                        debugItem = TryCreateDebugInput(DataObject.Environment, count++, new AssignValue(key, value), update);
-                        _debugOutputs.Add(debugItem);
-                    }
-                }
-            }
-            else
-            {
-                _innerActivity.Execute(DataObject, 0);
-                var outputVars = _innerActivity.GetOutputs();
-
-                if (env != null && !string.IsNullOrEmpty(Key))
-                {
-                    AddKeyToDebugOutputs(env, update);
-
-                    var debugItem = new DebugItem();
-                    var count = 1;
-                    foreach (var output in GetAssignValue(outputVars))
-                    {
-                        if (!string.IsNullOrWhiteSpace(output.Name))
-                        {
-                            debugItem = TryCreateDebugInput(DataObject.Environment, count++, output, update);
-                            _debugOutputs.Add(debugItem);
-                        }
-                    }
-                }
-            }
-
+            base.GetDebugOutputs(env, update);
             return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }
-
-        private void AddKeyToDebugOutputs(IExecutionEnvironment env, int update)
+        IDictionary<string, string> CachedData;
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            var debugItem = new DebugItem();
-            AddDebugItem(new DebugEvalResult(Key, "Key", env, update), debugItem);
-            _debugOutputs.Add(debugItem);
+            if (update == 0 && _debugInputs.Count > 1)
+            {
+                return _debugInputs;
+            }
+
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }
+
+            base.GetDebugInputs(env, update);
+            return _debugInputs?.Any() ?? false ? _debugInputs : new List<DebugItem>();
         }
-
-
-
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(RedisActivity other)
+        public bool Equals(RedisCacheActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
@@ -483,7 +482,7 @@ namespace Dev2.Activities.Redis
                 return false;
             }
 
-            return Equals((RedisActivity)obj);
+            return Equals((RedisCacheActivity)obj);
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex

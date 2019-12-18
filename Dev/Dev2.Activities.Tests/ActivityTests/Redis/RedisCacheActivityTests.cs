@@ -13,7 +13,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
@@ -29,16 +29,16 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests.Redis
 {
     [TestClass]
-    public class RedisActivityTests : BaseActivityTests
+    public class RedisCacheActivityTests : BaseActivityTests
     {
-        static RedisActivity CreateRedisActivity()
+        static RedisCacheActivity CreateRedisActivity()
         {
-            return new RedisActivity();
+            return new RedisCacheActivity();
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_Equal_BothareObjects()
         {
             object redisActivity = CreateRedisActivity();
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisActivity))]
+        [TestCategory(nameof(RedisCacheActivity))]
         public void RedisActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
             //---------------Set up test pack-------------------
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual(3, debugOutputs.Count);
 
             Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
-            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+            AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
 
             AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
             AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
@@ -217,7 +217,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual(3, debugOutputs.Count);
 
             Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
-            AssertDebugItems(debugOutputs, 0, 0, "Key", null, "=", sut.Key);
+            AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
 
             AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
             AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
@@ -226,7 +226,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
         }
-
 
         private static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
         {
@@ -274,7 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
     }
 
-    class TestRedisActivity : RedisActivity
+    class TestRedisActivity : RedisCacheActivity
     {
         public TestRedisActivity(IResourceCatalog resourceCatalog, RedisCacheImpl impl)
             : base(resourceCatalog, impl)
@@ -282,7 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         }
 
-        public List<DebugItem> TestGetDebugInputs(IExecutionEnvironment env, int update)
+        public List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return base.GetDebugInputs(env, update);
         }
