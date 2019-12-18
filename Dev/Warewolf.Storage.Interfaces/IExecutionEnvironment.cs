@@ -89,5 +89,6 @@ namespace Warewolf.Storage.Interfaces
         int GetObjectLength(string recordSetName);
 
         string ToJson();
+        IExecutionEnvironment Clone();
     }
 }

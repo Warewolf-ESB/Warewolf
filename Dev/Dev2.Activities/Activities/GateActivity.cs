@@ -9,7 +9,6 @@
 */
 
 using Dev2.Activities.Debug;
-using Dev2.Activities.Gates;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -38,6 +37,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
+    enum Gate { }
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
     public class GateActivity : DsfFlowNodeActivity<bool>, IEquatable<GateActivity>, IStateNotifierRequired
     {
@@ -232,6 +232,7 @@ namespace Dev2.Activities
         }
         IDSFDataObject _dataObject;
         IEnumerator<bool> _algo;
+        //IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
             if (GateOptions is null)
@@ -244,22 +245,30 @@ namespace Dev2.Activities
                 _stateNotifier?.LogPreExecuteState(this);
 
                 _dataObject = data;
-                if (!_dataObject.Gates.Contains(this))
+                var firstExecution = !_dataObject.Gates.Contains(this);
+                if (firstExecution)
                 {
                     _dataObject.Gates.Add(this);
                     if (GateOptions.GateOpts is AllowResumption gateOptionsResume)
                     {
                         _algo = gateOptionsResume.Strategy.Create().GetEnumerator();
                     }
+                    // TODO: clone is not implemented
+                    //_originalExecutionEnvironment = data.Environment.Clone();
+                    Dev2Logger.Warn("Gate: Environment Clone not implemented", data.ExecutionID.ToString());
                 }
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Rerty: " + _retryState.NumberOfRetries.ToString(), "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + _retryState.NumberOfRetries.ToString(), "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
-                if (_retryState.NumberOfRetries <= 0)
+                if (firstExecution)
                 {
+                    if (_retryState.NumberOfRetries > 0)
+                    {
+                        throw new GateException("gate execution corrupt: first execution with invalid number of retries");
+                    }
                     if (_dataObject.IsDebugMode())
                     {
                         var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteNormal), "", true);
@@ -273,6 +282,7 @@ namespace Dev2.Activities
                 // execute workflow that should be called on resume
 
                 // reset Environment to state it was in the first time we executed this Gate
+                //_dataObject.Environment = _originalExecutionEnvironment;
 
                 // load selected retry algorithm
                 if (_dataObject.IsDebugMode())
@@ -330,7 +340,6 @@ namespace Dev2.Activities
                 Stop = false;
                 Next = null;
 
-                UpdateConditions();
                 if (data.IsDebugMode())
                 {
                     _debugInputs = CreateDebugInputs(data.Environment);
@@ -338,8 +347,10 @@ namespace Dev2.Activities
                 }
 
                 //----------ExecuteTool--------------
-                if (!Passing(update))
+                var failing = !Passing(update);
+                if (failing)
                 {
+                    data.Environment.AddError("gate conditions failed");
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
                     var gateFailure = GateFailure;
@@ -347,7 +358,7 @@ namespace Dev2.Activities
                     switch (gateFailure)
                     {
                         case GateFailureAction.StopProcessing:
-                            data.Environment.AddError("stop on error with no resume");
+                            data.Environment.AddError("execution stopped");
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
                             Stop = true;
                             break;
@@ -430,22 +441,6 @@ namespace Dev2.Activities
         }
         public new string Result { get; set; }
 
-        private void UpdateConditions()
-        {
-            var rawText = ExpressionText;
-
-            if (rawText != null)
-            {
-                //  TODO: Not sure what is coming through so not what to do here
-                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
-                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                var conditionStack = JsonConvert.DeserializeObject<List<ConditionExpression>>(activityText);
-
-                Conditions = conditionStack;
-            }
-        }
-
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
             var result = new List<IDebugItem>();
@@ -455,14 +450,18 @@ namespace Dev2.Activities
             try
             {
                 var dds = Conditions;
-                //ErrorResultTO error = null;  //TODO: Add Correctly
+                ErrorResultTO error = null;  //TODO: Add Correctly
                 var userModel = "";          //TODO: Add Correctly
                 //allErrors.MergeErrors(error);
 
                 foreach (ConditionExpression conditionExpression in dds)
                 {
+                    if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
+                    {
+                        continue;
+                    }
                     //TODO: 
-                    //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Cond., out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Left, out error);
                     //allErrors.MergeErrors(error);
                     //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Col2, out error);
                     //allErrors.MergeErrors(error);
@@ -573,7 +572,21 @@ namespace Dev2.Activities
 
         private void UpdateRetryState(GateActivity gateActivity)
         {
-            _retryState.NumberOfRetries++;
+            if (GateOptions.GateOpts is AllowResumption allowResumption)
+            {
+
+                //if (_retryState.NumberOfRetries >= allowResumption.Strategy)
+                _retryState.NumberOfRetries++;
+            } else
+            {
+                throw new GateException("cannot update retry state of a non-resumable gate");
+            }
+        }
+        public class GateException : Exception
+        {
+            public GateException(string message) : base(message)
+            {
+            }
         }
 
         protected override void OnExecute(NativeActivityContext context)

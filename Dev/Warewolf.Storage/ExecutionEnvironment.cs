@@ -694,7 +694,10 @@ namespace Warewolf.Storage
             EnvironmentToJsonHelper.FromJson(serializedEnv, this);
         }
 
-
+        public IExecutionEnvironment Clone()
+        {
+            throw new NotImplementedException();
+        }
 
         private class EnvironmentToJsonHelper : IDisposable
         {
