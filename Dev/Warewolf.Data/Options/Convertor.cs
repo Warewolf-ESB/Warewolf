@@ -202,7 +202,7 @@ namespace Warewolf.Options
                     var optionTypes = dataProviderAttr.Get();
                     foreach (var optionType in optionTypes)
                     {
-                        object value = propertyValue is null ? optionType : propertyValue;
+                        object value = propertyValue != null && propertyValue.GetType() == optionType.GetType() ? propertyValue : optionType;
 
                         var type = optionType.GetType();
                         returnVal.Options[type.Name] = OptionConvertor.Convert(value).Where(o => o.Name != fieldValueName);
