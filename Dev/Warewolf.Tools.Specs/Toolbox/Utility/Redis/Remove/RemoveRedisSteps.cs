@@ -9,7 +9,7 @@
 */
 
 
-using Dev2.Activities.Redis;
+using Dev2.Activities.RedisCache;
 using Dev2.Activities.RedisRemove;
 using Dev2.Common.Serializers;
 using Dev2.Interfaces;
@@ -46,21 +46,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         public static Stopwatch Stoptime { get; set; }
 
 
-        [When(@"I execute the Remove tool")]
-        [Then(@"I execute the Remove tool")]
-        public void WhenIExecuteTheRemoveTool()
+        [When(@"I execute the Redis Remove ""(.*)"" tool")]
+        public void WhenIExecuteTheRedisRemoveTool(string key)
         {
-            var redisActivityOld = _scenarioContext.Get<SpecRedisRemoveActivity>(nameof(RedisRemoveActivity));
-            var dataToStore = _scenarioContext.Get<Dictionary<string, string>>("dataToStore");
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
             var port = _scenarioContext.Get<int>("port");
-            var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
+            var impl = GetRedisCacheImpl(hostName, password, port);
 
-            GenResourceAndDataobject(redisActivityOld.Key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
 
-            ExecuteRemoveTool(redisActivityOld, mockDataobject);
+            var redisRemoveActivity = GetRedisRemoveActivity(mockResourceCatalog.Object, key, hostName, impl);
+
+            var executionResult = ExecuteRemoveTool(redisRemoveActivity, new Dictionary<string, string> { { "Key", key } });
+
+            _scenarioContext.Add("executionResult", executionResult);
         }
+
 
         [Then(@"The ""(.*)"" Cache exists")]
         public void CacheExists(string key)
@@ -74,32 +76,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             Assert.IsNotNull(actualCachedData, key + ": Cache does not exists");
         }
 
-        [Then(@"I have an existing key to Remove ""(.*)""")]
-        public void ThenIHaveAnExistingKeyToRemove(string key)
+        [Then(@"The Cache has been Removed with ""(.*)""")]
+        public void ThenTheCacheHasBeenRemovedWith(string expectedResult)
         {
-            var hostName = _scenarioContext.Get<string>("hostName");
-            var password = _scenarioContext.Get<string>("password");
-            var port = _scenarioContext.Get<int>("port");
-            var redisImpl = GetRedisCacheImpl(hostName, password, port);
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, out ExecutionEnvironment environment);
+            var executionResult = _scenarioContext.Get<List<string>>("executionResult");
 
-            var RedisRemoveActivityNew = GetRedisRemoveActivity(mockResourceCatalog.Object, key, hostName, redisImpl);
-
-            _scenarioContext.Add(nameof(RedisRemoveActivity), RedisRemoveActivityNew);
-
-            Assert.IsNotNull(RedisRemoveActivityNew.Key);
-        }
-
-        [Then(@"The ""(.*)"" Cache has been Removed")]
-        public void ThenTheCacheHasBeenRemoved(string key)
-        {
-            var hostName = _scenarioContext.Get<string>("hostName");
-            var password = _scenarioContext.Get<string>("password");
-            var port = _scenarioContext.Get<int>("port");
-            var redisImpl = GetRedisCacheImpl(hostName, password, port);
-
-            var actualCachedData = GetCachedData(redisImpl, key);
-            Assert.IsNull(actualCachedData, key + ": Cache still exists");
+            Assert.AreEqual(expectedResult, executionResult[0]);
         }
 
         [Then(@"I add another key ""(.*)""")]
@@ -117,11 +99,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             var assignActivity = new DsfMultiAssignActivity();
             var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
             _scenarioContext.Remove(nameof(ttl));
 
-            _scenarioContext.Add(nameof(RedisActivity), redisActivityNew);
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
             _scenarioContext.Add(nameof(ttl), ttl);
 
@@ -132,7 +114,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         [Then(@"another assign ""(.*)"" as")]
         public void GivenAnotherAssignAs(string data, Table table)
         {
-            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisActivity));
+            var redisActivity = _scenarioContext.Get<SpecRedisActivity>(nameof(RedisCacheActivity));
 
             var assignActivity = GetDsfMultiAssignActivity("[[Var3]]", "Test4");
 
@@ -147,10 +129,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
 
             var dic = new Dictionary<string, string> { { assignOutputs[0].Value, assignOutputs[0].Name } };
 
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(DsfMultiAssignActivity));
 
-            _scenarioContext.Add(nameof(RedisActivity), redisActivity);
+            _scenarioContext.Add(nameof(RedisCacheActivity), redisActivity);
             _scenarioContext.Add(data, dic);
             _scenarioContext.Add(nameof(DsfMultiAssignActivity), assignActivity);
 
@@ -201,9 +183,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             mockDataobject.Setup(o => o.Environment).Returns(environment);
         }
 
-        private static void ExecuteRemoveTool(SpecRedisRemoveActivity RedisRemoveActivity, Mock<IDSFDataObject> mockDataobject)
+        private static List<string> ExecuteRemoveTool(SpecRedisRemoveActivity RedisRemoveActivity, Dictionary<string,string> evaluatedValues)
         {
-            RedisRemoveActivity.SpecExecuteTool(mockDataobject.Object);
+            return RedisRemoveActivity.SpecPerformExecution(evaluatedValues);
         }
 
         private static SpecRedisRemoveActivity GetRedisRemoveActivity(IResourceCatalog resourceCatalog, string key, string hostName, RedisCacheImpl impl)
@@ -253,7 +235,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
         [AfterScenario(@"RedisRemove")]
         public void Cleanup()
         {
-            _scenarioContext.Remove(nameof(RedisActivity));
+            _scenarioContext.Remove(nameof(RedisCacheActivity));
             _scenarioContext.Remove(nameof(RedisCacheImpl));
             _scenarioContext.Remove(nameof(RedisRemoveActivity));
             _scenarioContext.Remove("key");
@@ -261,7 +243,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
             _scenarioContext.Remove("hostName");
             _scenarioContext.Remove("password");
             _scenarioContext.Remove("port");
-
+            _scenarioContext.Remove("executionResult");
         }
     }
 }

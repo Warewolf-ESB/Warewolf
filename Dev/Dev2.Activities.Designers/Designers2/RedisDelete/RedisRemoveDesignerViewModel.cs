@@ -27,10 +27,13 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Validation;
 using Dev2.Providers.Errors;
 using Warewolf.Resource.Errors;
+using System.ComponentModel;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Providers.Validation.Rules;
 
 namespace Dev2.Activities.Designers2.RedisRemove
 {
-    public class RedisRemoveDesignerViewModel : ActivityDesignerViewModel
+    public class RedisRemoveDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
         readonly IServer _server;
         IShellViewModel _shellViewModel;
@@ -52,43 +55,45 @@ namespace Dev2.Activities.Designers2.RedisRemove
 
             AddTitleBarLargeToggle();
             ShowLarge = true;
-            RedisServers = new ObservableCollection<RedisSource>();
-            LoadRedisServers();
-            EditRedisServerCommand = new RelayCommand(o => EditRedisServerSource(), o => IsRedisServerSelected);
-            NewRedisServerCommand = new RelayCommand(o => NewRedisServerSource());
+            RedisSources = new ObservableCollection<RedisSource>();
+            LoadRedisSources();
+            EditRedisSourceCommand = new RelayCommand(o => EditRedisSource(), o => IsRedisSourceSelected);
+            NewRedisSourceCommand = new RelayCommand(o => NewRedisSource());
             if (modelItem.Properties["Key"]?.ComputedValue != null)
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
-            }            
+            }
         }
 
-        public ObservableCollection<RedisSource> RedisServers { get; private set; }
+        public ObservableCollection<RedisSource> RedisSources { get; private set; }
 
-        public RedisSource SelectedRedisServer
+        public RedisSource SelectedRedisSource
         {
-            get => (RedisSource)GetValue(SelectedRedisServerProperty);
-            set => SetValue(SelectedRedisServerProperty, value);
+            get => (RedisSource)GetValue(SelectedRedisSourceProperty);
+            set => SetValue(SelectedRedisSourceProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedRedisServerProperty =
-            DependencyProperty.Register("SelectedRedisServer", typeof(RedisSource), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisServerChanged));
+        public static readonly DependencyProperty SelectedRedisSourceProperty =
+            DependencyProperty.Register("SelectedRedisSource", typeof(RedisSource), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(null, OnSelectedRedisSourceChanged));
 
-        private static void OnSelectedRedisServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectedRedisSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RedisRemoveDesignerViewModel)d;
-            viewModel.OnSelectedRedisServerChanged();
-            viewModel.EditRedisServerCommand?.RaiseCanExecuteChanged();
+            viewModel.OnSelectedRedisSourceChanged();
+            viewModel.EditRedisSourceCommand?.RaiseCanExecuteChanged();
         }
 
-        protected virtual void OnSelectedRedisServerChanged()
+        protected virtual void OnSelectedRedisSourceChanged()
         {
-            ModelItem.SetProperty("SourceId", SelectedRedisServer.ResourceID);
+            ModelItem.SetProperty("SourceId", SelectedRedisSource.ResourceID);
+
+            OnPropertyChanged(nameof(IsRedisSourceSelected));
         }
 
-        public RelayCommand EditRedisServerCommand { get; private set; }
-        public RelayCommand NewRedisServerCommand { get; set; }
+        public RelayCommand EditRedisSourceCommand { get; private set; }
+        public RelayCommand NewRedisSourceCommand { get; set; }
 
-        public bool IsRedisServerSelected => SelectedRedisServer != null;
+        public bool IsRedisSourceSelected => SelectedRedisSource != null;
 
         public string Key
         {
@@ -110,30 +115,50 @@ namespace Dev2.Activities.Designers2.RedisRemove
             ModelItem.SetProperty("Key", Key);
         }
 
-        private void EditRedisServerSource()
+        public string Result
         {
-            _shellViewModel.OpenResource(SelectedRedisServer.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
-            LoadRedisServers();
+            get => (string)GetValue(ResultProperty);
+            set => SetValue(ResultProperty, value);
         }
 
-        private void NewRedisServerSource()
+        public static readonly DependencyProperty ResultProperty =
+            DependencyProperty.Register("Result", typeof(string), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(null, OnResultChanged));
+
+        private static void OnResultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (RedisRemoveDesignerViewModel)d;
+            viewModel.OnResultChanged();
+        }
+
+        protected virtual void OnResultChanged()
+        {
+            ModelItem.SetProperty("Result", Result);
+        }
+
+        private void EditRedisSource()
+        {
+            _shellViewModel.OpenResource(SelectedRedisSource.ResourceID, _server.EnvironmentID, _shellViewModel.ActiveServer);
+            LoadRedisSources();
+        }
+
+        private void NewRedisSource()
         {
             _shellViewModel.NewRedisSource("");
-            LoadRedisServers();
+            LoadRedisSources();
         }
 
-        private void LoadRedisServers()
+        private void LoadRedisSources()
         {
-            var redisServers = _server.ResourceRepository.FindSourcesByType<RedisSource>(_server, enSourceType.RedisSource);
-            RedisServers = redisServers.ToObservableCollection();
-            SetSelectedRedisServer();
+            var redisSources = _server.ResourceRepository.FindSourcesByType<RedisSource>(_server, enSourceType.RedisSource);
+            RedisSources = redisSources.ToObservableCollection();
+            SetSelectedRedisSource();
         }
 
-        void SetSelectedRedisServer()
+        void SetSelectedRedisSource()
         {
             var sourceId = Guid.Parse(ModelItem.Properties["SourceId"].ComputedValue.ToString());
-            var selectedRedisServer = RedisServers.FirstOrDefault(redisServer => redisServer.ResourceID == sourceId);
-            SelectedRedisServer = selectedRedisServer;
+            var selectedRedisSource = RedisSources.FirstOrDefault(redisSource => redisSource.ResourceID == sourceId);
+            SelectedRedisSource = selectedRedisSource;
         }
 
         public bool IsKeyFocused { get => (bool)GetValue(IsKeyFocusedProperty); set { SetValue(IsKeyFocusedProperty, value); } }
@@ -141,23 +166,61 @@ namespace Dev2.Activities.Designers2.RedisRemove
         public static readonly DependencyProperty IsKeyFocusedProperty =
             DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(false));
 
+        public bool IsRedisSourceFocused { get => (bool)GetValue(IsRedisSourceFocusedProperty); set { SetValue(IsRedisSourceFocusedProperty, value); } }
+
+        public static readonly DependencyProperty IsRedisSourceFocusedProperty = 
+            DependencyProperty.Register("IsRedisSourceFocused", typeof(bool), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(false));
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         [ExcludeFromCodeCoverage]
         public override void Validate()
         {
-            Errors = null;
-            var errors = new List<IActionableErrorInfo>();
+            var result = new List<IActionableErrorInfo>();
+            result.AddRange(ValidateThis());
+            Errors = result.Count == 0 ? null : result;
+        }
 
-            Action onError = () => IsKeyFocused = true;
-            var util = new VariableUtils();
-            util.AddError(errors, util.TryParseVariables(Key, out string keyValue, onError));
-
-            if (string.IsNullOrWhiteSpace(keyValue))
+        IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            foreach (var error in GetRuleSet(RuleSets.RedisSource).ValidateRules("'Redis Source'", () => IsRedisSourceFocused = true))
             {
-                errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Key") });
+                yield return error;
             }
+            foreach (var error in GetRuleSet(RuleSets.Key).ValidateRules("'Key'", () => IsKeyFocused = true))
+            {
+                yield return error;
+            }
+        }
 
-            // Always assign property otherwise binding does not update!
-            Errors = errors;
+	enum RuleSets {
+		RedisSource,
+		Key
+	}
+        IRuleSet GetRuleSet(RuleSets propertyName)
+        {
+            var ruleSet = new RuleSet();
+
+            switch (propertyName)
+            {
+                case RuleSets.RedisSource:
+                    ruleSet.Add(new IsNullRule(() => SelectedRedisSource));
+                    break;
+
+                case RuleSets.Key:
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Key));
+                    break;
+
+                default:
+                    break;
+            }
+            return ruleSet;
         }
 
         public override void UpdateHelpDescriptor(string helpText)

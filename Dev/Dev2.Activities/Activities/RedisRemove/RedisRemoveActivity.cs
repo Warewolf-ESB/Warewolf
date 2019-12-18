@@ -29,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisRemove
 {
-    [ToolDescriptorInfo(nameof(RedisRemove), "Redis Remove", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_RedisRemove")]
+    [ToolDescriptorInfo(nameof(RedisRemove), "Redis Remove", ToolType.Native, "47671136-49d2-4cca-b0d3-cb25ad424ddd", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisRemove")]
     public class RedisRemoveActivity : DsfBaseActivity, IEquatable<RedisRemoveActivity>
     {
         string _result = "Success";
@@ -112,9 +112,10 @@ namespace Dev2.Activities.RedisRemove
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
                 if (!_redisCache.Remove(Key))
                 {
-                    _result = "Failed";
+                    _result = "Failure";
                 }
                 Dev2Logger.Debug($"Cache {Key} removed: {_result}", GlobalConstants.WarewolfDebug);
+                Response = _result;
                 return new List<string> { _result };
             }
             catch (Exception ex)
@@ -129,13 +130,6 @@ namespace Dev2.Activities.RedisRemove
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugOutputs(env, update);
-
-            if (env != null && !string.IsNullOrEmpty(Response))
-            {
-                var debugItem = new DebugItem();
-                AddDebugItem(new DebugEvalResult(Response, "", env, update), debugItem);
-                _debugOutputs.Add(debugItem);
-            }
 
             return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }

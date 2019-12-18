@@ -26,7 +26,7 @@
         <ResourceDictionary Source="Images/ODBC.xaml" />
         <ResourceDictionary Source="Images/RabbitMq.xaml" />
         <ResourceDictionary Source="Images/WebMethods.xaml" />
-        <ResourceDictionary Source="Images/Redis.xaml" />
+        <ResourceDictionary Source="Images/RedisCache.xaml" />
         <ResourceDictionary Source="Images/RedisRemove.xaml" />
         <ResourceDictionary Source="Images/RedisCounter.xaml" />
         <ResourceDictionary Source="Images/MicrosoftSQL.xaml" />

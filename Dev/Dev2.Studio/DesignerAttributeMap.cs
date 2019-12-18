@@ -105,8 +105,8 @@ using Dev2.Activities.Designers2.ExchangeNewEmail;
 using Dev2.Activities.Designers2.ReadFolderNew;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Designers2.DeleteRecords;
-using Dev2.Activities.Redis;
-using Dev2.Activities.Designers2.Redis;
+using Dev2.Activities.RedisCache;
+using Dev2.Activities.Designers2.RedisCache;
 using Dev2.Activities.RedisRemove;
 using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.Designers2.RedisCounter;
@@ -210,7 +210,7 @@ namespace Dev2
                 { typeof(DsfDecision), typeof(DecisionDesignerViewModel) },
                 { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesignerViewModel) },
-                { typeof(RedisActivity), typeof(RedisDesigner) },
+                { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
             };

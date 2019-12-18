@@ -2953,14 +2953,14 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Edit the selected redis connection properties.
         /// </summary>
-        public static string RedisEditServerHelp {
+        public static string RedisEditSourceHelp {
             get {
-                return ResourceManager.GetString("RedisEditServerHelp", resourceCulture);
+                return ResourceManager.GetString("RedisEditSourceHelp", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis Key to store data by specified key.
+        ///   Looks up a localized string similar to Key used to store and retrieve data from the Redis cache.
         /// </summary>
         public static string RedisKeyHelp {
             get {
@@ -2971,9 +2971,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Create a new redis connection.
         /// </summary>
-        public static string RedisNewServerHelp {
+        public static string RedisNewSourceHelp {
             get {
-                return ResourceManager.GetString("RedisNewServerHelp", resourceCulture);
+                return ResourceManager.GetString("RedisNewSourceHelp", resourceCulture);
             }
         }
         
@@ -2987,11 +2987,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success if the key to remove was found and removed or Failure otherwise..
+        /// </summary>
+        public static string RedisRemoveResultHelp {
+            get {
+                return ResourceManager.GetString("RedisRemoveResultHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a preconfigured redis source..
         /// </summary>
-        public static string RedisServerHelp {
+        public static string RedisSourceHelp {
             get {
-                return ResourceManager.GetString("RedisServerHelp", resourceCulture);
+                return ResourceManager.GetString("RedisSourceHelp", resourceCulture);
             }
         }
         
@@ -3014,7 +3023,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TTL (Time To Live) stored data for a given Key.
+        ///   Looks up a localized string similar to Time To Live is set on the given Key to dispose of data cached until the Time To Live has elapsed.&lt;br/&gt;The default is 5 Seconds. &lt;br/&gt;&lt;br/&gt;If the Time To Live is set to 0, the data will remain cached until this key is removed using the Redis Remove Tool..
         /// </summary>
         public static string RedisTTLHelp {
             get {
@@ -4499,6 +4508,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use the Redis Cache tool to store data by key in the cache..
+        /// </summary>
+        public static string Tool_Database_RedisCache {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Redis Counter tool to increment or decrement values in the cache..
+        /// </summary>
+        public static string Tool_Database_RedisCounter {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Redis Remove tool to remove existing key with data from cache..
+        /// </summary>
+        public static string Tool_Database_RedisRemove {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use the Bulk Insert tool to move more than one record at a time into Microsoft SQL Server. This tool exposes the built-in functionality options and is highly performant when used exclusively with the Recordset data going in..
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert {
@@ -5017,33 +5053,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Utility_Random {
             get {
                 return ResourceManager.GetString("Tool_Utility_Random", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use the Redis tool to store data by key in the cache..
-        /// </summary>
-        public static string Tool_Utility_Redis {
-            get {
-                return ResourceManager.GetString("Tool_Utility_Redis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use the Redis Counter tool to increment or decrement values in the cache..
-        /// </summary>
-        public static string Tool_Utility_RedisCounter {
-            get {
-                return ResourceManager.GetString("Tool_Utility_RedisCounter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use the Redis Remove tool to remove existing key with data from cache..
-        /// </summary>
-        public static string Tool_Utility_RedisRemove {
-            get {
-                return ResourceManager.GetString("Tool_Utility_RedisRemove", resourceCulture);
             }
         }
         
