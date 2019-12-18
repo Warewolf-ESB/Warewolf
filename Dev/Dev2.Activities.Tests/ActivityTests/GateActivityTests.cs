@@ -8,8 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 using Dev2.Activities;
-using Dev2.Activities.Gates;
-using Dev2.Data.SystemTemplates.Models;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -65,10 +63,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
 
             var activity = new GateActivity();
-            activity.GateRetryStrategy = RetryAlgorithm.LinearBackoff.ToString();
             activity.GateFailure = GateFailureAction.StopProcessing;
 
-            Assert.AreEqual(RetryAlgorithm.LinearBackoff.ToString(), activity.GateRetryStrategy);
             Assert.AreEqual(GateFailureAction.StopProcessing.ToString(), activity.GateFailure);
         }
 
@@ -125,36 +121,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 var hashCode = gateActivityActivity.GetHashCode();
                 Assert.IsNotNull(hashCode);
             }
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        public void Gate_Environment_Construtor_Returns_Environment_IsNotNull()
-        {
-            var env = CreateExecutionEnvironment();
-            var dataObject = new Mock<IDSFDataObject>();
-            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            dataObject.Setup(o => o.Environment).Returns(env);
-            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
-
-            var gate = new Gate(env);
-            Assert.IsNotNull(gate.Environment);
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        public void Gate_Construtor_SetEnvironmentProperty_Returns__Environment_IsNotNull()
-        {
-            var env = CreateExecutionEnvironment();
-            var dataObject = new Mock<IDSFDataObject>();
-            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            dataObject.Setup(o => o.Environment).Returns(env);
-            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
-
-            var gate = new Gate
-            {
-                Environment = env
-            };
-            Assert.IsNotNull(gate.Environment);
         }
 
         [TestMethod]
