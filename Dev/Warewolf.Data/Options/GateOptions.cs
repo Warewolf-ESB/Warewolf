@@ -245,7 +245,7 @@ namespace Warewolf.Data.Options
             return sb.ToString();
         }
 
-        private void RenderDescription(StringBuilder sb)
+        public void RenderDescription(StringBuilder sb)
         {
             sb.Append(Left);
             Cond.RenderDescription(sb);
@@ -372,12 +372,28 @@ namespace Warewolf.Data.Options
         
         public override void RenderDescription(StringBuilder sb)
         {
-            sb.Append(" ");
-            sb.Append(From);
-            sb.Append(" ");
-            MatchType.RenderDescription(sb);
-            sb.Append(" ");
-            sb.Append(To);
+            if (MatchType == enDecisionType.IsBetween)
+            {
+                sb.Append(" is greater than ");
+                sb.Append(From);
+                sb.Append(" and less than ");
+                sb.Append(To);
+            }
+            else if (MatchType == enDecisionType.NotBetween)
+            {
+                sb.Append(" is less than ");
+                sb.Append(From);
+                sb.Append(" and more than ");
+                sb.Append(To);
+            }
+            else
+            {
+                sb.Append(" ");
+                sb.Append(From);
+                MatchType.RenderDescription(sb);
+                sb.Append(" ");
+                sb.Append(To);
+            }
         }
     }
 
