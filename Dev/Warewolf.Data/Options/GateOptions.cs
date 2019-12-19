@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Data.Decisions.Operations;
 using Warewolf.Data.Options.Enums;
@@ -237,6 +238,18 @@ namespace Warewolf.Data.Options
             return Cond.Eval(Left, getArgumentsFunc, hasError);
         }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            RenderDescription(sb);
+            return sb.ToString();
+        }
+
+        private void RenderDescription(StringBuilder sb)
+        {
+            sb.Append(Left);
+            Cond.RenderDescription(sb);
+        }
     }
 
     public abstract class Condition
@@ -245,6 +258,9 @@ namespace Warewolf.Data.Options
 
         internal abstract bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
         public abstract void SetOptions(OptionConditionExpression option);
+
+        public abstract void RenderDescription(StringBuilder sb);
+
     }
     public class ConditionMatch : Condition
     {
@@ -292,6 +308,14 @@ namespace Warewolf.Data.Options
                 }
             }
             return ret.All(o => o);
+        }
+        
+        public override void RenderDescription(StringBuilder sb)
+        {
+            sb.Append(" ");
+            MatchType.RenderDescription(sb);
+            sb.Append(" ");
+            sb.Append(Right);
         }
     }
 
@@ -344,6 +368,16 @@ namespace Warewolf.Data.Options
                 }
             }
             return ret.All(o => o);
+        }
+        
+        public override void RenderDescription(StringBuilder sb)
+        {
+            sb.Append(" ");
+            sb.Append(From);
+            sb.Append(" ");
+            MatchType.RenderDescription(sb);
+            sb.Append(" ");
+            sb.Append(To);
         }
     }
 
