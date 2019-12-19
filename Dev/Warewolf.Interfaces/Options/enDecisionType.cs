@@ -11,6 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
 namespace Warewolf.Options
 {
@@ -130,6 +133,14 @@ namespace Warewolf.Options
                 decisionType == enDecisionType.IsBase64 ||
                 decisionType == enDecisionType.IsNotBase64
             ;
+        }
+
+        public static void RenderDescription(this enDecisionType decisionType, StringBuilder sb)
+        {
+            var name = Enum.GetName(typeof(enDecisionType), decisionType);
+            var memberInfo = typeof(enDecisionType).GetMember(name).First();
+            var attribute = memberInfo.GetCustomAttributes(typeof(DecisionTypeDisplayValue), false).First() as DecisionTypeDisplayValue;
+            sb.Append(attribute.DisplayValue);
         }
     }
 }
