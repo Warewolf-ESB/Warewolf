@@ -74,12 +74,6 @@ namespace Dev2.Activities
             {
                 var res = Conditions.Select(a =>
                 {
-                    if (_dataObject.IsDebugMode())
-                    {
-                        var debugItemStaticDataParams = new DebugItemStaticDataParams(a.Left, "", true);
-                        AddDebugOutputItem(debugItemStaticDataParams);
-                    }
-
                     return a.Eval(GetArgumentsFunc, _dataObject.Environment.HasErrors());
                 });
                 return res.All(o => o);
@@ -195,7 +189,6 @@ namespace Dev2.Activities
 
             var stop = false;
             IDev2Activity next = null;
-            var resultText = "";
             try
             {
                 if (data.IsDebugMode())
@@ -205,9 +198,23 @@ namespace Dev2.Activities
                 }
 
                 //----------ExecuteTool--------------
-                var failing = !Passing(update);
-                if (failing)
+                var passing = Passing(update);
+                if (passing)
                 {
+                    if (_dataObject.IsDebugMode())
+                    {
+                        var debugItemStaticDataParams = new DebugItemStaticDataParams("Conditions passed", "", true);
+                        AddDebugOutputItem(debugItemStaticDataParams);
+                    }
+                }
+                else 
+                {
+                    if (_dataObject.IsDebugMode())
+                    {
+                        var debugItemStaticDataParams = new DebugItemStaticDataParams("Conditions failed", "", true);
+                        AddDebugOutputItem(debugItemStaticDataParams);
+                    }
+
                     data.Environment.AddError("gate conditions failed");
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
@@ -244,16 +251,9 @@ namespace Dev2.Activities
                 {
                     UpdateWithAssertions(data);
                 }
-                else
-                {
-                    resultText = nameof(Execute);
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);
-                }
             }
             catch (Exception ex)
             {
-                resultText = ex.Message;
                 data.Environment.AddError(ex.Message);
                 Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
                 stop = true;
@@ -267,30 +267,27 @@ namespace Dev2.Activities
             }
             if (next != null)
             {
-                resultText = nameof(next);
                 if (data.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry gate", "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 return next; // retry has set a node that we should go back to retry
             }
             if (stop)
             {
-                resultText = nameof(stop);
                 if (data.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Stop execution", "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 return null;
             }
             if (NextNodes != null && NextNodes.Any())
             {
-                resultText = nameof(NextNodes);
                 if (data.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(resultText, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Executing", "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 return NextNodes.First();
