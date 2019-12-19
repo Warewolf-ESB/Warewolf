@@ -8,16 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Warewolf.Options;
 using System.Linq;
+using NUnit.Framework;
 
 namespace Warewolf.Data.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class NamedIntTests
     {
-        [TestMethod]
+        [Test]
         public void NamedInt_()
         {
             var opts = NamedInt.GetAll(typeof(enDecisionType));
@@ -145,7 +146,7 @@ namespace Warewolf.Data.Tests
         }
 
 
-        [TestMethod]
+        [Test]
         public void NamedInt_GivenTestEnum_ShouldProceed()
         {
             var list = NamedInt.GetAll(typeof(MyTestEnum));
@@ -153,25 +154,22 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(3, list.Count());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(IndexAttributeException), "mixed use of enum IndexAttributes in A")]
+        [Test]
         public void NamedInt_GivenBrokenTestEnum_ExpectSuccess()
         {
-            NamedInt.GetAll(typeof(MyBrokenEnumOne));
+            Assert.Throws<IndexAttributeException>(() => NamedInt.GetAll(typeof(MyBrokenEnumOne)), "mixed use of enum IndexAttributes in A");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(IndexAttributeException), "mixed use of enum IndexAttributes in A")]
+        [Test]
         public void NamedInt_GivenBrokenTestEnumTwo_ShouldProceed()
         {
-            NamedInt.GetAll(typeof(MyBrokenEnumTwo));
+            Assert.Throws<IndexAttributeException>(() => NamedInt.GetAll(typeof(MyBrokenEnumTwo)), "mixed use of enum IndexAttributes in A");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(IndexAttributeException), "mixed use of enum IndexAttributes in A")]
+        [Test]
         public void NamedInt_GivenBrokenTestEnumThree_ShouldProceed()
         {
-            NamedInt.GetAll(typeof(MyBrokenEnumThree));
+            Assert.Throws<IndexAttributeException>(() => NamedInt.GetAll(typeof(MyBrokenEnumThree)), "mixed use of enum IndexAttributes in A");
         }
     }
 
