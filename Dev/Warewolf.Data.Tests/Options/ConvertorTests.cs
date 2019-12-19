@@ -8,17 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Linq;
+using NUnit.Framework;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ConvertorTests
     {
-        [TestMethod]
+        [Test]
         public void OptionConvertor_GivenSimpleClass_ExpectListOfIOptions()
         {
             var result = ConvertDataToOptionsList();
@@ -27,7 +26,7 @@ namespace Warewolf.Data.Tests
         }
 
 
-        [TestMethod]
+        [Test]
         public void OptionConvertor_GivenSimpleClass_ExpectIntOption_Success()
         {
             var result = ConvertDataToOptionsList();
@@ -36,7 +35,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(12, ((OptionInt)result[0]).Value);
         }
 
-        [TestMethod]
+        [Test]
         public void OptionConvertor_GivenSimpleClass_ExpectStringOption_Success()
         {
             var result = ConvertDataToOptionsList();
@@ -48,7 +47,7 @@ namespace Warewolf.Data.Tests
             Assert.IsTrue(expected.SequenceEqual(suggestions));
         }
 
-        [TestMethod]
+        [Test]
         public void OptionConvertor_GivenSimpleClass_ExpectBoolOption_Success()
         {
             var result = ConvertDataToOptionsList();
@@ -57,7 +56,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(true, ((OptionBool)result[2]).Value);
         }
 
-        [TestMethod]
+        [Test]
        
         public void OptionConvertor_GivenSimpleClass_ExpectedEnumOption_Success()
         {
@@ -69,7 +68,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, ((OptionInt)actual[3]).Value);
         }
 
-        [TestMethod]
+        [Test]
        
         public void OptionConvertor_Given_MultiDataProvider_WithEnum_ReturnSuccess()
         {

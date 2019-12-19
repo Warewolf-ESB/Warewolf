@@ -8,19 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class OptionTests
     {
-        [TestMethod]
-        [TestCategory(nameof(OptionBool))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionBool))]
+        [Author("Pieter Terblanche")]
         public void OptionBool_Default()
         {
             var optionBool = new OptionBool();
@@ -39,9 +40,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionBoolTooltip", optionBool.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionBool))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionBool))]
+        [Author("Pieter Terblanche")]
         public void OptionBool_Clone()
         {
             var optionBool = new OptionBool
@@ -55,9 +56,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionBool.Value, cloneOptionBool.Value);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionBool))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionBool))]
+        [Author("Pieter Terblanche")]
         public void OptionBool_CompareTo()
         {
             var optionBool = new OptionBool
@@ -76,9 +77,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionInt))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionInt))]
+        [Author("Pieter Terblanche")]
         public void OptionInt_Default()
         {
             var optionInt = new OptionInt();
@@ -97,9 +98,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionIntTooltip", optionInt.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionInt))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionInt))]
+        [Author("Pieter Terblanche")]
         public void OptionInt_Clone()
         {
             var optionInt = new OptionInt
@@ -113,9 +114,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionInt.Value, cloneOptionBool.Value);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionInt))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionInt))]
+        [Author("Pieter Terblanche")]
         public void OptionInt_CompareTo()
         {
             var optionInt = new OptionInt
@@ -134,9 +135,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionAutocomplete))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionAutocomplete))]
+        [Author("Pieter Terblanche")]
         public void OptionAutocomplete_Default()
         {
             var optionAutocomplete = new OptionAutocomplete();
@@ -156,9 +157,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionAutocompleteTooltip", optionAutocomplete.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionAutocomplete))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionAutocomplete))]
+        [Author("Pieter Terblanche")]
         public void OptionAutocomplete_Clone()
         {
             var optionAutocomplete = new OptionAutocomplete
@@ -172,9 +173,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionAutocomplete.Value, cloneOptionBool.Value);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionAutocomplete))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionAutocomplete))]
+        [Author("Pieter Terblanche")]
         public void OptionAutocomplete_CompareTo()
         {
             var optionAutocomplete = new OptionAutocomplete
@@ -193,9 +194,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnum))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionEnum))]
+        [Author("Siphamandla Dube")]
         public void OptionEnum_Default()
         {
             var optionEnum = new OptionEnum();
@@ -216,9 +217,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionEnumTooltip", optionEnum.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnum))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionEnum))]
+        [Author("Pieter Terblanche")]
         public void OptionEnum_OptionNames()
         {
             var optionEnum = new OptionEnum();
@@ -242,9 +243,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(1, optionEnum.Value);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnum))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionEnum))]
+        [Author("Siphamandla Dube")]
         public void OptionEnum_Clone()
         {
             var optionEnum = new OptionEnum
@@ -258,9 +259,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionEnum.Value, cloneOptionEnum.Value);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnum))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionEnum))]
+        [Author("Siphamandla Dube")]
         public void OptionEnum_CompareTo()
         {
             var optionEnum = new OptionEnum
@@ -279,9 +280,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnumGen))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionEnumGen))]
+        [Author("Siphamandla Dube")]
         public void OptionEnumGen_Default()
         {
             var optionEnum = new OptionEnumGen();
@@ -299,9 +300,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionEnumGenTooltip", optionEnum.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnumGen))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionEnumGen))]
+        [Author("Siphamandla Dube")]
         public void OptionEnumGen_Clone()
         {
             var optionEnumGen = new OptionEnumGen
@@ -315,9 +316,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionEnumGen.Value, cloneOptionEnumGen.Value);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnumGen))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionEnumGen))]
+        [Author("Siphamandla Dube")]
         public void OptionEnumGen_CompareTo()
         {
             var optionEnumGen = new OptionEnumGen
@@ -336,9 +337,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionEnumGen))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionEnumGen))]
+        [Author("Pieter Terblanche")]
         public void OptionCombobox_Default()
         {
             var optionCombobox = new OptionCombobox();
@@ -359,9 +360,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionComboboxTooltip", optionCombobox.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionCombobox))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionCombobox))]
+        [Author("Siphamandla Dube")]
         public void OptionCombobox_Clone()
         {
             var optionCombobox = new OptionCombobox
@@ -370,12 +371,12 @@ namespace Warewolf.Data.Tests
                 Value = MyEnum.Option1.ToString()
             };
 
-            Assert.ThrowsException<NotImplementedException>(() => optionCombobox.Clone() as OptionCombobox);
+            Assert.Throws<NotImplementedException>(() => optionCombobox.Clone());
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionCombobox))]
-        [Owner("Siphamandla Dube")]
+        [Test]
+        [Category(nameof(OptionCombobox))]
+        [Author("Siphamandla Dube")]
         public void OptionCombobox_CompareTo()
         {
             var optionCombobox = new OptionCombobox
@@ -394,9 +395,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionWorkflow))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionWorkflow))]
+        [Author("Pieter Terblanche")]
         public void OptionWorkflow_Default()
         {
             var optionWorkflow = new OptionWorkflow();
@@ -426,9 +427,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionWorkflowTooltip", optionWorkflow.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionWorkflow))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionWorkflow))]
+        [Author("Pieter Terblanche")]
         public void OptionWorkflow_Clone()
         {
             var expectedGuid = Guid.NewGuid();
@@ -451,9 +452,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionWorkflow.Workflow, cloneWorkflow.Workflow);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionWorkflow))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionWorkflow))]
+        [Author("Pieter Terblanche")]
         public void OptionWorkflow_CompareTo()
         {
             var expectedGuid = Guid.NewGuid();
@@ -481,9 +482,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, expectedValue);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionConditionExpression))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionConditionExpression))]
+        [Author("Pieter Terblanche")]
         public void OptionConditionExpression_Default()
         {
             var optionConditionExpression = new OptionConditionExpression();
@@ -501,9 +502,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("OptionComboboxTooltip", optionConditionExpression.Tooltip);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionConditionExpression))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionConditionExpression))]
+        [Author("Pieter Terblanche")]
         public void OptionConditionExpression_SetProperties()
         {
             var optionConditionExpression = new OptionConditionExpression();
@@ -550,9 +551,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("5", optionConditionExpression.To);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionConditionExpression))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionConditionExpression))]
+        [Author("Pieter Terblanche")]
         public void OptionConditionExpression_IsEmptyRow_IsSingleOperand()
         {
             var optionConditionExpression = new OptionConditionExpression();
@@ -573,9 +574,9 @@ namespace Warewolf.Data.Tests
             Assert.IsFalse(optionConditionExpression.IsEmptyRow);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionConditionExpression))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionConditionExpression))]
+        [Author("Pieter Terblanche")]
         public void OptionConditionExpression_IsEmptyRow_IsBetween()
         {
             var optionConditionExpression = new OptionConditionExpression();
@@ -601,9 +602,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("5", optionConditionExpression.To);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionConditionExpression))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionConditionExpression))]
+        [Author("Pieter Terblanche")]
         public void OptionConditionExpression_Clone()
         {
             var optionConditionExpression = new OptionConditionExpression
@@ -617,9 +618,9 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(optionConditionExpression.Left, cloneOptionConditionExpression.Left);
         }
 
-        [TestMethod]
-        [TestCategory(nameof(OptionConditionExpression))]
-        [Owner("Pieter Terblanche")]
+        [Test]
+        [Category(nameof(OptionConditionExpression))]
+        [Author("Pieter Terblanche")]
         public void OptionConditionExpression_CompareTo()
         {
             var optionConditionExpression = new OptionConditionExpression
