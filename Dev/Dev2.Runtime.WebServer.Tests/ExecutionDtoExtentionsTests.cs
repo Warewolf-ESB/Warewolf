@@ -21,7 +21,7 @@ using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Runtime.WebServerTests
+namespace Dev2.Runtime.WebServer.Tests
 {
     [TestClass]
     public class ExecutionDtoExtentionsTests
