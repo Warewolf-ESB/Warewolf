@@ -167,7 +167,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             {
                 GateOpts = new AllowResumption
                 {
-                    Resume = Resumable.AllowResumption,
                     ResumeEndpoint = expectedWorkflow,
                     Strategy = noBackoffAlgorithm
                 }

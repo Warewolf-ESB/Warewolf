@@ -39,8 +39,6 @@ namespace Dev2.Activities.Designers2.Gate
         private bool _isExpanded;
         private OptionsWithNotifier _options;
         private OptionsWithNotifier _conditionExpressionOptions;
-        private IServer _server;
-        private IResourceRepository _resourceRepository;
         private ConditionExpression _conditionExpression;
         private readonly ModelItem _modelItem;
 

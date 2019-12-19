@@ -32,7 +32,7 @@ namespace Warewolf.Data.Options
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
-        public Resumable Resume { get; set; } = Resumable.ResumptionDisabled;
+        public Resumable Resume { get; protected set; } = Resumable.ResumptionDisabled;
     }
     public class ResumptionDisabled : GateOptionsResumeBase
     {

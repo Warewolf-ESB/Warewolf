@@ -95,17 +95,14 @@ namespace Dev2.Activities
         //IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
-            if (GateOptions is null)
-            {
-                GateOptions = new GateOptions();
-            }
-
+            _dataObject = data;
             try
             {
                 _stateNotifier?.LogPreExecuteState(this);
 
-                _dataObject = data;
                 var firstExecution = !_dataObject.Gates.Contains(this);
+                var isRetry = _retryState.NumberOfRetries > 0;
+
                 if (firstExecution)
                 {
                     _dataObject.Gates.Add(this);
@@ -123,7 +120,7 @@ namespace Dev2.Activities
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
-                if (firstExecution)
+                if (firstExecution || !isRetry)
                 {
                     if (_retryState.NumberOfRetries > 0)
                     {
@@ -225,7 +222,7 @@ namespace Dev2.Activities
                         case GateFailureAction.Retry:
                             if (canRetry)
                             {
-                                var goBackToActivity = GetRetryEntryPoint.As<GateActivity>();
+                                var goBackToActivity = GetRetryEntryPoint().As<GateActivity>();
                                 goBackToActivity.UpdateRetryState(this);
                                 next = goBackToActivity;
                             }
@@ -316,8 +313,6 @@ namespace Dev2.Activities
         {
             if (GateOptions.GateOpts is AllowResumption allowResumption)
             {
-
-                //if (_retryState.NumberOfRetries >= allowResumption.Strategy)
                 _retryState.NumberOfRetries++;
             } else
             {
@@ -458,7 +453,7 @@ namespace Dev2.Activities
         /// <summary>
         /// Where should we send execution if this gate fails and not set to StopOnFailure
         /// </summary>
-        private IDev2Activity GetRetryEntryPoint => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString());
+        private IDev2Activity GetRetryEntryPoint() => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString());
 
 
         #region debugstuff
@@ -586,7 +581,7 @@ namespace Dev2.Activities
 
         public Guid RetryEntryPointId { get; set; }
 
-        public GateOptions GateOptions { get; set; }
+        public GateOptions GateOptions { get; set; } = new GateOptions();
     }
 
     public class GateException : Exception
