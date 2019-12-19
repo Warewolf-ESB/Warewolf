@@ -301,8 +301,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBase", "TestBase\TestBa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ", "Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj", "{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQTests", "Warewolf.Driver.RabbitMQTests\Warewolf.Driver.RabbitMQTests.csproj", "{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Data.Tests", "Warewolf.Data.Tests\Warewolf.Data.Tests.csproj", "{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Interfaces", "Warewolf.Interfaces\Warewolf.Interfaces.csproj", "{926CF512-B3FD-410D-AA83-EBDF4C4868DE}"
@@ -321,8 +319,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Trigger.Queue.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Framework48", "Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj", "{BC059E85-358E-49CF-A2E8-E79249C9BF51}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6DE66B0-83DE-46FE-9EEB-74997E37C67E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Framework48.Tests", "Warewolf.Common.Framework48.Tests\Warewolf.Common.Framework48.Tests.csproj", "{EB94A0EF-C62E-4B9E-A59F-4224C1DAB142}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.QueueWorker.Tests", "Warewolf.QueueWorker.Tests\Warewolf.QueueWorker.Tests.csproj", "{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}"
@@ -335,8 +331,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Logger.Tests", "Wa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog", "Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj", "{AFAFC635-413B-4525-8BE0-72AEBE0547E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.SerilogTests", "Warewolf.Driver.SerilogTests\Warewolf.Driver.SerilogTests.csproj", "{199C97CF-1256-4D9A-BDE3-0A547C600B56}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{2C4E3DC6-2195-4486-894D-8351B066D8CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing.Tests", "Warewolf.Auditing.Tests\Warewolf.Auditing.Tests.csproj", "{CB78B4CF-9B54-4491-9B17-B35199A95970}"
@@ -345,13 +339,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis", "Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj", "{86DF54BB-E37D-4559-8014-13D6030A2242}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RedisTests", "Warewolf.Driver.RedisTests\Warewolf.Driver.RedisTests.csproj", "{A50743C5-5567-4685-92E8-7955AE0BC796}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.RedisSource", "Warewolf.UIBindingTests.RedisSource\Warewolf.UIBindingTests.RedisSource.csproj", "{31D0816B-8A86-4FC4-8D45-81BF301EE4C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard20.Tests", "Warewolf.Common.NetStandard20.Tests\Warewolf.Common.NetStandard20.Tests.csproj", "{388FDEB8-9078-4F62-BDE5-6E67E03BD48B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer.Tests", "Dev2.Runtime.WebServer.Tests\Dev2.Runtime.WebServer.Tests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ.Tests", "Warewolf.Driver.RabbitMQ.Tests\Warewolf.Driver.RabbitMQ.Tests.csproj", "{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis.Tests", "Warewolf.Driver.Redis.Tests\Warewolf.Driver.Redis.Tests.csproj", "{F537BC70-24C1-4108-995A-5696F3F116BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog.Tests", "Warewolf.Driver.Serilog.Tests\Warewolf.Driver.Serilog.Tests.csproj", "{DD6E9C07-E364-4701-80E4-6896CE1E46CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1220,13 +1218,6 @@ Global
 		{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{B1ECF2E3-9706-43A5-A5AB-97AE8CA577CD}.Release|x86.Build.0 = Release|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Debug|x86.Build.0 = Debug|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Release|x86.ActiveCfg = Release|Any CPU
-		{0FC4337C-18AD-4C82-8DF3-BCA850A33E79}.Release|x86.Build.0 = Release|Any CPU
 		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DD680DD-B7D8-494A-B5F0-35CFF62AB756}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1342,13 +1333,6 @@ Global
 		{AFAFC635-413B-4525-8BE0-72AEBE0547E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AFAFC635-413B-4525-8BE0-72AEBE0547E5}.Release|x86.ActiveCfg = Release|Any CPU
 		{AFAFC635-413B-4525-8BE0-72AEBE0547E5}.Release|x86.Build.0 = Release|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Debug|x86.Build.0 = Debug|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Release|x86.ActiveCfg = Release|Any CPU
-		{199C97CF-1256-4D9A-BDE3-0A547C600B56}.Release|x86.Build.0 = Release|Any CPU
 		{2C4E3DC6-2195-4486-894D-8351B066D8CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C4E3DC6-2195-4486-894D-8351B066D8CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C4E3DC6-2195-4486-894D-8351B066D8CA}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1379,13 +1363,6 @@ Global
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Release|x86.ActiveCfg = Release|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Release|x86.Build.0 = Release|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Debug|x86.Build.0 = Debug|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Release|x86.ActiveCfg = Debug|Any CPU
-		{A50743C5-5567-4685-92E8-7955AE0BC796}.Release|x86.Build.0 = Debug|Any CPU
 		{31D0816B-8A86-4FC4-8D45-81BF301EE4C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31D0816B-8A86-4FC4-8D45-81BF301EE4C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D0816B-8A86-4FC4-8D45-81BF301EE4C8}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1409,6 +1386,30 @@ Global
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.ActiveCfg = Release|Any CPU
 		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.Build.0 = Release|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Debug|x86.Build.0 = Debug|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{BC8F89A2-3B3D-45B8-BF5B-F742E2A274A1}.Release|x86.Build.0 = Release|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Debug|x86.Build.0 = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Release|x86.ActiveCfg = Debug|Any CPU
+		{F537BC70-24C1-4108-995A-5696F3F116BB}.Release|x86.Build.0 = Debug|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Debug|x86.Build.0 = Debug|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|x86.ActiveCfg = Release|Any CPU
+		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
