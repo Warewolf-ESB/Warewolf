@@ -17,14 +17,29 @@ using Warewolf.Interfaces.Auditing;
 using Dev2.Common;
 using Warewolf.Interfaces.Pooling;
 using Warewolf.Pooling;
+using System.Collections.Concurrent;
 
 namespace Warewolf.Auditing
 {
     public class WebSocketFactory : IWebSocketFactory
     {
+        private static readonly ConcurrentDictionary<string, System.Net.WebSockets.Managed.ClientWebSocket> WebSocketConnectionPool = new ConcurrentDictionary<string, System.Net.WebSockets.Managed.ClientWebSocket>();
+
         public IWebSocketWrapper New()
         {
-            return new WebSocketWrapper(Config.Auditing.Endpoint);
+            var clientWebSocket = WebSocketConnectionPool.GetOrAdd(Config.Auditing.Endpoint, new System.Net.WebSockets.Managed.ClientWebSocket());
+
+            if (clientWebSocket.State == WebSocketState.None || clientWebSocket.State == WebSocketState.Open)
+            {
+                return new WebSocketWrapper(clientWebSocket, Config.Auditing.Endpoint);
+            }
+            else
+            {
+                WebSocketConnectionPool.TryRemove(Config.Auditing.Endpoint, out System.Net.WebSockets.Managed.ClientWebSocket removeClientwebSocket);
+
+                var newClientWebSocket = WebSocketConnectionPool.GetOrAdd(Config.Auditing.Endpoint, new System.Net.WebSockets.Managed.ClientWebSocket());
+                return new WebSocketWrapper(newClientWebSocket, Config.Auditing.Endpoint);
+            }
         }
     }
 
@@ -34,7 +49,6 @@ namespace Warewolf.Auditing
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
 
-        private static readonly IObjectPool<System.Net.WebSockets.Managed.ClientWebSocket> objectPool = new ObjectPoolFactory<System.Net.WebSockets.Managed.ClientWebSocket>().New(() => new System.Net.WebSockets.Managed.ClientWebSocket());
         private readonly System.Net.WebSockets.Managed.ClientWebSocket _clientWebSocket;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -44,10 +58,9 @@ namespace Warewolf.Auditing
         private Action<string, WebSocketWrapper> _onMessage;
         private Action<WebSocketWrapper> _onDisconnected;
 
-        public WebSocketWrapper() { }
-        public WebSocketWrapper(string uri)
+        public WebSocketWrapper(System.Net.WebSockets.Managed.ClientWebSocket clientWebSocket, string uri)
         {
-            _clientWebSocket = objectPool.AcquireObject();
+            _clientWebSocket = clientWebSocket;
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
 
@@ -146,13 +159,6 @@ namespace Warewolf.Auditing
             catch (Exception)
             {
                 CallOnDisconnected();
-            }
-            finally
-            {
-                if (IsOpen())
-                {
-                    objectPool.ReleaseObject(_clientWebSocket);
-                }
             }
         }
 
