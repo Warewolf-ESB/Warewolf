@@ -24,7 +24,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    public class GateActivityTests : BaseActivityTests
+    public class GateActivityTests
     {
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new GateActivity();
             activity.GateFailure = GateFailureAction.StopProcessing;
 
-            Assert.AreEqual(GateFailureAction.StopProcessing.ToString(), activity.GateFailure);
+            Assert.AreEqual(GateFailureAction.StopProcessing, activity.GateFailure);
         }
 
         [TestMethod]
@@ -184,6 +184,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
+            expectedRetryActivity.GateOptions.GateOpts = new AllowResumption();
+
             var expectedRetryActivityId = Guid.NewGuid();
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
@@ -194,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
-            conditions.Add(condition);            
+            conditions.Add(condition);
 
             //------------Setup for test--------------------------
             var act = new GateActivity
@@ -212,12 +214,56 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = act.Execute(dataObject, 0);
 
-            Assert.AreNotEqual(expectedNextActivity.Object, result, "execution should not proceed as normal if gate fails and Retry is set");
+            Assert.AreEqual(expectedRetryActivity, result, "execution should proceed to RetryEntryPoint if gate fails");
+            
             var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
-
             Assert.AreEqual("1", numberOfRetries);
+        }
+        
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GivenFailingConditionVarNotExistsWithRetryInvalidGate_ExpectRetryGateFailure()
+        {
+            var expectedNextActivity = new Mock<IDev2Activity>();
+            var expectedRetryActivity = new GateActivity();
+            var expectedRetryActivityId = Guid.NewGuid();
+            expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
 
-            Assert.AreNotEqual(expectedNextActivity.Object, result, "execution should not proceed as normal if gate fails and Retry is set");
+            //---------------Set up test pack-------------------
+            var condition = new ConditionExpression
+            {
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+            };
+            var conditions = new List<ConditionExpression>();
+            conditions.Add(condition);
+
+            //------------Setup for test--------------------------
+            var act = new GateActivity
+            {
+                GateFailure = GateFailureAction.Retry,
+                RetryEntryPointId = expectedRetryActivityId,
+                Conditions = conditions,
+                NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
+            };
+            expectedRetryActivity.Conditions = conditions;
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.Environment.Assign("[[nota]]", "bob", 0);
+            dataObject.Gates.Add(expectedRetryActivity);
+
+            var result = act.Execute(dataObject, 0);
+            
+            Assert.IsTrue(dataObject.Environment.HasErrors());
+            var errors = dataObject.Environment.Errors.ToArray();
+            Assert.AreEqual("gate conditions failed", errors[0]);
+            Assert.AreEqual("cannot update retry state of a non-resumable gate", errors[1]);
+
+            Assert.IsNull(result, "execution should not proceed to RetryEntryPoint if entrypoint is not resumable");
+            
+            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
+            Assert.AreEqual("0", numberOfRetries);
         }
 
         [TestMethod]
@@ -260,6 +306,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedRetryActivity = new GateActivity();
             var expectedRetryActivityId = Guid.NewGuid();
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
+            expectedRetryActivity.GateOptions.GateOpts = new AllowResumption();
 
             //---------------Set up test pack-------------------
             var condition = new ConditionExpression
@@ -433,6 +480,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GateFailure = GateFailureAction.StopProcessing,
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
+                GateOptions = new GateOptions(){GateOpts = new AllowResumption() { }}
             };
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());

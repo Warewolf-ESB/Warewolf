@@ -295,7 +295,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
             {
                 GateOpts = new AllowResumption
                 {
-                    Resume = Resumable.AllowResumption,
                     ResumeEndpoint = expectedWorkflow,
                     Strategy = new NoBackoff(),
                 }
