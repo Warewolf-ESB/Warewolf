@@ -27,6 +27,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
@@ -200,7 +201,7 @@ namespace Dev2.Activities
                 if (data.IsDebugMode())
                 {
                     _debugInputs = CreateDebugInputs(data.Environment);
-                    DispatchDebugState(data, StateType.Before, 0);
+                    //DispatchDebugState(data, StateType.Before, 0);
                 }
 
                 //----------ExecuteTool--------------
@@ -459,46 +460,32 @@ namespace Dev2.Activities
         #region debugstuff
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
-            var result = new List<IDebugItem>();
+            var result = new List<DebugItem>();
 
             var allErrors = new ErrorResultTO();
 
             try
             {
-                var dds = Conditions;
-                ErrorResultTO error = null;  //TODO: Add Correctly
-                var userModel = "";          //TODO: Add Correctly
-                //allErrors.MergeErrors(error);
-
-                foreach (ConditionExpression conditionExpression in dds)
+                var dds = Conditions.GetEnumerator();
+                var text = new StringBuilder();
+                if (dds.MoveNext() && dds.Current.Cond.MatchType != enDecisionType.Choose)
                 {
+                    dds.Current.RenderDescription(text);
+                }
+                while (dds.MoveNext())
+                {
+                    var conditionExpression = dds.Current;
                     if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
                     {
                         continue;
                     }
-                    //TODO: 
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Left, out error);
-                    //allErrors.MergeErrors(error);
-                    //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Col2, out error);
-                    //allErrors.MergeErrors(error);
-                    //AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, conditionExpression.Col3, out error);
-                    //allErrors.MergeErrors(error);
+
+                    text.Append("\n AND \n");
+                    conditionExpression.RenderDescription(text);
                 }
 
                 var itemToAdd = new DebugItem();
-
-                userModel = userModel.Replace("OR", " OR\r\n")
-                                     .Replace("AND", " AND\r\n")
-                                     .Replace("\r\n ", "\r\n")
-                                     .Replace("\r\n\r\n", "\r\n")
-                                     .Replace("  ", " ");
-
-                AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
-                result.Add(itemToAdd);
-
-                itemToAdd = new DebugItem();
-                //TODO: 
-                //AddDebugItem(new DebugItemStaticDataParams(dds. == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
+                AddDebugItem(new DebugItemStaticDataParams(text.ToString(), "Allow If"), itemToAdd);
                 result.Add(itemToAdd);
             }
             catch (JsonSerializationException e)
@@ -518,8 +505,7 @@ namespace Dev2.Activities
                 }
             }
 
-            var val = result.Select(a => a as DebugItem).ToList();
-            return val;
+            return result;
         }
 
         static void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
