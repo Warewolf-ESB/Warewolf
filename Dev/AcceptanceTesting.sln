@@ -343,8 +343,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServerTests", "Dev2.Runtime.WebServerTests\Dev2.Runtime.WebServerTests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis", "Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj", "{86DF54BB-E37D-4559-8014-13D6030A2242}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RedisTests", "Warewolf.Driver.RedisTests\Warewolf.Driver.RedisTests.csproj", "{A50743C5-5567-4685-92E8-7955AE0BC796}"
@@ -352,6 +350,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.RedisSource", "Warewolf.UIBindingTests.RedisSource\Warewolf.UIBindingTests.RedisSource.csproj", "{31D0816B-8A86-4FC4-8D45-81BF301EE4C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard20.Tests", "Warewolf.Common.NetStandard20.Tests\Warewolf.Common.NetStandard20.Tests.csproj", "{388FDEB8-9078-4F62-BDE5-6E67E03BD48B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer.Tests", "Dev2.Runtime.WebServer.Tests\Dev2.Runtime.WebServer.Tests.csproj", "{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1371,13 +1371,6 @@ Global
 		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.ActiveCfg = Debug|Any CPU
 		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.Build.0 = Debug|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|x86.Build.0 = Debug|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.ActiveCfg = Release|Any CPU
-		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.Build.0 = Release|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1408,6 +1401,14 @@ Global
 		{388FDEB8-9078-4F62-BDE5-6E67E03BD48B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{388FDEB8-9078-4F62-BDE5-6E67E03BD48B}.Release|x86.ActiveCfg = Release|Any CPU
 		{388FDEB8-9078-4F62-BDE5-6E67E03BD48B}.Release|x86.Build.0 = Release|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Debug|x86.Build.0 = Debug|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F98362F3-6DDF-4895-99CD-A715B3CEFD4F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
