@@ -20,6 +20,7 @@ namespace Dev2
         MixedActivity,
         DsfActivity,
         ForEach,
-        Sequence
+        Sequence,
+        RedisCache
     }
 }
