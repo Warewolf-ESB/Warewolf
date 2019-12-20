@@ -40,7 +40,7 @@ namespace Dev2.Activities
 {
     enum Gate { }
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
-    public class GateActivity : DsfFlowNodeActivity<bool>, IEquatable<GateActivity>, IStateNotifierRequired
+    public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IStateNotifierRequired
     {
         private IStateNotifier _stateNotifier = null;
 
@@ -49,6 +49,11 @@ namespace Dev2.Activities
         {
             DisplayName = nameof(Gate);
             IsGate = true;
+            _retryState = new RetryState();
+            if (GateOptions is null)
+            {
+                GateOptions = new GateOptions();
+            }
         }
 
         /// <summary>
@@ -90,7 +95,10 @@ namespace Dev2.Activities
         //IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            _debugInputs?.Clear();
+            _debugOutputs?.Clear();
             _dataObject = data;
+            var allErrors = new ErrorResultTO();
             try
             {
                 _stateNotifier?.LogPreExecuteState(this);
@@ -125,10 +133,8 @@ namespace Dev2.Activities
                     {
                         var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteNormal), "", true);
                         AddDebugOutputItem(debugItemStaticDataParams);
-                        DispatchDebugState(_dataObject, StateType.Before, update);
-                        DispatchDebugState(_dataObject, StateType.After, update);
                     }
-                    return ExecuteNormal(data, update);
+                    return ExecuteNormal(data, update, allErrors);
                 }
 
                 // TODO: execute workflow that should be called on resume
@@ -136,21 +142,27 @@ namespace Dev2.Activities
                 // TODO: reset Environment to state it was in the first time we executed this Gate (requires environment deep clone)
                 //_dataObject.Environment = _originalExecutionEnvironment;
 
-                // load selected retry algorithm
-                if (_dataObject.IsDebugMode())
-                {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteRetry), "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);
-                    DispatchDebugState(_dataObject, StateType.Before, update);
-                    DispatchDebugState(_dataObject, StateType.After, update);
-
-                }
-                return ExecuteRetry(data, update);
+                return ExecuteRetry(data, update, allErrors);
             }
             catch (Exception e)
             {
                 _stateNotifier?.LogExecuteException(e, this);
                 throw;
+            }
+            finally
+            {
+                var hasErrors = allErrors.HasErrors();
+                if (hasErrors)
+                {
+                    DisplayAndWriteError(nameof(GateActivity), allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    data.Environment.AddError(errorString);
+                }
+                if (data.IsDebugMode())
+                {
+                    DispatchDebugState(data, StateType.Before, update);
+                    DispatchDebugState(data, StateType.After, update);
+                }
             }
         }
         /// <summary>
@@ -160,16 +172,24 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, ErrorResultTO allErrors)
         {
-            // todo: if _algo is null then this gate did not get set to a resumable gate?
+            if (_dataObject.IsDebugMode())
+            {
+                var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteRetry), "", true);
+                AddDebugOutputItem(debugItemStaticDataParams);
+            }
 
             // if allowed to retry and its time for a retry return NextNode
             // otherwise schedule this environment and current activity to 
             // be executed at the calculated latter time
-            if (_algo.MoveNext() && _algo.Current)
+            var retryAllowed = _algo.MoveNext() && _algo.Current;
+            if (retryAllowed)
             {
                 return NextNodes.First();
+            } else
+            {
+                allErrors.AddError("retry count exceeded");
             }
 
             // Gate has reached maximum retries.
@@ -182,7 +202,7 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        public IDev2Activity ExecuteNormal(IDSFDataObject data, int update)
+        public IDev2Activity ExecuteNormal(IDSFDataObject data, int update, ErrorResultTO allErrors)
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
@@ -215,7 +235,8 @@ namespace Dev2.Activities
                         AddDebugOutputItem(debugItemStaticDataParams);
                     }
 
-                    data.Environment.AddError("gate conditions failed");
+                    var msg = "gate conditions failed";
+                    allErrors.AddError(msg);
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
                     var gateFailure = GateFailure;
@@ -223,7 +244,8 @@ namespace Dev2.Activities
                     switch (gateFailure)
                     {
                         case GateFailureAction.StopProcessing:
-                            data.Environment.AddError("execution stopped");
+                            msg = "execution stopped";
+                            allErrors.AddError(msg);
                             Dev2Logger.Warn("execution stopped!", _dataObject?.ExecutionID?.ToString());
                             stop = true;
                             break;
@@ -236,14 +258,16 @@ namespace Dev2.Activities
                             }
                             else
                             {
-                                const string msg = "invalid retry config: no gate selected";
-                                data.Environment.AddError(msg);
+                                msg = "invalid retry config: no gate selected";
+                                allErrors.AddError(msg);
                                 Dev2Logger.Warn($"execution stopped! {msg}", _dataObject?.ExecutionID?.ToString());
                                 stop = true;
                             }
                             break;
                         default:
-                            throw new Exception("unknown gate failure option");
+                            msg = "unknown gate failure option";
+                            allErrors.AddError(msg);
+                            throw new Exception(msg);
                     }
                 }
 
@@ -305,7 +329,7 @@ namespace Dev2.Activities
         {
             public int NumberOfRetries { get; set; }
         }
-        readonly RetryState _retryState = new RetryState();
+        RetryState _retryState;
 
         private void UpdateRetryState(GateActivity gateActivity)
         {
@@ -362,6 +386,7 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397);
+                hashCode = ((hashCode * 397) ^ (UniqueID != null ? UniqueID.GetHashCode() : 0));
 
                 return hashCode;
             }
@@ -455,6 +480,10 @@ namespace Dev2.Activities
 
 
         #region debugstuff
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
+
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
             var result = new List<DebugItem>();
@@ -558,13 +587,23 @@ namespace Dev2.Activities
         #endregion debugstuff
 
 
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return new List<DsfForEachItem>();
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return new List<DsfForEachItem>();
+        }
+
 
         public GateFailureAction GateFailure { get; set; }
         public IList<ConditionExpression> Conditions { get; set; }
 
         public Guid RetryEntryPointId { get; set; }
 
-        public GateOptions GateOptions { get; set; } = new GateOptions();
+        public GateOptions GateOptions { get; set; }
     }
 
     public class GateException : Exception
