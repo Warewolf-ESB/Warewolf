@@ -511,7 +511,15 @@ namespace Dev2.Activities
                 }
 
                 var itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams(text.ToString(), "Allow If"), itemToAdd);
+                var s = text.ToString();
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    AddDebugItem(new DebugItemStaticDataParams(s, "Always Allow"), itemToAdd);
+                }
+                else
+                {
+                    AddDebugItem(new DebugItemStaticDataParams(s, "Allow If"), itemToAdd);
+                }
                 result.Add(itemToAdd);
             }
             catch (JsonSerializationException e)
