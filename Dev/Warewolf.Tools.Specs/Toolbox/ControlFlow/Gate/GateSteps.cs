@@ -93,8 +93,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             gateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
             nextGateActivity.NextNodes = new List<IDev2Activity> { nextGateActivity };
 
-            nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             var gateTwoFlowStep = new FlowStep
             {
@@ -224,11 +222,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             var modelData = dds.ToVBPersistableModel();
             scenarioContext.Add("modelData", modelData);
 
-            gateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-
-            nextGateActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
         }
 
         [Given(@"GateFailure has ""(.*)"" selected")]
