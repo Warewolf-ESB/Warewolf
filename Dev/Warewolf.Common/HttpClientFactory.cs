@@ -46,6 +46,9 @@ namespace Warewolf.Common
                     credential.UserName = userName;
                 }
                 credential.Password = password;
+
+                httpClientHandler.Credentials = credential;
+
                 hasCredentials = true;
             }
             var client = new HttpClient(httpClientHandler)
