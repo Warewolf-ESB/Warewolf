@@ -116,6 +116,7 @@ namespace Dev2.Runtime.WebServer
             if (dataObject.Environment.HasErrors())
             {
                 Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, _executionDto.PayLoad);
             }
             else
             {
