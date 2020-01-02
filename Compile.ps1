@@ -297,6 +297,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
             }
+            if ($SolutionFileName -eq "AcceptanceTesting.sln" -and $SolutionWideOutputs.IsPresent) {
+                &"$MSBuildPath" "$PSScriptRoot\Dev\Dev2.Activities.Designers.Tests\Dev2.Activities.Designers.Tests.csproj" "/maxcpucount" "/nodeReuse:false" $Target
+                Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Activities.Designers.Tests\bin\Debug\Moq.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Moq.dll" -Force
+                Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Activities.Designers.Tests\bin\Debug\System.Threading.Tasks.Extensions.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\System.Threading.Tasks.Extensions.dll" -Force
+                Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Activities.Designers.Tests\bin\Debug\System.ValueTuple.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\System.ValueTuples.dll" -Force
+            }
         }
     }
 }
