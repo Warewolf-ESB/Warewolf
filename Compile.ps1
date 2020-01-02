@@ -301,7 +301,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 &"$MSBuildPath" "$PSScriptRoot\Dev\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj" "/maxcpucount" "/nodeReuse:false"
                 Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Infrastructure.Tests\bin\Debug\Moq.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Moq.dll" -Force
                 Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Infrastructure.Tests\bin\Debug\System.Threading.Tasks.Extensions.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\System.Threading.Tasks.Extensions.dll" -Force
-                Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Infrastructure.Tests\bin\Debug\System.ValueTuple.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\System.ValueTuples.dll" -Force
             }
         }
     }
