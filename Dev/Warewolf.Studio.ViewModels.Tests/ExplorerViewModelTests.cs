@@ -54,6 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(connectControlSingleton.Object);
             var environmentRepository = new Mock<IServerRepository>();
             CustomContainer.Register(environmentRepository.Object);
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object,true);
         }
 
