@@ -1996,39 +1996,44 @@ namespace Dev2.Studio.ViewModels.Workflow
             var treeNodes = serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
 
             var list = new List<NameValue> { new NameValue { Name = " - Select Gate - ", Value = Guid.Empty.ToString() } };
-
-            IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
+            try
             {
-                var ret = new List<IDev2Activity>();
-                ret.Add(activity);
-                if (activity.NextNodes is null)
+                IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
                 {
-                    return ret;
+                    var ret = new List<IDev2Activity>();
+                    ret.Add(activity);
+                    if (activity.NextNodes is null)
+                    {
+                        return ret;
+                    }
+
+                    foreach (var nextActivity in activity.NextNodes)
+                    {
+                        ret.AddRange(connectedList(nextActivity));
+                    }
+                    return ret.Where(o => o.IsGate);
                 }
 
-                foreach (var nextActivity in activity.NextNodes)
+                bool found = false;
+                var allGates = connectedList(treeNodes[0].Activity)
+                    .Cast<GateActivity>()
+                    .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is AllowResumption);
+
+                var selectableGates = allGates
+                    .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));
+
+                foreach (var gate in selectableGates)
                 {
-                    ret.AddRange(connectedList(nextActivity));
+                    var id = gate.UniqueID;
+                    var activityName = gate.GetDisplayName();
+                    var nameValue = new NameValue { Name = activityName, Value = id };
+                    list.Add(nameValue);
                 }
-                return ret.Where(o => o.IsGate);
             }
-            
-            bool found = false;
-            var allGates = connectedList(treeNodes[0].Activity)
-                .Cast<GateActivity>()
-                .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is AllowResumption);
-
-            var selectableGates = allGates
-                .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));
-
-            foreach (var gate in selectableGates)
+            catch (Exception ex)
             {
-                var id = gate.UniqueID;
-                var activityName = gate.GetDisplayName();
-                var nameValue = new NameValue { Name = activityName, Value = id };
-                list.Add(nameValue);
+                Dev2Logger.Error("Error loading selectable gates. Exception: " + ex.Message, GlobalConstants.ServerWorkspaceID.ToString());
             }
-
             return list;
         }
 
@@ -2413,6 +2418,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("AdvancedRecordsetActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("GateActivity");
         }
         
         bool WorkflowDropFromResourceToolboxItem(IDataObject dataObject, string isWorkflow, bool dropOccured, bool handled)

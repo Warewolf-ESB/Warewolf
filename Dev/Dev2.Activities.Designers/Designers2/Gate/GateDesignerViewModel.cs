@@ -9,6 +9,7 @@
 */
 
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
@@ -52,6 +53,7 @@ namespace Dev2.Activities.Designers2.Gate
 
             PopulateFields();
             LoadConditionExpressionOptions();
+            this.RunViewSetup();
         }
 
         private void LoadDefaults()
