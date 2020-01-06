@@ -365,7 +365,7 @@
     <DataTemplate x:Key="OptionInputsStyle" DataType="{x:Type options:OptionWorkflow}">
         <Grid DataContext="{Binding Path=DataContext}">
             <ui1:InputsDataGrid x:Name="InputsDataGrid"
-                                ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding Workflow.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMappingDataGridStyle}"
                                 Height="Auto"
                                 MinHeight="100"
