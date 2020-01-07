@@ -22,14 +22,30 @@
 
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="80"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" 
                    HorizontalAlignment="Center" 
-                   TextWrapping="Wrap"
-                   Text="{Binding SelectedGateFailure}" 
-                   ToolTip="{Binding SelectedGateFailure}"/>
+                   Text="Allow through the gate if"/>
+        
+        <TextBlock Grid.Row="1" MaxHeight="60"
+                   HorizontalAlignment="Center" 
+                   TextWrapping="Wrap" 
+                   TextTrimming="WordEllipsis"
+                   Text="{Binding ConditionExpressionText}" 
+                   ToolTip="{Binding ConditionExpressionText}"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="Then"/>
+            <TextBlock TextWrapping="Wrap"
+                       Margin="-3,0,0,0"
+                       Text="{Binding SelectedGateFailure}" 
+                       ToolTip="{Binding SelectedGateFailure}"/>
+        </StackPanel>
+        
     </Grid>
     
 </core:ActivityDesignerTemplate>

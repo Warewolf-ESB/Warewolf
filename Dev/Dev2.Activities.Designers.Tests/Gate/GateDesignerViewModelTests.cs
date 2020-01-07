@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -58,12 +59,46 @@ namespace Dev2.Activities.Designers.Tests.Gate
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_Constructor()
+        public void GateDesignerViewModel_Constructor_ShowLarge_True()
         {
+            var conditionExpressionList = new List<ConditionExpression>();
             //------------Setup for test--------------------------
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
+            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
+
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
+            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            var expectedGateFailure = "Stop processing";
+            IsItemDragged.Instance.IsDragged = true;
+            //------------Execute Test----------------------------
+            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(gateDesignerViewModel.HasLargeView);
+            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure.Name);
+            Assert.AreEqual(0, gateDesignerViewModel.SelectedGateFailure.Value);
+            Assert.IsTrue(gateDesignerViewModel.Enabled);
+            Assert.IsTrue(gateDesignerViewModel.ShowLarge);
+            Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateDesignerViewModel))]
+        public void GateDesignerViewModel_Constructor_ShowLarge_False()
+        {
+            var conditionExpressionList = new List<ConditionExpression>();
+            //------------Setup for test--------------------------
+            var gateFailureProperty = CreateModelProperty("GateFailure", null);
+            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
@@ -82,8 +117,8 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure.Name);
             Assert.AreEqual(0, gateDesignerViewModel.SelectedGateFailure.Value);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
-            Assert.IsTrue(gateDesignerViewModel.ShowLarge);
-            Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
+            Assert.IsFalse(gateDesignerViewModel.ShowLarge);
+            Assert.AreEqual(Visibility.Collapsed, gateDesignerViewModel.ThumbVisibility);
         }
 
         [TestMethod]
@@ -91,10 +126,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
         [TestCategory(nameof(GateDesignerViewModel))]
         public void GateDesignerViewModel_GateFailureOptions_Retry()
         {
+            var conditionExpressionList = new List<ConditionExpression>();
             //------------Setup for test--------------------------
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
@@ -123,10 +159,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
         [TestCategory(nameof(GateDesignerViewModel))]
         public void GateDesignerViewModel_GateFailureOptions_StopProcessing()
         {
+            var conditionExpressionList = new List<ConditionExpression>();
             //------------Setup for test--------------------------
             var gateFailureProperty = CreateModelProperty("GateFailure", GateFailureAction.Retry);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
@@ -155,10 +192,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
         [TestCategory(nameof(GateDesignerViewModel))]
         public void GateDesignerViewModel_GateFailureOptions_List()
         {
+            var conditionExpressionList = new List<ConditionExpression>();
             //------------Setup for test--------------------------
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
@@ -202,10 +240,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
             {
                 { uniqueId, mockModelProperty }
             };
+            var conditionExpressionList = new List<ConditionExpression>();
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", null).Object;
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockPropertyCollection = new Mock<ModelPropertyCollection>();
@@ -242,10 +281,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
             {
                 { uniqueId, mockModelProperty }
             };
+            var conditionExpressionList = new List<ConditionExpression>();
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null);
-            var conditionsProperty = CreateModelProperty("Conditions", null);
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty);
 
             var mockPropertyCollection = new Mock<ModelPropertyCollection>();
@@ -299,10 +339,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
                     Strategy = new NoBackoff(),
                 }
             };
+            var conditionExpressionList = new List<ConditionExpression>();
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", gateOptions).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", null);
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
@@ -346,10 +387,14 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 MatchType = enDecisionType.IsEqual,
                 Right = "10"
             };
+            var conditionExpressionList = new List<ConditionExpression>
+            {
+                conditionExpression
+            };
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", conditionExpression);
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
@@ -396,10 +441,14 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 MatchType = enDecisionType.IsEqual,
                 Right = "10"
             };
+            var conditionExpressionList = new List<ConditionExpression>
+            {
+                conditionExpression
+            };
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", conditionExpression);
+            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();

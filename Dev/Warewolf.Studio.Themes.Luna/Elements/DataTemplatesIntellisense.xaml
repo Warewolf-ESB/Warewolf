@@ -219,7 +219,7 @@
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
                     </ui:IntellisenseTextBox>
-                    <ui:IntellisenseTextBox DefaultText="From"
+                    <ui:IntellisenseTextBox DefaultText="To"
                                             FilterType="All"
                                             AllowUserCalculateMode="False"
                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"

@@ -248,7 +248,7 @@ namespace Warewolf.Data.Options
         public void RenderDescription(StringBuilder sb)
         {
             sb.Append(Left);
-            Cond.RenderDescription(sb);
+            Cond?.RenderDescription(sb);
         }
     }
 
