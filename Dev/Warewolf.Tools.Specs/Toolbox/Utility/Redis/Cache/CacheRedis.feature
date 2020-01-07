@@ -60,7 +60,7 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 	And I have "key1" of "MyData" and "ttl1" of "15" seconds
 	And I have "key2" of "MyData" and "ttl2" of "3" seconds
 	And an assign "dataToStore1" into "DsfMultiAssignActivity1" with
-		| name      | value   |
+		| name      | value  |
 		| [[Var1]] | "Test1" |
 		| [[Var2]] | "Test2" |
 	And an assign "dataToStore2" into "DsfMultiAssignActivity2" with
@@ -73,8 +73,9 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 		| [[Var2]] | "Test2" |
 	Then the assigned "key2", "ttl2" and innerActivity "DsfMultiAssignActivity2" is executed by "RedisActivity2"
 	Then "RedisActivity2" output variables have the following values
-		| var      | value   |
-		| [[Var1]] | "Test1" |
+		| label							| variable		| operator	| value		|
+		|	Redis key { MyData } found	|  null			|			|			|
+		|			null				| [[Var1]]		|	 =		| "Test1"	|
 
 
 Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
