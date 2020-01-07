@@ -874,6 +874,8 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupAllProperties();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             executionEnvironment.SetupAllProperties();
+            executionEnvironment.Setup(a => a.AddError(It.IsAny<string>()));
+            executionEnvironment.Setup(a => a.FetchErrors()).Returns(() => string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, ".tests"));
 
             dataObject.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
@@ -881,6 +883,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.TestName).Returns("*");
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             dataObject.Setup(o => o.ServiceName).Returns(".tests");
+            dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
 
             var resource = new Mock<IResource>();
             var resourceId = Guid.NewGuid();
@@ -918,6 +921,8 @@ namespace Dev2.Tests.Runtime.WebServer
             resourceCatalog.Verify(catalog => catalog.GetResources(It.IsAny<Guid>()), Times.Exactly(1));
             Assert.IsInstanceOfType(responseWriter, typeof(StringResponseWriter));
             testCatalog.Verify(o => o.Fetch(Guid.Empty), Times.Never);
+            executionEnvironment.Verify(o => o.AddError(It.IsAny<string>()), Times.Exactly(1));
+            executionEnvironment.Verify(o => o.FetchErrors(), Times.Exactly(1));
             dataObject.Verify(o => o.Clone());
         }
 
