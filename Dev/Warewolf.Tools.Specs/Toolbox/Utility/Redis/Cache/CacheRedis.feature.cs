@@ -391,8 +391,22 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Var1]]",
                         "=",
                         "\"Test1\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[Var2]]",
+                        "=",
+                        "\"Test2\""});
 #line 101
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2789, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table2790 = new TechTalk.SpecFlow.Table(new string[] {
+                        "error"});
+            table2790.AddRow(new string[] {
+                        "cached data missing key: [[Var3]]"});
+            table2790.AddRow(new string[] {
+                        "cached data missing key: [[Var4]]"});
+#line 106
+ testRunner.And("the Execution Environment has these error", ((string)(null)), table2790, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

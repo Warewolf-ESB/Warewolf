@@ -99,5 +99,11 @@ Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
 		| [[Var2]] | "Test2" |
 	Then the assigned "key2", "ttl2" and innerActivity "DsfMultiAssignActivity2" is executed by "RedisActivity2"
 	Then "RedisActivity2" output variables have the following values
-	#And the debug output has "cached data missing key:[[Var3]]" error
-	#And the debug output has "cached data missing key:[[Var4]]" error
+		| label							| variable		| operator	| value		|
+		|	Redis key { MyData } found	|  null			|			|			|
+		|			null				| [[Var1]]		|	 =		| "Test1"	|
+		|			null				| [[Var2]]		|	 =		| "Test2"	|
+	And the Execution Environment has these error
+	| error									|
+	|   cached data missing key: [[Var3]]   |
+	|   cached data missing key: [[Var4]]   |

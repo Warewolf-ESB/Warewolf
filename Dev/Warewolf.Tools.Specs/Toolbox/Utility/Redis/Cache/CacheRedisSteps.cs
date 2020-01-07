@@ -47,6 +47,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         }
         public static Stopwatch Stoptime { get; set; }
 
+        public static Mock<IDSFDataObject> _mockDataobject = new Mock<IDSFDataObject>();
+        public static ExecutionEnvironment _environment = new ExecutionEnvironment();
+        public static Mock<IResourceCatalog> _mockResourceCatalog = new Mock<IResourceCatalog>();
+
         [Given(@"Redis source ""(.*)"" with password ""(.*)"" and port ""(.*)""")]
         public void GivenRedisSourceWithPasswordAndPort(string hostName, string password, int port)
         {
@@ -62,10 +66,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
 
             var environment = new ExecutionEnvironment();
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, environment);
+            GenResourceAndDataobject(key, hostName, password, port);
 
             var assignActivity = new DsfMultiAssignActivity();
-            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            var redisActivityNew = SetupRedisActivity(_mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
             _scenarioContext.Add(nameof(RedisCacheActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
@@ -102,18 +106,25 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var impl = _scenarioContext.Get<RedisCacheImpl>("impl");
 
             var assignActivity = _scenarioContext.Get<DsfMultiAssignActivity>(innerActivityName);
-
-            var environment = new ExecutionEnvironment();
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, environment);
-            //_scenarioContext.Add("env", new ExecutionEnvironment());
-
-            var redisActivity = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, impl, assignActivity);
-
-            ExecuteCacheTool(redisActivity, mockDataobject);
+            SpecRedisActivity redisActivity = ExecuteRedisActivity(hostName, password, port, key, ttl, impl, assignActivity);
 
             _scenarioContext.Add(redisActivityName, redisActivity);
         }
 
+        private static SpecRedisActivity ExecuteRedisActivity(string hostName, string password, int port, string key, int ttl, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
+        {
+            var environment = new ExecutionEnvironment();
+            GenResourceAndDataobject(key, hostName, password, port);
+
+            var redisActivity = SetupRedisActivity(_mockResourceCatalog.Object, key, ttl, hostName, impl, assignActivity);
+
+            ExecuteCacheTool(redisActivity, _mockDataobject);
+
+            var executionResult = redisActivity.SpecPerformExecution(new Dictionary<string, string> { { "", "" } });
+            Assert.AreEqual("Success", executionResult[0]);
+            
+            return redisActivity;
+        }
 
         [Then(@"the Redis Cache under ""(.*)"" will contain")]
         public void ThenTheRedisCacheUnderWillContain(string keyStoringData, Table table)
@@ -143,23 +154,35 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         {
             var redisActivity = _scenarioContext.Get<SpecRedisActivity>(redisActivityName);
 
-            var executionResult = redisActivity.SpecPerformExecution(new Dictionary<string, string> { { "", "" } });
-            Assert.AreEqual("Success", executionResult[0]);
-
             var expDebugItemResult = table.CreateSet<DebugItemResult>().ToList();
 
             var env = new ExecutionEnvironment();
-            var debugOutputs = redisActivity.GetDebugOutputs(env, 0);
+            var debugOutputs = redisActivity.GetDebugOutputs(It.IsAny<ExecutionEnvironment>(), 0);
 
-            AssertDebugItems(debugOutputs, 0, 0, expDebugItemResult[0].Label, expDebugItemResult[0].Variable== "null" ? null : "", expDebugItemResult[0].Operator, expDebugItemResult[0].Value);
-            AssertDebugItems(debugOutputs, 1, 1, expDebugItemResult[1].Label == "null" ? null : "", expDebugItemResult[1].Variable, expDebugItemResult[1].Operator, expDebugItemResult[1].Value);
+            AssertDebugItems(debugOutputs, 0, 0, expDebugItemResult[0].Label, expDebugItemResult[0].Variable == "null" ? null : "", expDebugItemResult[0].Operator, expDebugItemResult[0].Value);
 
+            for (int count = 1; count < debugOutputs.Count; count++)
+            {
+                AssertDebugItems(debugOutputs, count, 1, expDebugItemResult[count].Label == "null" ? null : expDebugItemResult[count].Label, expDebugItemResult[count].Variable == "null" ? null : expDebugItemResult[count].Variable, expDebugItemResult[count].Operator == "null" ? null : expDebugItemResult[count].Operator, expDebugItemResult[count].Value == "null" ? null : expDebugItemResult[count].Value);
+            }
+        }
+
+        [Then(@"the Execution Environment has these error")]
+        public void ThenTheExecutionEnvironmentHasTheseError(Table table)
+        {
+            var errors = _environment.FetchErrors();
+
+            var expErrors = table.CreateSet<SpecExecutionEnvironmentErrors>();
+
+            foreach (var error in expErrors)
+            {
+                Assert.IsTrue(errors.Contains(error.Error));
+            }
         }
 
         private void AssertDebugItems(List<DebugItem> debugOutputs, int listIndex, int resultListIndex, string expLabel, string expVariable, string expOparator, string expValue)
         {
             Assert.AreEqual(expLabel, debugOutputs[listIndex].ResultsList[resultListIndex].Label);
-            Assert.AreEqual(expOparator, debugOutputs[listIndex].ResultsList[resultListIndex].Operator);
             Assert.AreEqual(expValue, debugOutputs[listIndex].ResultsList[resultListIndex].Value);
             Assert.AreEqual(expVariable, debugOutputs[listIndex].ResultsList[resultListIndex].Variable);
         }
@@ -241,9 +264,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var impl = _scenarioContext.Get<RedisCacheImpl>(nameof(RedisCacheImpl));
 
             var environment = new ExecutionEnvironment();
-            GenResourceAndDataobject(redisActivityOld.Key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, environment);
+            GenResourceAndDataobject(redisActivityOld.Key, hostName, password, port);
 
-            ExecuteCacheTool(redisActivityOld, mockDataobject);
+            ExecuteCacheTool(redisActivityOld, _mockDataobject);
         }
 
         [Then(@"the cache will contain")]
@@ -295,16 +318,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var ttl = _scenarioContext.Get<int>("ttl");
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
 
-            var environment = new ExecutionEnvironment();
-            GenResourceAndDataobject(key, hostName, password, port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, environment);
+            GenResourceAndDataobject(key, hostName, password, port);
 
             var dataStored = new List<ActivityDTO> { new ActivityDTO ("[[Var1]]", "Data in cache", 1 ) };
 
             var assignActivity = GetDsfMultiAssignActivity(dataStored);
 
-            var redisActivityNew = GetRedisActivity(mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            var redisActivityNew = SetupRedisActivity(_mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
 
-            ExecuteCacheTool(redisActivityNew, mockDataobject);
+            ExecuteCacheTool(redisActivityNew, _mockDataobject);
 
             var sdfsf = redisActivityNew.SpecPerformExecution(new Dictionary<string, string> { { It.IsAny<string>(), It.IsAny<string>() } });
 
@@ -359,7 +381,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             Assert.AreEqual("Success", executioResult[0]);
         }
 
-
+        public static string errors { get; set; }
         private static void ExecuteCacheTool(SpecRedisActivity redisActivity, Mock<IDSFDataObject> mockDataobject)
         {
             redisActivity.SpecExecuteTool(mockDataobject.Object);
@@ -401,22 +423,19 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             return activities;
         }
 
-        private static void GenResourceAndDataobject(string key, string hostName, string password, int port, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataobject, ExecutionEnvironment environment)
+        private static void GenResourceAndDataobject(string key, string hostName, string password, int port)
         {
-            mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockDataobject = new Mock<IDSFDataObject>();
             var redisSource = new Dev2.Data.ServiceModel.RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
-            mockResourceCatalog.Setup(o => o.GetResource<Dev2.Data.ServiceModel.RedisSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(redisSource);
+            _mockResourceCatalog.Setup(o => o.GetResource<Dev2.Data.ServiceModel.RedisSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(redisSource);
 
-            environment = new ExecutionEnvironment();
-            environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
-            environment.EvalToExpression(key, 0);
+            _environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
+            _environment.EvalToExpression(key, 0);
 
-            mockDataobject.Setup(o => o.IsDebugMode()).Returns(true);
-            mockDataobject.Setup(o => o.Environment).Returns(environment);
+            _mockDataobject.Setup(o => o.IsDebugMode()).Returns(true);
+            _mockDataobject.Setup(o => o.Environment).Returns(_environment);
         }
 
-        private static SpecRedisActivity GetRedisActivity(IResourceCatalog resourceCatalog, string key, int ttl, string hostName, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
+        private static SpecRedisActivity SetupRedisActivity(IResourceCatalog resourceCatalog, string key, int ttl, string hostName, RedisCacheImpl impl, DsfMultiAssignActivity assignActivity)
         {
             Stoptime = Stopwatch.StartNew();
             return new SpecRedisActivity(resourceCatalog, impl)
