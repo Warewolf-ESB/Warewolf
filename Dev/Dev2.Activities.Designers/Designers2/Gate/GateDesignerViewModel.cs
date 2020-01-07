@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Warewolf;
@@ -37,10 +38,10 @@ namespace Dev2.Activities.Designers2.Gate
         List<NameValue> _gates;
         private NameValue _selectedGate;
         private bool _enabled;
+        private string _conditionExpressionText;
         private bool _isExpanded;
         private OptionsWithNotifier _options;
         private OptionsWithNotifier _conditionExpressionOptions;
-        private ConditionExpression _conditionExpression;
         private readonly ModelItem _modelItem;
 
         public GateDesignerViewModel(ModelItem modelItem)
@@ -64,23 +65,11 @@ namespace Dev2.Activities.Designers2.Gate
             IsExpanded = false;
             Enabled = true;
 
-            ConditionExpression = new ConditionExpression();
-
             DeleteConditionCommand = new DelegateCommand(o =>
             {
 
             });
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Gate;
-        }
-
-        public ConditionExpression ConditionExpression
-        {
-            get => _conditionExpression;
-            set
-            {
-                _conditionExpression = value;
-                OnPropertyChanged(nameof(ConditionExpression));
-            }
         }
 
         private void PopulateFields()
@@ -128,12 +117,12 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void LoadConditionExpressionOptions()
         {
-            var conditionExpression = _modelItem.Properties["Conditions"].ComputedValue as ConditionExpression;
-            if (conditionExpression is null)
+            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<ConditionExpression>;
+            if (conditionExpressionList is null)
             {
-                conditionExpression = new ConditionExpression();
+                conditionExpressionList = new List<ConditionExpression>();
             }
-            var result = OptionConvertor.Convert(conditionExpression);
+            var result = OptionConvertor.ConvertFromListOfT(conditionExpressionList);
             ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
             UpdateConditionExpressionOptionsModelItem();
         }
@@ -214,6 +203,7 @@ namespace Dev2.Activities.Designers2.Gate
                 var tmp = OptionConvertor.ConvertToListOfT<ConditionExpression>(ConditionExpressionOptions.Options);
                 _modelItem.Properties["Conditions"]?.SetValue(tmp);
                 AddEmptyConditionExpression();
+                SetExpressionText();
                 foreach (var item in ConditionExpressionOptions.Options)
                 {
                     if (item is OptionConditionExpression conditionExpression)
@@ -225,6 +215,30 @@ namespace Dev2.Activities.Designers2.Gate
                     }
                 }
             }
+        }
+
+        private void SetExpressionText()
+        {
+            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<ConditionExpression>;
+
+            var text = new StringBuilder();
+            var dds = conditionExpressionList.GetEnumerator();
+            if (dds.MoveNext() && dds.Current.Cond.MatchType != enDecisionType.Choose)
+            {
+                dds.Current.RenderDescription(text);
+            }
+            while (dds.MoveNext())
+            {
+                var conditionExpression = dds.Current;
+                if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
+                {
+                    continue;
+                }
+
+                text.Append("\n AND \n");
+                conditionExpression.RenderDescription(text);
+            }
+            ConditionExpressionText = text.ToString();
         }
 
         private void UpdateOptionsModelItem()
@@ -250,6 +264,16 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _enabled = value;
                 OnPropertyChanged(nameof(Enabled));
+            }
+        }
+
+        public string ConditionExpressionText 
+        {
+            get => _conditionExpressionText;
+            set
+            {
+                _conditionExpressionText = value;
+                OnPropertyChanged(nameof(ConditionExpressionText));
             }
         }
 
