@@ -9,13 +9,16 @@
 */
 
 using System;
+using System.Net.WebSockets;
 
 namespace Warewolf.Interfaces.Auditing
 {
     // TODO: move to Warewolf.Net
-    public interface IWebSocketWrapper
+    public interface IWebSocketWrapper : IDisposable
     {
+        Uri Uri { get; }
         IWebSocketWrapper Connect();
+        WebSocketState State { get; }
         IWebSocketWrapper OnConnect(Action<IWebSocketWrapper> onConnect);
         IWebSocketWrapper OnDisconnect(Action<IWebSocketWrapper> onDisconnect);
         IWebSocketWrapper OnMessage(Action<string, IWebSocketWrapper> onMessage);

@@ -75,8 +75,8 @@ namespace Warewolf.Auditing.Tests
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState";
 
-            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            var mockWebSocketFactory = new Mock<IWebSocketPool>();
+            mockWebSocketFactory.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
             //------------------------------Act------------------------------------
@@ -94,8 +94,8 @@ namespace Warewolf.Auditing.Tests
             var previousActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogPostExecuteState";
 
-            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            var mockWebSocketFactory = new Mock<IWebSocketPool>();
+            mockWebSocketFactory.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
             //------------------------------Act------------------------------------
@@ -112,8 +112,8 @@ namespace Warewolf.Auditing.Tests
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogPreExecuteState";
 
-            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            var mockWebSocketFactory = new Mock<IWebSocketPool>();
+            mockWebSocketFactory.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
             //------------------------------Act------------------------------------
@@ -130,8 +130,8 @@ namespace Warewolf.Auditing.Tests
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogStopExecutionState";
 
-            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            var mockWebSocketFactory = new Mock<IWebSocketPool>();
+            mockWebSocketFactory.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
             //------------------------------Act------------------------------------
@@ -148,8 +148,8 @@ namespace Warewolf.Auditing.Tests
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogAdditionalDetail";
 
-            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
-            mockWebSocketFactory.Setup(o => o.New()).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            var mockWebSocketFactory = new Mock<IWebSocketPool>();
+            mockWebSocketFactory.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
             //------------------------------Act------------------------------------
@@ -170,9 +170,9 @@ namespace Warewolf.Auditing.Tests
 
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             var mockNextActivity = new Mock<IDev2Activity>();
-            var mockWebSocketFactory = new Mock<IWebSocketFactory>();
+            var mockWebSocketFactory = new Mock<IWebSocketPool>();
 
-            mockWebSocketFactory.Setup(o => o.New()).Returns(mockWebSocketWrapper.Object);
+            mockWebSocketFactory.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
 
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketFactory.Object);
 
@@ -185,7 +185,7 @@ namespace Warewolf.Auditing.Tests
             Assert.AreEqual(expected: expectedException.Message, actual: actualAudit.Exception.Message);
         }
 
-        private IStateAuditLogger GetIAuditStateLogger(IWebSocketFactory webSocketFactory)
+        private IStateAuditLogger GetIAuditStateLogger(IWebSocketPool webSocketFactory)
         {
             return new StateAuditLogger(webSocketFactory);
         }
@@ -227,7 +227,7 @@ namespace Warewolf.Auditing.Tests
 
             return mockedDataObject;
         }
-        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketFactory webSocketFactory)
+        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketPool webSocketFactory)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
             auditStateLogger = GetIAuditStateLogger(webSocketFactory);
