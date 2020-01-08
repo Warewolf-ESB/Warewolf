@@ -12,7 +12,7 @@ using System;
 
 namespace Warewolf.Interfaces.Pooling
 {
-    public interface IObjectPool<T> : IDisposable where T : class, new()
+    public interface IObjectPool<T> : IDisposable
     {
         T AcquireObject();
         void ReleaseObject(T concrete);
