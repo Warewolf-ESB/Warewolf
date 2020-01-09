@@ -487,7 +487,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Environment.Assign("[[a]]", "bob", 0);
 
             var result = firstGate.Execute(dataObject, 0);
+            dataObject.Environment.Assign("[[a]]", "ralph", 0);
 
+            Assert.AreEqual("ralph", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0]);
             Assert.AreEqual(secondGate, result);
 
             result = result.Execute(dataObject, 0);
@@ -496,6 +498,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             result = result.Execute(dataObject, 0);
 
+            Assert.AreEqual("bob", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0]);
             Assert.AreEqual(secondGate, result);
 
             dataObject.Environment.Assign("[[somebob]]", "notbob", 0);

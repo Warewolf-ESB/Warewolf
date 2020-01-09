@@ -92,7 +92,7 @@ namespace Dev2.Activities
 
         IDSFDataObject _dataObject;
         IEnumerator<bool> _algo;
-        //IExecutionEnvironment _originalExecutionEnvironment;
+        IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
             _debugInputs?.Clear();
@@ -113,9 +113,7 @@ namespace Dev2.Activities
                     {
                         _algo = gateOptionsResume.Strategy.Create().GetEnumerator();
                     }
-                    // TODO: clone is not implemented
-                    //_originalExecutionEnvironment = data.Environment.Clone();
-                    Dev2Logger.Warn("Gate: Environment Clone not implemented", data.ExecutionID.ToString());
+                    _originalExecutionEnvironment = data.Environment.Snapshot();
                 }
                 if (_dataObject.IsDebugMode())
                 {
@@ -139,8 +137,8 @@ namespace Dev2.Activities
 
                 // TODO: execute workflow that should be called on resume
 
-                // TODO: reset Environment to state it was in the first time we executed this Gate (requires environment deep clone)
-                //_dataObject.Environment = _originalExecutionEnvironment;
+                _dataObject.Environment = _originalExecutionEnvironment;
+                Dev2Logger.Debug("Gate: Resetting Environment Snapshot", data.ExecutionID.ToString());
 
                 return ExecuteRetry(data, update, allErrors);
             }
