@@ -20,6 +20,7 @@ using System.Threading;
 using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Triggers;
+using System.Collections.Concurrent;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -38,6 +39,7 @@ namespace Dev2.Runtime.Hosting
         public event TriggerChangeEvent OnChanged;
         public event TriggerChangeEvent OnDeleted;
         public event TriggerChangeEvent OnCreated;
+        private static readonly ConcurrentDictionary<string, bool> FileChangedConnectionPool = new ConcurrentDictionary<string, bool>();
 
         public static string PathFromResourceId(string triggerId) => Path.Combine(EnvironmentVariables.QueueTriggersPath, triggerId +".bite");
 
@@ -92,13 +94,24 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Load();
-            //restart
-            var guid = Path.GetFileNameWithoutExtension(e.Name);
-            if (Guid.TryParse(guid, out var result))
+            var isChangedEventFired = FileChangedConnectionPool.GetOrAdd(e.FullPath, false);
+
+            if (isChangedEventFired == false)
             {
-                Dev2Logger.Info($"Trigger restarting '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
-                OnChanged?.Invoke(result);
+                Load();
+                //restart
+                var guid = Path.GetFileNameWithoutExtension(e.Name);
+                if (Guid.TryParse(guid, out var result))
+                {
+                    Dev2Logger.Info($"Trigger restarting '{guid}'", GlobalConstants.ServerWorkspaceID.ToString());
+                    OnChanged?.Invoke(result);
+                }
+
+                FileChangedConnectionPool.TryUpdate(e.FullPath, true, isChangedEventFired);
+            }
+            else
+            {
+                FileChangedConnectionPool.TryUpdate(e.FullPath, false, isChangedEventFired);
             }
         }
 
