@@ -16,7 +16,6 @@ using Moq;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    [TestCategory("Explorer View")]
     public class ExplorerViewModelTests
     {
         ExplorerViewModel _target;
