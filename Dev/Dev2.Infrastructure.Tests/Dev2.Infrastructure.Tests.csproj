@@ -74,6 +74,9 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Warewolf.UnitTestAttributes\Depends.cs">
+      <Link>Depends.cs</Link>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsByResourceTests.cs" />
@@ -86,7 +89,6 @@
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
     <Compile Include="SharedModels\CompileMessageListTests.cs" />
-    <Compile Include="Depends.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>

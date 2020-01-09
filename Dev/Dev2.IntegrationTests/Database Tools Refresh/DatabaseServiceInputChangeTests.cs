@@ -21,6 +21,7 @@ using System.Linq;
 using Warewolf.Core;
 using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Integration.Tests.Database_Tools_Refresh
 {

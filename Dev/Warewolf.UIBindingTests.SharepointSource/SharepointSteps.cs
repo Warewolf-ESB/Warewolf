@@ -18,6 +18,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using System.IO;
 using Dev2.Infrastructure.Tests;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.UIBindingTests.SharepointSource
 {

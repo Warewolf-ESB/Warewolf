@@ -17,6 +17,7 @@ using IConnection = RabbitMQ.Client.IConnection;
 using Warewolf.Data;
 using System.Threading.Tasks;
 using Warewolf.Streams;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Driver.RabbitMQ.Tests
 {

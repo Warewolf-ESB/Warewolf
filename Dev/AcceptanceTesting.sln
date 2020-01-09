@@ -353,6 +353,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog.Tests", "Warewolf.Driver.Serilog.Tests\Warewolf.Driver.Serilog.Tests.csproj", "{DD6E9C07-E364-4701-80E4-6896CE1E46CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UnitTestAttributes", "Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj", "{4A455098-FFDD-4861-B873-656F960CF0BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1419,6 +1421,14 @@ Global
 		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|x86.Build.0 = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.Build.0 = Debug|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.ActiveCfg = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
