@@ -53,7 +53,7 @@ namespace QueueWorker
                 var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId);
                 var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
                 executionEntry.Exception = requestForwarderResult.Exception;
-
+                executionEntry.AuditType = "Error";
                 _logger.ExecutionFailed(executionEntry);
 
             }, TaskContinuationOptions.OnlyOnFaulted);
@@ -68,8 +68,17 @@ namespace QueueWorker
                     _logger.Info($"success processing body{strBody}");
                     var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
                     var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
-
                     _logger.ExecutionSucceeded(executionEntry);
+                }
+                else
+                {
+                   
+                    var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId);
+                    var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
+                    executionEntry.Exception = requestForwarderResult.Exception;
+                    executionEntry.AuditType = "Error";
+                    _logger.Error($"Failed to execute {_resourceId}");
+                    _logger.ExecutionFailed(executionEntry);                   
                 }
 
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
