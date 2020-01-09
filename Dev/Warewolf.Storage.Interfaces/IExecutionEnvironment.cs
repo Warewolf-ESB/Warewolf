@@ -8,6 +8,8 @@ namespace Warewolf.Storage.Interfaces
 {
     public interface IExecutionEnvironment
     {
+        Guid Id { get; }
+        Guid ParentId { get; }
         CommonFunctions.WarewolfEvalResult Eval(string exp, int update);
 
         CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists);
@@ -89,6 +91,7 @@ namespace Warewolf.Storage.Interfaces
         int GetObjectLength(string recordSetName);
 
         string ToJson();
-        IExecutionEnvironment Clone();
+        void FromJson(string serializedEnv);
+        IExecutionEnvironment Snapshot();
     }
 }
