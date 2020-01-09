@@ -114,8 +114,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
    testRunner.Then("\"New Web Service Source *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 20
-   testRunner.And("TestQuery is \"http://TFSBLD.premier.local/IntegrationTestSite/GetCountries.ashx?e" +
-                    "xtension=json&prefix=a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("TestQuery is \"http://TFSBLD.premier.local/IntegrationTestSite/GetCountries.ashx?exte" +
+                    "nsion=json&prefix=a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
@@ -143,8 +143,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
    testRunner.When("I click TestQuery", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
-   testRunner.Then("the browser window opens with \"http://TFSBLD.premier.local/IntegrationTestSite/Ge" +
-                    "tCountries.ashx?extension=json&prefix=a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("the browser window opens with \"http://TFSBLD.premier.local/IntegrationTestSite/GetCo" +
+                    "untries.ashx?extension=json&prefix=a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
