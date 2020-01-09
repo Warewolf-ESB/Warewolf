@@ -22,6 +22,7 @@ using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Infrastructure.Tests;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Sources
 {

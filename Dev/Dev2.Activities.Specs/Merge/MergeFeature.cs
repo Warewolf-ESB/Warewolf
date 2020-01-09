@@ -24,6 +24,7 @@ using Warewolf.Test.Agent;
 using Warewolf.MergeParser;
 using Warewolf.Studio.ViewModels;
 using Dev2.Activities.DropBox2016;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Merge
 {

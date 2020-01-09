@@ -27,6 +27,7 @@ using System.Security;
 using Warewolf.Test.Agent;
 using System.IO;
 using Dev2.Infrastructure.Tests;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {

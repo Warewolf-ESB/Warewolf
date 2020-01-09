@@ -12,6 +12,7 @@ using System;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Data.Tests.ServiceModel
 {

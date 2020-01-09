@@ -94,6 +94,7 @@ using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Runtime.Hosting;
 using Dev2.Infrastructure.Tests;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Composition
 {

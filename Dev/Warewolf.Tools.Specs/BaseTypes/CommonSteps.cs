@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+ /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -42,6 +42,7 @@ using System.Reflection;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Warewolf.Test.Agent;
 using System.Threading;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {

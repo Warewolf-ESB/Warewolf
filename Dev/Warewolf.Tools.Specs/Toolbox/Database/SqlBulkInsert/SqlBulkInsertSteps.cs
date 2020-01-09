@@ -29,6 +29,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using System.Reflection;
 using System.IO;
 using Warewolf.Test.Agent;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 {

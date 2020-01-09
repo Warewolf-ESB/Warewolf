@@ -18,6 +18,7 @@ using Warewolf.Storage.Interfaces;
 using System.Reflection;
 using System.Linq;
 using Dev2.Common.State;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 {

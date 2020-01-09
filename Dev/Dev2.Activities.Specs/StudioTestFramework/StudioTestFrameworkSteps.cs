@@ -45,6 +45,7 @@ using Dev2.Activities.Specs.Composition;
 using Warewolf.Test.Agent;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.TestFramework
 {

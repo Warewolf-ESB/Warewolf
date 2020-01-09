@@ -26,6 +26,7 @@ using TechTalk.SpecFlow.Assist;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 {

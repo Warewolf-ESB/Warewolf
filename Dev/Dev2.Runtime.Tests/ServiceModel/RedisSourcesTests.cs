@@ -13,6 +13,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
