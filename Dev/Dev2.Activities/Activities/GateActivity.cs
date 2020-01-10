@@ -49,7 +49,6 @@ namespace Dev2.Activities
         {
             DisplayName = nameof(Gate);
             IsGate = true;
-            _retryState = new RetryState();
             if (GateOptions is null)
             {
                 GateOptions = new GateOptions();
@@ -91,7 +90,6 @@ namespace Dev2.Activities
         }
 
         IDSFDataObject _dataObject;
-        IEnumerator<bool> _algo;
         IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
@@ -103,27 +101,35 @@ namespace Dev2.Activities
             {
                 _stateNotifier?.LogPreExecuteState(this);
 
-                var firstExecution = !_dataObject.Gates.Contains(this);
-                var isRetry = _retryState.NumberOfRetries > 0;
+                //var firstExecution = !_dataObject.Gates.Contains(this);
+                bool firstExecution = true;
+                if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) _retryState))
+                {
+                    firstExecution = false;
+                } else
+                {
+                    _retryState = (new RetryState(), null);
+                }
+                var isRetry = _retryState.Item1.NumberOfRetries > 0;
 
                 if (firstExecution)
                 {
-                    _dataObject.Gates.Add(this);
                     if (GateOptions.GateOpts is AllowResumption gateOptionsResume)
                     {
-                        _algo = gateOptionsResume.Strategy.Create().GetEnumerator();
+                        _retryState.Item2 = gateOptionsResume.Strategy.Create().GetEnumerator();
                     }
+                    _dataObject.Gates.Add(this, _retryState);
                     _originalExecutionEnvironment = data.Environment.Snapshot();
                 }
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + _retryState.NumberOfRetries.ToString(), "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + _retryState.Item1.NumberOfRetries.ToString(), "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
                 if (firstExecution || !isRetry)
                 {
-                    if (_retryState.NumberOfRetries > 0)
+                    if (_retryState.Item1.NumberOfRetries > 0)
                     {
                         throw new GateException("gate execution corrupt: first execution with invalid number of retries");
                     }
@@ -140,7 +146,7 @@ namespace Dev2.Activities
                 _dataObject.Environment = _originalExecutionEnvironment;
                 Dev2Logger.Debug("Gate: Resetting Environment Snapshot", data.ExecutionID.ToString());
 
-                return ExecuteRetry(data, update, allErrors);
+                return ExecuteRetry(data, update, allErrors, _retryState.Item2);
             }
             catch (Exception e)
             {
@@ -170,7 +176,7 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, ErrorResultTO allErrors)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, ErrorResultTO allErrors, IEnumerator<bool> _algo)
         {
             if (_dataObject.IsDebugMode())
             {
@@ -251,7 +257,7 @@ namespace Dev2.Activities
                             if (canRetry)
                             {
                                 var goBackToActivity = GetRetryEntryPoint().As<GateActivity>();
-                                goBackToActivity.UpdateRetryState(this);
+                                goBackToActivity.UpdateRetryState(this, _dataObject.Gates[goBackToActivity].Item1);
                                 next = goBackToActivity;
                             }
                             else
@@ -322,14 +328,7 @@ namespace Dev2.Activities
             throw new Exception("this should not be reached");
         }
 
-
-        class RetryState
-        {
-            public int NumberOfRetries { get; set; }
-        }
-        RetryState _retryState;
-
-        private void UpdateRetryState(GateActivity gateActivity)
+        private void UpdateRetryState(GateActivity gateActivity, RetryState _retryState)
         {
             if (GateOptions.GateOpts is AllowResumption allowResumption)
             {
@@ -425,13 +424,13 @@ namespace Dev2.Activities
                     Type = StateVariable.StateType.Input,
                     Name = nameof(GateOptions),
                     Value = GateOptions?.ToString()
-                },
+                },/*
                 new StateVariable
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(_retryState.NumberOfRetries),
                     Value = _retryState.NumberOfRetries.ToString(),
-                },
+                },*/
                  new StateVariable
                 {
                     Name = nameof(NextNodes),
@@ -474,7 +473,7 @@ namespace Dev2.Activities
         /// <summary>
         /// Where should we send execution if this gate fails and not set to StopOnFailure
         /// </summary>
-        private IDev2Activity GetRetryEntryPoint() => _dataObject.Gates.First(o => o.UniqueID == RetryEntryPointId.ToString());
+        private IDev2Activity GetRetryEntryPoint() => _dataObject.Gates.Keys.First(o => o.UniqueID == RetryEntryPointId.ToString());
 
 
         #region debugstuff
