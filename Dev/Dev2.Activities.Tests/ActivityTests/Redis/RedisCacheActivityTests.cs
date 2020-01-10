@@ -87,17 +87,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
             Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(3, debugInputs.Count);
+            Assert.AreEqual(4, debugInputs.Count);
 
             Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
             AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
+            AssertDebugItems(debugInputs, 1, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
 
-            AssertDebugItems(debugInputs, 1, 0, "1", null, "", "");
-            AssertDebugItems(debugInputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+            AssertDebugItems(debugInputs, 2, 0, "1", null, "", "");
+            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId1]]", "=", "ObjectName1");
 
-            AssertDebugItems(debugInputs, 2, 0, "2", null, "", "");
-            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
-
+            AssertDebugItems(debugInputs, 3, 0, "2", null, "", "");
+            AssertDebugItems(debugInputs, 3, 1, null, "[[objectId2]]", "=", "ObjectName2");
         }
 
         [TestMethod]
@@ -127,20 +127,20 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
             Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(4, debugInputs.Count);
+            Assert.AreEqual(5, debugInputs.Count);
 
             Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
             AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
+            AssertDebugItems(debugInputs, 1, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
 
-            AssertDebugItems(debugInputs, 1, 0, "1", null, "", "");
-            AssertDebugItems(debugInputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+            AssertDebugItems(debugInputs, 2, 0, "1", null, "", "");
+            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId1]]", "=", "ObjectName1");
 
-            AssertDebugItems(debugInputs, 2, 0, "2", null, "", "");
-            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+            AssertDebugItems(debugInputs, 3, 0, "2", null, "", "");
+            AssertDebugItems(debugInputs, 3, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
-            AssertDebugItems(debugInputs, 3, 0, "3", null, "", "");
-            AssertDebugItems(debugInputs, 3, 1, null, isCalValue, "=", isCalValue);
-
+            AssertDebugItems(debugInputs, 4, 0, "3", null, "", "");
+            AssertDebugItems(debugInputs, 4, 1, null, isCalValue, "=", isCalValue);
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
             //----------------------Arrange----------------------
-                        TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
 
             var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
@@ -227,11 +227,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
         }
-
-        private static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
+        
+        static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
         {
-            key = "key1";
-            hostName = "192.168.104.19";
+            key = "key" + Guid.NewGuid();
+            hostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP;
             password = "";
             port = 6380;
         }
