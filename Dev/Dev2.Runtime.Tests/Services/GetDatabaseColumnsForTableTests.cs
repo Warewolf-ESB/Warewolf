@@ -329,9 +329,13 @@ namespace Dev2.Tests.Runtime.Services
                 ReloadActions = true,
                 UserID = "testUser",
                 Password = "test123",
-                ConnectionTimeout = 30,
-                Port = int.Parse(_containerOps.Container.Port)
+                ConnectionTimeout = 30
             };
+            if (Depends.EnableDocker)
+            {
+                dbSource.Port = int.Parse(_containerOps.Container.Port);
+            }
+
             return dbSource;
         }
 
