@@ -66,7 +66,7 @@ namespace QueueWorker
                 }
                 else
                 {
-                    _logger.Error($"Failed to execute {_resourceId}");
+                    _logger.Error($"Failed to execute {_resourceId + " " + strBody}");
                     CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration);
                 }
 
