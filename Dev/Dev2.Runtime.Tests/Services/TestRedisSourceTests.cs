@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = $"{Depends.RigOpsIP}",
+                HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
                 Port = "6380",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };

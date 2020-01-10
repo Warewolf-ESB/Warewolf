@@ -114,7 +114,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             try
             {
                 var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
-                var result = SqlHelper.RunSqlCommand(Depends.RigOpsIP, _containerOps.Container.Port, createProcedure);
+                var result = SqlHelper.RunSqlCommand(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, _containerOps.Container.Port, createProcedure);
                 Assert.AreEqual(-1, result);
 
                 Setup(cleanProcName);
@@ -140,7 +140,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         private int DropProcedure(string cleanProcName)
         {
             var dropProcedure = "IF ( OBJECT_ID('" + cleanProcName + "') IS NOT NULL ) DROP PROCEDURE [dbo].[" + cleanProcName + "]";
-            var dropResult = SqlHelper.RunSqlCommand(Depends.RigOpsIP, _containerOps.Container.Port, dropProcedure);
+            var dropResult = SqlHelper.RunSqlCommand(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, _containerOps.Container.Port, dropProcedure);
             return dropResult;
         }
 

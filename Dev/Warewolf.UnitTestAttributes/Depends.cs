@@ -156,11 +156,11 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                var defaultServer = GetIPAddress("tst-ci-remote");
+                var defaultServer = GetIPAddress(CIRemoteIP.Split(':')[0]);
                 if (defaultServer != null)
                 {
                     UpdateSourcesConnectionStrings(
-                        $"AppServerUri=http://{defaultServer}:3142/dsf;WebServerPort=3142;AuthenticationType=Windows",
+                        $"AppServerUri=http://{defaultServer}:{CIRemoteIP.Split(':')[1]}/dsf;WebServerPort=3142;AuthenticationType=Windows",
                         knownServerSources);
                     Thread.Sleep(30000);
                 }
@@ -279,7 +279,7 @@ namespace Warewolf.UnitTestAttributes
         {
             if (EnableDocker)
             {
-                UpdateSourcesConnectionString($"{RigOpsIP};Port={Container.Port}",
+                UpdateSourcesConnectionString($"{(EnableDocker?RigOpsIP:SVRDEVIP)};Port={Container.Port}",
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
                 Thread.Sleep(30000);
             }

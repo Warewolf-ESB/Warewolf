@@ -399,7 +399,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
             {
-                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ":3144");
+                onErrorWebserviceToCall = onErrorWebserviceToCall.Replace("tst-ci-remote:3142", Depends.EnableDocker?Depends.RigOpsIP + ":3144":Depends.CIRemoteIP);
             }
             _scenarioContext.Add("webserviceToCall", onErrorWebserviceToCall);
         }
@@ -565,7 +565,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitSteps._containerOps != null)
             {
-                webservice = webservice.Replace("tst-ci-remote:3142", Depends.RigOpsIP + ":3144");
+                webservice = webservice.Replace("tst-ci-remote:3142", Depends.EnableDocker?Depends.RigOpsIP + ":3144":Depends.CIRemoteIP);
             }
             var result = _scenarioContext.Get<IDSFDataObject>("result");
 

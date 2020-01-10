@@ -323,7 +323,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = Depends.RigOpsIP,
+                Server = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
