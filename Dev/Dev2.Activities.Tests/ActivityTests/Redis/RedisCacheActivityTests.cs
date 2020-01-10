@@ -281,16 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         {
 
         }
-
-        public List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return base.GetDebugInputs(env, update);
-        }
-
-        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return base.GetDebugOutputs(env, update);
-        }
+        
         public void TestExecuteTool(IDSFDataObject dataObject)
         {
             base.ExecuteTool(dataObject, 0);
@@ -301,5 +292,4 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             base.PerformExecution(evaluatedValues);
         }
     }
-
 }
