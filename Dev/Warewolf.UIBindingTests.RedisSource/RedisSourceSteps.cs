@@ -109,22 +109,22 @@ namespace Warewolf.UIBindingTests
         public void GivenITypeHostNameAsValidRedisServer()
         {
             _containerOps = new Depends(Depends.ContainerType.Redis);
-            TypeContainerHostName();
+            TypeDependencyHostName();
         }
 
         [Given(@"I type HostName as a valid anonymous redis server")]
         public void GivenITypeHostNameAsValidAnonymousRedisServer()
         {
             _containerOps = new Depends(Depends.ContainerType.AnonymousRedis);
-            TypeContainerHostName();
+            TypeDependencyHostName();
         }
 
-        void TypeContainerHostName()
+        void TypeDependencyHostName()
         {
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
-            redisSourceControl.EnterHostName(Depends.RigOpsIP);
+            redisSourceControl.EnterHostName(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
-            Assert.AreEqual(Depends.RigOpsIP, viewModel.HostName);
+            Assert.AreEqual(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, viewModel.HostName);
         }
 
         [Given(@"I type HostName as ""(.*)""")]
