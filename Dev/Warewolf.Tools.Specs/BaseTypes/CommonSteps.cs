@@ -339,10 +339,20 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(pathVariable, location));
+            variableList.Add(new Tuple<string, string>(pathVariable, FixBrokenHostname(location)));
 
             _scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             _scenarioContext.Add(ActualSourceHolder, location);
+        }
+
+        string FixBrokenHostname(string location)
+        {
+            var brokenHostname = "SVRPDC.premier.local";
+            if (location.Contains(brokenHostname) && location.IndexOf(brokenHostname) >= 6 && location.Substring(location.IndexOf(brokenHostname)-6,6) == "ftp://")
+            {
+                location = location.Replace(brokenHostname, Depends.GetIPAddress(brokenHostname));
+            }
+            return location;
         }
 
         public static string GetGuid()
@@ -469,7 +479,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(pathVariable, location));
+            variableList.Add(new Tuple<string, string>(pathVariable, FixBrokenHostname(location)));
 
             _scenarioContext.Add(DestinationHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             _scenarioContext.Add(ActualDestinationHolder, location);
@@ -910,6 +920,11 @@ namespace Dev2.Activities.Specs.BaseTypes
                     return;
                 }
 
+                if (columnHeader == "Source Path" || columnHeader == "Destination Path")
+                {
+                    rowValue = FixBrokenHostname(rowValue);
+                }
+
                 if (rowValue.Contains(" ="))
                 {
                     string[] multipleVarsOneLine;
@@ -1030,9 +1045,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     Assert.IsTrue(inputDebugItems[i].Value.Contains("."));
                     Assert.IsTrue(int.TryParse(dt[6], out int val));
                     Assert.IsTrue(dt.Last().EndsWith("AM") || dt.Last().EndsWith("PM"));
-
                 }
-                //2016/01/06 08:00:01.68
                 else
                 {
                     Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i, inputDebugItems[i].Variable);
