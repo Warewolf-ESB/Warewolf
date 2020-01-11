@@ -11,7 +11,6 @@ Scenario Outline: Create file at location
 	And destination credentials as "<username>" and "<password>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with saved password
 	When the create file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -37,7 +36,6 @@ Scenario Outline: Create file at location with overwrite disabled
 	And destination credentials as "<username>" and "<password>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user ".\Administrator" with saved password
 	When the create file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
@@ -70,7 +68,7 @@ Scenario Outline: Create file at location Nulls
 		| No | Name       | destination | destinationLocation                                                                            | selected | username       | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | NULL                                                                                           | True     |                |              | [[result]] | Failure | AN           |                           |
 		| 2  | Local      | [[path]]    | v:\myfile.txt                                                                                  | True     |                |              | [[result]] | Failure | AN           |                           |
-		| 3  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                                  | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
+		| 3  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                                  | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
 		| 5  | UNC Secure | [[path]]    | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.tx | True     | Administrator  | Dev2@dmin123 | [[result]] | Failure | AN           |                           |
 
 

@@ -35,7 +35,6 @@ Scenario Outline: Delete file at location Null
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user ".\Administrator" with saved password
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	Then the execution has "<errorOccured>" error
@@ -44,10 +43,10 @@ Scenario Outline: Delete file at location Null
 	| Local      | [[path]] | NULL                                                                                                   | ""                          | ""       | [[result]] | ""        | AN           |                      |
 	| Local      | [[path]] | G:\filetodelete                                                                                        | ""                          | ""       | [[result]] | "Failure" | NO           |                      |
 	| UNC        | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Memo.txt               | ""                          | ""       | [[result]] | "Success" | NO           |                      |
-	| UNC Secure | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt| IntegrationTester           | password | [[result]] | "Failure" | NO           |                      |
+	| UNC Secure | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt| Administrator           | password | [[result]] | "Failure" | NO           |                      |
 	| FTP        | [[path]] | ftp://SVRPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx                                  | ""                          | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                   | Administrator               | I73573r0 | [[result]] | ""        | NO           |                      |
-	| SFTP       | [[path]] | sftp://rsaklfsvrdev/Memo.txt                                                                           | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
+	| FTPS       | [[path]] | ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                   | Administrator               | Dev2@dmin123 | [[result]] | ""        | NO           |                      |
+	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/Memo.txt                                                                           | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 Scenario Outline: Delete file Validation
     Given I have a variable "[[a]]" with a value "<Val1>"
@@ -59,7 +58,6 @@ Scenario Outline: Delete file Validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user ".\Administrator" with saved password
 	When validating the delete tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"

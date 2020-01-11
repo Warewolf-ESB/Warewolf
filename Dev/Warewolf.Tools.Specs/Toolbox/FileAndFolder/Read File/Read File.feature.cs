@@ -157,8 +157,8 @@ this.ReadFileAtLocation("1", "Local", "[[path]]", "c:\\filetoread.txt", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
-            "t")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filet" +
+            "oread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -168,8 +168,8 @@ this.ReadFileAtLocation("1", "Local", "[[path]]", "c:\\filetoread.txt", "\"\"", 
         public virtual void ReadFileAtLocation_2()
         {
 #line 8
-this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
-                    "t", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filet" +
+                    "oread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -181,10 +181,10 @@ this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemSha
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
-            "read.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secur" +
+            "e\\filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -192,8 +192,8 @@ this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemSha
         public virtual void ReadFileAtLocation_3()
         {
 #line 8
-this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
-                    "read.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secur" +
+                    "e\\filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -205,7 +205,7 @@ this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -215,7 +215,7 @@ this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSy
         public virtual void ReadFileAtLocation_4()
         {
 #line 8
-this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -227,9 +227,9 @@ this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORREAD
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/filetodele.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORTESTING/filetodele.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -237,7 +237,7 @@ this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORREAD
         public virtual void ReadFileAtLocation_5()
         {
 #line 8
-this.ReadFileAtLocation("5", "FTPS", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/filetodele.txt", "IntegrationTester", "I73573r0", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("5", "FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORTESTING/filetodele.txt", "Administrator", "Dev2@dmin123", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -336,8 +336,8 @@ this.ReadFileAtLocationNull("1", "Local", "[[path]]", "NULL", "\"\"", "\"\"", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
-            "t")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filet" +
+            "oread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -347,8 +347,8 @@ this.ReadFileAtLocationNull("1", "Local", "[[path]]", "NULL", "\"\"", "\"\"", "[
         public virtual void ReadFileAtLocationNull_2()
         {
 #line 32
-this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
-                    "t", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filet" +
+                    "oread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -360,10 +360,10 @@ this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSyste
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
-            "read.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secur" +
+            "e\\filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -371,8 +371,8 @@ this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSyste
         public virtual void ReadFileAtLocationNull_3()
         {
 #line 32
-this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
-                    "read.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secur" +
+                    "e\\filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -384,7 +384,7 @@ this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\Fi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -394,7 +394,7 @@ this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\Fi
         public virtual void ReadFileAtLocationNull_4()
         {
 #line 32
-this.ReadFileAtLocationNull("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("4", "FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -406,9 +406,9 @@ this.ReadFileAtLocationNull("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FOR
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftps://SVRPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -416,7 +416,7 @@ this.ReadFileAtLocationNull("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FOR
         public virtual void ReadFileAtLocationNull_5()
         {
 #line 32
-this.ReadFileAtLocationNull("5", "FTPS", "[[path]]", "ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt", "IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("5", "FTPS", "[[path]]", "ftps://SVRPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt", "Administrator", "Dev2@dmin123", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -428,7 +428,7 @@ this.ReadFileAtLocationNull("5", "FTPS", "[[path]]", "ftps://rsaklfsvrpdc:1002/F
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrdev/filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/filetoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -438,7 +438,7 @@ this.ReadFileAtLocationNull("5", "FTPS", "[[path]]", "ftps://rsaklfsvrpdc:1002/F
         public virtual void ReadFileAtLocationNull_6()
         {
 #line 32
-this.ReadFileAtLocationNull("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("6", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -450,7 +450,7 @@ this.ReadFileAtLocationNull("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/fileto
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrdev/filetoread1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/filetoread1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -460,7 +460,7 @@ this.ReadFileAtLocationNull("6", "SFTP", "[[path]]", "sftp://rsaklfsvrdev/fileto
         public virtual void ReadFileAtLocationNull_7()
         {
 #line 32
-this.ReadFileAtLocationNull("7", "SFTP PK", "[[path]]", "sftp://rsaklfsvrdev/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.ReadFileAtLocationNull("7", "SFTP PK", "[[path]]", "sftp://SVRDEV.premier.local/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -1841,15 +1841,15 @@ this.ReadFileAtLocationUsingIncorrectDirectory("2", "UNC", "[[variable]]", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "45454")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "45454")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void ReadFileAtLocationUsingIncorrectDirectory_3()
         {
 #line 121
-this.ReadFileAtLocationUsingIncorrectDirectory("3", "UNC Secure", "45454", "45454", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "", "AN", ((string[])(null)));
+this.ReadFileAtLocationUsingIncorrectDirectory("3", "UNC Secure", "45454", "45454", "\"\"", "\"\"", "[[result]]", "", "AN", ((string[])(null)));
 #line hidden
         }
     }
