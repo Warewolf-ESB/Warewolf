@@ -13,7 +13,6 @@ Scenario Outline: Copy file at location
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user ".\Administrator" with saved password
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
 	And the result variable "<resultVar>" will be "<result>"
@@ -63,7 +62,6 @@ Scenario Outline: Copy file at location with overwrite disabled
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user "Administrator" with saved password
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
 	And the result variable "<resultVar>" will be "<result>"
