@@ -50,7 +50,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         public void GivenValidRedisSource()
         {
             _containerOps = new Depends(Depends.ContainerType.AnonymousRedis);
-            SetUpRedisClientConnection(Depends.RigOpsIP, "", 6380);
+            SetUpRedisClientConnection(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, "", 6380);
         }
 
         [Given(@"I have a key ""(.*)"" and ttl of ""(.*)"" milliseconds")]
