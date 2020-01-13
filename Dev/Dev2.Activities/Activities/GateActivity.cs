@@ -21,6 +21,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
 using System;
@@ -136,6 +137,10 @@ namespace Dev2.Activities
                 }
 
                 // TODO: execute workflow that should be called on resume
+                if (GateOptions.GateOpts is AllowResumption allowResumption)
+                {
+                    ExecuteRetryWorkflow(allowResumption);
+                }
 
                 _dataObject.Environment = _originalExecutionEnvironment;
                 Dev2Logger.Debug("Gate: Resetting Environment Snapshot", data.ExecutionID.ToString());
@@ -153,8 +158,10 @@ namespace Dev2.Activities
                 if (hasErrors)
                 {
                     DisplayAndWriteError(nameof(GateActivity), allErrors);
-                    var errorString = allErrors.MakeDisplayReady();
-                    data.Environment.AddError(errorString);
+                    foreach (var errorString in allErrors.FetchErrors())
+                    {
+                        data.Environment.AddError(errorString);
+                    }
                 }
                 if (data.IsDebugMode())
                 {
@@ -163,6 +170,24 @@ namespace Dev2.Activities
                 }
             }
         }
+
+        private void ExecuteRetryWorkflow(AllowResumption allowResumption)
+        {
+            var resumeEndpoint = allowResumption.ResumeEndpoint;
+            var activity = new DsfActivity
+            {
+                ResourceID = resumeEndpoint.Value,
+                ServiceName = resumeEndpoint.Name
+            };
+            var callbackDataObject = new DsfDataObject("", Guid.Empty)
+            {
+                Environment = new ExecutionEnvironment(),
+                ParentServiceName = _dataObject.ServiceName
+            };
+            activity.Execute(_dataObject, 0);
+            Dev2Logger.Debug("Gate: Execute callback workflow - " + resumeEndpoint.Name, callbackDataObject.ExecutionID.ToString());
+        }
+
         /// <summary>
         /// This Gate is being executed again due to some other Gate selecting this Gate to be
         /// executed again.
@@ -276,7 +301,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                data.Environment.AddError(ex.Message);
+                allErrors.AddError(ex.Message);
                 Dev2Logger.Error(nameof(OnExecute), ex, GlobalConstants.WarewolfError);
                 stop = true;
             }
