@@ -73,5 +73,13 @@ namespace Dev2.Util
                 return ConfigurationManager.AppSettings["AesHexKey"];
             }
         }
+
+        public static string QueryStringMaxLength
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["QueryStringMaxLength"];
+            }
+        }
     }
 }
