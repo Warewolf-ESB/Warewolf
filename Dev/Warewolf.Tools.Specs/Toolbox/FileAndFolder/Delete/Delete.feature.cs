@@ -100,13 +100,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I authenticate for share at \"\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\" a" +
-                    "s user \".\\Administrator\" with saved password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
+#line 14
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 16
+#line 15
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1540 = new TechTalk.SpecFlow.Table(new string[] {
@@ -119,14 +116,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", username),
                         "String",
                         string.Format("{0}", sourcePrivateKeyFile)});
-#line 17
+#line 16
  testRunner.And("the debug inputs as", ((string)(null)), table1540, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1541 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1541.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 20
+#line 19
  testRunner.And("the debug output as", ((string)(null)), table1541, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -286,21 +283,21 @@ this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://SVRDEV.premier.local/fi
         public virtual void DeleteFileAtLocationNull(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string sourcePrivateKeyFile, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location Null", exampleTags);
-#line 33
+#line 32
 this.ScenarioSetup(scenarioInfo);
-#line 34
+#line 33
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 35
+#line 34
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 35
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 36
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 37
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
+#line 38
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 40
+#line 39
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -322,7 +319,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant0()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("Local", "[[path]]", "NULL", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "", ((string[])(null)));
 #line hidden
         }
@@ -343,7 +340,7 @@ this.DeleteFileAtLocationNull("Local", "[[path]]", "NULL", "\"\"", "\"\"", "[[re
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant1()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("Local", "[[path]]", "G:\\filetodelete", "\"\"", "\"\"", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -365,7 +362,7 @@ this.DeleteFileAtLocationNull("Local", "[[path]]", "G:\\filetodelete", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant2()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Mem" +
                     "o.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
@@ -388,7 +385,7 @@ this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\SVRPDC.premier.local\\File
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant3()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("UNC Secure", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Sec" +
                     "ure\\filetodelete.txt", "Administrator", "password", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
 #line hidden
@@ -410,7 +407,7 @@ this.DeleteFileAtLocationNull("UNC Secure", "[[path]]", "\\\\SVRPDC.premier.loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant4()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://SVRPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -431,7 +428,7 @@ this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://SVRPDC.premier.local:100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant5()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "Administrator", "Dev2@dmin123", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -452,7 +449,7 @@ this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://SVRPDC.premier.local:10
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant6()
         {
-#line 33
+#line 32
 this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -460,37 +457,37 @@ this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/M
         public virtual void DeleteFileValidation(string no, string fileOrFolder, string val1, string val2, string sourceLocation, string username, string resultVar, string result, string errorOccured, string validationResult, string designValidation, string outputError, string sourcePrivateKeyFile, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file Validation", exampleTags);
-#line 51
+#line 50
 this.ScenarioSetup(scenarioInfo);
-#line 52
+#line 51
     testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
+#line 52
  testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 53
  testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 54
  testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 55
  testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 56
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
+#line 57
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 58
  testRunner.And(string.Format("source credentials as \"{0}\" and \"<password>\"", username), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 59
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 60
  testRunner.When("validating the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 62
+#line 61
  testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 63
+#line 62
  testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 63
     testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 64
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 66
+#line 65
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1542 = new TechTalk.SpecFlow.Table(new string[] {
@@ -501,14 +498,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
-#line 67
+#line 66
  testRunner.And("the debug inputs as", ((string)(null)), table1542, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1543 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1543.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 70
+#line 69
  testRunner.And("the debug output as", ((string)(null)), table1543, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -534,7 +531,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_1()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("1", "[[sourcePath]]", "", "", "c:\\filetodelete.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -560,7 +557,7 @@ this.DeleteFileValidation("1", "[[sourcePath]]", "", "", "c:\\filetodelete.txt",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_2()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("2", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\fil" +
                     "etodelete1.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
@@ -587,7 +584,7 @@ this.DeleteFileValidation("2", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.loc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_3()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("3", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Sec" +
                     "ure\\filetodelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
@@ -613,7 +610,7 @@ this.DeleteFileValidation("3", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.loc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_4()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("4", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -638,7 +635,7 @@ this.DeleteFileValidation("4", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_5()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("5", "[[a]][[b]].txt", "c:\\file", "todelete3", "c:\\filetodelete3.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -663,7 +660,7 @@ this.DeleteFileValidation("5", "[[a]][[b]].txt", "c:\\file", "todelete3", "c:\\f
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_6()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("6", "[[rec(1).a]]", "c:\\filetodelete13.txt", "", "c:\\filetodelete13.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -689,7 +686,7 @@ this.DeleteFileValidation("6", "[[rec(1).a]]", "c:\\filetodelete13.txt", "", "c:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_7()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("7", "[[a]][[b]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite", "\\filetodelete2.txt", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\fil" +
                     "etodelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
@@ -716,7 +713,7 @@ this.DeleteFileValidation("7", "[[a]][[b]]", "\\\\SVRPDC.premier.local\\FileSyst
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_8()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("8", "[[a]]\\[[b]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite", "filetodelete3.txt", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\fil" +
                     "etodelete3.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
@@ -742,7 +739,7 @@ this.DeleteFileValidation("8", "[[a]]\\[[b]]", "\\\\SVRPDC.premier.local\\FileSy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_9()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("9", "[[a]]:\\[[b]]", "C", "filetodelete4.txt", "C:\\filetodelete4.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -767,7 +764,7 @@ this.DeleteFileValidation("9", "[[a]]:\\[[b]]", "C", "filetodelete4.txt", "C:\\f
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_10()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("10", "C:\\[[a]][[b]].txt", "file", "todelete5", "C:\\filetodelete5.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -792,7 +789,7 @@ this.DeleteFileValidation("10", "C:\\[[a]][[b]].txt", "file", "todelete5", "C:\\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_11()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("11", "[[rec(1).a]][[rec(2).a]]", "C:\\fileto", "delete6.txt", "C:\\filetodelete6.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -817,7 +814,7 @@ this.DeleteFileValidation("11", "[[rec(1).a]][[rec(2).a]]", "C:\\fileto", "delet
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_12()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("12", "[[rec(1).a]]\\[[rec(2).a]]", "C:", "filetodelete7.txt", "C:\\filetodelete7.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -842,7 +839,7 @@ this.DeleteFileValidation("12", "[[rec(1).a]]\\[[rec(2).a]]", "C:", "filetodelet
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_13()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("13", "[[rec(1).a]][[rec(2).a]].txt", "C:\\fileto", "delete8", "C:\\filetodelete8.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -867,7 +864,7 @@ this.DeleteFileValidation("13", "[[rec(1).a]][[rec(2).a]].txt", "C:\\fileto", "d
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_14()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("14", "[[rec(1).a]]:[[rec(2).a]]", "C", "\\filetodelete9.txt", "C:\\filetodelete9.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -892,7 +889,7 @@ this.DeleteFileValidation("14", "[[rec(1).a]]:[[rec(2).a]]", "C", "\\filetodelet
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_15()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("15", "C:[[rec(1).a]][[rec(2).a]].txt", "\\fileto", "delete10", "C:\\filetodelete10.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -917,7 +914,7 @@ this.DeleteFileValidation("15", "C:[[rec(1).a]][[rec(2).a]].txt", "\\fileto", "d
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_16()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("16", "[[a]]", "C:\\copyfile0.txt", "", "C:\\copyfile0.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -942,7 +939,7 @@ this.DeleteFileValidation("16", "[[a]]", "C:\\copyfile0.txt", "", "C:\\copyfile0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_17()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("17", "[[a]]", "C:\\filetodelete16.txt", "filetodelete16.txt", "C:\\filetodelete16.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -967,7 +964,7 @@ this.DeleteFileValidation("17", "[[a]]", "C:\\filetodelete16.txt", "filetodelete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_18()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("18", "[[a&]]", "", "", "", "user1", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[a&]] contains invalid character(s)", "1.File or Folder - Variable name [[a&]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -992,7 +989,7 @@ this.DeleteFileValidation("18", "[[a&]]", "", "", "", "user1", "[[result]]", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_19()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("19", "[[rec(**).a]]", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset index (**) contains invalid character(s)", "1.File or Folder - Recordset index (**) contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1017,7 +1014,7 @@ this.DeleteFileValidation("19", "[[rec(**).a]]", "", "", "", "\"\"", "[[result]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_20()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("20", "c(*()", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", ((string[])(null)));
 #line hidden
         }
@@ -1042,7 +1039,7 @@ this.DeleteFileValidation("20", "c(*()", "", "", "", "\"\"", "[[result]]", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_21()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("21", "C:\\\\\\gvh", "", "", "C:\\\\\\gvh", "\"\"", "[[result]]", "\"Failure\"", "AN", "True", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -1067,7 +1064,7 @@ this.DeleteFileValidation("21", "C:\\\\\\gvh", "", "", "C:\\\\\\gvh", "\"\"", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_22()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("22", "[[rec([[inde$x]]).a]]", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[index$x]] contains invalid character(s)", "1.File or Folder - Variable name [[index$x]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1092,7 +1089,7 @@ this.DeleteFileValidation("22", "[[rec([[inde$x]]).a]]", "", "", "", "\"\"", "[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_23()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("23", "[[sourcePath]]", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1117,7 +1114,7 @@ this.DeleteFileValidation("23", "[[sourcePath]]", "", "", "", "\"\"", "[[result]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_26()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("26", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[rec([[index&]]).a]]", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1142,7 +1139,7 @@ this.DeleteFileValidation("26", "[[sourcePath]].txt", "", "", "c:\\filetodelete2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_27()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("27", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[a]]*]]", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
 #line hidden
         }
@@ -1167,7 +1164,7 @@ this.DeleteFileValidation("27", "[[sourcePath]].txt", "", "", "c:\\filetodelete2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_28()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("28", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt", "\"\"", "\"\"", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", "", ((string[])(null)));
 #line hidden
         }
@@ -1193,7 +1190,7 @@ this.DeleteFileValidation("28", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_29()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("29", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\fil" +
                     "etodelete1.txt", "\"\"", "[[a]]*]]", "\"\"", "AN", "True", "Result - The Result field only allows single result", "1.Result - The Result field only allows single result", "", ((string[])(null)));
 #line hidden
@@ -1220,7 +1217,7 @@ this.DeleteFileValidation("29", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.lo
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_30()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Sec" +
                     "ure\\filetodelete2.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
@@ -1246,7 +1243,7 @@ this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\SVRPDC.premier.lo
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_31()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
 #line hidden
         }
@@ -1271,7 +1268,7 @@ this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_32()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete3.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1296,7 +1293,7 @@ this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete3.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_33()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("33", "[[sourcePath]]", "", "", "c:\\filetodelete13.txt", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1321,7 +1318,7 @@ this.DeleteFileValidation("33", "[[sourcePath]]", "", "", "c:\\filetodelete13.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_34()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("34", "[[sourcePath]]", "", "", "c:\\filetodelete14.txt", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1346,7 +1343,7 @@ this.DeleteFileValidation("34", "[[sourcePath]]", "", "", "c:\\filetodelete14.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_35()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("35", "[[sourcePath]]", "", "", "c:\\filetodelete15.txt", "\"\"", "[[@var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1371,7 +1368,7 @@ this.DeleteFileValidation("35", "[[sourcePath]]", "", "", "c:\\filetodelete15.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_36()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("36", "[[sourcePath]]", "", "", "c:\\filetodelete16.txt", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1396,7 +1393,7 @@ this.DeleteFileValidation("36", "[[sourcePath]]", "", "", "c:\\filetodelete16.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_37()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("37", "[[sourcePath]]", "", "", "c:\\filetodelete17.txt", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1421,7 +1418,7 @@ this.DeleteFileValidation("37", "[[sourcePath]]", "", "", "c:\\filetodelete17.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_38()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("38", "[[sourcePath]]", "", "", "c:\\filetodelete18.txt", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1446,7 +1443,7 @@ this.DeleteFileValidation("38", "[[sourcePath]]", "", "", "c:\\filetodelete18.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_39()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("39", "[[sourcePath]]", "", "", "c:\\filetodelete19.txt", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1471,7 +1468,7 @@ this.DeleteFileValidation("39", "[[sourcePath]]", "", "", "c:\\filetodelete19.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_40()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("40", "[[sourcePath]]", "", "", "c:\\filetodelete20.txt", "\"\"", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1498,7 +1495,7 @@ this.DeleteFileValidation("40", "[[sourcePath]]", "", "", "c:\\filetodelete20.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_41()
         {
-#line 51
+#line 50
 this.DeleteFileValidation("41", "[[var@]]", "", "", "", "[[var@]]", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
                     " name [[var@]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
                     "ble name [[var@]] contains invalid character(s)", "", ((string[])(null)));
@@ -1508,19 +1505,19 @@ this.DeleteFileValidation("41", "[[var@]]", "", "", "", "[[var@]]", "[[var@]]", 
         public virtual void DeleteFileAtLocationWithIncorrectDirectories(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location with incorrect directories", exampleTags);
-#line 115
+#line 114
 this.ScenarioSetup(scenarioInfo);
-#line 116
+#line 115
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 117
+#line 116
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 117
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 118
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 119
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 121
+#line 120
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1544 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1531,14 +1528,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
-#line 122
+#line 121
  testRunner.And("the debug inputs as", ((string)(null)), table1544, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1545 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1545.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 125
+#line 124
  testRunner.And("the debug output as", ((string)(null)), table1545, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1559,7 +1556,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_Local()
         {
-#line 115
+#line 114
 this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetodelete.txt", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
@@ -1579,7 +1576,7 @@ this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetode
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_UNC()
         {
-#line 115
+#line 114
 this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
@@ -1599,7 +1596,7 @@ this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_UNCSecure()
         {
-#line 115
+#line 114
 this.DeleteFileAtLocationWithIncorrectDirectories("UNC Secure", "[[variable]]", "\"\"", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }

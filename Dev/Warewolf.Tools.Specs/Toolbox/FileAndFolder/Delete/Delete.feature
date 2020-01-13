@@ -10,7 +10,6 @@ Scenario Outline: Delete file at location
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And I authenticate for share at "\\SVRPDC.premier.local\FileSystemShareTestingSite" as user ".\Administrator" with saved password
 	When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
