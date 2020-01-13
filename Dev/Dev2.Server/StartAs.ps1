@@ -28,7 +28,7 @@ if ($WarewolfServerProcess) {
 		}
 	}
 	sc.exe start "Warewolf Server"
-	if ($NoExit.IsPresent) {
-		ping -t localhost
-	}
+}
+if ($NoExit.IsPresent) {
+	ping -t localhost
 }
