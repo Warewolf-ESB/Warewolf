@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
@@ -257,6 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             
             Assert.IsTrue(dataObject.Environment.HasErrors());
             var errors = dataObject.Environment.Errors.ToArray();
+            Assert.AreEqual(2, errors.Length);
             Assert.AreEqual("gate conditions failed", errors[0]);
             Assert.AreEqual("cannot update retry state of a non-resumable gate", errors[1]);
 
@@ -473,6 +475,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var passingConditions = new List<ConditionExpression>();
             passingConditions.Add(passingCondition);
 
+            var expectedWorkflow = new WorkflowWithInputs
+            {
+                Name = "WorkflowName",
+                Value = Guid.NewGuid(),
+                Inputs = new List<IServiceInputBase>()
+            };
+
             //------------Setup for test--------------------------
             var firstGate = new GateActivity
             {
@@ -480,7 +489,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GateFailure = GateFailureAction.StopProcessing,
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
-                GateOptions = new GateOptions(){GateOpts = new AllowResumption() { }}
+                GateOptions = new GateOptions()
+                {
+                    GateOpts = new AllowResumption() { ResumeEndpoint = expectedWorkflow }
+                }
             };
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
