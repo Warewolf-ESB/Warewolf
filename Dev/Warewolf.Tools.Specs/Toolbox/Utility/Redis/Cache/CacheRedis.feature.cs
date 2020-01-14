@@ -293,11 +293,11 @@ this.ScenarioSetup(scenarioInfo);
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2785 = new TechTalk.SpecFlow.Table(new string[] {
-                        "var",
+                        "name",
                         "value"});
             table2785.AddRow(new string[] {
                         "[[Var1]]",
-                        "\"Test1\""});
+                        "\"Test21\""});
 #line 75
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2785, "Then ");
 #line hidden
@@ -366,8 +366,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 99
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 100
- testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

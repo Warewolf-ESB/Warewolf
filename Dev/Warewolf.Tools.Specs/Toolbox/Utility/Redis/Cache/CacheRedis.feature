@@ -73,8 +73,8 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 		| [[Var2]] | "Test2" |
 	Then the assigned "key2", "ttl2" and innerActivity "DsfMultiAssignActivity2" is executed by "RedisActivity2"
 	Then "RedisActivity2" output variables have the following values
-		| var      | value   |
-		| [[Var1]] | "Test1" |
+		| name     | value    |
+		| [[Var1]] | "Test21" |
 
 
 Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
@@ -97,6 +97,6 @@ Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
 		| [[Var1]] | "Test1" |
 		| [[Var2]] | "Test2" |
 	Then the assigned "key2", "ttl2" and innerActivity "DsfMultiAssignActivity2" is executed by "RedisActivity2"
-	Then "RedisActivity2" output variables have the following values
+	#Then "RedisActivity2" output variables have the following values
 	#And the debug output has "cached data missing key:[[Var3]]" error
 	#And the debug output has "cached data missing key:[[Var4]]" error

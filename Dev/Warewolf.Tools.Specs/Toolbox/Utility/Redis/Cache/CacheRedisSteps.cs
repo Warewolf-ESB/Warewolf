@@ -202,7 +202,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             } while (Stoptime.ElapsedMilliseconds < ttl);
 
             var actualCachedData = GetCachedData(impl, key);
-            Assert.IsNull(actualCachedData);
+            Assert.IsTrue(actualCachedData == null || actualCachedData.Count <= 0, "Cached data found when none was expected.");
         }
 
         [Given(@"an assign ""(.*)"" as")]
