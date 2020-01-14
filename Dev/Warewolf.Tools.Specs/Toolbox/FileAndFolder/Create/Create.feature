@@ -69,7 +69,7 @@ Scenario Outline: Create file at location Nulls
 		| 1  | Local      | [[path]]    | NULL                                                                                           | True     |                |              | [[result]] | Failure | AN           |                           |
 		| 2  | Local      | [[path]]    | v:\myfile.txt                                                                                  | True     |                |              | [[result]] | Failure | AN           |                           |
 		| 3  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                          | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
-		| 5  | UNC Secure | [[path]]    | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.tx | True     | ""             | ""           | [[result]] | Failure | AN           |                           |
+#TODO: re-introduce this test in the premier.local domain		| 5  | UNC Secure | [[path]]    | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.tx | True     | Administrator  | Dev2@dmin123 | [[result]] | Failure | AN           |                           |
 
 
 Scenario Outline: Create file at location with invalid directories
