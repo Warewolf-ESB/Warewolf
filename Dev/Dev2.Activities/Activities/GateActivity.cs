@@ -179,19 +179,15 @@ namespace Dev2.Activities
 
         private void ExecuteRetryWorkflow(AllowResumption allowResumption)
         {
-            var resumeEndpoint = allowResumption.ResumeEndpoint;
-            var activity = new DsfActivity
-            {
-                ResourceID = resumeEndpoint.Value,
-                ServiceName = resumeEndpoint.Name
-            };
+            var resumeEndpoint = allowResumption.SelectedActivity;
+            //var activity = allowResumption.SelectedActivity as DsfNativeActivity<string>;
             var callbackDataObject = new DsfDataObject("", Guid.Empty)
             {
                 Environment = new ExecutionEnvironment(),
                 ParentServiceName = _dataObject.ServiceName
             };
-            activity.Execute(_dataObject, 0);
-            Dev2Logger.Debug("Gate: Execute callback workflow - " + resumeEndpoint.Name, callbackDataObject.ExecutionID.ToString());
+            //activity.Execute(_dataObject, 0);
+            //Dev2Logger.Debug("Gate: Execute callback workflow - " + resumeEndpoint.DisplayName, callbackDataObject.ExecutionID.ToString());
         }
 
         /// <summary>

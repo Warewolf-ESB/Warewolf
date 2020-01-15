@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Linq;
 using Warewolf.Data;
 using System;
+using System.Activities;
 
 namespace Warewolf.Options
 {
@@ -109,6 +110,29 @@ namespace Warewolf.Options
                     }
                 };
                 return optionWorkflow;
+            }
+            else if (prop.PropertyType.IsAssignableFrom(typeof(System.Activities.Presentation.Model.ModelItem)))
+            {
+                var optionSelectedActivity = new OptionActivity
+                {
+                    Name = prop.Name,
+                    Value = (System.Activities.Presentation.Model.ModelItem)prop.GetValue(instance),
+                };
+                if (helptextAttr != null)
+                {
+                    optionSelectedActivity.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    optionSelectedActivity.Tooltip = tooltipAttr.Get();
+                }
+                optionSelectedActivity.PropertyChanged += (o, e) => {
+                    if (e.PropertyName == nameof(OptionActivity.Value))
+                    {
+                        prop.SetValue(instance, ((OptionActivity)o).Value);
+                    }
+                };
+                return optionSelectedActivity;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(bool)))
             {
@@ -280,6 +304,17 @@ namespace Warewolf.Options
                 if (option is OptionWorkflow optionWorkflow)
                 {
                     prop.SetValue(parentInstance, optionWorkflow.Workflow);
+                }
+                else
+                {
+                    throw FailedMappingException;
+                }
+            }
+            if (prop.PropertyType.IsAssignableFrom(typeof(System.Activities.Presentation.Model.ModelItem)))
+            {
+                if (option is OptionActivity optionSelectedActivity)
+                {
+                    prop.SetValue(parentInstance, optionSelectedActivity.Value);
                 }
                 else
                 {

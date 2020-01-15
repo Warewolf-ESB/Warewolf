@@ -35,6 +35,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -56,9 +57,14 @@
     <Compile Include="..\AssemblyCommonInfo.cs" />
     <Compile Include="OptionViewConverter.cs" />
     <Compile Include="ValidatedObject.cs" />
+    <Compile Include="SelectedActivityConverter.cs" />
     <Compile Include="WorkflowNameConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
