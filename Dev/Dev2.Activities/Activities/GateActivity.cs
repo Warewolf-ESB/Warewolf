@@ -54,6 +54,12 @@ namespace Dev2.Activities
             {
                 GateOptions = new GateOptions();
             }
+            DataFunc = new ActivityFunc<string, bool>
+            {
+                DisplayName = "Data Action",
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
+
+            };
         }
 
         /// <summary>
@@ -90,10 +96,12 @@ namespace Dev2.Activities
             }
         }
 
+        string _previousParentId;
         IDSFDataObject _dataObject;
         IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            _previousParentId = data.ParentInstanceID;
             _debugInputs?.Clear();
             _debugOutputs?.Clear();
             _dataObject = data;
@@ -145,7 +153,9 @@ namespace Dev2.Activities
                 // TODO: execute workflow that should be called on resume
                 if (GateOptions.GateOpts is AllowResumption allowResumption)
                 {
-                    ExecuteRetryWorkflow(allowResumption);
+                    BeforeExecuteRetryWorkflow();
+                    ExecuteRetryWorkflow();
+                    ExecuteRetryWorkflowCompleted();
                 }
 
                 _dataObject.Environment = _originalExecutionEnvironment;
@@ -177,17 +187,27 @@ namespace Dev2.Activities
             }
         }
 
-        private void ExecuteRetryWorkflow(AllowResumption allowResumption)
+        private void BeforeExecuteRetryWorkflow()
         {
-            var resumeEndpoint = allowResumption.SelectedActivity;
-            //var activity = allowResumption.SelectedActivity as DsfNativeActivity<string>;
-            var callbackDataObject = new DsfDataObject("", Guid.Empty)
+            _dataObject.ForEachNestingLevel++;
+            _dataObject.ParentInstanceID = UniqueID;
+            _dataObject.IsDebugNested = true;
+        }
+
+        private void ExecuteRetryWorkflow()
+        {
+            if (DataFunc.Handler is IDev2Activity act)
             {
-                Environment = new ExecutionEnvironment(),
-                ParentServiceName = _dataObject.ServiceName
-            };
-            //activity.Execute(_dataObject, 0);
-            //Dev2Logger.Debug("Gate: Execute callback workflow - " + resumeEndpoint.DisplayName, callbackDataObject.ExecutionID.ToString());
+                act.Execute(_dataObject, 0);
+                Dev2Logger.Debug("Gate: Execute callback workflow - " + act.GetDisplayName(), _dataObject.ExecutionID.ToString());
+            }
+        }
+
+        void ExecuteRetryWorkflowCompleted()
+        {
+            _dataObject.IsDebugNested = false;
+            _dataObject.ParentInstanceID = _previousParentId;
+            _dataObject.ForEachNestingLevel--;
         }
 
         /// <summary>
@@ -623,7 +643,7 @@ namespace Dev2.Activities
             return new List<DsfForEachItem>();
         }
 
-
+        public ActivityFunc<string, bool> DataFunc { get; set; }
         public GateFailureAction GateFailure { get; set; }
         public IList<ConditionExpression> Conditions { get; set; }
 

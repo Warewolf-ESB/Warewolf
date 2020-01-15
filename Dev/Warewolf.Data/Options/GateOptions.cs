@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,10 +48,6 @@ namespace Warewolf.Data.Options
         {
             Resume = Resumable.AllowResumption;
         }
-
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeEndpointHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeEndpointToolTip))]
-        public System.Activities.Presentation.Model.ModelItem SelectedActivity { get; set; }
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
         [MultiDataProvider(typeof(NoBackoff), typeof(ConstantBackoff), typeof(LinearBackoff), typeof(FibonacciBackoff), typeof(QuadraticBackoff))]

@@ -87,6 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.IsTrue(gateDesignerViewModel.Enabled);
             Assert.IsTrue(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
+            Assert.IsFalse(gateDesignerViewModel.AllowResumeCallback);
         }
 
         [TestMethod]
@@ -324,18 +325,10 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_LoadOptions()
         {
             //------------Setup for test--------------------------
-            var retryEntryPointId = Guid.NewGuid();
-            var expectedWorkflow = new WorkflowWithInputs
-            {
-                Name = "WorkflowName",
-                Value = retryEntryPointId,
-                Inputs = new List<IServiceInputBase>()
-            };
             var gateOptions = new GateOptions
             {
                 GateOpts = new AllowResumption
                 {
-                    //ResumeEndpoint = expectedWorkflow,
                     Strategy = new NoBackoff(),
                 }
             };
@@ -367,7 +360,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(2, comboOptions.Count);
             Assert.AreEqual("ResumptionDisabled", comboOptions[0].Key);
             Assert.AreEqual("AllowResumption", comboOptions[1].Key);
-            
+            Assert.IsTrue(gateDesignerViewModel.AllowResumeCallback);
         }
 
         [TestMethod]
@@ -376,8 +369,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_LoadConditions()
         {
             //------------Setup for test--------------------------
-            var retryEntryPointId = Guid.NewGuid();
-
             var conditionExpression = new ConditionExpression
             {
                 Left = "[[a]]"
@@ -430,8 +421,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_DeleteCondition()
         {
             //------------Setup for test--------------------------
-            var retryEntryPointId = Guid.NewGuid();
-
             var conditionExpression = new ConditionExpression
             {
                 Left = "[[a]]"

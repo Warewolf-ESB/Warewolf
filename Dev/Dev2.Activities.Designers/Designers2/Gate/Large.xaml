@@ -10,6 +10,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                                xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                                MinWidth="350"
                                Width="350"
@@ -41,6 +42,7 @@
 
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -142,6 +144,27 @@
             </ListBox>
         </Expander>
 
-        <errors:OnError Grid.Row="3" />
+        <Border BorderBrush="#CFD6E1"
+                BorderThickness="1"
+                Margin="1,3,0,0"
+                Grid.Row="3"
+                Visibility="{Binding AllowResumeCallback, Converter={StaticResource BoolToVisibilityConverter}}"
+                CornerRadius="12">
+            <sap:WorkflowItemPresenter x:Name="DropPoint"
+                                       AllowDrop="False"
+                                       HintText="Drop Activity Here"
+                                       BorderBrush="Black"
+                                       BorderThickness="2"
+                                       MinHeight="50"
+                                       Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                        <Binding Path="ModelItem.AutomationID" />
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </sap:WorkflowItemPresenter>
+        </Border>
+
+        <errors:OnError Grid.Row="4" />
     </Grid>
 </core:ActivityDesignerTemplate>

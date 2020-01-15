@@ -105,6 +105,16 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
+        public bool AllowResumeCallback
+        {
+            get
+            {
+                var allowResumption = Options.Options[0] as OptionCombobox;
+                return allowResumption?.Value == Resumable.AllowResumption.ToString();
+            }
+
+        }
+
         private void LoadGates()
         {
             var designerView = FindDependencyParent.FindParent<System.Activities.Presentation.View.DesignerView>(_modelItem.View);
@@ -254,6 +264,7 @@ namespace Dev2.Activities.Designers2.Gate
                     _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
                 }
                 OnPropertyChanged(nameof(Options));
+                OnPropertyChanged(nameof(AllowResumeCallback));
             }
         }
 
