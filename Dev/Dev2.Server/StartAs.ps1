@@ -3,6 +3,7 @@ Param(
 )
 $WarewolfServerProcess =  Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 if ($WarewolfServerProcess) {
+	Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true
 	Write-Host Warewolf server is now running.
 } else {
 	Remove-Item "C:\ProgramData\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue
