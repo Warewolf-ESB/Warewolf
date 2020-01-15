@@ -64,6 +64,7 @@
     <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
     <ui:OptionViewConverter x:Key="OptionViewConverter"/>
     <ui:WorkflowNameConverter x:Key="WorkflowNameConverter"/>
+    <ui:SelectedActivityConverter x:Key="SelectedActivityConverter"/>
 
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>

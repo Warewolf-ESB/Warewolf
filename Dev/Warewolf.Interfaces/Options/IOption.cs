@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Warewolf.Data;
 
@@ -76,6 +78,11 @@ namespace Warewolf.Options
     public interface IWorkflow : INamedGuid
     {
         ICollection<IServiceInputBase> Inputs { get; set; }
+    }
+
+    public interface IOptionActivity : IOption
+    {
+        ModelItem Value { get; set; }
     }
 
     public interface IOptionWorkflow : IOption

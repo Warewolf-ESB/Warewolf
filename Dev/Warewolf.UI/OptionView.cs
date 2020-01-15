@@ -64,9 +64,9 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionAutocompleteStyle";
                 }
-                if (DataContext is IOptionWorkflow)
+                if (DataContext is IOptionActivity)
                 {
-                    dataTemplateName = "OptionAddWorkflowStyle";
+                    dataTemplateName = "OptionActivityStyle";
                 }
                 if (DataContext is IOptionEnum optionEnum)
                 {

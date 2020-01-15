@@ -42,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
             dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
-            var gatesList = new List<IDev2Activity>();
+            var gatesList = new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>();
             dataObject.Setup(o => o.Gates).Returns(gatesList);
 
             var activity = new GateActivity();
@@ -211,7 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[nota]]", "bob", 0);
-            dataObject.Gates.Add(expectedRetryActivity);
+            dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
 
             var result = act.Execute(dataObject, 0);
 
@@ -252,7 +252,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[nota]]", "bob", 0);
-            dataObject.Gates.Add(expectedRetryActivity);
+            dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
 
             var result = act.Execute(dataObject, 0);
             
@@ -331,7 +331,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "notbob", 0);
-            dataObject.Gates.Add(expectedRetryActivity);
+            dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
 
             var result = act.Execute(dataObject, 0);
 
@@ -373,7 +373,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "bob", 0);
-            dataObject.Gates.Add(expectedRetryActivity);
+            dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
 
             var result = act.Execute(dataObject, 0);
 
@@ -491,7 +491,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 NextNodes = new List<IDev2Activity> { secondGate },
                 GateOptions = new GateOptions()
                 {
-                    GateOpts = new AllowResumption() { ResumeEndpoint = expectedWorkflow }
+                    GateOpts = new AllowResumption()// { ResumeEndpoint = expectedWorkflow }
                 }
             };
 

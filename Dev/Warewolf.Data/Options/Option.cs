@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -468,6 +470,55 @@ namespace Warewolf.Options
             }
 
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Workflow == Workflow ? 0 : -1);
+        }
+    }
+
+    public class OptionActivity : BindableBase, IOptionActivity
+    {
+        private ModelItem _value;
+        public ModelItem Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value);
+        }
+
+        public string Name { get; set; }
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionWorkflowHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
+
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionWorkflowTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
+
+        public object Clone()
+        {
+            return new OptionActivity
+            {
+                Name = Name,
+                Value = Value,
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionActivity;
+            if (item is null)
+            {
+                return -1;
+            }
+
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value == Value ? 0 : -1);
         }
     }
 

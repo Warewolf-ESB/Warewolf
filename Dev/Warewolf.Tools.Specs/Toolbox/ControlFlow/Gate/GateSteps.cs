@@ -165,7 +165,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             {
                 GateOpts = new AllowResumption
                 {
-                    ResumeEndpoint = expectedWorkflow,
+                    //ResumeEndpoint = expectedWorkflow,
                     Strategy = noBackoffAlgorithm
                 }
             };
@@ -453,7 +453,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
             if (gateActivity.GateOptions.GateOpts is AllowResumption optionsResume)
             {
-                optionsResume.ResumeEndpoint = expectedWorkflow;
+                //optionsResume.ResumeEndpoint = expectedWorkflow;
             }
         }
 
