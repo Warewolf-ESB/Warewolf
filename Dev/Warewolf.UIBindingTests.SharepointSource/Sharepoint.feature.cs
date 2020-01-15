@@ -108,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
    testRunner.And("title is \"New SharePoint Service Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
-   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
    testRunner.Then("\"New SharePoint Service Source *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 19
@@ -157,7 +157,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
    testRunner.Given("I open New Sharepoint Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
-   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
@@ -324,7 +324,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 111
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
-   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
@@ -371,6 +371,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved Sharepoint Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sharepoint")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SharepointSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SharepointSource")]
         public virtual void EditingSavedSharepointSource()
         {
@@ -381,44 +382,45 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf_Studio.exe",
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
-                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 139
-this.ScenarioSetup(scenarioInfo);
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
+                        "Ignore"});
 #line 140
-   testRunner.Given("I open \"Test\" Sharepoint source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 141
-   testRunner.Then("\"Test\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Given("I open \"Test\" Sharepoint source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 142
-   testRunner.And("title is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("\"Test\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 143
-   testRunner.And("Address is \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 144
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("Address is \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 145
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 146
-   testRunner.And("Authentication Type is \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
-   testRunner.And("Username field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
-   testRunner.When("I type Address as \"http://rsaklfsvrdevs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
-   testRunner.Then("\"Test *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
    testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 147
+   testRunner.And("Authentication Type is \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 148
+   testRunner.And("Username field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 150
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 151
+   testRunner.When("I type Address as \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 152
+   testRunner.Then("\"Test *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
-   testRunner.When("Test Connecton is \"Successfull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 156
-   testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.When("Test Connecton is \"Successfull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 157
+   testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 158
    testRunner.When("I save the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -428,6 +430,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved Sharepoint Source auth type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sharepoint")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SharepointSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SharepointSource")]
         public virtual void EditingSavedSharepointSourceAuthType()
         {
@@ -438,40 +441,41 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf_Studio.exe",
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
-                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 165
- this.ScenarioSetup(scenarioInfo);
-#line 166
-   testRunner.Given("I open \"Test\" Sharepoint source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
+                        "Ignore"});
 #line 167
-   testRunner.Then("\"Test\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ this.ScenarioSetup(scenarioInfo);
 #line 168
-   testRunner.And("Address is \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Given("I open \"Test\" Sharepoint source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 169
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("\"Test\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 170
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("Address is \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 171
-   testRunner.And("Authentication Type is \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
-   testRunner.And("Username field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
-   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
-   testRunner.When("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
-   testRunner.And("Username field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
-   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
-   testRunner.And("Username field as \"IntegrationTester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
-   testRunner.And("Password field as \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
+   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 173
+   testRunner.And("Authentication Type is \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
+   testRunner.And("Username field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
+   testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 176
+   testRunner.When("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 177
+   testRunner.And("Username field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 178
+   testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+   testRunner.And("Username field as \"IntegrationTester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
-   testRunner.When("Test Connecton is \"Successfull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("Password field as \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
+   testRunner.When("Test Connecton is \"Successfull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 183
    testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -492,25 +496,25 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 189
-this.ScenarioSetup(scenarioInfo);
-#line 190
-   testRunner.Given("I open New Sharepoint Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 191
-   testRunner.Then("\"New SharePoint Service Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 192
-   testRunner.And("title is \"New SharePoint Service Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Given("I open New Sharepoint Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 193
-   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("\"New SharePoint Service Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 194
-   testRunner.When("Test Connecton is \"Long Running\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("title is \"New SharePoint Service Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
-   testRunner.And("I Cancel the Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://SVRDEV.premier.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 196
-   testRunner.Then("\"Cancel Test\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.When("Test Connecton is \"Long Running\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 197
-   testRunner.And("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Cancel the Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 198
+   testRunner.Then("\"Cancel Test\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 199
+   testRunner.And("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 200
    testRunner.And("Validation message is \"Test Cancelled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
