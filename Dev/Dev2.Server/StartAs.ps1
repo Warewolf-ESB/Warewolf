@@ -3,9 +3,10 @@ Param(
 )
 $WarewolfServerProcess =  Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 if ($WarewolfServerProcess) {
-	Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true
-	Write-Host Warewolf server is now running.
+	Sleep 30
+	Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -UseDefaultCredentials -UseBasicParsing
 } else {
+	Write-Host Starting Warewolf server as $env:SERVER_USERNAME
 	Remove-Item "C:\ProgramData\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue
 	Write-Host Create Warewolf Administrators group.
 	NET localgroup "Warewolf Administrators" /ADD
