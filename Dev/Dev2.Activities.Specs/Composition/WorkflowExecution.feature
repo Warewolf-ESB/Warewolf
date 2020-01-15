@@ -1221,19 +1221,20 @@ Examples:
 
 @WorkflowExecution
 Scenario Outline: Database MySqlDB Database service inputs and outputs
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  | name             | afg%          | countryid           | <nameVariable>  |
-	  |                  |               | description         | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                            |
-	  | [[countries(1).id]] = 1                    |
-	  | [[countries(2).id]] = 1                    |
-	  | [[countries(1).description]] = Afghanistan |
-	  | [[countries(2).description]] = Afghanistan |
+	Given I depend on a valid MySQL server
+    And I have a workflow "<WorkflowName>"
+	And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
+	 | Input to Service | From Variable | Output from Service | To Variable     |
+	 | name             | afg%          | countryid           | <nameVariable>  |
+	 |                  |               | description         | <emailVariable> |
+    When "<WorkflowName>" is executed
+    Then the workflow execution has "<errorOccured>" error
+	And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
+	 |                                            |
+	 | [[countries(1).id]] = 1                    |
+	 | [[countries(2).id]] = 1                    |
+	 | [[countries(1).description]] = Afghanistan |
+	 | [[countries(2).description]] = Afghanistan |
 Examples: 
     | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithMySqlCountries | Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
