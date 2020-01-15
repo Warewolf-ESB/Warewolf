@@ -28,6 +28,7 @@ using WarewolfParserInterop;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Reflection;
 using System.IO;
+using System.Net.Sockets;
 using Warewolf.Test.Agent;
 using Warewolf.UnitTestAttributes;
 
@@ -59,7 +60,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             {
                 
             }
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             scenarioContext.Add("dbSource", dbSource);
 
