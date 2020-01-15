@@ -134,14 +134,15 @@ Examples:
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
  Scenario: Executing Postgres For Xml testing workflow base
-	  Given I have a workflow "Testing - Sql For Xml"
-	  And "Testing - Sql For Xml" contains "TestPostgresReturningXml" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Sql For Xml" is executed
-	  Then the workflow execution has "NO" error
-	  And the "TestPostgresReturningXml" in Workflow "TestPostgresReturningXml" debug outputs as
-	  |                     |
-	  | [[Result]] = Passed |
+	 Given I depend on a valid PostgreSQL server
+	 And I have a workflow "Testing - Sql For Xml"
+	 And "Testing - Sql For Xml" contains "TestPostgresReturningXml" from server "localhost" with mapping as
+	 | Input to Service | From Variable | Output from Service | To Variable      |
+	 When "Testing - Sql For Xml" is executed
+	 Then the workflow execution has "NO" error
+	 And the "TestPostgresReturningXml" in Workflow "TestPostgresReturningXml" debug outputs as
+	 |                     |
+	 | [[Result]] = Passed |
 
  Scenario: Executing Oracle For Xml testing workflow base
 	  Given I have a workflow "Testing - Sql For Xml"
@@ -275,15 +276,15 @@ Scenario: Workflow with Performance counters
 	| Count of requests for workflows which don't exist | 9     |
 
 Scenario: Sharepoint Acceptance Tests
-	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
-	  And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "Sharepoint Acceptance Tests Outer" is executed
+	Given I have a workflow "Sharepoint Acceptance Tests Outer"
+	And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as
+    | Input to Service | From Variable | Output from Service | To Variable |
+	|                  |               | Result              | [[Result]]  |
+	When "Sharepoint Acceptance Tests Outer" is executed
 	Then the workflow execution has "NO" error
-	  And the "Sharepoint Connectors Testing" in Workflow "Sharepoint Acceptance Tests Outer" debug outputs as
-	  |                   |
-	  | [[Result]] = Pass |
+	And the "Sharepoint Connectors Testing" in Workflow "Sharepoint Acceptance Tests Outer" debug outputs as
+	|                   |
+	| [[Result]] = Pass |
 
 Scenario: ForEach using * in CSV executed as a sub execution passes out an ordered recordset
 	  Given I have a workflow "Spec - Test For Each Shared Memory"

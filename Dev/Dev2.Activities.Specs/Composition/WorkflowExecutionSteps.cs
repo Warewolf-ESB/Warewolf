@@ -321,6 +321,12 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid RabbitMQ server")]
         public void GivenIGetaValidRabbitMQServer() => _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
 
+        [Given("I depend on a valid PostgreSQL server")]
+        public void GivenIGetaValidPostgreSQLServer() => _containerOps = new Depends(Depends.ContainerType.PostGreSQL);
+
+        [Given("I depend on a valid MySQL server")]
+        public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
