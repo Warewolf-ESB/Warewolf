@@ -68,8 +68,8 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("WorkFlow", workFlow);
         }
 
-        [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)"" and group ""(.*)""")]
-        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password, string groupName)
+        [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
+        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
