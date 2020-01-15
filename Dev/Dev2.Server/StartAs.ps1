@@ -3,7 +3,7 @@ Param(
 )
 $WarewolfServerProcess =  Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 if ($WarewolfServerProcess) {
-	Write-Warning -Message "Warewolf server is now running."
+	Write-Host Warewolf server is now running.
 } else {
 	Remove-Item "C:\ProgramData\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue
 	Write-Host Create Warewolf Administrators group.
