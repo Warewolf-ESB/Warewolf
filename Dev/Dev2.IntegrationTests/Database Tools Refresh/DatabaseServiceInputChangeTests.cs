@@ -107,9 +107,9 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Depends(Depends.ContainerType.MSSQL)]
         public void Change_sql_source_verify_Empty_Inputs()
         {
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             var newName = Guid.NewGuid().ToString();
             var cleanProcName = newName.Replace("-", "").Replace(" ", "");
             try
