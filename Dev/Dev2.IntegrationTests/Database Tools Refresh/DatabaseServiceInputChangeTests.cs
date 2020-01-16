@@ -107,6 +107,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Depends(Depends.ContainerType.MSSQL)]
         public void Change_sql_source_verify_Empty_Inputs()
         {
             var newName = Guid.NewGuid().ToString();
@@ -137,7 +138,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             }
         }
 
-        private int DropProcedure(string cleanProcName)
+        int DropProcedure(string cleanProcName)
         {
             var dropProcedure = "IF ( OBJECT_ID('" + cleanProcName + "') IS NOT NULL ) DROP PROCEDURE [dbo].[" + cleanProcName + "]";
             var dropResult = SqlHelper.RunSqlCommand(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, _containerOps.Container.Port, dropProcedure);
