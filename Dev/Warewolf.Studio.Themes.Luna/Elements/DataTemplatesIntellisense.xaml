@@ -456,7 +456,7 @@
                                            BorderBrush="Black"
                                            BorderThickness="2"
                                            MinHeight="50"
-                                           Item="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource SelectedActivityConverter}}">
+                                           Item="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
                     <AutomationProperties.AutomationId>
                         <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
                             <Binding Path="ModelItem.AutomationID" />
