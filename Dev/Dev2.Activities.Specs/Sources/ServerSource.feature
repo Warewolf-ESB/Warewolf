@@ -29,6 +29,7 @@ Scenario: Create Bad User Server Source
 	When I Test the connection
 	Then The result is "Connection Error :Unauthorized"	
 
+@Ignore
 Scenario: Create Public Server Source
 	Given I create a server source as
 	| Address                             | AuthenticationType |
