@@ -149,6 +149,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         [Owner("Pieter Terblanche")]
         public void Add_A_New_InputOnSqlProcedure_Expect_New_IS_InputAdded()
         {
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             const string procName = "TestingAddingANewInput";
 
             Setup(procName);
