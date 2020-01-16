@@ -1,5 +1,5 @@
 ﻿@StudioTestFrameworkWithSharepointTools
-Feature: StudioTestFrameworkWithScriptingTools
+Feature: StudioTestFrameworkWithSharepointTools
 	In order to test workflows that contain scripting tools in warewolf 
 	As a user
 	I want to create, edit, delete and update tests in a test window
