@@ -161,7 +161,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Given("I create a server source as", ((string)(null)), table931, "Given ");
 #line 28
- testRunner.And("User as \"BadUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User as \"BadUser\" and with \"Dev2@dmin123\" as password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 30
@@ -184,7 +184,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table932.AddRow(new string[] {
-                        "http://wolfs-den:3142",
+                        "http://wolfs-den.premier.local:3142",
                         "Public"});
 #line 33
  testRunner.Given("I create a server source as", ((string)(null)), table932, "Given ");
