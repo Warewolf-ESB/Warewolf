@@ -24,8 +24,6 @@ using Warewolf.Security.Encryption;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
-using Warewolf.Test.Agent;
-using System.IO;
 using Dev2.Infrastructure.Tests;
 using Warewolf.UnitTestAttributes;
 
@@ -67,7 +65,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [Owner("Ashley Lewis")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
-            RunAs("NoDBAccessTest", "DEV2", () =>
+            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -272,9 +270,25 @@ namespace Dev2.Integration.Tests.Services.Sql
             return result;
         }
 
+        public static bool RunAs(string userName, string domain, string password, Action action)
+        {
+            var result = false;
+            using (var impersonator = new Impersonator())
+            {
+                if (impersonator.Impersonate(userName, domain, password))
+                {
+                    action?.Invoke();
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         public interface IImpersonator
         {
             bool Impersonate(string userName, string domain);
+            bool Impersonate(string userName, string domain, string password);
             void Undo();
             bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted);
         }
@@ -307,11 +321,12 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             #region Impersonate
 
-            public bool Impersonate(string username, string domain)
+            public bool Impersonate(string username, string domain) => Impersonate(username, domain, TestEnvironmentVariables.GetVar(domain + "\\" + username));
+
+            public bool Impersonate(string username, string domain, string password)
             {
                 var token = IntPtr.Zero;
                 var tokenDuplicate = IntPtr.Zero;
-                var password = TestEnvironmentVariables.GetVar(domain + "\\" + username);
                 if (RevertToSelf() && LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out token) && DuplicateToken(token, 2, out tokenDuplicate) != 0)
                 {
                     var tempWindowsIdentity = new WindowsIdentity(tokenDuplicate);
