@@ -136,6 +136,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWithSharepointTools.feature.cs">
+      <DependentUpon>StudioTestFrameworkWithSharepointTools.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkWithSubworkflow.feature.cs">
       <DependentUpon>StudioTestFrameworkWithSubworkflow.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -351,6 +356,10 @@
     <None Include="StudioTestFramework\StudioTestFrameworkWithHelloWorldWorkflow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithHelloWorldWorkflow.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWithSharepointTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWithSharepointTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithSubworkflow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
