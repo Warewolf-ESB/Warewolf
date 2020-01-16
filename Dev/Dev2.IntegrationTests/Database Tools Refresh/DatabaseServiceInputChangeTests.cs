@@ -160,7 +160,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
             //testing here
             const string alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
-            var alterTableResults = SqlHelper.RunSqlCommand(Depends.RigOpsIP, _containerOps.Container.Port, alterProcedure);
+            var alterTableResults = SqlHelper.RunSqlCommand(Depends.RigOpsIP, Depends.EnableDocker?_containerOps.Container.Port:"1433", alterProcedure);
             Assert.AreEqual(-1, alterTableResults);
 
             _dbActionRegion.RefreshActionsCommand.Execute(null);
