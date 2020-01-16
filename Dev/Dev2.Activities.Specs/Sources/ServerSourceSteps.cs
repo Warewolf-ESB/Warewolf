@@ -179,19 +179,20 @@ namespace Dev2.Activities.Specs.Sources
         }
 
         [Given(@"User as ""(.*)""")]
-        public void GivenUserAs(string username)
+        public void GivenUserAs(string username) => AddUserToServerSource(username, TestEnvironmentVariables.GetVar(username));
+
+        [Given(@"User as ""(.*)"" and with ""(.*)"" as password")]
+        public void GivenUserAsWithPassword(string username, string password) => AddUserToServerSource(username, password);
+
+        private static void AddUserToServerSource(string username, string password)
         {
-            var password = TestEnvironmentVariables.GetVar(username);
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;
             ScenarioContext.Current.Set(serverSource, "serverSource");
         }
 
-        protected override void BuildDataList()
-        {
-            throw new NotImplementedException();
-        }
+        protected override void BuildDataList() => throw new NotImplementedException();
 
         [BeforeFeature("ServerSourceTests")]
         public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);

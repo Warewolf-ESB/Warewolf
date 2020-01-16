@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
@@ -50,7 +49,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-
                 Dev2Logger.Info("Test connection Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("ServerSource", out StringBuilder resourceDefinition);
