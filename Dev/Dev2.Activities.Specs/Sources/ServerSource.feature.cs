@@ -128,12 +128,12 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table930.AddRow(new string[] {
-                        "http://tst-ci-remote:3142",
+                        "http://tst-ci-remote.premier.local:3142",
                         "User"});
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table930, "Given ");
 #line 20
- testRunner.And("User as \"dev2\\IntegrationTester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User as \".\\Administrator\" and with \"Dev2@dmin123\" as password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
