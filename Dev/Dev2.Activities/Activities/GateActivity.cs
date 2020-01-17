@@ -11,6 +11,7 @@
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
@@ -27,6 +28,7 @@ using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -34,6 +36,7 @@ using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
+using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -96,6 +99,7 @@ namespace Dev2.Activities
             }
         }
 
+        Guid _originalUniqueID;
         string _previousParentId;
         IDSFDataObject _dataObject;
         IExecutionEnvironment _originalExecutionEnvironment;
@@ -147,6 +151,12 @@ namespace Dev2.Activities
                         var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteNormal), "", true);
                         AddDebugOutputItem(debugItemStaticDataParams);
                     }
+
+                    if (_dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
+                    {
+                        _originalUniqueID = Guid.Parse(UniqueID);
+                    }
+
                     return ExecuteNormal(data, update, allErrors);
                 }
 
@@ -170,19 +180,66 @@ namespace Dev2.Activities
             }
             finally
             {
-                var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
-                {
-                    DisplayAndWriteError(nameof(GateActivity), allErrors);
-                    foreach (var errorString in allErrors.FetchErrors())
-                    {
-                        data.Environment.AddError(errorString);
-                    }
-                }
+                HandleErrors(data, allErrors);
                 if (data.IsDebugMode())
                 {
                     DispatchDebugState(data, StateType.Before, update);
                     DispatchDebugState(data, StateType.After, update);
+                }
+            }
+        }
+
+        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        {
+            var resultList = new ObservableCollection<TestRunResult>();
+            foreach (var testStep in serviceTestStep.Children)
+            {
+                if (testStep.Result != null)
+                {
+                    resultList.Add(testStep.Result);
+                }
+            }
+
+            if (resultList.Count == 0)
+            {
+                testRunResult.RunTestResult = RunResult.TestPassed;
+            }
+            else
+            {
+                testRunResult.RunTestResult = RunResult.TestInvalid;
+
+                var testRunResults = resultList.Where(runResult => runResult.RunTestResult == RunResult.TestInvalid).ToList();
+                if (testRunResults.Count > 0)
+                {
+                    testRunResult.Message = string.Join(Environment.NewLine, testRunResults.Select(result => result.Message));
+                    testRunResult.RunTestResult = RunResult.TestInvalid;
+                }
+                else
+                {
+                    var passed = resultList.All(runResult => runResult.RunTestResult == RunResult.TestPassed);
+                    if (passed)
+                    {
+                        testRunResult.Message = Messages.Test_PassedResult;
+                        testRunResult.RunTestResult = RunResult.TestPassed;
+                    }
+                    else
+                    {
+                        testRunResult.Message = Messages.Test_FailureResult;
+                        testRunResult.RunTestResult = RunResult.TestFailed;
+                    }
+                }
+            }
+        }
+
+        private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (hasErrors)
+            {
+                DisplayAndWriteError(nameof(GateActivity), allErrors);
+                foreach (var errorString in allErrors.FetchErrors())
+                {
+                    data.Environment.AddError(errorString);
                 }
             }
         }
@@ -319,6 +376,15 @@ namespace Dev2.Activities
                 if (!data.IsDebugMode())
                 {
                     UpdateWithAssertions(data);
+                }
+                var serviceTestStep = _dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
+                var serviceTestSteps = serviceTestStep?.Children;
+
+                if (_dataObject.IsServiceTestExecution && serviceTestStep != null)
+                {
+                    var testRunResult = new TestRunResult();
+                    GetFinalTestRunResult(serviceTestStep, testRunResult);
+                    serviceTestStep.Result = testRunResult;
                 }
             }
             catch (Exception ex)
