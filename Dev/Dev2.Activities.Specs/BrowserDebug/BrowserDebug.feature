@@ -1,4 +1,5 @@
-﻿Feature: BrowserDebug
+﻿@ExecuteInBrowser
+Feature: BrowserDebug
 	In order to debug a workflow in Browser
 	As a Warewolf user
 	I want to be able to View full debug content in browser
