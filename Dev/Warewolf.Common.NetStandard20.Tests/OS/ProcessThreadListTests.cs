@@ -58,7 +58,7 @@ namespace Warewolf.OS.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
-        public void ProcessThreadList_GivenDefaultConfig_ExpectOneWorker()
+        public void ProcessThreadList_GivenDefaultConfig_ExpectNoWorker()
         {
             var mockConfig = new Mock<IJobConfig>();
             var mockProcessFactory = new Mock<ITestProcessFactory>();
@@ -74,8 +74,8 @@ namespace Warewolf.OS.Tests
             list.Monitor();
 
             Assert.IsFalse(list.NeedUpdate);
-            Assert.IsTrue(processThread.IsAlive);
-            mockProcessThread.Verify(o => o.Start(), Times.Once);
+            Assert.IsFalse(processThread.IsAlive);
+            mockProcessThread.Verify(o => o.Start(), Times.Never);
         }
 
         [TestMethod]

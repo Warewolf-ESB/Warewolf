@@ -502,5 +502,7 @@ namespace Dev2.Activities.RedisCache
                 return hashCode;
             }
         }
+
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.RedisCache;
     }
 }

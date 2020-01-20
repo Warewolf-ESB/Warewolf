@@ -46,14 +46,8 @@ namespace QueueWorker
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
-
                 _logger.Warn($"failure processing body {strBody}");
-                var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId);
-                var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
-                executionEntry.Exception = requestForwarderResult.Exception;
-
-                _logger.ExecutionFailed(executionEntry);
-
+                CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration);
             }, TaskContinuationOptions.OnlyOnFaulted);
 
             task.ContinueWith((requestForwarderResult) =>
@@ -66,8 +60,12 @@ namespace QueueWorker
                     _logger.Info($"success processing body {strBody}");
                     var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId);
                     var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
-
                     _logger.ExecutionSucceeded(executionEntry);
+                }
+                else
+                {
+                    _logger.Error($"Failed to execute {_resourceId + " " + strBody}");
+                    CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration);
                 }
 
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
@@ -80,6 +78,15 @@ namespace QueueWorker
             {
                 return Task.Run(() => ConsumerResult.Success);
             }
+        }
+
+        private void CreateExecutionError(Task<ConsumerResult> requestForwarderResult, Guid executionId, DateTime startDate, DateTime endDate, TimeSpan duration)
+        {
+            var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId);
+            var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
+            executionEntry.Exception = requestForwarderResult.Exception;
+            executionEntry.AuditType = "Error";
+            _logger.ExecutionFailed(executionEntry);
         }
     }
 }

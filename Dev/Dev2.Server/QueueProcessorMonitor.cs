@@ -36,9 +36,9 @@ namespace Dev2
                 try
                 {
                     var configs = _queueConfigLoader.Configs;
-                var config = configs.First(o => o.Id == triggerId);
-                    WorkerRestart(config);
-
+                    var config = configs.First(o => o.Id == triggerId);
+                    WorkerDeleted(config.Id);
+                    WorkerCreated(config.Id);
                 }
                 catch (Exception e)
                 {

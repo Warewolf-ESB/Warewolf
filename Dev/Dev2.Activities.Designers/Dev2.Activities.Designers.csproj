@@ -144,6 +144,7 @@
     <Compile Include="Designers2\ExchangeNewEmail\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\RedisCache\RedisValidatorDesignerViewModel.cs" />
     <Compile Include="Designers2\RedisCounter\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>

@@ -14,6 +14,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
 using System;
+using Warewolf.Auditing;
 using Warewolf.Common;
 using Warewolf.Data;
 using Warewolf.Streams;
@@ -82,7 +83,7 @@ namespace QueueWorker
             {
                 try
                 {
-                    var logger = new ExecutionLogger(new JsonSerializer());
+                    var logger = new ExecutionLogger(new JsonSerializer(), new WebSocketPool());
                     logger.Info("Starting queue worker", _config.QueueName);
 
                     if (_config.Source != null)

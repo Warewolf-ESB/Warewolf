@@ -74,7 +74,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
 
             //------------Setup for test-------------------------
-            var webSocketFactoryMock = new Mock<IWebSocketFactory>();
+            var webSocketFactoryMock = new Mock<IWebSocketPool>();
             var webSocketWrapperMock = new Mock<IWebSocketWrapper>();
             var commandMessage = "";
             var onMessage = new Action<string, IWebSocketWrapper>((s, w) => { });
@@ -88,7 +88,7 @@ namespace Warewolf.Driver.Serilog.Tests
 
 
 
-            webSocketFactoryMock.Setup(c => c.New()).Returns(webSocketWrapperMock.Object);
+            webSocketFactoryMock.Setup(c => c.Acquire(It.IsAny<string>())).Returns(webSocketWrapperMock.Object);
 
             var getLogData = new GetLogDataService(webSocketFactoryMock.Object, TimeSpan.FromMilliseconds(1));
             var workspaceMock = new Mock<IWorkspace>();
@@ -113,7 +113,7 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                { "ResourceID", new StringBuilder(GlobalConstants.DefaultLoggingSourceId) }
             };
-            var webSocketFactoryMock = new Mock<IWebSocketFactory>();
+            var webSocketFactoryMock = new Mock<IWebSocketPool>();
             var webSocketWrapperMock = new Mock<IWebSocketWrapper>();
             var commandMessage = "";
             var onMessage = new Action<string, IWebSocketWrapper>((s,w) => { });
@@ -127,7 +127,7 @@ namespace Warewolf.Driver.Serilog.Tests
 
            
 
-            webSocketFactoryMock.Setup(c => c.New()).Returns(webSocketWrapperMock.Object);
+            webSocketFactoryMock.Setup(c => c.Acquire(It.IsAny<string>())).Returns(webSocketWrapperMock.Object);
             
             //------------------------------Act--------------------------------------
             var getLogDataService = new GetLogDataService(webSocketFactoryMock.Object,TimeSpan.FromMilliseconds(1));

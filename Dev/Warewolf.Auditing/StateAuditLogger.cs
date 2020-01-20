@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
@@ -24,14 +25,14 @@ namespace Warewolf.Auditing
     public class StateAuditLogger : IStateAuditLogger, IWarewolfLogWriter
     {
         private IWebSocketWrapper _ws;
-        private readonly IWebSocketFactory _webSocketFactory;
+        private readonly IWebSocketPool _webSocketFactory;
 
         public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
         
-        public StateAuditLogger(IWebSocketFactory webSocketFactory)
+        public StateAuditLogger(IWebSocketPool webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
-            _ws = webSocketFactory.New();
+            _ws = webSocketFactory.Acquire(Config.Auditing.Endpoint);
             _ws.Connect();
         }
 
@@ -39,7 +40,7 @@ namespace Warewolf.Auditing
         {
             if (!_ws.IsOpen())
             {
-                _ws = _webSocketFactory.New();
+                _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
                 _ws.Connect();
             }
 
@@ -55,9 +56,27 @@ namespace Warewolf.Auditing
             }
         }
 
+        private bool _isDisposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    if (_ws != null)
+                    {
+                        _webSocketFactory.Release(_ws);
+                        _ws = null;
+                    }
+                }
+
+                _isDisposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            // TODO: close and dispose websocket
+            Dispose(true);
         }
     }
 }

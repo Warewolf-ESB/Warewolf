@@ -28,23 +28,23 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
     {
-        private readonly IWebSocketFactory _webSocketFactory;
+        private readonly IWebSocketPool _webSocketPool;
         private readonly TimeSpan _waitTimeOut;
 
         public GetLogDataService()
-             : this(new WebSocketFactory(),TimeSpan.FromMinutes(5))
+             : this(new WebSocketPool(),TimeSpan.FromMinutes(5))
         {
         }
 
-        public GetLogDataService(IWebSocketFactory webSocketFactory,TimeSpan waitTimeOut)
+        public GetLogDataService(IWebSocketPool webSocketFactory,TimeSpan waitTimeOut)
         {
-            _webSocketFactory = webSocketFactory;
+            _webSocketPool = webSocketFactory;
             _waitTimeOut = waitTimeOut;
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var client = _webSocketFactory.New().Connect();
+            IWebSocketWrapper client = null;
             
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
             var serializer = new Dev2JsonSerializer();
@@ -57,6 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
             try
             {
+                client = _webSocketPool.Acquire(Config.Auditing.Endpoint).Connect();
                 var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
 
                 client.OnMessage((msgResponse, socket) =>
@@ -74,6 +75,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch (Exception e)
             {
                 Dev2Logger.Info("Get Log Data ServiceError", e, GlobalConstants.WarewolfInfo);
+            }
+            finally
+            {
+                _webSocketPool.Release(client);
             }
             return serializer.SerializeToBuilder("");
         }
