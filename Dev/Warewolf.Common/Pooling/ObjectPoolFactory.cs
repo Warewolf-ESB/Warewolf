@@ -15,9 +15,9 @@ namespace Warewolf.Pooling
 {
     public class ObjectPoolFactory<T> : IObjectPoolFactory<T> where T : class, new()
     {
-        public IObjectPool<T> New(Func<T> objectCreator)
+        public IObjectPool<T> New(Func<T> objectCreator, Func<T, bool> objectValidator)
         {
-            return new ObjectPool<T>(objectCreator);
+            return new ObjectPool<T>(objectCreator, objectValidator);
         }
     }
 }

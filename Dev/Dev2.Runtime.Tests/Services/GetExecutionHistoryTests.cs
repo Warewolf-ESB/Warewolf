@@ -99,7 +99,7 @@ namespace Dev2.Tests.Runtime.Services
             {
                { "ResourceId", new StringBuilder(GlobalConstants.DefaultLoggingSourceId) }
             };
-            var webSocketFactoryMock = new Mock<IWebSocketFactory>();
+            var webSocketFactoryMock = new Mock<IWebSocketPool>();
             var webSocketWrapperMock = new Mock<IWebSocketWrapper>();
             var commandMessage = "";
             var onMessage = new Action<string, IWebSocketWrapper>((s, w) => { });
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Runtime.Services
 
 
 
-            webSocketFactoryMock.Setup(c => c.New()).Returns(webSocketWrapperMock.Object);
+            webSocketFactoryMock.Setup(c => c.Acquire(Config.Auditing.Endpoint)).Returns(webSocketWrapperMock.Object);
 
             //------------------------------Act--------------------------------------
             var getExecutionHistory = new GetExecutionHistory(webSocketFactoryMock.Object, TimeSpan.FromMilliseconds(1));
