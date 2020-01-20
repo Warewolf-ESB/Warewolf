@@ -190,7 +190,7 @@ namespace Warewolf.Auditing.Tests
             Assert.AreEqual(expected: expectedException.Message, actual: actualAudit.Exception.Message);
         }
 
-        IStateAuditLogger GetIAuditStateLogger(IWebSocketPool webSocketFactory) => new StateAuditLogger(webSocketFactory);
+        IStateAuditLogger GetIAuditStateLogger(IWebSocketPool webSocketPool) => new StateAuditLogger(webSocketPool);
 
         void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
         {
@@ -233,10 +233,10 @@ namespace Warewolf.Auditing.Tests
             return mockedDataObject;
         }
 
-        void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketPool webSocketFactory)
+        void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IStateAuditLogger auditStateLogger, out Mock<IDev2Activity> activity, IWebSocketPool webSocketPool)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            auditStateLogger = GetIAuditStateLogger(webSocketFactory);
+            auditStateLogger = GetIAuditStateLogger(webSocketPool);
         }
 
         void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
