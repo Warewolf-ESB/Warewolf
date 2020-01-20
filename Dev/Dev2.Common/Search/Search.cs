@@ -17,14 +17,29 @@ namespace Dev2.Common.Search
 {
     public class Search : ISearch
     {
+        string _searchInput;
         public Search()
         {
             SearchInput = string.Empty;
             SearchOptions = new SearchOptions();
         }
-        public string SearchInput { get; set; }
+        public string SearchInput
+        {
+            get { return _searchInput; }
+            set
+            {
+                _searchInput = value;
+                OnPropertyChanged();
+            }
+        }
         public ISearchOptions SearchOptions { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public List<ISearchResult> GetSearchResults(List<ISearcher> searchers)
         {
             var searchResults = new List<ISearchResult>();  
