@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
 
     <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
+
+    <Configurations>Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
