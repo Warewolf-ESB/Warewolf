@@ -70,10 +70,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
 
             var environment = new ExecutionEnvironment();
-            GenResourceAndDataobject(key, hostName, password, port);
+            GenResourceAndDataobject(myKey, hostName, password, port);
 
             var assignActivity = new DsfMultiAssignActivity();
-            var redisActivityNew = SetupRedisActivity(_mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            var redisActivityNew = SetupRedisActivity(_mockResourceCatalog.Object, myKey, ttl, hostName, redisImpl, assignActivity);
 
             _scenarioContext.Add(nameof(RedisCacheActivity), redisActivityNew);
             _scenarioContext.Add(nameof(RedisCacheImpl), redisImpl);
@@ -201,6 +201,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             Assert.AreEqual(expValue, debugOutputs[listIndex].ResultsList[resultListIndex].Value);
             Assert.AreEqual(expVariable, debugOutputs[listIndex].ResultsList[resultListIndex].Variable);
         }
+
         [Given(@"I have a key ""(.*)"" with GUID and ttl of ""(.*)"" milliseconds")]
         public void GivenIHaveAKeyWithGUIDAndTtlOfMilliseconds(string key, int ttl)
         {
@@ -371,13 +372,13 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
             var ttl = _scenarioContext.Get<int>("ttl");
             var redisImpl = GetRedisCacheImpl(hostName, password, port);
 
-            GenResourceAndDataobject(key, hostName, password, port);
+            GenResourceAndDataobject(myKey, hostName, password, port);
 
             var dataStored = new List<ActivityDTO> { new ActivityDTO ("[[Var1]]", "Data in cache", 1 ) };
 
             var assignActivity = GetDsfMultiAssignActivity(dataStored);
 
-            var redisActivityNew = SetupRedisActivity(_mockResourceCatalog.Object, key, ttl, hostName, redisImpl, assignActivity);
+            var redisActivityNew = SetupRedisActivity(_mockResourceCatalog.Object, myKey, ttl, hostName, redisImpl, assignActivity);
 
             ExecuteCacheTool(redisActivityNew, _mockDataobject);
 
