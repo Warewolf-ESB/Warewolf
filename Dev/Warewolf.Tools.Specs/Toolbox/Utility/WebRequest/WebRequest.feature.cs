@@ -107,7 +107,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2791 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2789.AddRow(new string[] {
+            table2791.AddRow(new string[] {
                         "http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 13
@@ -188,7 +188,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2795 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2793.AddRow(new string[] {
+            table2795.AddRow(new string[] {
                         "http://[[site]][[file]] = http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 39
@@ -233,7 +233,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2797 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2795.AddRow(new string[] {
+            table2797.AddRow(new string[] {
                         "http://TFSBLD.premier.local:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/json\""});
 #line 55
@@ -279,7 +279,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2799 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2797.AddRow(new string[] {
+            table2799.AddRow(new string[] {
                         "http://TFSBLD.premier.local:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/xml\""});
 #line 70
@@ -319,7 +319,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2801 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2799.AddRow(new string[] {
+            table2801.AddRow(new string[] {
                         "http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 82
@@ -361,7 +361,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2803 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2801.AddRow(new string[] {
+            table2803.AddRow(new string[] {
                         "http://TFSBLD.premier.local:9810/api/products/Get",
                         ""});
 #line 95
@@ -751,7 +751,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2815 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table2813.AddRow(new string[] {
+            table2815.AddRow(new string[] {
                         "[[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx",
                         ""});
             table2815.AddRow(new string[] {
