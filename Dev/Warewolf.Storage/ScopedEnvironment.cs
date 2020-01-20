@@ -152,6 +152,9 @@ namespace Warewolf.Storage
 
         public HashSet<string> AllErrors => _inner.AllErrors;
 
+        public Guid Id => _inner.Id;
+        public Guid ParentId => _inner.ParentId;
+
         public void AddError(string error)
         {
             _inner.AddError(error);
@@ -219,6 +222,16 @@ namespace Warewolf.Storage
         public string ToJson()
         {
             return "";
+        }
+
+        public IExecutionEnvironment Snapshot()
+        {
+            return _inner.Snapshot();
+        }
+
+        public void FromJson(string serializedEnv)
+        {
+            
         }
     }
 }

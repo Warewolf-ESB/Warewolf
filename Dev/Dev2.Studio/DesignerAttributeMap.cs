@@ -111,6 +111,7 @@ using Dev2.Activities.RedisRemove;
 using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.RedisCounter;
+using Dev2.Activities.Designers2.Gate;
 
 namespace Dev2
 {
@@ -213,6 +214,7 @@ namespace Dev2
                 { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
+                { typeof(GateActivity), typeof(GateDesignerViewModel) }
             };
     }
 }

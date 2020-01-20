@@ -62,6 +62,8 @@ using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Instrumentation;
 using Dev2.Triggers;
+using Dev2.Dialogs;
+using Warewolf.Options;
 
 namespace Dev2.Core.Tests
 {
@@ -4185,6 +4187,64 @@ namespace Dev2.Core.Tests
             _shellViewModel.SaveAllAndCloseCommand.Execute(null);
             //---------------Test Result -----------------------
             surfaceContext.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ShellViewModel_AddWorkflowCommand_OpenResourcePicker()
+        {
+            var resourceId = Guid.NewGuid();
+            var resourceName = "ResourceName";
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(resourceModel => resourceModel.ResourceName).Returns(resourceName);
+            mockResourceModel.Setup(resourceModel => resourceModel.ID).Returns(resourceId);
+            mockResourceModel.Setup(resourceModel => resourceModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resourceModel => resourceModel.DataList).Returns("<DataList><scalar1 Description=\"\" IsEditable=\"True\" " +
+                                                                          "ColumnIODirection=\"Input\" /><scalar2 Description=\"\" IsEditable=\"True\" " +
+                                                                          "ColumnIODirection=\"Input\" /></DataList>");
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepo => resourceRepo.LoadContextualResourceModel(resourceId)).Returns(mockResourceModel.Object);
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.DisplayName).Returns("Localhost");
+            mockServer.Setup(server => server.Name).Returns("Localhost");
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockServer.SetupGet(server => server.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            var mockPopupController = new Mock<IBrowserPopupController>();
+            var mockViewFactory = new Mock<IViewFactory>();
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(explorerTreeItem => explorerTreeItem.ResourcePath).Returns(resourceName);
+            mockExplorerTreeItem.Setup(explorerTreeItem => explorerTreeItem.ResourceId).Returns(resourceId);
+
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            mockResourcePicker.Setup(resourcePicker => resourcePicker.ShowDialog(mockServer.Object)).Returns(true);
+            mockResourcePicker.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(repository => repository.ActiveServer).Returns(mockServer.Object);
+            mockServerRepository.Setup(repository => repository.Source).Returns(mockServer.Object);
+            mockServerRepository.Setup(repository => repository.All()).Returns(new List<IServer>());
+            CustomContainer.Register(mockServerRepository.Object);
+
+            var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
+
+            var optionWorkflow = new OptionWorkflow();
+            var optionView = new Warewolf.UI.OptionView(optionWorkflow, () => { });
+            shellViewModel.AddWorkflowCommand.Execute(optionView);
+
+            mockResourcePicker.Verify(resourcePicker => resourcePicker.ShowDialog(mockServer.Object), Times.Once());
+            mockResourceRepository.Verify(resourceRepo => resourceRepo.LoadContextualResourceModel(resourceId), Times.Once());
+            Assert.AreEqual(resourceId, optionWorkflow.Workflow.Value);
+            Assert.AreEqual(resourceId, optionWorkflow.Workflow.Value);
+            Assert.AreEqual(resourceName, optionWorkflow.Workflow.Name);
+            Assert.AreEqual(2, optionWorkflow.Workflow.Inputs.Count);
+            Assert.AreEqual("scalar1", optionWorkflow.Workflow.Inputs.ToList()[0].Name);
+            Assert.AreEqual("scalar2", optionWorkflow.Workflow.Inputs.ToList()[1].Name);
         }
 
         [TestMethod]

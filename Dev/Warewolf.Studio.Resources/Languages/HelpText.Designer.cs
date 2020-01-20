@@ -1390,6 +1390,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If the gate conditions fail and &quot;Retry&quot; has been selected, then select an existing gate to roll back to..
+        /// </summary>
+        public static string ExistingGatesHelp {
+            get {
+                return ResourceManager.GetString("ExistingGatesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/knowledge-base/.
         /// </summary>
         public static string ExpertHelpUrl {
@@ -1602,6 +1611,17 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string FormatNumberHelpRoundValue {
             get {
                 return ResourceManager.GetString("FormatNumberHelpRoundValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the gate conditions fail, this is the action will be executed. 
+        ///    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
+        ///    	&lt;br/&gt;StopOnError: will stop the execution..
+        /// </summary>
+        public static string GateFailuresHelp {
+            get {
+                return ResourceManager.GetString("GateFailuresHelp", resourceCulture);
             }
         }
         
@@ -2308,6 +2328,141 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string NewRabbitMQSourceHelp {
             get {
                 return ResourceManager.GetString("NewRabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionAutocompleteHelpText.
+        /// </summary>
+        public static string OptionAutocompleteHelpText {
+            get {
+                return ResourceManager.GetString("OptionAutocompleteHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionBoolHelpText.
+        /// </summary>
+        public static string OptionBoolHelpText {
+            get {
+                return ResourceManager.GetString("OptionBoolHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionComboboxHelpText.
+        /// </summary>
+        public static string OptionComboboxHelpText {
+            get {
+                return ResourceManager.GetString("OptionComboboxHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumGenHelpText.
+        /// </summary>
+        public static string OptionEnumGenHelpText {
+            get {
+                return ResourceManager.GetString("OptionEnumGenHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumHelpText.
+        /// </summary>
+        public static string OptionEnumHelpText {
+            get {
+                return ResourceManager.GetString("OptionEnumHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the retry count. .
+        /// </summary>
+        public static string OptionGateCountHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateCountHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the delay increment between every retry attempt.
+        /// </summary>
+        public static string OptionGateIncrementHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateIncrementHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set maximum retries. The tool will keep retrying until the maximum retry count is hit.
+        /// </summary>
+        public static string OptionGateMaxRetriesHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateMaxRetriesHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the resume workflow or API that will be executed on retry.
+        /// </summary>
+        public static string OptionGateResumeEndpointHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateResumeEndpointHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select whether the Gate Tool will resume on error.
+        /// </summary>
+        public static string OptionGateResumeHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateResumeHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry strategy that will be actioned &lt;br/&gt;&lt;br/&gt;&lt;b&gt;NoBackoff: &lt;/b&gt;On Error Retry Immediately&lt;br/&gt;&lt;br/&gt;&lt;b&gt;LinearBackoff:&lt;/b&gt; Delay increases along with every attempt on Linear curve.
+        /// </summary>
+        public static string OptionGateStrategyHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateStrategyHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the Timeout of each retry.
+        /// </summary>
+        public static string OptionGateTimeoutHelpText {
+            get {
+                return ResourceManager.GetString("OptionGateTimeoutHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionIntHelpText.
+        /// </summary>
+        public static string OptionIntHelpText {
+            get {
+                return ResourceManager.GetString("OptionIntHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set if the queue is durable.
+        /// </summary>
+        public static string OptionRabbitMqDurableHelpText {
+            get {
+                return ResourceManager.GetString("OptionRabbitMqDurableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionWorkflowHelpText.
+        /// </summary>
+        public static string OptionWorkflowHelpText {
+            get {
+                return ResourceManager.GetString("OptionWorkflowHelpText", resourceCulture);
             }
         }
         
@@ -4702,6 +4857,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Decision {
             get {
                 return ResourceManager.GetString("Tool_Flow_Decision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Gate tool when you need to stop, retry, rollback to previous gates on error..
+        /// </summary>
+        public static string Tool_Flow_Gate {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Gate", resourceCulture);
             }
         }
         

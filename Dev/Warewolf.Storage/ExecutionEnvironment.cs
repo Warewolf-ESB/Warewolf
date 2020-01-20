@@ -39,6 +39,7 @@ namespace Warewolf.Storage
             _env = PublicFunctions.CreateEnv(@"");
             Errors = new HashSet<string>();
             AllErrors = new HashSet<string>();
+            Id = Guid.NewGuid();
 
             _buildIndexMap = new BuildJObjectArrayIndexMapHelper(this);
         }
@@ -502,6 +503,8 @@ namespace Warewolf.Storage
         public HashSet<string> Errors { get; }
 
         public HashSet<string> AllErrors { get; }
+        public Guid Id { get; protected set; }
+        public Guid ParentId { get; protected set; }
 
         public void AddError(string error)
         {
@@ -694,7 +697,16 @@ namespace Warewolf.Storage
             EnvironmentToJsonHelper.FromJson(serializedEnv, this);
         }
 
-
+        public IExecutionEnvironment Snapshot()
+        {
+            var clonedExecutionEnvironment = MemberwiseClone() as ExecutionEnvironment;
+            clonedExecutionEnvironment.Id = Guid.NewGuid();
+            clonedExecutionEnvironment.ParentId = Id;
+            clonedExecutionEnvironment._env = PublicFunctions.CreateEnv(@"");
+            var executionEnvironmentToJson = ToJson();
+            clonedExecutionEnvironment.FromJson(executionEnvironmentToJson);
+            return clonedExecutionEnvironment;
+        }
 
         private class EnvironmentToJsonHelper : IDisposable
         {

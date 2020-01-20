@@ -1,0 +1,13 @@
+﻿<DataGrid x:Class="Warewolf.UI.InputsDataGrid"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          HorizontalAlignment="Stretch">
+    <DataGrid.RowStyle>
+        <Style TargetType="DataGridRow">
+            <EventSetter Event="Loaded" Handler="OnDataGridRowLoaded" />
+        </Style>
+    </DataGrid.RowStyle>
+</DataGrid>
