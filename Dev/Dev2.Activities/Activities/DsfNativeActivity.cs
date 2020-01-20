@@ -90,10 +90,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
 
         readonly IDebugDispatcher _debugDispatcher;
-        readonly bool _isExecuteAsync;
+        protected readonly bool _isExecuteAsync;
         string _previousParentInstanceID;
         IDebugState _debugState;
-        bool _isOnDemandSimulation;
+        protected bool _isOnDemandSimulation;
         IResourceCatalog _resourceCatalog;
 
         protected IDebugState DebugState => _debugState;
@@ -601,7 +601,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        void UpdateWithAssertions(IDSFDataObject dataObject)
+        protected void UpdateWithAssertions(IDSFDataObject dataObject)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (dataObject.IsServiceTestExecution)
@@ -1037,6 +1037,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid ActivityId { get; set; }
 
+        public bool IsGate { get; set; }
 
         public virtual FlowNode GetFlowNode()
         {

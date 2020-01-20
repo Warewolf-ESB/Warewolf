@@ -21,9 +21,17 @@ using Warewolf.Storage.Interfaces;
 using Dev2;
 using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Enums;
+using Warewolf.Data.Options;
 
 namespace Dev2.Interfaces
 {
+
+
+    public class RetryState
+    {
+        public int NumberOfRetries { get; set; }
+    }
+    
     public interface IDSFDataObject
     {
         Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
@@ -120,5 +128,6 @@ namespace Dev2.Interfaces
         IDev2WorkflowSettings Settings { get; set; }
         IStateNotifier StateNotifier { get; set; }
         Exception ExecutionException { get; set; }
+        IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; }
     }
 }

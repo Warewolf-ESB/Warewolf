@@ -36,6 +36,27 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Constructor_ShouldSet_Id()
+        {
+            var _environment = new ExecutionEnvironment();
+            
+            Assert.IsNotNull(_environment.Id);
+            Assert.AreNotEqual(Guid.Empty, _environment.Id);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Constructor_ShouldNotSet_ParentId()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            Assert.AreEqual(Guid.Empty, _environment.ParentId);
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_Assign_RecsetField()
@@ -44,6 +65,31 @@ namespace Warewolf.Storage.Tests
             _environment.Assign("[[rec().a]]", "bob", 0);
             var recordSet = _environment.GetCount("rec");
             Assert.AreEqual(1, recordSet);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Snapshot()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[rec().a]]", "bob", 0);
+
+            var originalEnvironment = _environment.Snapshot();
+
+            originalEnvironment.Assign("[[rec().a]]", "ralph", 0);
+            Assert.AreEqual("bob", _environment.EvalAsListOfStrings("[[rec().a]]", 0)[0]);
+
+            Assert.AreNotEqual(_environment, originalEnvironment);
+
+            var recordSet = _environment.GetCount("rec");
+            var originalEnvironmentResult = originalEnvironment.GetCount("rec");
+            Assert.AreEqual(1, recordSet);
+            Assert.AreEqual(2, originalEnvironmentResult);
+
+            Assert.AreNotEqual(Guid.Empty, originalEnvironment.Id);
+            Assert.AreNotEqual(Guid.Empty, originalEnvironment.ParentId);
+            Assert.AreEqual(_environment.Id, originalEnvironment.ParentId);
         }
 
         [TestMethod]

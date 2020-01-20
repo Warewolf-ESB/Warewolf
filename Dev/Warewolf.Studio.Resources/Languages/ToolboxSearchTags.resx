@@ -360,4 +360,7 @@
   <data name="Tool_AdvancedRecordset" xml:space="preserve">
     <value>execute SQL command on a recordset data source</value>
   </data>
+  <data name="Tool_Flow_Gate" xml:space="preserve">
+    <value>gate retry stop end</value>
+  </data>
 </root>

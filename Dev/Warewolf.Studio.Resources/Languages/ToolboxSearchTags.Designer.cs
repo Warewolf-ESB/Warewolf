@@ -376,6 +376,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to gate retry stop end.
+        /// </summary>
+        public static string Tool_Flow_Gate {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Gate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to consolidate cleanup group nest.
         /// </summary>
         public static string Tool_Flow_Sequence {

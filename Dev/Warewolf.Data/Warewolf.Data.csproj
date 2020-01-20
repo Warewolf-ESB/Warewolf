@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -19,5 +20,12 @@
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Reference Include="System.Activities">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Activities.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Activities.Presentation">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Activities.Presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
