@@ -197,8 +197,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 
         private void AssertDebugItems(List<DebugItem> debugOutputs, int listIndex, int resultListIndex, string expLabel, string expVariable, string expOparator, string expValue)
         {
-            var myKey = _scenarioContext.Get<string>("key");
-            Assert.AreEqual(expLabel.Replace("MyData", myKey), debugOutputs[listIndex].ResultsList[resultListIndex].Label);
+            var myKey = _scenarioContext.Get<string>("key2");
+            Assert.AreEqual(expLabel?.Replace("MyData", myKey), debugOutputs[listIndex].ResultsList[resultListIndex].Label);
             Assert.AreEqual(expValue, debugOutputs[listIndex].ResultsList[resultListIndex].Value);
             Assert.AreEqual(expVariable, debugOutputs[listIndex].ResultsList[resultListIndex].Variable);
         }
