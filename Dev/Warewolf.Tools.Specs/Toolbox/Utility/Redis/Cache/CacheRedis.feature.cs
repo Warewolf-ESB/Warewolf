@@ -390,12 +390,12 @@ this.ScenarioSetup(scenarioInfo);
                         "null",
                         "[[Var1]]",
                         "=",
-                        "\"Test1\""});
+                        "\"Test21\""});
             table2789.AddRow(new string[] {
                         "null",
                         "[[Var2]]",
                         "=",
-                        "\"Test2\""});
+                        "\"Test22\""});
 #line 101
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2789, "Then ");
 #line hidden
