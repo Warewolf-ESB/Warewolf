@@ -94,7 +94,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             finally
             {
-                _webSocketPool.Release(client);
+                if (client != null)
+                {
+                    _webSocketPool.Release(client);
+                }
             }
         }
 
