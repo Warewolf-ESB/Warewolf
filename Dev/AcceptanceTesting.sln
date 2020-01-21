@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.902
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Specs", "Dev2.Activities.Specs\Dev2.Activities.Specs.csproj", "{A03004BE-79B5-47AF-88EF-112197619A5F}"
 EndProject
@@ -354,8 +354,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog.Tests", "Warewolf.Driver.Serilog.Tests\Warewolf.Driver.Serilog.Tests.csproj", "{DD6E9C07-E364-4701-80E4-6896CE1E46CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UnitTestAttributes", "Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj", "{4A455098-FFDD-4861-B873-656F960CF0BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer.Tests", "Dev2.Runtime.WebServerTests\Dev2.Runtime.WebServer.Tests.csproj", "{9E063689-9F46-444F-90AA-12DBFB62B513}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
