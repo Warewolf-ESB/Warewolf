@@ -75,7 +75,10 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 	Then "RedisActivity2" output variables have the following values
 		| label							| variable		| operator	| value		|
 		|	Redis key { MyData } found	|  null			|			|			|
-		|			null				| [[Var1]]		|	 =		| "Test1"	|
+		|			null				| [[Var1]]		|	 =		| "Test21"	|
+		|			null				| [[Var2]]		|	 =		| "Test22"	|
+		|			null				| [[Var3]]		|	 =		| "Test23"	|
+		|			null				| [[Var4]]		|	 =		| "Test24"	|
 
 
 Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
@@ -105,7 +108,3 @@ Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
 		|			null				| [[Var2]]		|	 =		| "Test22"	|
 		|			null				| [[Var3]]		|	 =		| "Test23"	|
 		|			null				| [[Var4]]		|	 =		| "Test24"	|
-	And the Execution Environment has these error
-	| error									|
-	|   cached data missing key: [[Var3]]   |
-	|   cached data missing key: [[Var4]]   |
