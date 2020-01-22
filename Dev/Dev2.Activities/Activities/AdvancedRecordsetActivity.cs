@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -28,6 +28,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TSQL;
+using TSQL.Clauses;
 using TSQL.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -156,6 +157,11 @@ namespace Dev2.Activities
             }
         }
 
+        public Dictionary<string, List<string>> GetIdentifiers()
+        {
+            return _worker.GetIdentifiers();
+        }
+
         public bool Equals(AdvancedRecordsetActivity other)
         {
             if (other is null)
@@ -212,6 +218,7 @@ namespace Dev2.Activities
         void AddValidationErrors(ErrorResultTO allErrors);
         void ExecuteSql(int update, ref bool started);
         void ExecuteRecordset(IDSFDataObject dataObject, int update);
+        Dictionary<string, List<string>> GetIdentifiers();
     }
 
     internal class AdvancedRecordsetActivityWorker : IAdvancedRecordsetActivityWorker
@@ -442,8 +449,6 @@ namespace Dev2.Activities
             }
         }
 
-        
-
         public void ExecuteRecordset(IDSFDataObject dataObject, int update)
         {
             var env = dataObject.Environment;
@@ -483,6 +488,40 @@ namespace Dev2.Activities
             {
                 _advancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
             }
+        }
+
+        public Dictionary<string, List<string>> GetIdentifiers()
+        {
+            Dictionary<string, List<string>> identifiers = new Dictionary<string, List<string>>();
+
+            try
+            {
+                var queryText = AddSqlForVariables(_activity.SqlQuery);
+                var statements = TSQLStatementReader.ParseStatements(queryText);
+
+                List<string> identifierVariables = null;
+
+                foreach (var statement in statements)
+                {
+                    if (statement.Type == TSQLStatementType.Select)
+                    {
+                        foreach (var table in statement.GetAllTables())
+                        {
+                            var key = table.TableName;
+
+                            identifierVariables = new List<string>();
+
+                            identifierVariables.AddRange(statement.Tokens.Where(a => a.Type == TSQL.Tokens.TSQLTokenType.Identifier && a.Text != key).Select(a => a.Text));
+
+                            identifiers.Add(key, identifierVariables);
+                        }
+                    }
+                }
+            }
+
+            catch { }
+
+            return identifiers;
         }
 
         public void Dispose()
