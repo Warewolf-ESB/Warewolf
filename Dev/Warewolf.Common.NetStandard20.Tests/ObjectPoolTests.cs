@@ -11,9 +11,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
-using Warewolf.Pooling;
 
-namespace Warewolf.Common.NetStandard20.Tests
+namespace Warewolf.Pooling.Tests
 {
     [TestClass]
     public class ObjectPoolTests

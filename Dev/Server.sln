@@ -143,8 +143,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Interfaces", "Ware
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common", "Warewolf.Common\Warewolf.Common.csproj", "{8C5FD042-6976-4D82-A6AA-610557F5CD76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Tests", "Warewolf.Common.Tests\Warewolf.Common.Tests.csproj", "{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -596,14 +594,6 @@ Global
 		{8C5FD042-6976-4D82-A6AA-610557F5CD76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C5FD042-6976-4D82-A6AA-610557F5CD76}.Release|x86.ActiveCfg = Release|Any CPU
 		{8C5FD042-6976-4D82-A6AA-610557F5CD76}.Release|x86.Build.0 = Release|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Debug|x86.Build.0 = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Release|x86.ActiveCfg = Debug|Any CPU
-		{0B9E4206-5AC5-4A6C-BD25-7E7EF0F54A27}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
