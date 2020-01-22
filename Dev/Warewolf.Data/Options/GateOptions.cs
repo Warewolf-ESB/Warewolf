@@ -50,7 +50,7 @@ namespace Warewolf.Data.Options
         }
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
-        [MultiDataProvider(typeof(NoBackoff), typeof(ConstantBackoff), typeof(LinearBackoff), typeof(FibonacciBackoff), typeof(QuadraticBackoff))]
+        [MultiDataProvider(typeof(NoBackoff), typeof(ConstantBackoff), typeof(LinearBackoff), typeof(FibonacciBackoff))]
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateStrategyHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateStrategyToolTip))]
         public RetryAlgorithmBase Strategy { get; set; } = new NoBackoff();
