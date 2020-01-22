@@ -14,8 +14,7 @@
                                xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="440"
-                               Height="440"
+                               Height="Auto"
                                MaxWidth="450"
                                mc:Ignorable="d" 
                                d:DesignHeight="450" 
@@ -45,7 +44,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -98,25 +96,9 @@
                 </ListBox>
             </Grid>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Gate Failure"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="On Failure"/>
 
             <Grid Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="40*"/>
-                </Grid.ColumnDefinitions>
-                <ComboBox x:Name="cbGateFailures"
-                          Grid.Column="0"
-                          ItemsSource="{Binding GateFailureOptions}"
-                          SelectedValuePath="Name"
-                          ToolTip="{x:Static languages:Tooltips.GateFailuresToolTip}"
-                          IsEditable="False"
-                          Margin="{StaticResource ControlBorderRight}"
-                          SelectedItem="{Binding SelectedGateFailure, Mode=TwoWay}">
-                    <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.GateFailuresHelp}" DataContext="{Binding}" />
-                    </i:Interaction.Behaviors>
-                </ComboBox>
                 <ComboBox x:Name="cbExistingGates"
                           Grid.Column="1"
                           ItemsSource="{Binding Gates, UpdateSourceTrigger=PropertyChanged}"
@@ -133,38 +115,54 @@
             </Grid>
         </Grid>
 
-        <Expander Grid.Row="2" Header="Resume"
-                  Style="{StaticResource ServiceTestTestStepExpander}" 
-                  IsExpanded="{Binding IsExpanded}">
-            <ListBox x:Name="OptionsListBox" 
+        <GroupBox x:Name="OnErrorGroupBox"             
+                  Style="{StaticResource ActivityGroupBoxStyle}"
+                  VerticalContentAlignment="Stretch"
+                  Grid.Row="2"
+                  Width="Auto">
+            <GroupBox.Header>
+                <TextBlock Text="On Resume" Margin="1" Padding="1" />
+            </GroupBox.Header>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Execute this"/>
+
+                <Border BorderBrush="#CFD6E1"
+                        BorderThickness="1"
+                        Grid.Row="1"
+                        CornerRadius="12">
+                    <sap:WorkflowItemPresenter x:Name="DropPoint"
+                                               AllowDrop="False"
+                                               HintText="Drop Activity Here"
+                                               BorderBrush="Black"
+                                               BorderThickness="2"
+                                               MinHeight="50"
+                                               Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
+                        <AutomationProperties.AutomationId>
+                            <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                                <Binding Path="ModelItem.AutomationID" />
+                            </MultiBinding>
+                        </AutomationProperties.AutomationId>
+                    </sap:WorkflowItemPresenter>
+                </Border>
+
+                <ListBox x:Name="OptionsListBox" 
+                         Grid.Row="2"
                          ItemsSource="{Binding Options, Converter={StaticResource OptionViewConverter}}" 
                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Margin="{StaticResource ControlBorderTop}"
                          Padding="0,3,3,3">
-            </ListBox>
-        </Expander>
+                </ListBox>
+            </Grid>
+        </GroupBox>
 
-        <Border BorderBrush="#CFD6E1"
-                BorderThickness="1"
-                Margin="1,3,0,0"
-                Grid.Row="3"
-                Visibility="{Binding AllowResumeCallback, Converter={StaticResource BoolToVisibilityConverter}}"
-                CornerRadius="12">
-            <sap:WorkflowItemPresenter x:Name="DropPoint"
-                                       AllowDrop="False"
-                                       HintText="Drop Activity Here"
-                                       BorderBrush="Black"
-                                       BorderThickness="2"
-                                       MinHeight="50"
-                                       Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
-                        <Binding Path="ModelItem.AutomationID" />
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
-            </sap:WorkflowItemPresenter>
-        </Border>
-
-        <errors:OnError Grid.Row="4" />
+        <errors:OnError Grid.Row="3" />
     </Grid>
 </core:ActivityDesignerTemplate>
