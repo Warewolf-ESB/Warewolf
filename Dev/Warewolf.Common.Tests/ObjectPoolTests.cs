@@ -26,7 +26,7 @@ namespace Warewolf.Pooling.Tests
         {
             //--------------Arrange------------------------------
             //--------------Act----------------------------------
-            var result = new ObjectPoolFactory<TestClass>().New(null);
+            var result = new ObjectPoolFactory<TestClass>().New(null, null);
             //--------------Assert-------------------------------
         }
 
@@ -37,7 +37,7 @@ namespace Warewolf.Pooling.Tests
         {
             //--------------Arrange------------------------------
             TestClass expectedResult = new TestClass();
-            var objectPool = new ObjectPoolFactory<TestClass>().New(() => expectedResult);
+            var objectPool = new ObjectPoolFactory<TestClass>().New(() => expectedResult, null);
 
             Parallel.For(0, 1000, (i, loopState) =>
             {
@@ -60,7 +60,7 @@ namespace Warewolf.Pooling.Tests
         {
             //--------------Arrange------------------------------
             TestClass expectedResult = new TestClass();
-            var objectPool = new ObjectPoolFactory<TestClass>().New(() => expectedResult);
+            var objectPool = new ObjectPoolFactory<TestClass>().New(() => expectedResult, null);
 
             Parallel.For(0, 1000, (i, loopState) =>
             {
