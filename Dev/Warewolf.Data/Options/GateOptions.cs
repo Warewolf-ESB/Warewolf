@@ -167,29 +167,6 @@ namespace Warewolf.Data.Options
         }
     }
 
-    public class QuadraticBackoff : RetryAlgorithmBase
-    {
-        public QuadraticBackoff()
-        {
-            RetryAlgorithm = RetryAlgorithm.QuadraticBackoff;
-        }
-
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateMaxRetriesHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateMaxRetriesToolTip))]
-        public int MaxRetries { get; set; } = 2;
-        public override IEnumerable<bool> Create()
-        {
-            var increment = 0;
-            for (var i = 0; i < MaxRetries; i++)
-            {
-                Task.Delay(i * increment).Wait();
-                yield return true;
-            }
-
-            yield return false;
-        }
-    }
-
     public class ConditionExpression : IOptionConvertable
     {
         public string Left { get; set; }

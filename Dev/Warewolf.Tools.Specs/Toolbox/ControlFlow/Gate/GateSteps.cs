@@ -284,9 +284,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
                     case "FibonacciBackoff":
                         optionsResume.Strategy = new FibonacciBackoff();
                         break;
-                    case "QuadraticBackoff":
-                        optionsResume.Strategy = new QuadraticBackoff();
-                        break;
                 }
             }
         }
