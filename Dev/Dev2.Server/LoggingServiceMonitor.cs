@@ -28,7 +28,7 @@ namespace Dev2
         }
 
         protected override IEnumerable<IJobConfig> GetConfigs()
-            => new IJobConfig[] { new JobConfig(Guid.NewGuid()) };
+            => new IJobConfig[] { new JobConfig(Guid.NewGuid(),1) };
         protected override ProcessThreadList NewThreadList(IJobConfig config) => new LoggingServiceThreadList(_childProcessTracker, _processFactory, config);
     }
     public class LoggingServiceThreadList : ProcessThreadList
