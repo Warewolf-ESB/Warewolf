@@ -605,6 +605,14 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add($"[[{identifier.Key}()]]");
                         results.AddRange(identifier.Value.Select(a => $"[[{identifier.Key}().{a}]]"));
+
+                        if (maAct.Outputs != null)
+                        {
+                            //Find out identifier variables which are not in Outputs
+                            var outputVariables = maAct.Outputs.Where(b => !results.Contains($"[[{identifier.Key}().{b.MappedFrom}]]"));
+
+                            results.AddRange(outputVariables.Select(a => $"[[{identifier.Key}().{a.MappedFrom}]]"));
+                        }
                     }
                 }
                 if (maAct.Inputs != null)
