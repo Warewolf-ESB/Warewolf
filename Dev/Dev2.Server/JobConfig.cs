@@ -22,8 +22,8 @@ namespace Dev2
             this.guid = guid;
         }
         public JobConfig(Guid guid,int concurrency)
+            : this(guid)
         {
-            this.guid = guid;
             this.Concurrency = concurrency;
         }
         public Guid Id => guid;
