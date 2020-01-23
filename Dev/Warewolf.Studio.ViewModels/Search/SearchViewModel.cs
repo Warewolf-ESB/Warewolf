@@ -94,9 +94,16 @@ namespace Dev2.ViewModels.Search
             return environmentViewModel;
         }
 
-        void UpdateServerCompareChanged(object sender, Guid environmentid)
+        async void UpdateServerCompareChanged(object sender, Guid environmentid)
         {
+            IsSearching = true;
+
+            var environmentViewModel = CreateEnvironmentViewModelAsync(sender, environmentid, false);
+            SelectedEnvironment = await environmentViewModel.ConfigureAwait(true);
+
             UpdateServerSearchAllowed();
+
+            IsSearching = false;
         }
 
         private void UpdateServerSearchAllowed()
