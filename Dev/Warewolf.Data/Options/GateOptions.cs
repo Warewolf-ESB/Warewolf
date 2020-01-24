@@ -28,7 +28,7 @@ namespace Warewolf.Data.Options
 
         [DataValue(nameof(OnResumeBase.Resume))]
         [MultiDataProvider(typeof(Continue), typeof(EndWorkflow))]
-        [OptionUX(nameof(OptionRadioButton))]
+        [OptionUX(nameof(OptionRadioButtons))]
         public OnResumeBase GateOpts { get; set; } = new Continue();
     }
 
