@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Warewolf.Data;
+using Warewolf.Data.Options;
 
 namespace Warewolf.Options
 {
@@ -425,6 +426,121 @@ namespace Warewolf.Options
         }
     }
 
+    public class OptionRadioButton : BindableBase, IOptionRadioButton
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private string _helpText = Studio.Resources.Languages.HelpText.OptionRadioButtonHelpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
+
+        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionRadioButtonTooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
+
+        public Dictionary<string, IEnumerable<IOption>> Options { get; } = new Dictionary<string, IEnumerable<IOption>>();
+
+        private List<OptionName> _list;
+        public List<OptionName> OptionNames
+        {
+            get
+            {
+                if (_list is null)
+                {
+                    _list = Options.Keys.Select(o => new OptionName(this, o)).ToList();
+                }
+                return _list;
+            }
+        }
+        public class OptionName : IDisposable
+        {
+            private OptionRadioButton _optionRadioButton;
+
+            public OptionName(OptionRadioButton optionRadioButton, string name)
+            {
+                this._optionRadioButton = optionRadioButton;
+                Name = name;
+            }
+
+            public string Name { get; }
+            public bool IsChecked
+            {
+                get => _optionRadioButton.Value == Name;
+                set
+                {
+                    if (value)
+                    {
+                        _optionRadioButton.Value = Name;
+                    }
+                }
+            }
+
+            public void Dispose()
+            {
+                _optionRadioButton = null;
+            }
+        }
+
+        public IEnumerable<IOption> SelectedOptions
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Value))
+                {
+                    return new List<IOption>();
+                }
+                return Options[Value];
+            }
+        }
+
+        private string _value;
+
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                if (SetProperty(ref _value, value))
+                {
+                    RaisePropertyChanged(nameof(SelectedOptions));
+                }
+            }
+        }
+
+        public Orientation Orientation { get; set; }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionRadioButton;
+            if (item is null)
+            {
+                return -1;
+            }
+
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | string.Compare(item.Value, Value);
+        }
+    }
+
     public class OptionWorkflow : BindableBase, IOptionWorkflow
     {
         private string _helpText = Studio.Resources.Languages.HelpText.OptionWorkflowHelpText;
@@ -556,8 +672,8 @@ namespace Warewolf.Options
         public enDecisionType MatchType { get; set; }
 
         private string _right;
-        public string Right 
-        { 
+        public string Right
+        {
             get => _right;
             set
             {
@@ -566,8 +682,8 @@ namespace Warewolf.Options
         }
 
         private string _from;
-        public string From 
-        { 
+        public string From
+        {
             get => _from;
             set
             {
@@ -576,8 +692,8 @@ namespace Warewolf.Options
         }
 
         private string _to;
-        public string To 
-        { 
+        public string To
+        {
             get => _to;
             set
             {

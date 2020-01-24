@@ -2458,6 +2458,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OptionRadioButtonHelpText.
+        /// </summary>
+        public static string OptionRadioButtonHelpText {
+            get {
+                return ResourceManager.GetString("OptionRadioButtonHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OptionWorkflowHelpText.
         /// </summary>
         public static string OptionWorkflowHelpText {

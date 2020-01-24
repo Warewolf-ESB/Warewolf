@@ -93,6 +93,10 @@ namespace Dev2.Activities.Designers2.Gate
                 var nameValue = Gates.First(o => o.Value == id.ToString());
                 SelectedGate = nameValue;
             }
+            else
+            {
+                SelectedGate = Gates[0];
+            }
         }
 
         public bool IsExpanded
@@ -103,16 +107,6 @@ namespace Dev2.Activities.Designers2.Gate
                 _isExpanded = value;
                 OnPropertyChanged(nameof(IsExpanded));
             }
-        }
-
-        public bool AllowResumeCallback
-        {
-            get
-            {
-                var allowResumption = Options.Options[0] as OptionCombobox;
-                return allowResumption?.Value == Resumable.AllowResumption.ToString();
-            }
-
         }
 
         private void LoadGates()
@@ -140,18 +134,15 @@ namespace Dev2.Activities.Designers2.Gate
         private void LoadOptions()
         {
             var gateOptions = _modelItem.Properties["GateOptions"].ComputedValue as GateOptions;
-            if (gateOptions != null)
+            if (gateOptions is null)
             {
-                var result = new List<IOption>();
-                var failureOptions = OptionConvertor.Convert(gateOptions);
-                result.AddRange(failureOptions);
-                Options = new OptionsWithNotifier { Options = result };
+                gateOptions = new GateOptions();
+                _modelItem.Properties["GateOptions"].SetValue(gateOptions);
             }
-            else
-            {
-                Options = new OptionsWithNotifier { Options = OptionConvertor.Convert(new GateOptions()) };
-            }
-            UpdateOptionsModelItem();
+            var result = new List<IOption>();
+            var failureOptions = OptionConvertor.Convert(gateOptions);
+            result.AddRange(failureOptions);
+            Options = new OptionsWithNotifier { Options = result };
         }
 
         public ICommand DeleteConditionCommand { get; set; }
@@ -255,16 +246,9 @@ namespace Dev2.Activities.Designers2.Gate
         {
             if (Options?.Options != null)
             {
-                if (_modelItem.Properties["GateOptions"]?.ComputedValue is GateOptions gateOptions)
-                {
-                    _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
-                }
-                else
-                {
-                    _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options));
-                }
+                var gateOptions = _modelItem.Properties["GateOptions"]?.ComputedValue as GateOptions;
+                _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options, gateOptions));
                 OnPropertyChanged(nameof(Options));
-                OnPropertyChanged(nameof(AllowResumeCallback));
             }
         }
 
@@ -357,7 +341,7 @@ namespace Dev2.Activities.Designers2.Gate
 
         public void ClearGates()
         {
-            Gates = new List<NameValue> { new NameValue { Name = " - Select Gate - ", Value = Guid.Empty.ToString() } };
+            Gates = new List<NameValue> { new NameValue { Name = "End", Value = Guid.Empty.ToString() } };
         }
     }
 }

@@ -76,6 +76,10 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionComboBoxStyle";
                 }
+                if (DataContext is IOptionRadioButton optionRadioButton)
+                {
+                    dataTemplateName = "OptionRadioButtonStyle";
+                }
                 if (DataContext is OptionConditionExpression optionConditionList)
                 {
                     dataTemplateName = "ConditionExpressionStyle";

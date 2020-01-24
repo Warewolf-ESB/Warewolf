@@ -3195,42 +3195,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("NewRedisSourceTooltip", resourceCulture);
             }
         }
-        /// <summary>
-        ///   Looks up a localized string similar to Create a new counter key.
-        /// </summary>
-        public static string RedisCounterKeyToolTip
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisCounterKeyToolTip", resourceCulture);
-            }
-        }
-        /// <summary>
-        ///   Looks up a localized string similar to Create a step size for the Redis Counter.
-        /// </summary>
-        public static string RedisCounterStepSizeToolTip
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisCounterStepSizeToolTip", resourceCulture);
-            }
-        }
-        public static string RedisCounterTypeIncrementToolTip
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisCounterTypeIncrementToolTip", resourceCulture);
-            }
-        }
-        public static string RedisCounterTypeDecrementToolTip
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisCounterTypeDecrementToolTip", resourceCulture);
-            }
-        }
         
-            
         /// <summary>
         ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
@@ -3304,13 +3269,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connect using a specific account.
-        /// </summary>
-        public static string PasswordAuthenticationToolTip {
-            get {
-                return ResourceManager.GetString("PasswordAuthenticationToolTip", resourceCulture);
-	    }
-	}
         ///   Looks up a localized string similar to OptionAutocompleteTooltip.
         /// </summary>
         public static string OptionAutocompleteTooltip {
@@ -3437,11 +3395,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OptionRadioButtonTooltip.
+        /// </summary>
+        public static string OptionRadioButtonTooltip {
+            get {
+                return ResourceManager.GetString("OptionRadioButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OptionWorkflowTooltip.
         /// </summary>
         public static string OptionWorkflowTooltip {
             get {
                 return ResourceManager.GetString("OptionWorkflowTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using a specific account.
+        /// </summary>
+        public static string PasswordAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("PasswordAuthenticationToolTip", resourceCulture);
             }
         }
         
@@ -3920,6 +3896,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redis Key to create a counter.
+        /// </summary>
+        public static string RedisCounterKeyToolTip {
+            get {
+                return ResourceManager.GetString("RedisCounterKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Step Size to increment or decrement a counter.
+        /// </summary>
+        public static string RedisCounterStepSizeToolTip {
+            get {
+                return ResourceManager.GetString("RedisCounterStepSizeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Decrement a counter.
+        /// </summary>
+        public static string RedisCounterTypeDecrementToolTip {
+            get {
+                return ResourceManager.GetString("RedisCounterTypeDecrementToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Increment a counter.
+        /// </summary>
+        public static string RedisCounterTypeIncrementToolTip {
+            get {
+                return ResourceManager.GetString("RedisCounterTypeIncrementToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Redis Server Source.
         /// </summary>
         public static string RedisEditSourceToolTip {
@@ -3929,30 +3941,14 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis Key to store data.
+        ///   Looks up a localized string similar to Key to store data into Redis cache.
         /// </summary>
         public static string RedisKeyToolTip {
             get {
                 return ResourceManager.GetString("RedisKeyToolTip", resourceCulture);
             }
         }
-        public static string RedisRemoveKeyToolTip
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisRemoveKeyToolTip", resourceCulture);
-            }
-        }
-        /// <summary>
-        /// Looks up a localized string similar to Redis Result 
-        /// </summary>
-        public static string RedisRemoveResultToolTip
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisRemoveResultToolTip", resourceCulture);
-            }
-        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Create a new Redis Server Source.
         /// </summary>
@@ -3972,11 +3968,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redis Key to remove data from cache.
+        /// </summary>
+        public static string RedisRemoveKeyToolTip {
+            get {
+                return ResourceManager.GetString("RedisRemoveKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns Success if the key was found and removed or Failure otherwise..
+        /// </summary>
+        public static string RedisRemoveResultToolTip {
+            get {
+                return ResourceManager.GetString("RedisRemoveResultToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a preconfigured redis source..
         /// </summary>
-        public static string RedisSourcesToolTip {
+        public static string RedisServersToolTip {
             get {
-                return ResourceManager.GetString("RedisSourcesToolTip", resourceCulture);
+                return ResourceManager.GetString("RedisServersToolTip", resourceCulture);
             }
         }
         
@@ -4017,7 +4031,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redis TTL (Time To Live).
+        ///   Looks up a localized string similar to Time in seconds before the key expires. Default is 5 Seconds..
         /// </summary>
         public static string RedisTTLToolTip {
             get {
@@ -5505,18 +5519,7 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("Tool_Data_Assign_Object", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Tags: s.
-        /// </summary>
-        public static string Tool_Database_RedisCache
-        {
-            get
-            {
-                return ResourceManager.GetString("Tool_Database_RedisCache", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tags: text binary base 64 base64 hex.
         /// </summary>
@@ -5604,6 +5607,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Database_PostgreSQL {
             get {
                 return ResourceManager.GetString("Tool_Database_PostgreSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: cache data under a specified key.
+        /// </summary>
+        public static string Tool_Database_RedisCache {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to increment/decrement the number stored at key by one.
+        /// </summary>
+        public static string Tool_Database_RedisCounter {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: removes the specified key and data from cache.
+        /// </summary>
+        public static string Tool_Database_RedisRemove {
+            get {
+                return ResourceManager.GetString("Tool_Database_RedisRemove", resourceCulture);
             }
         }
         

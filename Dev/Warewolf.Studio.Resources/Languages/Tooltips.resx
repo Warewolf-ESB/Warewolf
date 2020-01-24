@@ -2480,4 +2480,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="OptionRabbitMqDurableToolTip" xml:space="preserve">
     <value>Set if the queue is durable</value>
   </data>
+  <data name="OptionRadioButtonTooltip" xml:space="preserve">
+    <value>OptionRadioButtonTooltip</value>
+  </data>
 </root>

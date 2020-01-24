@@ -158,7 +158,7 @@
                          ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
                          Margin="{StaticResource ControlBorderTop}"
-                         Padding="0,3,3,3">
+                         BorderBrush="Transparent">
                 </ListBox>
             </Grid>
         </GroupBox>
