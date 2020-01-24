@@ -29,14 +29,14 @@ namespace Warewolf.Data.Options
         [DataValue(nameof(OnResumeBase.Resume))]
         [MultiDataProvider(typeof(Continue), typeof(EndWorkflow))]
         [OptionUX(nameof(OptionRadioButtons))]
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
+        [Orientation(Orientation.Horizontal)]
         public OnResumeBase GateOpts { get; set; } = new Continue();
     }
 
     public class OnResumeBase
     {
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
-        [Orientation(Orientation.Horizontal)]
         public GateResumeAction Resume { get; protected set; } = GateResumeAction.Continue;
     }
 
@@ -65,12 +65,8 @@ namespace Warewolf.Data.Options
     public enum GateResumeAction
     {
         [Description("End this workflow")]
-        [HelpText("Stop execution")]
-        [Tooltip("End this workflow")]
         EndWorkflow = 0,
         [Description("Continue")]
-        [HelpText("Continue execution")]
-        [Tooltip("Continue")]
         Continue = 1,
     }
 

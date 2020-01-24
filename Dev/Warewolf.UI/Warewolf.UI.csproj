@@ -56,6 +56,7 @@
     <Compile Include="OptionView.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" />
     <Compile Include="OptionViewConverter.cs" />
+    <Compile Include="OrientationConverter.cs" />
     <Compile Include="ValidatedObject.cs" />
     <Compile Include="WorkflowNameConverter.cs" />
   </ItemGroup>

@@ -435,14 +435,14 @@ namespace Warewolf.Options
             set => SetProperty(ref _name, value);
         }
 
-        private string _helpText = Studio.Resources.Languages.HelpText.OptionRadioButtonHelpText;
+        private string _helpText;
         public string HelpText
         {
             get => _helpText;
             set => SetProperty(ref _helpText, value);
         }
 
-        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionRadioButtonTooltip;
+        private string _tooltip;
         public string Tooltip
         {
             get => _tooltip;
