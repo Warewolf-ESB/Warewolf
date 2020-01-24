@@ -351,6 +351,73 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="OptionRadioButtonStyle" DataType="{x:Type options:OptionRadioButton}">
+        <Grid x:Name="RadioButtonGrid" Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ListBox x:Name="OptionsListBox" 
+                         ItemsSource="{Binding Path=OptionNames}" 
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle1}"
+                         BorderBrush="Transparent"
+                         HorizontalContentAlignment="Stretch"
+                         Margin="0,0,-1,0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Content="{Binding Path=Name}"
+                                         GroupName="OptionName"
+                                         IsChecked="{Binding Path=IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Margin="{StaticResource ControlBorderRight}"
+                                         ToolTip="{Binding Path=DataContext.Tooltip, ElementName=RadioButtonGrid}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{Binding Path=DataContext.HelpText, ElementName=RadioButtonGrid}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                                </i:Interaction.Behaviors>
+                            </RadioButton>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ContentPresenter ContentTemplate="{StaticResource OptionListBoxStyle}" DataContext="{Binding .}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionRadioButtonStyle1" DataType="{x:Type options:OptionRadioButton}">
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+            <RadioButton Content="{Binding Path=Name}"
+                        IsChecked="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center"
+                        Margin="{StaticResource ControlBorderRight}"
+                        ToolTip="{Binding Path=Tooltip}"
+                        IsEnabled="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                </i:Interaction.Behaviors>
+            </RadioButton>
+        </Grid>
+    </DataTemplate>
+    
     <DataTemplate x:Key="OptionListBoxStyle" DataType="{x:Type options:OptionCombobox}">
         <Grid DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
             <ListBox x:Name="OptionsListBox" 

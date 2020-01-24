@@ -185,7 +185,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var expectedNextActivity = new Mock<IDev2Activity>();
             var expectedRetryActivity = new GateActivity();
-            expectedRetryActivity.GateOptions.GateOpts = new AllowResumption();
+            expectedRetryActivity.GateOptions.GateOpts = new Continue();
 
             var expectedRetryActivityId = Guid.NewGuid();
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
@@ -308,7 +308,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedRetryActivity = new GateActivity();
             var expectedRetryActivityId = Guid.NewGuid();
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
-            expectedRetryActivity.GateOptions.GateOpts = new AllowResumption();
+            expectedRetryActivity.GateOptions.GateOpts = new Continue();
 
             //---------------Set up test pack-------------------
             var condition = new ConditionExpression
@@ -491,7 +491,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 NextNodes = new List<IDev2Activity> { secondGate },
                 GateOptions = new GateOptions()
                 {
-                    GateOpts = new AllowResumption()// { ResumeEndpoint = expectedWorkflow }
+                    GateOpts = new Continue()// { ResumeEndpoint = expectedWorkflow }
                 }
             };
 

@@ -87,7 +87,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.IsTrue(gateDesignerViewModel.Enabled);
             Assert.IsTrue(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
-            Assert.IsFalse(gateDesignerViewModel.AllowResumeCallback);
         }
 
         [TestMethod]
@@ -327,10 +326,10 @@ namespace Dev2.Activities.Designers.Tests.Gate
             //------------Setup for test--------------------------
             var gateOptions = new GateOptions
             {
-                GateOpts = new AllowResumption
-                {
-                    Strategy = new NoBackoff(),
-                }
+                //GateOpts = new AllowResumption
+                //{
+                //    Strategy = new NoBackoff(),
+                //}
             };
             var conditionExpressionList = new List<ConditionExpression>();
 
@@ -360,7 +359,6 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(2, comboOptions.Count);
             Assert.AreEqual("ResumptionDisabled", comboOptions[0].Key);
             Assert.AreEqual("AllowResumption", comboOptions[1].Key);
-            Assert.IsTrue(gateDesignerViewModel.AllowResumeCallback);
         }
 
         [TestMethod]

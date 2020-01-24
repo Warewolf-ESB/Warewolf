@@ -2401,4 +2401,7 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="OptionRabbitMqDurableHelpText" xml:space="preserve">
     <value>Set if the queue is durable</value>
   </data>
+  <data name="OptionRadioButtonHelpText" xml:space="preserve">
+    <value>OptionRadioButtonHelpText</value>
+  </data>
 </root>

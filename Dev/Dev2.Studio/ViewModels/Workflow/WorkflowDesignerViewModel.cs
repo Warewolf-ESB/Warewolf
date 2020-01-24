@@ -1995,7 +1995,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
             var treeNodes = serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
 
-            var list = new List<NameValue> { new NameValue { Name = " - Select Gate - ", Value = Guid.Empty.ToString() } };
+            var list = new List<NameValue> { new NameValue { Name = "End", Value = Guid.Empty.ToString() } };
             try
             {
                 IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
@@ -2017,7 +2017,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 bool found = false;
                 var allGates = connectedList(treeNodes[0].Activity)
                     .Cast<GateActivity>()
-                    .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is AllowResumption);
+                    .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is Continue);
 
                 var selectableGates = allGates
                     .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));

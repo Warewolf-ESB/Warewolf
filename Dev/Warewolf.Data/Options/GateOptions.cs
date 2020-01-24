@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,28 +26,33 @@ namespace Warewolf.Data.Options
         { }
 
 
-        [DataValue(nameof(GateOptionsResumeBase.Resume))]
-        [MultiDataProvider(typeof(ResumptionDisabled), typeof(AllowResumption))]
-        public GateOptionsResumeBase GateOpts { get; set; } = new ResumptionDisabled();
+        [DataValue(nameof(OnResumeBase.Resume))]
+        [MultiDataProvider(typeof(Continue), typeof(EndWorkflow))]
+        [OptionUX(nameof(OptionRadioButton))]
+        public OnResumeBase GateOpts { get; set; } = new Continue();
     }
-    public class GateOptionsResumeBase
+
+    public class OnResumeBase
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionGateResumeHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
-        public Resumable Resume { get; protected set; } = Resumable.ResumptionDisabled;
+        [Orientation(Orientation.Horizontal)]
+        public GateResumeAction Resume { get; protected set; } = GateResumeAction.Continue;
     }
-    public class ResumptionDisabled : GateOptionsResumeBase
+
+    public class EndWorkflow : OnResumeBase
     {
-        public ResumptionDisabled()
+        public EndWorkflow()
         {
-            Resume = Resumable.ResumptionDisabled;
+            Resume = GateResumeAction.EndWorkflow;
         }
     }
-    public class AllowResumption : GateOptionsResumeBase
+
+    public class Continue : OnResumeBase
     {
-        public AllowResumption()
+        public Continue()
         {
-            Resume = Resumable.AllowResumption;
+            Resume = GateResumeAction.Continue;
         }
 
         [DataValue(nameof(RetryAlgorithmBase.RetryAlgorithm))]
@@ -56,10 +62,16 @@ namespace Warewolf.Data.Options
         public RetryAlgorithmBase Strategy { get; set; } = new NoBackoff();
     }
 
-    public enum Resumable
+    public enum GateResumeAction
     {
-        AllowResumption = 1,
-        ResumptionDisabled = 0
+        [Description("End this workflow")]
+        [HelpText("Stop execution")]
+        [Tooltip("End this workflow")]
+        EndWorkflow = 0,
+        [Description("Continue")]
+        [HelpText("Continue execution")]
+        [Tooltip("Continue")]
+        Continue = 1,
     }
 
     public abstract class RetryAlgorithmBase

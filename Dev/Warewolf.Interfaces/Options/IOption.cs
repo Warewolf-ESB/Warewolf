@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Warewolf.Data;
 
 namespace Warewolf.Options
@@ -32,9 +33,20 @@ namespace Warewolf.Options
         string Name { get; set; }
     }
 
-    public interface IOptionComboBox : IOption
+    public interface IOptionMultiData : IOption, INotifyPropertyChanged
     {
         string Value { get; set; }
+        Dictionary<string, IEnumerable<IOption>> Options { get; }
+        IEnumerable<IOption> SelectedOptions { get; }
+    }
+    public interface IOptionComboBox : IOptionMultiData
+    {
+        
+    }
+
+    public interface IOptionRadioButton : IOptionMultiData
+    {
+
     }
 
     public interface IOptionBasic<T> : IOption

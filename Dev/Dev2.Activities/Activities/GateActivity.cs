@@ -127,9 +127,9 @@ namespace Dev2.Activities
 
                 if (firstExecution)
                 {
-                    if (GateOptions.GateOpts is AllowResumption gateOptionsResume)
+                    if (GateOptions.GateOpts is Continue onResume)
                     {
-                        _retryState.Item2 = gateOptionsResume.Strategy.Create().GetEnumerator();
+                        _retryState.Item2 = onResume.Strategy.Create().GetEnumerator();
                     }
                     _dataObject.Gates.Add(this, _retryState);
                     _originalExecutionEnvironment = data.Environment.Snapshot();
@@ -161,7 +161,7 @@ namespace Dev2.Activities
                 }
 
                 // TODO: execute workflow that should be called on resume
-                if (GateOptions.GateOpts is AllowResumption allowResumption)
+                if (GateOptions.GateOpts is Continue)
                 {
                     BeforeExecuteRetryWorkflow();
                     ExecuteRetryWorkflow();
@@ -437,7 +437,7 @@ namespace Dev2.Activities
 
         private void UpdateRetryState(GateActivity gateActivity, RetryState _retryState)
         {
-            if (GateOptions.GateOpts is AllowResumption allowResumption)
+            if (GateOptions.GateOpts is Continue)
             {
                 _retryState.NumberOfRetries++;
             } else

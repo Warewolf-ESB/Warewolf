@@ -14,6 +14,7 @@ using System.Linq;
 using Warewolf.Data;
 using System;
 using System.Activities;
+using Warewolf.Data.Options;
 
 namespace Warewolf.Options
 {
@@ -103,7 +104,8 @@ namespace Warewolf.Options
                 {
                     optionWorkflow.Tooltip = tooltipAttr.Get();
                 }
-                optionWorkflow.PropertyChanged += (o, e) => {
+                optionWorkflow.PropertyChanged += (o, e) =>
+                {
                     if (e.PropertyName == nameof(OptionWorkflow.Workflow))
                     {
                         prop.SetValue(instance, ((OptionWorkflow)o).Workflow);
@@ -126,7 +128,8 @@ namespace Warewolf.Options
                 {
                     optionSelectedActivity.Tooltip = tooltipAttr.Get();
                 }
-                optionSelectedActivity.PropertyChanged += (o, e) => {
+                optionSelectedActivity.PropertyChanged += (o, e) =>
+                {
                     if (e.PropertyName == nameof(OptionActivity.Value))
                     {
                         prop.SetValue(instance, ((OptionActivity)o).Value);
@@ -182,8 +185,10 @@ namespace Warewolf.Options
             }
             else
             {
-                var fieldValueAttr = prop.GetCustomAttributes().Where(o => o is DataValueAttribute).Cast<DataValueAttribute>().FirstOrDefault();
-                var dataProviderAttr = prop.GetCustomAttributes().Where(o => o is MultiDataProviderAttribute).Cast<MultiDataProviderAttribute>().FirstOrDefault();
+                var attrs = prop.GetCustomAttributes();
+                var optionTypeUXAttr = attrs.Where(o => o is OptionUXAttribute).Cast<OptionUXAttribute>().FirstOrDefault();
+                var fieldValueAttr = attrs.Where(o => o is DataValueAttribute).Cast<DataValueAttribute>().FirstOrDefault();
+                var dataProviderAttr = attrs.Where(o => o is MultiDataProviderAttribute).Cast<MultiDataProviderAttribute>().FirstOrDefault();
 
                 if (fieldValueAttr == null)
                 {
@@ -207,12 +212,31 @@ namespace Warewolf.Options
                     throw NullException;
                 }
 
+                IOptionMultiData returnVal;
                 var enumValue = fieldNameProp.GetValue(propertyValue);
-                var returnVal = new OptionCombobox
+
+                Orientation? orientation = null;
+                if (optionTypeUXAttr?.Get() == typeof(OptionRadioButton))
                 {
-                    Name = prop.Name,
-                    Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
-                };
+                    var orientationAttr = attrs.Where(o => o is OrientationAttribute).Cast<OrientationAttribute>().FirstOrDefault();
+                    if (orientationAttr != null)
+                    {
+                        orientation = orientationAttr.Get();
+                    }
+                    returnVal = new OptionRadioButton
+                    {
+                        Name = prop.Name,
+                        Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
+                    };
+                }
+                else
+                { // optionTypeUXAttr is OptionCombobox
+                    returnVal = new OptionCombobox
+                    {
+                        Name = prop.Name,
+                        Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
+                    };
+                }
                 if (helptextAttr != null)
                 {
                     returnVal.HelpText = helptextAttr.Get();
@@ -221,6 +245,8 @@ namespace Warewolf.Options
                 {
                     returnVal.Tooltip = tooltipAttr.Get();
                 }
+
+                var optionCount = 0;
                 if (dataProviderAttr != null)
                 {
                     var optionTypes = dataProviderAttr.Get();
@@ -231,8 +257,19 @@ namespace Warewolf.Options
                         var type = optionType.GetType();
                         returnVal.Options[type.Name] = OptionConvertor.Convert(value).Where(o => o.Name != fieldValueName);
                     }
+                    optionCount = optionTypes.Length;
                 }
-                returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionCombobox(instance, prop, (OptionCombobox)o)); };
+                if (returnVal is OptionRadioButton optionRadioButton)
+                {
+                    var calcOrientation = optionCount == 2 ? Orientation.Horizontal : Orientation.Vertical;
+                    optionRadioButton.Orientation = orientation ?? calcOrientation;
+
+                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionRadioButton)o)); };
+                }
+                else
+                {
+                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionCombobox)o)); };
+                }
                 return returnVal;
             }
             throw UnhandledException;
@@ -332,9 +369,14 @@ namespace Warewolf.Options
                     throw FailedMappingException;
                 }
             }
+            else if (option is OptionRadioButton optionRadioButton)
+            {
+                object value = ExtractValueFromOptionMultiData(parentInstance, prop, optionRadioButton);
+                prop.SetValue(parentInstance, value);
+            }
             else if (option is OptionCombobox optionComboBox)
             {
-                object value = ExtractValueFromOptionCombobox(parentInstance, prop, optionComboBox);
+                object value = ExtractValueFromOptionMultiData(parentInstance, prop, optionComboBox);
                 prop.SetValue(parentInstance, value);
             }
             else if (option is OptionEnum optionEnum)
@@ -348,21 +390,21 @@ namespace Warewolf.Options
             }
         }
 
-        private static object ExtractValueFromOptionCombobox(object parentInstance, PropertyInfo prop, OptionCombobox optionComboBox)
+        private static object ExtractValueFromOptionMultiData(object parentInstance, PropertyInfo prop, IOptionMultiData optionMultiData)
         {
-            var name = optionComboBox.Value;
+            var name = optionMultiData.Value;
             var propertyType = prop.PropertyType;
             var type = propertyType.Assembly.GetType(propertyType.Namespace + "." + name);
             var currentValue = prop.GetValue(parentInstance);
             if (currentValue.GetType() == type)
             {
-                var value = Convert(type, optionComboBox.SelectedOptions, currentValue);
+                var value = Convert(type, optionMultiData.SelectedOptions, currentValue);
                 return value;
             }
             else
             {
-                var value = Convert(type, optionComboBox.SelectedOptions);
-               return value;
+                var value = Convert(type, optionMultiData.SelectedOptions);
+                return value;
             }
         }
     }
