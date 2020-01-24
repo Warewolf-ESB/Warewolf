@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage", "Warewol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog", "Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj", "{C910662A-F71B-4AC2-A53F-0D44185ADF31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -261,6 +263,14 @@ Global
 		{61A15557-1D18-4C69-88EB-31BF49B7FB50}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61A15557-1D18-4C69-88EB-31BF49B7FB50}.Release|x86.ActiveCfg = Release|Any CPU
 		{61A15557-1D18-4C69-88EB-31BF49B7FB50}.Release|x86.Build.0 = Release|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Debug|x86.Build.0 = Debug|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|x86.ActiveCfg = Release|Any CPU
+		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
