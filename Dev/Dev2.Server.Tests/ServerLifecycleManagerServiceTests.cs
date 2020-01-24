@@ -353,6 +353,119 @@ namespace Dev2.Server.Tests
             }
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleManager_ServerStarted_OnDebug_ShouldSaveFileInDebugPath_IfNotExists()
+        {
+            //----------------------Arrange----------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockFile = new Mock<IFile>();
+            var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockFile.Setup(o => o.Exists(".\\ServerStarted")).Returns(false);
+
+            var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
+
+            EnvironmentVariables.IsServerOnline = false;
+
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                File = mockFile.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart
+            };
+
+            using (var sut = new ServerLifecycleManager(config))
+            {
+                //----------------------Act--------------------------
+                sut.Run(items).Wait();
+            };
+            //----------------------Assert-----------------------
+            mockFile.Verify(o => o.Exists(".\\ServerStarted"), Times.Once);
+            mockFile.Verify(o => o.Delete(".\\ServerStarted"), Times.Never);
+            mockFile.Verify(o => o.WriteAllText(".\\ServerStarted", It.IsAny<string>()), Times.Once);
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleManager_ServerStarted_OnDebug_ShouldSaveFileInDebugPath_IfExists()
+        {
+            //----------------------Arrange----------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockFile = new Mock<IFile>();
+            var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockFile.Setup(o => o.Exists(".\\ServerStarted")).Returns(true);
+
+            var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
+
+            EnvironmentVariables.IsServerOnline = false;
+
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                File = mockFile.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart
+            };
+
+            using (var sut = new ServerLifecycleManager(config))
+            {
+                //----------------------Act--------------------------
+                sut.Run(items).Wait();
+            };
+            //----------------------Assert-----------------------
+            mockFile.Verify(o => o.Exists(".\\ServerStarted"), Times.Once);
+            mockFile.Verify(o => o.Delete(".\\ServerStarted"), Times.Once);
+            mockFile.Verify(o => o.WriteAllText(".\\ServerStarted", It.IsAny<string>()), Times.Once);
+        }
+
 
         class ServerLifecycleManagerServiceTest : ServerLifecycleManagerService
         {
