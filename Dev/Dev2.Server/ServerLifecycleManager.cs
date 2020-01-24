@@ -66,6 +66,7 @@ namespace Dev2
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new NullProcessMonitor();
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
+        public IFile File { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -82,6 +83,7 @@ namespace Dev2
                 ResourceCatalogFactory = new ResourceCatalogFactory(),
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
+                File = new FileWrapper(),
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
@@ -108,6 +110,7 @@ namespace Dev2
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
+        private readonly IFile _file;
         private readonly IPauseHelper _pauseHelper;
         private readonly IProcessMonitor _queueProcessMonitor;
 
@@ -121,6 +124,7 @@ namespace Dev2
         {
             SetApplicationDirectory();
             _writer = startupConfiguration.Writer;
+            _file = startupConfiguration.File;
             StartLoggingService(startupConfiguration);
 
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
@@ -382,15 +386,15 @@ namespace Dev2
 
 #if DEBUG
 
-        static void SetAsStarted()
+        void SetAsStarted()
         {
             try
             {
-                if (File.Exists(".\\ServerStarted"))
+                if (_file.Exists(".\\ServerStarted"))
                 {
-                    File.Delete(".\\ServerStarted");
+                    _file.Delete(".\\ServerStarted");
                 }
-                File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+                _file.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception err)
             {
