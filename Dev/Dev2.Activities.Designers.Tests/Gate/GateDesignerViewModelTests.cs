@@ -309,7 +309,8 @@ namespace Dev2.Activities.Designers.Tests.Gate
             Assert.AreEqual(uniqueId, gateDesignerViewModel.Gates[0].Value);
             Assert.AreEqual(activityName, gateDesignerViewModel.Gates[0].Name);
 
-            Assert.IsNull(gateDesignerViewModel.SelectedGate);
+            Assert.IsNotNull(gateDesignerViewModel.SelectedGate);
+            Assert.AreEqual(Guid.Empty.ToString(), gateDesignerViewModel.SelectedGate.Value);
 
             gateDesignerViewModel.SelectedGate = gates[0];
 
@@ -324,13 +325,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
         public void GateDesignerViewModel_LoadOptions()
         {
             //------------Setup for test--------------------------
-            var gateOptions = new GateOptions
-            {
-                //GateOpts = new AllowResumption
-                //{
-                //    Strategy = new NoBackoff(),
-                //}
-            };
+            var gateOptions = new GateOptions();
             var conditionExpressionList = new List<ConditionExpression>();
 
             var gateFailureProperty = CreateModelProperty("GateFailure", null);
@@ -351,14 +346,14 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var options = gateDesignerViewModel.Options.Options.ToList();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionCombobox), options[0].GetType());
+            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
             Assert.AreEqual("GateOpts", options[0].Name);
 
-            var comboOptions = (options[0] as OptionCombobox).Options.ToList();
+            var comboOptions = (options[0] as OptionRadioButtons).Options.ToList();
 
             Assert.AreEqual(2, comboOptions.Count);
-            Assert.AreEqual("ResumptionDisabled", comboOptions[0].Key);
-            Assert.AreEqual("AllowResumption", comboOptions[1].Key);
+            Assert.AreEqual("Continue", comboOptions[0].Key);
+            Assert.AreEqual("EndWorkflow", comboOptions[1].Key);
         }
 
         [TestMethod]
