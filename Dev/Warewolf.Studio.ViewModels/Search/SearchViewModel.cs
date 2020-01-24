@@ -94,7 +94,7 @@ namespace Dev2.ViewModels.Search
             return environmentViewModel;
         }
 
-        async void UpdateServerCompareChanged(object sender, Guid environmentid)
+        public async void UpdateServerCompareChanged(object sender, Guid environmentid)
         {
             IsSearching = true;
 
@@ -111,17 +111,6 @@ namespace Dev2.ViewModels.Search
             CanShowResults = true;
             Search.SearchInput = string.Empty;
             SearchResults.Clear();
-
-            var serverVersion = Version.Parse(SelectedEnvironment?.Server?.GetServerVersion());
-            var minServerVersion = Version.Parse(SelectedEnvironment?.Server?.GetMinSupportedVersion());
-
-            if (serverVersion < ServerVersion)
-            {
-                CanShowResults = false;
-                VersionConflictError = Warewolf.Studio.Resources.Languages.Core.SearchVersionConflictError +
-                                        Environment.NewLine + GlobalConstants.ServerVersion + ServerVersion +
-                                        Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minServerVersion;
-            }
         }
 
         public Version MinSupportedVersion => Version.Parse(_shellViewModel.LocalhostServer.GetServerVersion());
