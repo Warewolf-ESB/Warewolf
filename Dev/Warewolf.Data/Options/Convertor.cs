@@ -216,14 +216,14 @@ namespace Warewolf.Options
                 var enumValue = fieldNameProp.GetValue(propertyValue);
 
                 Orientation? orientation = null;
-                if (optionTypeUXAttr?.Get() == typeof(OptionRadioButton))
+                if (optionTypeUXAttr?.Get() == typeof(OptionRadioButtons))
                 {
                     var orientationAttr = attrs.Where(o => o is OrientationAttribute).Cast<OrientationAttribute>().FirstOrDefault();
                     if (orientationAttr != null)
                     {
                         orientation = orientationAttr.Get();
                     }
-                    returnVal = new OptionRadioButton
+                    returnVal = new OptionRadioButtons
                     {
                         Name = prop.Name,
                         Value = Enum.GetName(fieldNameProp.PropertyType, enumValue),
@@ -259,12 +259,12 @@ namespace Warewolf.Options
                     }
                     optionCount = optionTypes.Length;
                 }
-                if (returnVal is OptionRadioButton optionRadioButton)
+                if (returnVal is OptionRadioButtons optionRadioButton)
                 {
                     var calcOrientation = optionCount == 2 ? Orientation.Horizontal : Orientation.Vertical;
                     optionRadioButton.Orientation = orientation ?? calcOrientation;
 
-                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionRadioButton)o)); };
+                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionRadioButtons)o)); };
                 }
                 else
                 {
@@ -369,7 +369,7 @@ namespace Warewolf.Options
                     throw FailedMappingException;
                 }
             }
-            else if (option is OptionRadioButton optionRadioButton)
+            else if (option is OptionRadioButtons optionRadioButton)
             {
                 object value = ExtractValueFromOptionMultiData(parentInstance, prop, optionRadioButton);
                 prop.SetValue(parentInstance, value);

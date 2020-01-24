@@ -426,7 +426,7 @@ namespace Warewolf.Options
         }
     }
 
-    public class OptionRadioButton : BindableBase, IOptionRadioButton
+    public class OptionRadioButtons : BindableBase, IOptionRadioButton
     {
         private string _name;
         public string Name
@@ -465,9 +465,9 @@ namespace Warewolf.Options
         }
         public class OptionName : IDisposable
         {
-            private OptionRadioButton _optionRadioButton;
+            private OptionRadioButtons _optionRadioButton;
 
-            public OptionName(OptionRadioButton optionRadioButton, string name)
+            public OptionName(OptionRadioButtons optionRadioButton, string name)
             {
                 this._optionRadioButton = optionRadioButton;
                 Name = name;
@@ -531,7 +531,7 @@ namespace Warewolf.Options
             {
                 return -1;
             }
-            var item = obj as OptionRadioButton;
+            var item = obj as OptionRadioButtons;
             if (item is null)
             {
                 return -1;
