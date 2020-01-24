@@ -59,8 +59,7 @@ namespace Warewolf.OS
             }
         }
 
-        public bool NeedUpdate { get => _processThreads.Count != _expectedNumProcesses || _processThreads.Any(o => !o.IsAlive); }
-
+        public bool NeedUpdate { get => _expectedNumProcesses < 1 || _processThreads.Count != _expectedNumProcesses || _processThreads.Any(o => !o.IsAlive); }
         public IEnumerator<IProcessThread> GetEnumerator() => _processThreads.GetEnumerator();
         public void Kill() => _processThreads.ForEach(o => { o.Kill(); });
 

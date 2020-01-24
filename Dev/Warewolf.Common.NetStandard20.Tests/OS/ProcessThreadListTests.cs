@@ -73,7 +73,7 @@ namespace Warewolf.OS.Tests
 
             list.Monitor();
 
-            Assert.IsFalse(list.NeedUpdate);
+            Assert.IsTrue(list.NeedUpdate);
             Assert.IsFalse(processThread.IsAlive);
             mockProcessThread.Verify(o => o.Start(), Times.Never);
         }

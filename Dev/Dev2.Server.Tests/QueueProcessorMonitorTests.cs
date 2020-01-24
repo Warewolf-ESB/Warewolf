@@ -25,7 +25,7 @@ namespace Dev2.Server.Tests
     public class QueueProcessorMonitorTests
     {
         [TestMethod]
-        [Owner("Siphamandla Dube")]
+        [Owner("Candice Daniel")]
         [TestCategory(nameof(QueueWorkerMonitor))]
         public void QueueProcessorMonitor_Start_Success()
         {
@@ -35,23 +35,30 @@ namespace Dev2.Server.Tests
             var mockProcess = new Mock<IProcess>();
             var mockTriggerCatalog = new Mock<ITriggersCatalog>();
             var mockChildProcessTracker = new Mock<IChildProcessTracker>();
-
-            mockQueueConfigLoader.Setup(o => o.Configs).Returns(new List<ITrigger> { new Mock<ITrigger>().Object });
+            var mockTriggerObject = new Mock<ITrigger>();
+            mockTriggerObject.Setup(o => o.Concurrency).Returns(1);
+            mockQueueConfigLoader.Setup(o => o.Configs).Returns(new List<ITrigger> { mockTriggerObject.Object });
 
             var pass = true;
 
             mockProcessFactory.Setup(o => o.Start(It.IsAny<ProcessStartInfo>()))
-                                .Callback<ProcessStartInfo>((startInfo)=> { if (pass) pass = (GlobalConstants.QueueWorkerExe == startInfo.FileName); })
+                                .Callback<ProcessStartInfo>((startInfo) => { if (pass) pass = (GlobalConstants.QueueWorkerExe == startInfo.FileName); })
                                 .Returns(mockProcess.Object);
 
             //----------------------------Act---------------------------------
-            var processMonitor = new QueueWorkerMonitor(mockProcessFactory.Object, mockQueueConfigLoader.Object, mockTriggerCatalog.Object, mockChildProcessTracker.Object);
+            var processMonitor = new QueueWorkerMonitor(
+                mockProcessFactory.Object,
+                mockQueueConfigLoader.Object,
+                mockTriggerCatalog.Object,
+                mockChildProcessTracker.Object);
 
             mockProcess.SetupSequence(o => o.WaitForExit(1000))
-                        .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(true)
-                        .Returns(()=> { Thread.Sleep(1000); return false; }).Returns(false).Returns(()=> { processMonitor.Shutdown(); return true; });
+                        .Returns(() => { Thread.Sleep(1000); return false; })
+                        .Returns(false).Returns(true)
+                        .Returns(() => { Thread.Sleep(1000); return false; })
+                        .Returns(false).Returns(() => { processMonitor.Shutdown(); return true; });
 
-            new Thread(()=> processMonitor.Start()).Start();
+            new Thread(() => processMonitor.Start()).Start();
             Thread.Sleep(5000);
             //----------------------------Assert------------------------------
             mockProcess.Verify(o => o.WaitForExit(1000), Times.Exactly(6));
@@ -60,6 +67,48 @@ namespace Dev2.Server.Tests
             Assert.IsTrue(pass, "Queue worker exe incorrect");
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(QueueWorkerMonitor))]
+        public void QueueProcessorMonitor_DoesNotStartAsConcurrencyDefaultIsZero_Success()
+        {
+            //----------------------------Arrange-----------------------------
+            var mockProcessFactory = new Mock<IProcessFactory>();
+            var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
+            var mockProcess = new Mock<IProcess>();
+            var mockTriggerCatalog = new Mock<ITriggersCatalog>();
+            var mockChildProcessTracker = new Mock<IChildProcessTracker>();
+            var mockTriggerObject = new Mock<ITrigger>();
+           
+            mockQueueConfigLoader.Setup(o => o.Configs).Returns(new List<ITrigger> { mockTriggerObject.Object });
+
+            var pass = true;
+
+            mockProcessFactory.Setup(o => o.Start(It.IsAny<ProcessStartInfo>()))
+                                .Callback<ProcessStartInfo>((startInfo) => { if (pass) pass = (GlobalConstants.QueueWorkerExe == startInfo.FileName); })
+                                .Returns(mockProcess.Object);
+
+            //----------------------------Act---------------------------------
+            var processMonitor = new QueueWorkerMonitor(
+                mockProcessFactory.Object,
+                mockQueueConfigLoader.Object,
+                mockTriggerCatalog.Object,
+                mockChildProcessTracker.Object);
+
+            mockProcess.SetupSequence(o => o.WaitForExit(1000))
+                        .Returns(() => { Thread.Sleep(1000); return false; })
+                        .Returns(false).Returns(true)
+                        .Returns(() => { Thread.Sleep(1000); return false; })
+                        .Returns(false).Returns(() => { processMonitor.Shutdown(); return true; });
+
+            new Thread(() => processMonitor.Start()).Start();
+            Thread.Sleep(5000);
+            //----------------------------Assert------------------------------
+            mockProcess.Verify(o => o.WaitForExit(1000), Times.Exactly(0));
+            mockProcessFactory.Verify(o => o.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(0));
+
+            Assert.IsTrue(pass, "Queue worker exe incorrect");
+        }
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(QueueWorkerMonitor))]
@@ -103,12 +152,12 @@ namespace Dev2.Server.Tests
 
         public void DeleteTriggerQueue(ITriggerQueue triggerQueue)
         {
-            
+
         }
 
         public void Load()
         {
-            
+
         }
 
         public ITriggerQueue LoadQueueTriggerFromFile(string filename)
@@ -118,7 +167,7 @@ namespace Dev2.Server.Tests
 
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)
         {
-            
+
         }
     }
 }
