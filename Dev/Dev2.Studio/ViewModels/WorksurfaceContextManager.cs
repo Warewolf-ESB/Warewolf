@@ -348,7 +348,7 @@ namespace Dev2.Studio.ViewModels
 
         public void SearchView(IWorkSurfaceKey workSurfaceKey)
         {
-            var vm = new SearchModel(_shellViewModel.EventPublisher, new SearchViewModel(_shellViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>()), new SearchView());
+            var vm = new SearchModel(_shellViewModel.EventPublisher, new SearchViewModel(_shellViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), _shellViewModel.PopupProvider), new SearchView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SearchViewer, Guid.Empty);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
