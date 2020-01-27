@@ -1265,5 +1265,58 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(MessageBoxImage.Error, imageType);
             Assert.AreEqual(null, dontShowAgainKey);
         }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("PopupController_ShowSearchServerVersionConflict")]
+        public void PopupController_ShowSearchServerVersionConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //--------------Arrange------------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //--------------Act----------------------------------
+            var serverVersion = "1.2.0.0";
+            var minimumSupportedVersion = "1.0.0.0";
+            popupController.ShowSearchServerVersionConflict(serverVersion, minimumSupportedVersion);
+
+            var message = Warewolf.Studio.Resources.Languages.Core.SearchVersionConflictError +
+                                        Environment.NewLine + GlobalConstants.ServerVersion + serverVersion +
+                                        Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minimumSupportedVersion +
+                                        Environment.NewLine + "Click OK to continue or Cancel to return." +
+                Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Continue to search resources." + Environment.NewLine +
+                          "Cancel - Cancel the search.";
+
+            //--------------Assert-------------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual("Server Version Conflict", header);
+            Assert.AreEqual(message, description);
+            Assert.IsTrue(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsFalse(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
     }
 }
