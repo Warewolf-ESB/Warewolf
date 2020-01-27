@@ -390,6 +390,29 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowSearchServerVersionConflict(string serverVersion, string minimumSupportedVersion)
+        {
+            var description = Warewolf.Studio.Resources.Languages.Core.SearchVersionConflictError +
+                                        Environment.NewLine + GlobalConstants.ServerVersion + serverVersion +
+                                        Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minimumSupportedVersion +
+                                        Environment.NewLine + "Click OK to continue or Cancel to return." +
+                Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Continue to search resources." + Environment.NewLine +
+                          "Cancel - Cancel the search.";
+            AssignCommonValues("Search Version Conflicts", description, MessageBoxButton.OKCancel);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+
+            return Show();
+        }
+
         public MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName)
         {
 

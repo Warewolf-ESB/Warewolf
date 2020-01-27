@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Search;
 using Microsoft.Practices.Prism;
 using System;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Dev2.ViewModels.Search
 {
@@ -34,11 +35,14 @@ namespace Dev2.ViewModels.Search
         string _displayName;
         bool _canShowResults;
         string _versionConflictError;
+        public virtual IPopupController PopupController { get; set; }
 
-        public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
+        public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator, IPopupController popupController)
             : base(shellViewModel, aggregator, false)
         {
             _shellViewModel = shellViewModel;
+            PopupController = popupController;
+
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -111,11 +115,28 @@ namespace Dev2.ViewModels.Search
             CanShowResults = true;
             Search.SearchInput = string.Empty;
             SearchResults.Clear();
+
+            CheckVersionConflict();
         }
 
-        public Version MinSupportedVersion => Version.Parse(_shellViewModel.LocalhostServer.GetServerVersion());
+        void CheckVersionConflict()
+        {
+            var selectedServerVersion = Version.Parse(SelectedEnvironment?.Server?.GetServerVersion());
 
-        public Version ServerVersion => Version.Parse(_shellViewModel.LocalhostServer.GetMinSupportedVersion());
+            if (selectedServerVersion < ServerVersion)
+            {
+                var messageBoxResult = PopupController.ShowSearchServerVersionConflict(selectedServerVersion.ToString(), MinSupportedVersion.ToString());
+
+                if (messageBoxResult == System.Windows.MessageBoxResult.Cancel)
+                {
+                    CanShowResults = false;
+                }
+            }
+        }
+
+        public Version MinSupportedVersion => Version.Parse(_shellViewModel.LocalhostServer.GetMinSupportedVersion());
+
+        public Version ServerVersion => Version.Parse(_shellViewModel.LocalhostServer.GetServerVersion());
 
         public event ServerState ServerStateChanged;
 
