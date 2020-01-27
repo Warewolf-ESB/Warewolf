@@ -401,7 +401,7 @@ namespace Dev2.Studio.Controller
                               Environment.NewLine +
                           "OK - Continue to search resources." + Environment.NewLine +
                           "Cancel - Cancel the search.";
-            AssignCommonValues("Search Version Conflicts", description, MessageBoxButton.OKCancel);
+            AssignCommonValues("Server Version Conflict", description, MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
