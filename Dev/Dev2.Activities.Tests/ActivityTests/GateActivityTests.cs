@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.Execute(dataObject.Object, 0);
             Assert.AreEqual("Gate", activity.DisplayName);
             Assert.AreEqual(1, gatesList.Count);
-            Assert.AreEqual(activity, gatesList.First());
+            Assert.AreEqual(activity, gatesList.Keys.First());
         }
 
         [TestMethod]
