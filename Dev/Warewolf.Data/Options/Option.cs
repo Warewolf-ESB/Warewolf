@@ -476,10 +476,10 @@ namespace Warewolf.Options
             public string Name { get; }
             public bool IsChecked
             {
-                get => _optionRadioButton.Value == Name;
+                get => _optionRadioButton?.Value == Name;
                 set
                 {
-                    if (value)
+                    if (value && _optionRadioButton != null)
                     {
                         _optionRadioButton.Value = Name;
                     }
