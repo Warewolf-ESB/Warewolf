@@ -216,9 +216,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = act.Execute(dataObject, 0);
 
             Assert.AreEqual(expectedRetryActivity, result, "execution should proceed to RetryEntryPoint if gate fails");
-            
-            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
-            Assert.AreEqual("1", numberOfRetries);
+
+            Assert.AreEqual(1, dataObject.Gates[expectedRetryActivity].Item1.NumberOfRetries);
         }
         
         [TestMethod]
@@ -230,6 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var expectedRetryActivity = new GateActivity();
             var expectedRetryActivityId = Guid.NewGuid();
             expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
+            expectedRetryActivity.GateOptions = new GateOptions { GateOpts = new EndWorkflow() };
 
             //---------------Set up test pack-------------------
             var condition = new ConditionExpression
@@ -264,8 +264,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsNull(result, "execution should not proceed to RetryEntryPoint if entrypoint is not resumable");
             
-            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
-            Assert.AreEqual("0", numberOfRetries);
+            Assert.AreEqual(0, dataObject.Gates[expectedRetryActivity].Item1.NumberOfRetries);
         }
 
         [TestMethod]
@@ -336,9 +335,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = act.Execute(dataObject, 0);
 
             Assert.AreNotEqual(expectedNextActivity.Object, result, "execution should not proceed as normal if gate fails and StopOnError is set");
-            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
 
-            Assert.AreEqual("1", numberOfRetries);
+            Assert.AreEqual(1, dataObject.Gates[expectedRetryActivity].Item1.NumberOfRetries);
             Assert.AreEqual(expectedRetryActivity, result);
         }
 
@@ -378,9 +376,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = act.Execute(dataObject, 0);
 
             Assert.AreNotEqual(expectedRetryActivity, result, "execution should proceed as normal if gate passes and Retry is set");
-            var numberOfRetries = expectedRetryActivity.GetState().First(o => o.Name == "NumberOfRetries").Value;
 
-            Assert.AreEqual("0", numberOfRetries, "number of retries should not change if gate passes");
+            Assert.AreEqual(0, dataObject.Gates[expectedRetryActivity].Item1.NumberOfRetries, "number of retries should not change if gate passes");
             Assert.AreEqual(expectedNextActivity.Object, result);
         }
 
