@@ -53,6 +53,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Instrumentation;
+using Dev2.Activities;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -2458,27 +2459,25 @@ namespace Dev2.Core.Tests.Workflows
             var uniqueId1 = Guid.NewGuid().ToString();
             var uniqueId2 = Guid.NewGuid().ToString();
 
-            var mockActivity1 = new Mock<IDev2Activity>();
-            mockActivity1.Setup(activity => activity.UniqueID).Returns(uniqueId1);
-            mockActivity1.Setup(activity => activity.IsGate).Returns(true);
-            mockActivity1.Setup(activity => activity.GetDisplayName()).Returns("Gate 1");
+            var gate1 = new GateActivity
+            {
+                UniqueID = uniqueId1,
+                DisplayName = "Gate 1",
+            };
 
-            var mockActivity2 = new Mock<IDev2Activity>();
-            mockActivity2.Setup(activity => activity.UniqueID).Returns(uniqueId2);
-            mockActivity2.Setup(activity => activity.IsGate).Returns(true);
-            mockActivity2.Setup(activity => activity.GetDisplayName()).Returns("Gate 2");
-            
+            var gate2 = new GateActivity
+            {
+                UniqueID = uniqueId2,
+                DisplayName = "Gate 2",
+            };
 
-            var activities = new List<IDev2Activity> { mockActivity2.Object };
-            IEnumerable<IDev2Activity> dev2Activities = null;
-
-            mockActivity1.Setup(activity => activity.NextNodes).Returns(activities);
-            mockActivity2.Setup(activity => activity.NextNodes).Returns(dev2Activities);
+            gate1.NextNodes = new List<IDev2Activity> { gate2 };
+            gate2.NextNodes = null;
 
             var treeNodes = new List<Common.ConflictTreeNode>
             {
-                new Common.ConflictTreeNode(mockActivity1.Object, new Point()),
-                new Common.ConflictTreeNode(mockActivity2.Object, new Point())
+                new Common.ConflictTreeNode(gate1, new Point()),
+                new Common.ConflictTreeNode(gate2, new Point())
             };
 
             var mockServiceDifferenceParser = new Mock<IServiceDifferenceParser>();
@@ -2490,9 +2489,11 @@ namespace Dev2.Core.Tests.Workflows
 
             var list = wd.GetSelectableGates(uniqueId2);
 
-            Assert.AreEqual(1, list.Count);
-            Assert.AreEqual(uniqueId1, list[0].Value);
-            Assert.AreEqual("Gate 1", list[0].Name);
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual(Guid.Empty.ToString(), list[0].Value);
+            Assert.AreEqual("End", list[0].Name);
+            Assert.AreEqual(uniqueId1, list[1].Value);
+            Assert.AreEqual("Gate 1", list[1].Name);
         }
 
         #region TestModelServiceModelChangedNextReference
