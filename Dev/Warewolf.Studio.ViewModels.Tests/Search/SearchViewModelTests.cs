@@ -1,6 +1,7 @@
 ﻿using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using Dev2.ViewModels.Search;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -8,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Warewolf.Studio.ViewModels.Tests.Search
 {
@@ -22,6 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
         private Mock<IStudioUpdateManager> _studioUpdateManagerMock;
         private Mock<IExplorerItem> _explorerItemMock;
         private Mock<IEnvironmentConnection> _environmentConnectonMock;
+        private Mock<IPopupController> _popupControllerMock;
 
         [TestInitialize]
         public void TestInitialize()
@@ -36,11 +39,14 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
+            _serverMock.Setup(it => it.GetServerVersion()).Returns("1.1.3");
+            _serverMock.Setup(it => it.GetMinSupportedVersion()).Returns("1.1.2");
             _environmentConnectonMock = SetupMockConnection();
             _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
             _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
+            _popupControllerMock = new Mock<IPopupController>();
 
             var connectControlSingleton = new Mock<Dev2.ConnectionHelpers.IConnectControlSingleton>();
             CustomContainer.Register(connectControlSingleton.Object);
@@ -48,7 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             CustomContainer.Register(environmentRepository.Object);
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
-            _target = new SearchViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            _target = new SearchViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, _popupControllerMock.Object);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
@@ -111,6 +118,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             _serverMock.Setup(server => server.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(server => server.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(server => server.DisplayName).Returns(environmentDisplayName);
+            _serverMock.Setup(it => it.GetServerVersion()).Returns("1.1.2");
             _environmentConnectonMock = SetupMockConnection();
             _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
             _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
@@ -127,6 +135,81 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             Assert.AreEqual(environmentDisplayName, _target.SelectedEnvironment.DisplayName);
             Assert.AreEqual(2, _target.Environments.Count);
             Assert.IsTrue(_target.CanShowResults);
+            Assert.IsFalse(_target.IsSearching);
+            Assert.AreEqual(string.Empty, _target.Search.SearchInput);
+            Assert.AreEqual(0, _target.SearchResults.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("SearchViewModel_UpdateServerCompareChanged")]
+        public void SearchViewModel_WhenSelectedEnvironmentIsNotConnected_SelectedEnvironmentChanged_ShowServerVersionConflictPopup_UserSelectedOK_ReturnSearchResultTrue()
+        {
+            //--------------Arrange------------------------------
+            const string environmentDisplayName = "someResName2";
+            Guid environmentId = Guid.NewGuid();
+
+            _serverMock = new Mock<IServer>();
+            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+            _serverMock.Setup(server => server.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
+            _serverMock.SetupGet(server => server.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
+            _serverMock.SetupGet(server => server.DisplayName).Returns(environmentDisplayName);
+            _serverMock.Setup(it => it.GetServerVersion()).Returns("1.1.0");
+            _environmentConnectonMock = SetupMockConnection();
+            _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
+            _serverMock.Setup(server => server.EnvironmentID).Returns(environmentId);
+            _popupControllerMock.Setup(popup => popup.ShowSearchServerVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.OK);
+
+            var _connectControlViewModel = new Mock<IConnectControlViewModel>();
+            _connectControlViewModel.Setup(connectControl => connectControl.SelectedConnection).Returns(_serverMock.Object);
+
+            //--------------Act----------------------------------            
+            _target.UpdateServerCompareChanged(_connectControlViewModel.Object, environmentId);
+
+            //--------------Assert-------------------------------
+            Assert.IsNotNull(_target.SelectedEnvironment);
+            Assert.AreEqual(environmentDisplayName, _target.SelectedEnvironment.DisplayName);
+            Assert.AreEqual(2, _target.Environments.Count);
+            Assert.IsTrue(_target.CanShowResults);
+            Assert.IsFalse(_target.IsSearching);
+            Assert.AreEqual(string.Empty, _target.Search.SearchInput);
+            Assert.AreEqual(0, _target.SearchResults.Count);
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("SearchViewModel_UpdateServerCompareChanged")]
+        public void SearchViewModel_WhenSelectedEnvironmentIsNotConnected_SelectedEnvironmentChanged_ShowServerVersionConflictPopup_UserSelectedCancel_ReturnSearchResultFalse()
+        {
+            //--------------Arrange------------------------------
+            const string environmentDisplayName = "someResName2";
+            Guid environmentId = Guid.NewGuid();
+
+            _serverMock = new Mock<IServer>();
+            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+            _serverMock.Setup(server => server.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
+            _serverMock.SetupGet(server => server.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
+            _serverMock.SetupGet(server => server.DisplayName).Returns(environmentDisplayName);
+            _serverMock.Setup(it => it.GetServerVersion()).Returns("1.1.0");
+            _environmentConnectonMock = SetupMockConnection();
+            _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
+            _serverMock.Setup(server => server.EnvironmentID).Returns(environmentId);
+            _popupControllerMock.Setup(popup => popup.ShowSearchServerVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
+
+            var _connectControlViewModel = new Mock<IConnectControlViewModel>();
+            _connectControlViewModel.Setup(connectControl => connectControl.SelectedConnection).Returns(_serverMock.Object);
+
+            //--------------Act----------------------------------            
+            _target.UpdateServerCompareChanged(_connectControlViewModel.Object, environmentId);
+
+            //--------------Assert-------------------------------
+            Assert.IsNotNull(_target.SelectedEnvironment);
+            Assert.AreEqual(environmentDisplayName, _target.SelectedEnvironment.DisplayName);
+            Assert.AreEqual(2, _target.Environments.Count);
+            Assert.IsFalse(_target.CanShowResults);
             Assert.IsFalse(_target.IsSearching);
             Assert.AreEqual(string.Empty, _target.Search.SearchInput);
             Assert.AreEqual(0, _target.SearchResults.Count);

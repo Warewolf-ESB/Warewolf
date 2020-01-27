@@ -43,6 +43,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowDeployNoResourcesToDeploy(string header, string description);
         MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion);
         MessageBoxResult ShowConnectServerVersionConflict(string selectedServerVersion, string currentServerVersion);
+        MessageBoxResult ShowSearchServerVersionConflict(string serverVersion, string minimumSupportedVersion);
         MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName);
         MessageBoxResult ShowSettingsCloseConfirmation();
         MessageBoxResult ShowSchedulerCloseConfirmation();
