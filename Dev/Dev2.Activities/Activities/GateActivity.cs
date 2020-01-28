@@ -341,7 +341,7 @@ namespace Dev2.Activities
                     allErrors.AddError(msg);
                     var canRetry = RetryEntryPointId != Guid.Empty;
 
-                    var gateFailure = GateFailure;
+                    var gateFailure = canRetry ? GateFailureAction.Retry : GateFailureAction.StopProcessing;
 
                     switch (gateFailure)
                     {
@@ -470,7 +470,6 @@ namespace Dev2.Activities
                 return true;
             }
             var eq = base.Equals(other);
-            eq &= string.Equals(GateFailure, other.GateFailure);
             eq &= GateOptions.Equals(other.GateOptions);
             return eq;
         }
@@ -507,12 +506,6 @@ namespace Dev2.Activities
                     Type = StateVariable.StateType.Input,
                     Name = nameof(Conditions),
                     Value = serializer.Serialize(Conditions),
-                },
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(GateFailure),
-                    Value = GateFailure.ToString(),
                 },
                 new StateVariable
                 {
@@ -710,7 +703,6 @@ namespace Dev2.Activities
         }
 
         public ActivityFunc<string, bool> DataFunc { get; set; }
-        public GateFailureAction GateFailure { get; set; }
         public IList<ConditionExpression> Conditions { get; set; }
 
         public Guid RetryEntryPointId { get; set; }

@@ -55,23 +55,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
-        public void GateActivity_Construct_Set_GateRetryStrategy_GateFailure_Returns_GateRetryStrategy_GateFailure()
-        {
-            var env = CreateExecutionEnvironment();
-            var dataObject = new Mock<IDSFDataObject>();
-            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            dataObject.Setup(o => o.Environment).Returns(env);
-            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
-
-            var activity = new GateActivity();
-            activity.GateFailure = GateFailureAction.StopProcessing;
-
-            Assert.AreEqual(GateFailureAction.StopProcessing, activity.GateFailure);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherIsNull_Returns_IsFalse()
         {
             var gateActivity = new GateActivity();
@@ -202,7 +185,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -243,7 +225,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -321,7 +302,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = expectedRetryActivityId,
                 Conditions = conditions,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -362,7 +342,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new GateActivity
             {
-                GateFailure = GateFailureAction.Retry,
                 Conditions = conditions,
                 RetryEntryPointId = expectedRetryActivityId,
                 NextNodes = new List<IDev2Activity> { expectedNextActivity.Object },
@@ -400,7 +379,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var secondGate = new GateActivity
             {
                 UniqueID = secondGateId.ToString(),
-                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = firstGateId,
                 Conditions = failingConditions,
                 NextNodes = new List<IDev2Activity> { thirdNode },
@@ -419,7 +397,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGate = new GateActivity
             {
                 UniqueID = firstGateId.ToString(),
-                GateFailure = GateFailureAction.StopProcessing,
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
             };
@@ -457,7 +434,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var secondGate = new GateActivity
             {
                 UniqueID = secondGateId.ToString(),
-                GateFailure = GateFailureAction.Retry,
                 RetryEntryPointId = firstGateId,
                 Conditions = failingConditions,
                 NextNodes = new List<IDev2Activity> { thirdNode },
@@ -483,7 +459,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var firstGate = new GateActivity
             {
                 UniqueID = firstGateId.ToString(),
-                GateFailure = GateFailureAction.StopProcessing,
                 Conditions = passingConditions,
                 NextNodes = new List<IDev2Activity> { secondGate },
                 GateOptions = new GateOptions()

@@ -140,10 +140,7 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
 
         private GateActivity CreateActivity()
         {
-            var noBackoffGateActivity = new GateActivity
-            {
-                GateFailure = GateFailureAction.StopProcessing
-            };
+            var noBackoffGateActivity = new GateActivity();
 
             CreateGateOptions(noBackoffGateActivity);
 
@@ -222,20 +219,6 @@ namespace Warewolf.Tools.Specs.Toolbox.ControlFlow.Gate
             var modelData = dds.ToVBPersistableModel();
             scenarioContext.Add("modelData", modelData);
 
-        }
-
-        [Given(@"GateFailure has ""(.*)"" selected")]
-        public void GivenGateFailureHasSelected(string gateFailure)
-        {
-            scenarioContext.TryGetValue("activity", out GateActivity gateActivity);
-            gateActivity.GateFailure = EnumHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
-        }
-
-        [Given(@"next gate GateFailure has ""(.*)"" selected")]
-        public void GivenNextGateGateFailureHasSelected(string gateFailure)
-        {
-            scenarioContext.TryGetValue("nextActivity", out GateActivity gateActivity);
-            gateActivity.GateFailure = EnumHelper<GateFailureAction>.GetEnumFromDescription(gateFailure);
         }
 
         [Given(@"Gates has ""(.*)"" selected")]
