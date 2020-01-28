@@ -116,7 +116,7 @@ namespace Dev2.ViewModels.Search
             Search.SearchInput = string.Empty;
             SearchResults.Clear();
 
-            //CheckVersionConflict();
+            CheckVersionConflict();
         }
 
         void CheckVersionConflict()
