@@ -8,7 +8,6 @@ Scenario: Gate tool has retry with resume and ResumeEndpoint set to API
 		| match | matchtype | match |
 		| [[a]] | =         | 10    |
 		| [[b]] | =         | 20    |
-	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
 	And GateRetryStrategy has "NoBackoff" selected
 	And Resume is set to "Yes"

@@ -6,7 +6,6 @@
 Scenario: Gate tool has no conditions
 	Given I have the following conditions
 		| match | matchtype | match |
-	And GateFailure has "StopOnError" selected
 	And Gates has "" selected
 	And GateRetryStrategy has "FibonacciBackoff" selected
 	And Fibonacci Timeout is set to "60000"
@@ -20,7 +19,6 @@ Scenario: Gate tool has stop on error with no resume
 		| match | matchtype | match |
 		| [[a]] | =         | 10    |
 		| [[b]] | =         | 20    |
-	And GateFailure has "StopOnError" selected
 	And Gates has "" selected
 	And GateRetryStrategy has "FibonacciBackoff" selected
 	And Fibonacci Timeout is set to "60000"
@@ -36,7 +34,6 @@ Scenario: Gate tool has stop on error with resume
 		| match | matchtype | match |
 		| [[a]] | =         | 10    |
 		| [[b]] | =         | 20    |
-	And GateFailure has "StopOnError" selected
 	And Gates has "" selected
 	And GateRetryStrategy has "FibonacciBackoff" selected
 	And Fibonacci Timeout is set to "60000"
@@ -52,7 +49,6 @@ Scenario: Gate tool has retry with no resume
 		| match | matchtype | match |
 		| [[a]] | =         | 10    |
 		| [[b]] | =         | 20    |
-	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
 	And GateRetryStrategy has "FibonacciBackoff" selected
 	And Fibonacci Timeout is set to "60000"
@@ -68,7 +64,6 @@ Scenario: Gate tool has retry with resume
 		| match | matchtype | match |
 		| [[a]] | =         | 10    |
 		| [[b]] | =         | 20    |
-	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
 	And GateRetryStrategy has "FibonacciBackoff" selected
 	And Fibonacci Timeout is set to "60000"
@@ -84,7 +79,6 @@ Scenario: Gate tool has retry with increment not allowed
 		| match | matchtype | match |
 		| [[a]] | =         | 10    |
 		| [[b]] | =         | 20    |
-	And GateFailure has "Retry" selected
 	And Gates has "Gate" selected
 	And GateRetryStrategy has "FibonacciBackoff" selected
 	And Fibonacci Timeout is set to "60000"

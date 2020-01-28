@@ -8,7 +8,6 @@ Scenario: Gate tool resume with no gate selected
 		| match | matchtype | match |
 		| [[a]] | IsEqual   | 10    |
 		| [[b]] | IsEqual   | 20    |
-	And GateFailure has "Retry" selected
 	And Gates has "" selected
 	And the Gate tool is executed
 	Then the execution has errors
