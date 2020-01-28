@@ -1,13 +1,16 @@
 ﻿using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Search;
 using Dev2.Studio.Interfaces;
 using Dev2.ViewModels.Search;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -215,5 +218,47 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             Assert.AreEqual(0, _target.SearchResults.Count);
         }
 
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("SearchViewModel_SearchWarewolf")]
+        public void SearchViewModel_SearchWarewolf_GivenSearchInputEmpty_ReturnSearchResult()
+        {
+            //--------------Arrange------------------------------
+            _target.Search.SearchInput = string.Empty;
+
+            //--------------Act----------------------------------
+            _target.SearchWarewolf();
+            //--------------Assert-------------------------------
+            Assert.AreEqual(0, _target.SearchResults.Count);
+            Assert.IsFalse(_target.IsSearching);
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("SearchViewModel_SearchWarewolf")]
+        public void SearchViewModel_SearchWarewolf_GivenSearchInputIsNotEmpty_ReturnSearchResult()
+        {
+            //--------------Arrange------------------------------
+            _target.Search.SearchInput = "Error";
+
+            var searchResults = new List<ISearchResult>()
+            {
+                new SearchResult(Guid.NewGuid(), "Error","Error", SearchItemType.ToolTitle,string.Empty),
+                new SearchResult(Guid.NewGuid(), "Control Flow - Decision","Control Flow - Decision", SearchItemType.ToolTitle,string.Empty),
+                new SearchResult(Guid.NewGuid(), "RunBackup","RunBackup", SearchItemType.ToolTitle,string.Empty),
+                new SearchResult(Guid.NewGuid(), "Error","Error", SearchItemType.SourceName,string.Empty),
+            };
+
+            var _resourceRepositoryMock = new Mock<IResourceRepository>();
+            _resourceRepositoryMock.Setup(a => a.Filter(It.IsAny<ISearch>())).Returns(searchResults);
+
+            _serverMock.Setup(server => server.ResourceRepository).Returns(_resourceRepositoryMock.Object);
+
+            //--------------Act----------------------------------
+            _target.SearchWarewolf();
+            //--------------Assert-------------------------------
+            Assert.AreEqual(4, _target.SearchResults.Count);
+            Assert.IsFalse(_target.IsSearching);
+        }
     }
 }

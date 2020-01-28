@@ -116,7 +116,7 @@ namespace Dev2.ViewModels.Search
             Search.SearchInput = string.Empty;
             SearchResults.Clear();
 
-            CheckVersionConflict();
+            //CheckVersionConflict();
         }
 
         void CheckVersionConflict()
@@ -160,14 +160,14 @@ namespace Dev2.ViewModels.Search
             }
         }
 
-        void SearchWarewolf()
+        public void SearchWarewolf()
         {
             IsSearching = true;
 
             SearchResults.Clear();
             if (!string.IsNullOrWhiteSpace(Search.SearchInput))
             {
-                var results = _shellViewModel.ActiveServer.ResourceRepository.Filter(Search);
+                var results = SelectedServer.ResourceRepository.Filter(Search);
                 if (results != null)
                 {
                     SearchResults.AddRange(results);
