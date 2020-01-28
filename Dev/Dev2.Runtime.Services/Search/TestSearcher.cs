@@ -34,8 +34,12 @@ namespace Dev2.Runtime.Search
                     if (found)
                     {
                         var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
-                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.TestName, test.TestName);
-                        foundItems.Add(searchResult);
+
+                        if(resource != null)
+                        {
+                            var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.TestName, test.TestName);
+                            foundItems.Add(searchResult);
+                        }
                     }
                 }
             }
