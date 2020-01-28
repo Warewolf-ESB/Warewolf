@@ -63,27 +63,22 @@ namespace Dev2.Activities.Designers.Tests.Gate
         {
             var conditionExpressionList = new List<ConditionExpression>();
             //------------Setup for test--------------------------
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
 
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
-            var expectedGateFailure = "Stop processing";
             IsItemDragged.Instance.IsDragged = true;
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(gateDesignerViewModel.HasLargeView);
-            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure.Name);
-            Assert.AreEqual(0, gateDesignerViewModel.SelectedGateFailure.Value);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
             Assert.IsTrue(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Visible, gateDesignerViewModel.ThumbVisibility);
@@ -96,126 +91,24 @@ namespace Dev2.Activities.Designers.Tests.Gate
         {
             var conditionExpressionList = new List<ConditionExpression>();
             //------------Setup for test--------------------------
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
 
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
-            var expectedGateFailure = "Stop processing";
             //------------Execute Test----------------------------
             var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(gateDesignerViewModel.HasLargeView);
-            Assert.AreEqual(expectedGateFailure, gateDesignerViewModel.SelectedGateFailure.Name);
-            Assert.AreEqual(0, gateDesignerViewModel.SelectedGateFailure.Value);
             Assert.IsTrue(gateDesignerViewModel.Enabled);
             Assert.IsFalse(gateDesignerViewModel.ShowLarge);
             Assert.AreEqual(Visibility.Collapsed, gateDesignerViewModel.ThumbVisibility);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_GateFailureOptions_Retry()
-        {
-            var conditionExpressionList = new List<ConditionExpression>();
-            //------------Setup for test--------------------------
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
-            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
-            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
-
-            var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
-
-            var mockModelItem = new Mock<ModelItem>();
-            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
-            CustomContainer.Register(mockModelItem.Object);
-            //------------Execute Test---------------------------
-            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
-            {
-                SelectedGateFailure = new NamedInt { Name = EnumHelper<GateFailureAction>.GetEnumDescription(GateFailureAction.Retry), Value = (int)GateFailureAction.Retry },
-            };
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Retry", gateDesignerViewModel.SelectedGateFailure.Name);
-            Assert.IsTrue(gateDesignerViewModel.Enabled);
-            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.StopProcessing), Times.Exactly(1));
-            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.Retry), Times.Exactly(1));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_GateFailureOptions_StopProcessing()
-        {
-            var conditionExpressionList = new List<ConditionExpression>();
-            //------------Setup for test--------------------------
-            var gateFailureProperty = CreateModelProperty("GateFailure", GateFailureAction.Retry);
-            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
-            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
-
-            var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
-
-            var mockModelItem = new Mock<ModelItem>();
-            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
-            CustomContainer.Register(mockModelItem.Object);
-            //------------Execute Test---------------------------
-            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object)
-            {
-                SelectedGateFailure = new NamedInt { Name = EnumHelper<GateFailureAction>.GetEnumDescription(GateFailureAction.StopProcessing), Value = (int)GateFailureAction.StopProcessing },
-            };
-            //------------Assert Results-------------------------
-            Assert.AreEqual("StopProcessing", gateDesignerViewModel.SelectedGateFailure.Name);
-            Assert.IsTrue(gateDesignerViewModel.Enabled);
-            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.Retry), Times.Exactly(1));
-            gateFailureProperty.Verify(prop => prop.SetValue(GateFailureAction.StopProcessing), Times.Exactly(1));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(GateDesignerViewModel))]
-        public void GateDesignerViewModel_GateFailureOptions_List()
-        {
-            var conditionExpressionList = new List<ConditionExpression>();
-            //------------Setup for test--------------------------
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
-            var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
-            var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
-            var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
-
-            var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
-            mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
-
-            var mockModelItem = new Mock<ModelItem>();
-            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
-            //------------Execute Test---------------------------
-            var gateDesignerViewModel = new GateDesignerViewModel(mockModelItem.Object);
-            var gateFailureOptions = gateDesignerViewModel.GateFailureOptions.ToList();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, gateFailureOptions.Count);
-            Assert.AreEqual("Stop processing", gateFailureOptions[0].Name);
-            Assert.AreEqual(0, gateFailureOptions[0].Value);
-            Assert.AreEqual("Retry execution", gateFailureOptions[1].Name);
-            Assert.AreEqual(1, gateFailureOptions[1].Value);
         }
 
         [TestMethod]
@@ -242,14 +135,12 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             var conditionExpressionList = new List<ConditionExpression>();
 
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList).Object;
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockPropertyCollection = new Mock<ModelPropertyCollection>();
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", uniqueId, true).Returns(mockModelProperty.Object);
-            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty);
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
@@ -283,14 +174,12 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             var conditionExpressionList = new List<ConditionExpression>();
 
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null);
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty);
 
             var mockPropertyCollection = new Mock<ModelPropertyCollection>();
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", uniqueId, true).Returns(mockModelProperty.Object);
-            mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty.Object);
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty.Object);
             mockPropertyCollection.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty.Object);
@@ -328,13 +217,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
             var gateOptions = new GateOptions();
             var conditionExpressionList = new List<ConditionExpression>();
 
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", gateOptions).Object;
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
@@ -376,13 +263,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 conditionExpression
             };
 
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
@@ -428,13 +313,11 @@ namespace Dev2.Activities.Designers.Tests.Gate
                 conditionExpression
             };
 
-            var gateFailureProperty = CreateModelProperty("GateFailure", null);
             var gateOptionsProperty = CreateModelProperty("GateOptions", null).Object;
             var conditionsProperty = CreateModelProperty("Conditions", conditionExpressionList);
             var retryEntryPointIdProperty = CreateModelProperty("RetryEntryPointId", Guid.Empty).Object;
 
             var mockProperties = new Mock<ModelPropertyCollection>();
-            mockProperties.Protected().Setup<ModelProperty>("Find", "GateFailure", true).Returns(gateFailureProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "GateOptions", true).Returns(gateOptionsProperty);
             mockProperties.Protected().Setup<ModelProperty>("Find", "Conditions", true).Returns(conditionsProperty.Object);
             mockProperties.Protected().Setup<ModelProperty>("Find", "RetryEntryPointId", true).Returns(retryEntryPointIdProperty);
