@@ -78,42 +78,6 @@
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
-    <Compile Include="Toolbox\ControlFlow\Gate\Gate.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Gate.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateConstantBackoff.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GateConstantBackoff.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateFibonacciBackoff.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GateFibonacciBackoff.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateLinearBackoff.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GateLinearBackoff.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateNoBackoff.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GateNoBackoff.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateQuadraticBackoff.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GateQuadraticBackoff.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateResumption.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GateResumption.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Gate\GateSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

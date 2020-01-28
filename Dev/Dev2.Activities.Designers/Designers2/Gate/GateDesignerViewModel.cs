@@ -34,7 +34,6 @@ namespace Dev2.Activities.Designers2.Gate
 {
     public class GateDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged, IEnabled
     {
-        private NamedInt _selectedGateFailure;
         List<NameValue> _gates;
         private NameValue _selectedGate;
         private bool _enabled;
@@ -74,24 +73,12 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void PopulateFields()
         {
-            var namedInts = NamedInt.GetAll(typeof(GateFailureAction)).ToArray();
-
-            var gateFailure = _modelItem.Properties["GateFailure"].ComputedValue;
-            if (gateFailure is null)
-            {
-                SelectedGateFailure = (NamedInt)namedInts[0];
-            }
-            else
-            {
-                SelectedGateFailure = (NamedInt)namedInts.First(o => o.Value == (int)gateFailure);
-                IsExpanded = true;
-            }
-
             var id = _modelItem.Properties["RetryEntryPointId"].ComputedValue;
             if (id != null && id.ToString() != Guid.Empty.ToString() && Gates.Count > 1)
             {
                 var nameValue = Gates.First(o => o.Value == id.ToString());
                 SelectedGate = nameValue;
+                IsExpanded = true;
             }
             else
             {
@@ -131,7 +118,7 @@ namespace Dev2.Activities.Designers2.Gate
             UpdateConditionExpressionOptionsModelItem();
         }
 
-        private void LoadOptions()
+/*        private void LoadOptions()
         {
             var gateOptions = _modelItem.Properties["GateOptions"].ComputedValue as GateOptions;
             if (gateOptions is null)
@@ -144,28 +131,8 @@ namespace Dev2.Activities.Designers2.Gate
             result.AddRange(failureOptions);
             Options = new OptionsWithNotifier { Options = result };
         }
-
+*/
         public ICommand DeleteConditionCommand { get; set; }
-
-        public IEnumerable<INamedInt> GateFailureOptions => NamedInt.GetAll(typeof(GateFailureAction));
-        public NamedInt SelectedGateFailure
-        {
-            get => _selectedGateFailure;
-            set
-            {
-                if (_selectedGateFailure == value)
-                {
-                    return;
-                }
-
-                _selectedGateFailure = value;
-                OnPropertyChanged(nameof(SelectedGateFailure));
-
-                var enumGateFailure = (GateFailureAction)value.Value;
-                _modelItem.Properties["GateFailure"]?.SetValue(enumGateFailure);
-                LoadOptions();
-            }
-        }
 
         public List<NameValue> Gates
         {
