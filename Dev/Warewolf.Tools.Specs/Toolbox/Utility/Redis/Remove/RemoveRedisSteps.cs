@@ -47,7 +47,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
 
 
         [When(@"I execute the Redis Remove ""(.*)"" tool")]
-        public void WhenIExecuteTheRedisRemoveTool(string key)
+        public void WhenIExecuteTheRedisRemoveTool(string key) => ExecuteRedisRemoveTool(key);
+
+        [When(@"I execute the Redis Remove ""(.*)"" with GUID tool")]
+        public void WhenIExecuteTheRedisRemoveWithGuidTool(string key) => ExecuteRedisRemoveTool(key + _scenarioContext.Get<Guid>("guid"));
+
+        void ExecuteRedisRemoveTool(string key)
         {
             var hostName = _scenarioContext.Get<string>("hostName");
             var password = _scenarioContext.Get<string>("password");
