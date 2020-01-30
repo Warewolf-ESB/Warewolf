@@ -15,6 +15,7 @@
                                MinWidth="350"
                                Width="350"
                                Height="Auto"
+                               MinHeight="335"
                                MaxWidth="450"
                                mc:Ignorable="d" 
                                d:DesignHeight="450" 

@@ -155,6 +155,7 @@
                                     MaxHeight="52"
                                     Focusable="True"
                                     Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                    ToolTip="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     Margin="-1,1,1,0"
                                     Grid.Column="1">
                 <i:Interaction.Behaviors>
@@ -169,8 +170,7 @@
                       SelectedValue="{Binding Path=SelectedMatchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource ComboBoxStyle}" 
                       Margin="0,1,1,0"
-                      Focusable="True"
-                      ToolTip="{Binding Path=Tooltip}">
+                      Focusable="True">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
@@ -193,6 +193,7 @@
                                         MaxHeight="52"
                                         Focusable="True"
                                         Text="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ToolTip="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         Grid.Column="0"
                                         Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
@@ -215,6 +216,7 @@
                                             Focusable="True"
                                             AllowUserInsertLine="False"
                                             Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            ToolTip="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                             Grid.Column="0">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
@@ -229,6 +231,7 @@
                                             Focusable="True"
                                             AllowUserInsertLine="False"
                                             Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                            ToolTip="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
                                             Margin="1,0,0,0"
                                             Grid.Column="1">
                         <i:Interaction.Behaviors>
