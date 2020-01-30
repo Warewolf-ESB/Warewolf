@@ -58,5 +58,33 @@ namespace Warewolf.Data.Options.Tests
             var result = condition.ToString();
             Assert.AreEqual("[[a]] is less than 2 and more than 10", result);
         }
+
+        [Test]
+        public void ConditionExpression_ToOptions()
+        {
+            var condition = new ConditionExpression
+            {
+                Left = "[[a]]",
+                Cond = new ConditionBetween()
+                {
+                    MatchType = enDecisionType.NotBetween,
+                    From = "2",
+                    To = "10",
+                }
+            };
+
+            var result = condition.ToOptions();
+            Assert.AreEqual(typeof(OptionConditionExpression), result[0].GetType());
+
+            var optionConditionExpression = result[0] as OptionConditionExpression;
+
+            Assert.IsNotNull(optionConditionExpression);
+            Assert.AreEqual("[[a]]", optionConditionExpression.Left);
+            Assert.AreEqual(enDecisionType.NotBetween, optionConditionExpression.MatchType);
+            Assert.AreEqual("Not Between", optionConditionExpression.SelectedMatchType.Name);
+            Assert.AreEqual(32, optionConditionExpression.SelectedMatchType.Value);
+            Assert.AreEqual("2", optionConditionExpression.From);
+            Assert.AreEqual("10", optionConditionExpression.To);
+        }
     }
 }

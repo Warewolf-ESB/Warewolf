@@ -177,10 +177,13 @@ namespace Warewolf.Data.Options
 
     public class ConditionExpression : IOptionConvertable
     {
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionLeftHelpText))]
         public string Left { get; set; }
 
         [DataValue(nameof(Condition.MatchType))]
         [MultiDataProvider(typeof(ConditionMatch), typeof(ConditionBetween))]
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionConditionToolTip))]
         public Condition Cond { get; set; }
 
         public IOption[] ToOptions()
@@ -190,9 +193,18 @@ namespace Warewolf.Data.Options
                 Left = Left
             };
             Cond?.SetOptions(option);
+            SetSelectedMatchType(option);
             return new[] {
                 option
             };
+        }
+
+        private void SetSelectedMatchType(OptionConditionExpression option)
+        {
+            var sb = new StringBuilder();
+            Cond.MatchType.RenderDescription(sb);
+            var item = NamedInt.GetAll(Cond.MatchType.GetType()).First(o => o.Name == sb.ToString());
+            option.SelectedMatchType = new NamedInt { Name = item.Name, Value = item.Value };
         }
 
         public void FromOption(IOption option)
@@ -245,6 +257,7 @@ namespace Warewolf.Data.Options
     }
     public class ConditionMatch : Condition
     {
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionRightHelpText))]
         public string Right { get; set; }
         public override void SetOptions(OptionConditionExpression option)
         {
