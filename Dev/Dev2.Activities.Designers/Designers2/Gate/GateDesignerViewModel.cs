@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers2.Gate
             LoadDefaults();
             ClearGates();
             LoadGates();
-
+            LoadOptions();
             PopulateFields();
             LoadConditionExpressionOptions();
             this.RunViewSetup();
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Designers2.Gate
             UpdateConditionExpressionOptionsModelItem();
         }
 
-/*        private void LoadOptions()
+        private void LoadOptions()
         {
             var gateOptions = _modelItem.Properties["GateOptions"].ComputedValue as GateOptions;
             if (gateOptions is null)
@@ -131,7 +131,7 @@ namespace Dev2.Activities.Designers2.Gate
             result.AddRange(failureOptions);
             Options = new OptionsWithNotifier { Options = result };
         }
-*/
+
         public ICommand DeleteConditionCommand { get; set; }
 
         public List<NameValue> Gates
