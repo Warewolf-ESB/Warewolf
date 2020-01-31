@@ -492,15 +492,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
-            if Seq.length data = 1 then
-                WarewolfAtomResult(Seq.exactlyOne data)
-            else
-                if Seq.isEmpty data then
-                    if jPath = "$."+(jsonIdentifierToName a) then
-                        WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
-                    else failwith "non existent object"                        
-                else
-                    WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+            WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
     | ComplexExpression a -> eval env update shouldEscape (languageExpressionToString lang)
     | WarewolfAtomExpression a -> WarewolfAtomResult(a)

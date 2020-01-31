@@ -1058,6 +1058,61 @@ namespace WarewolfParsingTest
             Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2);
 
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJobjectToJObject_MultipleArray_EvalCorreclty()
+        {
+            //------------Setup for test--------------------------
+            var environment = new ExecutionEnvironment();
+            //------------Execute Test---------------------------
+            environment.AssignJson(new AssignValue("[[@Org.Name]]", "Warewolf"), 0);
+            environment.AssignJson(new AssignValue("[[@Org.Location]]", "Ireland"), 0);
+            environment.AssignJson(new AssignValue("[[@Org.Workers().Name]]", "Bob"), 0);
+            environment.AssignJson(new AssignValue("[[@Org.Workers().Name]]", "Jane"), 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            Assert.IsTrue(data.JsonObjects.ContainsKey("Org"));
+            if (data.JsonObjects["Org"] is JObject obj)
+            {
+                Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"Warewolf\",\r\n  \"Location\": \"Ireland\",\r\n  \"Workers\": [\r\n    {\r\n      \"Name\": \"Bob\"\r\n    },\r\n    {\r\n      \"Name\": \"Jane\"\r\n    }\r\n  ]\r\n}");
+                var o = obj["Workers"];
+                var res = o as JArray;
+                Assert.IsNotNull(res);
+            }
+            else
+            {
+                Assert.Fail("bob");
+            }
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJobjectToJObject_EmptyArray_EvalCorreclty()
+        {
+            //------------Setup for test--------------------------
+            var environment = new ExecutionEnvironment();
+            //------------Execute Test---------------------------
+            var jObject = "{\"Workers\":[]}";
+            environment.AssignJson(new AssignValue("[[@Org]]", jObject), 0);
+          
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            Assert.IsTrue(data.JsonObjects.ContainsKey("Org"));
+            if (data.JsonObjects["Org"] is JObject obj)
+            {
+                Assert.AreEqual(obj.ToString(), "{\r\n  \"Workers\": []\r\n}");
+                var o = obj["Workers"];
+                var res = o as JArray;
+                Assert.IsNotNull(res);
+            }
+            else
+            {
+                Assert.Fail("AssignJobjectToJObject_EmptyArray_EvalCorreclty Failed");
+            }
+        }
         DataStorage.WarewolfEnvironment CreateTestEnvWithData()
         {
             IEnumerable<IAssignValue> assigns = new List<IAssignValue>

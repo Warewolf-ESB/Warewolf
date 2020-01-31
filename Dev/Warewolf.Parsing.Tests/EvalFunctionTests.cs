@@ -24,9 +24,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[x]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[x]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "1" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -39,9 +39,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[Rec().a]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[Rec().a]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "3" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "3");
         }
 
         [TestMethod]
@@ -121,9 +121,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[Rec(1).a]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[Rec(1).a]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "1" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
-        public void Eval_Indexes()  
+        public void Eval_Indexes()
         {
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
@@ -205,9 +205,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[Rec(*).a]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[Rec(*).a]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "1,2,3" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,2,3");
         }
 
         [TestMethod]
@@ -221,7 +221,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[Rec(*).a]]")).Item);
+            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Rec(*).a]]")).Item);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.atomtoString(res), "123");
         }
@@ -333,9 +333,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[Rec(*).a]][[x]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[Rec(*).a]][[x]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("11,21,31",  CommonFunctions.evalResultToString(res) );
+            Assert.AreEqual("11,21,31", CommonFunctions.evalResultToString(res));
         }
 
         [TestMethod]
@@ -349,9 +349,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[@Person.Age]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[@Person.Age]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "22" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "22");
         }
 
         [TestMethod]
@@ -365,9 +365,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[@Person.Score(1)]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[@Person.Score(1)]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "2" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "2");
         }
 
         [TestMethod]
@@ -381,9 +381,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  "[[@Person.Score(*)]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, "[[@Person.Score(*)]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "2,3" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "2,3");
         }
 
         [TestMethod]
@@ -397,9 +397,9 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  " 1 2 3" );
+            var res = EvaluationFunctions.eval(env, 0, false, " 1 2 3");
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  " 1 2 3" );
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), " 1 2 3");
         }
 
         [TestMethod]
@@ -410,9 +410,9 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, false,  " [[Rec()]]" );
+            var res = EvaluationFunctions.eval(env, 0, false, " [[Rec()]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(" 3, c",  CommonFunctions.evalResultToString(res) );
+            Assert.AreEqual(" 3, c", CommonFunctions.evalResultToString(res));
         }
 
 
@@ -699,7 +699,7 @@ namespace WarewolfParsingTest
             var res = EvaluationFunctions.evalIndexes(env, 0, "[[Rec()]]");
             //------------Assert Results-------------------------
             var enumerable = res as int[] ?? res.ToArray();
-            Assert.AreEqual(enumerable.ToArray()[0],1);
+            Assert.AreEqual(enumerable.ToArray()[0], 1);
             Assert.AreEqual(enumerable.ToArray()[1], 2);
             Assert.AreEqual(enumerable.ToArray()[2], 3);
         }
@@ -747,7 +747,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.eval(env, 0, false, "[[@Person.Age]]");
             //------------Assert Results-------------------------
-           Assert.AreEqual("22",CommonFunctions.evalResultToString(res));
+            Assert.AreEqual("22", CommonFunctions.evalResultToString(res));
         }
 
         [TestMethod]
@@ -761,7 +761,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.eval(env, 0, false, "[[@Person]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(expected.Replace(" ",""), CommonFunctions.evalResultToString(res).Replace(Environment.NewLine,"").Replace(" ",""));
+            Assert.AreEqual(expected.Replace(" ", ""), CommonFunctions.evalResultToString(res).Replace(Environment.NewLine, "").Replace(" ", ""));
         }
 
         [TestMethod]
@@ -864,7 +864,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[@arrayObj().Name]] [[@arrayObj().Name]]"));
+            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@arrayObj().Name]] [[@arrayObj().Name]]"));
             //------------Assert Results-------------------------
             Assert.AreEqual("bobe bobe", CommonFunctions.evalResultToString(res));
         }
@@ -893,7 +893,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var val = EvaluationFunctions.eval(env, 0, true, "[[escapeValue]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("C:\\test",CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("C:\\test", CommonFunctions.evalResultToString(val));
         }
 
         [TestMethod]
@@ -907,7 +907,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var val = EvaluationFunctions.eval(env, 0, false, "[[escapeValue]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("C:\test",CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("C:\test", CommonFunctions.evalResultToString(val));
         }
 
         [TestMethod]
@@ -941,7 +941,28 @@ namespace WarewolfParsingTest
             Assert.AreEqual("C:\temp", CommonFunctions.evalResultToString(val));
             Assert.AreEqual("C:\tval", CommonFunctions.evalResultToString(val2));
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("Eval")]
+        public void Eval_JSON_Json_EmptyArray()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEmptyEnvironmentWithData();
+            //------------Execute Test---------------------------
 
+            var res = EvaluationFunctions.eval(env, 0, false, "[[@Org.Workers(*)]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "");
+        }
+        public static DataStorage.WarewolfEnvironment CreateEmptyEnvironmentWithData()
+        {
+            var env = new ExecutionEnvironment();
+            //env.AssignJson(new AssignValue("[[@Org]]", "{\"Workers\":[{\"Name\" :\"rory\" }]}"), 0);
+            // env.AssignJson(new AssignValue("[[@Org]]", "{\"Workers\":[{\"Name\" :\"candice\" },{\"Name\" :\"rory\" }]}"), 0);
+            env.AssignJson(new AssignValue("[[@Org]]", "{\"Workers\":[]}"), 0);
+            var p = new PrivateObject(env);
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+        }
         public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
@@ -955,7 +976,7 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(1).b]]", "a", 0);
             env.Assign("[[Rec(2).b]]", "b", 0);
             env.Assign("[[Rec(3).b]]", "c", 0);
-            env.Assign("[[escapeValue]]","C:\test",0);
+            env.Assign("[[escapeValue]]", "C:\test", 0);
             env.Assign("[[esc(1).val]]", "C:\temp", 0);
             env.Assign("[[esc(2).val]]", "C:\tval", 0);
             env.Assign("[[x]]", "1", 0);
@@ -970,6 +991,8 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[@array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[@arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[@arrayObj(2).Name]]", "bobe"), 0);
+            env.AssignJson(new AssignValue("[[@Org]]", "{\"Workers\":[]}"), 0);
+
             var p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
