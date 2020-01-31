@@ -1185,11 +1185,6 @@
   <data name="PluginSourceRefreshCommandHelp" xml:space="preserve">
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
   </data>
-  <data name="GateFailuresHelp" xml:space="preserve">
-    <value>If the gate conditions fail, this is the action will be executed. 
-    	&lt;br/&gt;Retry: will retry the execution based on the options setup below. 
-    	&lt;br/&gt;StopOnError: will stop the execution.</value>
-  </data>
   <data name="ExistingGatesHelp" xml:space="preserve">
     <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
   </data>
@@ -2403,5 +2398,14 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="OptionRadioButtonHelpText" xml:space="preserve">
     <value>OptionRadioButtonHelpText</value>
+  </data>
+  <data name="OptionConditionHelpText" xml:space="preserve">
+    <value>OptionConditionHelpText</value>
+  </data>
+  <data name="OptionConditionLeftHelpText" xml:space="preserve">
+    <value>OptionConditionLeftHelpText</value>
+  </data>
+  <data name="OptionConditionRightHelpText" xml:space="preserve">
+    <value>OptionConditionRightHelpText</value>
   </data>
 </root>
