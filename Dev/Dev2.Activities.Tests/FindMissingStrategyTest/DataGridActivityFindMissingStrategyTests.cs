@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffGatherSystemInfoExpectedAllFindMissingFieldsToBeReturned()
         {
-            var baseConvertActivity = new DsfGatherSystemInformationActivity{SystemInformationCollection  = new List<GatherSystemInformationTO> {new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "res",1)} };
+            var baseConvertActivity = new DsfGatherSystemInformationActivity { SystemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "res", 1) } };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             var actual = strategy.GetActivityFields(baseConvertActivity);
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             //------------Execute Test---------------------------
             var fields = strategy.GetActivityFields(activity);
             //------------Assert Results-------------------------
-            Assert.AreEqual(10,fields.Count);
+            Assert.AreEqual(10, fields.Count);
             Assert.IsTrue(fields.Contains("[[InputValue1]]"));
             Assert.IsTrue(fields.Contains("[[InputValue2]]"));
             Assert.IsTrue(fields.Contains("[[InputValue3]]"));
@@ -436,7 +436,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Assert.IsTrue(fields.Contains("[[errSvc]]"));
         }
 
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
@@ -644,6 +644,52 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             //------------Assert Results-------------------------
             Assert.AreEqual(6, fields.Count);
             Assert.IsTrue(fields.Contains("TheObject"));
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_AdvancedRecordsetActivity_GivenSqlQueryWithNoAnyField_ShouldReturnResults()
+        {
+            //--------------Arrange------------------------------
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new AdvancedRecordsetActivity()
+            {
+                SqlQuery = "Select * from person",
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("id", "id", "TableCopy") },
+            };
+            //--------------Act----------------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //--------------Assert-------------------------------
+            Assert.AreEqual(3, fields.Count);
+            Assert.IsTrue(fields.Contains("[[person()]]"));
+            Assert.IsTrue(fields.Contains("[[person().id]]"));
+            Assert.IsTrue(fields.Contains("[[TableCopy().id]]"));
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_AdvancedRecordsetActivity_GivenSqlQueryWithTwoField_ShouldReturnResults()
+        {
+            //--------------Arrange------------------------------
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new AdvancedRecordsetActivity()
+            {
+                SqlQuery = "Select id, name from person",
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("id", "id", "TableCopy"), new ServiceOutputMapping("name", "name", "TableCopy") },
+            };
+            //--------------Act----------------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //--------------Assert-------------------------------
+            Assert.AreEqual(5, fields.Count);
+            Assert.IsTrue(fields.Contains("[[person()]]"));
+            Assert.IsTrue(fields.Contains("[[person().id]]"));
+            Assert.IsTrue(fields.Contains("[[person().name]]"));
+            Assert.IsTrue(fields.Contains("[[TableCopy().id]]"));
+            Assert.IsTrue(fields.Contains("[[TableCopy().name]]"));
         }
     }
 }
