@@ -154,7 +154,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="val">The value.</param>
         /// <returns></returns>
-        public static string RemoveLanguageBrackets(string val) => val.Replace("[", string.Empty).Replace("]", string.Empty);
+        public static string RemoveLanguageBrackets(string val) => val.Replace("[[", string.Empty).Replace("]]", string.Empty);
 
         /// <summary>
         /// Used to determine if a tag is a system tag or not
