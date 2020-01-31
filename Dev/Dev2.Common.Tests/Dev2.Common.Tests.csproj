@@ -97,6 +97,7 @@
     <Compile Include="DllListingTests.cs" />
     <Compile Include="ApisJsonTests.cs" />
     <Compile Include="DataNodeTests.cs" />
+    <Compile Include="Dev2JsonSerializerTests.cs" />
     <Compile Include="UtilitiesTests.cs" />
     <Compile Include="Utils\JSONUtilsTests.cs" />
     <Compile Include="WcfActionTests.cs" />

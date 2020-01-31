@@ -10,13 +10,18 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Common.Serializers
 {
@@ -181,6 +186,91 @@ namespace Dev2.Common.Serializers
                     return result;
                 }
             }
+        }
+        static bool ParseJson(JToken token, XDocument nodes, string parentNode = "", string currentNode = "")
+        {
+            if (token.HasValues) //has child Tokens
+            {
+                foreach (JToken child in token.Children())
+                {
+                    if (token.Type == JTokenType.Property)
+                    {
+                        var name = ((JProperty)token).Name;
+                        var value = ((JProperty)token).Value;
+
+                        if (parentNode == "")
+                        {
+                            if (child.HasValues)
+                            {
+                                nodes.Root.Add(new XElement(name));
+                            }
+                            parentNode = name;
+                        }
+                        else
+                        {
+                            if (!child.HasValues)
+                            {
+                                currentNode = name;
+                            }
+                            else
+                            {
+                                var node = nodes.Descendants(parentNode).FirstOrDefault();
+                                if (child.Type == JTokenType.Array)
+                                {
+                                    node.Add(new XElement(name, new XAttribute("array", "true")));
+                                }
+                                else
+                                {
+                                    node.Add(new XElement(name));
+                                }
+                               
+                                parentNode = name;
+                                currentNode = name;
+                            }
+                        }
+                    }
+
+                    ParseJson(child, nodes, parentNode, currentNode);
+                }
+                // we are done parsing and this is a parent node
+                return true;
+            }
+            else
+            {
+                if (currentNode == "")
+                {
+                    nodes.Root.Add(new XElement(parentNode, token.ToString()));
+                }
+                else
+                {
+                    var node = nodes.Descendants(parentNode).FirstOrDefault();
+                    if (token.Type == JTokenType.Array)
+                    {
+                        node.Add(new XElement(currentNode, new XAttribute("array", "true")));
+                    }
+                    else
+                    {
+                        node.Add(new XElement(currentNode, token.ToString()));
+                    }
+                }
+            }
+            return false;
+        }
+
+        public XDocument DeserializeXNode(string value, string deserializeRootElementName)
+        {
+            var results = new Dictionary<string, Dictionary<string, int>>();
+            var jsonObj = JsonConvert.DeserializeObject(value) as JObject;
+            XDocument xmlDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""));
+            XElement root = new XElement(deserializeRootElementName);
+            xmlDoc.Add(root);
+
+            var rootObject = JObject.Parse(value);
+            if (rootObject.HasValues)
+            {
+                ParseJson(rootObject, xmlDoc);
+            }
+            return xmlDoc;
         }
     }
 }
