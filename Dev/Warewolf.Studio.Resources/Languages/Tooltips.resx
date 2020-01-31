@@ -944,9 +944,6 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="PluginServiceSelectConstructorToolTip" xml:space="preserve">
     <value>Select constructor to execute.</value>
   </data>
-  <data name="GateFailuresToolTip" xml:space="preserve">
-    <value>If the gate conditions fail, this is the action will be executed.</value>
-  </data>
   <data name="ExistingGatesToolTip" xml:space="preserve">
     <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
   </data>
@@ -2482,5 +2479,8 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="OptionRadioButtonTooltip" xml:space="preserve">
     <value>OptionRadioButtonTooltip</value>
+  </data>
+  <data name="OptionConditionToolTip" xml:space="preserve">
+    <value>OptionConditionToolTip</value>
   </data>
 </root>
