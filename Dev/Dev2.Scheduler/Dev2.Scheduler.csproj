@@ -73,6 +73,7 @@
     </AdditionalFiles>
     <Compile Include="EventInfo.cs" />
     <Compile Include="ClientSchedulerFactory.cs" />
+    <Compile Include="LocalSecurityAuthorityController.cs" />
     <Compile Include="ResourceHistory.cs" />
     <Compile Include="ServerSchedulerFactory.cs" />
     <Compile Include="ScheduledResource.cs" />

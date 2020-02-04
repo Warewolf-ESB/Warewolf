@@ -127,33 +127,8 @@ public class SecurityWrapper : ISecurityWrapper
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
         var sanitizedUserName = userName.Trim();
-
-        var isFullyQualifiedUser = sanitizedUserName.Contains(@"\");
-        var unQualifiedUserName = GetUnqualifiedName(sanitizedUserName);
-        var accounts = GetAccountsWithPrivilege(privilege);
-
-        try
-        {
-            // when this throws every group is checked for a user that matches the userName stripping the host, if this happens we might as well just check Accounts for userName by stripping the host, it is the same thing.
-            // Perhaps we 
-            var isInRole = PrincipalIsInRole(accounts, unQualifiedUserName);
-            if (isInRole)
-            {
-                return isInRole;
-            }
-
-            var qualifiedUser = isFullyQualifiedUser ? sanitizedUserName : Environment.MachineName + "\\" + unQualifiedUserName;
-            var userIsAccount = accounts.Any(o => o.Equals(qualifiedUser, StringComparison.InvariantCultureIgnoreCase));
-            if (userIsAccount)
-            {
-                return userIsAccount;
-            }
-            return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
-        }
-        catch (Exception)
-        {
-            return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
-        }
+        var rights = LSAWrapper.GetRights(userName);
+        return rights.Contains(LocalSecurityAuthorityRights.LogonAsBatchJob);        
     }
 
     private static bool PrincipalIsInRole(List<string> accounts, string unQualifiedUserName)
