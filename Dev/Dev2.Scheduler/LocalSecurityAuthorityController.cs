@@ -97,15 +97,15 @@ public class LocalSecurityAuthorityController
     }
 
     // Returns the Local Security Authority rights granted to the account
-    public IList<string> GetRights(string accountName)
+    public static IList<string> GetRights(string accountName)
     {
         IList<string> rights = new List<string>();
-        string errorMessage = string.Empty;
+        var errorMessage = string.Empty;
 
         long winErrorCode = 0;
         IntPtr sid = IntPtr.Zero;
         int sidSize = 0;
-        StringBuilder domainName = new StringBuilder();
+        var domainName = new StringBuilder();
         int nameSize = 0;
         int accountType = 0;
 
@@ -122,13 +122,13 @@ public class LocalSecurityAuthorityController
         }
         else
         {
-            LSA_UNICODE_STRING systemName = new LSA_UNICODE_STRING();
+            var systemName = new LSA_UNICODE_STRING();
 
             IntPtr policyHandle = IntPtr.Zero;
             IntPtr userRightsPtr = IntPtr.Zero;
             int countOfRights = 0;
 
-            LSA_OBJECT_ATTRIBUTES objectAttributes = CreateLSAObject();
+            var objectAttributes = CreateLSAObject();
 
             uint policyStatus = LsaOpenPolicy(ref systemName, ref objectAttributes, Access, out policyHandle);
             winErrorCode = LsaNtStatusToWinError(policyStatus);
@@ -160,7 +160,7 @@ public class LocalSecurityAuthorityController
                     for (int i = 0; i < countOfRights; i++)
                     {
                         userRight = (LSA_UNICODE_STRING)Marshal.PtrToStructure(new IntPtr(ptr), typeof(LSA_UNICODE_STRING));
-                        string userRightStr = Marshal.PtrToStringAuto(userRight.Buffer);
+                        var userRightStr = Marshal.PtrToStringAuto(userRight.Buffer);
                         rights.Add(userRightStr);
                         ptr += Marshal.SizeOf(userRight);
                     }
@@ -176,14 +176,14 @@ public class LocalSecurityAuthorityController
     }
 
     // Adds a privilege to an account
-    public void SetRight(string accountName, string privilegeName)
+    public static void SetRight(string accountName, string privilegeName)
     {
         long winErrorCode = 0;
-        string errorMessage = string.Empty;
+        var errorMessage = string.Empty;
 
         IntPtr sid = IntPtr.Zero;
         int sidSize = 0;
-        StringBuilder domainName = new StringBuilder();
+        var domainName = new StringBuilder();
         int nameSize = 0;
         int accountType = 0;
 
@@ -200,9 +200,9 @@ public class LocalSecurityAuthorityController
         }
         else
         {
-            LSA_UNICODE_STRING systemName = new LSA_UNICODE_STRING();
+            var systemName = new LSA_UNICODE_STRING();
             IntPtr policyHandle = IntPtr.Zero;
-            LSA_OBJECT_ATTRIBUTES objectAttributes = CreateLSAObject();
+            var objectAttributes = CreateLSAObject();
 
             uint resultPolicy = LsaOpenPolicy(ref systemName, ref objectAttributes, Access, out policyHandle);
             winErrorCode = LsaNtStatusToWinError(resultPolicy);
@@ -216,7 +216,7 @@ public class LocalSecurityAuthorityController
             {
                 try
                 {
-                    LSA_UNICODE_STRING[] userRights = new LSA_UNICODE_STRING[1];
+                    var userRights = new LSA_UNICODE_STRING[1];
                     userRights[0] = new LSA_UNICODE_STRING();
                     userRights[0].Buffer = Marshal.StringToHGlobalUni(privilegeName);
                     userRights[0].Length = (UInt16)(privilegeName.Length * UnicodeEncoding.CharSize);
@@ -241,13 +241,14 @@ public class LocalSecurityAuthorityController
 
     private static LSA_OBJECT_ATTRIBUTES CreateLSAObject()
     {
-        LSA_OBJECT_ATTRIBUTES newInstance = new LSA_OBJECT_ATTRIBUTES();
-
-        newInstance.Length = 0;
-        newInstance.RootDirectory = IntPtr.Zero;
-        newInstance.Attributes = 0;
-        newInstance.SecurityDescriptor = IntPtr.Zero;
-        newInstance.SecurityQualityOfService = IntPtr.Zero;
+        var newInstance = new LSA_OBJECT_ATTRIBUTES
+        {
+            Length = 0,
+            RootDirectory = IntPtr.Zero,
+            Attributes = 0,
+            SecurityDescriptor = IntPtr.Zero,
+            SecurityQualityOfService = IntPtr.Zero
+        };
 
         return newInstance;
     }
@@ -274,11 +275,11 @@ public class LSAWrapper
 {
     public static IList<string> GetRights(string accountName)
     {
-        return new LocalSecurityAuthorityController().GetRights(accountName);
+        return LocalSecurityAuthorityController.GetRights(accountName);
     }
 
     public static void SetRight(string accountName, string privilegeName)
     {
-        new LocalSecurityAuthorityController().SetRight(accountName, privilegeName);
+        LocalSecurityAuthorityController.SetRight(accountName, privilegeName);
     }
 }
