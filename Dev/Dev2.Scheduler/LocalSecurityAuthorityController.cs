@@ -72,7 +72,7 @@ public class LocalSecurityAuthorityController
     {
         public int Length;
         public IntPtr RootDirectory;
-        public LSA_UNICODE_STRING ObjectName;
+        public readonly LSA_UNICODE_STRING ObjectName;
         public UInt32 Attributes;
         public IntPtr SecurityDescriptor;
         public IntPtr SecurityQualityOfService;
