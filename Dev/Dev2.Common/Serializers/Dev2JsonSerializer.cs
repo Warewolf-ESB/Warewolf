@@ -45,8 +45,23 @@ namespace Dev2.Common.Serializers
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
         };
-        public string Serialize<T>(T obj) => this.Serialize<T>(obj, Formatting);
+        //public string Serialize<T>(T obj) => this.Serialize<T>(obj, Formatting);
         public string Serialize<T>(T obj, Formatting formatting) => JsonConvert.SerializeObject(obj, formatting, _serializerSettings);
+
+        public string Serialize<T>(T obj)
+        {
+            var result = new StringBuilder();
+
+            var rootObject = JObject.Parse(obj.ToString());
+            if (rootObject.HasValues)
+            {
+            }
+            else
+            {
+
+            }
+                return rootObject.ToString();
+        }
 
         public T Deserialize<T>(string obj)
         {
@@ -259,7 +274,6 @@ namespace Dev2.Common.Serializers
 
         public XDocument DeserializeXNode(string value, string deserializeRootElementName)
         {
-            var results = new Dictionary<string, Dictionary<string, int>>();
             var jsonObj = JsonConvert.DeserializeObject(value) as JObject;
             XDocument xmlDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""));
             XElement root = new XElement(deserializeRootElementName);

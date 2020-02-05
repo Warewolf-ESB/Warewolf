@@ -14,11 +14,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Serializers;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -480,8 +482,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
             JsonData = dataListString;
-            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", false);
-
+            var dev2Serializer = new Dev2JsonSerializer();
+            var xml = dev2Serializer.DeserializeXNode(dataListString, @"DataList");
+            var value = JsonConvert.DeserializeObject(dataListString) as JObject;
+           
             try
             {
                 if (xml.Descendants().Count() == 1)
@@ -811,6 +815,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (prop != null)
                     {
                         value = prop.Value as JObject;
+                    }
+                    else
+                    {
+                        value = value as JObject;
                     }
                     dataListObject.Add(o.Field, value);
                 }

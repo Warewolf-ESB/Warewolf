@@ -31,7 +31,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Services.Security;
+using Newtonsoft.Json;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.Interfaces.Communication;
+using System.IO;
+using Dev2.Common.Serializers;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -1171,6 +1176,50 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_SetXmlData_WithBlankObjectArray()
+        {
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns("<DataList><rec></rec></DataList>");
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
+            {
+                workflowInputDataviewModel.XmlData = SetXmlData("{\"test\": \r\n { \r\n  \"rec\": []\r\n }}");
+                workflowInputDataviewModel.SetWorkflowInputData();
+                //workflowInputDataviewModel.LoadWorkflowInputs();
+                var inputs = workflowInputDataviewModel.WorkflowInputs;
+                Assert.AreEqual(2, inputs.Count);
+                inputs[0].Value = "bob";
+
+                workflowInputDataviewModel.SetXmlData();
+
+                Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Age></Age><Name></Name></Person></DataList>", workflowInputDataviewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
+                Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Age\": \"\",\r\n    \"Name\": \"\"\r\n  }\r\n}", workflowInputDataviewModel.JsonData);
+
+            }
+        }
+        static string SetXmlData(string dataListString)
+        {
+            var XmlData = "";
+            try
+            {
+                var dev2Serializer = new Dev2JsonSerializer();
+                var xml = dev2Serializer.DeserializeXNode(dataListString, "DataList");
+                if (xml.Descendants().Count() == 1)
+                {
+                    xml = XDocument.Parse(@"<DataList></DataList>");
+                }
+                XmlData = XElement.Parse(xml.ToString(), LoadOptions.PreserveWhitespace).ToString();
+            }
+            catch (Exception ex)
+            {
+                XmlData = ex.Message + @"Invalid characters entered";
+            }
+            return XmlData;
+        }
+       
         static OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
         {
             const int numberOfRecords = 6;
@@ -1290,4 +1339,6 @@ namespace Dev2.Core.Tests.Workflows
             SendViewInBrowserRequestPayload = payload;
         }
     }
+
+    
 }

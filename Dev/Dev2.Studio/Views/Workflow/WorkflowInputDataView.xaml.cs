@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
+using Dev2.Common.Serializers;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
@@ -106,7 +107,10 @@ namespace Dev2.Studio.Views.Workflow
 
                 if (xml.FirstChild != null)
                 {
-                    var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
+                    var dev2Serializer = new Dev2JsonSerializer();
+                    var json = dev2Serializer.Serialize(xml.FirstChild);
+                   // var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
+                    
                     _jsonEditor.Text = json;
                 }
                 else
@@ -228,8 +232,10 @@ namespace Dev2.Studio.Views.Workflow
         {
             try
             {
-                var xmlDocument = JsonConvert.DeserializeXmlNode(_jsonEditor.Text == "\"\"" ? "" : _jsonEditor.Text, "DataList",true);
-                return xmlDocument == null ? String.Empty : xmlDocument.InnerXml;
+                var dev2Serializer = new Dev2JsonSerializer();
+                var xmlDocument = dev2Serializer.Serialize(_jsonEditor.Text);
+              
+                return xmlDocument == null ? String.Empty : xmlDocument.ToString();
             }
             catch (Exception)
             {
