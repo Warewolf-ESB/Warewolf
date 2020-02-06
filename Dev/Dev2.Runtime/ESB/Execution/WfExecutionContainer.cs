@@ -232,7 +232,7 @@ namespace Dev2.Runtime.ESB.Execution
                 };
                 if (dsfDataObject.Settings.EnableDetailedLogging)
                 {
-                    stateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+                    stateNotifier = LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
                 }
 
@@ -241,7 +241,8 @@ namespace Dev2.Runtime.ESB.Execution
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                stateNotifier?.LogPreExecuteState(resource);
+                stateNotifier?.LogPreExecuteState(resource); 
+                //log the start of execution
 
                 IDev2Activity next;
                 IDev2Activity lastActivity;
@@ -258,7 +259,9 @@ namespace Dev2.Runtime.ESB.Execution
                 }
 
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
+                //log successful completion
             }
+            //catch log detailed exception
             finally
             {
                 _executionManager?.CompleteExecution();
@@ -302,8 +305,9 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
             while (next != null)
             {
-                if (dsfDataObject.StopExecution)
+                if (dsfDataObject.StopExecution) 
                 {
+                    //On error detailed logging
                     dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                     stoppedExecution = true;
                     break;
