@@ -133,7 +133,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HelpText.resx</DependentUpon>
     </Compile>
-    <Compile Include="Languages\Tooltips.Designer.cs">
+    <Compile Include="Languages\Tooltips1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Tooltips.resx</DependentUpon>
