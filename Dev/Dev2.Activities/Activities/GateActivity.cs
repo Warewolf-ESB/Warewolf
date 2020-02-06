@@ -160,17 +160,6 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update, allErrors);
                 }
 
-                // TODO: execute workflow that should be called on resume
-                if (GateOptions.GateOpts is Continue)
-                {
-                    BeforeExecuteRetryWorkflow();
-                    ExecuteRetryWorkflow();
-                    ExecuteRetryWorkflowCompleted();
-                }
-
-                _dataObject.Environment = _originalExecutionEnvironment;
-                Dev2Logger.Debug("Gate: Resetting Environment Snapshot", data.ExecutionID.ToString());
-
                 return ExecuteRetry(data, update, allErrors, _retryState.Item2);
             }
             catch (Exception e)
@@ -276,6 +265,16 @@ namespace Dev2.Activities
         /// <returns></returns>
         private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, ErrorResultTO allErrors, IEnumerator<bool> _algo)
         {
+            if (GateOptions.GateOpts is Continue)
+            {
+                BeforeExecuteRetryWorkflow();
+                ExecuteRetryWorkflow();
+                ExecuteRetryWorkflowCompleted();
+            }
+
+            _dataObject.Environment = _originalExecutionEnvironment;
+            Dev2Logger.Debug("Gate: Reset Environment Snapshot", data.ExecutionID.ToString());
+            
             if (_dataObject.IsDebugMode())
             {
                 var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteRetry), "", true);
