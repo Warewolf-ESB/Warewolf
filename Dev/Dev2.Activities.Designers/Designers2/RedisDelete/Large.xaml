@@ -66,7 +66,7 @@
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedRedisSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Tooltips.RedisSourcesToolTip}"
+                      ToolTip="{x:Static languages:Tooltips.RedisServersToolTip}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RedisSources_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.RedisSourceHelp}" DataContext="{Binding}" />
