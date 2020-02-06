@@ -182,8 +182,6 @@ namespace Warewolf.Data.Options
 
         [DataValue(nameof(Condition.MatchType))]
         [MultiDataProvider(typeof(ConditionMatch), typeof(ConditionBetween))]
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionHelpText))]
-        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionConditionToolTip))]
         public Condition Cond { get; set; }
 
         public IOption[] ToOptions()
