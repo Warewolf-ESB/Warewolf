@@ -159,7 +159,7 @@
                                     Margin="-1,1,1,0"
                                     Grid.Column="1">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpMatch}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
@@ -172,7 +172,7 @@
                       Margin="0,1,1,0"
                       Focusable="True">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpLookForMatchType}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
 
@@ -197,7 +197,7 @@
                                         Grid.Column="0"
                                         Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpMatch}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                     </i:Interaction.Behaviors>
                 </ui:IntellisenseTextBox>
 
@@ -219,7 +219,7 @@
                                             ToolTip="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                             Grid.Column="0">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.FindRecordsFromHelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
                     </ui:IntellisenseTextBox>
                     <ui:IntellisenseTextBox DefaultText="To"
@@ -235,7 +235,7 @@
                                             Margin="1,0,0,0"
                                             Grid.Column="1">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.FindRecordsToHelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                         </i:Interaction.Behaviors>
                     </ui:IntellisenseTextBox>
                 </Grid>
