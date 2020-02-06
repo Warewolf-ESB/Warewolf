@@ -136,7 +136,17 @@
                 </Button>
             </Grid>
 
-            
+            <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}" >
+                <ListView ItemsSource="{Binding Followers}">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Follower information">
+                            <GridViewColumn DisplayMemberBinding="{Binding HostName}" Header="Hostname" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding ConnectedSince}" Header="Connected since" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding LastSync}" Header="Last sync" Width="Auto"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
