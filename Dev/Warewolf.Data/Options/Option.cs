@@ -721,14 +721,14 @@ namespace Warewolf.Options
             }
         }
 
-        private string _helpText = Studio.Resources.Languages.HelpText.OptionComboboxHelpText;
+        private string _helpText;
         public string HelpText
         {
             get => _helpText;
             set => SetProperty(ref _helpText, value);
         }
 
-        private string _tooltip = Studio.Resources.Languages.Tooltips.OptionComboboxTooltip;
+        private string _tooltip;
 
         public string Tooltip
         {
