@@ -355,26 +355,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UnitTestAttributes", "Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj", "{4A455098-FFDD-4861-B873-656F960CF0BA}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "warewolfBI", "warewolfBI\", "{994301C3-CB7D-4F15-A3FE-27C4A944173E}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_58043"
-		Debug.AspNetCompiler.PhysicalPath = "warewolfBI\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_58043\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_58043"
-		Release.AspNetCompiler.PhysicalPath = "warewolfBI\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_58043\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "58043"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1444,14 +1424,6 @@ Global
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.Build.0 = Release|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Debug|x86.Build.0 = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|x86.ActiveCfg = Debug|Any CPU
-		{994301C3-CB7D-4F15-A3FE-27C4A944173E}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
