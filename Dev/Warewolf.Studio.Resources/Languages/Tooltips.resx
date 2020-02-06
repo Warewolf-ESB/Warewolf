@@ -2486,4 +2486,13 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="OptionConditionToolTip" xml:space="preserve">
     <value>OptionConditionToolTip</value>
   </data>
+  <data name="SettingsClusterCopyKeyToolTip" xml:space="preserve">
+    <value>Copy to clipboard the Key provided by the leader</value>
+  </data>
+  <data name="SettingsClusterFilterToolTip" xml:space="preserve">
+    <value>Filter the Followers list</value>
+  </data>
+  <data name="SettingsClusterKeyToolTip" xml:space="preserve">
+    <value>The Key provided by the leader</value>
+  </data>
 </root>

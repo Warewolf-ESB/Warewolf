@@ -4888,6 +4888,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy to clipboard the Key provided by the leader.
+        /// </summary>
+        public static string SettingsClusterCopyKeyToolTip {
+            get {
+                return ResourceManager.GetString("SettingsClusterCopyKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter the Followers list.
+        /// </summary>
+        public static string SettingsClusterFilterToolTip {
+            get {
+                return ResourceManager.GetString("SettingsClusterFilterToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Key provided by the leader.
+        /// </summary>
+        public static string SettingsClusterKeyToolTip {
+            get {
+                return ResourceManager.GetString("SettingsClusterKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes performance counters.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceTooltip {

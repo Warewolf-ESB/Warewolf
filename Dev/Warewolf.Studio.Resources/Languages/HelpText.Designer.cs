@@ -4008,6 +4008,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The cluster key has been copied to clipboard.
+        /// </summary>
+        public static string SettingsClusterCopyKeyHelpText {
+            get {
+                return ResourceManager.GetString("SettingsClusterCopyKeyHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter any text to filter for relevant items containing that text or character.
+        /// </summary>
+        public static string SettingsClusterFilterHelpText {
+            get {
+                return ResourceManager.GetString("SettingsClusterFilterHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the cluster key created on the leader.
+        /// </summary>
+        public static string SettingsClusterKeyHelpText {
+            get {
+                return ResourceManager.GetString("SettingsClusterKeyHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes the performance counters for this specific resource.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceHelpText {

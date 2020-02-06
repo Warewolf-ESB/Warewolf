@@ -2408,4 +2408,13 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="OptionConditionRightHelpText" xml:space="preserve">
     <value>OptionConditionRightHelpText</value>
   </data>
+  <data name="SettingsClusterCopyKeyHelpText" xml:space="preserve">
+    <value>The cluster key has been copied to clipboard</value>
+  </data>
+  <data name="SettingsClusterFilterHelpText" xml:space="preserve">
+    <value>Enter any text to filter for relevant items containing that text or character</value>
+  </data>
+  <data name="SettingsClusterKeyHelpText" xml:space="preserve">
+    <value>Enter the cluster key created on the leader</value>
+  </data>
 </root>
