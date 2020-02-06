@@ -92,6 +92,51 @@
             </Grid>
         </Grid>
 
-        
+        <Grid x:Name="LeadingGrid" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0"
+                        Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                        Background="{StaticResource WareWolfMenuBrush}"
+                        HorizontalAlignment="Stretch"
+                        Orientation="Horizontal">
+                <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Followers</TextBlock>
+            </StackPanel>
+
+            <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="FilterTextBox"
+                         Text="{Binding Filter}"
+                         Margin="{StaticResource ControlBorderTop}"
+                         ToolTip="{x:Static languages:Tooltips.SettingsClusterFilterToolTip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterFilterHelpText}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+
+                <Button x:Name="CopyKey"
+                        Command="{Binding CopyKeyCommand}"
+                        Content="Copy Security Key"
+                        HorizontalAlignment="Right"
+                        Grid.Column="1"
+                        Width="Auto"
+                        Margin="{StaticResource ControlBorderTopLeft}"
+                        ToolTip="{x:Static languages:Tooltips.SettingsClusterCopyKeyToolTip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterCopyKeyHelpText}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+            </Grid>
+
+            
+        </Grid>
     </Grid>
 </UserControl>
