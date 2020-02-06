@@ -216,6 +216,10 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Clusters\ClusterView.xaml.cs">
+      <DependentUpon>ClusterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Clusters\ClusterViewModel.cs" />
     <Compile Include="Triggers\QueueEvents\QueueEventsView.xaml.cs">
       <DependentUpon>QueueEventsView.xaml</DependentUpon>
     </Compile>
@@ -445,6 +449,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\Clusters\ClusterView.xaml" />
     <Page Include="Settings\Logging\LoggingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
