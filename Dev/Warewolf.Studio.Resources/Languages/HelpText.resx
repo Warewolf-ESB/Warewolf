@@ -1186,7 +1186,7 @@
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
   </data>
   <data name="ExistingGatesHelp" xml:space="preserve">
-    <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
+    <value>If the gate conditions fail and "Continue" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)	This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5	Preview (scalar field - including indexed recordsets and ())	This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
@@ -2379,7 +2379,7 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>Retry strategy that will be actioned &lt;br/&gt;&lt;br/&gt;&lt;b&gt;NoBackoff: &lt;/b&gt;On Error Retry Immediately&lt;br/&gt;&lt;br/&gt;&lt;b&gt;LinearBackoff:&lt;/b&gt; Delay increases along with every attempt on Linear curve</value>
   </data>
   <data name="OptionGateResumeHelpText" xml:space="preserve">
-    <value>Select whether the Gate Tool will resume on error</value>
+    <value>Select whether the Gate Tool will continue on error or end the workflow</value>
   </data>
   <data name="OptionGateIncrementHelpText" xml:space="preserve">
     <value>Set the delay increment between every retry attempt</value>

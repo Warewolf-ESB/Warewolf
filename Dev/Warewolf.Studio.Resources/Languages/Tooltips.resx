@@ -663,6 +663,9 @@ To execute more than one item in a loop construct etc. put the activities in a s
 and then put the sequence into the loop construct.
 Error handling operates as a catch all for all items in the sequence.</value>
   </data>
+  <data name="GateExecuteThisTooltip" xml:space="preserve">
+    <value>Execute an Activity when there is a failure in the Gate referencing this Gate.</value>
+  </data>
   <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
     <value>Only collections go in here.
 You can use the (*) or () notation for record sets or objects.</value>
@@ -945,7 +948,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Select constructor to execute.</value>
   </data>
   <data name="ExistingGatesToolTip" xml:space="preserve">
-    <value>If the gate conditions fail and "Retry" has been selected, then select an existing gate to roll back to.</value>
+    <value>If the gate conditions fail and "Continue" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PasswordToolTip" xml:space="preserve">
     <value>Enter the corresponding password</value>
@@ -2460,7 +2463,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Select the retry strategy that will be actioned</value>
   </data>
   <data name="OptionGateResumeToolTip" xml:space="preserve">
-    <value>Select whether the Gate Tool will resume on error</value>
+    <value>Select whether the Gate Tool will continue on error or end the workflow</value>
   </data>
   <data name="OptionGateMaxRetriesToolTip" xml:space="preserve">
     <value>Set the maximum retry count. The tool will keep retrying until the maximum retry count is hit</value>
