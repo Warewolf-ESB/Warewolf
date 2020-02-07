@@ -25,14 +25,14 @@ import { ExecutionLoggingComponent } from './components/executionlogging/executi
 import { SettingsComponent } from './components/settings/settings.component';
 
 import { ExecutionLoggingService } from './services/executionlogging.service';
-// import { LogEntryComponent } from './components/logentry/logentry.component';
+import { LogEntryComponent } from './components/logentry/logentry.component';
 
 import { MediatorService } from './services/mediator.service';
 import { APIService } from './services/api.service';
 
 @NgModule({
   entryComponents: [
-    // LogEntryComponent
+     LogEntryComponent
   ],
   declarations: [
     AppComponent,
@@ -40,8 +40,8 @@ import { APIService } from './services/api.service';
     ServerExplorerComponent,
     OutputsExplorerComponent,
     ExecutionLoggingComponent,
-    SettingsComponent
-    // LogEntryComponent
+    SettingsComponent,
+    LogEntryComponent
   ],
   imports: [
     NgbModule,

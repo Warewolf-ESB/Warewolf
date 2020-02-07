@@ -24,7 +24,7 @@
   </table>
   <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
   <div style="padding-top: 3px;">
-    
+
       <table id="executionFilters" class="table">
         <tr>
           <td style="display:none;" class='filter-container filterContainId'>
@@ -58,36 +58,37 @@
   </form>
   <div class="executionList">
     <mat-table id="executionList" class="logs-table mat-elevation-z8" [dataSource]="dataSource">
+      <ng-container matColumnDef="WorkflowName">
+        <mat-header-cell *matHeaderCellDef>Workflow Name</mat-header-cell>
+        <mat-cell class="WorkflowName-cell" *matCellDef="let logEntry">{{logEntry.WorkflowName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="AuditType">
+        <mat-header-cell *matHeaderCellDef>AuditType</mat-header-cell>
+        <mat-cell class="AuditType-cell" *matCellDef="let logEntry">{{logEntry.AuditType}}</mat-cell>
+      </ng-container>
       <ng-container matColumnDef="ExecutionId">
         <mat-header-cell *matHeaderCellDef>ExecutionId</mat-header-cell>
-        <mat-cell *matCellDef="let logEntry">{{logEntry.ExecutionId}}</mat-cell>
+        <mat-cell *matCellDef="let logEntry">{{logEntry.ExecutionID}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="Url">
         <mat-header-cell *matHeaderCellDef>Url</mat-header-cell>
         <mat-cell class="Url-cell" *matCellDef="let logEntry">{{logEntry.Url}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="ExecutionTime">
-        <mat-header-cell *matHeaderCellDef>Execution Time</mat-header-cell>
-        <mat-cell class="ExecutionTime-cell" *matCellDef="let logEntry">{{logEntry.ExecutionTime}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="Status">
         <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
         <mat-cell class="Status-cell" *matCellDef="let logEntry">{{logEntry.Status}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="StartDateTime">
-        <mat-header-cell *matHeaderCellDef>Started</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Timestamp</mat-header-cell>
         <mat-cell class="StartDateTime-cell" *matCellDef="let logEntry">{{logEntry.StartDateTime}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="CompletedDateTime">
-        <mat-header-cell *matHeaderCellDef>Completed</mat-header-cell>
-        <mat-cell class="CompletedDateTime-cell" *matCellDef="let logEntry">{{logEntry.CompletedDateTime}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="User">
         <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
         <mat-cell class="User-cell" *matCellDef="let logEntry">{{logEntry.User}}</mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      <mat-row  *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)">
+      </mat-row>
     </mat-table>
     <!--<mat-paginator [length]="logEntry?.Count" [pageSize]="10" [pageSizeOptions]="[10, 50, 100]"></mat-paginator>-->
   </div>

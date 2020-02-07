@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { LogEntry } from '../../models/logentry.model';
-import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+import { FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-logentry',
@@ -10,18 +10,13 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 })
 
 export class LogEntryComponent implements OnInit {
-
-  constructor(
+   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<LogEntryComponent>,
-    @Inject(MAT_DIALOG_DATA) public logEntry: LogEntry) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data: LogEntry) {
+    }
 
   ngOnInit() { }
-
-  resume() {
-    this.dialogRef.componentInstance.resume();
-  }
 
   close() {
     this.dialogRef.close();

@@ -1,0 +1,22 @@
+
+  .mat-raised-button{
+    align-content: center;
+    background: #f3700d;
+    color: white;
+    box-sizing: 0px;
+  }
+
+  .mat-raised-button:hover {
+    background: #b14f05;
+  }
+  .mat-raised-button:not([disabled]):active:not([class*=mat-elevation-z]) {
+    box-shadow:0px;
+}
+.mat-card {
+  transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+  display: block;
+  position: relative;
+  padding: 5px;
+  border-radius: 0px;
+  font-size: 12px;
+}

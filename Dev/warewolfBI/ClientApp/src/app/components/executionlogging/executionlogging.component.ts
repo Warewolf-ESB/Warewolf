@@ -41,16 +41,16 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     filterUser: new FormControl(''),
   });
   model: any = {};
-  displayLogs: boolean = false;
+  displayLogs = false;
   logEntry: LogEntry;
   dataSource: ExecutionDataSource;
   serverURL: string;
-  serverName: string = 'localhost';
-  port: string = '3142';
-  protocol: string = 'http';
-  loading: boolean = true;
+  serverName = 'localhost';
+  port = '3142';
+  protocol = 'http';
+  loading = true;
   portSelect = 'http';
-  displayedColumns = ['ExecutionId', 'Url', 'ExecutionTime', 'Status', 'StartDateTime', 'CompletedDateTime', 'User'];
+  displayedColumns = ['WorkflowName',  'ExecutionId', 'AuditType', 'StartDateTime'];
 
 
   constructor(private formBuilder: FormBuilder,
@@ -73,7 +73,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   }
   ChangingPort(event) {
     this.protocol = event;
-    if (this.protocol == 'http') { this.port = '3142' } else { this.port = '3143'; }
+    if (this.protocol === 'http') { this.port = '3142'; } else { this.port = '3143'; }
     this.serverURL = this.protocol + '://' + this.serverName + ':' + this.port;
   }
   ngAfterViewInit() {
@@ -90,7 +90,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     //  )
     //  .subscribe();
 
-    //this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
     //  merge(this.sort.sortChange, this.paginator.page)
     //    .pipe(
@@ -102,7 +102,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   onSubmit(buttonType): void {
     if (buttonType === 'Update') {
       this.serverURL = this.protocol + '://' + this.serverName + ':' + this.port;
-      var filter = '';
+      const filter = '';
       this.dataSource.loadLogs(this.serverURL, '', filter, 'asc', 0, 3);
     }
     if (buttonType === 'Clear') {
@@ -120,7 +120,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.dataSource.loadLogs(
       this.serverURL,
-      this.logEntry.ExecutionId,
+      this.logEntry.ExecutionID,
       '',
      // this.sort.direction,
     //  this.paginator.pageIndex,
@@ -130,12 +130,13 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     this.displayLogs = true;
   }
 
-  // onRowClicked(LogEntry) {
-  //  const dialogConfig = new MatDialogConfig();
-  //  dialogConfig.disableClose = true;
-  //  dialogConfig.autoFocus = true;
-  //  dialogConfig.data = { LogEntry };
-  //  const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
-  // }
+  // tslint:disable-next-line: no-shadowed-variable
+  onRowClicked(LogEntry) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = { LogEntry };
+    const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
+   }
 }
 
