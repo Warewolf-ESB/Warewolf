@@ -12,11 +12,11 @@ namespace Warewolf.UnitTestAttributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
     public class Depends : Attribute, IDisposable
     {
-        public static readonly string RigOpsIP = "T004124.premier.local";
+        public static readonly string RigOpsIP = "rsaklfwynand.premier.local";
         public static readonly string SVRDEVIP = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string CIRemoteIP = "tst-ci-remote.premier.local:3142";
-        public static readonly bool EnableDocker = false;
+        public static readonly bool EnableDocker = true;
 
         public enum ContainerType
         {
