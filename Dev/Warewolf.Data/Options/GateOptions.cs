@@ -301,11 +301,15 @@ namespace Warewolf.Data.Options
             }
             return ret.All(o => o);
         }
-        
+
         public override void RenderDescription(StringBuilder sb)
         {
             sb.Append(" ");
             MatchType.RenderDescription(sb);
+            if (MatchType.IsSingleOperand())
+            {
+                return;
+            }
             sb.Append(" ");
             sb.Append(Right);
         }

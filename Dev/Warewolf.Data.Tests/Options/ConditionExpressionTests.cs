@@ -58,6 +58,23 @@ namespace Warewolf.Data.Options.Tests
             var result = condition.ToString();
             Assert.AreEqual("[[a]] is less than 2 and more than 10", result);
         }
+        
+        [Test]
+        public void ConditionExpression_GivenIsSingleOperand()
+        {
+            var condition = new ConditionExpression
+            {
+                Left = "[[a]]",
+                Cond = new ConditionMatch()
+                {
+                    MatchType = enDecisionType.IsNull,
+                    Right = "2",
+                }
+            };
+
+            var result = condition.ToString();
+            Assert.AreEqual("[[a]] Is NULL", result);
+        }
 
         [Test]
         public void ConditionExpression_ToOptions()
