@@ -497,9 +497,6 @@ namespace Warewolf.Data.Tests
             Assert.IsNull(optionConditionExpression.From);
             Assert.IsNull(optionConditionExpression.To);
             Assert.IsTrue(optionConditionExpression.IsEmptyRow);
-
-            Assert.AreEqual("OptionComboboxHelpText", optionConditionExpression.HelpText);
-            Assert.AreEqual("OptionComboboxTooltip", optionConditionExpression.Tooltip);
         }
 
         [Test]

@@ -10,19 +10,13 @@
 
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Communication;
-using Dev2.Data;
-using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
-using Dev2.Data.Util;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
 using System;
@@ -31,6 +25,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces.Data.TO;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
@@ -61,7 +56,6 @@ namespace Dev2.Activities
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
-
             };
         }
 
@@ -86,10 +80,7 @@ namespace Dev2.Activities
 
             try
             {
-                var res = Conditions.Select(a =>
-                {
-                    return a.Eval(GetArgumentsFunc, _dataObject.Environment.HasErrors());
-                });
+                var res = Conditions.Select(a => a.Eval(GetArgumentsFunc, _dataObject.Environment.HasErrors()));
                 return res.All(o => o);
             }
             catch (Exception e)
@@ -99,10 +90,10 @@ namespace Dev2.Activities
             }
         }
 
-        Guid _originalUniqueID;
-        string _previousParentId;
-        IDSFDataObject _dataObject;
-        IExecutionEnvironment _originalExecutionEnvironment;
+        private Guid _originalUniqueId;
+        private string _previousParentId;
+        private IDSFDataObject _dataObject;
+        private IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
             _previousParentId = data.ParentInstanceID;
@@ -114,7 +105,6 @@ namespace Dev2.Activities
             {
                 _stateNotifier?.LogPreExecuteState(this);
 
-                //var firstExecution = !_dataObject.Gates.Contains(this);
                 bool firstExecution = true;
                 if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) _retryState))
                 {
@@ -152,9 +142,9 @@ namespace Dev2.Activities
                         AddDebugOutputItem(debugItemStaticDataParams);
                     }
 
-                    if (_dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
+                    if (_dataObject.IsServiceTestExecution && _originalUniqueId == Guid.Empty)
                     {
-                        _originalUniqueID = Guid.Parse(UniqueID);
+                        _originalUniqueId = Guid.Parse(UniqueID);
                     }
 
                     return ExecuteNormal(data, update, allErrors);
@@ -178,7 +168,7 @@ namespace Dev2.Activities
             }
         }
 
-        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
             var resultList = new ObservableCollection<TestRunResult>();
             foreach (var testStep in serviceTestStep.Children)
@@ -223,13 +213,14 @@ namespace Dev2.Activities
         private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
-            if (hasErrors)
+            if (!hasErrors)
             {
-                DisplayAndWriteError(nameof(GateActivity), allErrors);
-                foreach (var errorString in allErrors.FetchErrors())
-                {
-                    data.Environment.AddError(errorString);
-                }
+                return;
+            }
+            DisplayAndWriteError(nameof(GateActivity), allErrors);
+            foreach (var errorString in allErrors.FetchErrors())
+            {
+                data.Environment.AddError(errorString);
             }
         }
 
@@ -249,7 +240,7 @@ namespace Dev2.Activities
             }
         }
 
-        void ExecuteRetryWorkflowCompleted()
+        private void ExecuteRetryWorkflowCompleted()
         {
             _dataObject.IsDebugNested = false;
             _dataObject.ParentInstanceID = _previousParentId;
@@ -263,7 +254,7 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, ErrorResultTO allErrors, IEnumerator<bool> _algo)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, IErrorResultTO allErrors, IEnumerator<bool> _algo)
         {
             if (GateOptions.GateOpts is Continue)
             {
@@ -303,7 +294,7 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        public IDev2Activity ExecuteNormal(IDSFDataObject data, int update, ErrorResultTO allErrors)
+        private IDev2Activity ExecuteNormal(IDSFDataObject data, int update, IErrorResultTO allErrors)
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
@@ -314,8 +305,7 @@ namespace Dev2.Activities
             {
                 if (data.IsDebugMode())
                 {
-                    _debugInputs = CreateDebugInputs(data.Environment);
-                    //DispatchDebugState(data, StateType.Before, 0);
+                    _debugInputs = CreateDebugInputs();
                 }
 
                 //----------ExecuteTool--------------
@@ -376,8 +366,7 @@ namespace Dev2.Activities
                 {
                     UpdateWithAssertions(data);
                 }
-                var serviceTestStep = _dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
-                var serviceTestSteps = serviceTestStep?.Children;
+                var serviceTestStep = _dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueId);
 
                 if (_dataObject.IsServiceTestExecution && serviceTestStep != null)
                 {
@@ -439,7 +428,8 @@ namespace Dev2.Activities
             if (GateOptions.GateOpts is Continue)
             {
                 _retryState.NumberOfRetries++;
-            } else
+            }
+            else
             {
                 throw new GateException("cannot update retry state of a non-resumable gate");
             }
@@ -523,13 +513,7 @@ namespace Dev2.Activities
                     Type = StateVariable.StateType.Input,
                     Name = nameof(GateOptions),
                     Value = GateOptions?.ToString()
-                },/*
-                new StateVariable
-                {
-                    Type = StateVariable.StateType.Input,
-                    Name = nameof(_retryState.NumberOfRetries),
-                    Value = _retryState.NumberOfRetries.ToString(),
-                },*/
+                },
                  new StateVariable
                 {
                     Name = nameof(NextNodes),
@@ -580,7 +564,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
-        List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
+        private List<DebugItem> CreateDebugInputs()
         {
             var result = new List<DebugItem>();
 
@@ -638,58 +622,7 @@ namespace Dev2.Activities
             return result;
         }
 
-        static void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
-        {
-            error = new ErrorResultTO();
-            if (expression != null && DataListUtil.IsEvaluated(expression))
-            {
-                DebugOutputBase debugResult;
-                if (error.HasErrors())
-                {
-                    debugResult = new DebugItemStaticDataParams("", expression, "");
-                }
-                else
-                {
-                    string expressiomToStringValue;
-                    try
-                    {
-                        expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));
-                    }
-                    catch (NullValueInVariableException)
-                    {
-                        expressiomToStringValue = "";
-                    }
-                    userModel = userModel.Replace(expression, expressiomToStringValue);
-                    debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
-                }
-
-                var itemResults = debugResult.GetDebugItemResult();
-
-                var allReadyAdded = new List<IDebugItemResult>();
-
-                itemResults.ForEach(a =>
-                {
-                    var found = result.SelectMany(r => r.FetchResultsList()).SingleOrDefault(r => r.Variable.Equals(a.Variable));
-                    if (found != null)
-                    {
-                        allReadyAdded.Add(a);
-                    }
-                });
-
-                allReadyAdded.ForEach(i => itemResults.Remove(i));
-
-                if (parent == null)
-                {
-                    result.Add(new DebugItem(itemResults));
-                }
-                else
-                {
-                    parent.AddRange(itemResults);
-                }
-            }
-        }
         #endregion debugstuff
-
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {

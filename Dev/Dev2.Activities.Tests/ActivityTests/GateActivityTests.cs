@@ -130,6 +130,52 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expectedNextActivity.Object, result);
         }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GetDebugInputs()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new GateActivity
+            {
+                Conditions = new List<ConditionExpression>
+                {
+                    new ConditionExpression { Left = "[[a]]", Cond = new ConditionMatch { MatchType = enDecisionType.IsNull } },
+                    new ConditionExpression { Left = "[[a]]", Cond = new ConditionBetween { MatchType = enDecisionType.IsBetween, From = "1", To = "10"} },
+                },
+            };
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid()) { IsDebug = true };
+
+            var result = act.Execute(dataObject, 0);
+            var inputs = act.GetDebugInputs(dataObject.Environment, 0);
+            Assert.IsNotNull(inputs);
+            Assert.AreEqual(1, inputs.Count);
+            Assert.AreEqual("Allow If", inputs[0].ResultsList[0].Label);
+            Assert.AreEqual("[[a]] Is NULL\n AND \n[[a]] is greater than 1 and less than 10", inputs[0].ResultsList[0].Value);
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GetDebugOutputs()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new GateActivity
+            {
+                Conditions = new List<ConditionExpression>(),
+            };
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+
+            var result = act.Execute(dataObject, 0);
+            var outputs = act.GetDebugOutputs(dataObject.Environment, 0);
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual(0, outputs.Count);
+        }
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -448,13 +494,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var passingConditions = new List<ConditionExpression>();
             passingConditions.Add(passingCondition);
 
-            var expectedWorkflow = new WorkflowWithInputs
-            {
-                Name = "WorkflowName",
-                Value = Guid.NewGuid(),
-                Inputs = new List<IServiceInputBase>()
-            };
-
             //------------Setup for test--------------------------
             var firstGate = new GateActivity
             {
@@ -463,9 +502,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                 NextNodes = new List<IDev2Activity> { secondGate },
                 GateOptions = new GateOptions()
                 {
-                    GateOpts = new Continue()// { ResumeEndpoint = expectedWorkflow }
+                    GateOpts = new Continue()
                 }
             };
+            
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogPreExecuteState(It.IsAny<IDev2Activity>()));
+            
+            firstGate.SetStateNotifier(mockStateNotifier.Object);
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "bob", 0);
@@ -490,6 +534,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             result = result.Execute(dataObject, 0);
 
             Assert.AreEqual(thirdNode, result);
+            
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Exactly(2));
         }
     }
 }
