@@ -144,6 +144,7 @@
                                                BorderBrush="Black"
                                                BorderThickness="2"
                                                MinHeight="50"
+                                               ToolTip="{x:Static languages:Tooltips.GateExecuteThisTooltip}"
                                                Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
                         <AutomationProperties.AutomationId>
                             <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
