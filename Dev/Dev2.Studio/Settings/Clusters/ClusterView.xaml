@@ -6,8 +6,17 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:clusters="clr-namespace:Dev2.Settings.Clusters"
+             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance clusters:ClusterViewModel}">
+
+    <UserControl.Resources>
+        <ColumnDefinition x:Key="HostNameShared" Width="40*" />
+        <ColumnDefinition x:Key="ConnectedSinceShared" Width="30*" />
+        <ColumnDefinition x:Key="LastSyncShared" Width="30*" />
+    </UserControl.Resources>
 
     <Grid Margin="{StaticResource ElementBorderTop}" x:Name="GridContainer">
         <Grid.ColumnDefinitions>
@@ -50,35 +59,36 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    
-                    <ComboBox Grid.Column="0" ItemsSource="{Binding ServerList}">
-                        
-                    </ComboBox>
-                    
+
+                    <ComboBox Grid.Column="0" ItemsSource="{Binding ServerList}" />
+
                     <Button Grid.Column="1"
                             x:Name="EditButton"
                             Content="..."
                             Margin="{StaticResource ControlBorderLeft}"
-                            Command="{Binding EditServerCommand}" >
+                            Command="{Binding EditServerCommand}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}"
+                                             DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </Button>
-                    
+
                     <Button Grid.Column="2"
                             x:Name="NewServerButton"
-                            Content="{x:Static languages:Core.New}" 
+                            Content="{x:Static languages:Core.New}"
                             Width="Auto"
-                            Style="{StaticResource ButtonOrangeStyle}" 
+                            Style="{StaticResource ButtonOrangeStyle}"
                             Margin="{StaticResource ControlBorderLeft}"
                             Command="{Binding NewServerCommand}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}"
+                                             DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </Grid>
 
-                <TextBlock x:Name="KeyTextBlock" Text="Key" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" />
+                <TextBlock x:Name="KeyTextBlock" Text="Key" Grid.Column="0" Grid.Row="1"
+                           Margin="{StaticResource ControlBorderTop}" />
                 <TextBox x:Name="KeyTextBox"
                          Text="{Binding Key}"
                          Grid.Column="1"
@@ -86,7 +96,8 @@
                          Margin="{StaticResource ControlBorderTop}"
                          ToolTip="{x:Static languages:Tooltips.SettingsClusterKeyToolTip}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterKeyHelpText}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterKeyHelpText}"
+                                         DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
             </Grid>
@@ -113,14 +124,17 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="FilterTextBox"
-                         Text="{Binding Filter}"
-                         Margin="{StaticResource ControlBorderTop}"
-                         ToolTip="{x:Static languages:Tooltips.SettingsClusterFilterToolTip}">
+                <controls:AutoCompleteBox x:Name="FilterTextBox"
+                                          Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          DefaultText="Filter"
+                                          FilterMode="Contains"
+                                          Margin="{StaticResource ControlBorderTop}"
+                                          ToolTip="{x:Static languages:Tooltips.SettingsClusterFilterToolTip}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterFilterHelpText}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterFilterHelpText}"
+                                         DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
-                </TextBox>
+                </controls:AutoCompleteBox>
 
                 <Button x:Name="CopyKey"
                         Command="{Binding CopyKeyCommand}"
@@ -131,21 +145,63 @@
                         Margin="{StaticResource ControlBorderTopLeft}"
                         ToolTip="{x:Static languages:Tooltips.SettingsClusterCopyKeyToolTip}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterCopyKeyHelpText}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsClusterCopyKeyHelpText}"
+                                         DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </Button>
             </Grid>
 
-            <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}" >
-                <ListView ItemsSource="{Binding Followers}">
-                    <ListView.View>
-                        <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Follower information">
-                            <GridViewColumn DisplayMemberBinding="{Binding HostName}" Header="Hostname" Width="Auto"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding ConnectedSince}" Header="Connected since" Width="Auto"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding LastSync}" Header="Last sync" Width="Auto"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+            <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding ElementName=HostNameShared, Path=ActualWidth}" />
+                        <ColumnDefinition Width="{Binding ElementName=ConnectedSinceShared, Path=ActualWidth}" />
+                        <ColumnDefinition Width="{Binding ElementName=LastSyncShared, Path=ActualWidth}" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
+                        <TextBlock Text="Host name" FontWeight="Bold"
+                                   FontSize="{StaticResource FontSize-Large}" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="1" BorderThickness="0,1,1,1" BorderBrush="Black">
+                        <TextBlock Text="Connected since" FontWeight="Bold"
+                                   FontSize="{StaticResource FontSize-Large}" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="2" BorderThickness="0,1,1,1" BorderBrush="Black">
+                        <TextBlock Text="Last sync" FontWeight="Bold"
+                                   FontSize="{StaticResource FontSize-Large}" HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
+                <TreeView Grid.Row="1"
+                          Margin="{StaticResource ControlBorderTop}"
+                          ItemsSource="{Binding Followers}"
+                          Style="{StaticResource TreeViewStyle}">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate x:Name="FollowerDataTemplate"
+                                                  DataType="{x:Type clusters:ServerFollower}">
+                            <Grid Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding ElementName=HostNameShared, Path=ActualWidth}" />
+                                    <ColumnDefinition
+                                        Width="{Binding ElementName=ConnectedSinceShared, Path=ActualWidth}" />
+                                    <ColumnDefinition Width="{Binding ElementName=LastSyncShared, Path=ActualWidth}" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" BorderThickness="0,0,0,1" BorderBrush="#FFE7E4E0">
+                                    <TextBlock Text="{Binding HostName}" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0,0,0,1" BorderBrush="#FFE7E4E0">
+                                    <TextBlock Text="{Binding ConnectedSince}" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="0,0,0,1" BorderBrush="#FFE7E4E0">
+                                    <TextBlock Text="{Binding LastSync}" HorizontalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
             </Grid>
         </Grid>
     </Grid>

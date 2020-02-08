@@ -383,6 +383,7 @@ namespace Dev2.Settings
                 SecurityViewModel = CreateSecurityViewModel();
                 LogSettingsViewModel = CreateLoggingViewModel();
                 PerfmonViewModel = CreatePerfmonViewModel();
+                ClusterViewModel = CreateClusterViewModel();
 
                 AddPropertyChangedHandlers();
 
@@ -438,6 +439,12 @@ namespace Dev2.Settings
                 return logSettingsViewModel;
             }
             return null;
+        }
+
+        protected virtual ClusterViewModel CreateClusterViewModel()
+        {
+            var clusterViewModel = new ClusterViewModel();
+            return clusterViewModel;
         }
 
         void AddPropertyChangedHandlers()
