@@ -239,21 +239,22 @@ namespace Dev2.Runtime.ESB.Execution
                 //    KeepLogsForDays = 2,
                 //    CompressOldLogFiles = true
                 //};
-                if (dsfDataObject.Settings.EnableDetailedLogging)
-                {
-                    stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
-                    dsfDataObject.StateNotifier = stateNotifier;
 
-                    stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
-                }
 
                 AddExecutionToExecutionManager(dsfDataObject, resource);
 
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                stateNotifier?.LogPreExecuteState(resource); 
+                stateNotifier?.LogPreExecuteState(resource);
                 //log the start of execution
+                if (dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
+                    dsfDataObject.StateNotifier = stateNotifier;
+                    //this should take input data from the resource
+                    stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
+                }
 
                 IDev2Activity next;
                 IDev2Activity lastActivity;
@@ -271,8 +272,26 @@ namespace Dev2.Runtime.ESB.Execution
 
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
                 //log successful completion
+                if (dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
+                    dsfDataObject.StateNotifier = stateNotifier;
+                    //this should take output data from the resource
+                    stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
+                }
             }
             //catch log detailed exception
+            catch (Exception ex)
+            {
+                if (dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
+                    dsfDataObject.StateNotifier = stateNotifier;
+                    //this should take Exception data from the resource
+                    stateNotifier?.LogAdditionalDetail(ex, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
+                }
+            }
+
             finally
             {
                 _executionManager?.CompleteExecution();
