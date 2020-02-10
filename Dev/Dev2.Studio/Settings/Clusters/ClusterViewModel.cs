@@ -33,7 +33,14 @@ namespace Dev2.Settings.Clusters
         public ClusterViewModel()
         {
             CopyKeyCommand = new DelegateCommand(o => CopySecurityKey());
+            NewServerCommand = new DelegateCommand(o => NewServer());
             LoadServerFollowers();
+        }
+
+        private static void NewServer()
+        {
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.NewServerSource(string.Empty);
         }
 
         private void LoadServerFollowers()
@@ -66,6 +73,7 @@ namespace Dev2.Settings.Clusters
         }
 
         public ICommand CopyKeyCommand { get; }
+        public ICommand NewServerCommand { get; }
 
         public IEnumerable<ServerFollower> Followers
         {
