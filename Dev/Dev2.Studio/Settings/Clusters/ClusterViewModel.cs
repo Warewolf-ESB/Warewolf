@@ -62,7 +62,7 @@ namespace Dev2.Settings.Clusters
 
         private static void CopySecurityKey()
         {
-            Clipboard.SetText("QWERTY-1234-ASDF-56");
+            Clipboard.SetText(Guid.NewGuid().ToString());
         }
 
         public ICommand CopyKeyCommand { get; }
