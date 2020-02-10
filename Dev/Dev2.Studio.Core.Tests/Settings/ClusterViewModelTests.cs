@@ -118,5 +118,17 @@ namespace Dev2.Core.Tests.Settings
             clusterViewModel.EditServerCommand.Execute(null);
             mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()), Times.Once());
         }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_Servers()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var clusterViewModel = new ClusterViewModel();
+            Assert.AreEqual(6, clusterViewModel.Servers.Count);
+        }
     }
 }

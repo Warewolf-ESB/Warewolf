@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -19,6 +20,10 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Settings.Clusters
 {
+    public class Server
+    {
+        public string DisplayName { get; set; }
+    }
     public class ServerFollower
     {
         public string HostName { get; set; }
@@ -29,12 +34,14 @@ namespace Dev2.Settings.Clusters
     {
         private string _filter;
         private IEnumerable<ServerFollower> _followers;
+        private ObservableCollection<Server> _servers;
 
         public ClusterViewModel()
         {
             CopyKeyCommand = new DelegateCommand(o => CopySecurityKey());
             NewServerCommand = new DelegateCommand(o => NewServer());
             EditServerCommand = new DelegateCommand(o => EditServer());
+            LoadServers();
             LoadServerFollowers();
         }
 
@@ -50,6 +57,19 @@ namespace Dev2.Settings.Clusters
             mainViewModel?.NewServerSource(string.Empty);
         }
 
+        private void LoadServers()
+        {
+            Servers = new ObservableCollection<Server>
+            {
+                new Server {DisplayName = "Server One"},
+                new Server {DisplayName = "Server Two"},
+                new Server {DisplayName = "Server Three"},
+                new Server {DisplayName = "Server Four"},
+                new Server {DisplayName = "Server Five"},
+                new Server {DisplayName = "Server Six"},
+            };
+        }
+        
         private void LoadServerFollowers()
         {
             Followers = new List<ServerFollower>
@@ -83,6 +103,16 @@ namespace Dev2.Settings.Clusters
         public ICommand NewServerCommand { get; }
         public ICommand EditServerCommand { get; }
 
+        public ObservableCollection<Server> Servers
+        {
+            get => _servers;
+            private set
+            {
+                _servers = value;
+                OnPropertyChanged(nameof(Servers));
+            }
+        }
+        
         public IEnumerable<ServerFollower> Followers
         {
             get => _followers;

@@ -60,7 +60,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ComboBox Grid.Column="0" ItemsSource="{Binding ServerList}" />
+                    <ComboBox Grid.Column="0" ItemsSource="{Binding Servers}" SelectedValuePath="DisplayName" DisplayMemberPath="DisplayName" />
 
                     <Button Grid.Column="1"
                             x:Name="EditButton"
