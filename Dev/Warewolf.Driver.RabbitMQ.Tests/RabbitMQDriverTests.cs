@@ -76,6 +76,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQSource))]
+        [Depends(Depends.ContainerType.RabbitMQ)]
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
@@ -122,7 +123,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public TestPublishSuccess()
             {
-                _factory = new ConnectionFactory() { HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, UserName = "test", Password = "test" };
+                _factory = new ConnectionFactory() { HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ), UserName = "test", Password = "test" };
             }
 
             private IConnection NewConnection()

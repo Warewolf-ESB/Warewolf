@@ -12,11 +12,13 @@ namespace Warewolf.UnitTestAttributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
     public class Depends : Attribute, IDisposable
     {
-        public static readonly string RigOpsIP = "rsaklfwynand.premier.local";
-        public static readonly string SVRDEVIP = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
-        public static readonly string CIRemoteIP = "tst-ci-remote.premier.local:3142";
-        public static readonly bool EnableDocker = true;
+        public static readonly string SharepointBackupServer = BackupServer;
+        static readonly string RigOpsIP = "rsaklfsvrhst1.premier.local";
+        static readonly string BackupServer = "SVRDEV.premier.local";
+        static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
+        static readonly string BackupCIRemotePort = "3142";
+        static readonly bool EnableDocker = true;
 
         public enum ContainerType
         {
@@ -29,6 +31,8 @@ namespace Warewolf.UnitTestAttributes
             Redis = 6,
             AnonymousRedis = 7
         }
+
+        ContainerType _containerType;
 
         string ConvertToString(ContainerType containerType)
         {
@@ -55,7 +59,100 @@ namespace Warewolf.UnitTestAttributes
             throw new ArgumentOutOfRangeException();
         }
 
-        ContainerType _containerType;
+        public string GetAddress()
+        {
+            if (EnableDocker)
+            {
+                if (_containerType == ContainerType.CIRemote)
+                {
+                    return RigOpsIP + ":3144";
+                }
+                else
+                {
+                    return RigOpsIP;
+                }
+            }
+            else
+            {
+                return BackupServer;
+            }
+        }
+
+        public string GetPort()
+        {
+            if (EnableDocker)
+            {
+                return Container.Port;
+            }
+            else
+            {
+                switch (_containerType)
+                {
+                    case ContainerType.CIRemote:
+                        return BackupCIRemotePort;
+                    case ContainerType.MSSQL:
+                        return "1433";
+                    case ContainerType.MySQL:
+                        return "3306";
+                    case ContainerType.PostGreSQL:
+                        return "5432";
+                    case ContainerType.RabbitMQ:
+                        return "5672";
+                    case ContainerType.Redis:
+                        return "6379";
+                    case ContainerType.AnonymousRedis:
+                        return "6380";
+                }
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public static string GetAddress(ContainerType containerType)
+        {
+            if (EnableDocker)
+            {
+                if (containerType == ContainerType.CIRemote)
+                {
+                    return RigOpsIP + ":3144";
+                }
+                else
+                {
+                    return RigOpsIP;
+                }
+            }
+            else
+            {
+                if (containerType == ContainerType.CIRemote)
+                {
+                    return BackupCIRemoteServer + ":" + BackupCIRemotePort;
+                }
+                else
+                {
+                    return BackupServer;
+                }
+            }
+        }
+
+        public static string GetPort(ContainerType containerType)
+        {
+            if (EnableDocker)
+            {
+                switch (containerType)
+                {
+                    case ContainerType.CIRemote:
+                        return "3144";
+                }
+            }
+            else
+            {
+                switch (containerType)
+                {
+                    case ContainerType.CIRemote:
+                        return BackupCIRemotePort;
+                }
+            }
+            throw new ArgumentOutOfRangeException();
+        }
 
         public Container Container;
 
@@ -156,11 +253,11 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                var defaultServer = GetIPAddress(CIRemoteIP.Split(':')[0]);
+                var defaultServer = GetIPAddress(BackupCIRemoteServer.Split(':')[0]);
                 if (defaultServer != null)
                 {
                     UpdateSourcesConnectionStrings(
-                        $"AppServerUri=http://{defaultServer}:{CIRemoteIP.Split(':')[1]}/dsf;WebServerPort=3142;AuthenticationType=Windows",
+                        $"AppServerUri=http://{defaultServer}:{BackupCIRemoteServer.Split(':')[1]}/dsf;WebServerPort=3142;AuthenticationType=Windows",
                         knownServerSources);
                     Thread.Sleep(30000);
                 }
@@ -188,7 +285,7 @@ namespace Warewolf.UnitTestAttributes
             else
             {
                 UpdateSourcesConnectionStrings(
-                    $"Data Source={SVRDEVIP},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
+                    $"Data Source={BackupServer},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
                     knownMssqlServerSources);
                 Thread.Sleep(30000);
             }
@@ -210,7 +307,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                UpdateSourcesConnectionStrings($"HostName={SVRDEVIP};UserName=test;Password=test;VirtualHost=/",
+                UpdateSourcesConnectionStrings($"HostName={BackupServer};UserName=test;Password=test;VirtualHost=/",
                     knownServerSources);
                 Thread.Sleep(30000);
             }
@@ -233,7 +330,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                UpdateSourcesConnectionStrings($"Host={SVRDEVIP};UserName=postgres;Password=test123;Database=TestDB",
+                UpdateSourcesConnectionStrings($"Host={BackupServer};UserName=postgres;Password=test123;Database=TestDB",
                     knownServerSources);
                 Thread.Sleep(30000);
             }
@@ -257,10 +354,10 @@ namespace Warewolf.UnitTestAttributes
 
         void InjectSVRDEVIP()
         {
-            UpdateSourcesConnectionString($"Server={SVRDEVIP};Database=test;Uid=root;Pwd=admin;",
+            UpdateSourcesConnectionString($"Server={BackupServer};Database=test;Uid=root;Pwd=admin;",
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.xml");
             UpdateSourcesConnectionString(
-                $"Server=http://{SVRDEVIP}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0",
+                $"Server=http://{BackupServer}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0",
                 @"%programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.xml");
         }
 
@@ -271,7 +368,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.xml"
             };
-            UpdateSourcesConnectionStrings($"User Id=Testuser;Password=test123;Data Source={SVRDEVIP};Database=HR;",
+            UpdateSourcesConnectionStrings($"User Id=Testuser;Password=test123;Data Source={BackupServer};Database=HR;",
                 knownServerSources);
         }
 
@@ -279,13 +376,13 @@ namespace Warewolf.UnitTestAttributes
         {
             if (EnableDocker)
             {
-                UpdateSourcesConnectionString($"{(EnableDocker?RigOpsIP:SVRDEVIP)};Port={Container.Port}",
+                UpdateSourcesConnectionString($"{(EnableDocker?RigOpsIP:BackupServer)};Port={Container.Port}",
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
                 Thread.Sleep(30000);
             }
             else
             {
-                UpdateSourcesConnectionString(SVRDEVIP,
+                UpdateSourcesConnectionString(BackupServer,
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
                 Thread.Sleep(30000);
             }
