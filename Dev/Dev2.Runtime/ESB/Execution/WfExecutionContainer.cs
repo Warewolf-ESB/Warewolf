@@ -203,6 +203,7 @@ namespace Dev2.Runtime.ESB.Execution
     }
     public class WfExecutionContainer : WfExecutionContainerBase
     {
+        private readonly IStateNotifier _stateNotifier;
         readonly IExecutionManager _executionManager;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
@@ -213,6 +214,13 @@ namespace Dev2.Runtime.ESB.Execution
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            _executionManager = executionManager; //TODO: [code smell] this should not appear in both CTOR 
+        }
+        //TODO: The work on the UI as per EsbExecutionContainer.cs might resolve this code smell in CTOR
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager, IStateNotifier stateNotifier)
+           : this(sa, dataObj, theWorkspace, esbChannel)
+        {
+            _stateNotifier = stateNotifier;
             _executionManager = executionManager;
         }
 
@@ -223,16 +231,17 @@ namespace Dev2.Runtime.ESB.Execution
             IStateNotifier stateNotifier = null;
             try
             {
-                dsfDataObject.Settings = new Dev2WorkflowSettingsTO
-                {
-                    EnableDetailedLogging = Config.Server.EnableDetailedLogging,
-                    LoggerType = LoggerType.JSON,
-                    KeepLogsForDays = 2,
-                    CompressOldLogFiles = true
-                };
+                //TODO: [WIP] The UI changes suggested above resolves the move of this code?                
+                //dsfDataObject.Settings = new Dev2WorkflowSettingsTO
+                //{
+                //    EnableDetailedLogging = Config.Server.EnableDetailedLogging,
+                //    LoggerType = LoggerType.JSON,
+                //    KeepLogsForDays = 2,
+                //    CompressOldLogFiles = true
+                //};
                 if (dsfDataObject.Settings.EnableDetailedLogging)
                 {
-                    stateNotifier = LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
+                    stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
                 }
 

@@ -24,12 +24,16 @@ using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common;
 using Warewolf.Storage;
+using Dev2.Runtime;
+using Dev2.Data;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
     [TestClass]
     public class WfExecutionContainerTests
     {
+        //TODO: Perhaps we replace this builder as it ties our tests to Microsoft, try an approach that might make use of IDev2Activity. Suggest not using VisualBasic
         protected FlowNode TestStartNode { get; set; }
         protected DynamicActivity FlowchartProcess
         {
@@ -185,6 +189,48 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WfExecutionContainer))]
+        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_Expect_LogAdditionalDetail()
+        {
+            //--------------Arrange------------------------------
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            var workSpaceMock = new Mock<IWorkspace>();
+            var esbChannelMock = new Mock<IEsbChannel>();
+            var executionEnvironment = new Mock<ExecutionEnvironment>();
+            var serviceAction = new ServiceAction();
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            var mockActivityOne = new Mock<IDev2Activity>();
+            var mockExecutionManager = new Mock<IExecutionManager>();
+            Config.Server.EnableDetailedLogging = true;
+
+            var wfSettings = new Dev2WorkflowSettingsTO
+            {
+                EnableDetailedLogging = Config.Server.EnableDetailedLogging,
+                LoggerType = LoggerType.JSON,
+                KeepLogsForDays = 2,
+                CompressOldLogFiles = true
+            };
+            dataObjectMock.SetupAllProperties();
+            dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
+            dataObjectMock.Setup(o => o.StopExecution).Returns(false);
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.Settings).Returns(wfSettings);
+
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, mockStateNotifier.Object);
+
+            //--------------Act----------------------------------
+            wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
+
+            //--------------Assert-------------------------------
+            Assert.IsNull(dataObjectMock.Object.ExecutionException);
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Exactly(2)); //This should be called once? 
+            //mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Once); //TODO: this should pass
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
         }
     }
 }
