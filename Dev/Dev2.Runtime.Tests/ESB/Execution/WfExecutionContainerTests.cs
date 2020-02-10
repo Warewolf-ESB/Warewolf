@@ -228,9 +228,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
             mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Exactly(2)); //This should be called once? 
-            //mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Once); //TODO: this should pass
+            mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Once); //TODO: though this is now passing, the logAddtionalDetail is still null in db?
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
         }
+
     }
 }

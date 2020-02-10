@@ -216,7 +216,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             _executionManager = executionManager; //TODO: [code smell] this should not appear in both CTOR 
         }
-        //TODO: The work on the UI as per EsbExecutionContainer.cs might resolve this code smell in CTOR
+        //TODO: The work on the UI as per EsbExecutionContainer.cs might resolve this code smell CTOR
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager, IStateNotifier stateNotifier)
            : this(sa, dataObj, theWorkspace, esbChannel)
         {
@@ -243,6 +243,8 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
+
+                    stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
                 }
 
                 AddExecutionToExecutionManager(dsfDataObject, resource);
