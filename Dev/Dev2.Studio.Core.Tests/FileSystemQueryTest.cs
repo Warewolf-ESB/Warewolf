@@ -621,16 +621,7 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
-            if (shareCollection.Count <= 0)
-            {
-                var username = @"dev2\IntegrationTester";
-                var password = TestEnvironmentVariables.GetVar(username);
-            //------------Execute Test---------------------------
-                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", username, password);
-                Thread.Sleep(1000);
-                shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
-            }
+            var shareCollection = new ShareCollection(@"\\SVRPDC.premier.local\");
             //------------Assert Results-------------------------
             Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
         }
