@@ -29,7 +29,7 @@ export class LogEntry {
   public IsSubExecution: number;
   public IsRemoteWorkflow: number;
   public WorkflowID: string;
-
+  public VersionNumber: string;
   LogEntry: LogEntry;
 
   constructor(values: Object = {}) {

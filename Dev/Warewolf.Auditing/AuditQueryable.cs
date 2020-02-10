@@ -49,7 +49,7 @@ namespace Warewolf.Auditing
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
-            var executionID = GetValue<string>("ExecutionID", values);
+            var executionID = GetValue<string>("ExecutionId", values);
 
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
 

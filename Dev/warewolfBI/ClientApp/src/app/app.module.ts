@@ -4,15 +4,20 @@ import { CustomMaterialModule } from './core/custommaterial.module';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule,DatePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'angular-custom-modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from '@angular/cdk/layout';
 
+import {
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatGridListModule
+} from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -58,7 +63,10 @@ import { APIService } from './services/api.service';
     FormsModule,
     LayoutModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatGridListModule
   ],
   exports: [
     sanitizeHtmlPipe

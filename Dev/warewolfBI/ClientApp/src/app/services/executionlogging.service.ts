@@ -18,8 +18,8 @@ export class ExecutionLoggingService extends APIService {
   getLogData(ServerUrl: string, ExecutionId: string, filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<LogEntry[]> {
 
     this.serverUrl = ServerUrl.toLowerCase();
-    var warewolfUrl = this.serverUrl + "/services/GetLogDataService";
-    let apiURL = `${warewolfUrl}?ExecutionId='${ExecutionId}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const warewolfUrl = this.serverUrl + '/services/GetLogDataService';
+    const apiURL = `${warewolfUrl}?ExecutionId='${ExecutionId}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
     let params = new HttpParams();
     params = params.set('ExecutionId', ExecutionId);
     params = params.set('filter', filter);
@@ -45,6 +45,6 @@ export class ExecutionLoggingService extends APIService {
   }
 
   private log(message: string) {
-    //TODO: Add to the logging DB
+    // TODO: Add to the logging DB
   }
 }
