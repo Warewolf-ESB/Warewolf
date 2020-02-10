@@ -133,8 +133,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.TestingDotnetDllCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement.Tests", "Warewolf.ResourceManagement.Tests\Warewolf.ResourceManagement.Tests.csproj", "{54724E72-4953-4CED-B4EA-532F9596A88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj", "{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Logger", "Warewolf.Logger\Warewolf.Logger.csproj", "{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{1EC3364C-3871-4753-A402-F9A174BF2352}"
@@ -553,14 +551,6 @@ Global
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.ActiveCfg = Debug|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|x86.Build.0 = Debug|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|x86.ActiveCfg = Release|Any CPU
-		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|x86.Build.0 = Release|Any CPU
 		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38C8CF7D-1B92-4914-B36C-BE8A3AD5E5A5}.Debug|x86.ActiveCfg = Debug|Any CPU
