@@ -34,10 +34,17 @@ namespace Dev2.Settings.Clusters
         {
             CopyKeyCommand = new DelegateCommand(o => CopySecurityKey());
             NewServerCommand = new DelegateCommand(o => NewServer());
+            EditServerCommand = new DelegateCommand(o => EditServer());
             LoadServerFollowers();
         }
 
         private static void NewServer()
+        {
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.NewServerSource(string.Empty);
+        }
+        
+        private static void EditServer()
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.NewServerSource(string.Empty);
@@ -74,6 +81,7 @@ namespace Dev2.Settings.Clusters
 
         public ICommand CopyKeyCommand { get; }
         public ICommand NewServerCommand { get; }
+        public ICommand EditServerCommand { get; }
 
         public IEnumerable<ServerFollower> Followers
         {

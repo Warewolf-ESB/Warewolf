@@ -102,5 +102,21 @@ namespace Dev2.Core.Tests.Settings
             clusterViewModel.NewServerCommand.Execute(null);
             mockShellViewModel.Verify(model => model.NewServerSource(It.IsAny<string>()), Times.Once());
         }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_EditServerCommand()
+        {
+            //------------Setup for test--------------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>())).Verifiable();
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            //------------Execute Test---------------------------
+            var clusterViewModel = new ClusterViewModel();
+            clusterViewModel.EditServerCommand.Execute(null);
+            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()), Times.Once());
+        }
     }
 }
