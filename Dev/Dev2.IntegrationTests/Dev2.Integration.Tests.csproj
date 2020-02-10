@@ -184,7 +184,7 @@
     <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="SqlParallelRunStressTests.cs" />
-    <Compile Include="Sql\WorkflowsTests.cs" />
+    <Compile Include="Api\WorkflowsTests.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
   </ItemGroup>
   <ItemGroup>
