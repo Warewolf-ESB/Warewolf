@@ -33,7 +33,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     [TestClass]
     public class WfExecutionContainerTests
     {
-        //TODO: Perhaps we replace this builder as it ties our tests to Microsoft, try an approach that might make use of IDev2Activity. Suggest not using VisualBasic
         protected FlowNode TestStartNode { get; set; }
         protected DynamicActivity FlowchartProcess
         {
@@ -75,23 +74,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                         StartNode = TestStartNode
                     }
                 };
-
-                var vbs = new VisualBasicSettings
-                {
-                    ImportReferences =     {
-                        new VisualBasicImportReference {
-                            Assembly = "Unlimited.Framework",
-                            Import = "Unlimited.Framework"
-                        },
-                        new VisualBasicImportReference{
-                             Assembly = "Unlimited.Applications.BusinessDesignStudio.Activities",
-                             Import = "Unlimited.Applications.BusinessDesignStudio.Activities"
-
-                        }
-                    }
-                };
-
-                VisualBasic.SetSettings(builder, vbs);
 
                 return builder;
             }
