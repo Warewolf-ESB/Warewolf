@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
@@ -35,12 +36,14 @@ namespace Dev2.Settings.Clusters
         private string _filter;
         private IEnumerable<ServerFollower> _followers;
         private ObservableCollection<Server> _servers;
+        private string _clusterKey;
 
         public ClusterViewModel()
         {
-            CopyKeyCommand = new DelegateCommand(o => CopySecurityKey());
+            CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
             NewServerCommand = new DelegateCommand(o => NewServer());
             EditServerCommand = new DelegateCommand(o => EditServer());
+            TestKeyCommand = new DelegateCommand(o => TestClusterKey());
             LoadServers();
             LoadServerFollowers();
         }
@@ -94,14 +97,33 @@ namespace Dev2.Settings.Clusters
             return follower;
         }
 
-        private static void CopySecurityKey()
+        private static void CopyClusterKey()
         {
             Clipboard.SetText(Guid.NewGuid().ToString());
+        }
+
+        private static void TestClusterKey()
+        {
+            var popupController = CustomContainer.Get<IPopupController>();
+            popupController?.Show("Success!", "Test Cluster Key", MessageBoxButton.OK, MessageBoxImage.Information,
+                string.Empty, false, false, true, false, false, false);
         }
 
         public ICommand CopyKeyCommand { get; }
         public ICommand NewServerCommand { get; }
         public ICommand EditServerCommand { get; }
+        public ICommand TestKeyCommand { get; }
+
+        public string ClusterKey
+        {
+            get => _clusterKey;
+            set
+            {
+                _clusterKey = value;
+                OnPropertyChanged(nameof(ClusterKey));
+                OnPropertyChanged(nameof(TestKeyCommand));
+            }
+        }
 
         public ObservableCollection<Server> Servers
         {

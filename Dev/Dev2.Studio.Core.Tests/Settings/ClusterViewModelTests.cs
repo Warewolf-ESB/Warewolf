@@ -10,7 +10,9 @@
 
 using System;
 using System.Linq;
+using System.Windows;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Settings.Clusters;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -59,6 +61,25 @@ namespace Dev2.Core.Tests.Settings
             var canExecute = viewModel.CopyKeyCommand.CanExecute(null);
             //------------Assert Results-------------------------
             Assert.IsTrue(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_TestClusterKey()
+        {
+            //------------Setup for test--------------------------
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(model => model.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(),
+                    It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
+            
+            CustomContainer.Register(mockPopupController.Object);
+            
+            var viewModel = new ClusterViewModel();
+            
+            viewModel.TestKeyCommand.Execute(null);
+            mockPopupController.Verify(model => model.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(),
+                It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
         }
 
         [TestMethod]

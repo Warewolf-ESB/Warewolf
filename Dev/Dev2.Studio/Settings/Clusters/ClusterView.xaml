@@ -46,6 +46,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -53,7 +54,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="LeaderTextBlock" Text="Leader" />
-                <Grid Grid.Column="1" Grid.Row="0">
+                <Grid Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -90,7 +91,7 @@
                 <TextBlock x:Name="KeyTextBlock" Text="Cluster Key" Grid.Column="0" Grid.Row="1"
                            Margin="{StaticResource ControlBorderTop}" />
                 <TextBox x:Name="KeyTextBox"
-                         Text="{Binding Key}"
+                         Text="{Binding ClusterKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Column="1"
                          Grid.Row="1"
                          Margin="{StaticResource ControlBorderTop}"
@@ -100,6 +101,21 @@
                                          DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
+                
+                <Button x:Name="TestKey"
+                        Command="{Binding TestKeyCommand}"
+                        Content="Test"
+                        HorizontalAlignment="Right"
+                        Grid.Column="2"
+                        Grid.Row="1"
+                        Width="{Binding ElementName=NewServerButton, Path=ActualWidth}"
+                        Margin="{StaticResource ControlBorderTopLeft}"
+                        ToolTip="Test the Cluster Key to follow this server" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsTestClusterKeyHelpText}"
+                                         DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
             </Grid>
         </Grid>
 

@@ -5131,6 +5131,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test the Cluster Key to follow this server.
+        /// </summary>
+        public static string SettingsTestClusterKeyToolTip {
+            get {
+                return ResourceManager.GetString("SettingsTestClusterKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
