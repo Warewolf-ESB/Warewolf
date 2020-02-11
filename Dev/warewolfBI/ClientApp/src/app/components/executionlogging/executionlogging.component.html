@@ -26,39 +26,39 @@
       </div>
     </div>
     <div id="executionFilters" class="executionFilters">
-      <div class='filter-container filterContainServerID'>
+      <div class='filter-container'>
         <input id="ServerID" [(ngModel)]="model.ServerID" #ServerID="ngModel" autocomplete='off'
           class='form-control filter' name='ServerID' placeholder='ServerID' data-col='ServerID' />
       </div>
-      <div class='filter-container filterContainWorkflowID'>
+      <div class='filter-container'>
         <input id="WorkflowID" [(ngModel)]="model.WorkflowID" #WorkflowID="ngModel" autocomplete='off'
           class='form-control filter' name='WorkflowID' placeholder='WorkflowID' data-col='WorkflowID' />
       </div>
-      <div class='filter-container filterContainWorkflowName'>
+      <div class='filter-container'>
         <input id="WorkflowName" [(ngModel)]="model.WorkflowName" #WorkflowName="ngModel"
           autocomplete='off' class='form-control filter' name='WorkflowName' placeholder='WorkflowName'
           data-col='WorkflowName' />
       </div>
-      <div class='filter-container filterContainExecutionId'>
-        <input id="ExecutionId" [(ngModel)]="model.ExecutionId" #ExecutionId="ngModel"
-          autocomplete='off' class='form-control filter' name='ExecutionId' placeholder='ExecutionId'
-          data-col='ExecutionId' />
+      <div class='filter-container'>
+        <input id="ExecutionID" [(ngModel)]="model.ExecutionID" #ExecutionID="ngModel"
+          autocomplete='off' class='form-control filter' name='ExecutionID' placeholder='ExecutionID'
+          data-col='ExecutionID' />
       </div>
-      <div class='filter-container filterContainParentID'>
+      <div class='filter-container'>
         <input id="ParentID" [(ngModel)]="model.filterParentID" #ParentID="ngModel" autocomplete='off'
           class='form-control filter' name='ParentID' placeholder='ParentID' data-col='ParentID' />
       </div>
-      <div class='filter-container filterContainPreviousActivityId'>
+      <div class='filter-container'>
         <input id="PreviousActivityId" [(ngModel)]="model.PreviousActivityId"
           #PreviousActivityId="ngModel" autocomplete='off' class='form-control filter'
           name='PreviousActivityId' placeholder='PreviousActivityId' data-col='PreviousActivityId' />
       </div>
-      <div class='filter-container filterContainIsSubExecution'>
+      <div class='filter-container'>
         <input id="IsSubExecution" [(ngModel)]="model.IsSubExecution" #IsSubExecution="ngModel"
           autocomplete='off' class='form-control filter' name='IsSubExecution' placeholder='IsSubExecution'
           data-col='IsSubExecution' />
       </div>
-      <div class='filter-container filterContainIsRemoteWorkflow'>
+      <div class='filter-container'>
         <input id="IsRemoteWorkflow" [(ngModel)]="model.IsRemoteWorkflow" #IsRemoteWorkflow="ngModel"
           autocomplete='off' class='form-control filter' name='IsRemoteWorkflow' placeholder='IsRemoteWorkflow'
           data-col='IsRemoteWorkflow' />
@@ -108,8 +108,8 @@
         <mat-header-cell *matHeaderCellDef>AuditType</mat-header-cell>
         <mat-cell class="AuditType-cell" *matCellDef="let logEntry">{{logEntry.AuditType}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="ExecutionId">
-        <mat-header-cell *matHeaderCellDef>ExecutionId</mat-header-cell>
+      <ng-container matColumnDef="ExecutionID">
+        <mat-header-cell *matHeaderCellDef>ExecutionID</mat-header-cell>
         <mat-cell *matCellDef="let logEntry">{{logEntry.ExecutionID}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="Url">

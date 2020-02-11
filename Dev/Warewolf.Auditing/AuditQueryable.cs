@@ -49,7 +49,7 @@ namespace Warewolf.Auditing
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
-            var executionID = GetValue<string>("ExecutionId", values);
+            var executionID = GetValue<string>("ExecutionID", values);
 
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
 
@@ -71,7 +71,7 @@ namespace Warewolf.Auditing
                 }
             }
 
-            var sql = BuildSQLWebUIFilterString(executionID, startTime, endTime, eventLevel);
+            var sql = BuildSQLWebUIFilterString(executionID.Replace("''",""), startTime, endTime, eventLevel);
 
             var results = ExecuteDatabase(_connectionString, sql);
             if (results.Length > 0)
@@ -150,7 +150,7 @@ namespace Warewolf.Auditing
             }
             if (string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionID))
             {
-                sql.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionID + "' ");
+                sql.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionID.Replace("'","") + "' ");
             }
             if ((!string.IsNullOrEmpty(eventLevel) || !string.IsNullOrEmpty(executionID)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
@@ -162,7 +162,7 @@ namespace Warewolf.Auditing
                 sql.Append("WHERE (Timestamp >= '" + startTime + "' ");
                 sql.Append("AND Timestamp <= '" + endTime + "') ");
             }
-            sql.Append("ORDER BY TimeStamp Desc LIMIT 20");
+            sql.Append("ORDER BY TimeStamp Desc LIMIT 100");
             
             return sql;
         }

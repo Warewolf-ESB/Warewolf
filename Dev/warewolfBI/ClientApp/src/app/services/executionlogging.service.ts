@@ -15,13 +15,13 @@ export class ExecutionLoggingService extends APIService {
   serverUrl: string;
   results: LogEntry[];
 
-  getLogData(ServerUrl: string, ExecutionId: string, filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<LogEntry[]> {
+  getLogData(ServerUrl: string, ExecutionID: string, filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<LogEntry[]> {
 
     this.serverUrl = ServerUrl.toLowerCase();
     const warewolfUrl = this.serverUrl + '/services/GetLogDataService';
-    const apiURL = `${warewolfUrl}?ExecutionId='${ExecutionId}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const apiURL = `${warewolfUrl}?ExecutionID='${ExecutionID}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
     let params = new HttpParams();
-    params = params.set('ExecutionId', ExecutionId);
+    params = params.set('ExecutionID', ExecutionID);
     params = params.set('filter', filter);
     params = params.set('sortOrder', sortOrder);
     params = params.set('pageNumber', pageNumber.toString());

@@ -1,4 +1,4 @@
-import { NgModule, Component,  Pipe, PipeTransform, ElementRef, OnInit, Input, ViewChild, ViewChildren, AfterViewInit, Directive, QueryList, ViewContainerRef, } from '@angular/core';
+import { NgModule, Component, Pipe, PipeTransform, ElementRef, OnInit, Input, ViewChild, ViewChildren, AfterViewInit, Directive, QueryList, ViewContainerRef, } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { ExecutionLoggingService } from './../../services/executionlogging.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog, MatDialogConfig, MatDatepickerModule,  MatNativeDateModule, MatProgressSpinnerModule,MatPaginator, MatSort } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDatepickerModule, MatNativeDateModule, MatProgressSpinnerModule, MatPaginator, MatSort } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { ExecutionDataSource } from './executionLoggingDataSource';
 import { ExecutionLogging } from './../../models/executionlogging.model';
@@ -33,7 +33,7 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatDatepickerModule,
     MatProgressSpinnerModule],
-  declarations: [ ExecutionLoggingComponent]
+  declarations: [ExecutionLoggingComponent]
 
 })
 
@@ -42,7 +42,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     ServerID: new FormControl(''),
     WorkflowID: new FormControl(''),
     WorkflowName: new FormControl(''),
-    ExecutionId: new FormControl(''),
+    ExecutionID: new FormControl(''),
     ParentID: new FormControl(''),
     PreviousActivityId: new FormControl(''),
     IsSubExecution: new FormControl(''),
@@ -51,7 +51,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     CompletedDateTime: new FormControl(new Date())
   });
   oneday = 1000 * 60 * 60 * 24;
-  error: any = {isError: false, errorMessage: ''};
+  error: any = { isError: false, errorMessage: '' };
   isValidDate: any;
   model: any = {};
   displayLogs = false;
@@ -63,7 +63,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   protocol = 'http';
   loading = true;
   portSelect = 'http';
-  displayedColumns = ['ServerID', 'WorkflowID', 'WorkflowName',  'ExecutionId', 'ParentID', 'PreviousActivityId', 'IsSubExecution', 'IsRemoteWorkflow', 'AuditType', 'StartDateTime'];
+  displayedColumns = ['ServerID', 'WorkflowID', 'WorkflowName', 'ExecutionID', 'ParentID', 'PreviousActivityId', 'IsSubExecution', 'IsRemoteWorkflow', 'AuditType', 'StartDateTime'];
 
   constructor(private formBuilder: FormBuilder,
     public dialog: MatDialog,
@@ -82,8 +82,16 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     this.dataSource.loadLogs(this.serverURL, '', '', 'asc', 0, 3);
     this.loading = false;
     this.displayLogs = true;
+    this.model.ServerID = '';
+    this.model.WorkflowID = '';
+    this.model.WorkflowName = '';
+    this.model.ExecutionID = '';
+    this.model.ParentID = '';
+    this.model.PreviousActivityId = '';
+    this.model.IsSubExecution = '';
+    this.model.IsRemoteWorkflow = '';
     this.model.StartDateTime = new Date((new Date().getTime() - this.oneday));
-    this.model.CompletedDateTime =  new Date((new Date().getTime()));
+    this.model.CompletedDateTime = new Date((new Date().getTime()));
   }
   ChangingPort(event) {
     this.protocol = event;
@@ -95,25 +103,26 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     if (buttonType === 'Update') {
       this.serverURL = this.protocol.replace(/\s/g, '') + '://' + this.serverName.replace(/\s/g, '') + ':' + this.port.replace(/\s/g, '');
       const filter = '';
-     // this.dataSource.loadLogs(this.serverURL,  this.model.ExecutionId.replace(/\s/g, ''), filter, 'asc', 0, 3);
+      // this.dataSource.loadLogs(this.serverURL,  this.model.ExecutionID.replace(/\s/g, ''), filter, 'asc', 0, 3);
     }
     if (buttonType === 'Clear') {
       this.model.ServerID = '';
       this.model.WorkflowID = '';
       this.model.WorkflowName = '';
-      this.model.ExecutionId = '';
+      this.model.ExecutionID = '';
       this.model.ParentID = '';
       this.model.PreviousActivityId = '';
       this.model.IsSubExecution = '';
       this.model.IsRemoteWorkflow = '';
       this.model.StartDateTime = new Date((new Date().getTime() - this.oneday));
-      this.model.CompletedDateTime =  new Date((new Date().getTime()));
+      this.model.CompletedDateTime = new Date((new Date().getTime()));
     }
     if (buttonType === 'Filter') {
+      console.log(this.model);
       this.isValidDate = this.validateDates(this.model.StartDateTime, this.model.CompletedDateTime);
       if (this.isValidDate) {
         this.serverURL = this.protocol.replace(/\s/g, '') + '://' + this.serverName.replace(/\s/g, '') + ':' + this.port.replace(/\s/g, '');
-        this.dataSource.loadLogs(this.serverURL, this.model.ExecutionId, JSON.stringify(this.model), 'asc', 0, 3);
+        this.dataSource.loadLogs(this.serverURL, this.model.ExecutionID, JSON.stringify(this.model), 'asc', 0, 3);
       }
     }
   }
@@ -122,11 +131,11 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.dataSource.loadLogs(
       this.serverURL,
-      this.logEntry.ExecutionID,
+      this.model.ExecutionID,
       JSON.stringify(this.model),
-     // this.sort.direction,
-    //  this.paginator.pageIndex,
-     // this.paginator.pageSize
+      // this.sort.direction,
+      //  this.paginator.pageIndex,
+      // this.paginator.pageSize
     );
     this.loading = false;
     this.displayLogs = true;
@@ -140,7 +149,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
   }
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     // TODO: This will be added in when we do the paging and sorting in the next ticket
     // fromEvent(this.serverNameInput.nativeElement, 'keyup')
     //  .pipe(
@@ -173,12 +182,12 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   validateDates(sDate: string, eDate: string) {
     this.isValidDate = true;
     if ((sDate == null || eDate == null)) {
-      this.error = {isError: true, errorMessage: 'Start date and end date are required.'};
+      this.error = { isError: true, errorMessage: 'Start date and end date are required.' };
       this.isValidDate = false;
     }
 
     if ((sDate != null && eDate != null) && (eDate) < (sDate)) {
-      this.error = {isError: true, errorMessage: 'End date should be grater then start date.'};
+      this.error = { isError: true, errorMessage: 'End date should be grater then start date.' };
       this.isValidDate = false;
     }
     return this.isValidDate;
