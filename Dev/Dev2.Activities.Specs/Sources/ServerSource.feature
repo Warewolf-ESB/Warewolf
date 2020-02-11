@@ -17,7 +17,7 @@ Scenario: Create User Server Source
 	Given I create a server source as
 	| Address                                 | AuthenticationType |
 	| http://tst-ci-remote.premier.local:3142 | User               |
-	And User as ".\Administrator" and with "Dev2@dmin123" as password
+	And User as "WarewolfAdmin" and with "W@rEw0lf@dm1n" as password
 	When I Test the connection
 	Then The result is "success"
 
@@ -29,7 +29,6 @@ Scenario: Create Bad User Server Source
 	When I Test the connection
 	Then The result is "Connection Error :Unauthorized"	
 
-@Ignore
 Scenario: Create Public Server Source
 	Given I create a server source as
 	| Address                             | AuthenticationType |
