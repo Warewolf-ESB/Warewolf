@@ -31,7 +31,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 UserID = authenticationType == AuthenticationType.User ? "testuser" : null,
                 Password = authenticationType == AuthenticationType.User ? "test123" : null,
                 ConnectionTimeout = 30,
-                Port = int.Parse(Depends.GetPort(Depends.ContainerType.MSSQL))
+                Port = port
             };
             return dbSource;
         }
