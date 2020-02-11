@@ -71,6 +71,10 @@ namespace Dev2.Activities.Specs.Merge
             {
                 WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
             }
+            if (serverName == "Remote Connection Integration")
+            {
+                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.CIRemote);
+            }
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
