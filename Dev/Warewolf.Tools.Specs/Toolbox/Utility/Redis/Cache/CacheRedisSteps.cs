@@ -56,7 +56,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         public void GivenValidRedisSource()
         {
             _containerOps = new Depends(Depends.ContainerType.AnonymousRedis);
-            SetUpRedisClientConnection(_containerOps.GetAddress(), "", 6380);
+            SetUpRedisClientConnection(_containerOps.Container.IP, "", 6380);
         }
 
         [Given(@"I have a key ""(.*)"" and ttl of ""(.*)"" milliseconds")]

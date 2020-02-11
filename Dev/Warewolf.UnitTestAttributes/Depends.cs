@@ -62,54 +62,6 @@ namespace Warewolf.UnitTestAttributes
             throw new ArgumentOutOfRangeException();
         }
 
-        public string GetAddress()
-        {
-            if (EnableDocker)
-            {
-                if (_containerType == ContainerType.CIRemote)
-                {
-                    return RigOpsIP + ":3144";
-                }
-                else
-                {
-                    return RigOpsIP;
-                }
-            }
-            else
-            {
-                return BackupServer;
-            }
-        }
-
-        public string GetPort()
-        {
-            if (EnableDocker)
-            {
-                return Container.Port;
-            }
-            else
-            {
-                switch (_containerType)
-                {
-                    case ContainerType.CIRemote:
-                        return BackupCIRemotePort;
-                    case ContainerType.MSSQL:
-                        return "1433";
-                    case ContainerType.MySQL:
-                        return "3306";
-                    case ContainerType.PostGreSQL:
-                        return "5432";
-                    case ContainerType.RabbitMQ:
-                        return "5672";
-                    case ContainerType.Redis:
-                        return "6379";
-                    case ContainerType.AnonymousRedis:
-                        return "6380";
-                }
-            }
-            throw new ArgumentOutOfRangeException();
-        }
-
         public static string GetAddress(ContainerType containerType)
         {
             if (EnableDocker)
@@ -184,7 +136,42 @@ namespace Warewolf.UnitTestAttributes
                         throw new Exception($"Container for {containerType} type dependency not found.");
                     }
 
-                    Container.IP = RigOpsIP;
+                    if (_containerType == ContainerType.CIRemote)
+                    {
+                        Container.IP = RigOpsIP + ":3144";
+                    }
+                    else
+                    {
+                        Container.IP = RigOpsIP;
+                    }
+                }
+            }
+            else
+            {
+                Container.IP = BackupServer;
+                switch (_containerType)
+                {
+                    case ContainerType.CIRemote:
+                        Container.Port = BackupCIRemotePort;
+                        break;
+                    case ContainerType.MSSQL:
+                        Container.Port = "1433";
+                        break;
+                    case ContainerType.MySQL:
+                        Container.Port = "3306";
+                        break;
+                    case ContainerType.PostGreSQL:
+                        Container.Port = "5432";
+                        break;
+                    case ContainerType.RabbitMQ:
+                        Container.Port = "5672";
+                        break;
+                    case ContainerType.Redis:
+                        Container.Port = "6379";
+                        break;
+                    case ContainerType.AnonymousRedis:
+                        Container.Port = "6380";
+                        break;
                 }
             }
 
