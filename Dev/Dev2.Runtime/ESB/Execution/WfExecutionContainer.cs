@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -33,6 +34,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -216,7 +218,7 @@ namespace Dev2.Runtime.ESB.Execution
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             _executionManager = executionManager; //TODO: [code smell] this should not appear in both CTOR 
-            
+
         }
         //TODO: The work on the UI as per EsbExecutionContainer.cs might resolve this code smell CTOR
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager, IStateNotifier stateNotifier)
@@ -257,7 +259,24 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
-                    //TODO: dataListTO.Inputs
+
+                    foreach (var input in dataListTO.Inputs) //TODO: This is not working for log object input parameters.
+                    {
+                        var warewolfEvalResult = dsfDataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input), 0);
+
+                        if (warewolfEvalResult.IsWarewolfAtomResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
+                        {
+                            //TODO: Log scalarResult.Item
+                        }
+                        if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recordSetResult)
+                        {
+                            foreach (var item in recordSetResult.Item)
+                            {
+                                //TODO: Log item
+                            }
+                        }
+                    }
+
                     stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
                 }
 
@@ -340,7 +359,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
             while (next != null)
             {
-                if (dsfDataObject.StopExecution) 
+                if (dsfDataObject.StopExecution)
                 {
                     //On error detailed logging
                     dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
@@ -398,7 +417,8 @@ namespace Dev2.Runtime.ESB.Execution
 
                 var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId, resumeVersionNumber.ToString());
                 startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId, resourceObject);
-            } else
+            }
+            else
             {
                 startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceId, executionId);
             }
@@ -406,6 +426,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute", executionId);
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
+       
     }
 
 
