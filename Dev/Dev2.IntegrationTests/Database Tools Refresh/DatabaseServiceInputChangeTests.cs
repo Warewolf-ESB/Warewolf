@@ -115,8 +115,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             try
             {
                 var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
-                var result = SqlHelper.RunSqlCommand(_containerOps.GetAddress(),
-                    _containerOps.GetPort(), createProcedure);
+                var result = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
+                    _containerOps.Container.Port, createProcedure);
                 Assert.AreEqual(-1, result);
 
                 Setup(cleanProcName);
@@ -142,8 +142,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         int DropProcedure(string cleanProcName)
         {
             var dropProcedure = "IF ( OBJECT_ID('" + cleanProcName + "') IS NOT NULL ) DROP PROCEDURE [dbo].[" + cleanProcName + "]";
-            var dropResult = SqlHelper.RunSqlCommand(_containerOps.GetAddress(),
-                _containerOps.GetPort(), dropProcedure);
+            var dropResult = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
+                _containerOps.Container.Port, dropProcedure);
             return dropResult;
         }
 
@@ -161,8 +161,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
             //testing here
             const string alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
-            var alterTableResults = SqlHelper.RunSqlCommand(_containerOps.GetAddress(),
-                _containerOps.GetPort(), alterProcedure);
+            var alterTableResults = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
+                _containerOps.Container.Port, alterProcedure);
             Assert.AreEqual(-1, alterTableResults);
 
             _dbActionRegion.RefreshActionsCommand.Execute(null);

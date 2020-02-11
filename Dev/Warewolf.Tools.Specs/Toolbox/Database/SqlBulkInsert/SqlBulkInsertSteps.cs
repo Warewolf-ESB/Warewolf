@@ -52,7 +52,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         public void SetupScenerio()
         {
             _containerOps = new Depends(Depends.ContainerType.MSSQL);
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.GetAddress());
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             scenarioContext.Add("dbSource", dbSource);
 
