@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             _resourceCatalog = resourceCatalog;
             DataObject.Settings = GetWorkflowSetting();
+            DataObject.DataList = sa.DataListSpecification;
         }
 
         /// <summary>
@@ -215,6 +216,7 @@ namespace Dev2.Runtime.ESB.Execution
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             _executionManager = executionManager; //TODO: [code smell] this should not appear in both CTOR 
+            
         }
         //TODO: The work on the UI as per EsbExecutionContainer.cs might resolve this code smell CTOR
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager, IStateNotifier stateNotifier)
@@ -229,8 +231,11 @@ namespace Dev2.Runtime.ESB.Execution
             var outerStateLogger = dsfDataObject.StateNotifier;
 
             IStateNotifier stateNotifier = null;
+
             try
             {
+                var dataListTO = new DataListTO(dsfDataObject.DataList.ToString());
+
                 //TODO: [WIP] The UI changes suggested above resolves the move of this code?                
                 //dsfDataObject.Settings = new Dev2WorkflowSettingsTO
                 //{
@@ -252,7 +257,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
-                    //this should take input data from the resource
+                    //TODO: dataListTO.Inputs
                     stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
                 }
 
@@ -276,7 +281,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
-                    //this should take output data from the resource
+                    //TODO: dataListTO.Outputs
                     stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
                 }
             }

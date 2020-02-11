@@ -27,6 +27,7 @@ using Warewolf.Storage;
 using Dev2.Runtime;
 using Dev2.Data;
 using Dev2.Common.Interfaces.Enums;
+using System.Text;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -126,11 +127,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_CheckWhenDataObjectStopExecutionIsTrue_ShouldNotEmptyExecutionExceptionInDataObject()
         {
             //--------------Arrange------------------------------
+            const string Datalist = "<DataList><Name Description='' IsEditable='True' ColumnIODirection='Input' /><Message Description='' IsEditable='True' ColumnIODirection='Output' /><Test Description='' IsEditable='True' ColumnIODirection='Input'><T1 Description='' IsEditable='True' ColumnIODirection='Input' /><T2 Description='' IsEditable='True' ColumnIODirection='Input' /></Test></DataList>";
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             var workSpaceMock = new Mock<IWorkspace>();
             var esbChannelMock = new Mock<IEsbChannel>();
             var executionEnvironment = new Mock<ExecutionEnvironment>();
-            var serviceAction = new ServiceAction();
+            var serviceAction = new ServiceAction
+            {
+                DataListSpecification = new StringBuilder(Datalist)
+            };
 
             dataObjectMock.SetupAllProperties();
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
@@ -179,11 +185,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_Expect_LogAdditionalDetail()
         {
             //--------------Arrange------------------------------
+            const string Datalist = "<DataList><Name Description='' IsEditable='True' ColumnIODirection='Input' /><Message Description='' IsEditable='True' ColumnIODirection='Output' /><Test Description='' IsEditable='True' ColumnIODirection='Input'><T1 Description='' IsEditable='True' ColumnIODirection='Input' /><T2 Description='' IsEditable='True' ColumnIODirection='Input' /></Test></DataList>";
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             var workSpaceMock = new Mock<IWorkspace>();
             var esbChannelMock = new Mock<IEsbChannel>();
             var executionEnvironment = new Mock<ExecutionEnvironment>();
-            var serviceAction = new ServiceAction();
+            var serviceAction = new ServiceAction
+            {
+                DataListSpecification= new StringBuilder(Datalist)
+            };
             var mockStateNotifier = new Mock<IStateNotifier>();
             var mockActivityOne = new Mock<IDev2Activity>();
             var mockExecutionManager = new Mock<IExecutionManager>();
@@ -209,6 +220,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
+            Assert.IsNotNull(dataObjectMock.Object.DataList);
             mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once); 
             mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(2)); //TODO: though this is now passing, the logAddtionalDetail is still null in db?
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
