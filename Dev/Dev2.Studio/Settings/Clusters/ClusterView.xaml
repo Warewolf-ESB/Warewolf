@@ -87,7 +87,7 @@
                     </Button>
                 </Grid>
 
-                <TextBlock x:Name="KeyTextBlock" Text="Key" Grid.Column="0" Grid.Row="1"
+                <TextBlock x:Name="KeyTextBlock" Text="Cluster Key" Grid.Column="0" Grid.Row="1"
                            Margin="{StaticResource ControlBorderTop}" />
                 <TextBox x:Name="KeyTextBox"
                          Text="{Binding Key}"
@@ -138,7 +138,7 @@
 
                 <Button x:Name="CopyKey"
                         Command="{Binding CopyKeyCommand}"
-                        Content="Copy Security Key"
+                        Content="Copy My Cluster Key"
                         HorizontalAlignment="Right"
                         Grid.Column="1"
                         Width="Auto"

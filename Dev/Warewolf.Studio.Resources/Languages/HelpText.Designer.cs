@@ -4008,7 +4008,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The cluster key has been copied to clipboard.
+        ///   Looks up a localized string similar to Followers will require the Cluster Key to follow this server.
         /// </summary>
         public static string SettingsClusterCopyKeyHelpText {
             get {
@@ -4017,7 +4017,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter any text to filter for relevant items containing that text or character.
+        ///   Looks up a localized string similar to Enter any text to filter for relevant items containing that character.
         /// </summary>
         public static string SettingsClusterFilterHelpText {
             get {
@@ -4026,7 +4026,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the cluster key created on the leader.
+        ///   Looks up a localized string similar to Use the Cluster Key from the above selected server.
         /// </summary>
         public static string SettingsClusterKeyHelpText {
             get {

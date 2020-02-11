@@ -2409,12 +2409,12 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>OptionConditionRightHelpText</value>
   </data>
   <data name="SettingsClusterCopyKeyHelpText" xml:space="preserve">
-    <value>The cluster key has been copied to clipboard</value>
+    <value>Followers will require the Cluster Key to follow this server</value>
   </data>
   <data name="SettingsClusterFilterHelpText" xml:space="preserve">
-    <value>Enter any text to filter for relevant items containing that text or character</value>
+    <value>Enter any text to filter for relevant items containing that character</value>
   </data>
   <data name="SettingsClusterKeyHelpText" xml:space="preserve">
-    <value>Enter the cluster key created on the leader</value>
+    <value>Use the Cluster Key from the above selected server</value>
   </data>
 </root>

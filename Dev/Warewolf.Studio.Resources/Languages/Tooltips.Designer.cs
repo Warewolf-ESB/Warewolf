@@ -4888,7 +4888,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy to clipboard the Key provided by the leader.
+        ///   Looks up a localized string similar to The Cluster Key to follow this server.
         /// </summary>
         public static string SettingsClusterCopyKeyToolTip {
             get {
@@ -4906,7 +4906,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Key provided by the leader.
+        ///   Looks up a localized string similar to The Cluster Key from the above selected server.
         /// </summary>
         public static string SettingsClusterKeyToolTip {
             get {
