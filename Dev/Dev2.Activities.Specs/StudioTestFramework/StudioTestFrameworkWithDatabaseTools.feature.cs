@@ -90,69 +90,69 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 #line 9
   testRunner.Given("test folder is cleaned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1031 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1068 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table1031.AddRow(new string[] {
+            table1068.AddRow(new string[] {
                         "[[a]]"});
 #line 10
-  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1031, "And ");
+  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1068, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1032 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1069 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table1032.AddRow(new string[] {
+            table1069.AddRow(new string[] {
                         "[[outputValue]]"});
 #line 13
-  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1032, "And ");
+  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1069, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1033 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1070 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table1033.AddRow(new string[] {
+            table1070.AddRow(new string[] {
                         "[[rec().a]]"});
-            table1033.AddRow(new string[] {
+            table1070.AddRow(new string[] {
                         "[[rec().b]]"});
 #line 16
-  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1033, "Given ");
+  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1070, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1034 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1071 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table1034.AddRow(new string[] {
+            table1071.AddRow(new string[] {
                         "[[returnVal]]"});
 #line 20
-  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1034, "And ");
+  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1071, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1035 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1072 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table1035.AddRow(new string[] {
+            table1072.AddRow(new string[] {
                         "[[A]]"});
-            table1035.AddRow(new string[] {
+            table1072.AddRow(new string[] {
                         "[[B]]"});
-            table1035.AddRow(new string[] {
+            table1072.AddRow(new string[] {
                         "[[C]]"});
 #line 23
-  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1035, "Given ");
+  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1072, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1036 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1073 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table1036.AddRow(new string[] {
+            table1073.AddRow(new string[] {
                         "[[message]]"});
 #line 28
-  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1036, "And ");
+  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1073, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1037 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1074 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table1037.AddRow(new string[] {
+            table1074.AddRow(new string[] {
                         "[[input]]"});
 #line 31
-  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1037, "Given ");
+  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1074, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1038 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1075 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
-            table1038.AddRow(new string[] {
+            table1075.AddRow(new string[] {
                         "[[outputValue]]"});
 #line 34
-  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1038, "And ");
+  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1075, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1039 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1076 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error",
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "TestPending",
                         "TestInvalid",
                         "TestPassed"});
-            table1039.AddRow(new string[] {
+            table1076.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "false",
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "true"});
-            table1039.AddRow(new string[] {
+            table1076.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "false",
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "false"});
-            table1039.AddRow(new string[] {
+            table1076.AddRow(new string[] {
                         "Test3",
                         "Windows",
                         "false",
@@ -184,7 +184,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "true",
                         "false"});
-            table1039.AddRow(new string[] {
+            table1076.AddRow(new string[] {
                         "Test4",
                         "Windows",
                         "false",
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false"});
 #line 37
-  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1039, "And ");
+  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1076, "And ");
 #line hidden
         }
         
@@ -211,24 +211,24 @@ this.FeatureBackground();
 #line 46
   testRunner.Given("I have a workflow \"MySqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1040 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1077 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table1040.AddRow(new string[] {
+            table1077.AddRow(new string[] {
                         "",
                         "",
                         "name",
                         "[[rec(*).name]]"});
-            table1040.AddRow(new string[] {
+            table1077.AddRow(new string[] {
                         "",
                         "",
                         "email",
                         "[[rec(*).email]]"});
 #line 47
    testRunner.And("\"MySqlTestWF\" contains a mysql database service \"MySqlEmail\" with mappings for te" +
-                    "sting as", ((string)(null)), table1040, "And ");
+                    "sting as", ((string)(null)), table1077, "And ");
 #line 51
   testRunner.And("I save workflow \"MySqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
@@ -242,20 +242,20 @@ this.FeatureBackground();
 #line 56
   testRunner.And("I Add \"MySqlEmail\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1041 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1078 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1041.AddRow(new string[] {
+            table1078.AddRow(new string[] {
                         "[[MySqlEmail(1).name]]",
                         "=",
                         "Monk"});
-            table1041.AddRow(new string[] {
+            table1078.AddRow(new string[] {
                         "[[MySqlEmail(1).email]]",
                         "=",
                         "dora@explorers.com"});
 #line 57
-  testRunner.And("I add StepOutputs as", ((string)(null)), table1041, "And ");
+  testRunner.And("I add StepOutputs as", ((string)(null)), table1078, "And ");
 #line 61
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 62
@@ -286,15 +286,15 @@ this.FeatureBackground();
 #line 69
   testRunner.Given("I have a workflow \"SqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1042 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1079 = new TechTalk.SpecFlow.Table(new string[] {
                         "ParameterName",
                         "ParameterValue"});
-            table1042.AddRow(new string[] {
+            table1079.AddRow(new string[] {
                         "Prefix",
                         "D"});
 #line 70
    testRunner.And("\"SqlTestWF\" contains a sqlserver database service \"dbo.Pr_CitiesGetCountries\" wit" +
-                    "h mappings for testing as", ((string)(null)), table1042, "And ");
+                    "h mappings for testing as", ((string)(null)), table1079, "And ");
 #line 73
   testRunner.And("I save workflow \"SqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
@@ -308,20 +308,20 @@ this.FeatureBackground();
 #line 78
   testRunner.And("I Add \"dbo.Pr_CitiesGetCountries\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1043 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1080 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1043.AddRow(new string[] {
+            table1080.AddRow(new string[] {
                         "[[dbo_Pr_CitiesGetCountries(2).CountryID]]",
                         "=",
                         "40"});
-            table1043.AddRow(new string[] {
+            table1080.AddRow(new string[] {
                         "[[dbo_Pr_CitiesGetCountries(2).Description]]",
                         "=",
                         "Djibouti"});
 #line 79
-  testRunner.And("I add StepOutputs as", ((string)(null)), table1043, "And ");
+  testRunner.And("I add StepOutputs as", ((string)(null)), table1080, "And ");
 #line 83
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 84
@@ -352,15 +352,15 @@ this.FeatureBackground();
 #line 91
   testRunner.Given("I have a workflow \"oracleTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1044 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1081 = new TechTalk.SpecFlow.Table(new string[] {
                         "ParameterName",
                         "ParameterValue"});
-            table1044.AddRow(new string[] {
+            table1081.AddRow(new string[] {
                         "P_DEPTNO",
                         "110"});
 #line 92
    testRunner.And("\"oracleTestWF\" contains a oracle database service \"HR.GET_EMP_RS\" with mappings a" +
-                    "s", ((string)(null)), table1044, "And ");
+                    "s", ((string)(null)), table1081, "And ");
 #line 95
   testRunner.And("I save workflow \"oracleTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
@@ -374,28 +374,28 @@ this.FeatureBackground();
 #line 100
   testRunner.And("I Add \"HR.GET_EMP_RS\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1045 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1082 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1045.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "[[HR_GET_EMP_RS(2).EMPLOYEE_ID]]",
                         "=",
                         "205"});
-            table1045.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "[[HR_GET_EMP_RS(2).FIRST_NAME]]",
                         "=",
                         "Shelley"});
-            table1045.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "[[HR_GET_EMP_RS(2).LAST_NAME]]",
                         "=",
                         "Higgins"});
-            table1045.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "[[HR_GET_EMP_RS(2).EMAIL]]",
                         "=",
                         "SHIGGINS"});
 #line 101
-  testRunner.And("I add StepOutputs as", ((string)(null)), table1045, "And ");
+  testRunner.And("I add StepOutputs as", ((string)(null)), table1082, "And ");
 #line 107
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 108
@@ -426,15 +426,15 @@ this.FeatureBackground();
 #line 115
   testRunner.Given("I have a workflow \"PostGreTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1046 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1083 = new TechTalk.SpecFlow.Table(new string[] {
                         "ParameterName",
                         "ParameterValue"});
-            table1046.AddRow(new string[] {
+            table1083.AddRow(new string[] {
                         "Prefix",
                         "K"});
 #line 116
    testRunner.And("\"PostGreTestWF\" contains a postgre tool using \"get_countries\" with mappings for t" +
-                    "esting as", ((string)(null)), table1046, "And ");
+                    "esting as", ((string)(null)), table1083, "And ");
 #line 119
   testRunner.And("I save workflow \"PostGreTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 120
@@ -448,16 +448,16 @@ this.FeatureBackground();
 #line 124
   testRunner.And("I Add \"get_countries\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1047 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1084 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1047.AddRow(new string[] {
+            table1084.AddRow(new string[] {
                         "[[get_countries(1).id]]",
                         "=",
                         "2"});
 #line 125
-  testRunner.And("I add StepOutputs as", ((string)(null)), table1047, "And ");
+  testRunner.And("I add StepOutputs as", ((string)(null)), table1084, "And ");
 #line 128
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 129
@@ -488,14 +488,14 @@ this.FeatureBackground();
 #line 136
   testRunner.Given("I have a workflow \"DecisionTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1048 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1085 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table1048.AddRow(new string[] {
+            table1085.AddRow(new string[] {
                         "[[A]]",
                         "30"});
 #line 137
-  testRunner.And("\"DecisionTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table1048, "And ");
+  testRunner.And("\"DecisionTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table1085, "And ");
 #line 140
   testRunner.And("a decision variable \"[[A]]\" value \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
@@ -513,18 +513,18 @@ this.FeatureBackground();
 #line 147
   testRunner.And("I Add \"TestDecision\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1049 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1086 = new TechTalk.SpecFlow.Table(new string[] {
                         "Step Name",
                         "Output Variable",
                         "Output Value",
                         "Activity Type"});
-            table1049.AddRow(new string[] {
+            table1086.AddRow(new string[] {
                         "If [[Name]] <> (Not Equal)",
                         "Flow Arm",
                         "True",
                         "Decision"});
 #line 148
-  testRunner.And("I add Assert steps as", ((string)(null)), table1049, "And ");
+  testRunner.And("I add Assert steps as", ((string)(null)), table1086, "And ");
 #line 151
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 152
@@ -555,21 +555,21 @@ this.FeatureBackground();
 #line 159
   testRunner.Given("I have a workflow \"SqlBulkTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1050 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1087 = new TechTalk.SpecFlow.Table(new string[] {
                         "Column",
                         "Mapping",
                         "IsNullable",
                         "DataTypeName",
                         "MaxLength",
                         "IsAutoIncrement"});
-            table1050.AddRow(new string[] {
+            table1087.AddRow(new string[] {
                         "Name",
                         "Warewolf",
                         "false",
                         "varchar",
                         "50",
                         "false"});
-            table1050.AddRow(new string[] {
+            table1087.AddRow(new string[] {
                         "Email",
                         "Warewolf@dev2.co.za",
                         "false",
@@ -579,7 +579,7 @@ this.FeatureBackground();
 #line 160
    testRunner.And("\"SqlBulkTestWF\" contains an SQL Bulk Insert \"BulkInsert\" using database \"NewSqlBu" +
                     "lkInsertSource\" and table \"dbo.MailingList\" and KeepIdentity set \"true\" and Resu" +
-                    "lt set \"[[result]]\" for testing as", ((string)(null)), table1050, "And ");
+                    "lt set \"[[result]]\" for testing as", ((string)(null)), table1087, "And ");
 #line 164
   testRunner.And("I save workflow \"SqlBulkTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 165
@@ -593,16 +593,16 @@ this.FeatureBackground();
 #line 169
   testRunner.And("I Add \"BulkInsert\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1051 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1088 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1051.AddRow(new string[] {
+            table1088.AddRow(new string[] {
                         "[[result]]",
                         "=",
                         "Success"});
 #line 170
- testRunner.And("I add StepOutputs as", ((string)(null)), table1051, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1088, "And ");
 #line 173
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 174
