@@ -90,21 +90,13 @@ namespace Warewolf.UnitTestAttributes
 
         public static string GetPort(ContainerType containerType)
         {
-            if (EnableDocker)
+            if (EnableDocker && containerType == ContainerType.CIRemote)
             {
-                switch (containerType)
-                {
-                    case ContainerType.CIRemote:
-                        return "3144";
-                }
+                return "3144";
             }
             else
             {
-                switch (containerType)
-                {
-                    case ContainerType.CIRemote:
-                        return BackupCIRemotePort;
-                }
+                return GetBackupPort(containerType);
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -149,30 +141,7 @@ namespace Warewolf.UnitTestAttributes
             else
             {
                 Container.IP = BackupServer;
-                switch (_containerType)
-                {
-                    case ContainerType.CIRemote:
-                        Container.Port = BackupCIRemotePort;
-                        break;
-                    case ContainerType.MSSQL:
-                        Container.Port = "1433";
-                        break;
-                    case ContainerType.MySQL:
-                        Container.Port = "3306";
-                        break;
-                    case ContainerType.PostGreSQL:
-                        Container.Port = "5432";
-                        break;
-                    case ContainerType.RabbitMQ:
-                        Container.Port = "5672";
-                        break;
-                    case ContainerType.Redis:
-                        Container.Port = "6379";
-                        break;
-                    case ContainerType.AnonymousRedis:
-                        Container.Port = "6380";
-                        break;
-                }
+                Container.Port = GetBackupPort(_containerType);
             }
 
             switch (_containerType)
@@ -193,6 +162,28 @@ namespace Warewolf.UnitTestAttributes
                     InjectPostGreSQLContainer(EnableDocker);
                     break;
             }
+        }
+
+        static string GetBackupPort(ContainerType type)
+        {
+            switch (type)
+            {
+                case ContainerType.CIRemote:
+                    return BackupCIRemotePort;
+                case ContainerType.MSSQL:
+                    return "1433";
+                case ContainerType.MySQL:
+                    return "3306";
+                case ContainerType.PostGreSQL:
+                    return "5432";
+                case ContainerType.RabbitMQ:
+                    return "5672";
+                case ContainerType.Redis:
+                    return "6379";
+                case ContainerType.AnonymousRedis:
+                    return "6380";
+            }
+            throw new ArgumentOutOfRangeException();
         }
 
         public void Dispose()
