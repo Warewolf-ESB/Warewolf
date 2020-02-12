@@ -38,5 +38,18 @@ namespace Dev2.Activities.Specs.Composition
         {
             ScenarioContext.Current.Pending();
         }
+
+        [When(@"a workflow stops on error")]
+        public void WhenAWorkflowStopsOnError()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"a detailed on error log entry is created")]
+        public void ThenADetailedOnErrorLogEntryIsCreated(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }

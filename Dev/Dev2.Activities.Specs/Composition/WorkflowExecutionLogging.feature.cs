@@ -91,6 +91,52 @@ namespace Dev2.Activities.Specs.Composition
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution Entry point detailed log", ((string[])(null)));
 #line 6
   this.ScenarioSetup(scenarioInfo);
+#line 7
+          testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 8
+          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
+          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table592 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table592.AddRow(new string[] {
+                        "value 1",
+                        "value 2",
+                        "value 3"});
+#line 10
+          testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table592, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution entry point detailed logs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        public virtual void WorkflowExecutionEntryPointDetailedLogs()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution entry point detailed logs", ((string[])(null)));
+#line 14
+this.ScenarioSetup(scenarioInfo);
+#line 15
+          testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 16
+          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+          testRunner.When("a workflow stops on error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table593.AddRow(new string[] {
+                        "value 1",
+                        "value 2",
+                        "value 3"});
+#line 18
+          testRunner.Then("a detailed on error log entry is created", ((string)(null)), table593, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
