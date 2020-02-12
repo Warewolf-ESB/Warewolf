@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\FSharp.Compiler.Tools.10.2.3\build\FSharp.Compiler.Tools.props" Condition="Exists('..\packages\FSharp.Compiler.Tools.10.2.3\build\FSharp.Compiler.Tools.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,13 +10,12 @@
     <RootNamespace>WarewolfLanguageParser</RootNamespace>
     <AssemblyName>Warewolf.Language.Parser</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
+    <TargetFramework>.NETFramework,Version=v4.8</TargetFramework>
     <Name>Warewolf.Language.Parser</Name>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>63219277</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -86,7 +84,6 @@
     </Compile>
     <None Include="Script.fsx" />
     <Compile Include="DataStorage.fs" />
-    <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
     <FsYacc Include="WarewolfLanguage.fsy">
       <OtherFlags>--module Parser</OtherFlags>
@@ -116,22 +113,7 @@
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FsLexYacc.Runtime">
-      <HintPath>..\packages\FsLexYacc.Runtime.6.1.0\lib\net40\FsLexYacc.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="policy.2.3.FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -147,12 +129,17 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\FSharp.Compiler.Tools.10.2.3\build\FSharp.Compiler.Tools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FSharp.Compiler.Tools.10.2.3\build\FSharp.Compiler.Tools.props'))" />
-  </Target>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core">
+      <Version>3.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="FsLexYacc">
+      <Version>6.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
