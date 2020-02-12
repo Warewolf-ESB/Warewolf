@@ -229,7 +229,7 @@ namespace Warewolf.UnitTestAttributes
             if (EnableDocker)
             {
                 UpdateSourcesConnectionStrings(
-                    $"AppServerUri=http://{RigOpsIP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;",
+                    $"AppServerUri=http://{Container.IP}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;",
                     knownServerSources);
             }
             else
@@ -259,7 +259,7 @@ namespace Warewolf.UnitTestAttributes
             if (EnableDocker)
             {
                 UpdateSourcesConnectionStrings(
-                    $"Data Source={RigOpsIP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
+                    $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
                     knownMssqlServerSources);
                 Thread.Sleep(30000);
             }
@@ -305,7 +305,7 @@ namespace Warewolf.UnitTestAttributes
             };
             if (EnableDocker)
             {
-                UpdateSourcesConnectionStrings($"Host={RigOpsIP};Username=postgres;Password=test123;Database=TestDB",
+                UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
                     knownServerSources);
                 Thread.Sleep(30000);
             }
