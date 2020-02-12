@@ -51,5 +51,23 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Pending();
         }
 
+        [When(@"a workflow execution has an exception")]
+        public void WhenAWorkflowExecutionHasAnException()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"a detailed execution exception log entry is created")]
+        public void ThenADetailedExecutionExceptionLogEntryIsCreated(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"a detailed execution completed log entry is has no logs")]
+        public void ThenADetailedExecutionCompletedLogEntryIsHasNoLogs()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }
