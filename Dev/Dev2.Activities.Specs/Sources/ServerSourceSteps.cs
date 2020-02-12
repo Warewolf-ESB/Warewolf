@@ -69,7 +69,7 @@ namespace Dev2.Activities.Specs.Sources
                 environmentModel.ResourceRepository.DeleteResource(resourceModel);
                 environmentModel.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
             }
-            declaredDependency.Dispose();
+            declaredDependency?.Dispose();
         }
 
         [Given(@"I create a server source as")]
