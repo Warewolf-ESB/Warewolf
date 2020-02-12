@@ -94,36 +94,36 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("I have a workflow \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table933 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table935 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table933.AddRow(new string[] {
+            table935.AddRow(new string[] {
                         "[[person(1).name]]",
                         "Bob"});
-            table933.AddRow(new string[] {
+            table935.AddRow(new string[] {
                         "[[person(2).name]]",
                         "Alice"});
-            table933.AddRow(new string[] {
+            table935.AddRow(new string[] {
                         "[[person(1).surname]]",
                         "Smith"});
-            table933.AddRow(new string[] {
+            table935.AddRow(new string[] {
                         "[[person(2).surname]]",
                         "Jones"});
 #line 8
- testRunner.And("\"AdvancedRecsetTestWF\" contains an Assign \"assignrecordset\" as", ((string)(null)), table933, "And ");
+ testRunner.And("\"AdvancedRecsetTestWF\" contains an Assign \"assignrecordset\" as", ((string)(null)), table935, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table934 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table936 = new TechTalk.SpecFlow.Table(new string[] {
                         "MappedTo",
                         "MappedFrom"});
-            table934.AddRow(new string[] {
+            table936.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table934.AddRow(new string[] {
+            table936.AddRow(new string[] {
                         "surname",
                         "[[TableCopy().surname]]"});
 #line 14
  testRunner.And("\"AdvancedRecsetTestWF\" contains Advanced Recordset \"selectall\" with Query \"Select" +
-                    " * from person\"", ((string)(null)), table934, "And ");
+                    " * from person\"", ((string)(null)), table936, "And ");
 #line 18
  testRunner.And("I save workflow \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
@@ -135,43 +135,43 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
     testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table935 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table937 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table935.AddRow(new string[] {
+            table937.AddRow(new string[] {
                         "[[person(1).name]]",
                         "=",
                         "Bob"});
-            table935.AddRow(new string[] {
+            table937.AddRow(new string[] {
                         "[[person(2).name]]",
                         "=",
                         "Alice"});
-            table935.AddRow(new string[] {
+            table937.AddRow(new string[] {
                         "[[person(1).surname]]",
                         "=",
                         "Smith"});
-            table935.AddRow(new string[] {
+            table937.AddRow(new string[] {
                         "[[person(2).surname]]",
                         "=",
                         "Jones"});
 #line 23
- testRunner.And("I Add \"assignrecordset\" as TestStep with", ((string)(null)), table935, "And ");
+ testRunner.And("I Add \"assignrecordset\" as TestStep with", ((string)(null)), table937, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table936 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table938 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table936.AddRow(new string[] {
+            table938.AddRow(new string[] {
                         "[[TableCopy(2).name]]",
                         "=",
                         "Alice"});
-            table936.AddRow(new string[] {
+            table938.AddRow(new string[] {
                         "[[TableCopy(2).surname]]",
                         "=",
                         "Jones"});
 #line 29
- testRunner.And("I Add \"selectall\" as TestStep with", ((string)(null)), table936, "And ");
+ testRunner.And("I Add \"selectall\" as TestStep with", ((string)(null)), table938, "And ");
 #line 33
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
@@ -199,36 +199,36 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.Given("I have a workflow \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table937 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table939 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table937.AddRow(new string[] {
+            table939.AddRow(new string[] {
                         "[[person(1).name]]",
                         "Bob"});
-            table937.AddRow(new string[] {
+            table939.AddRow(new string[] {
                         "[[person(2).name]]",
                         "Alice"});
-            table937.AddRow(new string[] {
+            table939.AddRow(new string[] {
                         "[[person(1).surname]]",
                         "Smith"});
-            table937.AddRow(new string[] {
+            table939.AddRow(new string[] {
                         "[[person(2).surname]]",
                         "Jones"});
 #line 43
- testRunner.And("\"AdvancedRecsetTestWF\" contains an Assign \"assignrecordset\" as", ((string)(null)), table937, "And ");
+ testRunner.And("\"AdvancedRecsetTestWF\" contains an Assign \"assignrecordset\" as", ((string)(null)), table939, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table938 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table940 = new TechTalk.SpecFlow.Table(new string[] {
                         "MappedTo",
                         "MappedFrom"});
-            table938.AddRow(new string[] {
+            table940.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table938.AddRow(new string[] {
+            table940.AddRow(new string[] {
                         "surname",
                         "[[TableCopy().surname]]"});
 #line 49
  testRunner.And("\"AdvancedRecsetTestWF\" contains Advanced Recordset \"selectall\" with Query \"Select" +
-                    " name from person\"", ((string)(null)), table938, "And ");
+                    " name from person\"", ((string)(null)), table940, "And ");
 #line 53
  testRunner.And("I save workflow \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54
@@ -240,39 +240,39 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
     testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table939 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table941 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table939.AddRow(new string[] {
+            table941.AddRow(new string[] {
                         "[[person(1).name]]",
                         "=",
                         "Bob"});
-            table939.AddRow(new string[] {
+            table941.AddRow(new string[] {
                         "[[person(2).name]]",
                         "=",
                         "Alice"});
-            table939.AddRow(new string[] {
+            table941.AddRow(new string[] {
                         "[[person(1).surname]]",
                         "=",
                         "Smith"});
-            table939.AddRow(new string[] {
+            table941.AddRow(new string[] {
                         "[[person(2).surname]]",
                         "=",
                         "Jones"});
 #line 58
- testRunner.And("I Add \"assignrecordset\" as TestStep with", ((string)(null)), table939, "And ");
+ testRunner.And("I Add \"assignrecordset\" as TestStep with", ((string)(null)), table941, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table940 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table942 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table940.AddRow(new string[] {
+            table942.AddRow(new string[] {
                         "[[TableCopy(2).name]]",
                         "=",
                         "Alice"});
 #line 64
- testRunner.And("I Add \"selectall\" as TestStep with", ((string)(null)), table940, "And ");
+ testRunner.And("I Add \"selectall\" as TestStep with", ((string)(null)), table942, "And ");
 #line 67
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 68
