@@ -62,54 +62,6 @@ namespace Warewolf.UnitTestAttributes
             throw new ArgumentOutOfRangeException();
         }
 
-        public string GetAddress()
-        {
-            if (EnableDocker)
-            {
-                if (_containerType == ContainerType.CIRemote)
-                {
-                    return RigOpsIP + ":3144";
-                }
-                else
-                {
-                    return RigOpsIP;
-                }
-            }
-            else
-            {
-                return BackupServer;
-            }
-        }
-
-        public string GetPort()
-        {
-            if (EnableDocker)
-            {
-                return Container.Port;
-            }
-            else
-            {
-                switch (_containerType)
-                {
-                    case ContainerType.CIRemote:
-                        return BackupCIRemotePort;
-                    case ContainerType.MSSQL:
-                        return "1433";
-                    case ContainerType.MySQL:
-                        return "3306";
-                    case ContainerType.PostGreSQL:
-                        return "5432";
-                    case ContainerType.RabbitMQ:
-                        return "5672";
-                    case ContainerType.Redis:
-                        return "6379";
-                    case ContainerType.AnonymousRedis:
-                        return "6380";
-                }
-            }
-            throw new ArgumentOutOfRangeException();
-        }
-
         public static string GetAddress(ContainerType containerType)
         {
             if (EnableDocker)
@@ -138,21 +90,13 @@ namespace Warewolf.UnitTestAttributes
 
         public static string GetPort(ContainerType containerType)
         {
-            if (EnableDocker)
+            if (EnableDocker && containerType == ContainerType.CIRemote)
             {
-                switch (containerType)
-                {
-                    case ContainerType.CIRemote:
-                        return "3144";
-                }
+                return "3144";
             }
             else
             {
-                switch (containerType)
-                {
-                    case ContainerType.CIRemote:
-                        return BackupCIRemotePort;
-                }
+                return GetBackupPort(containerType);
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -184,8 +128,20 @@ namespace Warewolf.UnitTestAttributes
                         throw new Exception($"Container for {containerType} type dependency not found.");
                     }
 
-                    Container.IP = RigOpsIP;
+                    if (_containerType == ContainerType.CIRemote)
+                    {
+                        Container.IP = RigOpsIP + ":3144";
+                    }
+                    else
+                    {
+                        Container.IP = RigOpsIP;
+                    }
                 }
+            }
+            else
+            {
+                Container.IP = BackupServer;
+                Container.Port = GetBackupPort(_containerType);
             }
 
             switch (_containerType)
@@ -206,6 +162,28 @@ namespace Warewolf.UnitTestAttributes
                     InjectPostGreSQLContainer(EnableDocker);
                     break;
             }
+        }
+
+        static string GetBackupPort(ContainerType type)
+        {
+            switch (type)
+            {
+                case ContainerType.CIRemote:
+                    return BackupCIRemotePort;
+                case ContainerType.MSSQL:
+                    return "1433";
+                case ContainerType.MySQL:
+                    return "3306";
+                case ContainerType.PostGreSQL:
+                    return "5432";
+                case ContainerType.RabbitMQ:
+                    return "5672";
+                case ContainerType.Redis:
+                    return "6379";
+                case ContainerType.AnonymousRedis:
+                    return "6380";
+            }
+            throw new ArgumentOutOfRangeException();
         }
 
         public void Dispose()
