@@ -240,7 +240,6 @@ namespace Warewolf.UnitTestAttributes
                     UpdateSourcesConnectionStrings(
                         $"AppServerUri=http://{defaultServer}:{BackupCIRemoteServer.Split(':')[1]}/dsf;WebServerPort=3142;AuthenticationType=Windows",
                         knownServerSources);
-                    Thread.Sleep(30000);
                 }
             }
         }
@@ -261,14 +260,12 @@ namespace Warewolf.UnitTestAttributes
                 UpdateSourcesConnectionStrings(
                     $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
                     knownMssqlServerSources);
-                Thread.Sleep(30000);
             }
             else
             {
                 UpdateSourcesConnectionStrings(
                     $"Data Source={BackupServer},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
                     knownMssqlServerSources);
-                Thread.Sleep(30000);
             }
         }
 
@@ -284,13 +281,11 @@ namespace Warewolf.UnitTestAttributes
                 UpdateSourcesConnectionStrings(
                     $"HostName={RigOpsIP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
                     knownServerSources);
-                Thread.Sleep(30000);
             }
             else
             {
                 UpdateSourcesConnectionStrings($"HostName={BackupServer};UserName=test;Password=test;VirtualHost=/",
                     knownServerSources);
-                Thread.Sleep(30000);
             }
         }
 
@@ -307,13 +302,11 @@ namespace Warewolf.UnitTestAttributes
             {
                 UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
                     knownServerSources);
-                Thread.Sleep(30000);
             }
             else
             {
                 UpdateSourcesConnectionStrings($"Host={BackupServer};UserName=postgres;Password=test123;Database=TestDB",
                     knownServerSources);
-                Thread.Sleep(30000);
             }
         }
 
@@ -359,13 +352,11 @@ namespace Warewolf.UnitTestAttributes
             {
                 UpdateSourcesConnectionString($"{Container.IP};Port={Container.Port}",
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-                Thread.Sleep(30000);
             }
             else
             {
                 UpdateSourcesConnectionString(BackupServer,
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-                Thread.Sleep(30000);
             }
         }
 
