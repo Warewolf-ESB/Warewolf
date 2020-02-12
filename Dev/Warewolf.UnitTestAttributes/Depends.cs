@@ -357,7 +357,7 @@ namespace Warewolf.UnitTestAttributes
         {
             if (EnableDocker)
             {
-                UpdateSourcesConnectionString($"{(EnableDocker?RigOpsIP:BackupServer)};Port={Container.Port}",
+                UpdateSourcesConnectionString($"{Container.IP};Port={Container.Port}",
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
                 Thread.Sleep(30000);
             }
