@@ -10,7 +10,7 @@
     <RootNamespace>WarewolfLanguageParser</RootNamespace>
     <AssemblyName>Warewolf.Language.Parser</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFramework>.NETFramework,Version=v4.7.2</TargetFramework>
+    <TargetFramework>.NETFramework,Version=v4.8</TargetFramework>
     <Name>Warewolf.Language.Parser</Name>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -84,7 +84,6 @@
     </Compile>
     <None Include="Script.fsx" />
     <Compile Include="DataStorage.fs" />
-    <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
     <FsYacc Include="WarewolfLanguage.fsy">
       <OtherFlags>--module Parser</OtherFlags>
