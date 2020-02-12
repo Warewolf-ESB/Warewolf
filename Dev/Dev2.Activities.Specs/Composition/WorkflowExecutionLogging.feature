@@ -26,3 +26,13 @@ Scenario: Workflow execution completed detailed logs
           Then a detailed execution completed log entry is created
           |  one  |  two   |three   |
           |value 1| value 2| value 3|
+
+Scenario: Workflow execution failure detailed logs
+          Given a valid workflow
+          And workflow execution entry point detailed logs are logged
+          And a workflow stops on error has no logs
+          When a workflow execution has an exception
+          Then a detailed execution exception log entry is created
+          |  one  |  two   |three   |
+          |value 1| value 2| value 3|
+          And a detailed execution completed log entry is has no logs
