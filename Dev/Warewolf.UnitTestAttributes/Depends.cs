@@ -14,7 +14,7 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
-        static readonly string RigOpsIP = "T004124.premier.local";
+        static readonly string RigOpsIP = "rsaklfsvrhst1.premier.local";
         static readonly string BackupServer = "SVRDEV.premier.local";
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
         static readonly string BackupCIRemotePort = "3142";
