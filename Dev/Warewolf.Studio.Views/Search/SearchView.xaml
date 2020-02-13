@@ -53,7 +53,7 @@
             </Grid.ColumnDefinitions>
             <TextBox x:Name="txtSearchInput" 
                      ToolTip="{x:Static languages:Tooltips.SearchInputTooltip}" 
-                     Text="{Binding Search.SearchInput}" 
+                     Text="{Binding Search.SearchInput, Mode=TwoWay}" 
                      IsEnabled="{Binding CanShowResults}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static languages:HelpText.SearchInputHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
