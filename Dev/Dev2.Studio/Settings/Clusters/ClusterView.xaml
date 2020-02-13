@@ -178,17 +178,14 @@
                         <ColumnDefinition Width="{Binding ElementName=ConnectedSinceShared, Path=ActualWidth}" />
                         <ColumnDefinition Width="{Binding ElementName=LastSyncShared, Path=ActualWidth}" />
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
-                        <TextBlock Text="Host name" FontWeight="Bold"
-                                   FontSize="{StaticResource FontSize-Large}" HorizontalAlignment="Center" />
+                    <Border Grid.Column="0" Background="#FFF4F4F4" BorderThickness="1,0,1,0" BorderBrush="#FFB9B9B9">
+                        <TextBlock Text="Host name" FontWeight="Bold" HorizontalAlignment="Left" />
                     </Border>
-                    <Border Grid.Column="1" BorderThickness="0,1,1,1" BorderBrush="Black">
-                        <TextBlock Text="Connected since" FontWeight="Bold"
-                                   FontSize="{StaticResource FontSize-Large}" HorizontalAlignment="Center" />
+                    <Border Grid.Column="1" Background="#FFF4F4F4" BorderThickness="0,0,1,0" BorderBrush="#FFB9B9B9">
+                        <TextBlock Text="Connected since" FontWeight="Bold" HorizontalAlignment="Left" />
                     </Border>
-                    <Border Grid.Column="2" BorderThickness="0,1,1,1" BorderBrush="Black">
-                        <TextBlock Text="Last sync" FontWeight="Bold"
-                                   FontSize="{StaticResource FontSize-Large}" HorizontalAlignment="Center" />
+                    <Border Grid.Column="2" Background="#FFF4F4F4" BorderThickness="0,0,1,0" BorderBrush="#FFB9B9B9">
+                        <TextBlock Text="Last sync" FontWeight="Bold" HorizontalAlignment="Left" />
                     </Border>
                 </Grid>
                 <TreeView Grid.Row="1"
