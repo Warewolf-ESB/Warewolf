@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -3932,6 +3932,18 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SettingsPerfCounterServerHelpWfNotFound {
             get {
                 return ResourceManager.GetString("SettingsPerfCounterServerHelpWfNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a public workflow to associate a username and password with a set of group names that that user belongs to.
+        ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Any request that contains the resulting hashed token will be considered to be in these groups.
+        ///    .
+        /// </summary>
+        public static string SettingsSecurityOverrideAuthHelpText {
+            get {
+                return ResourceManager.GetString("SettingsSecurityOverrideAuthHelpText", resourceCulture);
             }
         }
         
