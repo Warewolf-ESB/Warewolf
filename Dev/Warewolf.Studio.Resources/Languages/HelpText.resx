@@ -1642,6 +1642,12 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="SettingsSecurityServerHelpWindowsGroup" xml:space="preserve">
     <value>To set server wide permissions for security, enter the Windows Group name or "Public" here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.	By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.	Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission. 	The Public group grants any and every user those permissions.</value>
   </data>
+  <data name="SettingsSecurityOverrideAuthHelpText" xml:space="preserve">
+    <value>Use a public workflow to associate a username and password with a set of group names that that user belongs to.
+      &lt;br/&gt;&lt;br/&gt;
+      Any request that contains the resulting hashed token will be considered to be in these groups.
+    </value>
+  </data>
   <data name="SharepointDeleteHelpResult" xml:space="preserve">
     <value>Only variables go in here.	Returns the number of records deleted.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
