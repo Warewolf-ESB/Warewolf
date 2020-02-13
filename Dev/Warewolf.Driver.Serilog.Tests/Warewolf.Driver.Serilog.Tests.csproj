@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
     <Configurations>Debug</Configurations>
+    <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -16,6 +16,8 @@
   <ItemGroup>
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00216" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.1.0-alpha0011" />
     <PackageReference Include="Serilog.Sinks.SQLite" Version="4.5.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
     <PackageReference Include="Moq" Version="4.13.1" />
