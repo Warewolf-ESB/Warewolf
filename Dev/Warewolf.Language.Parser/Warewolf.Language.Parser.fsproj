@@ -1,5 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,7 +10,7 @@
     <RootNamespace>WarewolfLanguageParser</RootNamespace>
     <AssemblyName>Warewolf.Language.Parser</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFramework>.NETFramework,Version=v4.8</TargetFramework>
+    <TargetFramework>.NETFramework,Version=v4.8.0</TargetFramework>
     <Name>Warewolf.Language.Parser</Name>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -19,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <Tailcalls>false</Tailcalls>
     <OutputPath>bin\Debug\</OutputPath>
@@ -83,6 +84,7 @@
     </Compile>
     <None Include="Script.fsx" />
     <Compile Include="DataStorage.fs" />
+    <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
     <FsYacc Include="WarewolfLanguage.fsy">
       <OtherFlags>--module Parser</OtherFlags>
@@ -107,14 +109,31 @@
     <Compile Include="IntellisenseStringProvider.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FsLexYacc" Version="6.1.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Name>Warewolf.Parser.Interop</Name>
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FsLexYacc.Runtime">
+      <HintPath>..\packages\FsLexYacc.Runtime.6.1.0\lib\net40\FsLexYacc.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="policy.2.3.FSharp.Core">
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Name>Dev2.Common.Interfaces</Name>
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
@@ -125,5 +144,17 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="FSharp.Core.3" Version="0.0.2" />
+    <PackageReference Include="FsLexYacc" Version="6.1.0" />
+    <PackageReference Include="FsLexYacc.Runtime" Version="6.1.0" />
   </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <Import Project="..\packages\FsLexYacc.6.0.0\bin\FsLexYacc.targets" />
+  -->
 </Project>
