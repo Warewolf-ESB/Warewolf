@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
@@ -37,18 +36,18 @@ namespace Dev2.ViewModels.Search
         string _versionConflictError;
         public virtual IPopupController PopupController { get; set; }
 
-        public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator, IPopupController popupController)
+        public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator, false)
         {
             _shellViewModel = shellViewModel;
-            PopupController = popupController;
+            PopupController = shellViewModel.PopupProvider;
 
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             ConnectControlViewModel.SelectedEnvironmentChanged += UpdateServerCompareChanged;
             SelectedEnvironment = _environments.FirstOrDefault();
-            RefreshCommand = new DelegateCommand((o) => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            RefreshCommand = new DelegateCommand(async (o) => await RefreshEnvironment(SelectedEnvironment.ResourceId));
             SearchInputCommand = new DelegateCommand((o) => SearchWarewolf());
             OpenResourceCommand = new DelegateCommand((searchObject) =>
             {
@@ -60,7 +59,7 @@ namespace Dev2.ViewModels.Search
             Search = new Common.Search.Search();
             SelectedEnvironment?.Server?.ResourceRepository?.Load(false);
             IsSearching = false;
-            DisplayName = "Search";
+            DisplayName = $"Search";
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MenuSearchHelp);
         }
 
