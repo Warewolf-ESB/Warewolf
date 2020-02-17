@@ -12,3 +12,13 @@ Feature: WarewolfLoggingFollower
           And local log file should contain
           |  one   |  two    | three  |
           | value 1| value 2 | value 3| 
+
+Scenario: Leader server discovered on log
+          Given a valid follower server resource
+          And log service have received logs
+          When the follower server tries to log and connection to leader is live
+          And the log file is found and not null
+          Then the logs should be logged to the leader server
+          And local log file should contain
+          |  one   |  two    | three  |
+          |        |         |        | 
