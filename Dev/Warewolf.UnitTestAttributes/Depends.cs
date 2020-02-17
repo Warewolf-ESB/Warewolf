@@ -376,7 +376,8 @@ namespace Warewolf.UnitTestAttributes
 
         static void UpdateMySQLSourceConnectionString(string defaultServer, string knownServerSource)
         {
-            string sourcePath = Environment.ExpandEnvironmentVariables(knownServerSource);
+            var sourcePath = Environment.ExpandEnvironmentVariables(knownServerSource);
+            if (!File.Exists(sourcePath)) return;
             File.WriteAllText(sourcePath,
                 InsertServerSourceAddress(File.ReadAllText(sourcePath),
                     $"Server={defaultServer};Database=test;Uid=root;Pwd=admin;"));
