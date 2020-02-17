@@ -45,7 +45,8 @@ namespace Dev2.Activities.Specs.Settings.Cluster
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WarewolfLoggingFollower", "\tIn order to centralize all execution workflow logs\r\n    As a warewolf user\r\n    " +
-                    "I want to be able to store logs to a leader server", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "I want to be able to store logs to a leader server", ProgrammingLanguage.CSharp, new string[] {
+                        "followerServer"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,11 +87,10 @@ namespace Dev2.Activities.Specs.Settings.Cluster
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("No leader server discovered on log")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WarewolfLoggingFollower")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("followerServer")]
         public virtual void NoLeaderServerDiscoveredOnLog()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No leader server discovered on log", new string[] {
-                        "mytag"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No leader server discovered on log", ((string[])(null)));
 #line 7
  this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -112,6 +112,40 @@ namespace Dev2.Activities.Specs.Settings.Cluster
                         "value 3"});
 #line 12
           testRunner.And("local log file should contain", ((string)(null)), table933, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Leader server discovered on log")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WarewolfLoggingFollower")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("followerServer")]
+        public virtual void LeaderServerDiscoveredOnLog()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Leader server discovered on log", ((string[])(null)));
+#line 16
+this.ScenarioSetup(scenarioInfo);
+#line 17
+          testRunner.Given("a valid follower server resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
+          testRunner.And("log service have received logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+          testRunner.When("the follower server tries to log and connection to leader is live", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 20
+          testRunner.And("the log file is found and not null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+          testRunner.Then("the logs should be logged to the leader server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table934 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table934.AddRow(new string[] {
+                        "",
+                        "",
+                        ""});
+#line 22
+          testRunner.And("local log file should contain", ((string)(null)), table934, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
