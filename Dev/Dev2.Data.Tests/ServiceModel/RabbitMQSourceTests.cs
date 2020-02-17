@@ -176,7 +176,7 @@ namespace Dev2.Data.Tests.ServiceModel
         public void RabbitMQSource_NewConnection_GivenNoArgConstructor_ConnectionSuccess()
         {
             //-------------------------------Arrange-----------------------------
-            var port = 5672;
+            var port = int.Parse(Depends.GetPort(Depends.ContainerType.RabbitMQ));
             var hostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ);
             var userName = "test";
             var password = "test";
@@ -192,7 +192,7 @@ namespace Dev2.Data.Tests.ServiceModel
             };
             //----------------------Pre-Assert---------------------------------
             Assert.AreEqual(nameof(RabbitMQSource), rabbitMqSource.ResourceType);
-            Assert.AreEqual(5672, rabbitMqSource.Port);
+            Assert.AreEqual(int.Parse(Depends.GetPort(Depends.ContainerType.RabbitMQ)), rabbitMqSource.Port);
             Assert.AreEqual(Depends.GetAddress(Depends.ContainerType.RabbitMQ), rabbitMqSource.HostName);
             Assert.AreEqual("test", rabbitMqSource.UserName);
             Assert.AreEqual("test", rabbitMqSource.Password);
