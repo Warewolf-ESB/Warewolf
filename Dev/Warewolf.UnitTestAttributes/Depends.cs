@@ -98,7 +98,6 @@ namespace Warewolf.UnitTestAttributes
             {
                 return GetBackupPort(containerType);
             }
-            throw new ArgumentOutOfRangeException();
         }
 
         public Container Container;
@@ -116,12 +115,8 @@ namespace Warewolf.UnitTestAttributes
                     string result = "";
                     string containerType = ConvertToString(_containerType);
                     string address = $"http://{RigOpsIP}:3142/public/Container/Async/Start/{containerType}.json";
-                    var retryCount = 0;
-                    do
-                    {
-                        result = client.DownloadString(address);
-                        Container = JsonConvert.DeserializeObject<Container>(result);
-                    } while (string.IsNullOrEmpty(Container.Port) && retryCount++ < 10);
+                    result = client.DownloadString(address);
+                    Container = JsonConvert.DeserializeObject<Container>(result);
 
                     if (string.IsNullOrEmpty(Container.Port))
                     {
@@ -312,27 +307,46 @@ namespace Warewolf.UnitTestAttributes
 
         void InjectTFSBLDIP()
         {
-            UpdateSourcesConnectionString(
-                $"Address=http://{TFSBLDIP}:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
-                @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.xml");
-            UpdateSourcesConnectionString(
-                $"Address=http://{TFSBLDIP}:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
-                @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.xml");
-            UpdateSourcesConnectionString(
-                $"Address=http://{TFSBLDIP}:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
-                @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.xml");
-            UpdateSourcesConnectionString(
-                $"Address=http://{TFSBLDIP}:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
-                @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml");
+            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
+                new List<string>
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.bite"
+                });
+            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
+                new List<string>
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.bite"
+                });
+            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
+                new List<string>
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.bite"
+                });
+            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
+                new List<string>
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.bite"
+                });
         }
 
         void InjectSVRDEVIP()
         {
-            UpdateSourcesConnectionString($"Server={BackupServer};Database=test;Uid=root;Pwd=admin;",
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.xml");
-            UpdateSourcesConnectionString(
-                $"Server=http://{BackupServer}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0",
-                @"%programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.xml");
+            UpdateSourcesConnectionStrings($"Server={BackupServer};Database=test;Uid=root;Pwd=admin;",
+                new List<string>
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite"
+                });
+            UpdateSourcesConnectionStrings($"Server=http://{BackupServer}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0",
+                new List<string>
+                {
+                    @"programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.xml",
+                    @"programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.bite"
+                });
         }
 
         public static void InjectOracleSources()
@@ -350,17 +364,17 @@ namespace Warewolf.UnitTestAttributes
         {
             if (EnableDocker)
             {
-                UpdateSourcesConnectionString($"{Container.IP};Port={Container.Port}",
+                UpdateMySQLSourceConnectionString($"{Container.IP};Port={Container.Port}",
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             }
             else
             {
-                UpdateSourcesConnectionString(BackupServer,
+                UpdateMySQLSourceConnectionString(BackupServer,
                     @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             }
         }
 
-        static void UpdateSourcesConnectionString(string defaultServer, string knownServerSource)
+        static void UpdateMySQLSourceConnectionString(string defaultServer, string knownServerSource)
         {
             string sourcePath = Environment.ExpandEnvironmentVariables(knownServerSource);
             File.WriteAllText(sourcePath,
@@ -478,7 +492,7 @@ namespace Warewolf.UnitTestAttributes
         protected override WebRequest GetWebRequest(Uri uri)
         {
             WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 20 * 60 * 1000;
+            w.Timeout = 3 * 60 * 1000;
             return w;
         }
     }
