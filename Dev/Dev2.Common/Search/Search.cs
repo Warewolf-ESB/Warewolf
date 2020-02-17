@@ -8,14 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 using Dev2.Common.Interfaces.Search;
+using Microsoft.Practices.Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Warewolf;
 
 namespace Dev2.Common.Search
 {
-    public class Search : ISearch
+    public class Search : BindableBase, ISearch
     {
         string _searchInput;
         public Search()
@@ -26,20 +28,10 @@ namespace Dev2.Common.Search
         public string SearchInput
         {
             get { return _searchInput; }
-            set
-            {
-                _searchInput = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _searchInput, value);
         }
         public ISearchOptions SearchOptions { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         public List<ISearchResult> GetSearchResults(List<ISearcher> searchers)
         {
             var searchResults = new List<ISearchResult>();  
@@ -107,7 +99,7 @@ namespace Dev2.Common.Search
         }
     }
 
-    public class SearchOptions : ISearchOptions
+    public class SearchOptions : BindableBase, ISearchOptions
     {
         bool _isAllSelected;
         bool _isWorkflowNameSelected;
@@ -130,83 +122,47 @@ namespace Dev2.Common.Search
         public bool IsAllSelected
         {
             get => _isAllSelected;
-            set
-            {
-                _isAllSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isAllSelected, value);
         }
         public bool IsWorkflowNameSelected
         {
             get => _isWorkflowNameSelected;
-            set
-            {
-                _isWorkflowNameSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isWorkflowNameSelected, value);
         }
         public bool IsTestNameSelected
         {
             get => _isTestNameSelected;
-            set
-            {
-                _isTestNameSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isTestNameSelected, value);
         }
         public bool IsScalarNameSelected
         {
             get => _isScalarNameSelected;
-            set
-            {
-                _isScalarNameSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isScalarNameSelected, value);
         }
         public bool IsObjectNameSelected
         {
             get => _isObjectNameSelected;
-            set
-            {
-                _isObjectNameSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isObjectNameSelected, value);
         }
         public bool IsRecSetNameSelected
         {
             get => _isRecSetNameSelected;
-            set
-            {
-                _isRecSetNameSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isRecSetNameSelected, value);
         }
         public bool IsToolTitleSelected
         {
             get => _isToolTitleSelected;
-            set
-            {
-                _isToolTitleSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isToolTitleSelected, value);
         }
         public bool IsInputVariableSelected
         {
             get => _isInputVariableSelected;
-            set
-            {
-                _isInputVariableSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isInputVariableSelected, value);
         }
         public bool IsOutputVariableSelected
         {
             get => _isOutputVariableSelected;
-            set
-            {
-                _isOutputVariableSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isOutputVariableSelected, value);
         }
 
         public bool IsVariableSelected => GetAnyVariableSelected();
@@ -236,28 +192,12 @@ namespace Dev2.Common.Search
         public bool IsMatchCaseSelected
         {
             get => _isMatchCaseSelected;
-            set
-            {
-                _isMatchCaseSelected = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _isMatchCaseSelected, value);
         }
         public bool IsMatchWholeWordSelected
         {
             get => _isMatchWholeWordSelected;
-            set
-            {
-                _isMatchWholeWordSelected = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            set => SetProperty(ref _isMatchWholeWordSelected, value);
         }
     }
 }

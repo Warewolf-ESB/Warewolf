@@ -48,8 +48,9 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
             _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
-            _eventAggregatorMock = new Mock<IEventAggregator>();
             _popupControllerMock = new Mock<IPopupController>();
+            _shellViewModelMock.SetupGet(o => o.PopupProvider).Returns(_popupControllerMock.Object);
+            _eventAggregatorMock = new Mock<IEventAggregator>();
 
             var connectControlSingleton = new Mock<Dev2.ConnectionHelpers.IConnectControlSingleton>();
             CustomContainer.Register(connectControlSingleton.Object);
@@ -58,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             CustomContainer.Register(new Mock<IPopupController>().Object);
-            _target = new SearchViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, _popupControllerMock.Object);
+            _target = new SearchViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
@@ -94,7 +95,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             //--------------Arrange------------------------------
             const string environmentDisplayName = "someResName";
 
-            //--------------Act----------------------------------            
+            //--------------Act----------------------------------
             _target.UpdateServerCompareChanged(new Mock<IConnectControlViewModel>().Object, Guid.Empty);
 
             //--------------Assert-------------------------------
@@ -130,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             var _connectControlViewModel = new Mock<IConnectControlViewModel>();
             _connectControlViewModel.Setup(connectControl => connectControl.SelectedConnection).Returns(_serverMock.Object);
 
-            //--------------Act----------------------------------            
+            //--------------Act----------------------------------
             _target.UpdateServerCompareChanged(_connectControlViewModel.Object, environmentId);
 
             //--------------Assert-------------------------------
@@ -168,7 +169,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             var _connectControlViewModel = new Mock<IConnectControlViewModel>();
             _connectControlViewModel.Setup(connectControl => connectControl.SelectedConnection).Returns(_serverMock.Object);
 
-            //--------------Act----------------------------------            
+            //--------------Act----------------------------------
             _target.UpdateServerCompareChanged(_connectControlViewModel.Object, environmentId);
 
             //--------------Assert-------------------------------
@@ -205,7 +206,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             var _connectControlViewModel = new Mock<IConnectControlViewModel>();
             _connectControlViewModel.Setup(connectControl => connectControl.SelectedConnection).Returns(_serverMock.Object);
 
-            //--------------Act----------------------------------            
+            //--------------Act----------------------------------
             _target.UpdateServerCompareChanged(_connectControlViewModel.Object, environmentId);
 
             //--------------Assert-------------------------------
