@@ -140,6 +140,68 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution completed detailed logs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        public virtual void WorkflowExecutionCompletedDetailedLogs()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution completed detailed logs", ((string[])(null)));
+#line 22
+this.ScenarioSetup(scenarioInfo);
+#line 23
+          testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 24
+          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table594.AddRow(new string[] {
+                        "value 1",
+                        "value 2",
+                        "value 3"});
+#line 26
+          testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table594, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution failure detailed logs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        public virtual void WorkflowExecutionFailureDetailedLogs()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution failure detailed logs", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line 31
+          testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 32
+          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+          testRunner.When("a workflow execution has an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table595.AddRow(new string[] {
+                        "value 1",
+                        "value 2",
+                        "value 3"});
+#line 35
+          testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table595, "Then ");
+#line 38
+          testRunner.And("a detailed execution completed log entry is has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
