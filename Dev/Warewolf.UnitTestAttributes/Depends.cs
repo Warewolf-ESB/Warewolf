@@ -120,7 +120,7 @@ namespace Warewolf.UnitTestAttributes
 
                     if (string.IsNullOrEmpty(Container.Port))
                     {
-                        throw new Exception($"Container for {containerType} type dependency not found.");
+                        Container.Port = GetBackupPort(_containerType);
                     }
 
                     if (_containerType == ContainerType.CIRemote)
