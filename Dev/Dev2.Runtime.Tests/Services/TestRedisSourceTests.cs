@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.Services
                 Id = Guid.Empty,
                 Name = "Name",
                 HostName = Depends.GetAddress(Depends.ContainerType.AnonymousRedis),
-                Port = "6380",
+                Port = Depends.GetPort(Depends.ContainerType.AnonymousRedis),
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
