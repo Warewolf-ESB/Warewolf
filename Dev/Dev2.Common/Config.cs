@@ -31,6 +31,7 @@ namespace Dev2.Common
 
         public static ServerSettings Server = new ServerSettings();
         public static StudioSettings Studio = new StudioSettings();
+        public static ClusterSettings Cluster = new ClusterSettings();
         public static AuditingSettings Auditing = new AuditingSettings();
     }
 
@@ -190,5 +191,21 @@ namespace Dev2.Common
         }
 
         public string Endpoint => _settings.Endpoint;
+    }
+
+    public class ClusterSettings : ConfigSettingsBase<ClusterSettingsData>
+    {
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
+        public ClusterSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        public ClusterSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public string Key => _settings.Key;
     }
 }

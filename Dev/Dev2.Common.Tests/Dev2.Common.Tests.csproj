@@ -78,6 +78,7 @@
     <Compile Include="Common\GetComputerNamesTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
+    <Compile Include="ClusterSettingsTests.cs" />
     <Compile Include="ServerSettingsTests.cs" />
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
