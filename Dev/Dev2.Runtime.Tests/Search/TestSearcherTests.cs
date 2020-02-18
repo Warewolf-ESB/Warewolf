@@ -90,5 +90,40 @@ namespace Dev2.Tests.Runtime.Search
             Assert.AreEqual("Folder", searchResult.Path);
             Assert.AreEqual(Common.Interfaces.Search.SearchItemType.TestName, searchResult.Type);
         }
+
+
+        [TestMethod]
+        public void GetSearchResults_WhenTestNameHasValueAndResourceDoesNotExists_ShouldReturnEmptyResult()
+        {
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(res => res.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(() => null);
+
+            var searchValue = new Common.Search.Search
+            {
+                SearchInput = "Set",
+                SearchOptions = new SearchOptions
+                {
+                    IsAllSelected = false,
+                    IsTestNameSelected = true
+                }
+            };
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(t => t.FetchAllTests()).Returns(new List<IServiceTestModelTO>
+            {
+                 new ServiceTestModelTO
+                 {
+                     TestName = "Set Test"
+                 }
+                 ,
+                 new ServiceTestModelTO
+                 {
+                     TestName = "Test set value"
+                 }
+            });
+            var searcher = new TestSearcher(mockResourceCatalog.Object, mockTestCatalog.Object);
+            var searchResults = searcher.GetSearchResults(searchValue);
+            Assert.AreEqual(0, searchResults.Count);
+        }
     }
 }
