@@ -28,6 +28,8 @@ using Dev2.Runtime;
 using Dev2.Data;
 using Dev2.Common.Interfaces.Enums;
 using System.Text;
+using Warewolf.Storage.Interfaces;
+using WarewolfParserInterop;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -84,7 +86,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void Setup()
         {
             Config.Server.EnableDetailedLogging = false;
-            
+
             TestStartNode = new FlowStep
             {
                 Action = new DsfNumberFormatActivity(),
@@ -165,7 +167,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var executionEnvironment = new Mock<ExecutionEnvironment>();
             var serviceAction = new ServiceAction();
 
-            
+
             dataObjectMock.SetupAllProperties();
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
             dataObjectMock.Setup(o => o.StopExecution).Returns(false);
@@ -185,15 +187,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_Expect_LogAdditionalDetail()
         {
             //--------------Arrange------------------------------
-            const string Datalist = "<DataList><Name Description='' IsEditable='True' ColumnIODirection='Input' /><Message Description='' IsEditable='True' ColumnIODirection='Output' /><Test Description='' IsEditable='True' ColumnIODirection='Input'><T1 Description='' IsEditable='True' ColumnIODirection='Input' /><T2 Description='' IsEditable='True' ColumnIODirection='Input' /></Test></DataList>";
+            const string Datalist = "<DataList><Id Description='' IsEditable='True' ColumnIODirection='Output' /><Student Description='' IsEditable='True' ColumnIODirection='Input'><Id Description='' IsEditable='True' ColumnIODirection='Input' /><Name Description='' IsEditable='True' ColumnIODirection='Input' /><Fees Description='' IsEditable='True' ColumnIODirection='Input' /></Student><User Description='' IsEditable='True' IsJson='True' IsArray='True' ColumnIODirection='Output'><Id Description='' IsEditable='True' IsJson='True' IsArray='False' ColumnIODirection='None'></Id><Name Description='' IsEditable='True' IsJson='True' IsArray='False' ColumnIODirection='None'></Name></User></DataList>";
 
             var dataObjectMock = new Mock<IDSFDataObject>();
             var workSpaceMock = new Mock<IWorkspace>();
             var esbChannelMock = new Mock<IEsbChannel>();
-            var executionEnvironment = new Mock<ExecutionEnvironment>();
+            var executionEnvironment = new Mock<IExecutionEnvironment>();
             var serviceAction = new ServiceAction
             {
-                DataListSpecification= new StringBuilder(Datalist)
+                DataListSpecification = new StringBuilder(Datalist)
             };
             var mockStateNotifier = new Mock<IStateNotifier>();
             var mockActivityOne = new Mock<IDev2Activity>();
@@ -207,6 +209,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 KeepLogsForDays = 2,
                 CompressOldLogFiles = true
             };
+
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
+            atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Bob"));
+            atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Stub"));
+            var objectResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"UserName\": \"Bob\"}"));
+            executionEnvironment.Setup(environment => environment.AllErrors).Returns(new HashSet<string>());
+            executionEnvironment.Setup(environment => environment.Errors).Returns(new HashSet<string>());
+            executionEnvironment.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList));
+            executionEnvironment.Setup(environment => environment.EvalForJson(It.IsAny<string>())).Returns(objectResult);
+
             dataObjectMock.SetupAllProperties();
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
             dataObjectMock.Setup(o => o.StopExecution).Returns(false);
@@ -221,12 +233,75 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
             Assert.IsNotNull(dataObjectMock.Object.DataList);
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once); 
+            Assert.IsNotNull(executionEnvironment.Object.Errors);
+            Assert.IsNotNull(executionEnvironment.Object.AllErrors);
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(2)); //TODO: though this is now passing, the logAddtionalDetail is still null in db?
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
+            executionEnvironment.Verify(o => o.Eval(It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(11));
+            executionEnvironment.Verify(o => o.EvalForJson(It.IsAny<string>()), Times.Exactly(2));
         }
 
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WfExecutionContainer))]
+        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_Expect_LogExecuteException()
+        {
+            //--------------Arrange------------------------------
+            const string Datalist = "<DataList><Id Description='' IsEditable='True' ColumnIODirection='Output' /><Student Description='' IsEditable='True' ColumnIODirection='Input'><Id Description='' IsEditable='True' ColumnIODirection='Input' /><Name Description='' IsEditable='True' ColumnIODirection='Input' /><Fees Description='' IsEditable='True' ColumnIODirection='Input' /></Student><User Description='' IsEditable='True' IsJson='True' IsArray='True' ColumnIODirection='Output'><Id Description='' IsEditable='True' IsJson='True' IsArray='False' ColumnIODirection='None'></Id><Name Description='' IsEditable='True' IsJson='True' IsArray='False' ColumnIODirection='None'></Name></User></DataList>";
+
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            var workSpaceMock = new Mock<IWorkspace>();
+            var esbChannelMock = new Mock<IEsbChannel>();
+            var executionEnvironment = new Mock<IExecutionEnvironment>();
+            var serviceAction = new ServiceAction
+            {
+                DataListSpecification = new StringBuilder(Datalist)
+            };
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            var mockActivityOne = new Mock<IDev2Activity>();
+            var mockExecutionManager = new Mock<IExecutionManager>();
+            Config.Server.EnableDetailedLogging = true;
+
+            var wfSettings = new Dev2WorkflowSettingsTO
+            {
+                EnableDetailedLogging = Config.Server.EnableDetailedLogging,
+                LoggerType = LoggerType.JSON,
+                KeepLogsForDays = 2,
+                CompressOldLogFiles = true
+            };
+
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
+            atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Bob"));
+            atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Stub"));
+            var objectResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"UserName\": \"Bob\"}"));
+            executionEnvironment.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList));
+            executionEnvironment.Setup(environment => environment.EvalForJson(It.IsAny<string>())).Returns(objectResult);
+
+            dataObjectMock.SetupAllProperties();
+            dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
+            dataObjectMock.Setup(o => o.StopExecution).Returns(false);
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.Settings).Returns(wfSettings);
+
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, mockStateNotifier.Object);
+
+            //--------------Act----------------------------------
+            wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
+
+            //--------------Assert-------------------------------
+            Assert.IsNull(dataObjectMock.Object.ExecutionException);
+            Assert.IsNotNull(dataObjectMock.Object.DataList);
+            Assert.IsNull(executionEnvironment.Object.Errors);
+            Assert.IsNull(executionEnvironment.Object.AllErrors);
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Once); //TODO: though this is now passing, the logAddtionalDetail is still null in db?
+            mockStateNotifier.Verify(o => o.LogExecuteException(It.IsAny<Exception>(), It.IsAny<IDev2Activity>()), Times.Once);
+            mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
+            mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
+            executionEnvironment.Verify(o => o.Eval(It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(9));
+        }
     }
 }
