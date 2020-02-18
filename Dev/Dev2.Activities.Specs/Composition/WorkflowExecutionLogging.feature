@@ -11,7 +11,7 @@
           |  one  |  two   |three   |
           |value 1| value 2| value 3|
 
-Scenario: Workflow execution entry point detailed logs
+Scenario: Workflow execution stops on error detailed logs
           Given a valid workflow
           And workflow execution entry point detailed logs are logged
           When a workflow stops on error
