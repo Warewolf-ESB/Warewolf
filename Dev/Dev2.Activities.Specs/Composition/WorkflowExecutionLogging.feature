@@ -3,11 +3,11 @@
       As a warewolf user
       I want to be able to list all entry to exit execution log points
 
-  Scenario: Workflow execution Entry point detailed log
+  Scenario: Workflow execution entry point detailed log
           Given a valid workflow
           And workflow execution entry point detailed logs are logged
           And a workflow stops on error has no logs
-          Then a detailed execution completed log entry is created
+          And a detailed execution completed log entry is created with input parameter values
           |  one  |  two   |three   |
           |value 1| value 2| value 3|
 
