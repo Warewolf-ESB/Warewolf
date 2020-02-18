@@ -39,6 +39,12 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Pending();
         }
 
+        [Then(@"it has these output parameter values")]
+        public void ThenItHasTheseOutputParameterValues(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [When(@"a workflow stops on error")]
         public void WhenAWorkflowStopsOnError()
         {
