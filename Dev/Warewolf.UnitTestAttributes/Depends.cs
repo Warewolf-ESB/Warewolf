@@ -119,12 +119,9 @@ namespace Warewolf.UnitTestAttributes
                     {
                         result = client.DownloadString(address);
                     }
-                    catch (WebException e)
+                    catch (WebException)
                     {
-                        if (e.Message != "The request was aborted: The operation has timed out.")
-                        {
-                            throw e;
-                        }
+                        //use backup values instead
                     }
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
