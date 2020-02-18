@@ -8,6 +8,7 @@
              xmlns:security="clr-namespace:Dev2.Settings.Security"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
+             xmlns:clusters="clr-namespace:Dev2.Settings.Clusters"
              Padding="5"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -22,6 +23,8 @@
                                AutomationProperties.AutomationId="SecurityViewContent" DataContext="{Binding SecurityViewModel, Mode=OneWay}" />
         <perfcounters:PerfCounterView x:Key="PerfMonView"
                                AutomationProperties.AutomationId="PerfmonViewContent" DataContext="{Binding PerfmonViewModel, Mode=OneWay}" />
+        <clusters:ClusterView x:Key="ClusterView"
+                               AutomationProperties.AutomationId="ClusterViewContent" DataContext="{Binding ClusterViewModel, Mode=OneWay}" />    
     </UserControl.Resources>
 
     <Grid>
@@ -69,6 +72,17 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <StaticResource ResourceKey="PerfMonView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Sitemap" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding ClusterHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="ClusterView" />
                         </TabItem.Content>
                     </TabItem>
                 </TabControl>

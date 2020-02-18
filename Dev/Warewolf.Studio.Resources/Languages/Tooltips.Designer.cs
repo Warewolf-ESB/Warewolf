@@ -4888,6 +4888,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Cluster Key to follow this server.
+        /// </summary>
+        public static string SettingsClusterCopyKeyToolTip {
+            get {
+                return ResourceManager.GetString("SettingsClusterCopyKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter the Followers list.
+        /// </summary>
+        public static string SettingsClusterFilterToolTip {
+            get {
+                return ResourceManager.GetString("SettingsClusterFilterToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Cluster Key from the above selected server.
+        /// </summary>
+        public static string SettingsClusterKeyToolTip {
+            get {
+                return ResourceManager.GetString("SettingsClusterKeyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes performance counters.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceTooltip {
@@ -5100,6 +5127,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SettingsSecurityServerToolTipWindowsGroup {
             get {
                 return ResourceManager.GetString("SettingsSecurityServerToolTipWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the Cluster Key to follow this server.
+        /// </summary>
+        public static string SettingsTestClusterKeyToolTip {
+            get {
+                return ResourceManager.GetString("SettingsTestClusterKeyToolTip", resourceCulture);
             }
         }
         

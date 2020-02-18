@@ -25,6 +25,7 @@ using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.Settings.Clusters;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Security;
@@ -57,6 +58,7 @@ namespace Dev2.Settings
         IServer _currentEnvironment;
         Func<IServer, IServer> _toEnvironmentModel;
         PerfcounterViewModel _perfmonViewModel;
+        private ClusterViewModel _clusterViewModel;
         string _displayName;
 
         // ReSharper disable once MemberCanBeProtected.Global
@@ -381,6 +383,7 @@ namespace Dev2.Settings
                 SecurityViewModel = CreateSecurityViewModel();
                 LogSettingsViewModel = CreateLoggingViewModel();
                 PerfmonViewModel = CreatePerfmonViewModel();
+                ClusterViewModel = CreateClusterViewModel();
 
                 AddPropertyChangedHandlers();
 
@@ -401,6 +404,16 @@ namespace Dev2.Settings
             {
                 _perfmonViewModel = value;
                 NotifyOfPropertyChange(() => PerfmonViewModel);
+            }
+        }
+
+        public ClusterViewModel ClusterViewModel
+        {
+            get => _clusterViewModel;
+            set
+            {
+                _clusterViewModel = value;
+                NotifyOfPropertyChange(() => ClusterViewModel);
             }
         }
 
@@ -426,6 +439,12 @@ namespace Dev2.Settings
                 return logSettingsViewModel;
             }
             return null;
+        }
+
+        protected virtual ClusterViewModel CreateClusterViewModel()
+        {
+            var clusterViewModel = new ClusterViewModel();
+            return clusterViewModel;
         }
 
         void AddPropertyChangedHandlers()
@@ -470,11 +489,12 @@ namespace Dev2.Settings
         {
             if (SecurityViewModel != null && LogSettingsViewModel != null)
             {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty;
+                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty || ClusterViewModel.IsDirty;
             }
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
             NotifyOfPropertyChange(() => PerfmonHeader);
+            NotifyOfPropertyChange(() => ClusterHeader);
             ClearErrors();
         }
 
@@ -494,6 +514,12 @@ namespace Dev2.Settings
             {
                 PerfmonViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => PerfmonHeader);
+            }
+
+            if (ClusterViewModel != null)
+            {
+                ClusterViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => ClusterHeader);
             }
         }
 
@@ -575,6 +601,11 @@ namespace Dev2.Settings
                     if (PerfmonViewModel.IsDirty)
                     {
                         PerfmonViewModel.Save(Settings.PerfCounters);
+                    }
+
+                    if (ClusterViewModel.IsDirty)
+                    {
+                        //ClusterViewModel.Save();
                     }
                     var isWritten = WriteSettings();
                     if (isWritten)
@@ -691,6 +722,7 @@ namespace Dev2.Settings
 
         public string ResourceType => StringResources.SettingsTitle;
         public string PerfmonHeader => PerfmonViewModel != null && PerfmonViewModel.IsDirty ? StringResources.SettingsPerformanceCounters +  " *" : StringResources.SettingsPerformanceCounters;
+        public string ClusterHeader => ClusterViewModel != null && ClusterViewModel.IsDirty ? StringResources.SettingsCluster +  " *" : StringResources.SettingsCluster;
     }
 }
 

@@ -2408,4 +2408,16 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="OptionConditionRightHelpText" xml:space="preserve">
     <value>OptionConditionRightHelpText</value>
   </data>
+  <data name="SettingsClusterCopyKeyHelpText" xml:space="preserve">
+    <value>Followers will require the Cluster Key to follow this server</value>
+  </data>
+  <data name="SettingsTestClusterKeyHelpText" xml:space="preserve">
+    <value>Test the connection using the Cluster Key to follow this server</value>
+  </data>
+  <data name="SettingsClusterFilterHelpText" xml:space="preserve">
+    <value>Enter any text to filter for relevant items containing that character</value>
+  </data>
+  <data name="SettingsClusterKeyHelpText" xml:space="preserve">
+    <value>Use the Cluster Key from the above selected server</value>
+  </data>
 </root>

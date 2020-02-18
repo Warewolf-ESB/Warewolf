@@ -4008,6 +4008,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Followers will require the Cluster Key to follow this server.
+        /// </summary>
+        public static string SettingsClusterCopyKeyHelpText {
+            get {
+                return ResourceManager.GetString("SettingsClusterCopyKeyHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter any text to filter for relevant items containing that character.
+        /// </summary>
+        public static string SettingsClusterFilterHelpText {
+            get {
+                return ResourceManager.GetString("SettingsClusterFilterHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Cluster Key from the above selected server.
+        /// </summary>
+        public static string SettingsClusterKeyHelpText {
+            get {
+                return ResourceManager.GetString("SettingsClusterKeyHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes the performance counters for this specific resource.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceHelpText {
@@ -4247,6 +4274,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SettingsSecurityServerHelpWindowsGroup {
             get {
                 return ResourceManager.GetString("SettingsSecurityServerHelpWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the connection using the Cluster Key to follow this server.
+        /// </summary>
+        public static string SettingsTestClusterKeyHelpText {
+            get {
+                return ResourceManager.GetString("SettingsTestClusterKeyHelpText", resourceCulture);
             }
         }
         
