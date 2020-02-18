@@ -245,6 +245,10 @@
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>

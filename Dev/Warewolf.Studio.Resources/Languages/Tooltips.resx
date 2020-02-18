@@ -663,6 +663,9 @@ To execute more than one item in a loop construct etc. put the activities in a s
 and then put the sequence into the loop construct.
 Error handling operates as a catch all for all items in the sequence.</value>
   </data>
+  <data name="GateExecuteThisTooltip" xml:space="preserve">
+    <value>Execute an Activity when there is a failure in the Gate referencing this Gate.</value>
+  </data>
   <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
     <value>Only collections go in here.
 You can use the (*) or () notation for record sets or objects.</value>
@@ -943,6 +946,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   </data>
   <data name="PluginServiceSelectConstructorToolTip" xml:space="preserve">
     <value>Select constructor to execute.</value>
+  </data>
+  <data name="ExistingGatesToolTip" xml:space="preserve">
+    <value>If the gate conditions fail and "Continue" has been selected, then select an existing gate to roll back to.</value>
   </data>
   <data name="PasswordToolTip" xml:space="preserve">
     <value>Enter the corresponding password</value>
@@ -2267,6 +2273,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Data_Replace" xml:space="preserve">
     <value>Tags: find</value>
   </data>
+  <data name="Tool_Flow_Gate" xml:space="preserve">
+    <value>Tags: gate retry stop end</value>
+  </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
     <value>Tags: search string position</value>
   </data>
@@ -2425,5 +2434,56 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="RedisRemoveResultToolTip" xml:space="preserve">
     <value>Returns Success if the key was found and removed or Failure otherwise.</value>
+  </data>
+  <data name="OptionAutocompleteTooltip" xml:space="preserve">
+    <value>OptionAutocompleteTooltip</value>
+  </data>
+  <data name="OptionIntTooltip" xml:space="preserve">
+    <value>OptionIntTooltip</value>
+  </data>
+  <data name="OptionBoolTooltip" xml:space="preserve">
+    <value>OptionBoolTooltip</value>
+  </data>
+  <data name="OptionEnumTooltip" xml:space="preserve">
+    <value>OptionEnumTooltip</value>
+  </data>
+  <data name="OptionEnumGenTooltip" xml:space="preserve">
+    <value>OptionEnumGenTooltip</value>
+  </data>
+  <data name="OptionComboboxTooltip" xml:space="preserve">
+    <value>OptionComboboxTooltip</value>
+  </data>
+  <data name="OptionWorkflowTooltip" xml:space="preserve">
+    <value>OptionWorkflowTooltip</value>
+  </data>
+  <data name="OptionGateCountToolTip" xml:space="preserve">
+    <value>Set the retry count.</value>
+  </data>
+  <data name="OptionGateStrategyToolTip" xml:space="preserve">
+    <value>Select the retry strategy that will be actioned</value>
+  </data>
+  <data name="OptionGateResumeToolTip" xml:space="preserve">
+    <value>Select whether the Gate Tool will continue on error or end the workflow</value>
+  </data>
+  <data name="OptionGateMaxRetriesToolTip" xml:space="preserve">
+    <value>Set the maximum retry count. The tool will keep retrying until the maximum retry count is hit</value>
+  </data>
+  <data name="OptionGateTimeoutToolTip" xml:space="preserve">
+    <value>Set the Timeout of each retry</value>
+  </data>
+  <data name="OptionGateResumeEndpointToolTip" xml:space="preserve">
+    <value>Select the resume workflow or API that will be executed on retry</value>
+  </data>
+  <data name="OptionGateIncrementToolTip" xml:space="preserve">
+    <value>Set the delay increment between every retry attempt</value>
+  </data>
+  <data name="OptionRabbitMqDurableToolTip" xml:space="preserve">
+    <value>Set if the queue is durable</value>
+  </data>
+  <data name="OptionRadioButtonTooltip" xml:space="preserve">
+    <value>OptionRadioButtonTooltip</value>
+  </data>
+  <data name="OptionConditionToolTip" xml:space="preserve">
+    <value>OptionConditionToolTip</value>
   </data>
 </root>

@@ -101,6 +101,7 @@
     <Compile Include="Activities\AdvancedRecordset\AdvancedRecordset.cs" />
     <Compile Include="Activities\AdvancedRecordset\IAdvancedRecordset.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivity.cs" />
+    <Compile Include="Activities\GateActivity.cs" />
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
@@ -342,6 +343,7 @@
     <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
+    <Compile Include="LogManager.cs" />
     <Compile Include="TestMockStep.cs" />
     <Compile Include="TO\AssignObjectDTO.cs" />
     <Compile Include="TO\ActivityDTO.cs" />
@@ -442,6 +444,18 @@
       <Project>{86DF54BB-E37D-4559-8014-13D6030A2242}</Project>
       <Name>Warewolf.Driver.Redis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
+      <Project>{2c4e3dc6-2195-4486-894d-8351b066d8ca}</Project>
+      <Name>Warewolf.Auditing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+      <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
+      <Name>Warewolf.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj">
       <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
       <Name>Warewolf.Exchange.Email.Wrapper</Name>
@@ -453,6 +467,10 @@
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj">
+      <Project>{a44298cd-2e74-4b81-a115-cf9497c982f2}</Project>
+      <Name>Warewolf.Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
