@@ -260,22 +260,7 @@ namespace Dev2.Runtime.ESB.Execution
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
 
-                    foreach (var input in dataListTO.Inputs) //TODO: This is not working for log object input parameters.
-                    {
-                        var warewolfEvalResult = dsfDataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input), 0);
-
-                        if (warewolfEvalResult.IsWarewolfAtomResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
-                        {
-                            //TODO: Log scalarResult.Item
-                        }
-                        if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recordSetResult)
-                        {
-                            foreach (var item in recordSetResult.Item)
-                            {
-                                //TODO: Log item
-                            }
-                        }
-                    }
+                    LogInputOutputVariables(dataListTO.Inputs, dsfDataObject);
 
                     stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
                 }
@@ -300,7 +285,9 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
-                    //TODO: dataListTO.Outputs
+
+                    LogInputOutputVariables(dataListTO.Outputs, dsfDataObject);
+
                     stateNotifier?.LogAdditionalDetail(resource, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
                 }
             }
@@ -312,7 +299,7 @@ namespace Dev2.Runtime.ESB.Execution
                     stateNotifier = _stateNotifier; //LogManager.CreateStateNotifier(dsfDataObject); //TODO: (DI): LogManager.CreateStateNotifier() inject for testing
                     dsfDataObject.StateNotifier = stateNotifier;
                     //this should take Exception data from the resource
-                    stateNotifier?.LogAdditionalDetail(ex, dsfDataObject.ExecutionID.ToString()); //TODO: The table of information as per clients expectations is blocking this, 
+                    stateNotifier?.LogExecuteException(ex, resource); //TODO: The table of information as per clients expectations is blocking this, 
                 }
             }
 
@@ -324,6 +311,7 @@ namespace Dev2.Runtime.ESB.Execution
                 dsfDataObject.StateNotifier = outerStateLogger;
             }
         }
+
 
         void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
         {
@@ -426,7 +414,40 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute", executionId);
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
-       
+
+        void LogInputOutputVariables(List<string> variables, IDSFDataObject dsfDataObject)
+        {
+            foreach (var variable in variables)
+            {
+                if (DataListUtil.IsValueRecordset(DataListUtil.AddBracketsToValueIfNotExist(variable)))
+                {
+                    var warewolfEvalResult = dsfDataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variable), 0);
+
+                    if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recordSetResult)
+                    {
+                        foreach (var item in recordSetResult.Item)
+                        {
+                            //TODO: Log item
+                        }
+                    }
+                }
+                else
+                {
+                    var warewolfEvalResult = dsfDataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variable), 0);
+
+                    if (warewolfEvalResult.IsWarewolfAtomResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
+                    {
+                        //TODO: Log scalarResult.Item
+                    }
+                    else
+                    {
+                        var evalResult = dsfDataObject.Environment.EvalForJson("[[@" + variable + "]]");
+
+                        //TODO: Log evalResult
+                    }
+                }
+            }
+        }
     }
 
 
