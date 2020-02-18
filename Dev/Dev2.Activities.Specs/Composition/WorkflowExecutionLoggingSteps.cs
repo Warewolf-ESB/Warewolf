@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Pending();
         }
         
-        [Then(@"a detailed execution completed log entry is created")]
+        [Then(@"a detailed execution completed log entry is created with input parameter values")]
         public void ThenADetailedExecutionCompletedLogEntryIsCreated(Table table)
         {
             ScenarioContext.Current.Pending();
