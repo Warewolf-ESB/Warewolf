@@ -5,9 +5,11 @@
 
   Scenario: Workflow execution entry point detailed log
           Given a valid workflow
-          And workflow execution entry point detailed logs are logged
-          And a workflow stops on error has no logs
-          And a detailed execution completed log entry is created with input parameter values
+		  When a workflow request is received
+          Then a detailed entry log is created
+          |  one  |  two   |three   |
+          |value 1| value 2| value 3|
+		  And it has these input parameter values
           |  one  |  two   |three   |
           |value 1| value 2| value 3|
 
