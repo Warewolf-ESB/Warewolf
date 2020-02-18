@@ -113,11 +113,11 @@ namespace Dev2.Activities.Specs.Composition
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution entry point detailed logs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution stops on error detailed logs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
-        public virtual void WorkflowExecutionEntryPointDetailedLogs()
+        public virtual void WorkflowExecutionStopsOnErrorDetailedLogs()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution entry point detailed logs", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution stops on error detailed logs", ((string[])(null)));
 #line 14
 this.ScenarioSetup(scenarioInfo);
 #line 15
@@ -167,6 +167,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
           testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table594, "Then ");
 #line hidden
+            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table595.AddRow(new string[] {
+                        "value 1",
+                        "value 2",
+                        "value 3"});
+#line 29
+          testRunner.And("it has these output parameter values", ((string)(null)), table595, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -176,28 +187,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WorkflowExecutionFailureDetailedLogs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution failure detailed logs", ((string[])(null)));
-#line 30
-this.ScenarioSetup(scenarioInfo);
-#line 31
-          testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
-          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
-          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 34
+          testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 35
+          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
           testRunner.When("a workflow execution has an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table596 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table595.AddRow(new string[] {
+            table596.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
-#line 35
-          testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table595, "Then ");
 #line 38
+          testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table596, "Then ");
+#line 41
           testRunner.And("a detailed execution completed log entry is has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
