@@ -57,9 +57,6 @@ namespace Dev2.Activities.Specs.Merge
             CustomContainer.Register(pop.Object);
             localHost = environmentModel.Source;
             localHost.ConnectAsync().Wait(60000);
-#pragma warning disable S125 // Sections of code should not be "commented out"
-            //localHost.ResourceRepository.Load(true);
-#pragma warning restore S125 // Sections of code should not be "commented out"
         }
 
         IServer localHost;
