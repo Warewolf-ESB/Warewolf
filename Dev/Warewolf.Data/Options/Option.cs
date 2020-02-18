@@ -9,13 +9,10 @@
 */
 
 using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Warewolf.Data;
-using Warewolf.Data.Options;
 
 namespace Warewolf.Options
 {
@@ -591,8 +588,8 @@ namespace Warewolf.Options
 
     public class OptionActivity : BindableBase, IOptionActivity
     {
-        private ModelItem _value;
-        public ModelItem Value
+        private object _value; // ModelItem _value;
+        public object Value
         {
             get => _value;
             set => SetProperty(ref _value, value);
