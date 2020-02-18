@@ -107,7 +107,7 @@ namespace Dev2.Activities.Specs.Composition
                         "value 2",
                         "value 3"});
 #line 10
-          testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table592, "Then ");
+          testRunner.And("a detailed execution completed log entry is created with input parameter values", ((string)(null)), table592, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
