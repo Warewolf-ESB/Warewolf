@@ -106,26 +106,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2814 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2815 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2814.AddRow(new string[] {
+            table2815.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
                         "[[firstNum]] = //root/number[@id=\"1\"]/text()"});
 #line 13
- testRunner.And("the debug inputs as", ((string)(null)), table2814, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2815, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2815 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2816 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2815.AddRow(new string[] {
+            table2816.AddRow(new string[] {
                         "1",
                         "[[firstNum]] = One"});
 #line 16
- testRunner.And("the debug output as", ((string)(null)), table2815, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2816, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -152,26 +152,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2816 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2817 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2816.AddRow(new string[] {
+            table2817.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
                         "[[firstNum]] = //root/number[@id=\"2\"]/text()"});
 #line 26
- testRunner.And("the debug inputs as", ((string)(null)), table2816, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2817, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2817 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2818 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2817.AddRow(new string[] {
+            table2818.AddRow(new string[] {
                         "1",
                         "[[firstNum]] = Two"});
 #line 29
- testRunner.And("the debug output as", ((string)(null)), table2817, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2818, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -195,69 +195,69 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2818 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2819 = new TechTalk.SpecFlow.Table(new string[] {
                         "rec().id"});
-            table2818.AddRow(new string[] {
+            table2819.AddRow(new string[] {
                         "1"});
-            table2818.AddRow(new string[] {
+            table2819.AddRow(new string[] {
                         "2"});
-            table2818.AddRow(new string[] {
+            table2819.AddRow(new string[] {
                         "3"});
 #line 38
- testRunner.Then("the xpath result for this varibale \"[[rec(*).id]]\" will be", ((string)(null)), table2818, "Then ");
+ testRunner.Then("the xpath result for this varibale \"[[rec(*).id]]\" will be", ((string)(null)), table2819, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2819 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2820 = new TechTalk.SpecFlow.Table(new string[] {
                         "rec().text"});
-            table2819.AddRow(new string[] {
+            table2820.AddRow(new string[] {
                         "One"});
-            table2819.AddRow(new string[] {
+            table2820.AddRow(new string[] {
                         "Two"});
-            table2819.AddRow(new string[] {
+            table2820.AddRow(new string[] {
                         "Three"});
 #line 43
- testRunner.Then("the xpath result for this varibale \"[[rec2(*).text]]\" will be", ((string)(null)), table2819, "Then ");
+ testRunner.Then("the xpath result for this varibale \"[[rec2(*).text]]\" will be", ((string)(null)), table2820, "Then ");
 #line 48
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2820 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2821 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2820.AddRow(new string[] {
+            table2821.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
                         "[[rec(*).id]] = //root/number/@id"});
-            table2820.AddRow(new string[] {
+            table2821.AddRow(new string[] {
                         "",
                         "2",
                         "[[rec2(*).text]] = //root/number/text()"});
 #line 49
- testRunner.And("the debug inputs as", ((string)(null)), table2820, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2821, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2821 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2822 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2821.AddRow(new string[] {
+            table2822.AddRow(new string[] {
                         "1",
                         "[[rec(1).id]] = 1"});
-            table2821.AddRow(new string[] {
+            table2822.AddRow(new string[] {
                         "",
                         "[[rec(2).id]] = 2"});
-            table2821.AddRow(new string[] {
+            table2822.AddRow(new string[] {
                         "",
                         "[[rec(3).id]] = 3"});
-            table2821.AddRow(new string[] {
+            table2822.AddRow(new string[] {
                         "2",
                         "[[rec2(1).text]] = One"});
-            table2821.AddRow(new string[] {
+            table2822.AddRow(new string[] {
                         "",
                         "[[rec2(2).text]] = Two"});
-            table2821.AddRow(new string[] {
+            table2822.AddRow(new string[] {
                         "",
                         "[[rec2(3).text]] = Three"});
 #line 53
- testRunner.And("the debug output as", ((string)(null)), table2821, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2822, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -283,26 +283,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2822 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2823 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2822.AddRow(new string[] {
+            table2823.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
                         "[[ids]] = //root/num/@id"});
 #line 68
- testRunner.And("the debug inputs as", ((string)(null)), table2822, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2823, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2823 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2824 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2823.AddRow(new string[] {
+            table2824.AddRow(new string[] {
                         "1",
                         "[[ids]] ="});
 #line 71
- testRunner.And("the debug output as", ((string)(null)), table2823, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2824, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -330,26 +330,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2824 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2825 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2824.AddRow(new string[] {
+            table2825.AddRow(new string[] {
                         "[[myxml]] = <root><number id=\"1\">One</number><number id=\"2\">Two</number><number i" +
                             "d=\"3\">Three</number></root>",
                         "1",
                         "[[ids]] = @@#$"});
 #line 82
- testRunner.And("the debug inputs as", ((string)(null)), table2824, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2825, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2825 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2826 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2825.AddRow(new string[] {
+            table2826.AddRow(new string[] {
                         "1",
                         "[[ids]] ="});
 #line 85
- testRunner.And("the debug output as", ((string)(null)), table2825, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2826, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -373,52 +373,52 @@ this.ScenarioSetup(scenarioInfo);
 #line 93
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2826 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2827 = new TechTalk.SpecFlow.Table(new string[] {
                         "rec().set"});
-            table2826.AddRow(new string[] {
+            table2827.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>"});
-            table2826.AddRow(new string[] {
+            table2827.AddRow(new string[] {
                         "1"});
-            table2826.AddRow(new string[] {
+            table2827.AddRow(new string[] {
                         "2"});
-            table2826.AddRow(new string[] {
+            table2827.AddRow(new string[] {
                         "3"});
 #line 94
- testRunner.Then("the xpath result for this varibale \"[[rec().set]]\" will be", ((string)(null)), table2826, "Then ");
+ testRunner.Then("the xpath result for this varibale \"[[rec().set]]\" will be", ((string)(null)), table2827, "Then ");
 #line 100
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2827 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2828 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2827.AddRow(new string[] {
+            table2828.AddRow(new string[] {
                         "[[rec(1).set]] = <root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                             "ber id=\"3\">Three</number></root>",
                         "1",
                         "[[rec().set]] = //root/number/@id"});
 #line 101
- testRunner.And("the debug inputs as", ((string)(null)), table2827, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2828, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2828 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2829 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2828.AddRow(new string[] {
+            table2829.AddRow(new string[] {
                         "1",
                         "[[rec(1).set]] = <root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                             "ber id=\"3\">Three</number></root>"});
-            table2828.AddRow(new string[] {
+            table2829.AddRow(new string[] {
                         "",
                         "[[rec(2).set]] = 1"});
-            table2828.AddRow(new string[] {
+            table2829.AddRow(new string[] {
                         "",
                         "[[rec(3).set]] = 2"});
-            table2828.AddRow(new string[] {
+            table2829.AddRow(new string[] {
                         "",
                         "[[rec(4).set]] = 3"});
 #line 104
- testRunner.And("the debug output as", ((string)(null)), table2828, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2829, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -445,25 +445,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 117
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2829 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2830 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2829.AddRow(new string[] {
+            table2830.AddRow(new string[] {
                         "[[myxml]] = <start></end>",
                         "1",
                         "[[ids]] = //root"});
 #line 118
- testRunner.And("the debug inputs as", ((string)(null)), table2829, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2830, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2830 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2831 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2830.AddRow(new string[] {
+            table2831.AddRow(new string[] {
                         "1",
                         "[[ids]] ="});
 #line 121
- testRunner.And("the debug output as", ((string)(null)), table2830, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2831, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -487,17 +487,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 129
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2831 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2832 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2831.AddRow(new string[] {
+            table2832.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "",
                         ""});
 #line 130
- testRunner.And("the debug inputs as", ((string)(null)), table2831, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2832, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -523,26 +523,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 139
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2832 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2833 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2832.AddRow(new string[] {
+            table2833.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
                         "[[ids]] = //root/number/@id"});
 #line 140
- testRunner.And("the debug inputs as", ((string)(null)), table2832, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2833, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2833 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2834 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2833.AddRow(new string[] {
+            table2834.AddRow(new string[] {
                         "1",
                         "[[ids]] = 3"});
 #line 143
- testRunner.And("the debug output as", ((string)(null)), table2833, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2834, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -591,26 +591,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 159
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2834 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2835 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2834.AddRow(new string[] {
+            table2835.AddRow(new string[] {
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
                         "[[ids]] ="});
 #line 160
- testRunner.And("the debug inputs as", ((string)(null)), table2834, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2835, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2835 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2836 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2835.AddRow(new string[] {
+            table2836.AddRow(new string[] {
                         "1",
                         "[[ids]] ="});
 #line 163
- testRunner.And("the debug output as", ((string)(null)), table2835, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2836, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -637,25 +637,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 173
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2836 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2837 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2836.AddRow(new string[] {
+            table2837.AddRow(new string[] {
                         "[[myxml]] =",
                         "1",
                         "[[ids]] = //root/num/@id"});
 #line 174
- testRunner.And("the debug inputs as", ((string)(null)), table2836, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2837, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2837 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2838 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2837.AddRow(new string[] {
+            table2838.AddRow(new string[] {
                         "1",
                         "[[ids]] ="});
 #line 177
- testRunner.And("the debug output as", ((string)(null)), table2837, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2838, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -682,26 +682,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 187
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2838 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2839 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2838.AddRow(new string[] {
+            table2839.AddRow(new string[] {
                         "[[xml]] = <root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=" +
                             "\"3\">Three</number></root>",
                         "1",
                         "[[rec(-1).ids]] = //root/number[@id=\"2\"]/text()"});
 #line 188
- testRunner.And("the debug inputs as", ((string)(null)), table2838, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2839, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2839 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2840 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2839.AddRow(new string[] {
+            table2840.AddRow(new string[] {
                         "1",
                         "[[rec(-1).ids]] ="});
 #line 191
- testRunner.And("the debug output as", ((string)(null)), table2839, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2840, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -726,45 +726,45 @@ this.ScenarioSetup(scenarioInfo);
 #line 199
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2840 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2841 = new TechTalk.SpecFlow.Table(new string[] {
                         "rec().id"});
-            table2840.AddRow(new string[] {
+            table2841.AddRow(new string[] {
                         "1"});
-            table2840.AddRow(new string[] {
+            table2841.AddRow(new string[] {
                         "2"});
-            table2840.AddRow(new string[] {
+            table2841.AddRow(new string[] {
                         "3"});
 #line 200
- testRunner.Then("the xpath result for this varibale \"[[rec(*).id]]\" will be", ((string)(null)), table2840, "Then ");
+ testRunner.Then("the xpath result for this varibale \"[[rec(*).id]]\" will be", ((string)(null)), table2841, "Then ");
 #line 205
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2841 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2842 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
                         "#",
                         ""});
-            table2841.AddRow(new string[] {
+            table2842.AddRow(new string[] {
                         "[[xml]] = <?xml version=\"1.0\" encoding=\"utf-8\"?><!-- Generated by Warewolf --><ro" +
                             "ot><number id=\"1\">One</number",
                         "1",
                         "[[rec(*).id]] = //root/number/@id"});
 #line 206
- testRunner.And("the debug inputs as", ((string)(null)), table2841, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2842, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2842 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2843 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table2842.AddRow(new string[] {
+            table2843.AddRow(new string[] {
                         "1",
                         "[[rec(1).id]] = 1"});
-            table2842.AddRow(new string[] {
+            table2843.AddRow(new string[] {
                         "",
                         "[[rec(2).id]] = 2"});
-            table2842.AddRow(new string[] {
+            table2843.AddRow(new string[] {
                         "",
                         "[[rec(3).id]] = 3"});
 #line 209
- testRunner.And("the debug output as", ((string)(null)), table2842, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2843, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

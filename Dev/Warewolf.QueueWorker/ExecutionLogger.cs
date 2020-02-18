@@ -9,14 +9,15 @@
 */
 
 using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 
 namespace QueueWorker
 {
     internal class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
     {
-        public ExecutionLogger(ISerializer serializer)
-            : base(serializer)
+        public ExecutionLogger(ISerializer serializer, IWebSocketPool webSocketPool)
+            : base(serializer, webSocketPool)
         {
         }
 

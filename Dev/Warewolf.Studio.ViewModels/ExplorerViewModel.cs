@@ -341,6 +341,7 @@ namespace Warewolf.Studio.ViewModels
 
         async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
+            SearchText = string.Empty;
             var environmentViewModel = CreateEnvironmentViewModelAsync(sender, environmentId, true);
             SelectedEnvironment = await environmentViewModel.ConfigureAwait(true);
         }
@@ -351,7 +352,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             if (environmentViewModel == null)
             {
-                var connectControlViewModel = sender as ConnectControlViewModel;
+                var connectControlViewModel = sender as IConnectControlViewModel;
                 var selectedConnection = connectControlViewModel?.SelectedConnection;
                 var environmentConnection = selectedConnection?.Connection;
                 if (environmentConnection != null)

@@ -17,32 +17,39 @@ namespace QueueWorker
 {
     internal class NetworkLogger : ILoggerPublisher
     {
-        private IWebSocketWrapper _ws;
+        private IWebSocketPool _webSocketPool;
         private readonly ISerializer _serializer;
         protected ISerializer Serializer { get => _serializer; }
 
-        public NetworkLogger(ISerializer serializer)
+        public NetworkLogger(ISerializer serializer, IWebSocketPool webSocketPool)
         {
+            _webSocketPool = webSocketPool;
             _serializer = serializer;
-            _ws = new WebSocketFactory().New(); 
-            _ws.Connect();
         }
 
         private void SendMessage(LogEntry logEntry)
         {
-            if (!_ws.IsOpen())
+            IWebSocketWrapper _ws = null;
+            try
             {
-                _ws = new WebSocketFactory().New();
-                _ws.Connect();
-            }
+                _ws = _webSocketPool.Acquire(Dev2.Common.Config.Auditing.Endpoint);
+                if (!_ws.IsOpen())
+                {
+                    _ws.Connect();
+                }
 
-            var logCommand = new AuditCommand
+                var logCommand = new AuditCommand
+                {
+                    Type = "LogEntryCommand",
+                    LogEntry = logEntry
+                };
+                var msg = _serializer.Serialize(logCommand);
+                _ws.SendMessage(msg);
+            }
+            finally
             {
-                Type = "LogEntryCommand",
-                LogEntry = logEntry
-            };
-            var msg = _serializer.Serialize(logCommand);
-            _ws.SendMessage(msg);
+                _webSocketPool.Release(_ws);
+            }
         }
 
         public void Debug(string outputTemplate, params object[] args) => SendMessage(new LogEntry(LogLevel.Debug, outputTemplate, args));
@@ -51,6 +58,18 @@ namespace QueueWorker
         public void Info(string outputTemplate, params object[] args) => SendMessage(new LogEntry(LogLevel.Info, outputTemplate, args));
         public void Warn(string outputTemplate, params object[] args) => SendMessage(new LogEntry(LogLevel.Warn, outputTemplate, args));
 
-        public void Publish(byte[] value) => _ws.SendMessage(value);
+        public void Publish(byte[] value)
+        {
+            IWebSocketWrapper _ws = null;
+            try
+            {
+                _ws = _webSocketPool.Acquire(Dev2.Common.Config.Auditing.Endpoint);
+                _ws.SendMessage(value);
+            }
+            finally
+            {
+                _webSocketPool.Release(_ws);
+            }
+        }
     }
 }

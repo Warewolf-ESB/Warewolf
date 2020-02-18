@@ -10,8 +10,9 @@
 
 namespace Warewolf.Interfaces.Auditing
 {
-    public interface IWebSocketFactory
+    public interface IWebSocketPool
     {
-        IWebSocketWrapper New();
+        IWebSocketWrapper Acquire(string endpoint);
+        void Release(IWebSocketWrapper webSocketWrapper);
     }
 }

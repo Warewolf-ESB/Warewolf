@@ -302,6 +302,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if (dsfDataObject.StopExecution)
                 {
+                    dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                     break;
                 }
                 var current = next;

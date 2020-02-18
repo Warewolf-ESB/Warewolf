@@ -39,7 +39,8 @@ namespace Warewolf.OS
                 try
                 {
                     return _config;
-                } finally
+                }
+                finally
                 {
                     _configLock.ExitReadLock();
                 }
@@ -50,7 +51,8 @@ namespace Warewolf.OS
                 try
                 {
                     _config = value;
-                } finally
+                }
+                finally
                 {
                     _configLock.ExitWriteLock();
                 }
@@ -58,7 +60,6 @@ namespace Warewolf.OS
         }
 
         public bool NeedUpdate { get => _expectedNumProcesses < 1 || _processThreads.Count != _expectedNumProcesses || _processThreads.Any(o => !o.IsAlive); }
-
         public IEnumerator<IProcessThread> GetEnumerator() => _processThreads.GetEnumerator();
         public void Kill() => _processThreads.ForEach(o => { o.Kill(); });
 
@@ -101,11 +102,7 @@ namespace Warewolf.OS
         {
             _expectedNumProcesses = _config.Concurrency;
             var logicalProcessors = System.Environment.ProcessorCount;
-            if (_expectedNumProcesses < 1)
-            {
-                _expectedNumProcesses = 1;
-            }
-            else if (_expectedNumProcesses > logicalProcessors)
+            if (_expectedNumProcesses > logicalProcessors)
             {
                 _expectedNumProcesses = logicalProcessors;
             }

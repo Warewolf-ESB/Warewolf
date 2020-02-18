@@ -22,15 +22,15 @@ namespace Warewolf.Driver.RabbitMQ
 
         public RabbitPublisher(RabbitConfig config, IModel channel)
         {
-            _exchange = config.Exchange;
-            _routingKey = config.RoutingKey;
+            _exchange = config.Exchange ?? string.Empty;
+            _routingKey = config.RoutingKey ?? config.QueueName;
             _basicProperties = config.BasicProperties;
             _channel = channel;
         }
 
         public void Publish(byte[] value)
         {
-            _channel.BasicPublish(_exchange, _routingKey, _basicProperties, value);
+            _channel.BasicPublish(exchange: _exchange, routingKey: _routingKey, basicProperties: _basicProperties, body: value);
         }
     }
 }

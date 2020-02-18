@@ -14,6 +14,6 @@ namespace Warewolf.Interfaces.Pooling
 {
     public interface IObjectPoolFactory<T> where T : class, new()
     {
-        IObjectPool<T> New(Func<T> objectCreator);
+        IObjectPool<T> New(Func<T> objectCreator, Func<T, bool> objectValidator);
     }
 }

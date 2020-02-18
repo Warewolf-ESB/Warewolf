@@ -477,6 +477,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CacheRedis.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Utility\Redis\SpecExecutionEnvironmentErrors.cs" />
     <Compile Include="Toolbox\Utility\Redis\Remove\RemoveRedis.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

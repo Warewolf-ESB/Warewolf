@@ -30,6 +30,7 @@ using Warewolf.Resource.Errors;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Activities.Designers2.RedisValidator;
 
 namespace Dev2.Activities.Designers2.RedisRemove
 {
@@ -183,46 +184,11 @@ namespace Dev2.Activities.Designers2.RedisRemove
         public override void Validate()
         {
             var result = new List<IActionableErrorInfo>();
-            result.AddRange(ValidateThis());
+            var redisDesignerDTO = new RedisDesignerDTO(SelectedRedisSource, Key);
+            result.AddRange(RedisValidatorDesignerViewModel.Validate(redisDesignerDTO, _isRedisSourceFocused => IsRedisSourceFocused = _isRedisSourceFocused, _isKeyFocused => IsKeyFocused = _isKeyFocused));
             Errors = result.Count == 0 ? null : result;
         }
-
-        IEnumerable<IActionableErrorInfo> ValidateThis()
-        {
-            foreach (var error in GetRuleSet(RuleSets.RedisSource).ValidateRules("'Redis Source'", () => IsRedisSourceFocused = true))
-            {
-                yield return error;
-            }
-            foreach (var error in GetRuleSet(RuleSets.Key).ValidateRules("'Key'", () => IsKeyFocused = true))
-            {
-                yield return error;
-            }
-        }
-
-	enum RuleSets {
-		RedisSource,
-		Key
-	}
-        IRuleSet GetRuleSet(RuleSets propertyName)
-        {
-            var ruleSet = new RuleSet();
-
-            switch (propertyName)
-            {
-                case RuleSets.RedisSource:
-                    ruleSet.Add(new IsNullRule(() => SelectedRedisSource));
-                    break;
-
-                case RuleSets.Key:
-                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Key));
-                    break;
-
-                default:
-                    break;
-            }
-            return ruleSet;
-        }
-
+       
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();

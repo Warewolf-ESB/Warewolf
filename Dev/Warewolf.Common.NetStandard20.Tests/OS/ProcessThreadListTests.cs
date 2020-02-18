@@ -58,7 +58,7 @@ namespace Warewolf.OS.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
-        public void ProcessThreadList_GivenDefaultConfig_ExpectOneWorker()
+        public void ProcessThreadList_GivenDefaultConfig_ExpectNoWorker()
         {
             var mockConfig = new Mock<IJobConfig>();
             var mockProcessFactory = new Mock<ITestProcessFactory>();
@@ -73,9 +73,9 @@ namespace Warewolf.OS.Tests
 
             list.Monitor();
 
-            Assert.IsFalse(list.NeedUpdate);
-            Assert.IsTrue(processThread.IsAlive);
-            mockProcessThread.Verify(o => o.Start(), Times.Once);
+            Assert.IsTrue(list.NeedUpdate);
+            Assert.IsFalse(processThread.IsAlive);
+            mockProcessThread.Verify(o => o.Start(), Times.Never);
         }
 
         [TestMethod]
@@ -183,9 +183,6 @@ namespace Warewolf.OS.Tests
             mockProcessThread1.Verify(o => o.Kill(), Times.Once);
             mockProcessThread2.Verify(o => o.Kill(), Times.Once);
             mockProcessThread3.Verify(o => o.Kill(), Times.Once);
-
-            // At this point a ProcessThread will restart it's process
-            // do not expect Start() to be called again here, this logic is in ProcessThread.
         }
 
         [TestMethod]
@@ -222,9 +219,6 @@ namespace Warewolf.OS.Tests
             mockProcessThread1.Verify(o => o.Start(), Times.Never);
             mockProcessThread2.Verify(o => o.Start(), Times.Never);
             mockProcessThread3.Verify(o => o.Start(), Times.Never);
-
-
-
         }
 
         private static Mock<IProcessThread> CreateMockProcessThread()

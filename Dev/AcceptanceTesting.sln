@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Specs", "Dev2.Activities.Specs\Dev2.Activities.Specs.csproj", "{A03004BE-79B5-47AF-88EF-112197619A5F}"
 EndProject
@@ -1030,12 +1030,12 @@ Global
 		{33896C15-E182-4C09-BA33-99FF9A8BB44A}.Release|x86.Build.0 = Release|Any CPU
 		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|x86.ActiveCfg = Debug|x86
-		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|x86.Build.0 = Debug|x86
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|x86.Build.0 = Debug|Any CPU
 		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|x86.ActiveCfg = Release|x86
-		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|x86.Build.0 = Release|x86
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|x86.Build.0 = Release|Any CPU
 		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1417,12 +1417,11 @@ Global
 		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{DD6E9C07-E364-4701-80E4-6896CE1E46CC}.Release|x86.Build.0 = Release|Any CPU
-		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.Build.0 = Debug|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.ActiveCfg = Release|Any CPU
+		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.Build.0 = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection

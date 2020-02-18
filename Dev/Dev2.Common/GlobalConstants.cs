@@ -179,7 +179,7 @@ namespace Dev2.Common
         
         public static readonly int _uniqueBatchSize = 1000;
         
-        public static readonly int NetworkTimeOut = 3000;
+        public static readonly int NetworkTimeOut = 10000;
 
         public static readonly string NetworkCommunicationErrorTextFormat = "An error occurred while executing the '{0}' command";
         

@@ -22,17 +22,6 @@ namespace Warewolf.OS
         private bool _running;
 
         public event ProcessDiedEvent OnProcessDied;
-
-        protected void WorkerRestart(IJobConfig config)
-        {
-            var processList = _processLists.FirstOrDefault(o => o.Config.Id == config.Id);
-            if (processList is null)
-            {
-                AddMissingMonitors();
-                return;
-            }
-            processList.UpdateConfig(config);
-        }
         protected void WorkerDeleted(Guid guid)
         {
             var process = _processLists.FirstOrDefault(o => o.Config.Id == guid);

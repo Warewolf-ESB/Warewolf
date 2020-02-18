@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -9,18 +9,10 @@
 */
 
 
-
-namespace Dev2
+namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis
 {
-    
-    public enum enFindMissingType
+    public class SpecExecutionEnvironmentErrors
     {
-        DataGridActivity,
-        StaticActivity,
-        MixedActivity,
-        DsfActivity,
-        ForEach,
-        Sequence,
-        RedisCache
+        public string Error { get; set; }
     }
 }

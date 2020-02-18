@@ -27,22 +27,23 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetExecutionHistory : DefaultEsbManagementEndpoint
     {
-        private readonly IWebSocketFactory _webSocketFactory;
+        private readonly IWebSocketPool _webSocketPool;
         private readonly TimeSpan _waitTimeOut;
 
         public GetExecutionHistory()
-             : this(new WebSocketFactory(), TimeSpan.FromMinutes(5))
+             : this(new WebSocketPool(), TimeSpan.FromMinutes(5))
         {
         }
 
-        public GetExecutionHistory(IWebSocketFactory webSocketFactory, TimeSpan waitTimeOut)
+        public GetExecutionHistory(IWebSocketPool webSocketFactory, TimeSpan waitTimeOut)
         {
-            _webSocketFactory = webSocketFactory;
+            _webSocketPool = webSocketFactory;
             _waitTimeOut = waitTimeOut;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            IWebSocketWrapper client = null;
             try
             {
                 var serializer = new Dev2JsonSerializer();
@@ -54,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ResourceId", out StringBuilder triggerID);
                 if (triggerID != null)
                 {
-                    var client = _webSocketFactory.New().Connect();
+                    client = _webSocketPool.Acquire(Config.Auditing.Endpoint).Connect();
 
                     Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
                    
@@ -90,6 +91,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
+            }
+            finally
+            {
+                if (client != null)
+                {
+                    _webSocketPool.Release(client);
+                }
             }
         }
 

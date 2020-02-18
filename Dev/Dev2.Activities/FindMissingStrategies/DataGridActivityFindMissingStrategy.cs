@@ -18,6 +18,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Linq;
 
 namespace Dev2.FindMissingStrategies
 {
@@ -591,10 +592,29 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        List<string> GetDsfAdvancedRecordsetActivity(object activity) {
+        List<string> GetDsfAdvancedRecordsetActivity(object activity)
+        {
             var results = new List<string>();
             if (activity is AdvancedRecordsetActivity maAct)
             {
+                if (maAct.SqlQuery != null)
+                {
+                    var identifiers = maAct.GetIdentifiers();
+
+                    foreach (var identifier in identifiers)
+                    {
+                        results.Add($"[[{identifier.Key}()]]");
+                        results.AddRange(identifier.Value.Select(a => $"[[{identifier.Key}().{a}]]"));
+
+                        if (maAct.Outputs != null)
+                        {
+                            //Find out identifier variables which are not in Outputs
+                            var outputVariables = maAct.Outputs.Where(b => !results.Contains($"[[{identifier.Key}().{b.MappedFrom}]]"));
+
+                            results.AddRange(outputVariables.Select(a => $"[[{identifier.Key}().{a.MappedFrom}]]"));
+                        }
+                    }
+                }
                 if (maAct.Inputs != null)
                 {
                     results.AddRange(InternalFindMissing(maAct.Inputs));
@@ -607,9 +627,9 @@ namespace Dev2.FindMissingStrategies
                 {
                     results.Add(maAct.OnErrorVariable);
                 }
-                if(maAct.DeclareVariables != null)
+                if (maAct.DeclareVariables != null)
                 {
-                    foreach(var item in maAct.DeclareVariables)
+                    foreach (var item in maAct.DeclareVariables)
                     {
                         results.Add(item.Value);
                     }
