@@ -223,6 +223,10 @@
       <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
       <Name>Warewolf.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
@@ -243,6 +247,7 @@
   <ItemGroup>
     <Folder Include="DB Support\DB_Helper\" />
     <Folder Include="DB Support\DB_Sanity\" />
+    <Folder Include="Gates\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">

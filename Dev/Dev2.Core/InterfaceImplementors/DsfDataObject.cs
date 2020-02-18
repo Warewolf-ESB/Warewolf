@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -152,7 +151,7 @@ namespace Dev2.DynamicServices
                 BookmarkExecutionCallbackID = ExecutionCallbackID;
             }
 
-            Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid parentInstanceId);
+            Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out var _);
 
             ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
 
@@ -327,6 +326,9 @@ namespace Dev2.DynamicServices
         public IDev2WorkflowSettings Settings { get; set; }
         public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
         public Exception ExecutionException { get; set; }
+        //public IList<IDev2Activity> Gates { get; } = new List<IDev2Activity>();
+        public IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; } = new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>();
+
 
         #endregion Properties
 

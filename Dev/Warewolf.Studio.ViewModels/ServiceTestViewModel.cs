@@ -362,6 +362,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ForEachParent(debugItemContent, debugState, parent);
             }
+            if (parent.ActivityType == typeof(GateActivity).Name)
+            {
+                GateParent(debugItemContent, debugState, parent);
+            }
             else if (parent.ActivityType == typeof(DsfSequenceActivity).Name)
             {
                 var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
@@ -405,6 +409,48 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 AddChildren(debugState, parent);
+            }
+        }
+
+        void GateParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
+        {
+            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+            if (model?.GetCurrentValue() is GateActivity gateActivity && debugState.Children.LastOrDefault() is DebugStateTreeViewItemViewModel childItem)
+            {
+                var act = gateActivity.DataFunc.Handler as IDev2Activity;
+                if (act != null)
+                {
+                    var guid = Guid.Parse(act.UniqueID);
+                    childItem.Content.ID = guid;
+                }
+
+                var childItemContent = childItem.Content;
+                var outputs = childItemContent.Outputs;
+
+                var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                if (exists == null)
+                {
+                    AddGateChildStep(parent, childItem, act, childItemContent, outputs);
+                }
+            }
+        }
+
+        void AddGateChildStep(IServiceTestStep parent, DebugStateTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
+        {
+            var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
+            if (outputs.Count > 0)
+            {
+                AddOutputs(outputs, childStep);
+            }
+            else
+            {
+                AddOutputs(act?.GetOutputs(), childStep);
+            }
+            SetStepIcon(childStep.ActivityType, childStep);
+            parent.Children.Add(childStep);
+            if (childItem.Children?.Count > 0)
+            {
+                AddChildDebugItems(childItemContent, childItem, childStep);
             }
         }
 
@@ -736,6 +782,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ProcessSequence(modelItem);
             }
+            else if (itemType == typeof(GateActivity))
+            {
+                ProcessGate(modelItem);
+            }
             else if (itemType == typeof(DsfEnhancedDotNetDllActivity))
             {
                 ProcessEnhanchedDotNetDll(modelItem);
@@ -788,6 +838,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 AddSequence(sequence, null, SelectedServiceTest.TestSteps);
             }
+        }
+
+        void ProcessGate(ModelItem modelItem)
+        {
+            var gateActivity = GetCurrentActivity<GateActivity>(modelItem);
+            AddGate(gateActivity, null, SelectedServiceTest.TestSteps);
         }
 
         void ProcessEnhanchedDotNetDll(ModelItem modelItem)
@@ -997,6 +1053,57 @@ namespace Warewolf.Studio.ViewModels
                         AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                     }
                 }
+            }
+        }
+
+        void AddGate(GateActivity gateActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if (gateActivity == null)
+            {
+                return;
+            }
+            var uniqueId = gateActivity.UniqueID;
+            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+            var type = typeof(GateActivity);
+            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, gateActivity.DisplayName);
+            SetStepIcon(type, testStep);
+            var activity = gateActivity.DataFunc.Handler;
+            var act = activity as DsfNativeActivity<string>;
+            var workFlowService = activity as DsfActivity;
+            if (act != null)
+            {
+                if (act.GetType() == typeof(DsfSequenceActivity))
+                {
+                    AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
+                }
+                else
+                {
+                    AddChildActivity(act, testStep);
+                }
+            }
+            else
+            {
+                if (activity?.GetType() == typeof(DsfSelectAndApplyActivity))
+                {
+                    AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                }
+                else
+                {
+                    if (activity?.GetType() == type)
+                    {
+                        AddGate(activity as GateActivity, testStep, testStep.Children);
+                    }
+                }
+            }
+
+            if (workFlowService != null)
+            {
+                AddChildActivity(workFlowService, testStep);
+            }
+            if (exists == null)
+            {
+                serviceTestSteps.Add(testStep);
             }
         }
 
