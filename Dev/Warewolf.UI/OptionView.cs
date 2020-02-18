@@ -48,11 +48,13 @@ namespace Warewolf.UI
             get
             {
                 string dataTemplateName = "OptionNoneStyle";
-                if (DataContext is IOptionBool)
+                if (DataContext is BindableBase bindableBase)
+                {
+                    bindableBase.PropertyChanged += BindableBase_PropertyChanged;
+                }
+                if (DataContext is IOptionBool optionBool)
                 {
                     dataTemplateName = "OptionBoolStyle";
-                    var item = DataContext as IOptionBool;
-                    item.ValueUpdated += Item_ValueUpdated;
                 }
                 if (DataContext is IOptionInt)
                 {
@@ -62,6 +64,26 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionAutocompleteStyle";
                 }
+                if (DataContext is IOptionActivity)
+                {
+                    dataTemplateName = "OptionActivityStyle";
+                }
+                if (DataContext is IOptionEnum optionEnum)
+                {
+                    dataTemplateName = "OptionEnumComboBoxStyle";
+                }
+                if (DataContext is IOptionComboBox optionComboBox)
+                {
+                    dataTemplateName = "OptionComboBoxStyle";
+                }
+                if (DataContext is IOptionRadioButton optionRadioButton)
+                {
+                    dataTemplateName = "OptionRadioButtonStyle";
+                }
+                if (DataContext is OptionConditionExpression optionConditionList)
+                {
+                    dataTemplateName = "ConditionExpressionStyle";
+                }
                 var currentApp = CustomContainer.Get<IApplicationAdaptor>();
                 var application = currentApp ?? new ApplicationAdaptor(Application.Current);
 
@@ -69,7 +91,7 @@ namespace Warewolf.UI
             }
         }
 
-        private void Item_ValueUpdated(object sender, OptionValueChangedArgs<bool> e)
+        private void BindableBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _valueUpdatedAction();
         }

@@ -24,5 +24,11 @@ namespace Warewolf.Service
     {
         public const string RedisSource = nameof(RedisSource);
     }
+    public static class OptionsService
+    {
+        public const string ParameterName = nameof(ParameterName);
+
+        public const string GateResume = nameof(GateResume);
+    }
 
 }

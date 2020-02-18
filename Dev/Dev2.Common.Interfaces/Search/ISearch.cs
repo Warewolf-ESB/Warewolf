@@ -59,7 +59,7 @@ namespace Dev2.Common.Interfaces.Search
         string Match { get; set; }
     }
 
-    public interface ISearch
+    public interface ISearch : INotifyPropertyChanged
     {
         string SearchInput { get; set; }
         ISearchOptions SearchOptions { get; set; }

@@ -97,3 +97,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 # Versioning
 ####################################################################################
 /Dev/Warewolf.Auditing/AssemblyCommonInfo.cs
+/Dev/Warewolf.Data1.Tests
