@@ -60,7 +60,7 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 	And I have "key1" of "MyData" with GUID and "ttl1" of "15" seconds
 	And I have "key2" of "MyData" with GUID and "ttl2" of "3" seconds
 	And an assign "dataToStore1" into "DsfMultiAssignActivity1" with
-		| name      | value   |
+		| name      | value  |
 		| [[Var1]] | "Test1" |
 		| [[Var2]] | "Test2" |
 	And an assign "dataToStore2" into "DsfMultiAssignActivity2" with
@@ -73,8 +73,12 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 		| [[Var2]] | "Test2" |
 	Then the assigned "key2", "ttl2" and innerActivity "DsfMultiAssignActivity2" is executed by "RedisActivity2"
 	Then "RedisActivity2" output variables have the following values
-		| name     | value    |
-		| [[Var1]] | "Test21" |
+		| label							| variable		| operator	| value		|
+		|	Redis key { MyData } found	|  null			|			|			|
+		|			null				| [[Var1]]		|	 =		| "Test21"	|
+		|			null				| [[Var2]]		|	 =		| "Test22"	|
+		|			null				| [[Var3]]		|	 =		| "Test23"	|
+		|			null				| [[Var4]]		|	 =		| "Test24"	|
 
 
 Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
@@ -97,6 +101,10 @@ Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
 		| [[Var1]] | "Test1" |
 		| [[Var2]] | "Test2" |
 	Then the assigned "key2", "ttl2" and innerActivity "DsfMultiAssignActivity2" is executed by "RedisActivity2"
-	#Then "RedisActivity2" output variables have the following values
-	#And the debug output has "cached data missing key:[[Var3]]" error
-	#And the debug output has "cached data missing key:[[Var4]]" error
+	Then "RedisActivity2" output variables have the following values
+		| label							| variable		| operator	| value		|
+		|	Redis key { MyData } found	|  null			|			|			|
+		|			null				| [[Var1]]		|	 =		| "Test21"	|
+		|			null				| [[Var2]]		|	 =		| "Test22"	|
+		|			null				| [[Var3]]		|	 =		| "Test23"	|
+		|			null				| [[Var4]]		|	 =		| "Test24"	|

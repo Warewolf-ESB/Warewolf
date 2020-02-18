@@ -96,7 +96,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Remove
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("Redis source \"192.168.104.19\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
  testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
@@ -117,9 +117,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
 this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.Given("Redis source \"192.168.104.19\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a key \"MyData\" with GUID and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.Then("I execute the cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 21
- testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I execute the Redis Remove \"MyData\" with GUID tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
  testRunner.Then("The Cache has been Removed with \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -151,9 +151,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
 this.ScenarioSetup(scenarioInfo);
 #line 26
- testRunner.Given("Redis source \"192.168.104.19\" with password \"pass123\" and port \"6379\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 27
- testRunner.And("I have a key \"MyData\" and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a key \"MyData\" with GUID and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
@@ -181,7 +181,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
  testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
- testRunner.When("I execute the Redis Remove \"MyData\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I execute the Redis Remove \"MyData\" with GUID tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
  testRunner.Then("The \"MyData2\" Cache exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

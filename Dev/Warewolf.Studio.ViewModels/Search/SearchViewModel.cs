@@ -1,5 +1,4 @@
-#pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -22,6 +21,7 @@ using Dev2.Common.Interfaces.Search;
 using Microsoft.Practices.Prism;
 using System;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Dev2.ViewModels.Search
 {
@@ -34,17 +34,20 @@ namespace Dev2.ViewModels.Search
         string _displayName;
         bool _canShowResults;
         string _versionConflictError;
+        public virtual IPopupController PopupController { get; set; }
 
         public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator, false)
         {
             _shellViewModel = shellViewModel;
+            PopupController = shellViewModel.PopupProvider;
+
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             ConnectControlViewModel.SelectedEnvironmentChanged += UpdateServerCompareChanged;
             SelectedEnvironment = _environments.FirstOrDefault();
-            RefreshCommand = new DelegateCommand((o) => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            RefreshCommand = new DelegateCommand(async (o) => await RefreshEnvironment(SelectedEnvironment.ResourceId));
             SearchInputCommand = new DelegateCommand((o) => SearchWarewolf());
             OpenResourceCommand = new DelegateCommand((searchObject) =>
             {
@@ -56,7 +59,7 @@ namespace Dev2.ViewModels.Search
             Search = new Common.Search.Search();
             SelectedEnvironment?.Server?.ResourceRepository?.Load(false);
             IsSearching = false;
-            DisplayName = "Search";
+            DisplayName = $"Search";
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MenuSearchHelp);
         }
 
@@ -94,9 +97,16 @@ namespace Dev2.ViewModels.Search
             return environmentViewModel;
         }
 
-        void UpdateServerCompareChanged(object sender, Guid environmentid)
+        public async void UpdateServerCompareChanged(object sender, Guid environmentid)
         {
+            IsSearching = true;
+
+            var environmentViewModel = CreateEnvironmentViewModelAsync(sender, environmentid, false);
+            SelectedEnvironment = await environmentViewModel.ConfigureAwait(true);
+
             UpdateServerSearchAllowed();
+
+            IsSearching = false;
         }
 
         private void UpdateServerSearchAllowed()
@@ -105,21 +115,27 @@ namespace Dev2.ViewModels.Search
             Search.SearchInput = string.Empty;
             SearchResults.Clear();
 
-            var serverVersion = Version.Parse(SelectedEnvironment?.Server?.GetServerVersion());
-            var minServerVersion = Version.Parse(SelectedEnvironment?.Server?.GetMinSupportedVersion());
+            CheckVersionConflict();
+        }
 
-            if (serverVersion < ServerVersion)
+        void CheckVersionConflict()
+        {
+            var selectedServerVersion = Version.Parse(SelectedEnvironment?.Server?.GetServerVersion());
+
+            if (selectedServerVersion < ServerVersion)
             {
-                CanShowResults = false;
-                VersionConflictError = Warewolf.Studio.Resources.Languages.Core.SearchVersionConflictError +
-                                        Environment.NewLine + GlobalConstants.ServerVersion + ServerVersion +
-                                        Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minServerVersion;
+                var messageBoxResult = PopupController.ShowSearchServerVersionConflict(selectedServerVersion.ToString(), MinSupportedVersion.ToString());
+
+                if (messageBoxResult == System.Windows.MessageBoxResult.Cancel)
+                {
+                    CanShowResults = false;
+                }
             }
         }
 
-        public Version MinSupportedVersion => Version.Parse(_shellViewModel.LocalhostServer.GetServerVersion());
+        public Version MinSupportedVersion => Version.Parse(_shellViewModel.LocalhostServer.GetMinSupportedVersion());
 
-        public Version ServerVersion => Version.Parse(_shellViewModel.LocalhostServer.GetMinSupportedVersion());
+        public Version ServerVersion => Version.Parse(_shellViewModel.LocalhostServer.GetServerVersion());
 
         public event ServerState ServerStateChanged;
 
@@ -143,14 +159,14 @@ namespace Dev2.ViewModels.Search
             }
         }
 
-        void SearchWarewolf()
+        public void SearchWarewolf()
         {
             IsSearching = true;
 
             SearchResults.Clear();
             if (!string.IsNullOrWhiteSpace(Search.SearchInput))
             {
-                var results = _shellViewModel.ActiveServer.ResourceRepository.Filter(Search);
+                var results = SelectedServer.ResourceRepository.Filter(Search);
                 if (results != null)
                 {
                     SearchResults.AddRange(results);

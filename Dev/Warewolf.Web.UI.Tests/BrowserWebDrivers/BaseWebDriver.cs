@@ -195,16 +195,13 @@ namespace Warewolf.Web.UI.Tests
 
         public static string GetOperaPath()
         {
-            const string path = @"%localappdata%\Programs\Opera";
             var operaPath = string.Empty;
-
-            var files = System.IO.Directory.GetFiles(Environment.ExpandEnvironmentVariables(path), "*opera.exe", System.IO.SearchOption.AllDirectories);
+            var files = System.IO.Directory.GetFiles(@"C:\Program Files\Opera", "*opera.exe", System.IO.SearchOption.AllDirectories);
             foreach (var file in files)
             {
                 operaPath = file;
                 break;
             }
-
             return operaPath;
         }
     }

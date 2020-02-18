@@ -293,11 +293,35 @@ this.ScenarioSetup(scenarioInfo);
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2785 = new TechTalk.SpecFlow.Table(new string[] {
-                        "name",
+                        "label",
+                        "variable",
+                        "operator",
                         "value"});
             table2785.AddRow(new string[] {
+                        "Redis key { MyData } found",
+                        "null",
+                        "",
+                        ""});
+            table2785.AddRow(new string[] {
+                        "null",
                         "[[Var1]]",
+                        "=",
                         "\"Test21\""});
+            table2785.AddRow(new string[] {
+                        "null",
+                        "[[Var2]]",
+                        "=",
+                        "\"Test22\""});
+            table2785.AddRow(new string[] {
+                        "null",
+                        "[[Var3]]",
+                        "=",
+                        "\"Test23\""});
+            table2785.AddRow(new string[] {
+                        "null",
+                        "[[Var4]]",
+                        "=",
+                        "\"Test24\""});
 #line 75
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2785, "Then ");
 #line hidden
@@ -310,13 +334,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InputVariableKeysAreGreaterThenCachedDataVariableKeys()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Greater Then Cached Data Variable Keys", ((string[])(null)));
-#line 80
+#line 84
 this.ScenarioSetup(scenarioInfo);
-#line 81
+#line 85
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 86
  testRunner.And("I have \"key1\" of \"MyData\" with GUID and \"ttl1\" of \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 87
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2786 = new TechTalk.SpecFlow.Table(new string[] {
@@ -328,7 +352,7 @@ this.ScenarioSetup(scenarioInfo);
             table2786.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
-#line 84
+#line 88
  testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2786, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2787 = new TechTalk.SpecFlow.Table(new string[] {
@@ -346,9 +370,9 @@ this.ScenarioSetup(scenarioInfo);
             table2787.AddRow(new string[] {
                         "[[Var4]]",
                         "\"Test24\""});
-#line 88
+#line 92
  testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2787, "And ");
-#line 94
+#line 98
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                     "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -361,11 +385,44 @@ this.ScenarioSetup(scenarioInfo);
             table2788.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
-#line 95
- testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2788, "And ");
 #line 99
+ testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2788, "And ");
+#line 103
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table2789 = new TechTalk.SpecFlow.Table(new string[] {
+                        "label",
+                        "variable",
+                        "operator",
+                        "value"});
+            table2789.AddRow(new string[] {
+                        "Redis key { MyData } found",
+                        "null",
+                        "",
+                        ""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[Var1]]",
+                        "=",
+                        "\"Test21\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[Var2]]",
+                        "=",
+                        "\"Test22\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[Var3]]",
+                        "=",
+                        "\"Test23\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[Var4]]",
+                        "=",
+                        "\"Test24\""});
+#line 104
+ testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2789, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

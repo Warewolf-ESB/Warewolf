@@ -19,6 +19,7 @@ using TSQL.Statements;
 using TSQL.Tokens;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
+using System.Linq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -451,6 +452,51 @@ namespace Dev2.Tests.Activities.ActivityTests
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>()), Times.Once);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery(sqlQuery), Times.Once);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Once);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
+        public void AdvancedRecordsetActivityWorker_GetIdentifiers_TSQLStatementType_SELECT_GivenNoAnyField_ReturnIdentifierWithZeroValue()
+        {
+            var advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
+            advancedRecordsetActivity.DeclareVariables.Add(new NameValue { Name = "", Value = "" });
+            advancedRecordsetActivity.SqlQuery = "Select * from person";
+
+            const string expectedTableName = "person";
+
+            var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
+
+            using (var viewModel = new AdvancedRecordsetActivityWorker(advancedRecordsetActivity, mockAdvancedRecordset.Object))
+            {
+                var identifiers = viewModel.GetIdentifiers();
+
+                Assert.AreEqual(1, identifiers.Count);
+                Assert.AreEqual(expectedTableName, identifiers.FirstOrDefault().Key);
+                Assert.AreEqual(0, identifiers.FirstOrDefault().Value.Count);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
+        public void AdvancedRecordsetActivityWorker_GetIdentifiers_TSQLStatementType_SELECT_GivenTwoField_ReturnIdentifierWithTwoValues()
+        {
+            var advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
+            advancedRecordsetActivity.DeclareVariables.Add(new NameValue { Name = "", Value = "" });
+            advancedRecordsetActivity.SqlQuery = "Select personid, personname from person";
+
+            const string expectedTableName = "person";
+
+            var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
+
+            using (var viewModel = new AdvancedRecordsetActivityWorker(advancedRecordsetActivity, mockAdvancedRecordset.Object))
+            {
+                var identifiers = viewModel.GetIdentifiers();
+                Assert.AreEqual(1, identifiers.Count);
+                Assert.AreEqual(expectedTableName, identifiers.FirstOrDefault().Key);
+                Assert.AreEqual(2, identifiers.FirstOrDefault().Value.Count);
             }
         }
     }

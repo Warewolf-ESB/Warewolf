@@ -14,17 +14,42 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
 using Warewolf.Interfaces.Auditing;
-using Dev2.Common;
 using Warewolf.Interfaces.Pooling;
 using Warewolf.Pooling;
+using System.Collections.Concurrent;
+using Dev2.Common;
 
 namespace Warewolf.Auditing
 {
-    public class WebSocketFactory : IWebSocketFactory
+    public class WebSocketPool : IWebSocketPool
     {
-        public IWebSocketWrapper New()
+        private static readonly ConcurrentDictionary<Uri, IObjectPool<IWebSocketWrapper>> WebSocketConnectionPool = new ConcurrentDictionary<Uri, IObjectPool<IWebSocketWrapper>>();
+
+        public IWebSocketWrapper Acquire(string endpoint)
         {
-            return new WebSocketWrapper(Config.Auditing.Endpoint);
+            var pool = WebSocketConnectionPool.GetOrAdd(new Uri(endpoint), CreateObjectPool);
+            var clientWebSocket = pool.AcquireObject();
+
+            return clientWebSocket;
+        }
+        public void Release(IWebSocketWrapper webSocketWrapper)
+        {
+            var pool = WebSocketConnectionPool.GetOrAdd(webSocketWrapper.Uri, CreateObjectPool);
+            pool.ReleaseObject(webSocketWrapper);
+        }
+
+        private static IObjectPool<IWebSocketWrapper> CreateObjectPool(Uri endpoint)
+        {
+            IWebSocketWrapper CreateObject()
+            {
+                return new WebSocketWrapper(new System.Net.WebSockets.Managed.ClientWebSocket(), endpoint).Connect();
+            }
+            bool ValidateObject(IWebSocketWrapper instance)
+            {
+                return instance.State == WebSocketState.None || instance.State == WebSocketState.Open;
+            }
+
+            return new ObjectPool<IWebSocketWrapper>(CreateObject, ValidateObject);
         }
     }
 
@@ -34,21 +59,20 @@ namespace Warewolf.Auditing
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
 
-        private static readonly IObjectPool<System.Net.WebSockets.Managed.ClientWebSocket> objectPool = new ObjectPoolFactory<System.Net.WebSockets.Managed.ClientWebSocket>().New(() => new System.Net.WebSockets.Managed.ClientWebSocket());
         private readonly System.Net.WebSockets.Managed.ClientWebSocket _clientWebSocket;
-        private readonly Uri _uri;
+        public Uri Uri { get; private set;}
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
 
         private Action<WebSocketWrapper> _onConnected;
         private Action<string, WebSocketWrapper> _onMessage;
         private Action<WebSocketWrapper> _onDisconnected;
+        private Task _messageReceiveWorker;
 
-        public WebSocketWrapper() { }
-        public WebSocketWrapper(string uri)
+        public WebSocketWrapper(System.Net.WebSockets.Managed.ClientWebSocket clientWebSocket, Uri uri)
         {
-            _clientWebSocket = objectPool.AcquireObject();
-            _uri = new Uri(uri);
+            _clientWebSocket = clientWebSocket;
+            Uri = uri;
             _cancellationToken = _cancellationTokenSource.Token;
 
             if (_clientWebSocket.State == WebSocketState.None)
@@ -56,6 +80,8 @@ namespace Warewolf.Auditing
                 _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
             }
         }
+        public WebSocketState State => _clientWebSocket.State;
+
         public IWebSocketWrapper Connect()
         {
             if (!IsOpen())
@@ -147,20 +173,13 @@ namespace Warewolf.Auditing
             {
                 CallOnDisconnected();
             }
-            finally
-            {
-                if (IsOpen())
-                {
-                    objectPool.ReleaseObject(_clientWebSocket);
-                }
-            }
         }
 
         private async Task ConnectAsync()
         {
-            await _clientWebSocket.ConnectAsync(_uri, _cancellationToken);
+            await _clientWebSocket.ConnectAsync(Uri, _cancellationToken);
             CallOnConnected();
-            WatchForMessagesFromServer();
+            _messageReceiveWorker = WatchForMessagesFromServer();
         }
 
         private async Task WatchForMessagesFromServer()
@@ -232,6 +251,32 @@ namespace Warewolf.Auditing
         private static void RunInTask(Action action)
         {
             Task.Factory.StartNew(action);
+        }
+
+        private bool _isDisposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    if (!_messageReceiveWorker.IsCompleted)
+                    {
+                        Dev2Logger.Warn("websocket message receive worker still running is disposing WebSocketWrapper", Guid.Empty.ToString());
+                    }
+                    if (IsOpen())
+                    {
+                        _cancellationTokenSource.Cancel();
+                        _clientWebSocket.Dispose();
+                    }
+                }
+
+                _isDisposed = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }

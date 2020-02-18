@@ -14,26 +14,28 @@ using Warewolf.Interfaces.Pooling;
 
 namespace Warewolf.Pooling
 {
-    internal class ObjectPool<T> : IObjectPool<T> where T:class, new()
+    public class ObjectPool<T> : IObjectPool<T> where T:class
     {
-        private readonly ConcurrentBag<T> objects;
+        private readonly ConcurrentBag<T> objects = new ConcurrentBag<T>();
         private readonly Func<T> objectGenerator;
-        public ObjectPool(Func<T> objectGenerator)
+        private readonly Func<T, bool> objectValidator;
+        public ObjectPool(Func<T> objectGenerator, Func<T, bool> objectValidator)
         {
             this.objectGenerator = objectGenerator ?? throw new ArgumentNullException(nameof(objectGenerator));
-            objects = new ConcurrentBag<T>();
+            this.objectValidator = objectValidator ?? throw new ArgumentNullException(nameof(objectValidator));
         }
 
         public T AcquireObject()
         {
             if (objects.TryTake(out T concrete))
             {
+                objectValidator.Invoke(concrete);
                 return concrete;
             }
             else
             {
-                concrete = objectGenerator?.Invoke();
-                objects.Add(concrete);
+                concrete = objectGenerator.Invoke();
+                objectValidator.Invoke(concrete);
                 return concrete;
             }
         }

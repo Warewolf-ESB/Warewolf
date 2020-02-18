@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -149,6 +150,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }
+        IPopupController PopupProvider { get; set; }
         IServer LocalhostServer { get; }
         bool ResourceCalled { get; set; }
 

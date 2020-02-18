@@ -27,7 +27,7 @@ namespace Dev2
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                _logger = new StateAuditLogger(new WebSocketFactory());
+                _logger = new StateAuditLogger(new WebSocketPool());
                 stateNotifier.Subscribe(_logger.NewStateListener(dsfDataObject));
             }
 
