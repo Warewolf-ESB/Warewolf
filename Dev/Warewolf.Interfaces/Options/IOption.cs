@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Warewolf.Data;
@@ -93,7 +92,7 @@ namespace Warewolf.Options
 
     public interface IOptionActivity : IOption
     {
-        ModelItem Value { get; set; }
+        object Value { get; set; }
     }
 
     public interface IOptionWorkflow : IOption
