@@ -32,8 +32,25 @@ namespace Dev2.Activities.Specs.Composition
         {
             ScenarioContext.Current.Pending();
         }
-        
-        [Then(@"a detailed execution completed log entry is created with input parameter values")]
+
+        [When(@"a workflow request is received")]
+        public void WhenAWorkflowRequestIsReceived()
+        {
+            ScenarioContext.Current.Pending();
+        }
+        [Then(@"a detailed entry log is created")]
+        public void ThenADetailedLogEntryIsCreated(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"it has these input parameter values")]
+        public void ThenItHasTheseInputParameterValues(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"a detailed execution completed log entry is created")]
         public void ThenADetailedExecutionCompletedLogEntryIsCreated(Table table)
         {
             ScenarioContext.Current.Pending();
