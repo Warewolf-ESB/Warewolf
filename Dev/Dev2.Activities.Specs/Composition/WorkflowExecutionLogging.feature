@@ -26,6 +26,9 @@ Scenario: Workflow execution completed detailed logs
           Then a detailed execution completed log entry is created
           |  one  |  two   |three   |
           |value 1| value 2| value 3|
+          And it has these output parameter values
+          |  one  |  two   |three   |
+          |value 1| value 2| value 3|
 
 Scenario: Workflow execution failure detailed logs
           Given a valid workflow
