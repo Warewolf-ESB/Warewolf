@@ -126,7 +126,7 @@ namespace Warewolf.UnitTestAttributes
                             throw e;
                         }
                     }
-                    Container = JsonConvert.DeserializeObject<Container>(result);
+                    Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
                     if (string.IsNullOrEmpty(Container.Port))
                     {
@@ -422,6 +422,7 @@ namespace Warewolf.UnitTestAttributes
 
         static void UpdateSourcesConnectionStrings(string NewConnectionString, List<string> knownServerSources)
         {
+            var InjectedSource = false;
             foreach (var source in knownServerSources)
             {
                 string sourcePath = Environment.ExpandEnvironmentVariables(source);
@@ -429,10 +430,14 @@ namespace Warewolf.UnitTestAttributes
                 {
                     File.WriteAllText(sourcePath,
                         InsertServerSourceAddress(File.ReadAllText(sourcePath), NewConnectionString));
+                    InjectedSource = true;
                 }
             }
 
-            RefreshServer();
+            if (InjectedSource)
+            {
+                RefreshServer();
+            }
         }
 
         public static void RefreshServer()
