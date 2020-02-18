@@ -115,7 +115,17 @@ namespace Warewolf.UnitTestAttributes
                     string result = "";
                     string containerType = ConvertToString(_containerType);
                     string address = $"http://{RigOpsIP}:3142/public/Container/Async/Start/{containerType}.json";
-                    result = client.DownloadString(address);
+                    try
+                    {
+                        result = client.DownloadString(address);
+                    }
+                    catch (WebException e)
+                    {
+                        if (e.Message != "The request was aborted: The operation has timed out.")
+                        {
+                            throw e;
+                        }
+                    }
                     Container = JsonConvert.DeserializeObject<Container>(result);
 
                     if (string.IsNullOrEmpty(Container.Port))
