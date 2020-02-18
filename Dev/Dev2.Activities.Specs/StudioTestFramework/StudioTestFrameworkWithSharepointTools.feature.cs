@@ -90,69 +90,69 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 #line 9
   testRunner.Given("test folder is cleaned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1008 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1009 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
-            table1008.AddRow(new string[] {
+            table1009.AddRow(new string[] {
                         "[[a]]"});
 #line 10
-  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1008, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1009 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
-            table1009.AddRow(new string[] {
-                        "[[outputValue]]"});
-#line 13
-  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1009, "And ");
+  testRunner.And("I have \"Workflow 1\" with inputs as", ((string)(null)), table1009, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1010 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Var Name"});
+                        "Ouput Var Name"});
             table1010.AddRow(new string[] {
-                        "[[rec().a]]"});
-            table1010.AddRow(new string[] {
-                        "[[rec().b]]"});
-#line 16
-  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1010, "Given ");
+                        "[[outputValue]]"});
+#line 13
+  testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table1010, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1011 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
+                        "Input Var Name"});
             table1011.AddRow(new string[] {
-                        "[[returnVal]]"});
-#line 20
-  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1011, "And ");
+                        "[[rec().a]]"});
+            table1011.AddRow(new string[] {
+                        "[[rec().b]]"});
+#line 16
+  testRunner.Given("I have \"Workflow 2\" with inputs as", ((string)(null)), table1011, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1012 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Var Name"});
+                        "Ouput Var Name"});
             table1012.AddRow(new string[] {
-                        "[[A]]"});
-            table1012.AddRow(new string[] {
-                        "[[B]]"});
-            table1012.AddRow(new string[] {
-                        "[[C]]"});
-#line 23
-  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1012, "Given ");
+                        "[[returnVal]]"});
+#line 20
+  testRunner.And("\"Workflow 2\" has outputs as", ((string)(null)), table1012, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1013 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
+                        "Input Var Name"});
             table1013.AddRow(new string[] {
-                        "[[message]]"});
-#line 28
-  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1013, "And ");
+                        "[[A]]"});
+            table1013.AddRow(new string[] {
+                        "[[B]]"});
+            table1013.AddRow(new string[] {
+                        "[[C]]"});
+#line 23
+  testRunner.Given("I have \"Workflow 3\" with inputs as", ((string)(null)), table1013, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1014 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Var Name"});
+                        "Ouput Var Name"});
             table1014.AddRow(new string[] {
-                        "[[input]]"});
-#line 31
-  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1014, "Given ");
+                        "[[message]]"});
+#line 28
+  testRunner.And("\"Workflow 3\" has outputs as", ((string)(null)), table1014, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1015 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Ouput Var Name"});
+                        "Input Var Name"});
             table1015.AddRow(new string[] {
-                        "[[outputValue]]"});
-#line 34
-  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1015, "And ");
+                        "[[input]]"});
+#line 31
+  testRunner.Given("I have \"WorkflowWithTests\" with inputs as", ((string)(null)), table1015, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1016 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Ouput Var Name"});
+            table1016.AddRow(new string[] {
+                        "[[outputValue]]"});
+#line 34
+  testRunner.And("\"WorkflowWithTests\" has outputs as", ((string)(null)), table1016, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1017 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error",
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "TestPending",
                         "TestInvalid",
                         "TestPassed"});
-            table1016.AddRow(new string[] {
+            table1017.AddRow(new string[] {
                         "Test1",
                         "Windows",
                         "false",
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "true"});
-            table1016.AddRow(new string[] {
+            table1017.AddRow(new string[] {
                         "Test2",
                         "Windows",
                         "false",
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false",
                         "false"});
-            table1016.AddRow(new string[] {
+            table1017.AddRow(new string[] {
                         "Test3",
                         "Windows",
                         "false",
@@ -184,7 +184,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "true",
                         "false"});
-            table1016.AddRow(new string[] {
+            table1017.AddRow(new string[] {
                         "Test4",
                         "Windows",
                         "false",
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "false",
                         "false"});
 #line 37
-  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1016, "And ");
+  testRunner.And("\"WorkflowWithTests\" Tests as", ((string)(null)), table1017, "And ");
 #line hidden
         }
         
@@ -211,45 +211,45 @@ this.FeatureBackground();
 #line 46
  testRunner.Given("I have a workflow \"ShapointCopyFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1017 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1018 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "LocalPathFrom",
                         "ServerPathTo",
                         "Result"});
-            table1017.AddRow(new string[] {
+            table1018.AddRow(new string[] {
                         "SharePoint Test Server",
                         "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
                         "e.bite",
                         "[[Result]]"});
 #line 47
-   testRunner.And("\"ShapointCopyFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" as", ((string)(null)), table1017, "And ");
+   testRunner.And("\"ShapointCopyFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" as", ((string)(null)), table1018, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1018 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1019 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPathFrom",
                         "ServerPathTo",
                         "Overwrite",
                         "Result"});
-            table1018.AddRow(new string[] {
+            table1019.AddRow(new string[] {
                         "SharePoint Test Server",
                         "e.bite",
                         "f.bite",
                         "true",
                         "[[copyResult]]"});
 #line 50
- testRunner.And("\"ShapointCopyFileTestWF\" contains SharepointCopyFile \"TestSharePCopyFile\" as", ((string)(null)), table1018, "And ");
+ testRunner.And("\"ShapointCopyFileTestWF\" contains SharepointCopyFile \"TestSharePCopyFile\" as", ((string)(null)), table1019, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1019 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1020 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPath",
                         "Result"});
-            table1019.AddRow(new string[] {
+            table1020.AddRow(new string[] {
                         "SharePoint Test Server",
                         "e.bite",
                         "[[Result]]"});
 #line 53
  testRunner.And("\"ShapointCopyFileTestWF\" contains SharepointDeleteSingle \"TestSharePdeleteListIte" +
-                    "m\" as", ((string)(null)), table1019, "And ");
+                    "m\" as", ((string)(null)), table1020, "And ");
 #line 56
  testRunner.And("I save workflow \"ShapointCopyFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
@@ -263,16 +263,16 @@ this.FeatureBackground();
 #line 61
  testRunner.And("I Add \"TestSharePCopyFile\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1020 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1021 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1020.AddRow(new string[] {
+            table1021.AddRow(new string[] {
                         "[[copyResult]]",
                         "=",
                         "Success"});
 #line 62
- testRunner.And("I add StepOutputs as", ((string)(null)), table1020, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1021, "And ");
 #line 65
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 66
@@ -303,53 +303,53 @@ this.FeatureBackground();
 #line 73
  testRunner.Given("I have a workflow \"ShapointCreateListItemsTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1021 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1022 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().Title]]",
                         "Mr"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().Name]]",
                         "Micky"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().IntField]]",
                         "1.1"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().CurrencyField]]",
                         "2211"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().DateField]]",
                         "2016/11/10"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().DateTimeField]]",
                         "2016/11/10"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().BoolField]]",
                         "True"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().MultilineTextField]]",
                         "<div class=\"ExternalClassD0D0AB75CC30454599C3D12D077D6D8D\">123</div>"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().RequiredField]]",
                         "Text"});
-            table1021.AddRow(new string[] {
+            table1022.AddRow(new string[] {
                         "[[AcceptanceTesting_Create().Loc]]",
                         "True"});
 #line 74
-   testRunner.And("\"ShapointCreateListItemsTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table1021, "And ");
+   testRunner.And("\"ShapointCreateListItemsTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table1022, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1022 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1023 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "List",
                         "Result"});
-            table1022.AddRow(new string[] {
+            table1023.AddRow(new string[] {
                         "SharePoint Test Server",
                         "AcceptanceTesting_Create",
                         "[[Result]]"});
 #line 87
  testRunner.And("\"ShapointCreateListItemsTestWF\" contains CreateListItems \"TestSharePCreateItemLis" +
-                    "t\" as", ((string)(null)), table1022, "And ");
+                    "t\" as", ((string)(null)), table1023, "And ");
 #line 90
  testRunner.And("I save workflow \"ShapointCreateListItemsTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
@@ -363,16 +363,16 @@ this.FeatureBackground();
 #line 95
  testRunner.And("I Add \"TestSharePCreateItemList\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1023 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1024 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1023.AddRow(new string[] {
+            table1024.AddRow(new string[] {
                         "[[Result]]",
                         "=",
                         "Success"});
 #line 96
- testRunner.And("I add StepOutputs as", ((string)(null)), table1023, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1024, "And ");
 #line 99
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 100
@@ -403,17 +403,17 @@ this.FeatureBackground();
 #line 107
  testRunner.Given("I have a workflow \"ShapointDeleteFileListTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1024 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1025 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "SharepointList",
                         "Result"});
-            table1024.AddRow(new string[] {
+            table1025.AddRow(new string[] {
                         "SharePoint Test Server",
                         "AccTesting",
                         "[[delResult]]"});
 #line 108
  testRunner.And("\"ShapointDeleteFileListTestWF\" contains SharepointDeleteFile \"TestSharePDeleteFil" +
-                    "e\" as", ((string)(null)), table1024, "And ");
+                    "e\" as", ((string)(null)), table1025, "And ");
 #line 111
  testRunner.And("I save workflow \"ShapointDeleteFileListTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
@@ -427,16 +427,16 @@ this.FeatureBackground();
 #line 116
  testRunner.And("I Add \"TestSharePDeleteFile\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1025 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1026 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1025.AddRow(new string[] {
+            table1026.AddRow(new string[] {
                         "[[delResult]]",
                         "=",
                         "0"});
 #line 117
- testRunner.And("I add StepOutputs as", ((string)(null)), table1025, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1026, "And ");
 #line 120
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 121
@@ -467,17 +467,17 @@ this.FeatureBackground();
 #line 128
  testRunner.Given("I have a workflow \"ShapointDelSingleItemTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1026 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1027 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPath",
                         "Result"});
-            table1026.AddRow(new string[] {
+            table1027.AddRow(new string[] {
                         "SharePoint Test Server",
                         "125698.xml",
                         "[[Result]]"});
 #line 129
  testRunner.And("\"ShapointDelSingleItemTestWF\" contains SharepointDeleteSingle \"TestSharePdeleteLi" +
-                    "stItem\" as", ((string)(null)), table1026, "And ");
+                    "stItem\" as", ((string)(null)), table1027, "And ");
 #line 132
  testRunner.And("I save workflow \"ShapointDelSingleItemTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 133
@@ -491,16 +491,16 @@ this.FeatureBackground();
 #line 137
  testRunner.And("I Add \"TestSharePdeleteListItem\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1027 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1028 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1027.AddRow(new string[] {
+            table1028.AddRow(new string[] {
                         "[[Result]]",
                         "=",
                         ""});
 #line 138
- testRunner.And("I add StepOutputs as", ((string)(null)), table1027, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1028, "And ");
 #line 141
  testRunner.And("I expect Error \"File Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
@@ -533,27 +533,27 @@ this.FeatureBackground();
 #line 150
  testRunner.Given("I have a workflow \"ShapointDownloadFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1028 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1029 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "LocalPathFrom",
                         "ServerPathTo",
                         "Result"});
-            table1028.AddRow(new string[] {
+            table1029.AddRow(new string[] {
                         "SharePoint Test Server",
                         "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
                         "Hello World.bite",
                         "[[Uploaded]]"});
 #line 151
  testRunner.And("\"ShapointUploadFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" a" +
-                    "s", ((string)(null)), table1028, "And ");
+                    "s", ((string)(null)), table1029, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1029 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1030 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPathFrom",
                         "LocalPathTo",
                         "Overwrite",
                         "Result"});
-            table1029.AddRow(new string[] {
+            table1030.AddRow(new string[] {
                         "SharePoint Test Server",
                         "Hello World.bite",
                         "C:\\ProgramData\\Warewolf\\Resources\\DownloadedFromSharepoint\\Hello World.bite",
@@ -561,19 +561,19 @@ this.FeatureBackground();
                         "[[Downloaded]]"});
 #line 154
  testRunner.And("\"ShapointDownloadFileTestWF\" contains SharepointDownloadFile \"TestSharePDownloadF" +
-                    "ile\" as", ((string)(null)), table1029, "And ");
+                    "ile\" as", ((string)(null)), table1030, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1030 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1031 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPath",
                         "Result"});
-            table1030.AddRow(new string[] {
+            table1031.AddRow(new string[] {
                         "SharePoint Test Server",
                         "Hello World.bite",
                         "[[Result]]"});
 #line 157
  testRunner.And("\"ShapointDownloadFileTestWF\" contains SharepointDeleteSingle \"TestSharePdeleteLis" +
-                    "tItem\" as", ((string)(null)), table1030, "And ");
+                    "tItem\" as", ((string)(null)), table1031, "And ");
 #line 160
  testRunner.And("I save workflow \"ShapointDownloadFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 161
@@ -587,16 +587,16 @@ this.FeatureBackground();
 #line 165
  testRunner.And("I Add \"TestSharePDownloadFile\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1031 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1032 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1031.AddRow(new string[] {
+            table1032.AddRow(new string[] {
                         "[[Downloaded]]",
                         "=",
                         "Success"});
 #line 166
- testRunner.And("I add StepOutputs as", ((string)(null)), table1031, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1032, "And ");
 #line 169
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 170
@@ -629,31 +629,31 @@ this.FeatureBackground();
 #line 178
  testRunner.Given("I have a workflow \"ShapointUploadFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1032 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1033 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "LocalPathFrom",
                         "ServerPathTo",
                         "Result"});
-            table1032.AddRow(new string[] {
+            table1033.AddRow(new string[] {
                         "SharePoint Test Server",
                         "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
                         "a.bite",
                         "[[Result]]"});
 #line 179
  testRunner.And("\"ShapointUploadFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" a" +
-                    "s", ((string)(null)), table1032, "And ");
+                    "s", ((string)(null)), table1033, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1033 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1034 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPath",
                         "Result"});
-            table1033.AddRow(new string[] {
+            table1034.AddRow(new string[] {
                         "SharePoint Test Server",
                         "a.bite",
                         "[[Result]]"});
 #line 182
  testRunner.And("\"ShapointUploadFileTestWF\" contains SharepointDeleteSingle \"TestSharePdeleteListI" +
-                    "tem\" as", ((string)(null)), table1033, "And ");
+                    "tem\" as", ((string)(null)), table1034, "And ");
 #line 185
  testRunner.And("I save workflow \"ShapointUploadFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 186
@@ -667,16 +667,16 @@ this.FeatureBackground();
 #line 190
  testRunner.And("I Add \"TestSharePUploadFile\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1034 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1035 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1034.AddRow(new string[] {
+            table1035.AddRow(new string[] {
                         "[[Result]]",
                         "=",
                         "Success"});
 #line 191
- testRunner.And("I add StepOutputs as", ((string)(null)), table1034, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1035, "And ");
 #line 194
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 195
@@ -707,33 +707,33 @@ this.FeatureBackground();
 #line 202
  testRunner.Given("I have a workflow \"ShapointMoveFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1035 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1036 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "LocalPathFrom",
                         "ServerPathTo",
                         "Result"});
-            table1035.AddRow(new string[] {
+            table1036.AddRow(new string[] {
                         "SharePoint Test Server",
                         "C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite",
                         "B.bite",
                         "[[Result]]"});
 #line 203
- testRunner.And("\"ShapointMoveFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" as", ((string)(null)), table1035, "And ");
+ testRunner.And("\"ShapointMoveFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" as", ((string)(null)), table1036, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1036 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1037 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPathFrom",
                         "ServerPathTo",
                         "Overwrite",
                         "Result"});
-            table1036.AddRow(new string[] {
+            table1037.AddRow(new string[] {
                         "SharePoint Test Server",
                         "B.bite",
                         "c.bite",
                         "true",
                         "[[MoveResult]]"});
 #line 206
- testRunner.And("\"ShapointMoveFileTestWF\" contains SharepointMoveFile \"TestSharePMoveFile\" as", ((string)(null)), table1036, "And ");
+ testRunner.And("\"ShapointMoveFileTestWF\" contains SharepointMoveFile \"TestSharePMoveFile\" as", ((string)(null)), table1037, "And ");
 #line 209
  testRunner.And("I save workflow \"ShapointMoveFileTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
@@ -747,16 +747,16 @@ this.FeatureBackground();
 #line 214
  testRunner.And("I Add \"TestSharePMoveFile\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1037 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1038 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1037.AddRow(new string[] {
+            table1038.AddRow(new string[] {
                         "[[MoveResult]]",
                         "=",
                         "Success"});
 #line 215
- testRunner.And("I add StepOutputs as", ((string)(null)), table1037, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1038, "And ");
 #line 218
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 219
@@ -787,19 +787,19 @@ this.FeatureBackground();
 #line 226
  testRunner.Given("I have a workflow \"ShapointReadFolderTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1038 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1039 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPath",
                         "Folders",
                         "Result"});
-            table1038.AddRow(new string[] {
+            table1039.AddRow(new string[] {
                         "SharePoint Test Server",
                         "",
                         "True",
                         "[[Folders(*).Name]]"});
 #line 227
  testRunner.And("\"ShapointReadFolderTestWF\" contains SharepointReadFolder \"TestSharePReadFolder\" a" +
-                    "s", ((string)(null)), table1038, "And ");
+                    "s", ((string)(null)), table1039, "And ");
 #line 230
  testRunner.And("I save workflow \"ShapointReadFolderTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 231
@@ -813,16 +813,16 @@ this.FeatureBackground();
 #line 235
  testRunner.And("I Add \"TestSharePReadFolder\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1039 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1040 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1039.AddRow(new string[] {
+            table1040.AddRow(new string[] {
                         "[[Folders(1).Name]]",
                         "=",
                         "/Shared Documents/bob"});
 #line 236
- testRunner.And("I add StepOutputs as", ((string)(null)), table1039, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1040, "And ");
 #line 239
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 240
@@ -853,15 +853,15 @@ this.FeatureBackground();
 #line 247
  testRunner.Given("I have a workflow \"ShapointReadListItemTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1040 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1041 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "List"});
-            table1040.AddRow(new string[] {
+            table1041.AddRow(new string[] {
                         "SharePoint Test Server",
                         "AccTesting"});
 #line 248
  testRunner.And("\"ShapointReadListItemTestWF\" contains SharepointReadListItem \"TestSharePReadListI" +
-                    "tem\" as", ((string)(null)), table1040, "And ");
+                    "tem\" as", ((string)(null)), table1041, "And ");
 #line 251
  testRunner.And("I save workflow \"ShapointReadListItemTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
@@ -875,16 +875,16 @@ this.FeatureBackground();
 #line 256
  testRunner.And("I Add \"TestSharePReadListItem\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1041 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1042 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1041.AddRow(new string[] {
+            table1042.AddRow(new string[] {
                         "[[AccTesting(1).Title]]",
                         "=",
                         "Mrs"});
 #line 257
- testRunner.And("I add StepOutputs as", ((string)(null)), table1041, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1042, "And ");
 #line 260
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 261
@@ -915,54 +915,54 @@ this.FeatureBackground();
 #line 268
  testRunner.Given("I have a workflow \"ShapointUpdateListItemTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1042 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1043 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().Title]]",
                         "Mrs"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().Name]]",
                         "Minnie"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().IntField]]",
                         "2.0"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().CurrencyField]]",
                         "2211"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().DateField]]",
                         "2016/11/5"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().DateTimeField]]",
                         "2016/10/10"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().BoolField]]",
                         "True"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().MultilineTextField]]",
                         "<div class=\"ExternalClassD0D0AB75CC30454599C3D12D077D6D8D\">123</div>"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().RequiredField]]",
                         "Text"});
-            table1042.AddRow(new string[] {
+            table1043.AddRow(new string[] {
                         "[[AccTesting().Loc]]",
                         "True"});
 #line 269
     testRunner.And("\"ShapointCreateListItemsTestWF\" contains a recordset name randomizing Assign \"MyA" +
-                    "ssign\" as", ((string)(null)), table1042, "And ");
+                    "ssign\" as", ((string)(null)), table1043, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1043 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1044 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "List",
                         "Result"});
-            table1043.AddRow(new string[] {
+            table1044.AddRow(new string[] {
                         "SharePoint Test Server",
                         "AccTesting",
                         "[[Result]]"});
 #line 281
  testRunner.And("\"ShapointCreateListItemsTestWF\" contains UpdateListItems \"TestSharePUpdateListIte" +
-                    "m\" as", ((string)(null)), table1043, "And ");
+                    "m\" as", ((string)(null)), table1044, "And ");
 #line 284
  testRunner.And("I save workflow \"ShapointUpdateListItemTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 285
@@ -976,16 +976,16 @@ this.FeatureBackground();
 #line 289
  testRunner.And("I Add \"TestSharePUpdateListItem\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1044 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1045 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
-            table1044.AddRow(new string[] {
+            table1045.AddRow(new string[] {
                         "[[Result]]",
                         "=",
                         "Success"});
 #line 290
- testRunner.And("I add StepOutputs as", ((string)(null)), table1044, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1045, "And ");
 #line 293
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 294
