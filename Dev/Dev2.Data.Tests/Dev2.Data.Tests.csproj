@@ -197,7 +197,6 @@
     <Compile Include="TranslationConstantsTest.cs" />
     <Compile Include="WarewolfIteratorTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
-    <Compile Include="XmlHelperTest.cs" />
     <Compile Include="ExtensionClassesTests.cs" />
     <Compile Include="XPathParserTests.cs" />
   </ItemGroup>
@@ -245,6 +244,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
       <Project>{85617545-2121-4683-9828-DAEDB5878CE9}</Project>
       <Name>Dev2.Runtime.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>

@@ -11,9 +11,6 @@ using Dev2.Common.Interfaces.Search;
 using Microsoft.Practices.Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Warewolf;
 
 namespace Dev2.Common.Search
 {

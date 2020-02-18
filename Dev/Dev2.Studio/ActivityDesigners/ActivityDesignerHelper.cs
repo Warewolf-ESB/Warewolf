@@ -102,6 +102,7 @@ using Dev2.Activities.RedisRemove;
 using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.RedisCounter;
+using Dev2.Activities.Designers2.Gate;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -201,7 +202,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) },
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
-                { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) }
+                { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
+                { typeof(GateActivity), typeof(GateDesigner) }
             };
         static Hashtable _hashTable;
 

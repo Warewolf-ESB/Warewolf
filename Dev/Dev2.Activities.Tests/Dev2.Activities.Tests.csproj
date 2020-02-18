@@ -219,6 +219,7 @@
     <Compile Include="ActivityTests\DotNetMultiAssignActivityTest.cs" />
     <Compile Include="ActivityTests\Exchange\DsfExchangeEmailNewActivityTest.cs" />
     <Compile Include="ActivityTests\AbstractFileActivityTests.cs" />
+    <Compile Include="ActivityTests\GateActivityTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\ReadFolderNewTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetTests.cs" />
@@ -460,6 +461,10 @@
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj">
       <Project>{86DF54BB-E37D-4559-8014-13D6030A2242}</Project>
       <Name>Warewolf.Driver.Redis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
