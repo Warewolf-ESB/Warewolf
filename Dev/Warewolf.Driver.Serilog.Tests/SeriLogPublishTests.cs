@@ -30,7 +30,7 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogPublisher))]
-        public void SeriLogPublisher_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_Success()
+        public void SeriLogPublisher_NewPublisher_WriteToSink_Sqlite_UsingAny_ILogEventSink_IPML_Success()
         {
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
@@ -63,7 +63,7 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogPublisher))]
-        public void SeriLogPublisher_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_WithOutputTemplateFormat_Test_Success()
+        public void SeriLogPublisher_NewPublisher_WriteToSink_Sqlite_UsingAny_ILogEventSink_IPML_WithOutputTemplateFormat_Test_Success()
         {
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
@@ -118,7 +118,7 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestMethod]  
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogPublisher))]
-        public void SeriLogPublisher_NewPublisher_Reading_LogData_From_SQLite_Success()
+        public void SeriLogPublisher_NewPublisher_Reading_Sqlite_LogData_From_SQLite_Success()
         {
             //-------------------------Arrange------------------------------
             var testDBPath = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
@@ -173,6 +173,40 @@ namespace Warewolf.Driver.Serilog.Tests
             Assert.AreEqual(expected: null, actual: dataList[2].Exception);
             Assert.AreEqual(expected: null, actual: dataList[2].Message);
 
+        }
+
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SeriLogPublisher))]
+        public void SeriLogPublisher_NewPublisher_WriteToSink_Elasticsearch_UsingAny_ILogEventSink_IPML_Success()
+        {
+            //-------------------------Arrange------------------------------
+            var testEventSink = new TestLogEventSink();
+            var seriConfig = new TestSeriLogSinkConfig(testEventSink);
+            var loggerSource = new SeriLoggerSource();
+
+            var loggerConnection = loggerSource.NewConnection(seriConfig);
+            var loggerPublisher = loggerConnection.NewPublisher();
+
+            var error = new { ServerName = "testServer", Error = "testError" };
+
+            var expectedTestWarnMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+            var expectedTestErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
+
+            //-------------------------Act----------------------------------
+            loggerPublisher.Warn(expectedTestWarnMsgTemplate);
+            loggerPublisher.Error(expectedTestErrorMsg);
+
+            var actualLogEventList = testEventSink.LogData;
+            //-------------------------Assert-------------------------------
+            Assert.IsTrue(actualLogEventList.Count == 2);
+
+            Assert.AreEqual(expected: LogEventLevel.Warning, actual: actualLogEventList[0].Level);
+            Assert.AreEqual(expected: expectedTestWarnMsgTemplate, actual: actualLogEventList[0].MessageTemplate.Text);
+
+            Assert.AreEqual(expected: LogEventLevel.Error, actual: actualLogEventList[1].Level);
+            Assert.AreEqual(expected: expectedTestErrorMsg, actual: actualLogEventList[1].MessageTemplate.Text);
         }
 
         class TestLogEventSink : ILogEventSink
@@ -269,6 +303,33 @@ namespace Warewolf.Driver.Serilog.Tests
             return new LoggerConfiguration()
                 .WriteTo
                 .SQLite(sqliteDbPath: _config.Path, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
+                .CreateLogger();
+        }
+    }
+
+    class TestSeriLogElasticsearchConfig : ISeriLogConfig
+    {
+        readonly SeriLogElasticsearchConfig.Settings _config;
+
+        public TestSeriLogElasticsearchConfig()
+        {
+            _config = new SeriLogElasticsearchConfig.Settings();
+        }
+
+        public TestSeriLogElasticsearchConfig(SeriLogElasticsearchConfig.Settings elasticConfig)
+        {
+            _config = elasticConfig;
+        }
+
+        public ILogger Logger { get => CreateLogger(); }
+        public string ServerLoggingAddress { get; set; }
+        public string ConnectionString { get; }
+        public string Url { get; set; }
+        private ILogger CreateLogger()
+        {
+            return new LoggerConfiguration()
+                .WriteTo
+                .Elasticsearch()
                 .CreateLogger();
         }
     }

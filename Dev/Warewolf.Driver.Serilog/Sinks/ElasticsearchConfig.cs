@@ -16,49 +16,53 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace Warewolf.Driver.Serilog
 {
-    public class SeriLogELasticConfig : ISeriLogConfig
+    public class SeriLogElasticsearchConfig : ISeriLogConfig
     {
         static readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() => new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_staticSettings.Url))
                 {
-                    MinimumLogEventLevel = LogEventLevel.Verbose,
+                    MinimumLogEventLevel = _staticSettings.RestrictedToMinimumLevel,
                     AutoRegisterTemplate = true,
-                    CustomFormatter = new ElasticsearchJsonFormatter()
+                    CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                 })
                 .CreateLogger());
 
         static readonly Settings _staticSettings = new Settings();
-
         readonly Settings _config;
 
-        public SeriLogELasticConfig()
+        public SeriLogElasticsearchConfig()
         {
             _config = new Settings();
         }
 
-        public SeriLogELasticConfig(Settings elasticConfig)
+        public SeriLogElasticsearchConfig(Settings elasticConfig)
         {
             _config = elasticConfig;
         }
 
         public ILogger Logger { get => _logger.Value; }
-        //TODO: this path needs to come the Config.Server.AuditPath which is still tobe moved to project Framework48
-        public string ConnectionString { get => _config.ConnectionString; }  
 
-        public string ServerLoggingAddress { get; set; }
+        public string ServerLoggingAddress { set { } get => _config.Url; }
+
+        public string Url { set { } get => _config.Url; }
+
+
+        public string ConnectionString => throw new NotImplementedException();
 
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_config.Url))
                 {
                     MinimumLogEventLevel = LogEventLevel.Verbose,
                     AutoRegisterTemplate = true,
-                    CustomFormatter = new ElasticsearchJsonFormatter()
+                    CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                 })
                 .CreateLogger();
         }
@@ -66,15 +70,11 @@ namespace Warewolf.Driver.Serilog
         {
             public Settings()
             {
+                Url = @"http://localhost:9200";
+                RestrictedToMinimumLevel = LogEventLevel.Verbose;
             }
-            public string ConnectionString { get; set; }
-            public string Database { get; set; }
-            public string Path { get; set; }
-            public string TableName { get; set; }
+            public string Url { get; set; }
             public LogEventLevel RestrictedToMinimumLevel { get; set; }
-            public IFormatProvider FormatProvider { get; set; }
-            public bool StoreTimestampInUtc { get; set; }
-            public TimeSpan? RetentionPeriod { get; set; }
         }
     }
 }
