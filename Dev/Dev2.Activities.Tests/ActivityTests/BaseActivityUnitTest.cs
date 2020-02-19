@@ -253,9 +253,6 @@ namespace ActivityUnitTests
                     ParentThreadID = 1
                 };
 
-
-                // we need to set this now ;)
-
                 mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, false)).Verifiable();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
                 var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
