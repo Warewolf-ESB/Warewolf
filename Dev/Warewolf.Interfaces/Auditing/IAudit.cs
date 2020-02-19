@@ -25,6 +25,7 @@ namespace Warewolf.Interfaces.Auditing
         string Environment { get; set; }
         string ExecutingUser { get; set; }
         string ExecutionID { get; set; }
+        string CustomTransactionID { get; set; }
         long ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
         string ExecutionToken { get; set; }
