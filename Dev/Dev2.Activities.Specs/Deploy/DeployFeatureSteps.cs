@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            string destinationServer = Depends.EnableDocker?Depends.RigOpsIP + ":3144":Depends.CIRemoteIP;
+            string destinationServer = Depends.GetAddress(Depends.ContainerType.CIRemote) + Depends.GetPort(Depends.ContainerType.CIRemote);
 
             var formattableString = $"http://{destinationServer}";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))

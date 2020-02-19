@@ -115,8 +115,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             try
             {
                 var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
-                var result = SqlHelper.RunSqlCommand(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
-                    Depends.EnableDocker?_containerOps.Container.Port:"1433", createProcedure);
+                var result = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
+                    _containerOps.Container.Port, createProcedure);
                 Assert.AreEqual(-1, result);
 
                 Setup(cleanProcName);
@@ -142,8 +142,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         int DropProcedure(string cleanProcName)
         {
             var dropProcedure = "IF ( OBJECT_ID('" + cleanProcName + "') IS NOT NULL ) DROP PROCEDURE [dbo].[" + cleanProcName + "]";
-            var dropResult = SqlHelper.RunSqlCommand(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
-                Depends.EnableDocker?_containerOps.Container.Port:"1433", dropProcedure);
+            var dropResult = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
+                _containerOps.Container.Port, dropProcedure);
             return dropResult;
         }
 
@@ -151,7 +151,6 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         [Owner("Pieter Terblanche")]
         public void Add_A_New_InputOnSqlProcedure_Expect_New_IS_InputAdded()
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             const string procName = "TestingAddingANewInput";
 
             Setup(procName);
@@ -162,8 +161,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
             //testing here
             const string alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
-            var alterTableResults = SqlHelper.RunSqlCommand(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
-                Depends.EnableDocker?_containerOps.Container.Port:"1433", alterProcedure);
+            var alterTableResults = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
+                _containerOps.Container.Port, alterProcedure);
             Assert.AreEqual(-1, alterTableResults);
 
             _dbActionRegion.RefreshActionsCommand.Execute(null);
