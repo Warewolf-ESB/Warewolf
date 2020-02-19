@@ -120,6 +120,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Search.feature</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Cluster\WarewolfLoggingFollower.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WarewolfLoggingFollower.feature</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Cluster\WarewolfLoggingFollowerSteps.cs" />
     <Compile Include="Sources\ServerSource.feature.cs">
       <AutoGen>True</AutoGen>
@@ -352,7 +357,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Search.feature.cs</LastGenOutput>
     </None>
-    <None Include="Settings\Cluster\WarewolfLoggingFollower.feature" />
+    <None Include="Settings\Cluster\WarewolfLoggingFollower.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WarewolfLoggingFollower.feature.cs</LastGenOutput>
+    </None>
     <None Include="Sources\ServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ServerSource.feature.cs</LastGenOutput>

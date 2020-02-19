@@ -102,16 +102,16 @@ namespace Dev2.Activities.Specs.Settings.Cluster
 #line 11
           testRunner.Then("the logs should be logged locally", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table935 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table935.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
 #line 12
-          testRunner.And("local log file should contain", ((string)(null)), table935, "And ");
+          testRunner.And("local log file should contain", ((string)(null)), table1, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -136,16 +136,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
           testRunner.Then("the logs should be logged to the leader server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table936 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table936.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "",
                         "",
                         ""});
 #line 22
-          testRunner.And("local log file should contain", ((string)(null)), table936, "And ");
+          testRunner.And("local log file should contain", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -153,3 +153,4 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+
