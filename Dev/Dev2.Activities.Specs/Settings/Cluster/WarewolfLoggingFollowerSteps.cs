@@ -33,6 +33,18 @@ namespace Dev2.Activities.Specs.Settings.Cluster
             ScenarioContext.Current.Pending();
         }
         
+        [When(@"the follower server tries to log and connection to leader is live")]
+        public void WhenTheFollowerServerTriesToLogAndConnectionToLeaderIsLive()
+        {
+            ScenarioContext.Current.Pending();
+        }
+        
+        [When(@"the log file is found and not null")]
+        public void WhenTheLogFileIsFoundAndNotNull()
+        {
+            ScenarioContext.Current.Pending();
+        }
+        
         [Then(@"the logs should be logged locally")]
         public void ThenTheLogsShouldBeLoggedLocally()
         {
@@ -44,24 +56,11 @@ namespace Dev2.Activities.Specs.Settings.Cluster
         {
             ScenarioContext.Current.Pending();
         }
-
-        [When(@"the follower server tries to log and connection to leader is live")]
-        public void WhenTheFollowerServerTriesToLogAndConnectionToLeaderIsLive()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"the log file is found and not null")]
-        public void WhenTheLogFileIsFoundAndNotNull()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
+        
         [Then(@"the logs should be logged to the leader server")]
         public void ThenTheLogsShouldBeLoggedToTheLeaderServer()
         {
             ScenarioContext.Current.Pending();
         }
-
     }
 }
