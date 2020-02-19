@@ -259,7 +259,7 @@ namespace ActivityUnitTests
                 mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, false)).Verifiable();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
                 var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
-
+                dataObject.Settings = new Dev2WorkflowSettingsTO{ EnableDetailedLogging = false };
                 errors.ClearErrors();
                 wfec.Eval(FlowchartProcess,dataObject, 0);
 
