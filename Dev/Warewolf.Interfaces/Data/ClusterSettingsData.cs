@@ -18,7 +18,7 @@ namespace Warewolf.Configuration
         public bool Equals(ClusterSettingsData other)
         {
             var equals = true;
-            equals &= string.Equals(Key, other.Key, StringComparison.InvariantCultureIgnoreCase);
+            equals &= string.Equals(Key, other.Key);
 
             return equals;
         }

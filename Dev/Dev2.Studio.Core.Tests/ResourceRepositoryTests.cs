@@ -2565,6 +2565,29 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.SaveServerSettings(_environmentModel.Object, serverSettingsData);
         }
 
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_GetClusterSettings_ExpectSettings()
+        {
+            var expected = new ClusterSettingsData();
+
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new Dev2JsonSerializer().SerializeToBuilder(expected));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var clusterSettings = _repo.GetClusterSettings(_environmentModel.Object);
+
+            Assert.IsTrue(clusterSettings.Equals(expected));
+        }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceRepository))]
