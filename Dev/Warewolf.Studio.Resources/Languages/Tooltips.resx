@@ -754,6 +754,12 @@ Returns the output of the script, if any.</value>
   <data name="MergeButtonTooltip" xml:space="preserve">
     <value>Merge the Service</value>
   </data>
+  <data name="RunAllServerTestsToolTip" xml:space="preserve">
+    <value>Run all tests in browser for all resources</value>
+  </data>
+  <data name="RunAllFolderTestsToolTip" xml:space="preserve">
+    <value>Run all tests in browser for all resources in this folder</value>
+  </data>
   <data name="RunAllTestsToolTip" xml:space="preserve">
     <value>Run all tests in browser for this resource</value>
   </data>
