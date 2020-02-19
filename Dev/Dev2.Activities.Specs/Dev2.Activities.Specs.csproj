@@ -77,6 +77,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Composition\WorkflowExecutionLogging.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowExecutionLogging.feature</DependentUpon>
+    </Compile>
     <Compile Include="Composition\WorkflowExecutionLoggingSteps.cs" />
     <Compile Include="Composition\WorkflowResume.feature.cs">
       <AutoGen>True</AutoGen>
@@ -315,7 +320,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CompositionLoadTests.feature.cs</LastGenOutput>
     </None>
-    <None Include="Composition\WorkflowExecutionLogging.feature" />
+    <None Include="Composition\WorkflowExecutionLogging.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowExecutionLogging.feature.cs</LastGenOutput>
+    </None>
     <None Include="Composition\WorkflowResume.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowResume.feature.cs</LastGenOutput>
