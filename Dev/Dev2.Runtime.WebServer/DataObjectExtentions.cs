@@ -121,10 +121,6 @@ namespace Dev2.Runtime.WebServer
             if (headers != null)
             {
                 var customTransactionId = headers.Get("CustomTransactionID");
-                if (string.IsNullOrEmpty(customTransactionId))
-                {
-                    customTransactionId = headers.Get("CustomTransactionID");
-                }
                 if (!string.IsNullOrEmpty(customTransactionId))
                 {
                     dataObject.CustomTransactionID = customTransactionId;
