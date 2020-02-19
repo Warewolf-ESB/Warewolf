@@ -321,6 +321,7 @@ namespace Dev2.DynamicServices
         public IServiceTestModelTO ServiceTest { get; set; }
 
         public Guid? ExecutionID { get; set; }
+        public string CustomTransactionID { get; set; }
         public string WebUrl { get; set; }
         public IStateNotifier StateNotifier { get; set; }
         public IDev2WorkflowSettings Settings { get; set; }
@@ -400,6 +401,7 @@ namespace Dev2.DynamicServices
             result.IsServiceTestExecution = IsServiceTestExecution;
             result.IsDebugFromWeb = IsDebugFromWeb;
             result.ExecutionID = ExecutionID;
+            result.CustomTransactionID = CustomTransactionID;
             result.WebUrl = WebUrl;
             result.IsSubExecution = IsSubExecution;
             result.QueryString = QueryString;

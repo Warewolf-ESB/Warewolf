@@ -116,7 +116,21 @@ namespace Dev2.Runtime.WebServer
                 dataObject.ReturnType = EmitionTypes.XML;
             }
         }
-
+        public static void SetCustomTransactionID(this IDSFDataObject dataObject, NameValueCollection headers)
+        {
+            if (headers != null)
+            {
+                var customTransactionId = headers.Get("CustomTransactionID");
+                if (string.IsNullOrEmpty(customTransactionId))
+                {
+                    customTransactionId = headers.Get("CustomTransactionID");
+                }
+                if (!string.IsNullOrEmpty(customTransactionId))
+                {
+                    dataObject.CustomTransactionID = customTransactionId;
+                }
+            }
+        }
         public static void SetupForWebDebug(this IDSFDataObject dataObject, WebRequestTO webRequest)
         {
             var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
