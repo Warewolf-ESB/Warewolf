@@ -229,6 +229,7 @@ namespace Warewolf.Tests
             public Exception Exception { get; set; }
             public string ExecutingUser { get; set; }
             public string ExecutionID { get; set; }
+            public string CustomTransactionID  { get; set; }
             public long ExecutionOrigin { get; set; }
             public string ExecutionOriginDescription { get; set; }
             public string ExecutionToken { get; set; }
