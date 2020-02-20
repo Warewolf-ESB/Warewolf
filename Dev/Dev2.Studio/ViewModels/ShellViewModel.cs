@@ -312,7 +312,17 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public ICommand EditSourceCommand => new DelegateCommand(EditSource);
 
+        private void EditSource(object item)
+        {
+            var resourceId = (Guid)item; 
+            if (resourceId != Guid.Empty)
+            {
+                OpenResource(resourceId, ActiveServer.EnvironmentID, ActiveServer);
+            }
+        }
+        
         IResourcePickerDialog _currentResourcePicker;
 
         public ICommand AddWorkflowCommand

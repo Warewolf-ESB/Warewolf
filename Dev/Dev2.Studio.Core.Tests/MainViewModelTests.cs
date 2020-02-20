@@ -4231,6 +4231,51 @@ namespace Dev2.Core.Tests
         
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        public void ShellViewModel_EditSourceCommand_OpenResource()
+        {
+            var resourceId = Guid.NewGuid();
+            var resourceName = "ResourceName";
+        
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(o => o.ResourceName).Returns(resourceName);
+            mockResourceModel.Setup(o => o.ID).Returns(resourceId);
+            mockResourceModel.Setup(o => o.ServerResourceType).Returns("ServerSource");
+            mockResourceModel.Setup(o => o.DataList).Returns("<DataList><scalar1 Description=\"\" IsEditable=\"True\" " +
+                                                                                  "ColumnIODirection=\"Input\" /><scalar2 Description=\"\" IsEditable=\"True\" " +
+                                                                                  "ColumnIODirection=\"Input\" /></DataList>");
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadContextualResourceModel(resourceId)).Returns(mockResourceModel.Object);
+
+            var envId = Guid.NewGuid();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.DisplayName).Returns("Localhost");
+            mockServer.Setup(o => o.Name).Returns("Localhost");
+            mockServer.Setup(o => o.EnvironmentID).Returns(envId);
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
+                    
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(o => o.ActiveServer).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.Source).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.Get(envId)).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.All()).Returns(new List<IServer>());
+            CustomContainer.Register(mockServerRepository.Object);
+            
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            var mockViewFactory = new Mock<IViewFactory>();
+            var mockPopupController = new Mock<IBrowserPopupController>();
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            
+            var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
+
+            Assert.IsTrue(shellViewModel.EditSourceCommand.CanExecute(resourceId));
+            shellViewModel.EditSourceCommand.Execute(resourceId);
+            mockResourceRepository.Verify(o => o.LoadContextualResourceModel(resourceId), Times.Exactly(1));
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         public void ShellViewModel_AddWorkflowCommand_OpenResourcePicker()
         {
             var resourceId = Guid.NewGuid();
@@ -4239,7 +4284,7 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(resourceModel => resourceModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resourceModel => resourceModel.ID).Returns(resourceId);
-            mockResourceModel.Setup(resourceModel => resourceModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resourceModel => resourceModel.ResourceType).Returns(ResourceType.Source);
             mockResourceModel.Setup(resourceModel => resourceModel.DataList).Returns("<DataList><scalar1 Description=\"\" IsEditable=\"True\" " +
                                                                           "ColumnIODirection=\"Input\" /><scalar2 Description=\"\" IsEditable=\"True\" " +
                                                                           "ColumnIODirection=\"Input\" /></DataList>");
