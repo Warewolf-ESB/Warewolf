@@ -230,8 +230,8 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExecutionEnvironmentUtils_GetXmlOutputFromEnvironment")]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment")]
         public void ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment_WhenDataList_ShouldOnlyHaveVariablesMarkedAsOutputInString()
         {
             //------------Setup for test--------------------------
@@ -240,6 +240,8 @@ namespace Dev2.Tests
                                     "<Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"/>" +
                                     "<Surname Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\"/>" +
                                     "<FullName Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "<Age Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "<Salary Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
                                     "<rec Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\">" +
                                     "<a Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
                                     "<b Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
@@ -252,6 +254,8 @@ namespace Dev2.Tests
             dataObj.Environment.Assign("[[Name]]", "Bob", 0);
             dataObj.Environment.Assign("[[Surname]]", "Mary", 0);
             dataObj.Environment.Assign("[[FullName]]", "Bob Mary", 0);
+            dataObj.Environment.Assign("[[Age]]", "15", 0);
+            dataObj.Environment.Assign("[[Salary]]", "1550.55", 0);
             //------------Execute Test---------------------------
             var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
             //------------Assert Results-------------------------
@@ -259,7 +263,9 @@ namespace Dev2.Tests
             StringAssert.Contains(actual, "\"a\": \"1\"");
             StringAssert.Contains(actual, "\"a\": \"\"");
             StringAssert.Contains(actual, "\"a\": \"\"");
-            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\"");
+            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\""); //String datatype
+            StringAssert.Contains(actual, "\"Age\": 15"); //Int datatype
+            StringAssert.Contains(actual, "\"Salary\": 1550.55"); //Float datatype
             Assert.IsFalse(actual.Contains("\"Name\": \"Bob\""));
             Assert.IsFalse(actual.Contains("\"Surname\": \"Mary\""));
             Assert.IsFalse(actual.Contains("\"b\": \"2\""));
