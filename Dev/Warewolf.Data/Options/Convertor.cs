@@ -54,7 +54,31 @@ namespace Warewolf.Options
                 };
                 if (attr != null)
                 {
-                    result.Suggestions = ((IOptionDataList)attr.Get()).Options;
+                    result.Suggestions = ((IOptionDataList<string>)attr.Get()).Items;
+                }
+                if (helptextAttr != null)
+                {
+                    result.HelpText = helptextAttr.Get();
+                }
+                if (tooltipAttr != null)
+                {
+                    result.Tooltip = tooltipAttr.Get();
+                }
+                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionAutocomplete)o).Value); };
+
+                return result;
+            }
+            if (prop.PropertyType.IsAssignableFrom(typeof(NamedGuid)))
+            {
+                var attr = prop.GetCustomAttributes().Where(o => o is DataProviderAttribute).Cast<DataProviderAttribute>().FirstOrDefault();
+                var result = new OptionSourceCombobox()
+                {
+                    Name = prop.Name,
+                    Value = (INamedGuid)prop.GetValue(instance)
+                };
+                if (attr != null)
+                {
+                    result.Options = ((IOptionDataList<INamedGuid>)attr.Get()).Items;
                 }
                 if (helptextAttr != null)
                 {
