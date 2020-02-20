@@ -61,6 +61,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType() => "FindSourcesByType";
+        public override string HandlesType() => nameof(Warewolf.Service.FindSourcesByType);
     }
 }
