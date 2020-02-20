@@ -10,6 +10,10 @@
 
 namespace Warewolf.Service
 {
+    public static class FindSourcesByType
+    {
+        public const string WorkspaceId = nameof(WorkspaceId);
+    }
     public static class GetResourceById
     {
         public const string WorkspaceId = nameof(WorkspaceId);
