@@ -76,6 +76,10 @@ namespace Warewolf.UI
                 {
                     dataTemplateName = "OptionComboBoxStyle";
                 }
+                if (DataContext is IOptionSourceComboBox optionSourceComboBox)
+                {
+                    dataTemplateName = "OptionSourceComboBoxStyle";
+                }
                 if (DataContext is IOptionRadioButton optionRadioButton)
                 {
                     dataTemplateName = "OptionRadioButtonStyle";
