@@ -12,15 +12,41 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
+using Warewolf;
+using Warewolf.Data;
+using Warewolf.Options;
 
 namespace Dev2.Settings.Clusters
 {
+    public class ServerOptions
+    {
+        [DataProvider(typeof(ResourceDataProvider))]
+        public NamedGuid Leader { get; set; }
+
+        public class ResourceDataProvider : IOptionDataList<INamedGuid>
+        {
+            public INamedGuid[] Items
+            {
+                get
+                {
+                    var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                    var sources = shellViewModel.ActiveServer.ResourceRepository.FindSourcesByType<IServerSource>(
+                        shellViewModel.ActiveServer, enSourceType.Dev2Server);
+                    
+                    return sources?.Select(o => new NamedGuid {Name = o.Name, Value = o.ID})
+                        .ToArray();
+                }
+            }
+        }
+    }
     public class Server
     {
         public string DisplayName { get; set; }
@@ -44,8 +70,8 @@ namespace Dev2.Settings.Clusters
             NewServerCommand = new DelegateCommand(o => NewServer());
             EditServerCommand = new DelegateCommand(o => EditServer());
             TestKeyCommand = new DelegateCommand(o => TestClusterKey());
-            LoadServers();
             LoadServerFollowers();
+            ServerOptions = new ServerOptions();
         }
 
         private static void NewServer()
@@ -60,19 +86,6 @@ namespace Dev2.Settings.Clusters
             mainViewModel?.NewServerSource(string.Empty);
         }
 
-        private void LoadServers()
-        {
-            Servers = new ObservableCollection<Server>
-            {
-                new Server {DisplayName = "Server One"},
-                new Server {DisplayName = "Server Two"},
-                new Server {DisplayName = "Server Three"},
-                new Server {DisplayName = "Server Four"},
-                new Server {DisplayName = "Server Five"},
-                new Server {DisplayName = "Server Six"},
-            };
-        }
-        
         private void LoadServerFollowers()
         {
             Followers = new List<ServerFollower>
@@ -155,6 +168,12 @@ namespace Dev2.Settings.Clusters
                 LoadServerFollowers();
                 FilterFollowers(value.ToLower());
             }
+        }
+
+        public ServerOptions ServerOptions
+        {
+            get;
+            set;
         }
 
         private void FilterFollowers(string value)
