@@ -41,6 +41,11 @@ namespace Warewolf.Options
     {
         
     }
+    
+    public interface IOptionSourceComboBox : IOption
+    {
+        
+    }
 
     public interface IOptionRadioButton : IOptionMultiData
     {
