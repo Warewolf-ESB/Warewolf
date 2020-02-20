@@ -15,7 +15,7 @@ namespace Warewolf.Streams
 {
     public interface IConsumer
     {
-        Task<ConsumerResult> Consume(byte[] body);
+        Task<ConsumerResult> Consume(byte[] body,string customTransactionID);
     }
     public interface IConsumer<in T>
     {

@@ -722,7 +722,7 @@ namespace Warewolf.Trigger.Queue.Tests
         {
             var resourceId = Guid.NewGuid();
 
-            var executionInfo = new ExecutionInfo(DateTime.Now, DateTime.Now-DateTime.UtcNow, DateTime.Today, QueueRunStatus.Success, Guid.NewGuid());
+            var executionInfo = new ExecutionInfo(DateTime.Now, DateTime.Now-DateTime.UtcNow, DateTime.Today, QueueRunStatus.Success, Guid.NewGuid(),"");
 
             var history = new List<IExecutionHistory>
             {
