@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppResources\Converters\CustomIconsTests.cs" />
+    <Compile Include="ViewModels\ClusterViewModelTests.cs" />
     <Compile Include="ViewModels\SearchModelTests.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModelTests.cs" />
   </ItemGroup>
@@ -98,6 +99,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
+      <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
+      <Name>Warewolf.Common.Framework48</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
