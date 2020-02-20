@@ -219,7 +219,7 @@ namespace Dev2.Tests
             StringAssert.Contains(actual, "<DataList>");
             StringAssert.Contains(actual, "<rec>");
             StringAssert.Contains(actual, "<a>1</a>");
-            StringAssert.Contains(actual, "<a></a>");
+            StringAssert.Contains(actual, "<a />"); //When WarewolfAtom Result is null then return null instead of empty string
             StringAssert.Contains(actual, "</rec>");
             StringAssert.Contains(actual, "</DataList>");
             StringAssert.Contains(actual, "<FullName>Bob Mary</FullName>");
@@ -260,16 +260,77 @@ namespace Dev2.Tests
             var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
             //------------Assert Results-------------------------
             StringAssert.Contains(actual, "rec");
-            StringAssert.Contains(actual, "\"a\": \"1\"");
-            StringAssert.Contains(actual, "\"a\": \"\"");
-            StringAssert.Contains(actual, "\"a\": \"\"");
-            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\""); //String datatype
-            StringAssert.Contains(actual, "\"Age\": 15"); //Int datatype
-            StringAssert.Contains(actual, "\"Salary\": 1550.55"); //Float datatype
+            StringAssert.Contains(actual, "\"a\": 1");
+            StringAssert.Contains(actual, "\"a\": null"); //When WarewolfAtom Result is null then return null instead of empty string
+            StringAssert.Contains(actual, "\"a\": null"); //When WarewolfAtom Result is null then return null instead of empty string
+            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\"");
+            StringAssert.Contains(actual, "\"Age\": 15");
+            StringAssert.Contains(actual, "\"Salary\": 1550.55");
             Assert.IsFalse(actual.Contains("\"Name\": \"Bob\""));
             Assert.IsFalse(actual.Contains("\"Surname\": \"Mary\""));
             Assert.IsFalse(actual.Contains("\"b\": \"2\""));
             Assert.IsFalse(actual.Contains("\"c\": \"3\""));
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment")]
+        public void ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment_WhenDataList_WithScalarOutputVariable_ShouldReturnStringWithCorrectDatatype()
+        {
+            //------------Setup for test--------------------------
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList>" +
+                                    "<Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "<Surname Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "<FullName Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "<Age Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "<Salary Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"/>" +
+                                    "</DataList>";
+
+            dataObj.Environment.Assign("[[Name]]", "Bob", 0);
+            dataObj.Environment.Assign("[[Surname]]", "Mary", 0);
+            dataObj.Environment.Assign("[[FullName]]", "Bob Mary", 0);
+            dataObj.Environment.Assign("[[Age]]", "15", 0);
+            dataObj.Environment.Assign("[[Salary]]", "1550.55", 0);
+            //------------Execute Test---------------------------
+            var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(actual, "\"Name\": \"Bob\"");//String datatype
+            StringAssert.Contains(actual, "\"Surname\": \"Mary\"");
+            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\"");
+            StringAssert.Contains(actual, "\"Age\": 15"); //Int datatype
+            StringAssert.Contains(actual, "\"Salary\": 1550.55"); //Float datatype
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory("ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment")]
+        public void ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment_WhenDataList_WithRecordsetOutputVariable_ShouldReturnStringWithCorrectDatatype()
+        {
+            //------------Setup for test--------------------------
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList>" +
+                                    "<User Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\">" +
+                                    "<Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<Surname Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<FullName Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<Age Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<Salary Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "</User>" +
+                                    "</DataList>";
+            dataObj.Environment.Assign("[[User().Name]]", "Bob", 0);
+            dataObj.Environment.Assign("[[User().Surname]]", "Mary", 0);
+            dataObj.Environment.Assign("[[User().FullName]]", "Bob Mary", 0);
+            dataObj.Environment.Assign("[[User().Age]]", "15", 0);
+            dataObj.Environment.Assign("[[User().Salary]]", "1550.55", 0);
+            //------------Execute Test---------------------------
+            var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(actual, "\"Name\": \"Bob\"");//String datatype
+            StringAssert.Contains(actual, "\"Surname\": \"Mary\"");
+            StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\"");
+            StringAssert.Contains(actual, "\"Age\": 15"); //Int datatype
+            StringAssert.Contains(actual, "\"Salary\": 1550.55"); //Float datatype
         }
 
         [TestMethod]
@@ -316,6 +377,6 @@ namespace Dev2.Tests
             Assert.AreEqual(1, values.Count);
             Assert.AreEqual("123<1234", values[0]);
 
-        }                  
+        }
     }
 }
