@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Warewolf.Data;
@@ -420,6 +421,73 @@ namespace Warewolf.Options
             }
 
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | string.Compare(item.Value, Value);
+        }
+    }
+
+    public class OptionSourceCombobox : BindableBase, IOptionSourceComboBox
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+
+        private string _helpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
+
+        private string _tooltip;
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
+
+        public INamedGuid[] Options { get; set; }
+
+        public List<string> OptionNames
+        {
+            get
+            {
+                return Options.Select(o=> o.Name).ToList();
+            }
+        }
+
+        private INamedGuid _value;
+
+        public INamedGuid Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value);
+        }
+
+        public object Clone()
+        {
+            return new OptionSourceCombobox
+            {
+                Name = _name,
+                Value = _value
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as OptionSourceCombobox;
+            if (item is null)
+            {
+                return -1;
+            }
+
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) | (item.Value.Equals(Value) ? 0 : 1);
         }
     }
 
