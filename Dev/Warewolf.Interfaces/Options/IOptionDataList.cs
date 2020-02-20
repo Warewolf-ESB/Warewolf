@@ -1,7 +1,7 @@
 ﻿namespace Warewolf.Data
 {
-    public interface IOptionDataList
+    public interface IOptionDataList<T>
     {
-        string[] Options { get; }
+        T[] Items { get; }
     }
 }
