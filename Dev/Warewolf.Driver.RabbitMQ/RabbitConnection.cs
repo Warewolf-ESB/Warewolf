@@ -42,8 +42,8 @@ namespace Warewolf.Driver.RabbitMQ
             eventConsumer.Received += (model, eventArgs) =>
             {
                 var body = eventArgs.Body;
-
-                var resultTask = consumer.Consume(body);
+                var customTransactionID = eventArgs.BasicProperties.CorrelationId;
+                var resultTask = consumer.Consume(body,customTransactionID);
                 resultTask.Wait();
                 if (resultTask.Result == Data.ConsumerResult.Success)
                 {
