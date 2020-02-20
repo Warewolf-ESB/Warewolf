@@ -635,6 +635,43 @@ namespace Warewolf.Data.Tests
             expectedValue = optionConditionExpression.CompareTo(optionConditionExpression);
             Assert.AreEqual(0, expectedValue);
         }
+        
+        [Test]
+        [Category(nameof(OptionSourceCombobox))]
+        [Author("Pieter Terblanche")]
+        public void OptionSourceCombobox_Clone()
+        {
+            var optionSourceCombobox = new OptionSourceCombobox
+            {
+                Name = "MyEnum",
+                Value = new NamedGuid { Name = "", Value = Guid.Empty},
+            };
+
+            var cloneOptionSourceCombobox = optionSourceCombobox.Clone() as OptionSourceCombobox;
+            Assert.AreEqual(optionSourceCombobox.Name, cloneOptionSourceCombobox.Name);
+            Assert.AreEqual(optionSourceCombobox.Value, cloneOptionSourceCombobox.Value);
+        }
+
+        [Test]
+        [Category(nameof(OptionSourceCombobox))]
+        [Author("Pieter Terblanche")]
+        public void OptionSourceCombobox_CompareTo()
+        {
+            var optionSourceCombobox = new OptionSourceCombobox
+            {
+                Name = "MyEnum",
+                Value = new NamedGuid { Name = "", Value = Guid.Empty},
+            };
+
+            var expectedValue = optionSourceCombobox.CompareTo(null);
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionSourceCombobox.CompareTo(new object { });
+            Assert.AreEqual(-1, expectedValue);
+
+            expectedValue = optionSourceCombobox.CompareTo(optionSourceCombobox);
+            Assert.AreEqual(0, expectedValue);
+        }
 
         enum MyEnum
         {
