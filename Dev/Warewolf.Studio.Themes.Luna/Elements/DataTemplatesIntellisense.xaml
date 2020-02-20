@@ -353,6 +353,64 @@
             </StackPanel>
         </Grid>
     </DataTemplate>
+    
+    <DataTemplate x:Key="OptionSourceComboBoxStyle" DataType="{x:Type options:OptionSourceCombobox}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
+                <ComboBox Grid.Column="1" 
+                          ItemsSource="{Binding Path=OptionNames}"
+                          DisplayMemberPath="."
+                          Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxStyle}" 
+                          ToolTip="{Binding Path=Tooltip}"
+                          IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            x:Name="EditButton"
+                            Content="..."
+                            Margin="{StaticResource ControlBorderLeft}"
+                            Command="{Binding Path=DataContext.EditSourceCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}"
+                            CommandParameter="{Binding Path=Value}">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                    <Button x:Name="NewServerButton"
+                            Grid.Column="1"
+                            Content="{x:Static languages:Core.New}" 
+                            Width="Auto"
+                            Style="{StaticResource ButtonOrangeStyle}" 
+                            Margin="{StaticResource ControlBorderLeft}"
+                            Command="{Binding Path=DataContext.NewSourceCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}"
+                            CommandParameter="{Binding Path=ResourceType}">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
 
     <DataTemplate x:Key="OptionRadioButtonStyle" DataType="{x:Type options:OptionRadioButtons}">
         <Grid x:Name="RadioButtonGrid" Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
