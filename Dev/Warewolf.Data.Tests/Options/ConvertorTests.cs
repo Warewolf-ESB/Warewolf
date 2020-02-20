@@ -42,7 +42,7 @@ namespace Warewolf.Data.Tests
 
             Assert.AreEqual(nameof(TestData.MyString), result[1].Name);
             Assert.AreEqual("hello", ((OptionAutocomplete)result[1]).Value);
-            var expected = new TestData.OptionsForS().Options;
+            var expected = new TestData.OptionsForS().Items;
             var suggestions = ((OptionAutocomplete)result[1]).Suggestions;
             Assert.IsTrue(expected.SequenceEqual(suggestions));
         }
@@ -123,9 +123,9 @@ namespace Warewolf.Data.Tests
             [MultiDataProvider(typeof(OatsBreakfast), typeof(WeetbixBreakfast))]
             public BreakfastBase MyBreakfast { get; set; }
 
-            public class OptionsForS : IOptionDataList
+            public class OptionsForS : IOptionDataList<string>
             {
-                public string[] Options => new string[] { "sopt1", "sopt2", "sopt3", "sopt4" };
+                public string[] Items => new string[] { "sopt1", "sopt2", "sopt3", "sopt4" };
             }
         }
 
