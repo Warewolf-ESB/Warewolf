@@ -108,8 +108,26 @@ namespace Dev2
                 var x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
                 if ((x == enDev2ColumnArgumentDirection.Both || x == requestIODirection) && (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult))
                 {
+                    if (warewolfEvalResult.Item is DataStorage.WarewolfAtom.DataString stringResult)
+                    {
+                        var eval = CommonFunctions.atomToJsonCompatibleObject(warewolfEvalResult.Item);
+                        outputObj.Add(new JProperty(objName, eval));
+                    }
+                    else if (warewolfEvalResult.Item is DataStorage.WarewolfAtom.Float floatResult)
+                    {
+                        var eval = CommonFunctions.atomToJsonCompatibleObject(warewolfEvalResult.Item);
+                        outputObj.Add(new JProperty(objName, eval));
+                    }
+                    else if (warewolfEvalResult.Item is DataStorage.WarewolfAtom.Int intResult)
+                    {
+                        var eval = CommonFunctions.atomToJsonCompatibleObject(warewolfEvalResult.Item);
+                        outputObj.Add(new JProperty(objName, eval));
+                    }
+                    else
+                    {
                         var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
                         outputObj.Add(objName, eval);
+                    }
                 }
             }
         }
