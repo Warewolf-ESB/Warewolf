@@ -66,10 +66,11 @@ Scenario: Test WF with MySql
 		Then workflow "MySqlTestWF" is deleted as cleanup
 
 Scenario: Test WF with Sql Server
-		Given I have a workflow "SqlTestWF"
-		 And "SqlTestWF" contains a sqlserver database service "dbo.Pr_CitiesGetCountries" with mappings for testing as
-		   | ParameterName | ParameterValue |
-		   | Prefix        | D              |
+		Given I depend on a valid MSSQL server
+		And I have a workflow "SqlTestWF"
+		And "SqlTestWF" contains a sqlserver database service "dbo.Pr_CitiesGetCountries" with mappings for testing as
+		| ParameterName | ParameterValue |
+		| Prefix        | D              |
 		And I save workflow "SqlTestWF"
 		Then the test builder is open with "SqlTestWF"
 		And I click New Test
@@ -112,10 +113,11 @@ Scenario: Test WF with Oracle
 		Then workflow "oracleTestWF" is deleted as cleanup
 		
 Scenario: Test WF with PostGre Sql
-		Given I have a workflow "PostGreTestWF"
-		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
-		  | ParameterName | ParameterValue |
-		  | Prefix        | K              |  
+		Given I depend on a valid PostgreSQL server
+		And I have a workflow "PostGreTestWF"
+		And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
+		| ParameterName | ParameterValue |
+		| Prefix        | K              |  
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test
@@ -156,18 +158,19 @@ Scenario: Test WF with Decision
 		Then workflow "DecisionTestWF" is deleted as cleanup
 
 Scenario: Test WF with SqlBulk Insert
-		Given I have a workflow "SqlBulkTestWF"
-		 And "SqlBulkTestWF" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlBulkInsertSource" and table "dbo.MailingList" and KeepIdentity set "true" and Result set "[[result]]" for testing as
-		   | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
-		   | Name   | Warewolf            | false      | varchar      | 50        | false           |
-		   | Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
+		Given I depend on a valid MSSQL server
+		And I have a workflow "SqlBulkTestWF"
+		And "SqlBulkTestWF" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlBulkInsertSource" and table "dbo.MailingList" and KeepIdentity set "true" and Result set "[[result]]" for testing as
+		| Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
+		| Name   | Warewolf            | false      | varchar      | 50        | false           |
+		| Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
 		And I save workflow "SqlBulkTestWF"
 		Then the test builder is open with "SqlBulkTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "BulkInsert" as TestStep
-	And I add StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
 		When I save

@@ -327,6 +327,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid MySQL server")]
         public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL);
 
+        [Given("I depend on a valid MSSQL server")]
+        public void GivenIGetaValidMSSQLServer() => _containerOps = new Depends(Depends.ContainerType.MSSQL);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
