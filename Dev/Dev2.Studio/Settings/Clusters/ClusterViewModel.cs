@@ -38,8 +38,9 @@ namespace Dev2.Settings.Clusters
                 get
                 {
                     var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                    var sources = shellViewModel.ActiveServer.ResourceRepository.FindSourcesByType<IServerSource>(
-                        shellViewModel.ActiveServer, enSourceType.Dev2Server);
+                    var activeServer = shellViewModel.ActiveServer;
+                    var sources = activeServer.ResourceRepository.FindSourcesByType<IServerSource>(
+                        activeServer, enSourceType.Dev2Server);
                     
                     return sources?.Select(o => new NamedGuid {Name = o.Name, Value = o.ID})
                         .ToArray();
@@ -67,16 +68,9 @@ namespace Dev2.Settings.Clusters
         public ClusterViewModel()
         {
             CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
-            EditServerCommand = new DelegateCommand(o => EditServer());
             TestKeyCommand = new DelegateCommand(o => TestClusterKey());
             LoadServerFollowers();
             ServerOptions = new ServerOptions();
-        }
-
-        private static void EditServer()
-        {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.NewServerSource(string.Empty);
         }
 
         private void LoadServerFollowers()
@@ -117,7 +111,6 @@ namespace Dev2.Settings.Clusters
 
         public Type ResourceType => typeof(IServerSource);
         public ICommand CopyKeyCommand { get; }
-        public ICommand EditServerCommand { get; }
         public ICommand TestKeyCommand { get; }
 
         public string ClusterKey
