@@ -402,7 +402,7 @@
                             Style="{StaticResource ButtonOrangeStyle}" 
                             Margin="{StaticResource ControlBorderLeft}"
                             Command="{Binding Path=DataContext.NewSourceCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}"
-                            CommandParameter="{Binding Path=ResourceType}">
+                            CommandParameter="{Binding Path=DataContext.ResourceType, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>

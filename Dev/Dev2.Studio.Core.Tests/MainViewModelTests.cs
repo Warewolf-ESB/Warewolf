@@ -4191,6 +4191,46 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        public void ShellViewModel_NewSourceCommand_NewServerSourceCommand()
+        {
+            var resourceId = Guid.NewGuid();
+            var resourceName = "ResourceName";
+        
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(resourceModel => resourceModel.ResourceName).Returns(resourceName);
+            mockResourceModel.Setup(resourceModel => resourceModel.ID).Returns(resourceId);
+            mockResourceModel.Setup(resourceModel => resourceModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resourceModel => resourceModel.DataList).Returns("<DataList><scalar1 Description=\"\" IsEditable=\"True\" " +
+                                                                                  "ColumnIODirection=\"Input\" /><scalar2 Description=\"\" IsEditable=\"True\" " +
+                                                                                  "ColumnIODirection=\"Input\" /></DataList>");
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepo => resourceRepo.LoadContextualResourceModel(resourceId)).Returns(mockResourceModel.Object);
+            
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.DisplayName).Returns("Localhost");
+            mockServer.Setup(server => server.Name).Returns("Localhost");
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockServer.SetupGet(server => server.Connection).Returns(mockEnvironmentConnection.Object);
+                    
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(repository => repository.ActiveServer).Returns(mockServer.Object);
+            mockServerRepository.Setup(repository => repository.Source).Returns(mockServer.Object);
+            mockServerRepository.Setup(repository => repository.All()).Returns(new List<IServer>());
+            CustomContainer.Register(mockServerRepository.Object);
+            
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            var mockViewFactory = new Mock<IViewFactory>();
+            var mockPopupController = new Mock<IBrowserPopupController>();
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            
+            var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
+
+            Assert.IsTrue(shellViewModel.NewSourceCommand.CanExecute(typeof(IServerSource)));
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         public void ShellViewModel_AddWorkflowCommand_OpenResourcePicker()
         {
             var resourceId = Guid.NewGuid();

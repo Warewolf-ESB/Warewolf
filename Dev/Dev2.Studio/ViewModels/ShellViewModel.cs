@@ -301,6 +301,18 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public ICommand NewSourceCommand => new DelegateCommand(CreateNewSource);
+
+        private void CreateNewSource(object resourceType)
+        {
+            //TODO: We should not have to do a check here 
+            if (resourceType == typeof(IServerSource))
+            {
+                NewServerSourceCommand.Execute(null);
+            }
+        }
+
+
         IResourcePickerDialog _currentResourcePicker;
 
         public ICommand AddWorkflowCommand
