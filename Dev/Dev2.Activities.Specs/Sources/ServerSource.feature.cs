@@ -188,15 +188,8 @@ this.ScenarioSetup(scenarioInfo);
             table940.AddRow(new string[] {
                         "http://wolfs-den.premier.local:3142",
                         "Public"});
-<<<<<<< HEAD
 #line 35
- testRunner.Given("I create a server source as", ((string)(null)), table932, "Given ");
-=======
-#line 34
  testRunner.Given("I create a server source as", ((string)(null)), table940, "Given ");
-#line 37
- testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
->>>>>>> 6213-System Generated Code
 #line 38
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39

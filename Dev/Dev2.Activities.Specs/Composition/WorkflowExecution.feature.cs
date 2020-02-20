@@ -4543,27 +4543,11 @@ this.FeatureBackground();
                         ""});
             table889.AddRow(new string[] {
                         "[[countries(1).id]] = 1"});
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            table883.AddRow(new string[] {
-                        "[[countries(2).id]] = 1"});
-            table883.AddRow(new string[] {
-=======
-            table885.AddRow(new string[] {
->>>>>>> 6213-System Generated Code
-=======
-            table887.AddRow(new string[] {
->>>>>>> 6213-System Generated Code
-=======
-            table888.AddRow(new string[] {
->>>>>>> 6213-System Generated Code
-=======
             table889.AddRow(new string[] {
->>>>>>> 6213-System Generated Code
+                        "[[countries(2).id]] = 1"});
+            table889.AddRow(new string[] {
                         "[[countries(1).description]] = Afghanistan"});
-            table883.AddRow(new string[] {
+            table889.AddRow(new string[] {
                         "[[countries(2).description]] = Afghanistan"});
 #line 1232
  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table889, "And ");
@@ -4620,15 +4604,9 @@ this.FeatureBackground();
                         "",
                         "description",
                         string.Format("{0}", emailVariable)});
-<<<<<<< HEAD
 #line 1245
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table884, "And ");
-#line 1249
-=======
-#line 1243
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table890, "And ");
-#line 1247
->>>>>>> 6213-System Generated Code
+#line 1249
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1250
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -4639,25 +4617,8 @@ this.FeatureBackground();
                         "[[countries(1).id]] = 1"});
             table891.AddRow(new string[] {
                         "[[countries(1).description]] = Afghanistan"});
-<<<<<<< HEAD
 #line 1251
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table885, "And ");
-=======
-#line 1249
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table887, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table889, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table890, "And ");
->>>>>>> 6213-System Generated Code
-=======
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table891, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4701,25 +4662,8 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-<<<<<<< HEAD
-=======
-#line 1260
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table888, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table890, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table891, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table892, "And ");
->>>>>>> 6213-System Generated Code
 #line 1262
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table886, "And ");
+  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table892, "And ");
 #line 1264
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1265
@@ -4776,15 +4720,9 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-<<<<<<< HEAD
 #line 1273
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table887, "And ");
-#line 1277
-=======
-#line 1271
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table893, "And ");
-#line 1275
->>>>>>> 6213-System Generated Code
+#line 1277
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1278
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -4795,25 +4733,8 @@ this.FeatureBackground();
                         "[[rec(1).name]] = dora"});
             table894.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.co.za"});
-<<<<<<< HEAD
 #line 1279
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table888, "And ");
-=======
-#line 1277
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table890, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table892, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table893, "And ");
->>>>>>> 6213-System Generated Code
-=======
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table894, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4866,15 +4787,9 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-<<<<<<< HEAD
 #line 1290
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table889, "And ");
-#line 1294
-=======
-#line 1288
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table895, "And ");
-#line 1292
->>>>>>> 6213-System Generated Code
+#line 1294
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1295
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -4885,25 +4800,8 @@ this.FeatureBackground();
                         "[[rec(1).name]] = dora"});
             table896.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.co.za"});
-<<<<<<< HEAD
 #line 1296
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table890, "And ");
-=======
-#line 1294
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table892, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table894, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table895, "And ");
->>>>>>> 6213-System Generated Code
-=======
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table896, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4956,15 +4854,9 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-<<<<<<< HEAD
 #line 1307
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table891, "And ");
-#line 1311
-=======
-#line 1305
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table897, "And ");
-#line 1309
->>>>>>> 6213-System Generated Code
+#line 1311
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1312
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -4975,25 +4867,8 @@ this.FeatureBackground();
                         "[[name]] = dora"});
             table898.AddRow(new string[] {
                         "[[email]] = dora@explorers.co.za"});
-<<<<<<< HEAD
 #line 1313
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table892, "And ");
-=======
-#line 1311
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table894, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table896, "And ");
->>>>>>> 6213-System Generated Code
-=======
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table897, "And ");
->>>>>>> 6213-System Generated Code
-=======
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table898, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5039,15 +4914,9 @@ this.FeatureBackground();
             table899.AddRow(new string[] {
                         "[[rec(2).a]]",
                         "no"});
-<<<<<<< HEAD
 #line 1324
- testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table893, "And ");
-#line 1328
-=======
-#line 1322
  testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table899, "And ");
-#line 1326
->>>>>>> 6213-System Generated Code
+#line 1328
    testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1329
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -5061,15 +4930,9 @@ this.FeatureBackground();
             table900.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = no"});
-<<<<<<< HEAD
 #line 1330
-   testRunner.And("the \"Rec To Convert\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table894, "And ");
-#line 1334
-=======
-#line 1328
    testRunner.And("the \"Rec To Convert\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table900, "And ");
-#line 1332
->>>>>>> 6213-System Generated Code
+#line 1334
    testRunner.Then("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table901 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5081,15 +4944,9 @@ this.FeatureBackground();
             table901.AddRow(new string[] {
                         "[[rec(2).a]]",
                         "2"});
-<<<<<<< HEAD
 #line 1335
-   testRunner.And("\"Unsaved 1\" contains an Assign \"Assign 1\" as", ((string)(null)), table895, "And ");
-#line 1339
-=======
-#line 1333
    testRunner.And("\"Unsaved 1\" contains an Assign \"Assign 1\" as", ((string)(null)), table901, "And ");
-#line 1337
->>>>>>> 6213-System Generated Code
+#line 1339
    testRunner.When("\'2\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table902 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5101,25 +4958,8 @@ this.FeatureBackground();
             table902.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = 2"});
-<<<<<<< HEAD
 #line 1340
-   testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table896, "And ");
-=======
-#line 1338
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table898, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table900, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table901, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table902, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5211,25 +5051,8 @@ this.FeatureBackground();
                         ""});
             table903.AddRow(new string[] {
                         "[[PrimitiveReturnValue]] = 0"});
-<<<<<<< HEAD
 #line 1370
- testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table897, "And ");
-=======
-#line 1368
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table899, "And ");
->>>>>>> 6213-System Generated Code
-=======
- testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table901, "And ");
->>>>>>> 6213-System Generated Code
-=======
- testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table902, "And ");
->>>>>>> 6213-System Generated Code
-=======
  testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table903, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5255,25 +5078,8 @@ this.FeatureBackground();
             table904.AddRow(new string[] {
                         "[[counter]]",
                         "0"});
-<<<<<<< HEAD
 #line 1377
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table898, "And ");
-=======
-#line 1375
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table900, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table902, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table903, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table904, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table905 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -5281,15 +5087,9 @@ this.FeatureBackground();
             table905.AddRow(new string[] {
                         "[[counter]]",
                         "=[[counter]]+1"});
-<<<<<<< HEAD
 #line 1380
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Increment Counter\" as", ((string)(null)), table899, "And ");
-#line 1383
-=======
-#line 1378
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Increment Counter\" as", ((string)(null)), table905, "And ");
-#line 1381
->>>>>>> 6213-System Generated Code
+#line 1383
    testRunner.And("\"WFWithForEachWithManualLoop\" contains a Foreach \"ForEachTest\" as \"NumOfExecution" +
                     "\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5299,25 +5099,8 @@ this.FeatureBackground();
             table906.AddRow(new string[] {
                         "[[rec().a]]",
                         "Test"});
-<<<<<<< HEAD
 #line 1384
-   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table900, "And ");
-=======
-#line 1382
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table902, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table904, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table905, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table906, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table907 = new TechTalk.SpecFlow.Table(new string[] {
                         "ItemToCheck",
@@ -5331,25 +5114,8 @@ this.FeatureBackground();
                         "3",
                         "End Result",
                         "Increment Counter"});
-<<<<<<< HEAD
 #line 1387
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table901, "And ");
-=======
-#line 1385
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table903, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table905, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table906, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table907, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table908 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -5357,15 +5123,9 @@ this.FeatureBackground();
             table908.AddRow(new string[] {
                         "[[result]]",
                         "DONE"});
-<<<<<<< HEAD
 #line 1390
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table902, "And ");
-#line 1393
-=======
-#line 1388
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table908, "And ");
-#line 1391
->>>>>>> 6213-System Generated Code
+#line 1393
       testRunner.When("\"WFWithForEachWithManualLoop\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1394
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -5378,25 +5138,8 @@ this.FeatureBackground();
                         "2"});
 #line 1395
    testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    "ts as", ((string)(null)), table903, "And ");
-#line 1398
-=======
-                    "ts as", ((string)(null)), table905, "And ");
-=======
-                    "ts as", ((string)(null)), table907, "And ");
->>>>>>> 6213-System Generated Code
-=======
-                    "ts as", ((string)(null)), table908, "And ");
->>>>>>> 6213-System Generated Code
-=======
                     "ts as", ((string)(null)), table909, "And ");
->>>>>>> 6213-System Generated Code
-#line 1396
->>>>>>> 6213-System Generated Code
+#line 1398
       testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
                     "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5408,25 +5151,8 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-<<<<<<< HEAD
 #line 1399
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table904, "And ");
-=======
-#line 1397
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table906, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table908, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table909, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table910, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table911 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5434,25 +5160,8 @@ this.FeatureBackground();
             table911.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = Test"});
-<<<<<<< HEAD
 #line 1402
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table905, "And ");
-=======
-#line 1400
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table907, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table909, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table910, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table911, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table912 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5462,25 +5171,8 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-<<<<<<< HEAD
 #line 1405
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table906, "And ");
-=======
-#line 1403
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table908, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table910, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table911, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table912, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table913 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5488,25 +5180,8 @@ this.FeatureBackground();
             table913.AddRow(new string[] {
                         "1",
                         "[[rec(2).a]] = Test"});
-<<<<<<< HEAD
 #line 1408
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table907, "And ");
-=======
-#line 1406
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table909, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table911, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table912, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table913, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table914 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
@@ -5516,25 +5191,8 @@ this.FeatureBackground();
                         "2"});
 #line 1411
    testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    "ts as", ((string)(null)), table908, "And ");
-#line 1414
-=======
-                    "ts as", ((string)(null)), table910, "And ");
-=======
-                    "ts as", ((string)(null)), table912, "And ");
->>>>>>> 6213-System Generated Code
-=======
-                    "ts as", ((string)(null)), table913, "And ");
->>>>>>> 6213-System Generated Code
-=======
                     "ts as", ((string)(null)), table914, "And ");
->>>>>>> 6213-System Generated Code
-#line 1412
->>>>>>> 6213-System Generated Code
+#line 1414
       testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
                     "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5546,25 +5204,8 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-<<<<<<< HEAD
 #line 1415
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table909, "And ");
-=======
-#line 1413
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table911, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table913, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table914, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table915, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table916 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5572,25 +5213,8 @@ this.FeatureBackground();
             table916.AddRow(new string[] {
                         "1",
                         "[[rec(3).a]] = Test"});
-<<<<<<< HEAD
 #line 1418
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table910, "And ");
-=======
-#line 1416
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table912, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table914, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table915, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table916, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table917 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5600,25 +5224,8 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-<<<<<<< HEAD
 #line 1421
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table911, "And ");
-=======
-#line 1419
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table913, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table915, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table916, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table917, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             TechTalk.SpecFlow.Table table918 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5626,25 +5233,8 @@ this.FeatureBackground();
             table918.AddRow(new string[] {
                         "1",
                         "[[rec(4).a]] = Test"});
-<<<<<<< HEAD
 #line 1424
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table912, "And ");
-=======
-#line 1422
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table914, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table916, "And ");
->>>>>>> 6213-System Generated Code
-=======
-   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table917, "And ");
->>>>>>> 6213-System Generated Code
-=======
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table918, "And ");
->>>>>>> 6213-System Generated Code
 #line hidden
             this.ScenarioCleanup();
         }
