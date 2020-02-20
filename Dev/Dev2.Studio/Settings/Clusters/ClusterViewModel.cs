@@ -67,19 +67,12 @@ namespace Dev2.Settings.Clusters
         public ClusterViewModel()
         {
             CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
-            NewServerCommand = new DelegateCommand(o => NewServer());
             EditServerCommand = new DelegateCommand(o => EditServer());
             TestKeyCommand = new DelegateCommand(o => TestClusterKey());
             LoadServerFollowers();
             ServerOptions = new ServerOptions();
         }
 
-        private static void NewServer()
-        {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.NewServerSource(string.Empty);
-        }
-        
         private static void EditServer()
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
@@ -122,8 +115,8 @@ namespace Dev2.Settings.Clusters
                 string.Empty, false, false, true, false, false, false);
         }
 
+        public Type ResourceType => typeof(IServerSource);
         public ICommand CopyKeyCommand { get; }
-        public ICommand NewServerCommand { get; }
         public ICommand EditServerCommand { get; }
         public ICommand TestKeyCommand { get; }
 

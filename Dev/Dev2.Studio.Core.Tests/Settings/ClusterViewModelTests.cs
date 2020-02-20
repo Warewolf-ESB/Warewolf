@@ -107,22 +107,6 @@ namespace Dev2.Core.Tests.Settings
             viewModel.Filter = "ONE";
             Assert.AreEqual(1, viewModel.Followers.Count());
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ClusterViewModel))]
-        public void ClusterViewModel_NewServerCommand()
-        {
-            //------------Setup for test--------------------------
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.NewServerSource(It.IsAny<string>())).Verifiable();
-            CustomContainer.Register(mockShellViewModel.Object);
-
-            //------------Execute Test---------------------------
-            var clusterViewModel = new ClusterViewModel();
-            clusterViewModel.NewServerCommand.Execute(null);
-            mockShellViewModel.Verify(model => model.NewServerSource(It.IsAny<string>()), Times.Once());
-        }
         
         [TestMethod]
         [Owner("Pieter Terblanche")]
