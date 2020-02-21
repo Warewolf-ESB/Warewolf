@@ -88,7 +88,7 @@ namespace Warewolf.Options
                 {
                     result.Tooltip = tooltipAttr.Get();
                 }
-                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionAutocomplete)o).Value); };
+                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionSourceCombobox)o).Value); };
 
                 return result;
             }
