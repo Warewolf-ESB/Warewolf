@@ -9,14 +9,18 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Settings.Clusters;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Options;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -109,15 +113,41 @@ namespace Dev2.Core.Tests.Settings
         }
         
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ClusterViewModel))]
-        public void ClusterViewModel_Servers()
+        public void ClusterViewModel_ServerOptions()
         {
-            //------------Setup for test--------------------------
+            //-------------------------Arrange-----------------------
+            var expectedId = Guid.NewGuid();
+            const string expectedName = "ServerName";
+            var connection = new Data.ServiceModel.Connection {ResourceID = expectedId, ResourceName = expectedName};
+            var expected = new List<Data.ServiceModel.Connection>
+            {
+                connection,
+            };
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o =>
+                o.FindSourcesByType<Data.ServiceModel.Connection>(It.IsAny<IServer>(), It.IsAny<enSourceType>())).Returns(expected);
+            
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.ActiveServer).Returns(mockServer.Object);
+            
+            CustomContainer.Register(mockShellViewModel.Object);
+            
+            //-------------------------Act---------------------------
+            var serverOptions = new ServerOptions();
+            var result = OptionConvertor.Convert(serverOptions);
 
-            //------------Execute Test---------------------------
-            var clusterViewModel = new ClusterViewModel();
-            Assert.AreEqual(6, clusterViewModel.Servers.Count);
+            //-------------------------Assert------------------------
+            Assert.IsNotNull(result);
+            var optionSourceCombobox = result[0] as OptionSourceCombobox;
+            Assert.IsNotNull(optionSourceCombobox);
+            Assert.AreEqual("Leader", optionSourceCombobox.Name);
+            Assert.AreEqual(expectedName, optionSourceCombobox.Options[0].Name);
+            Assert.AreEqual(expectedId, optionSourceCombobox.Options[0].Value);
+            
+            mockResourceRepository.Verify(o => 
+                o.FindSourcesByType<Data.ServiceModel.Connection>(It.IsAny<IServer>(), It.IsAny<enSourceType>()), Times.Exactly(1));
         }
     }
 }
