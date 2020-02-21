@@ -99,51 +99,35 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "assert",
                         "node"});
             table1.AddRow(new string[] {
-                        "true",
                         "assign(input)"});
             table1.AddRow(new string[] {
-                        "false",
                         "Decision"});
             table1.AddRow(new string[] {
-                        "true",
                         "False"});
             table1.AddRow(new string[] {
-                        "true",
                         "Assign(error)"});
-            table1.AddRow(new string[] {
-                        "false",
-                        "SQL"});
 #line 10
   testRunner.And("workflow only tests", ((string)(null)), table1, "And ");
-#line 17
+#line 16
   testRunner.When("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 18
+#line 17
   testRunner.And("test coverage is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "assert",
                         "node"});
             table2.AddRow(new string[] {
-                        "true",
                         "assign(input)"});
             table2.AddRow(new string[] {
-                        "false",
                         "Decision"});
             table2.AddRow(new string[] {
-                        "true",
                         "False"});
             table2.AddRow(new string[] {
-                        "true",
                         "Assign(error)"});
-            table2.AddRow(new string[] {
-                        "false",
-                        "SQL"});
-#line 19
+#line 18
   testRunner.Then("the covered nodes are", ((string)(null)), table2, "Then ");
-#line 26
+#line 24
   testRunner.And("the test coverage is \"35%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

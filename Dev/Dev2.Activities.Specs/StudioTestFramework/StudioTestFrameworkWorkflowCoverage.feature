@@ -8,20 +8,18 @@ Scenario: Run an individual test to show partial coverage of nodes
 		Given a saved test is run
 		And generate test coverage is selected
 		And workflow only tests
-		| assert | node          |
-		| true   | assign(input) |
-		| false  | Decision		 |
-		| true   | False		 |
-		| true   | Assign(error) |
-		| false  | SQL			 |
+		| node          |
+		| assign(input) |
+		| Decision		|
+		| False			|
+		| Assign(error) |
 		When I run the test 
 		And test coverage is generated 
 		Then the covered nodes are 
-		| assert | node          |
-		| true   | assign(input) |
-		| false  | Decision		 |
-		| true   | False		 |
-		| true   | Assign(error) |
-		| false  | SQL			 |
+		| node          |
+		| assign(input) |
+		| Decision		|
+		| False			|
+		| Assign(error) |
 		And the test coverage is "35%"
 
