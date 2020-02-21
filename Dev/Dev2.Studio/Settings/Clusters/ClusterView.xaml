@@ -42,7 +42,7 @@
                 <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Follow</TextBlock>
             </StackPanel>
 
-            <Grid x:Name="FollowingGridSelection" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+            <Grid x:Name="FollowingGridSelection" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="*" />
