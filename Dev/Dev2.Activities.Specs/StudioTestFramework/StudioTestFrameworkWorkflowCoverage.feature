@@ -59,7 +59,7 @@ Scenario: Run all tests should show which nodes have no coverage reports
 
 Scenario: Test coverage summary view folders should have coverage of all workflows it contains
 		Given a test coverage summary view is opened
-		When a folder contains test coverage reports is loaded
+		When a folder containing test coverage reports is loaded
 		Then information bar will have these values
 		| total | passed | failed |
 		| 1324	| 1300	 | 24	  |
@@ -67,3 +67,27 @@ Scenario: Test coverage summary view folders should have coverage of all workflo
 		| name		 | coverage							 |
 		| Folder-one | 70 %								 |
 		| Folder-two | warning: no coverage report found |
+
+Scenario: Test coverage summary view workflows should have per workflow coverage
+		Given a test coverage summary view is opened 
+		And a folder containing test coverage reports is loaded
+		And information bar will have these values
+		| total | passed | failed |
+		| 1324	| 1300	 | 24	  |
+		And the per workflow coverage summary is
+		| name   | coverage								| branch_coverage |
+		| wf-one | 85%									| 30%             |
+		| wf-two | warning: no coverage report found	| 15%             |
+		When I select "wf-one" within test coverage summary view
+		Then the workflow nodes will be as 
+		| passed | node           |
+		| true   | assign(input)  |
+		| false  | Decision       |
+		| true   | False branch   |
+		| true   | Assign(error)  |
+		| true   | assign(input)  |
+		| true   | Decision       |
+		| true   | True branch    |
+		| true   | SQL            |
+		| true   | assign(person) |
+		| true	 | SMTP Send	  |

@@ -238,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
   testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 62
-  testRunner.When("a folder contains test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("a folder containing test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "total",
@@ -262,6 +262,86 @@ this.ScenarioSetup(scenarioInfo);
                         "warning: no coverage report found"});
 #line 66
   testRunner.And("the per folder coverage summary is", ((string)(null)), table9, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test coverage summary view workflows should have per workflow coverage")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWorkflowCoverage")]
+        public virtual void TestCoverageSummaryViewWorkflowsShouldHavePerWorkflowCoverage()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test coverage summary view workflows should have per workflow coverage", ((string[])(null)));
+#line 71
+this.ScenarioSetup(scenarioInfo);
+#line 72
+  testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 73
+  testRunner.And("a folder containing test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "total",
+                        "passed",
+                        "failed"});
+            table10.AddRow(new string[] {
+                        "1324",
+                        "1300",
+                        "24"});
+#line 74
+  testRunner.And("information bar will have these values", ((string)(null)), table10, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name",
+                        "coverage",
+                        "branch_coverage"});
+            table11.AddRow(new string[] {
+                        "wf-one",
+                        "85%",
+                        "30%"});
+            table11.AddRow(new string[] {
+                        "wf-two",
+                        "warning: no coverage report found",
+                        "15%"});
+#line 77
+  testRunner.And("the per workflow coverage summary is", ((string)(null)), table11, "And ");
+#line 81
+  testRunner.When("I select \"wf-one\" within test coverage summary view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "passed",
+                        "node"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "assign(input)"});
+            table12.AddRow(new string[] {
+                        "false",
+                        "Decision"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "False branch"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "Assign(error)"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "assign(input)"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "Decision"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "True branch"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "SQL"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "assign(person)"});
+            table12.AddRow(new string[] {
+                        "true",
+                        "SMTP Send"});
+#line 82
+  testRunner.Then("the workflow nodes will be as", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

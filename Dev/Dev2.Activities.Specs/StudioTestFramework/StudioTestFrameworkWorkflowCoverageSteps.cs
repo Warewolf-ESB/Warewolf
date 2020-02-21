@@ -90,13 +90,15 @@ namespace Dev2.Activities.Specs.StudioTestFramework
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"a folder contains test coverage reports is loaded")]
-        public void WhenAFolderContainsTestCoverageReportsIsLoaded()
+        [When(@"a folder containing test coverage reports is loaded")]
+        [Given(@"a folder containing test coverage reports is loaded")]
+        public void WhenAFolderContainingTestCoverageReportsIsLoaded()
         {
             ScenarioContext.Current.Pending();
         }
 
         [Then(@"information bar will have these values")]
+        [Given(@"information bar will have these values")]
         public void ThenInformationBarWillHaveTheseValues(Table table)
         {
             ScenarioContext.Current.Pending();
@@ -107,5 +109,24 @@ namespace Dev2.Activities.Specs.StudioTestFramework
         {
             ScenarioContext.Current.Pending();
         }
+
+        [Given(@"the per workflow coverage summary is")]
+        public void GivenThePerWorkflowCoverageSummaryIs(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I select ""(.*)"" within test coverage summary view")]
+        public void WhenISelectWithinTestCoverageSummaryView(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"the workflow nodes will be as")]
+        public void ThenTheWorkflowNodesWillBeAs(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }
