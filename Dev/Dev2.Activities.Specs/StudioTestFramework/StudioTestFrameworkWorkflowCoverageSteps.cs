@@ -84,5 +84,28 @@ namespace Dev2.Activities.Specs.StudioTestFramework
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"a test coverage summary view is opened")]
+        public void GivenATestCoverageSummaryViewIsOpened()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"a folder contains test coverage reports is loaded")]
+        public void WhenAFolderContainsTestCoverageReportsIsLoaded()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"information bar will have these values")]
+        public void ThenInformationBarWillHaveTheseValues(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"the per folder coverage summary is")]
+        public void ThenThePerFolderCoverageSummaryIs(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }
