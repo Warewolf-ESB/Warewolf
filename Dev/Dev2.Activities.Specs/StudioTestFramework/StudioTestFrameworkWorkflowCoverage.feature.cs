@@ -224,6 +224,47 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test coverage summary view folders should have coverage of all workflows it conta" +
+            "ins")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWorkflowCoverage")]
+        public virtual void TestCoverageSummaryViewFoldersShouldHaveCoverageOfAllWorkflowsItContains()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test coverage summary view folders should have coverage of all workflows it conta" +
+                    "ins", ((string[])(null)));
+#line 60
+this.ScenarioSetup(scenarioInfo);
+#line 61
+  testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 62
+  testRunner.When("a folder contains test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "total",
+                        "passed",
+                        "failed"});
+            table8.AddRow(new string[] {
+                        "1324",
+                        "1300",
+                        "24"});
+#line 63
+  testRunner.Then("information bar will have these values", ((string)(null)), table8, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name",
+                        "coverage"});
+            table9.AddRow(new string[] {
+                        "Folder-one",
+                        "70 %"});
+            table9.AddRow(new string[] {
+                        "Folder-two",
+                        "warning: no coverage report found"});
+#line 66
+  testRunner.And("the per folder coverage summary is", ((string)(null)), table9, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

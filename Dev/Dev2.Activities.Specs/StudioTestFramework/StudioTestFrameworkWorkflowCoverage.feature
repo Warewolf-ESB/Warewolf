@@ -57,4 +57,13 @@ Scenario: Run all tests should show which nodes have no coverage reports
 		| assign(person)	|
 		| SMTP Send			|
 
-
+Scenario: Test coverage summary view folders should have coverage of all workflows it contains
+		Given a test coverage summary view is opened
+		When a folder contains test coverage reports is loaded
+		Then information bar will have these values
+		| total | passed | failed |
+		| 1324	| 1300	 | 24	  |
+		And the per folder coverage summary is
+		| name		 | coverage							 |
+		| Folder-one | 70 %								 |
+		| Folder-two | warning: no coverage report found |
