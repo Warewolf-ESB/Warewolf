@@ -902,6 +902,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RabbitMQToolTipQueueName" xml:space="preserve">
     <value>Provide a name of the Queue you want to consume from.</value>
   </data>
+  <data name="RabbitMQToolTipCorrelationID" xml:space="preserve">
+    <value>Provide a CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we'll look at this property, and based on that we'll be able to match a response with a request</value>
+  </data>
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>
