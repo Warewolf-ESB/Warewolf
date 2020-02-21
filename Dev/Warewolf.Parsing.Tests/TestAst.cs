@@ -174,6 +174,14 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(DataStorage))]
+        public void DataStorage_TryParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsIntTrue()
+        {
+            Assert.IsTrue(DataStorage.tryParseAtom("0123").IsInt);
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(DataStorage))]
         public void DataStorage_TryFloatParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsFloatTrue()
         {
             Assert.IsTrue(DataStorage.tryFloatParseAtom("01.0").IsFloat);
