@@ -184,6 +184,10 @@ namespace Warewolf.UnitTestAttributes
                     return "6379";
                 case ContainerType.AnonymousRedis:
                     return "6380";
+                case ContainerType.AnonymousWarewolf:
+                    return "3148";
+                case ContainerType.Warewolf:
+                    return "3146";
             }
             throw new ArgumentOutOfRangeException();
         }

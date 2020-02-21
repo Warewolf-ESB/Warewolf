@@ -4509,7 +4509,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == resourceId);
-
+            dbSource.ServerName += "," + _containerOps.Container.Port;
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
@@ -4525,8 +4525,6 @@ namespace Dev2.Activities.Specs.Composition
                 Id = dbSource.Id
             };
             var testResults = dbServiceModel.TestService(databaseService);
-
-
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
