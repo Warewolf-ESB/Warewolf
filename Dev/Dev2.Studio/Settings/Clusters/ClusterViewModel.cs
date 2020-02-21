@@ -26,10 +26,16 @@ using Warewolf.Options;
 
 namespace Dev2.Settings.Clusters
 {
-    public class ServerOptions
+    public class ServerOptions : BindableBase
     {
+        private NamedGuid _leader;
+
         [DataProvider(typeof(ResourceDataProvider))]
-        public NamedGuid Leader { get; set; }
+        public NamedGuid Leader
+        {
+            get => _leader;
+            set => SetProperty(ref _leader, value);
+        }
 
         public class ResourceDataProvider : IOptionDataList<INamedGuid>
         {
@@ -39,10 +45,10 @@ namespace Dev2.Settings.Clusters
                 {
                     var shellViewModel = CustomContainer.Get<IShellViewModel>();
                     var activeServer = shellViewModel.ActiveServer;
-                    var sources = activeServer.ResourceRepository.FindSourcesByType<IServerSource>(
+                    var sources = activeServer?.ResourceRepository.FindSourcesByType<Data.ServiceModel.Connection>(
                         activeServer, enSourceType.Dev2Server);
                     
-                    return sources?.Select(o => new NamedGuid {Name = o.Name, Value = o.ID})
+                    return sources?.Select(o => new NamedGuid {Name = o.ResourceName, Value = o.ResourceID})
                         .ToArray();
                 }
             }
@@ -64,6 +70,7 @@ namespace Dev2.Settings.Clusters
         private IEnumerable<ServerFollower> _followers;
         private ObservableCollection<Server> _servers;
         private string _clusterKey;
+        private ServerOptions _serverOptions;
 
         public ClusterViewModel()
         {
@@ -71,6 +78,13 @@ namespace Dev2.Settings.Clusters
             TestKeyCommand = new DelegateCommand(o => TestClusterKey());
             LoadServerFollowers();
             ServerOptions = new ServerOptions();
+            _serverOptions.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(ServerOptions.Leader))
+                {
+                    OnPropertyChanged(nameof(ResourceId));
+                }
+            };
         }
 
         private void LoadServerFollowers()
@@ -110,6 +124,7 @@ namespace Dev2.Settings.Clusters
         }
 
         public Type ResourceType => typeof(IServerSource);
+        public Guid ResourceId => ServerOptions?.Leader?.Value ?? Guid.Empty;
         public ICommand CopyKeyCommand { get; }
         public ICommand TestKeyCommand { get; }
 
@@ -158,8 +173,13 @@ namespace Dev2.Settings.Clusters
 
         public ServerOptions ServerOptions
         {
-            get;
-            set;
+            get => _serverOptions;
+            set
+            {
+                _serverOptions = value;
+                OnPropertyChanged(nameof(ServerOptions));
+                OnPropertyChanged(nameof(ResourceId));
+            }
         }
 
         private void FilterFollowers(string value)
