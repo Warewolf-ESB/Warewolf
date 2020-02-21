@@ -1,7 +1,7 @@
 ﻿Feature: StudioTestFrameworkWorkflowCoverage
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to able to tell which nodes of the workflow has coverage
+	As a warewolf user
+	I want to be able to generate test coverage results
 
 @StudioTestFrameworkWorkflowCoverage
 Scenario: Run an individual test to show partial coverage of nodes
@@ -24,7 +24,10 @@ Scenario: Run an individual test to show partial coverage of nodes
 		And the test coverage is "35%"
 
 Scenario: Run all tests to generate total nodes covered in workflow
-		Given two saved tests "Test 1" and "Test 2"
+		Given saved test(s) below is run
+		| name						 |
+		| Test Decision false branch |
+		| Test Decision true branch  |
 		And generate test coverage is selected
 		When I run all the tests
 		And the test coverage is 
@@ -32,7 +35,7 @@ Scenario: Run all tests to generate total nodes covered in workflow
 		| Test Decision false branch | 35%      |
 		| Test Decision true branch  | 50%      |
 		Then the total workflow test coverage is "85%"
-		And the covered nodes are
+		And the nodes covered are
 		| node          |
 		| assign(input) |
 		| Decision		|
@@ -42,3 +45,16 @@ Scenario: Run all tests to generate total nodes covered in workflow
 		| Decision		|
 		| True branch   |
 		| SQL			|
+
+Scenario: Run all tests should show which nodes have no coverage reports
+		Given saved test(s) below is run
+		| name						 |
+		| Test Decision false branch |
+		| Test Decision true branch  | 
+		And I run all the tests with generate coverage selected
+		Then the nodes not covered are
+		| node				|
+		| assign(person)	|
+		| SMTP Send			|
+
+

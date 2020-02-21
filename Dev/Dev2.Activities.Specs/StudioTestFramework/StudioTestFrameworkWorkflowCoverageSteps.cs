@@ -42,12 +42,6 @@ namespace Dev2.Activities.Specs.StudioTestFramework
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"two saved tests ""(.*)"" and ""(.*)""")]
-        public void GivenTwoSavedTestsAnd(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [When(@"I run all the tests")]
         public void WhenIRunAllTheTests()
         {
@@ -62,6 +56,30 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 
         [Then(@"the total workflow test coverage is ""(.*)""")]
         public void ThenTheTotalWorkflowTestCoverageIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"saved test\(s\) below is run")]
+        public void GivenSavedTestSBelowIsRun(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"the nodes covered are")]
+        public void ThenTheNodesCoveredAre(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I run all the tests with generate coverage selected")]
+        public void GivenIRunAllTheTestsWithGenerateCoverageSelected()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"the nodes not covered are")]
+        public void ThenTheNodesNotCoveredAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
