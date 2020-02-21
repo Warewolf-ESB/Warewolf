@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppResources\Converters\CustomIconsTests.cs" />
-    <Compile Include="ViewModels\ClusterViewModelTests.cs" />
     <Compile Include="ViewModels\SearchModelTests.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModelTests.cs" />
   </ItemGroup>
