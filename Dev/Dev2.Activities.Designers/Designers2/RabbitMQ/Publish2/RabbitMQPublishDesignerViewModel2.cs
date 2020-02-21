@@ -28,13 +28,13 @@ using Dev2.Studio.Interfaces;
 
 
 
-namespace Dev2.Activities.Designers2.RabbitMQ.Publish
+namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 {
-    public class RabbitMQPublishDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
+    public class RabbitMQPublishDesignerViewModel2 : ActivityDesignerViewModel, INotifyPropertyChanged
     {
         readonly IRabbitMQSourceModel _model;
 
-        public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
+        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Publish;
         }
 
-        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IRabbitMQSourceModel model)
+        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem, IRabbitMQSourceModel model)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
@@ -75,13 +75,14 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
         public RelayCommand EditRabbitMQSourceCommand { get; private set; }
 
         public bool IsRabbitMQSourceFocused { get => (bool)GetValue(IsRabbitMQSourceFocusedProperty); set => SetValue(IsRabbitMQSourceFocusedProperty, value); }
-        public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel2), new PropertyMetadata(default(bool)));
 
         public bool IsQueueNameFocused { get => (bool)GetValue(IsQueueNameFocusedProperty); set => SetValue(IsQueueNameFocusedProperty, value); }
-        public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
-
+        public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel2), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsCorrelationIDFocusedProperty = DependencyProperty.Register("IsCorrelationIDFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel2), new PropertyMetadata(default(bool)));
+        public bool IsCorrelationIDFocused { get => (bool)GetValue(IsCorrelationIDFocusedProperty); set => SetValue(IsCorrelationIDFocusedProperty, value); }
         public bool IsMessageFocused { get => (bool)GetValue(IsMessageFocusedProperty); set => SetValue(IsMessageFocusedProperty, value); }
-        public static readonly DependencyProperty IsMessageFocusedProperty = DependencyProperty.Register("IsMessageFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsMessageFocusedProperty = DependencyProperty.Register("IsMessageFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel2), new PropertyMetadata(default(bool)));
 
         IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
 
@@ -119,7 +120,11 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
-
+        public string CorrelationID
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
+        }
         public bool IsDurable
         {
             get { return GetProperty<bool>(); }

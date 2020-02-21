@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+ /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -26,22 +26,22 @@ using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    public class DsfPublishRabbitMQActivity : DsfBaseActivity, IEquatable<DsfPublishRabbitMQActivity>
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
+    public class PublishRabbitMQActivity : DsfBaseActivity, IEquatable<PublishRabbitMQActivity>
     {
-        #region Ctor
-
-        public DsfPublishRabbitMQActivity()
+        public PublishRabbitMQActivity()
         {
             DisplayName = "RabbitMQ Publish";
         }
-
-        #endregion Ctor
 
         public Guid RabbitMQSourceResourceId { get; set; }
 
         [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
+        [Inputs("CorrelationID")]
+        [FindMissing]
+        public string CorrelationID { get; set; }
 
         [FindMissing]
         public bool IsDurable { get; set; }
@@ -89,6 +89,12 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 },
                 new StateVariable
                 {
+                    Name = "CorrelationID",
+                    Value = CorrelationID,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
                     Name = "IsDurable",
                     Value = IsDurable.ToString(),
                     Type = StateVariable.StateType.Input
@@ -125,8 +131,6 @@ namespace Dev2.Activities.RabbitMQ.Publish
             };
         }
 
-        #region Overrides of DsfBaseActivity
-
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
@@ -159,10 +163,11 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
+                        basicProperties.CorrelationId = CorrelationID;
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug($"Message published to queue {queueName}", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Message published to queue {queueName} {CorrelationID} ", GlobalConstants.WarewolfDebug);
                 return new List<string> { "Success" };
             }
             catch (Exception ex)
@@ -172,10 +177,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
             }
         }
 
-        #endregion Overrides of DsfBaseActivity
-
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(DsfPublishRabbitMQActivity other)
+        public bool Equals(PublishRabbitMQActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
@@ -192,6 +195,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
             return base.Equals(other)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                 && string.Equals(QueueName, other.QueueName)
+                && string.Equals(CorrelationID, other.CorrelationID)
                 && IsDurable == other.IsDurable
                 && IsExclusive == other.IsExclusive
                 && IsAutoDelete == other.IsAutoDelete
@@ -217,7 +221,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return false;
             }
 
-            return Equals((DsfPublishRabbitMQActivity)obj);
+            return Equals((PublishRabbitMQActivity)obj);
         }
 
         public override int GetHashCode()
@@ -227,6 +231,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CorrelationID != null ? CorrelationID.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDurable.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsExclusive.GetHashCode();

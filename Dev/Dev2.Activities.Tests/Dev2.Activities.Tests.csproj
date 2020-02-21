@@ -221,6 +221,7 @@
     <Compile Include="ActivityTests\AbstractFileActivityTests.cs" />
     <Compile Include="ActivityTests\GateActivityTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
+    <Compile Include="ActivityTests\RabbitMQ\Publish\PublishRabbitMQActivityTests.cs" />
     <Compile Include="ActivityTests\ReadFolderNewTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetTests.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
