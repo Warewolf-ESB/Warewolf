@@ -188,6 +188,12 @@
     </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkSteps.cs" />
     <Compile Include="DatasplitCompositionLoadTests.cs" />
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWorkflowCoverage.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudioTestFrameworkWorkflowCoverage.feature</DependentUpon>
+    </Compile>
+    <Compile Include="StudioTestFramework\StudioTestFrameworkWorkflowCoverageSteps.cs" />
     <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.CSharp" />
@@ -396,6 +402,10 @@
     <None Include="StudioTestFramework\StudioTestFramework.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkWorkflowCoverage.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkWorkflowCoverage.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
