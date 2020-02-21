@@ -174,18 +174,17 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(DataStorage))]
-        public void DataStorage_TryParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsIntTrue()
+        public void DataStorage_TryParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsDataStringTrue()
         {
-            Assert.IsTrue(DataStorage.tryParseAtom("0123").IsInt);
+            Assert.IsTrue(DataStorage.tryParseAtom("0123").IsDataString);
         }
 
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(DataStorage))]
-        public void DataStorage_TryFloatParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsFloatTrue()
+        public void DataStorage_TryFloatParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsDataStringTrue()
         {
-            Assert.IsTrue(DataStorage.tryFloatParseAtom("01.0").IsFloat);
-            Assert.IsTrue(DataStorage.tryFloatParseAtom("0.0").IsFloat);
+            Assert.IsTrue(DataStorage.tryFloatParseAtom("01.0").IsDataString);
         }
 
         [TestMethod]
@@ -194,6 +193,7 @@ namespace WarewolfParsingTest
         public void DataStorage_TryFloatParseAtom_GivenInputStringEndsWithZero_ShouldReturnIsFloatTrue()
         {
             Assert.IsTrue(DataStorage.tryFloatParseAtom("1500.50").IsFloat);
+            Assert.IsTrue(DataStorage.tryFloatParseAtom("0.0").IsFloat);
         }
     }
 }
