@@ -132,6 +132,59 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Run all tests to generate total nodes covered in workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWorkflowCoverage")]
+        public virtual void RunAllTestsToGenerateTotalNodesCoveredInWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Run all tests to generate total nodes covered in workflow", ((string[])(null)));
+#line 26
+this.ScenarioSetup(scenarioInfo);
+#line 27
+  testRunner.Given("two saved tests \"Test 1\" and \"Test 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 28
+  testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+  testRunner.When("I run all the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name",
+                        "coverage"});
+            table3.AddRow(new string[] {
+                        "Test Decision false branch",
+                        "35%"});
+            table3.AddRow(new string[] {
+                        "Test Decision true branch",
+                        "50%"});
+#line 30
+  testRunner.And("the test coverage is", ((string)(null)), table3, "And ");
+#line 34
+  testRunner.Then("the total workflow test coverage is \"85%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "node"});
+            table4.AddRow(new string[] {
+                        "assign(input)"});
+            table4.AddRow(new string[] {
+                        "Decision"});
+            table4.AddRow(new string[] {
+                        "False branch"});
+            table4.AddRow(new string[] {
+                        "Assign(error)"});
+            table4.AddRow(new string[] {
+                        "assign(input)"});
+            table4.AddRow(new string[] {
+                        "Decision"});
+            table4.AddRow(new string[] {
+                        "True branch"});
+            table4.AddRow(new string[] {
+                        "SQL"});
+#line 35
+  testRunner.And("the covered nodes are", ((string)(null)), table4, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
