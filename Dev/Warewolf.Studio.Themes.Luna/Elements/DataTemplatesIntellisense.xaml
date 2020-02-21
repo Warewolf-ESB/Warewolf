@@ -369,8 +369,8 @@
 
                 <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
                 <ComboBox Grid.Column="1" 
-                          ItemsSource="{Binding Path=OptionNames}"
-                          DisplayMemberPath="."
+                          ItemsSource="{Binding Path=Options}"
+                          DisplayMemberPath="Name"
                           Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource ComboBoxStyle}" 
@@ -390,7 +390,7 @@
                             Content="..."
                             Margin="{StaticResource ControlBorderLeft}"
                             Command="{Binding Path=DataContext.EditSourceCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}"
-                            CommandParameter="{Binding Path=Value}">
+                            CommandParameter="{Binding Path=DataContext.ResourceId, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
