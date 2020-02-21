@@ -82,7 +82,7 @@ namespace QueueWorker
             public void Run()
             {
                 var logger = new ExecutionLogger(new JsonSerializer(), new WebSocketPool());
-                logger.Info("Starting queue worker", _config.QueueName);
+                //logger.Info("Starting queue worker", _config.QueueName);
                 try
                 {                  
 
@@ -104,7 +104,7 @@ namespace QueueWorker
                     else
                     {
                         Console.WriteLine("Failed to start queue worker: No queue source.");
-                        logger.Error("Failed to start queue worker: No queue source", _config.QueueName);
+                        //logger.Error("Failed to start queue worker: No queue source", _config.QueueName);
                     }
                 }
                 catch (Exception ex)

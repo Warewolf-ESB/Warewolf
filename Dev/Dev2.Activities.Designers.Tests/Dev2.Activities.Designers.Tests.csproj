@@ -124,6 +124,7 @@
     <Compile Include="Oracle\TestOracleViewModel.cs" />
     <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
+    <Compile Include="RabbitMQ\Publish\DsfRabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
     <Compile Include="ODBC\TestODBCServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />

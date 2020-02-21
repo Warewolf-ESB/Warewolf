@@ -106,6 +106,7 @@
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
+    <Compile Include="Activities\RabbitMQ\Publish\PublishRabbitMQActivity.cs" />
     <Compile Include="Activities\RedisCounter\RedisCounterActivity.cs" />
     <Compile Include="Activities\RedisRemove\RedisRemoveActivity.cs" />
     <Compile Include="Activities\RedisCache\RedisCacheActivity.cs" />
