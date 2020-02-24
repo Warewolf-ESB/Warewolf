@@ -6,6 +6,12 @@ namespace Dev2.Activities.Specs.StudioTestFramework
     [Binding]
     public class StudioTestFrameworkWorkflowCoverageSteps
     {
+        [Given(@"a workflow with below nodes")]
+        public void GivenAWorkflowWithBelowNodes(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [Given(@"a saved test is run")]
         public void GivenASavedTestIsRun()
         {
@@ -14,12 +20,6 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 
         [Given(@"generate test coverage is selected")]
         public void GivenGenerateTestCoverageIsSelected()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"workflow only tests")]
-        public void GivenWorkflowOnlyTests(Table table)
         {
             ScenarioContext.Current.Pending();
         }

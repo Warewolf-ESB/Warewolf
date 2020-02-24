@@ -93,42 +93,44 @@ namespace Dev2.Activities.Specs.StudioTestFramework
                         "StudioTestFrameworkWorkflowCoverage"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
-#line 8
-  testRunner.Given("a saved test is run", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
-  testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
             table1.AddRow(new string[] {
-                        "assign(input)"});
+                        "Assign(input)"});
             table1.AddRow(new string[] {
                         "Decision"});
             table1.AddRow(new string[] {
-                        "False"});
-            table1.AddRow(new string[] {
                         "Assign(error)"});
-#line 10
-  testRunner.And("workflow only tests", ((string)(null)), table1, "And ");
+            table1.AddRow(new string[] {
+                        "SQL"});
+            table1.AddRow(new string[] {
+                        "Assign(person)"});
+            table1.AddRow(new string[] {
+                        "SMTP Send"});
+#line 8
+  testRunner.Given("a workflow with below nodes", ((string)(null)), table1, "Given ");
 #line 16
-  testRunner.When("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
+  testRunner.When("I run test \"Test Decision false branch\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 18
   testRunner.And("test coverage is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
             table2.AddRow(new string[] {
-                        "assign(input)"});
+                        "Assign(input)"});
             table2.AddRow(new string[] {
                         "Decision"});
             table2.AddRow(new string[] {
                         "False"});
             table2.AddRow(new string[] {
                         "Assign(error)"});
-#line 18
+#line 19
   testRunner.Then("the covered nodes are", ((string)(null)), table2, "Then ");
-#line 24
-  testRunner.And("the test coverage is \"35%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+  testRunner.And("the test coverage is \"50%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -139,7 +141,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RunAllTestsToGenerateTotalNodesCoveredInWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Run all tests to generate total nodes covered in workflow", ((string[])(null)));
-#line 26
+#line 27
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -148,11 +150,11 @@ this.ScenarioSetup(scenarioInfo);
                         "Test Decision false branch"});
             table3.AddRow(new string[] {
                         "Test Decision true branch"});
-#line 27
+#line 28
   testRunner.Given("saved test(s) below is run", ((string)(null)), table3, "Given ");
-#line 31
-  testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
+  testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
   testRunner.When("I run all the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -164,9 +166,9 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "Test Decision true branch",
                         "50%"});
-#line 33
+#line 34
   testRunner.And("the test coverage is", ((string)(null)), table4, "And ");
-#line 37
+#line 38
   testRunner.Then("the total workflow test coverage is \"85%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -187,7 +189,7 @@ this.ScenarioSetup(scenarioInfo);
                         "True branch"});
             table5.AddRow(new string[] {
                         "SQL"});
-#line 38
+#line 39
   testRunner.And("the nodes covered are", ((string)(null)), table5, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -199,7 +201,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RunAllTestsShouldShowWhichNodesHaveNoCoverageReports()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Run all tests should show which nodes have no coverage reports", ((string[])(null)));
-#line 49
+#line 50
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -208,9 +210,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Test Decision false branch"});
             table6.AddRow(new string[] {
                         "Test Decision true branch"});
-#line 50
+#line 51
   testRunner.Given("saved test(s) below is run", ((string)(null)), table6, "Given ");
-#line 54
+#line 55
   testRunner.And("I run all the tests with generate coverage selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -219,7 +221,7 @@ this.ScenarioSetup(scenarioInfo);
                         "assign(person)"});
             table7.AddRow(new string[] {
                         "SMTP Send"});
-#line 55
+#line 56
   testRunner.Then("the nodes not covered are", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -233,11 +235,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test coverage summary view folders should have coverage of all workflows it conta" +
                     "ins", ((string[])(null)));
-#line 60
-this.ScenarioSetup(scenarioInfo);
 #line 61
-  testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 62
+  testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 63
   testRunner.When("a folder containing test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -248,7 +250,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1324",
                         "1300",
                         "24"});
-#line 63
+#line 64
   testRunner.Then("information bar will have these values", ((string)(null)), table8, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -260,7 +262,7 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "Folder-two",
                         "warning: no coverage report found"});
-#line 66
+#line 67
   testRunner.And("the per folder coverage summary is", ((string)(null)), table9, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -272,11 +274,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void TestCoverageSummaryViewWorkflowsShouldHavePerWorkflowCoverage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test coverage summary view workflows should have per workflow coverage", ((string[])(null)));
-#line 71
-this.ScenarioSetup(scenarioInfo);
 #line 72
-  testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 73
+  testRunner.Given("a test coverage summary view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 74
   testRunner.And("a folder containing test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -287,7 +289,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1324",
                         "1300",
                         "24"});
-#line 74
+#line 75
   testRunner.And("information bar will have these values", ((string)(null)), table10, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -302,9 +304,9 @@ this.ScenarioSetup(scenarioInfo);
                         "wf-two",
                         "warning: no coverage report found",
                         "15%"});
-#line 77
+#line 78
   testRunner.And("the per workflow coverage summary is", ((string)(null)), table11, "And ");
-#line 81
+#line 82
   testRunner.When("I select \"wf-one\" within test coverage summary view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -340,7 +342,7 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "true",
                         "SMTP Send"});
-#line 82
+#line 83
   testRunner.Then("the workflow nodes will be as", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
