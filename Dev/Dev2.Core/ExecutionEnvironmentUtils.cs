@@ -186,8 +186,7 @@ namespace Dev2
             }
             else
             {
-                var eval = PublicFunctions.AtomtoString(warewolfAtom);
-                jObject.Add(key, eval);
+                jObject.Add(key, warewolfAtom.ToString());
             }
         }
 

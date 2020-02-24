@@ -219,7 +219,7 @@ namespace Dev2.Tests
             StringAssert.Contains(actual, "<DataList>");
             StringAssert.Contains(actual, "<rec>");
             StringAssert.Contains(actual, "<a>1</a>");
-            StringAssert.Contains(actual, "<a />"); //When WarewolfAtom Result is null then return null instead of empty string
+            StringAssert.Contains(actual, "<a></a>");
             StringAssert.Contains(actual, "</rec>");
             StringAssert.Contains(actual, "</DataList>");
             StringAssert.Contains(actual, "<FullName>Bob Mary</FullName>");
@@ -261,8 +261,8 @@ namespace Dev2.Tests
             //------------Assert Results-------------------------
             StringAssert.Contains(actual, "rec");
             StringAssert.Contains(actual, "\"a\": 1");
-            StringAssert.Contains(actual, "\"a\": null"); //When WarewolfAtom Result is null then return null instead of empty string
-            StringAssert.Contains(actual, "\"a\": null"); //When WarewolfAtom Result is null then return null instead of empty string
+            StringAssert.Contains(actual, "\"a\": \"\"");
+            StringAssert.Contains(actual, "\"a\": \"\"");
             StringAssert.Contains(actual, "\"FullName\": \"Bob Mary\"");
             StringAssert.Contains(actual, "\"Age\": 15");
             StringAssert.Contains(actual, "\"Salary\": 1550.55");
