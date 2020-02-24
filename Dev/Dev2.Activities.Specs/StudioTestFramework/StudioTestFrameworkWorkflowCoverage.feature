@@ -5,23 +5,24 @@
 
 @StudioTestFrameworkWorkflowCoverage
 Scenario: Run an individual test to show partial coverage of nodes
-		Given a saved test is run
+		Given a workflow with below nodes
+		| node           |
+		| Assign(input)  |
+		| Decision       |
+		| Assign(error)  |
+		| SQL            |
+		| Assign(person) |
+		| SMTP Send      |
 		And generate test coverage is selected
-		And workflow only tests
-		| node          |
-		| assign(input) |
-		| Decision		|
-		| False			|
-		| Assign(error) |
-		When I run the test 
+		When I run test "Test Decision false branch"
 		And test coverage is generated 
 		Then the covered nodes are 
 		| node          |
-		| assign(input) |
+		| Assign(input) |
 		| Decision		|
 		| False			|
 		| Assign(error) |
-		And the test coverage is "35%"
+		And the test coverage is "50%"
 
 Scenario: Run all tests to generate total nodes covered in workflow
 		Given saved test(s) below is run
