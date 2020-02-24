@@ -111,9 +111,7 @@ and tryFloatParseAtom (data : string) =
     if data.StartsWith("0") && (not (data.StartsWith("0."))) then DataString data
     else if (data.Contains(".")) then 
         let success = System.Decimal.TryParse(data, &value) && System.Double.TryParse(data, &valuse)
-        if success then 
-            if (data.EndsWith("0")) && success then DataString data
-            else Float(System.Convert.ToDouble(value))
+        if success then Float(System.Convert.ToDouble(value))
         else DataString data
     else DataString data
 
