@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Warewolf.Options;
 
@@ -634,6 +635,41 @@ namespace Warewolf.Data.Tests
 
             expectedValue = optionConditionExpression.CompareTo(optionConditionExpression);
             Assert.AreEqual(0, expectedValue);
+        }
+        
+        [Test]
+        [Category(nameof(OptionSourceCombobox))]
+        [Author("Pieter Terblanche")]
+        public void OptionSourceCombobox_Default()
+        {
+            var optionSourceCombobox = new OptionSourceCombobox();
+
+            Assert.IsNull(optionSourceCombobox.Options);
+            
+            optionSourceCombobox.Options = new INamedGuid[] { new NamedGuid { Name = "Item", Value = Guid.Empty },  };
+            
+            Assert.IsNotNull(optionSourceCombobox.OptionNames);
+            Assert.AreEqual(1, optionSourceCombobox.OptionNames.Count);
+
+            Assert.IsNull(optionSourceCombobox.Name);
+            optionSourceCombobox.Name = "Name";
+            Assert.AreEqual("Name", optionSourceCombobox.Name);
+
+            Assert.IsNull(optionSourceCombobox.Value);
+            var expectedGuid = Guid.NewGuid();
+            optionSourceCombobox.Value = new NamedGuid {Name = "Item1", Value = expectedGuid};
+            Assert.IsNotNull(optionSourceCombobox.Value);
+            Assert.AreEqual("Item1", optionSourceCombobox.Value.Name);
+            Assert.AreEqual(expectedGuid, optionSourceCombobox.Value.Value);
+
+            Assert.IsNull(optionSourceCombobox.HelpText);
+            Assert.IsNull(optionSourceCombobox.Tooltip);
+
+            optionSourceCombobox.HelpText = "OptionSourceComboboxHelpText";
+            optionSourceCombobox.Tooltip = "OptionSourceComboboxToolTip";
+            
+            Assert.AreEqual("OptionSourceComboboxHelpText", optionSourceCombobox.HelpText);
+            Assert.AreEqual("OptionSourceComboboxToolTip", optionSourceCombobox.Tooltip);
         }
         
         [Test]
