@@ -1,4 +1,14 @@
-﻿using Dev2.Activities.RabbitMQ.Publish;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -7,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Runtime.Interfaces;
-using System.Reflection;
 using Dev2.Common.State;
 using System.Linq;
 
@@ -17,8 +26,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
     public class PublishRabbitMQActivityTests
     {
         [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Construct_Paramterless_SetsDefaultPropertyValues()
         {
             //------------Setup for test--------------------------
@@ -31,8 +40,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Sucess()
         {
             //------------Setup for test--------------------------
@@ -76,7 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_With_CorrelationID_Sucess()
         {
             //------------Setup for test--------------------------
@@ -119,8 +128,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.AreEqual("Prop2", mockBasicProperties.Object.CorrelationId);
         }
         [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_NullSource()
         {
             //------------Setup for test--------------------------
@@ -142,8 +151,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_NoParams()
         {
             //------------Setup for test--------------------------
@@ -167,8 +176,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_InvalidParams()
         {
             //------------Setup for test--------------------------
@@ -192,8 +201,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         [ExpectedException(typeof(Exception))]
         public void PublishRabbitMQActivity_Execute_Failure_NullException()
         {
@@ -220,7 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PublishRabbitMQActivity")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------

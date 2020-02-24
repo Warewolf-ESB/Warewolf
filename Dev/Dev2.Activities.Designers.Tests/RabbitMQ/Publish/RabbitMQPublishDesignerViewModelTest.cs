@@ -11,7 +11,6 @@
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
     {
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RabbitMQPublishDesignerViewModel2_Constructor_NullModelItem_ThrowsException()
         {
@@ -47,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RabbitMQPublishDesignerViewModel2_Constructor_IRabbitMQModelIsNull_ThrowsArgumentNullException()
         {
@@ -62,7 +61,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         public void RabbitMQPublishDesignerViewModel2_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
@@ -80,7 +79,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         public void RabbitMQPublishDesignerViewModel2_Constructor1()
         {
             //------------Setup for test--------------------------
@@ -128,7 +127,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         public void RabbitMQPublishDesignerViewModel2_Validate()
         {
             //------------Setup for test--------------------------
@@ -156,7 +155,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         public void RabbitMQPublishDesignerViewModel2_EditRabbitMQSourceCommand_ShouldCallOpenResource()
         {
             //------------Setup for test--------------------------
@@ -173,7 +172,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("RabbitMQPublishDesignerViewModel2")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
         public void RabbitMQPublishDesignerViewModel2_NewRabbitMQSourceCommand_ShouldPublishShowNewResourceWizard()
         {
             var model = new Mock<IRabbitMQSourceModel>();

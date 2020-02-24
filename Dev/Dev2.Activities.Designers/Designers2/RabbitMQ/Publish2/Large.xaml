@@ -118,7 +118,7 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
         
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="CorrelationID" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="CorrelationID" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
                                 DefaultText="CorrelationID"
                                 AllowUserInsertLine="False"
