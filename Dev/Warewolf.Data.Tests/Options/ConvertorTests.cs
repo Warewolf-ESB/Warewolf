@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Warewolf.Options;
@@ -22,7 +23,7 @@ namespace Warewolf.Data.Tests
         {
             var result = ConvertDataToOptionsList();
 
-            Assert.AreEqual(5, result.Length);
+            Assert.AreEqual(6, result.Length);
         }
 
 
@@ -57,7 +58,7 @@ namespace Warewolf.Data.Tests
         }
 
         [Test]
-       
+
         public void OptionConvertor_GivenSimpleClass_ExpectedEnumOption_Success()
         {
             //----------------------Arrange----------------------
@@ -69,7 +70,7 @@ namespace Warewolf.Data.Tests
         }
 
         [Test]
-       
+
         public void OptionConvertor_Given_MultiDataProvider_WithEnum_ReturnSuccess()
         {
             //----------------------Arrange----------------------
@@ -90,6 +91,28 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("Temperature", oatsBreakfast[1].Name);
         }
 
+        [Test]
+
+        public void OptionConvertor_Given_NamedGuid_ReturnSuccess()
+        {
+            //----------------------Arrange----------------------
+            //----------------------Act--------------------------
+            var result = ConvertDataToOptionsList();
+
+            var optionSourceCombobox = (OptionSourceCombobox)result[5];
+            Assert.AreEqual("MyNamedGuid", optionSourceCombobox.Name);
+            Assert.AreEqual(2, optionSourceCombobox.Options.Count());
+            Assert.AreEqual(2, optionSourceCombobox.OptionNames.Count());
+
+            Assert.AreEqual("sopt1", optionSourceCombobox.Options[0].Name);
+            Assert.AreEqual(Guid.Empty, optionSourceCombobox.Options[0].Value);
+            Assert.AreEqual("sopt2", optionSourceCombobox.Options[1].Name);
+            Assert.AreNotEqual(Guid.Empty, optionSourceCombobox.Options[1].Value);
+
+            Assert.AreEqual("OptionComboboxHelpText", optionSourceCombobox.HelpText);
+            Assert.AreEqual("OptionComboboxTooltip", optionSourceCombobox.Tooltip);
+        }
+
         private static IOption[] ConvertDataToOptionsList()
         {
             var cls = new TestData
@@ -98,7 +121,8 @@ namespace Warewolf.Data.Tests
                 MyString = "hello",
                 MyBool = true,
                 MyEnum = (int)MyOptions.Option1,
-                MyBreakfast = new OatsBreakfast()
+                MyBreakfast = new OatsBreakfast(),
+                MyNamedGuid = new NamedGuid { Name = "Item", Value = Guid.Empty },
             };
 
             return OptionConvertor.Convert(cls);
@@ -118,14 +142,29 @@ namespace Warewolf.Data.Tests
             public bool MyBool { get; set; }
             public int MyEnum { get; set; }
 
-
             [DataValue(nameof(BreakfastBase.BreakfastType))]
             [MultiDataProvider(typeof(OatsBreakfast), typeof(WeetbixBreakfast))]
             public BreakfastBase MyBreakfast { get; set; }
 
+            [DataProvider(typeof(ResourceDataTest))]
+            [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionComboboxHelpText))]
+            [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionComboboxTooltip))]
+            public NamedGuid MyNamedGuid { get; set; }
+
+
+
             public class OptionsForS : IOptionDataList<string>
             {
                 public string[] Items => new string[] { "sopt1", "sopt2", "sopt3", "sopt4" };
+            }
+
+            public class ResourceDataTest : IOptionDataList<INamedGuid>
+            {
+                public INamedGuid[] Items => new NamedGuid[]
+                {
+                    new NamedGuid {Name = "sopt1", Value = Guid.Empty },
+                    new NamedGuid {Name = "sopt2", Value = Guid.NewGuid() },
+                };
             }
         }
 
