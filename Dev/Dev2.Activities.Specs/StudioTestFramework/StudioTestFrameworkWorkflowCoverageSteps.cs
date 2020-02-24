@@ -6,8 +6,8 @@ namespace Dev2.Activities.Specs.StudioTestFramework
     [Binding]
     public class StudioTestFrameworkWorkflowCoverageSteps
     {
-        [Given(@"a workflow with below nodes")]
-        public void GivenAWorkflowWithBelowNodes(Table table)
+        [Given(@"a workflow ""(.*)"" with below nodes")]
+        public void GivenAWorkflowWithBelowNodes(string p0, Table table)
         {
             ScenarioContext.Current.Pending();
         }
@@ -60,8 +60,8 @@ namespace Dev2.Activities.Specs.StudioTestFramework
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"saved test\(s\) below is run")]
-        public void GivenSavedTestSBelowIsRun(Table table)
+        [Given(@"""(.*)"" saved test\(s\) below")]
+        public void GivenSavedTestSBelow(string p0, Table table)
         {
             ScenarioContext.Current.Pending();
         }
@@ -122,8 +122,8 @@ namespace Dev2.Activities.Specs.StudioTestFramework
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"the workflow nodes will be as")]
-        public void ThenTheWorkflowNodesWillBeAs(Table table)
+        [Then(@"the workflow nodes will show")]
+        public void ThenTheWorkflowNodesWillShow(Table table)
         {
             ScenarioContext.Current.Pending();
         }

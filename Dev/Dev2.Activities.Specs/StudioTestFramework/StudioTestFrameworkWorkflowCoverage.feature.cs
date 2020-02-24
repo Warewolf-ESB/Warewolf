@@ -109,7 +109,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "SMTP Send"});
 #line 8
-  testRunner.Given("a workflow with below nodes", ((string)(null)), table1, "Given ");
+  testRunner.Given("a workflow \"wf-one\" with below nodes", ((string)(null)), table1, "Given ");
 #line 16
   testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
   testRunner.Then("the covered nodes are", ((string)(null)), table2, "Then ");
 #line 25
-  testRunner.And("the test coverage is \"50%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the test coverage is \"35%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -151,7 +151,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "Test Decision true branch"});
 #line 28
-  testRunner.Given("saved test(s) below is run", ((string)(null)), table3, "Given ");
+  testRunner.Given("\"wf-one\" saved test(s) below", ((string)(null)), table3, "Given ");
 #line 32
   testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
@@ -174,7 +174,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
             table5.AddRow(new string[] {
-                        "assign(input)"});
+                        "Assign(input)"});
             table5.AddRow(new string[] {
                         "Decision"});
             table5.AddRow(new string[] {
@@ -182,7 +182,7 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "Assign(error)"});
             table5.AddRow(new string[] {
-                        "assign(input)"});
+                        "Assign(input)"});
             table5.AddRow(new string[] {
                         "Decision"});
             table5.AddRow(new string[] {
@@ -211,14 +211,14 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "Test Decision true branch"});
 #line 51
-  testRunner.Given("saved test(s) below is run", ((string)(null)), table6, "Given ");
+  testRunner.Given("\"wf-one\" saved test(s) below", ((string)(null)), table6, "Given ");
 #line 55
   testRunner.And("I run all the tests with generate coverage selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
             table7.AddRow(new string[] {
-                        "assign(person)"});
+                        "Assign(person)"});
             table7.AddRow(new string[] {
                         "SMTP Send"});
 #line 56
@@ -303,7 +303,7 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "wf-two",
                         "warning: no coverage report found",
-                        "15%"});
+                        "0%"});
 #line 78
   testRunner.And("the per workflow coverage summary is", ((string)(null)), table11, "And ");
 #line 82
@@ -326,7 +326,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Assign(error)"});
             table12.AddRow(new string[] {
                         "true",
-                        "assign(input)"});
+                        "Assign(input)"});
             table12.AddRow(new string[] {
                         "true",
                         "Decision"});
@@ -337,13 +337,13 @@ this.ScenarioSetup(scenarioInfo);
                         "true",
                         "SQL"});
             table12.AddRow(new string[] {
-                        "true",
-                        "assign(person)"});
+                        "false",
+                        "Assign(person)"});
             table12.AddRow(new string[] {
-                        "true",
+                        "false",
                         "SMTP Send"});
 #line 83
-  testRunner.Then("the workflow nodes will be as", ((string)(null)), table12, "Then ");
+  testRunner.Then("the workflow nodes will show", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
