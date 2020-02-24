@@ -19,3 +19,10 @@ Bug Fixes
 - Double restart of the trigger when changes are saved.
 - Connection errors when the QueueWorker communicated with the Logger.
 - Queue Trigger View does not show scrollbars when on a smaller screen
+
+Mon Feb 24 2020
+===============
+
+Features
+---------
+- Resumption Gates
