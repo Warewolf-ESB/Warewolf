@@ -194,6 +194,7 @@ namespace Dev2.Tests
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
             dataObject.BookmarkExecutionCallbackID = Guid.NewGuid();
             dataObject.CurrentBookmarkName = "def";
+            dataObject.CustomTransactionID = "def-ecd-01";
             dataObject.DataList = new StringBuilder("<x/>");
             dataObject.DataListID = Guid.NewGuid();
             dataObject.DatalistInMergeDepth = enTranslationDepth.Data;
@@ -261,7 +262,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(72, properties.Length);
+            Assert.AreEqual(74, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -331,6 +332,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.Settings.KeepLogsForDays, clonedObject.Settings.KeepLogsForDays);
             Assert.AreNotEqual(dataObject.AuthCache, clonedObject.AuthCache);
             Assert.AreEqual(dataObject.ExecutionException, clonedObject.ExecutionException);
+            Assert.AreEqual(dataObject.CustomTransactionID, clonedObject.CustomTransactionID);
         }
 
         #region Debug Mode Test
