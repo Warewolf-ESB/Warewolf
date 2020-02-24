@@ -4191,7 +4191,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        public void ShellViewModel_NewSourceCommand_NewServerSourceCommand()
+        public void ShellViewModel_NewSourceCommand_CanExecute_Expected_True()
         {
             var resourceId = Guid.NewGuid();
             var resourceName = "ResourceName";
