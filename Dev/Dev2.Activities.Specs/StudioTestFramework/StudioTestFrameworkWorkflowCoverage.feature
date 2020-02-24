@@ -5,7 +5,7 @@
 
 @StudioTestFrameworkWorkflowCoverage
 Scenario: Run an individual test to show partial coverage of nodes
-		Given a workflow with below nodes
+		Given a workflow "wf-one" with below nodes
 		| node           |
 		| Assign(input)  |
 		| Decision       |
@@ -22,10 +22,10 @@ Scenario: Run an individual test to show partial coverage of nodes
 		| Decision		|
 		| False			|
 		| Assign(error) |
-		And the test coverage is "50%"
+		And the test coverage is "35%"
 
 Scenario: Run all tests to generate total nodes covered in workflow
-		Given saved test(s) below is run
+		Given "wf-one" saved test(s) below
 		| name						 |
 		| Test Decision false branch |
 		| Test Decision true branch  |
@@ -38,24 +38,24 @@ Scenario: Run all tests to generate total nodes covered in workflow
 		Then the total workflow test coverage is "85%"
 		And the nodes covered are
 		| node          |
-		| assign(input) |
+		| Assign(input) |
 		| Decision		|
 		| False branch	|
 		| Assign(error) |
-		| assign(input) |
+		| Assign(input) |
 		| Decision		|
 		| True branch   |
 		| SQL			|
 
 Scenario: Run all tests should show which nodes have no coverage reports
-		Given saved test(s) below is run
+		Given "wf-one" saved test(s) below
 		| name						 |
 		| Test Decision false branch |
 		| Test Decision true branch  | 
 		And I run all the tests with generate coverage selected
 		Then the nodes not covered are
 		| node				|
-		| assign(person)	|
+		| Assign(person)	|
 		| SMTP Send			|
 
 Scenario: Test coverage summary view folders should have coverage of all workflows it contains
@@ -78,17 +78,17 @@ Scenario: Test coverage summary view workflows should have per workflow coverage
 		And the per workflow coverage summary is
 		| name   | coverage								| branch_coverage |
 		| wf-one | 85%									| 30%             |
-		| wf-two | warning: no coverage report found	| 15%             |
+		| wf-two | warning: no coverage report found	| 0%              |
 		When I select "wf-one" within test coverage summary view
-		Then the workflow nodes will be as 
+		Then the workflow nodes will show 
 		| passed | node           |
 		| true   | assign(input)  |
 		| false  | Decision       |
 		| true   | False branch   |
 		| true   | Assign(error)  |
-		| true   | assign(input)  |
+		| true   | Assign(input)  |
 		| true   | Decision       |
 		| true   | True branch    |
 		| true   | SQL            |
-		| true   | assign(person) |
-		| true	 | SMTP Send	  |
+		| false  | Assign(person) |
+		| false	 | SMTP Send	  |
