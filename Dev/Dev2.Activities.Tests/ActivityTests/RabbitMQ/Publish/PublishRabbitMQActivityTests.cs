@@ -46,10 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.IsNotNull(publishRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Publish", publishRabbitMQActivity.DisplayName);
         }
-        static IExecutionEnvironment CreateExecutionEnvironment()
-        {
-            return new ExecutionEnvironment();
-        }
+       
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
