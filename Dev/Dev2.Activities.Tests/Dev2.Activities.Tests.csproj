@@ -555,7 +555,7 @@
       <Version>2.2.2</Version>
     </PackageReference>
     <PackageReference Include="RabbitMQ.Client">
-      <Version>3.6.1</Version>
+      <Version>5.1.2</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
