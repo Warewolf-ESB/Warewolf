@@ -216,6 +216,44 @@ and assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (ex
         addedenv
     | _ -> failwith "top level assign cannot be a nested expresssion"
 
+and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResult) (exp : JsonIdentifierExpression) : WarewolfEnvironment = 
+    let evalResult = ((evalResultToString res).TrimEnd ' ').TrimStart ' '
+
+    match exp with
+    | NameExpression a -> 
+        if (evalResult.StartsWith "{" && evalResult.EndsWith "}") then
+            let actualValue = JContainer.Parse evalResult :?> JContainer
+            let addedenv = addOrReturnJsonObjects env a.Name (new JObject())
+            addToJsonObjects addedenv a.Name actualValue            
+        else
+            env
+    | NestedNameExpression a -> 
+        let addedenv = addOrReturnJsonObjects env a.ObjectName (new JObject())
+        let obj = addedenv.JsonObjects.[a.ObjectName]
+        expressionToObject obj a.Next res |> ignore
+        addedenv
+    | IndexNestedNameExpression b -> 
+        let addedenv = addOrReturnJsonObjects env b.ObjectName (new JArray())
+        let obj = addedenv.JsonObjects.[b.ObjectName]
+        if b.Next = Terminal then 
+            let arr = obj :?> JArray
+            let indexes = indexToInt b.Index arr
+            let actualIndexes = 
+                match b.Index with
+                    | IntIndex a -> indexes
+                    | Last -> indexes
+                    | Star -> if indexes.Length = 0 then [1] else indexes
+                    | _ -> failwith "invalid index"
+            if (evalResult.StartsWith "{" && evalResult.EndsWith "}") || (evalResult.StartsWith "[{" && evalResult.EndsWith "}]") then
+                let actualValue = JContainer.Parse evalResult
+                List.map (fun a -> addValueToJArray arr a actualValue) actualIndexes |> ignore
+            else
+                let actualValue = new JValue(evalResultToString res)
+                List.map (fun a -> addValueToJArray arr a actualValue) actualIndexes |> ignore
+        else objectFromExpression exp res obj |> ignore
+        addedenv
+    | _ -> failwith "top level assign cannot be a nested expresssion"
+
 and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifierExpression = 
     match a with
     | ScalarExpression _ -> failwith "unspecified error"
@@ -238,8 +276,8 @@ and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
 and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     let left = parseLanguageExpression value.Name update
     let jsonId = languageExpressionToJsonIdentifier left
-    let right = eval env update false value.Value
-    assignGivenAValue env right jsonId
+    let right = evalForJson env update false value.Value
+    assignGivenAValueForJson env right jsonId
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env

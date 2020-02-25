@@ -26,6 +26,18 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("CommonFunctions")]
+        public void CommonFunctions_atomtoString_GivenJson_ExpectCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            var result = EvaluationFunctions.eval(env, 0, false, "[[@a]]");
+            var a = CommonFunctions.evalResultToString(result);
+            Assert.AreEqual("", a);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CommonFunctions_MethodName")]
         public void CommonFunctions_MethodName_AtomRecordToString_ExpectCorrectString()
@@ -218,6 +230,11 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
+
+            env.AssignJson(new AssignValue("[[@a]]", "{\"aa\":1}"), 0);
+            env.AssignJson(new AssignValue("[[@a.b]]", "{\"bb\":2}"), 0);
+            env.AssignJson(new AssignValue("[[@a.c]]", "[[@a]]"), 0);
+
             var p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }

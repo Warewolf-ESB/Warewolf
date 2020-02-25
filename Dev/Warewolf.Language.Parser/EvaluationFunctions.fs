@@ -504,6 +504,45 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         else failwith "non existent object"
     | ComplexExpression a -> eval env update shouldEscape (languageExpressionToString lang)
     | WarewolfAtomExpression a -> WarewolfAtomResult(a)
+and evalJsonForJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : LanguageExpression) =     
+    match lang with
+    | ScalarExpression a -> 
+        if env.JsonObjects.ContainsKey a then WarewolfAtomResult(JsonObject(env.JsonObjects.[a]))
+        else failwith "non existent object"
+    | RecordSetExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
+        if env.JsonObjects.ContainsKey a.Name then 
+            let jo = env.JsonObjects.[a.Name]
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            WarewolfAtomListresult
+                (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+        else failwith "non existent object"
+    | RecordSetNameExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
+        if env.JsonObjects.ContainsKey a.Name then 
+            let jo = env.JsonObjects.[a.Name]
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            WarewolfAtomListresult
+                (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+        else failwith "non existent object"
+    
+    | JsonIdentifierExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
+        if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
+            let jo = env.JsonObjects.[(jsonIdentifierToName a)]
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            if Seq.length data = 1 then
+                WarewolfAtomResult(Seq.exactlyOne data)
+            else
+                if Seq.isEmpty data then
+                    if jPath = "$."+(jsonIdentifierToName a) then
+                        WarewolfAtomResult(WarewolfAtom.JsonObject(jo))
+                    else failwith "non existent object"                        
+                else
+                    WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+        else failwith "non existent object"
+    | ComplexExpression a -> eval env update shouldEscape (languageExpressionToString lang)
+    | WarewolfAtomExpression a -> WarewolfAtomResult(a)
 //specialise eval for calculate. Its just eval with the addition of some quotes. can be merged into eval function at the expense of complexity for c# developers
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs

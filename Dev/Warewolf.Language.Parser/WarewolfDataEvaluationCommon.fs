@@ -34,6 +34,7 @@ let atomtoString (x:WarewolfAtom )=
                      a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
+        | JsonObject a -> a.ToString()
         | Nothing -> null
         | NullPlaceholder -> null
         | PositionedValue (_,b) -> b.ToString()
@@ -43,6 +44,7 @@ let warewolfAtomRecordtoString (x:WarewolfAtomRecord )=
                      a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
+        | JsonObject a -> a.ToString()
         | Nothing -> ""
         | NullPlaceholder -> ""
         | PositionedValue (_,b) -> b.ToString()
@@ -317,8 +319,65 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (shouldEscape:bool) (lang:st
                                             match res with
                                             | WarewolfAtomListresult x -> WarewolfAtomListresult (x)
                                             | WarewolfAtomResult x -> WarewolfAtomResult(x)
-                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))            
-                                                                                 
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
+
+and  evalForJson  (env: WarewolfEnvironment)  (update:int) (shouldEscape:bool) (lang:string) : WarewolfEvalResult=
+    if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then
+        evalForCalculate env update lang
+    elif lang.StartsWith(Dev2.Common.GlobalConstants.AggregateCalculateTextConvertPrefix) then
+       evalForCalculateAggregate env update lang
+    else
+        let EvalComplex (exp:LanguageExpression list) = 
+            if((List.length exp) =1) then
+                match exp.[0] with
+                    | RecordSetExpression a ->  WarewolfAtomListresult(  (evalRecordsSet a env) )
+                    | ScalarExpression a ->  WarewolfAtomResult (evalScalar a env)
+                    | WarewolfAtomExpression a ->  WarewolfAtomResult a
+                    | _ ->failwith "you should not get here"
+            else    
+                let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
+                let evaled = (List.map (languageExpressionToString >> (eval  env update shouldEscape)>>evalResultToStringAsList)  exp )  
+                let apply (fList: ('a->'b) list) (xList: 'a list)  = 
+                    [ for f in fList do
+                        for x in xList do
+                        yield f x ]  
+
+                let (<!>) = List.map
+                let (<*>) = apply
+                if Seq.isEmpty evaled then WarewolfAtomResult (DataString "") 
+                else
+                let vals = List.ofSeq (List.ofSeq evaled |> List.reduce (fun acc elem ->
+                                                                let x = List.ofSeq acc
+                                                                let y = List.ofSeq elem
+                                                                let z = (+) <!> x <*> y
+                                                                Seq.ofList z)) 
+                if (List.length vals = 1 && (not (vals.Head.Contains("[[")))) then
+                    WarewolfAtomResult (DataString vals.Head)
+                else
+                    let checkVal (str:string) =
+                        if(str.Contains("[[") && (not (str=start))) then
+                            eval env update shouldEscape str
+                        else
+                            WarewolfAtomResult (DataString str)                    
+                    let atoms = List.map checkVal vals
+                    let v = List.map evalResultToString atoms
+                    let x = List.map DataString v 
+                    WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",x))
+    
+        let buffer =  parseLanguageExpression lang update
+                        
+        match buffer with
+            | RecordSetExpression a -> WarewolfAtomListresult(  (evalRecordsSet a env) )
+            | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
+            | WarewolfAtomExpression a -> WarewolfAtomResult a
+            | RecordSetNameExpression x ->evalDataSetExpression env update x
+            | ComplexExpression  a -> EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)
+            | JsonIdentifierExpression a -> let res = evalJsonForJson env update shouldEscape buffer
+                                            match res with
+                                            | WarewolfAtomListresult x -> WarewolfAtomListresult (x)
+                                            | WarewolfAtomResult x -> WarewolfAtomResult(x)
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
+
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
 
@@ -817,12 +876,13 @@ let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (valu
 
 let atomtoJToken (x:WarewolfAtom )=
     match x with 
-        | Float a -> new JValue(a)
-        | Int a -> new JValue(a)
-        | DataString a -> new JValue(a)
-        | Nothing -> null
-        | NullPlaceholder -> null
-        | PositionedValue (_,b) ->  new JValue(b.ToString())
+        | Float a -> new JValue(a) :> JToken
+        | Int a -> new JValue(a) :> JToken
+        | DataString a -> new JValue(a) :> JToken
+        | JsonObject a -> a :> JToken
+        | Nothing -> null :> JToken
+        | NullPlaceholder -> null :> JToken
+        | PositionedValue (_,b) ->  new JValue(b.ToString()) :> JToken
 
 let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom) = 
     let props = obj.Properties()

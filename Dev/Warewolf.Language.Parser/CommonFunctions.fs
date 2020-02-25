@@ -54,6 +54,7 @@ let atomtoString (x : WarewolfAtom) =
         a.ToString(sprintf "F%i" places)
     | Int a -> a.ToString()
     | DataString a -> a
+    | JsonObject a -> a.ToString()
     | Nothing -> null
     | NullPlaceholder -> null
     | PositionedValue(_, b) -> b.ToString()
@@ -65,6 +66,7 @@ let warewolfAtomRecordtoString (x : WarewolfAtomRecord) =
         a.ToString(sprintf "F%i" places)
     | Int a -> a.ToString()
     | DataString a -> a
+    | JsonObject a -> a.ToString()
     | Nothing -> ""
     | NullPlaceholder -> ""
     | PositionedValue(_, b) -> b.ToString()
