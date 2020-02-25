@@ -21,8 +21,11 @@ using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Interfaces;
-
-
+using Warewolf.Data.Options;
+using Warewolf.Options;
+using Warewolf.UI;
+using Moq.Protected;
+using System.Linq;
 
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 {
@@ -85,11 +88,16 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
             var model = new Mock<IRabbitMQSourceModel>();
             model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
-
             //------------Execute Test---------------------------
+
+            var result = new List<RabbitMqPublishOptions>();
+            var CorrelationID = new RabbitMqPublishOptions() { CorrelationID = "123" };
+            var options = OptionConvertor.Convert(CorrelationID);
+            var basicProperties = new OptionsWithNotifier { Options = options };
+
             var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem(), model.Object);
             vm.QueueName = "Q1";
-            vm.CorrelationID = "123-test";
+            vm.BasicProperties = basicProperties;
             vm.IsDurable = false;
             vm.IsExclusive = false;
             vm.IsAutoDelete = false;
@@ -97,7 +105,6 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             vm.Result = "Success";
             vm.IsRabbitMQSourceFocused = false;
             vm.IsQueueNameFocused = false;
-            vm.IsCorrelationIDFocused = false;
             vm.IsMessageFocused = false;
 
             //------------Assert Results-------------------------
@@ -109,11 +116,10 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             Assert.IsNotNull(vm.RabbitMQSources);
             Assert.IsFalse(vm.IsRabbitMQSourceFocused);
             Assert.IsFalse(vm.IsQueueNameFocused);
-            Assert.IsFalse(vm.IsCorrelationIDFocused);
             Assert.IsFalse(vm.IsMessageFocused);
             Assert.IsNull(vm.SelectedRabbitMQSource);
             Assert.AreEqual(vm.QueueName, "Q1");
-            Assert.AreEqual(vm.CorrelationID, "123-test");
+            Assert.AreEqual(vm.BasicProperties.Options[0].Name, "CorrelationID");
             Assert.AreEqual(vm.IsDurable, false);
             Assert.AreEqual(vm.IsExclusive, false);
             Assert.AreEqual(vm.IsAutoDelete, false);
@@ -121,7 +127,6 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             Assert.AreEqual(vm.Result, "Success");
             Assert.AreEqual(vm.IsRabbitMQSourceFocused, false);
             Assert.AreEqual(vm.IsQueueNameFocused, false);
-            Assert.AreEqual(vm.IsCorrelationIDFocused, false);
             Assert.AreEqual(vm.IsMessageFocused, false);
         }
 
@@ -133,10 +138,8 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
             var model = new Mock<IRabbitMQSourceModel>();
             model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
-
             var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem(), model.Object);
             vm.QueueName = "";
-            vm.CorrelationID = "";
             vm.Message = null;
             vm.SelectedRabbitMQSource = null;
 
@@ -151,6 +154,25 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             StringAssert.Contains(errors[0].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqSourceNotNullErrorTest);
             StringAssert.Contains(errors[1].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqQueueNameNotNullErrorTest);
             StringAssert.Contains(errors[2].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqMessageNotNullErrorTest);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
+        public void RabbitMQPublishDesignerViewModel2_LoadBasicProperties()
+        {
+            var properties = new RabbitMqPublishOptions();
+            var basicProperties = CreateModelProperty("BasicProperties", properties).Object;
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "BasicProperties", true).Returns(basicProperties);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            var rabbitMQPublishDesignerViewModel2 = new RabbitMQPublishDesignerViewModel2(mockModelItem.Object, new Mock<IRabbitMQSourceModel>().Object);
+            var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
+
+            Assert.AreEqual(1, options.Count);
+            Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
+            Assert.AreEqual("CorrelationID", options[0].Name);
         }
 
         [TestMethod]
@@ -191,6 +213,13 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new PublishRabbitMQActivity());
+        }
+        private Mock<ModelProperty> CreateModelProperty(string name, object value)
+        {
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.Name).Returns(name);
+            prop.Setup(p => p.ComputedValue).Returns(value);
+            return prop;
         }
     }
 }
