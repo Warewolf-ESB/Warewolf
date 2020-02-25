@@ -1,5 +1,5 @@
 #pragma warning disable
- /*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -23,6 +23,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Dev2.Common.State;
+using Dev2.Communication;
+using Warewolf.Data.Options;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
@@ -32,16 +34,17 @@ namespace Dev2.Activities.RabbitMQ.Publish
         public PublishRabbitMQActivity()
         {
             DisplayName = "RabbitMQ Publish";
+            if (BasicProperties is null)
+            {
+                BasicProperties = new RabbitMqPublishOptions();
+            }
         }
 
         public Guid RabbitMQSourceResourceId { get; set; }
-
+        public RabbitMqPublishOptions BasicProperties { get; set; }
         [Inputs("Queue Name")]
-        [FindMissing]
-        public string QueueName { get; set; }
-        [Inputs("CorrelationID")]
-        [FindMissing]
-        public string CorrelationID { get; set; }
+        [FindMissing] public string QueueName { get; set; }
+
 
         [FindMissing]
         public bool IsDurable { get; set; }
@@ -49,26 +52,18 @@ namespace Dev2.Activities.RabbitMQ.Publish
         [FindMissing]
         public bool IsExclusive { get; set; }
 
-        [FindMissing]
-        public bool IsAutoDelete { get; set; }
+        [FindMissing] public bool IsAutoDelete { get; set; }
 
         [Inputs("Message")]
         [FindMissing]
         public string Message { get; set; }
 
-        [NonSerialized]
-        ConnectionFactory _connectionFactory;
+        [NonSerialized] ConnectionFactory _connectionFactory;
 
         internal ConnectionFactory ConnectionFactory
         {
-            get
-            {
-                return _connectionFactory ?? (_connectionFactory = new ConnectionFactory());
-            }
-            set
-            {
-                _connectionFactory = value;
-            }
+            get { return _connectionFactory ?? (_connectionFactory = new ConnectionFactory()); }
+            set { _connectionFactory = value; }
         }
 
         internal IConnection Connection { get; set; }
@@ -79,7 +74,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
 
         public override IEnumerable<StateVariable> GetState()
-        {
+        { 
+            var serializer = new Dev2JsonSerializer();
             return new[] {
                 new StateVariable
                 {
@@ -89,9 +85,9 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 },
                 new StateVariable
                 {
-                    Name = "CorrelationID",
-                    Value = CorrelationID,
-                    Type = StateVariable.StateType.Input
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(BasicProperties),
+                    Value = serializer.Serialize(BasicProperties),
                 },
                 new StateVariable
                 {
@@ -116,7 +112,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
                     Name = "RabbitMQSourceResourceId",
                     Value = RabbitMQSourceResourceId.ToString(),
                     Type = StateVariable.StateType.Input
-                },new StateVariable
+                },
+                new StateVariable
                 {
                     Name = "IsAutoDelete",
                     Value = IsAutoDelete.ToString(),
@@ -124,10 +121,10 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 },
                 new StateVariable
                 {
-                    Name="Result",
+                    Name = "Result",
                     Value = Result,
                     Type = StateVariable.StateType.Output
-                }                
+                }
             };
         }
 
@@ -138,13 +135,13 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
-                    return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
+                    return new List<string> {ErrorResource.RabbitSourceHasBeenDeleted};
                 }
 
                 if (!evaluatedValues.TryGetValue("QueueName", out string queueName) ||
                     !evaluatedValues.TryGetValue("Message", out string message))
                 {
-                    return new List<string> { ErrorResource.RabbitQueueNameAndMessageRequired };
+                    return new List<string> {ErrorResource.RabbitQueueNameAndMessageRequired};
                 }
 
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
@@ -163,12 +160,12 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
-                        basicProperties.CorrelationId = CorrelationID;
+                        basicProperties.CorrelationId = BasicProperties.CorrelationID;
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug($"Message published to queue {queueName} {CorrelationID} ", GlobalConstants.WarewolfDebug);
-                return new List<string> { "Success" };
+                Dev2Logger.Debug($"Message published to queue {queueName} {BasicProperties.CorrelationID} ", GlobalConstants.WarewolfDebug);
+                return new List<string> {"Success"};
             }
             catch (Exception ex)
             {
@@ -191,17 +188,17 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return true;
             }
 
-            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitMQSource, other.RabbitMQSource);
             return base.Equals(other)
-                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
-                && string.Equals(QueueName, other.QueueName)
-                && string.Equals(CorrelationID, other.CorrelationID)
-                && IsDurable == other.IsDurable
-                && IsExclusive == other.IsExclusive
-                && IsAutoDelete == other.IsAutoDelete
-                && string.Equals(Message, other.Message)
-                && string.Equals(DisplayName, other.DisplayName)
-                && isSourceEqual;
+                   && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
+                   && string.Equals(QueueName, other.QueueName)
+                   && string.Equals(BasicProperties.CorrelationID, other.BasicProperties.CorrelationID)
+                   && IsDurable == other.IsDurable
+                   && IsExclusive == other.IsExclusive
+                   && IsAutoDelete == other.IsAutoDelete
+                   && string.Equals(Message, other.Message)
+                   && string.Equals(DisplayName, other.DisplayName)
+                   && isSourceEqual;
         }
 
         public override bool Equals(object obj)
@@ -221,7 +218,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return false;
             }
 
-            return Equals((PublishRabbitMQActivity)obj);
+            return Equals((PublishRabbitMQActivity) obj);
         }
 
         public override int GetHashCode()
@@ -231,7 +228,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (CorrelationID != null ? CorrelationID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (BasicProperties.CorrelationID != null ? BasicProperties.CorrelationID.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDurable.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsExclusive.GetHashCode();
