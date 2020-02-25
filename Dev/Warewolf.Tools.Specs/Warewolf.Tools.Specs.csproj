@@ -940,6 +940,10 @@
       <Project>{86DF54BB-E37D-4559-8014-13D6030A2242}</Project>
       <Name>Warewolf.Driver.Redis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
@@ -993,7 +997,7 @@
       <Version>1.3.0.7</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>

@@ -1185,6 +1185,9 @@
   <data name="PluginSourceRefreshCommandHelp" xml:space="preserve">
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
   </data>
+  <data name="ExistingGatesHelp" xml:space="preserve">
+    <value>If the gate conditions fail and "Continue" has been selected, then select an existing gate to roll back to.</value>
+  </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)	This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5	Preview (scalar field - including indexed recordsets and ())	This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
   </data>
@@ -2094,6 +2097,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_LoopConstruct_For_Each" xml:space="preserve">
     <value>Use the For Each tool to run something a few times. Very handy for processing recordset or specific records.</value>
   </data>
+  <data name="Tool_Flow_Gate" xml:space="preserve">
+    <value>Use the Gate tool when you need to stop, retry, rollback to previous gates on error.</value>
+  </data>
   <data name="Tool_Flow_Switch" xml:space="preserve">
     <value>Use the Switch tool when you need to take a different action depending on the value of a variable. Just drag another flow arm to add another possibility.</value>
   </data>
@@ -2344,5 +2350,62 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="RedisRemoveResultHelp" xml:space="preserve">
     <value>Only variables go in here.	Returns Success if the key to remove was found and removed or Failure otherwise.</value>
+  </data>
+  <data name="OptionAutocompleteHelpText" xml:space="preserve">
+    <value>OptionAutocompleteHelpText</value>
+  </data>
+  <data name="OptionIntHelpText" xml:space="preserve">
+    <value>OptionIntHelpText</value>
+  </data>
+  <data name="OptionBoolHelpText" xml:space="preserve">
+    <value>OptionBoolHelpText</value>
+  </data>
+  <data name="OptionEnumHelpText" xml:space="preserve">
+    <value>OptionEnumHelpText</value>
+  </data>
+  <data name="OptionEnumGenHelpText" xml:space="preserve">
+    <value>OptionEnumGenHelpText</value>
+  </data>
+  <data name="OptionComboboxHelpText" xml:space="preserve">
+    <value>OptionComboboxHelpText</value>
+  </data>
+  <data name="OptionWorkflowHelpText" xml:space="preserve">
+    <value>OptionWorkflowHelpText</value>
+  </data>
+  <data name="OptionGateCountHelpText" xml:space="preserve">
+    <value>Set the retry count. </value>
+  </data>
+  <data name="OptionGateStrategyHelpText" xml:space="preserve">
+    <value>Retry strategy that will be actioned &lt;br/&gt;&lt;br/&gt;&lt;b&gt;NoBackoff: &lt;/b&gt;On Error Retry Immediately&lt;br/&gt;&lt;br/&gt;&lt;b&gt;LinearBackoff:&lt;/b&gt; Delay increases along with every attempt on Linear curve</value>
+  </data>
+  <data name="OptionGateResumeHelpText" xml:space="preserve">
+    <value>Select whether the Gate Tool will continue on error or end the workflow</value>
+  </data>
+  <data name="OptionGateIncrementHelpText" xml:space="preserve">
+    <value>Set the delay increment between every retry attempt</value>
+  </data>
+  <data name="OptionGateMaxRetriesHelpText" xml:space="preserve">
+    <value>Set maximum retries. The tool will keep retrying until the maximum retry count is hit</value>
+  </data>
+  <data name="OptionGateTimeoutHelpText" xml:space="preserve">
+    <value>Set the Timeout of each retry</value>
+  </data>
+  <data name="OptionGateResumeEndpointHelpText" xml:space="preserve">
+    <value>Select the resume workflow or API that will be executed on retry</value>
+  </data>
+  <data name="OptionRabbitMqDurableHelpText" xml:space="preserve">
+    <value>Set if the queue is durable</value>
+  </data>
+  <data name="OptionRadioButtonHelpText" xml:space="preserve">
+    <value>OptionRadioButtonHelpText</value>
+  </data>
+  <data name="OptionConditionHelpText" xml:space="preserve">
+    <value>OptionConditionHelpText</value>
+  </data>
+  <data name="OptionConditionLeftHelpText" xml:space="preserve">
+    <value>OptionConditionLeftHelpText</value>
+  </data>
+  <data name="OptionConditionRightHelpText" xml:space="preserve">
+    <value>OptionConditionRightHelpText</value>
   </data>
 </root>

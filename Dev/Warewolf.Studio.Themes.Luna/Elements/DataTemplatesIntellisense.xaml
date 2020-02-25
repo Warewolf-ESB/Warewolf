@@ -5,14 +5,30 @@
                     xmlns:options="clr-namespace:Warewolf.Options;assembly=Warewolf.Data"
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources">
-
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                    xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:di="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+                    xmlns:wi="clr-namespace:Warewolf.Options;assembly=Warewolf.Interfaces"
+                    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    mc:Ignorable="d" >
+    <!--xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"-->
 
     <ResourceDictionary.MergedDictionaries>
         <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
         <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
         <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector" />
+
+    <ColumnDefinition x:Key="MasterColumnDefinition" Width="100" />
+    <DataGridTemplateColumn x:Key="MasterColumnDefinition1" Width="*" MinWidth="160" />
+    <DataGridTemplateColumn x:Key="MasterColumnDefinition2" Width="*" MinWidth="160" />
+    <DataGridTemplateColumn x:Key="MasterColumnDefinition3" Width="*" MinWidth="160" />
 
     <DataTemplate x:Key="DefaultDefaultTextTemplate">
         <ContentControl Content="{Binding}"
@@ -42,7 +58,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="OptionNoneStyle">
-        <Grid>
+        <Grid Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -50,43 +66,47 @@
             <TextBlock Grid.Column="0" Text="None" HorizontalAlignment="Center" />
         </Grid>
     </DataTemplate>
-    
+
     <DataTemplate x:Key="OptionBoolStyle" DataType="{x:Type options:OptionBool}">
-        <Grid>
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
-            <CheckBox Grid.Column="1" IsChecked="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="-6,0,0,0" >
+            <CheckBox Grid.Column="1" IsChecked="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="-6,0,0,0" 
+                      ToolTip="{Binding Path=DataContext.Tooltip}" 
+                      IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
         </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="OptionIntStyle" DataType="{x:Type options:OptionInt}">
-        <Grid DataContext="{Binding Path=DataContext}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
-            <TextBox Grid.Column="1" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+            <TextBox Grid.Column="1" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     ToolTip="{Binding Path=Tooltip}" 
+                     IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="OptionAutocompleteStyle" DataType="{x:Type options:OptionAutocomplete}">
-        <Grid>
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -97,11 +117,402 @@
                                       ValueMemberPath="Value" 
                                       ItemsSource="{Binding Path=Suggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource AutoCompleteBoxStyle}" >
+                                      Style="{StaticResource AutoCompleteBoxStyle}" 
+                                      ToolTip="{Binding Path=DataContext.Tooltip}"
+                                      IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ConditionExpressionStyle" DataType="{x:Type options:OptionConditionExpression}">
+        <Grid HorizontalAlignment="Stretch" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Style="{StaticResource ButtonOrangeTransparentStyle}" Command="{Binding DeleteCommand}">
+                <Button.Content>
+                    <fa:FontAwesome Icon="Close" FontSize="14"></fa:FontAwesome>
+                </Button.Content>
+            </Button>
+
+            <ui:IntellisenseTextBox DefaultText="Match Value"
+                                    AllowUserCalculateMode="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                    TextWrapping="Wrap"
+                                    AllowMultilinePaste="True"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="True"
+                                    MaxHeight="52"
+                                    Focusable="True"
+                                    Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                    ToolTip="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                    Margin="-1,1,1,0"
+                                    Grid.Column="1">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpMatch}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+
+            <ComboBox Grid.Column="2" 
+                      ItemsSource="{Binding Path=MatchTypes}"
+                      DisplayMemberPath="Name"
+                      Text="{Binding Path=Name, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValue="{Binding Path=SelectedMatchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource ComboBoxStyle}" 
+                      Margin="0,1,1,0"
+                      Focusable="True">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpLookForMatchType}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+
+            <Grid Grid.Column="3" 
+                  Margin="0,1,0,0"
+                  Visibility="{Binding IsSingleOperand, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ui:IntellisenseTextBox DefaultText="Match"
+                                        FilterType="All"
+                                        AllowUserCalculateMode="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                        TextWrapping="Wrap"
+                                        AllowMultilinePaste="True"
+                                        AcceptsReturn="True"
+                                        AllowUserInsertLine="True"
+                                        MaxHeight="52"
+                                        Focusable="True"
+                                        Text="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ToolTip="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        Grid.Column="0"
+                                        Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpMatch}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+
+                <Grid Grid.Column="0" 
+                      Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ui:IntellisenseTextBox DefaultText="From"
+                                            FilterType="All"
+                                            AllowUserCalculateMode="False"
+                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                            TextWrapping="NoWrap"
+                                            MaxHeight="52"
+                                            Focusable="True"
+                                            AllowUserInsertLine="False"
+                                            Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            ToolTip="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            Grid.Column="0">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.FindRecordsFromHelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                        </i:Interaction.Behaviors>
+                    </ui:IntellisenseTextBox>
+                    <ui:IntellisenseTextBox DefaultText="To"
+                                            FilterType="All"
+                                            AllowUserCalculateMode="False"
+                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                            TextWrapping="NoWrap"
+                                            MaxHeight="52"
+                                            Focusable="True"
+                                            AllowUserInsertLine="False"
+                                            Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                            ToolTip="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                            Margin="1,0,0,0"
+                                            Grid.Column="1">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.FindRecordsToHelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                        </i:Interaction.Behaviors>
+                    </ui:IntellisenseTextBox>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionAddWorkflowStyle" DataType="{x:Type options:OptionWorkflow}">
+        <Grid Margin="{StaticResource ControlBorderTop}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Path=DataContext.Name}" />
+                <Grid Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" 
+                             x:Name="WorkflowTextBox"
+                             Text="{Binding Path=DataContext.Workflow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource WorkflowNameConverter}}"
+                             Style="{StaticResource ReadOnlyTextBoxStyle}"
+                             HorizontalAlignment="Stretch"
+                             AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
+                             IsReadOnly="True"
+                             ToolTip="{Binding Path=DataContext.Workflow.Name}"
+                             IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}"/>
+
+                    <!--, diag:PresentationTraceSources.TraceLevel=High-->
+                    <Button Grid.Column="1" 
+                            Content="..."
+                            Margin="{StaticResource ControlBorderLeft}"
+                            Style="{StaticResource ButtonStyle}"
+                            CommandParameter="{Binding .}"
+                            Command="{Binding Path=DataContext.AddWorkflowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}, AncestorLevel=1}}" 
+                            AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID"
+                            ToolTip="{Binding Path=DataContext.Tooltip}"
+                            IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{Binding Path=DataContext.HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </Grid>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ContentPresenter ContentTemplate="{StaticResource OptionInputsStyle}" DataContext="{Binding .}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionEnumComboBoxStyle" DataType="{x:Type options:OptionEnum}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
+                <ComboBox Grid.Column="1" 
+                          ItemsSource="{Binding Path=OptionNames}"
+                          DisplayMemberPath="."
+                          Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=OptionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxStyle}" 
+                          ToolTip="{Binding Path=Tooltip}"
+                          IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionComboBoxStyle" DataType="{x:Type options:OptionCombobox}">
+        <Grid Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Source={StaticResource MasterColumnDefinition}, Path=Width, Mode=TwoWay}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" />
+                <ComboBox Grid.Column="1" 
+                          ItemsSource="{Binding Path=OptionNames}"
+                          DisplayMemberPath="."
+                          Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxStyle}" 
+                          ToolTip="{Binding Path=Tooltip}"
+                          IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ContentPresenter ContentTemplate="{StaticResource OptionListBoxStyle}" DataContext="{Binding .}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionRadioButtonStyle" DataType="{x:Type options:OptionRadioButtons}">
+        <Grid x:Name="RadioButtonGrid" Margin="{StaticResource ControlBorderTop}" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ListBox x:Name="OptionsListBox" 
+                         ItemsSource="{Binding Path=OptionNames}" 
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle1}"
+                         BorderBrush="Transparent"
+                         HorizontalContentAlignment="Stretch"
+                         Margin="0,0,-1,0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="{Binding Path=Orientation, Converter={StaticResource OrientationConverter}}" HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Content="{Binding Path=Name}"
+                                         GroupName="OptionName"
+                                         IsChecked="{Binding Path=IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Margin="{StaticResource ControlBorderRight}"
+                                         ToolTip="{Binding Path=DataContext.Tooltip, ElementName=RadioButtonGrid}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{Binding Path=DataContext.HelpText, ElementName=RadioButtonGrid}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                                </i:Interaction.Behaviors>
+                            </RadioButton>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ContentPresenter ContentTemplate="{StaticResource OptionListBoxStyle}" DataContext="{Binding .}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="OptionListBoxStyle" DataType="{x:Type options:OptionCombobox}">
+        <Grid DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <ListBox x:Name="OptionsListBox" 
+                     ItemsSource="{Binding SelectedOptions, Converter={StaticResource OptionViewConverter}}" 
+                     ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle1}"
+                     BorderBrush="Transparent"
+                     Margin="0,0,-1,0">
+            </ListBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionInputsStyle" DataType="{x:Type options:OptionWorkflow}">
+        <Grid DataContext="{Binding Path=DataContext}">
+            <ui1:InputsDataGrid x:Name="InputsDataGrid"
+                                ItemsSource="{Binding Workflow.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ActivityMappingDataGridStyle}"
+                                Height="Auto"
+                                MinHeight="100"
+                                Margin="{StaticResource ControlBorderTop}"
+                                IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
+
+                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="{Binding Source={StaticResource MasterColumnDefinition1}, Path=Width, Mode=TwoWay}"
+                                            Header="Parameter"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=ui1:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <TextBlock Text="{Binding Path=Name}"
+                                               TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center"
+                                               Padding="3,0"
+                                               ToolTip="{Binding OutputColumn.ColumnName}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Source={StaticResource MasterColumnDefinition2}, Path=Width, Mode=TwoWay}"
+                                            Header="Value"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=ui1:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:IntellisenseTextBox DefaultText="Test Data"
+                                                        AllowMultilinePaste="True"
+                                                        AcceptsReturn="True"
+                                                        AllowUserInsertLine="True"
+                                                        MaxHeight="80"
+                                                        Margin="0,0,1,1"
+                                                        TextWrapping="Wrap"
+                                                        WrapInBrackets="False"
+                                                        ToolTip="{x:Static languages:Tooltips.WebInsertToolTipColumn}"
+                                                        Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        <ui1:ErrorsSetter Source="{Binding}"
+                                                          SourcePropertyName="Value"
+                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                    <AutomationProperties.AutomationId>
+                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                            <Binding Path="IndexNumber" />
+                                        </MultiBinding>
+                                    </AutomationProperties.AutomationId>
+                                </ui:IntellisenseTextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </ui1:InputsDataGrid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OptionActivityStyle" DataType="{x:Type options:OptionActivity}">
+        <Grid HorizontalAlignment="Stretch" DataContext="{Binding Path=DataContext}" Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="#CFD6E1"
+                    BorderThickness="1"
+                    Margin="1,3,0,0"
+                    Grid.Row="0"
+                    CornerRadius="12">
+                <sap:WorkflowItemPresenter x:Name="DropPoint"
+                                           AllowDrop="False"
+                                           HintText="Drop Activity Here"
+                                           BorderBrush="Black"
+                                           BorderThickness="2"
+                                           MinHeight="50"
+                                           Item="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
+                    <AutomationProperties.AutomationId>
+                        <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                            <Binding Path="ModelItem.AutomationID" />
+                        </MultiBinding>
+                    </AutomationProperties.AutomationId>
+                </sap:WorkflowItemPresenter>
+            </Border>
         </Grid>
     </DataTemplate>
 

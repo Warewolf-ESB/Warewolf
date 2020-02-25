@@ -54,7 +54,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("IntegrationTester", "dev2", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
                 var result = broker.GetServiceMethods(dbSource);
                 Assert.AreEqual(true, result.Count > 0);
@@ -67,7 +67,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
                 try
                 {
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [ExpectedException(typeof(WarewolfDbException))]        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
         {
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
 
@@ -100,7 +100,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [Owner("Ashley Lewis")]
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
         {
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             var broker = new SqlDatabaseBroker();
             var result = broker.GetServiceMethods(dbSource);
             Assert.AreEqual(true, result.Count > 0);
@@ -113,7 +113,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("IntegrationTester", "dev2", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource("172.27.14.50", AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
                 var serviceConn = new DbService
                 {
                     ResourceID = Guid.NewGuid(),
@@ -141,7 +141,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             Exception exception = null;
             RunAs("NoDBAccessTest", "DEV2", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
 
                 var serviceConn = new DbService
                 {
@@ -179,7 +179,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
 
         {
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
 
@@ -205,7 +205,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker")]
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
         {
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             var serviceConn = new DbService
             {
                 ResourceID = Guid.NewGuid(),
@@ -243,7 +243,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 {
                     Name = "Collections",
                 },
-                Source = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP)
+                Source = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port))
             };
 
             var broker = new SqlDatabaseBroker();
