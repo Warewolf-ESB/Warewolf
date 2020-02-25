@@ -481,7 +481,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         [Then(@"Mysql Server Recordset Name equals ""(.*)""")]
         public void ThenMysqlServerRecordsetNameEquals(string recsetName)
         {
-            Assert.IsTrue(string.Equals(recsetName, GetViewModel().OutputsRegion.RecordsetName));
+            Assert.IsTrue(string.Equals(recsetName, GetViewModel().OutputsRegion.RecordsetName), $"Actual recordset name {GetViewModel().OutputsRegion.RecordsetName} does not equal expected recordset name {recsetName}.");
         }
 
         [Then(@"Mysql Server Outputs appear as")]

@@ -34,6 +34,7 @@ namespace Dev2.Core.Tests.Workflows
 
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         public Guid ActivityId { get; set; }
+        public bool IsGate { get; set; }
         public List<string> GetOutputs()
         {
             return new List<string>();
@@ -70,6 +71,7 @@ namespace Dev2.Core.Tests.Workflows
         }
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         public Guid ActivityId { get; set; }
+        public bool IsGate { get; set; }
         public List<string> GetOutputs()
         {
             return new List<string>();
