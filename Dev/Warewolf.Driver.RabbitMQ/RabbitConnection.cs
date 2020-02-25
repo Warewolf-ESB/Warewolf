@@ -53,7 +53,7 @@ namespace Warewolf.Driver.RabbitMQ
             };
 
             channel.BasicConsume(queue: rabbitConfig.QueueName,
-                                        noAck: false,
+                                        autoAck: false,
                                         consumer: eventConsumer);
         }
 
