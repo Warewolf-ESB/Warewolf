@@ -243,7 +243,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (dsfDataObject.Settings.EnableDetailedLogging)
                 {
-                    _stateNotifier?.LogPreExecuteState(resource);
+                    _stateNotifier.LogPreExecuteState(resource);
                 }
 
                 IDev2Activity next;
@@ -264,6 +264,11 @@ namespace Dev2.Runtime.ESB.Execution
                     throw;
                 }
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
+
+                if(dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    _stateNotifier.LogExecuteCompleteState(lastActivity);
+                }
             }
             finally
             {
