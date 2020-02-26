@@ -1032,7 +1032,7 @@ namespace WarewolfParsingTest
 
             var value2 = jContainer.First;
             var token2 = ((JProperty)value2).Value;
-            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2);
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2.ToString());
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -1055,7 +1055,7 @@ namespace WarewolfParsingTest
 
             var value2 = jContainer.First;
             var token2 = ((JProperty)value2).Value;
-            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2);
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2.ToString());
 
         }
         DataStorage.WarewolfEnvironment CreateTestEnvWithData()

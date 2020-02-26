@@ -178,6 +178,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
+            env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
             var p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
@@ -198,7 +199,7 @@ namespace WarewolfParsingTest
             {
                 sb.Append(s);
             }
-            var expected = "{\"scalars\":{\"r\":\"s\",\"s\":\"s\",\"x\":1,\"y\":\"y\"},\"record_sets\":{\"Rec\":{\"WarewolfPositionColumn\":[1,2,3,4],\"a\":[1,2,3,2],\"b\":[\"a\",\"b\",\"c\",\"c\"]}},\"json_objects\":{\"Person\":{\"Name\":\"bob\",\"Age\":22,\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[\"2\",\"3\"]},\"array\":[\"bob\"],\"arrayObj\":[{\"Name\":\"bob\"},{\"Name\":\"bobe\"}]}}";
+            var expected = "{\"scalars\":{\"r\":\"s\",\"s\":\"s\",\"x\":1,\"y\":\"y\"},\"record_sets\":{\"Rec\":{\"WarewolfPositionColumn\":[1,2,3,4],\"a\":[1,2,3,2],\"b\":[\"a\",\"b\",\"c\",\"c\"]}},\"json_objects\":{\"Person\":{\"Name\":\"bob\",\"Age\":22,\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[2,3]},\"array\":[\"bob\"],\"arrayObj\":[{\"Name\":\"bob\"},{\"Name\":\"bobe\"}]}}";
 
             var actual = sb.ToString();
             Assert.AreEqual(expected, actual);
