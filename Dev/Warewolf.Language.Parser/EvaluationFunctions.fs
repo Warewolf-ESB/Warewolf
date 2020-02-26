@@ -388,7 +388,11 @@ and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : 
         match buffer with
         | RecordSetExpression a when env.RecordSets.ContainsKey a.Name -> let b = evalRecordsSet a env
                                                                           match a.Index with
-                                                                          | IntIndex i -> WarewolfAtomResult(b.[0])
+                                                                          | IntIndex i ->
+                                                                                       match shouldEscape with
+                                                                                         | true ->  let escape = warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString
+                                                                                                    WarewolfAtomResult(escape b.[0])
+                                                                                         | false -> WarewolfAtomResult(b.[0])
                                                                           | _ -> 
                                                                               match shouldEscape with
                                                                                 |true -> let d =  Seq.map (warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString) b |> fun a -> a                                                                                      
