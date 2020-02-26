@@ -115,6 +115,7 @@
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
+    <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetResourceById.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
@@ -570,7 +571,7 @@
       <Version>6.9.9</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Npgsql">
       <Version>3.0.5</Version>

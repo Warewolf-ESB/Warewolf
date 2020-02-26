@@ -22,6 +22,8 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Data;
+using Warewolf.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -125,6 +127,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand DebugCommand { get; }
         IAuthorizeCommand SettingsCommand { get; }
         ICommand SearchCommand { get; }
+        ICommand AddWorkflowCommand { get; }
         IAuthorizeCommand SchedulerCommand { get; }
         IAuthorizeCommand QueueEventsCommand { get; }
         IAuthorizeCommand TasksCommand { get; }
@@ -147,6 +150,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }
+        IPopupController PopupProvider { get; set; }
         IServer LocalhostServer { get; }
         bool ResourceCalled { get; set; }
 
@@ -159,5 +163,7 @@ namespace Dev2.Studio.Interfaces
         void OpenMergeDialogView(IExplorerItemViewModel currentResource);
         void UpdateExplorerWorkflowChanges(Guid resourceId);
         IResource CreateResourceFromStreamContent(string resourceContent);
+        IResource GetResource(string resourceId);
+        List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId);
     }
 }

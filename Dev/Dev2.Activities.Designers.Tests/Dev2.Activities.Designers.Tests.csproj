@@ -115,6 +115,7 @@
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="Exchange\ExchangeNewEmailDesignerViewModelTests.cs" />
+    <Compile Include="Gate\GateDesignerViewModelTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
     <Compile Include="MySql\TestMySqlViewModel.cs" />
@@ -297,10 +298,6 @@
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
-      <Name>Dev2.Studio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
@@ -308,6 +305,10 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
@@ -333,10 +334,6 @@
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
-      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
-      <Name>Warewolf.Studio.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
@@ -352,6 +349,10 @@
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
+      <Project>{B7FAA26B-DDCB-4967-9FCB-89AFBA92E726}</Project>
+      <Name>Warewolf.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

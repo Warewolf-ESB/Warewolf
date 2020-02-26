@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new RedisSource
             {
-                HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
+                HostName = Depends.GetAddress(Depends.ContainerType.AnonymousRedis),
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
                 Port = "6380"
             }.ToString();
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new RedisSource
             {
-                HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
+                HostName = Depends.GetAddress(Depends.ContainerType.Redis),
                 Port = "6379",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "pass123"

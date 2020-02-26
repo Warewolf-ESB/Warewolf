@@ -24,9 +24,9 @@ export class ExecutionDataSource implements DataSource<LogEntry> {
     this.loadingSubject.complete();
   }
 
-  loadLogs(ServerUrl:string,ExecutionId: string, filter = '', sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
+  loadLogs(ServerUrl: string, ExecutionID: string, filter = '', sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
     this.loadingSubject.next(true);
-    this.executionLoggingservice.getLogData(ServerUrl,ExecutionId, filter, sortDirection, pageIndex, pageSize).pipe(
+    this.executionLoggingservice.getLogData(ServerUrl, ExecutionID, filter, sortDirection, pageIndex, pageSize).pipe(
       catchError(() => of([])),
       finalize(() => this.loadingSubject.next(false))
     ).subscribe(logs => this.logsSubject.next(logs));

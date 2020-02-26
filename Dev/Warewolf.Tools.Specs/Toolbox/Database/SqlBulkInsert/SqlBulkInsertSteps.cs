@@ -29,7 +29,6 @@ using Dev2.Activities.Specs.BaseTypes;
 using System.Reflection;
 using System.IO;
 using System.Net.Sockets;
-using Warewolf.Test.Agent;
 using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
@@ -52,15 +51,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
         public void SetupScenerio()
         {
-            try
-            {
-                _containerOps = new Depends(Depends.ContainerType.MSSQL);
-            }
-            catch
-            {
-                
-            }
-            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP);
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             scenarioContext.Add("dbSource", dbSource);
 

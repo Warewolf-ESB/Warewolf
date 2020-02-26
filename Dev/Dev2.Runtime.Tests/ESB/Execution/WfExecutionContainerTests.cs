@@ -24,6 +24,9 @@ using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common;
 using Warewolf.Storage;
+using WarewolfParserInterop;
+using Warewolf.Storage.Interfaces;
+using Dev2.Runtime;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -72,23 +75,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                     }
                 };
 
-                var vbs = new VisualBasicSettings
-                {
-                    ImportReferences =     {
-                        new VisualBasicImportReference {
-                            Assembly = "Unlimited.Framework",
-                            Import = "Unlimited.Framework"
-                        },
-                        new VisualBasicImportReference{
-                             Assembly = "Unlimited.Applications.BusinessDesignStudio.Activities",
-                             Import = "Unlimited.Applications.BusinessDesignStudio.Activities"
-
-                        }
-                    }
-                };
-
-                VisualBasic.SetSettings(builder, vbs);
-
                 return builder;
             }
         }
@@ -121,6 +107,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             try
             {
                 var obj = new Mock<IDSFDataObject>();
+                var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+                dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(false);
+                obj.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
                 var workSpace = new Mock<IWorkspace>();
                 var channel = new Mock<IEsbChannel>();
                 var serviceAction = new ServiceAction();
@@ -185,6 +174,86 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WfExecutionContainer))]
+        public void WfExecutionContainer_LogStopExecutionState()
+        {
+            var serviceAction = new ServiceAction();
+            var mockDataObject = new Mock<IDSFDataObject>();
+            
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
+            mockDataObject.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
+
+            var mockExecutionEnvironment = new Mock<Warewolf.Storage.Interfaces.IExecutionEnvironment>();
+            mockExecutionEnvironment.Setup(o => o.Eval(It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Value"))))
+                .Verifiable();
+            mockExecutionEnvironment.Setup(o => o.FetchErrors()).Returns("Error").Verifiable();
+            
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(mockExecutionEnvironment.Object);
+
+            mockDataObject.Setup(o => o.StopExecution).Returns(true);
+            
+            var mockWorkspace = new Mock<IWorkspace>();
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockExecutionManager = new Mock<Dev2.Runtime.IExecutionManager>();
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()))
+                .Verifiable();
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, mockDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object,
+                mockExecutionManager.Object, mockStateNotifier.Object);
+            
+            wfExecutionContainer.Eval(FlowchartProcess, mockDataObject.Object, 0);
+            
+            mockExecutionEnvironment.Verify(o => o.Eval(It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
+            mockExecutionEnvironment.Verify(o => o.FetchErrors(), Times.Exactly(1));
+            mockStateNotifier.Verify(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()), Times.Exactly(1));
+        }
+
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(WfExecutionContainer))]
+        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogPreExecuteStateAndLogExecuteCompleteState()
+        {
+            //--------------Arrange------------------------------
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            var workSpaceMock = new Mock<IWorkspace>();
+            var esbChannelMock = new Mock<IEsbChannel>();
+            var executionEnvironmentMock = new Mock<IExecutionEnvironment>();
+            var serviceAction = new ServiceAction();
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            var mockExecutionManager = new Mock<IExecutionManager>();
+
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
+
+            executionEnvironmentMock.Setup(environment => environment.AllErrors).Returns(new HashSet<string>());
+            executionEnvironmentMock.Setup(environment => environment.Errors).Returns(new HashSet<string>());
+
+            dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironmentMock.Object);
+            dataObjectMock.Setup(o => o.StopExecution).Returns(false);
+            dataObjectMock.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
+
+            mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
+            mockStateNotifier.Setup(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>())).Verifiable();
+
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, mockStateNotifier.Object);
+
+            //--------------Act----------------------------------
+            wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
+
+            //--------------Assert-------------------------------
+            Assert.IsNull(dataObjectMock.Object.ExecutionException);
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
+            mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
         }
     }
 }
