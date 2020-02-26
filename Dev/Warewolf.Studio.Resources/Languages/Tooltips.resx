@@ -905,6 +905,13 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RabbitMQToolTipCorrelationID" xml:space="preserve">
     <value>Provide a CorrelationID of the Queue you want to consume from.</value>
   </data>
+  <data name="RabbitMQToolTipAutoCorrelationID" xml:space="preserve">
+    <value>Use ExecutionID or CustomTransactionID from Header as CorrelationID of the Queue you want to consume from.</value>
+  </data>
+  <data name="RabbitMQToolTipAutoCustomTransactionIDCorrelationID" xml:space="preserve">
+    <value>Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from.</value>
+  </data>
+  
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>

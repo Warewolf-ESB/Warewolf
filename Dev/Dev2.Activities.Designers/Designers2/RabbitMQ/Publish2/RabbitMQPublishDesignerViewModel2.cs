@@ -30,6 +30,7 @@ using Warewolf.Options;
 using Warewolf.UI;
 using Dev2.Studio.Core;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 {
@@ -38,23 +39,17 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
         readonly IRabbitMQSourceModel _model;
         private readonly ModelItem _modelItem;
         private OptionsWithNotifier _basicProperties;
-        readonly IServer _server;
-        IShellViewModel _shellViewModel;
 
-        [ExcludeFromCodeCoverage]
+       
         public RabbitMQPublishDesignerViewModel2(ModelItem modelItem)
-           : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
-        {
-
-        }
-        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
             : base(modelItem)
-        {
-            _server = server;
-            _shellViewModel = shellViewModel;
+        {  
             _modelItem = modelItem;
-          
-            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel,server);
+            VerifyArgument.IsNotNull("modelItem", modelItem);
+
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel);
             SetupCommonViewModelProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Publish;
         }
@@ -270,7 +265,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged(string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

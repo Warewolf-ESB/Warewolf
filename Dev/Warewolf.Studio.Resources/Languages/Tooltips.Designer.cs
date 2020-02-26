@@ -3638,6 +3638,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use ExecutionID or CustomTransactionID from Header as CorrelationID of the Queue you want to consume from..
+        /// </summary>
+        public static string RabbitMQToolTipAutoCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipAutoCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from..
+        /// </summary>
+        public static string RabbitMQToolTipAutoCustomTransactionIDCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipAutoCustomTransactionIDCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provide a CorrelationID of the Queue you want to consume from..
         /// </summary>
         public static string RabbitMQToolTipCorrelationID {

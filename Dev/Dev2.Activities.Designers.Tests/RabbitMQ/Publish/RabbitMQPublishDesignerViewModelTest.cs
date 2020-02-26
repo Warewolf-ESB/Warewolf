@@ -26,6 +26,7 @@ using Warewolf.Options;
 using Warewolf.UI;
 using Moq.Protected;
 using System.Linq;
+using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core;
 
@@ -93,7 +94,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Execute Test---------------------------
 
             var result = new List<RabbitMqPublishOptions>();
-            var CorrelationID = new RabbitMqPublishOptions() { CorrelationID = "123" };
+            var CorrelationID = new RabbitMqPublishOptions() {  };
             var options = OptionConvertor.Convert(CorrelationID);
             var basicProperties = new OptionsWithNotifier { Options = options };
 
@@ -186,7 +187,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
                 typeof(RabbitMQServiceSourceDefinition)
             };
             //------------Setup for test--------------------------
-            var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem(),server.Object,mockMainViewModel.Object);
+            var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem());
             vm.QueueName = "";
             vm.Message = null;
             vm.SelectedRabbitMQSource = null;
