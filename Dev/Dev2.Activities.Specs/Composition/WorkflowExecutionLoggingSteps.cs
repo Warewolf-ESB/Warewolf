@@ -97,13 +97,6 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(workflow, workflow +" was not found.");
         }
 
-        [Given(@"workflow execution entry point detailed logs are logged")]
-        public void GivenWorkflowExecutionEntryPointDetailedLogsAreLogged()
-        {
-            //This step will call 
-            ScenarioContext.Current.Pending();
-        }
-
         [Given(@"""(.*)"" workflow execution entry point detailed logs are created and logged")]
         public void GivenWorkflowExecutionEntryPointDetailedLogsAreCreatedAndLogged(string wfName)
         {
