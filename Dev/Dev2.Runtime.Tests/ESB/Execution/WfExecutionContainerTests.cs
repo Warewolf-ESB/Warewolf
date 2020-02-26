@@ -73,23 +73,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                     }
                 };
 
-                var vbs = new VisualBasicSettings
-                {
-                    ImportReferences =     {
-                        new VisualBasicImportReference {
-                            Assembly = "Unlimited.Framework",
-                            Import = "Unlimited.Framework"
-                        },
-                        new VisualBasicImportReference{
-                             Assembly = "Unlimited.Applications.BusinessDesignStudio.Activities",
-                             Import = "Unlimited.Applications.BusinessDesignStudio.Activities"
-
-                        }
-                    }
-                };
-
-                VisualBasic.SetSettings(builder, vbs);
-
                 return builder;
             }
         }
