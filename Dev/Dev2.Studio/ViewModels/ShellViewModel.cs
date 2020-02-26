@@ -71,6 +71,11 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
 using Dev2.Instrumentation;
 using Dev2.Triggers;
+using Dev2.Dialogs;
+using Dev2.Studio.Enums;
+using Warewolf.Data;
+using Dev2.Data;
+using Warewolf.Core;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -112,6 +117,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand _tasksCommand;
         private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
+        private ICommand _addWorkflowCommand;
         readonly IAsyncWorker _asyncWorker;
         readonly IViewFactory _factory;
         readonly IFile _file;
@@ -295,6 +301,91 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        IResourcePickerDialog _currentResourcePicker;
+
+        public ICommand AddWorkflowCommand
+        {
+            get => _addWorkflowCommand ?? (_addWorkflowCommand = new DelegateCommand(param => OpenResourcePicker(param)));
+        }
+
+        private void OpenResourcePicker(object item)
+        {
+            if (_currentResourcePicker is null)
+            {
+                return;
+            }
+            
+            if (_currentResourcePicker.ShowDialog(ServerRepository.ActiveServer))
+            {
+                var optionView = item as Warewolf.UI.OptionView;
+                var selectedResource = _currentResourcePicker.SelectedResource;
+
+                if (optionView.DataContext is Warewolf.Options.OptionWorkflow optionWorkflow)
+                {
+                    optionWorkflow.Workflow = new WorkflowWithInputs
+                    {
+                        Name = selectedResource.ResourcePath,
+                        Value = selectedResource.ResourceId,
+                        Inputs = GetInputsFromWorkflow(selectedResource.ResourceId)
+                    };
+                }
+            }
+        }
+
+        public List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId)
+        {
+            var inputs = new List<IServiceInputBase>();
+            var contextualResourceModel = ServerRepository.ActiveServer.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var dataList = new DataListModel();
+            var dataListConversionUtils = new DataListConversionUtils();
+            dataList.Create(contextualResourceModel.DataList, contextualResourceModel.DataList);
+            var inputList = dataListConversionUtils.GetInputs(dataList);
+            inputs = inputList.Select(sca =>
+            {
+                var serviceTestInput = new ServiceInput(sca.DisplayValue, "");
+                return serviceTestInput.As<IServiceInputBase>();
+
+            }).ToList();
+            return inputs;
+        }
+
+        IResourcePickerDialog CreateResourcePickerDialog()
+        {
+            if (_currentResourcePicker == null)
+            {
+                var environmentViewModels = ExplorerViewModel?.Environments;
+                if (environmentViewModels != null)
+                {
+                    var environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
+                    var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
+                    ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
+                    return res;
+                }
+            }
+            return _currentResourcePicker;
+        }
+
+        public IResource GetResource(string resourceId)
+        {
+            try
+            {
+                var explorerItem = ExplorerViewModel.Environments[0].AsList().First(o => o.ResourceId == Guid.Parse(resourceId));
+
+                IResource resource = new Resource
+                {
+                    ResourceID = explorerItem.ResourceId,
+                    ResourceName = explorerItem.ResourceName
+                };
+
+                return resource;
+            }
+            finally
+            {
+                Dev2Logger.Error($"Could not find resource for - { resourceId }", GlobalConstants.WarewolfError);
+            }
+            return null;
+        }
+
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
@@ -398,31 +489,31 @@ namespace Dev2.Studio.ViewModels
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, true, null, null, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, true, null, null, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, null, null, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, null, null, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, null, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, null, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController, IPopupController popupController)
-            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, popupController, null)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, popupController, null, null)
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController,
-            IPopupController popupController, IExplorerViewModel explorer)
+            IPopupController popupController, IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
             : base(eventPublisher)
         {
             _file = new FileWrapper();
@@ -450,6 +541,11 @@ namespace Dev2.Studio.ViewModels
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
+            _currentResourcePicker = currentResourcePicker;
+            if (_currentResourcePicker == null)
+            {
+                _currentResourcePicker = CreateResourcePickerDialog();
+            }
         }
 
         public void Handle(ShowReverseDependencyVisualizer message)

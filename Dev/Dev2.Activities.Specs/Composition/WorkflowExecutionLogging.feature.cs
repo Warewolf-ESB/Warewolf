@@ -44,8 +44,8 @@ namespace Dev2.Activities.Specs.Composition
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WorkflowExecutionLogging", "      In order to get a detailed workflow execution log\r\n      As a warewolf user" +
-                    "\r\n      I want to be able to list all entry to exit execution log points", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WorkflowExecutionLogging", "    In order to get a detailed workflow execution log\r\n    As a warewolf user\r\n  " +
+                    "  I want to be able to list all entry to exit execution log points", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -90,33 +90,33 @@ namespace Dev2.Activities.Specs.Composition
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution entry point detailed log", ((string[])(null)));
 #line 6
-  this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 7
-          testRunner.Given("an existing workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-    testRunner.When("a \"Hello World\" workflow request is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("a workflow request is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table592 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table1.AddRow(new string[] {
+            table592.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
 #line 9
-          testRunner.Then("a detailed entry log is created", ((string)(null)), table1, "Then ");
+    testRunner.Then("a detailed entry log is created", ((string)(null)), table592, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table2.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
 #line 12
-    testRunner.And("it has these input parameter values", ((string)(null)), table2, "And ");
+    testRunner.And("it has these input parameter values", ((string)(null)), table593, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -130,21 +130,22 @@ namespace Dev2.Activities.Specs.Composition
 #line 16
 this.ScenarioSetup(scenarioInfo);
 #line 17
-          testRunner.Given("\"Hello World\" workflow execution entry point detailed logs are created and logged" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
-          testRunner.When("a workflow stops on error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+    testRunner.When("a workflow stops on error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table3.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
-#line 19
-          testRunner.Then("a detailed on error log entry is created", ((string)(null)), table3, "Then ");
+#line 20
+    testRunner.Then("a detailed on error log entry is created", ((string)(null)), table594, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -155,36 +156,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WorkflowExecutionCompletedDetailedLogs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution completed detailed logs", ((string[])(null)));
-#line 23
-this.ScenarioSetup(scenarioInfo);
 #line 24
-          testRunner.Given("an existing workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 25
-          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
-          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "one",
-                        "two",
-                        "three"});
-            table4.AddRow(new string[] {
-                        "value 1",
-                        "value 2",
-                        "value 3"});
+    testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
-          testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table4, "Then ");
+    testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table5.AddRow(new string[] {
+            table595.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
-#line 30
-          testRunner.And("it has these output parameter values", ((string)(null)), table5, "And ");
+#line 28
+    testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table595, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table596 = new TechTalk.SpecFlow.Table(new string[] {
+                        "one",
+                        "two",
+                        "three"});
+            table596.AddRow(new string[] {
+                        "value 1",
+                        "value 2",
+                        "value 3"});
+#line 31
+    testRunner.And("it has these output parameter values", ((string)(null)), table596, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -195,29 +196,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WorkflowExecutionFailureDetailedLogs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution failure detailed logs", ((string[])(null)));
-#line 34
-this.ScenarioSetup(scenarioInfo);
 #line 35
-          testRunner.Given("an existing workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 36
-          testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("a valid workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
-          testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("workflow execution entry point detailed logs are logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
-          testRunner.When("a workflow execution has an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+    testRunner.When("a workflow execution has an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table597 = new TechTalk.SpecFlow.Table(new string[] {
                         "one",
                         "two",
                         "three"});
-            table6.AddRow(new string[] {
+            table597.AddRow(new string[] {
                         "value 1",
                         "value 2",
                         "value 3"});
-#line 39
-          testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table6, "Then ");
-#line 42
-          testRunner.And("a detailed execution completed log entry is has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+    testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table597, "Then ");
+#line 43
+    testRunner.And("a detailed execution completed log entry is has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -225,4 +226,3 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
-

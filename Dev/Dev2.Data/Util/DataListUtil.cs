@@ -26,6 +26,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
+using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -360,13 +361,9 @@ namespace Dev2.Data.Util
 
         //used in the replace node method
 
-        public static bool IsXml(string data)
-        {
-            var isXml = XmlHelper.IsXml(data, out bool isFragment, out bool isHtml);
-            return isXml && !isFragment && !isHtml;
-        }
-
-        public static bool IsXml(string data, out bool isFragment) => XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
+        public static bool IsXml(string data) => DataListUtilBase.IsXml(data);
+        
+        public static bool IsXml(string data, out bool isFragment) => DataListUtilBase.IsXml(data, out isFragment);
 
         public static bool IsJson(string data)
         {
@@ -396,47 +393,8 @@ namespace Dev2.Data.Util
 
             return result;
         }
-        
-        public static string AdjustForEncodingIssues(string payload)
-        {
-            var trimedData = payload.Trim();
-            var isXml = trimedData.StartsWith("<", StringComparison.Ordinal) && !trimedData.StartsWith("<![CDATA[", StringComparison.Ordinal);
 
-            if (!isXml)
-            {
-                trimedData = TrimNonXmlData(trimedData);
-            }
-            var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
-            if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
-            {
-                trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
-            }
-
-            trimedData = trimedData.Replace("\0", "");
-            return trimedData;
-        }
-
-        private static string TrimNonXmlData(string trimedData)
-        {
-            var nonXmlData = trimedData;
-            if (nonXmlData.Length > 1 && nonXmlData[1] == '<' && nonXmlData[2] == '?')
-            {
-                nonXmlData = nonXmlData.Substring(1);
-            }
-            else if (nonXmlData.Length > 2 && nonXmlData[2] == '<' && nonXmlData[3] == '?')
-            {
-                nonXmlData = nonXmlData.Substring(2);
-            }
-            else
-            {
-                if (nonXmlData.Length > 3 && nonXmlData[3] == '<' && nonXmlData[4] == '?')
-                {
-                    nonXmlData = nonXmlData.Substring(3);
-                }
-            }
-
-            return nonXmlData;
-        }
+        public static string AdjustForEncodingIssues(string payload) => DataListUtilBase.AdjustForEncodingIssues(payload);
 
         public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
 

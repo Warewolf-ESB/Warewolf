@@ -69,7 +69,7 @@ footer {
 }
 
 .mat-primary {
-  background: #333;
+  background: #222;
   color: #fff;
 }
 
@@ -156,6 +156,8 @@ mat-sidenav {
 
 main {
   min-height: 500px;
+  padding-left:20px;
+  max-width:calc(100% - 10px);
 }
 
 mat-sidenav-container,

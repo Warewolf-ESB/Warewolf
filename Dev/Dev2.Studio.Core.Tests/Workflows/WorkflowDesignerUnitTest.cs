@@ -53,6 +53,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Instrumentation;
+using Dev2.Activities;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -2394,6 +2395,105 @@ namespace Dev2.Core.Tests.Workflows
 
             //Assert Unique ID has changed
             Assert.IsFalse(handled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowDesignerViewModel))]
+        public void WorkflowDesignerViewModel_GetGates()
+        {
+            #region Setup view model constructor parameters
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+
+            var serviceDefinition = new StringBuilder();
+
+            var mockModelService = new Mock<ModelService>();
+
+            var mockWorkflowHelper = new Mock<IWorkflowHelper>();
+            mockWorkflowHelper.Setup(workflowHelper => workflowHelper.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
+            mockWorkflowHelper.Setup(workflowHelper => workflowHelper.SerializeWorkflow(mockModelService.Object)).Returns(serviceDefinition);
+
+            #endregion
+
+            #region setup Mock ModelItem
+            SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+            var testAct = new FlowSwitch<string>
+            {
+                DisplayName = "TestSwitch",
+                Expression = Activity<string>.FromValue("True")
+            };
+
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(c => c.Content).Returns(prop.Object);
+            source.Setup(c => c.ItemType).Returns(testAct.GetType());
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
+
+            #endregion
+
+            var uniqueId1 = Guid.NewGuid().ToString();
+            var uniqueId2 = Guid.NewGuid().ToString();
+
+            var gate1 = new GateActivity
+            {
+                UniqueID = uniqueId1,
+                DisplayName = "Gate 1",
+            };
+
+            var gate2 = new GateActivity
+            {
+                UniqueID = uniqueId2,
+                DisplayName = "Gate 2",
+            };
+
+            gate1.NextNodes = new List<IDev2Activity> { gate2 };
+            gate2.NextNodes = null;
+
+            var treeNodes = new List<Common.ConflictTreeNode>
+            {
+                new Common.ConflictTreeNode(gate1, new Point()),
+                new Common.ConflictTreeNode(gate2, new Point())
+            };
+
+            var mockServiceDifferenceParser = new Mock<IServiceDifferenceParser>();
+            mockServiceDifferenceParser.Setup(serviceDifferenceParser => serviceDifferenceParser.BuildWorkflow(serviceDefinition)).Returns(treeNodes);
+
+            CustomContainer.Register(mockServiceDifferenceParser.Object);
+
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, mockWorkflowHelper.Object, new Mock<IEventAggregator>().Object, mockModelService.Object);
+
+            var list = wd.GetSelectableGates(uniqueId2);
+
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual(Guid.Empty.ToString(), list[0].Value);
+            Assert.AreEqual("End", list[0].Name);
+            Assert.AreEqual(uniqueId1, list[1].Value);
+            Assert.AreEqual("Gate 1", list[1].Name);
         }
 
         #region TestModelServiceModelChangedNextReference

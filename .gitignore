@@ -33,6 +33,7 @@
 ####################################################################################
 # Visual Studio
 ####################################################################################
+.idea
 .vs/**
 /Dev/.vs/**
 /Dev/.sonarlint
@@ -96,4 +97,6 @@ Dev/SonarQube/SolutionBinding.sqconfig
 # Versioning
 ####################################################################################
 /Dev/Warewolf.Auditing/AssemblyCommonInfo.cs
+/Dev/Warewolf.Data1.Tests
 /Dev/.idea
+
