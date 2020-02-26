@@ -241,6 +241,11 @@ namespace Dev2.Runtime.ESB.Execution
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
 
+                if (dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    _stateNotifier?.LogPreExecuteState(resource);
+                }
+
                 IDev2Activity next;
                 IDev2Activity lastActivity = null;
                 try
