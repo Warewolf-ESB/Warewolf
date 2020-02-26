@@ -1,31 +1,37 @@
-<h2 mat-dialog-title>Manual Resumption</h2>
-<mat-dialog-content>
-  <!--<mat-card>AuditDate: {{logEntry.AuditDate}}</mat-card>
-  <mat-card>WorkflowID: {{logEntry.WorkflowID}}</mat-card>
-  <mat-card>WorkflowName: {{logEntry.WorkflowName}}</mat-card>
-  <mat-card>ExecutionId: {{logEntry.ExecutionID}}</mat-card>
-  <mat-card>AuditType: {{logEntry.AuditType}}</mat-card>
-  <mat-card>PreviousActivity: {{logEntry.PreviousActivity}}</mat-card>
-  <mat-card>PreviousActivityType: {{logEntry.PreviousActivityType}}</mat-card>
-  <mat-card>PreviousActivityID: {{logEntry.PreviousActivityID}}</mat-card>
-  <mat-card>NextActivity: {{logEntry.NextActivity}}</mat-card>
-  <mat-card>NextActivityType: {{logEntry.NextActivityType}}</mat-card>
-  <mat-card>NextActivityID: {{logEntry.NextActivityID}}</mat-card>
-  <mat-card>ServerID: {{logEntry.ServerID}}</mat-card>
-  <mat-card>ParentID: {{logEntry.ParentID}}</mat-card>
-  <mat-card>ClientID: {{logEntry.ClientID}}</mat-card>
-  <mat-card>ExecutingUser: {{logEntry.ExecutingUser}}</mat-card>
-  <mat-card>Environment: {{logEntry.Environment}}</mat-card>
-  <mat-card>ExecutionOrigin: {{logEntry.ExecutionOrigin}}</mat-card>
-  <mat-card>ExecutionOriginDescription: {{logEntry.ExecutionOriginDescription}}</mat-card>
-  <mat-card>ExecutionToken: {{logEntry.ExecutionToken}}</mat-card>
-  <mat-card>AdditionalDetail: {{logEntry.AdditionalDetail}}</mat-card>
-  <mat-card>IsSubExecution: {{logEntry.IsSubExecution}}</mat-card>
-  <mat-card>IsRemoteWorkflow: {{logEntry.IsRemoteWorkflow}}</mat-card>-->
 
+<mat-card-title>Log Entry</mat-card-title>
+<mat-dialog-content>
+  <mat-card><b>WorkflowName:</b> {{data.LogEntry.WorkflowName}}</mat-card>
+  <mat-card><b>WorkflowID:</b> {{data.LogEntry.WorkflowID}}</mat-card>
+  <mat-card><b>ExecutionID:</b> {{data.LogEntry.ExecutionID}}</mat-card>
+  <mat-card><b>StartDateTime:</b> {{data.LogEntry.StartDateTime}}</mat-card>
+  <mat-card><b>CompletedDateTime:</b> {{data.LogEntry.CompletedDateTime}}</mat-card>
+  <mat-card><b>Url:</b> {{data.LogEntry.Url}}</mat-card>
+  <mat-card><b>Environment: </b>{{data.LogEntry.Environment}}</mat-card>
+
+  <mat-card><b>ServerID:</b> {{data.LogEntry.ServerID}}</mat-card>
+  <mat-card><b>ParentID:</b> {{data.LogEntry.ParentID}}</mat-card>
+  <mat-card><b>ClientID:</b> {{data.LogEntry.ClientID}}</mat-card>
+  <mat-card><b>AuditType:</b> {{data.LogEntry.AuditType}}</mat-card>
+
+  <mat-card><b>PreviousActivity:</b> {{data.LogEntry.PreviousActivity}}</mat-card>
+  <mat-card><b>PreviousActivityType:</b> {{data.LogEntry.PreviousActivityType}}</mat-card>
+  <mat-card><b>PreviousActivityID:</b> {{data.LogEntry.PreviousActivityID}}</mat-card>
+  <mat-card><b>NextActivity:</b> {{data.LogEntry.NextActivity}}</mat-card>
+  <mat-card><b>NextActivityType:</b> {{data.LogEntry.NextActivityType}}</mat-card>
+  <mat-card><b>NextActivityID:</b> {{data.LogEntry.NextActivityID}}</mat-card>
+
+  <mat-card><b>ExecutingUser: </b>{{data.LogEntry.ExecutingUser}}</mat-card>
+
+  <mat-card><b>ExecutionOrigin:</b> {{data.LogEntry.ExecutionOrigin}}</mat-card>
+  <mat-card><b>ExecutionOriginDescription:</b> {{data.LogEntry.ExecutionOriginDescription}}</mat-card>
+  <mat-card><b>ExecutionToken:</b> {{data.LogEntry.ExecutionToken}}</mat-card>
+  <mat-card><b>AdditionalDetail:</b> {{data.LogEntry.AdditionalDetail}}</mat-card>
+  <mat-card><b>IsSubExecution: </b>{{data.LogEntry.IsSubExecution}}</mat-card>
+  <mat-card><b>IsRemoteWorkflow:</b> {{data.LogEntry.IsRemoteWorkflow}}</mat-card>
+  <mat-card><b>VersionNumber:</b> {{data.LogEntry.VersionNumber}}</mat-card>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button class="mat-raised-button" (click)="close()">    Close  </button>
-  <button class="mat-raised-button mat-primary" (click)="resume()">    Resume  </button>
 </mat-dialog-actions>

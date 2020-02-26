@@ -10,6 +10,7 @@
 */
 
 using System;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
@@ -66,7 +67,7 @@ namespace Dev2.Runtime.ESB.Execution
         public virtual Dev2WorkflowSettingsTO GetWorkflowSetting() =>
             new Dev2WorkflowSettingsTO
             {
-                EnableDetailedLogging = false,
+                EnableDetailedLogging = Config.Server.EnableDetailedLogging,
                 LoggerType = LoggerType.JSON,
                 KeepLogsForDays = 2,
                 CompressOldLogFiles = true
