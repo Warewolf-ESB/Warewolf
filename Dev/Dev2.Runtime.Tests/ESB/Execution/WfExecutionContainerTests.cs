@@ -219,7 +219,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
-        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_Expect_LogPreExecuteState()
+        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogPreExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
             var dataObjectMock = new Mock<IDSFDataObject>();
@@ -241,6 +241,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dataObjectMock.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
 
             mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
+            mockStateNotifier.Setup(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>())).Verifiable();
 
             var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, mockStateNotifier.Object);
 
@@ -250,6 +251,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
             mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
         }
