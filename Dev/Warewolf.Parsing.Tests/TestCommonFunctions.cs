@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -31,10 +33,16 @@ namespace WarewolfParsingTest
         public void CommonFunctions_atomtoString_GivenJson_ExpectCorrectJson()
         {
             //------------Setup for test--------------------------
-            var env = CreateEnvironmentWithData();
+            var env = CreateEnvironmentWithData2();
             var result = EvaluationFunctions.eval(env, 0, false, "[[@a]]");
             var a = CommonFunctions.evalResultToString(result);
-            Assert.AreEqual("", a);
+            Assert.AreEqual("{\r\n  \"aa\": 1,\r\n  \"b\": {\r\n    \"bb\": 2\r\n  },\r\n  \"c\": {\r\n    \"aa\": 1,\r\n    \"b\": {\r\n      \"bb\": 2\r\n    }\r\n  },\r\n  \"d\": [\r\n    {\r\n      \"indexNested\": 3\r\n    }\r\n  ]\r\n}", a);
+            var json = (JObject)JsonConvert.DeserializeObject(a);
+            Assert.AreEqual(1, json["aa"]);
+            Assert.AreEqual(2, json["b"]["bb"]);
+            Assert.AreEqual(1, json["c"]["aa"]);
+            Assert.AreEqual(2, json["c"]["b"]["bb"]);
+            Assert.AreEqual(3, json["d"][0]["indexNested"]);
         }
 
         [TestMethod]
@@ -234,6 +242,24 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[@a]]", "{\"aa\":1}"), 0);
             env.AssignJson(new AssignValue("[[@a.b]]", "{\"bb\":2}"), 0);
             env.AssignJson(new AssignValue("[[@a.c]]", "[[@a]]"), 0);
+            env.AssignJson(new AssignValue("[[@a2(1)]]", "{\"indexNested\": 3}"), 0);
+            env.AssignJson(new AssignValue("[[@a.d]]", "[[@a2]]"), 0);
+
+
+            var p = new PrivateObject(env);
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+        }
+
+        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData2()
+        {
+
+            var env = new ExecutionEnvironment();
+            env.AssignJson(new AssignValue("[[@a]]", "{\"aa\":1}"), 0);
+            env.AssignJson(new AssignValue("[[@a.b]]", "{\"bb\":2}"), 0);
+            env.AssignJson(new AssignValue("[[@a.c]]", "[[@a]]"), 0);
+            env.AssignJson(new AssignValue("[[@a2(1)]]", "{\"indexNested\": 3}"), 0);
+            env.AssignJson(new AssignValue("[[@a.d]]", "[[@a2]]"), 0);
+
 
             var p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
