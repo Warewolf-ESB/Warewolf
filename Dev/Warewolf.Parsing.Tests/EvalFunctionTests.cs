@@ -922,8 +922,8 @@ namespace WarewolfParsingTest
             var val = EvaluationFunctions.eval(env, 0, true, "[[esc(1).val]]");
             var val2 = EvaluationFunctions.eval(env, 0, true, "[[esc(2).val]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("some\tstring", CommonFunctions.evalResultToString(val));
-            Assert.AreEqual("another\tstring", CommonFunctions.evalResultToString(val2));
+            Assert.AreEqual("some\\tstring", CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("another\\tstring", CommonFunctions.evalResultToString(val2));
         }
 
         [TestMethod]
