@@ -16,6 +16,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using RabbitMQ.Client;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
@@ -24,6 +25,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Dev2.Common.State;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Warewolf.Data.Options;
 
 namespace Dev2.Activities.RabbitMQ.Publish
@@ -87,7 +89,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(BasicProperties),
-                    Value = serializer.Serialize(BasicProperties),
+                    Value = BasicProperties?.ToString(),
                 },
                 new StateVariable
                 {
@@ -128,10 +130,25 @@ namespace Dev2.Activities.RabbitMQ.Publish
             };
         }
 
+        private IDSFDataObject DataObject
+        {
+            get; set;
+        }
+        protected override void OnExecute(NativeActivityContext context)
+        {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject, 0);
+        }
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            DataObject = dataObject;
+            base.ExecuteTool(dataObject, update);
+        }
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
+                var CorrelationID = "";
                 RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
@@ -160,11 +177,43 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
-                        basicProperties.CorrelationId = BasicProperties.CorrelationID;
+                        if (BasicProperties.AutoCorrelation is Manual properties)
+                        {
+                            basicProperties.CorrelationId = properties.CorrelationID;
+                            CorrelationID = properties.CorrelationID;
+                        }
+                        else
+                        {
+                            if (BasicProperties.AutoCorrelation is Auto autoProperties)
+                            {
+                                switch (autoProperties.AutoCorrelation)
+                                {
+                                    case AutoCorrelationAction.ExecutionID:
+                                        basicProperties.CorrelationId = DataObject.ExecutionID.ToString();
+                                        break;
+                                    case AutoCorrelationAction.CustomTransactionID:
+                                        basicProperties.CorrelationId = DataObject.CustomTransactionID;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                if (DataObject.CustomTransactionID.Length > 0)
+                                {
+                                    basicProperties.CorrelationId =DataObject.CustomTransactionID;
+                                }
+                                else
+                                {
+                                    basicProperties.CorrelationId =  DataObject.ExecutionID.ToString();
+                                }
+                            }
+                            CorrelationID = basicProperties.CorrelationId;
+                        }
+                        
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug($"Message published to queue {queueName} {BasicProperties.CorrelationID} ", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Message published to queue {queueName} {CorrelationID} ", GlobalConstants.WarewolfDebug);
                 return new List<string> {"Success"};
             }
             catch (Exception ex)
@@ -192,7 +241,6 @@ namespace Dev2.Activities.RabbitMQ.Publish
             return base.Equals(other)
                    && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
                    && string.Equals(QueueName, other.QueueName)
-                   && string.Equals(BasicProperties.CorrelationID, other.BasicProperties.CorrelationID)
                    && IsDurable == other.IsDurable
                    && IsExclusive == other.IsExclusive
                    && IsAutoDelete == other.IsAutoDelete
@@ -228,7 +276,6 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (BasicProperties.CorrelationID != null ? BasicProperties.CorrelationID.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDurable.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsExclusive.GetHashCode();

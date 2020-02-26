@@ -2816,6 +2816,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use ExecutionID or CustomTransactionID from Header as CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we&apos;ll look at this property, and based on that we&apos;ll be able to match a response with a request.
+        /// </summary>
+        public static string RabbitMQHelpAutoCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpAutoCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we&apos;ll look at this property, and based on that we&apos;ll be able to match a response with a request.
+        /// </summary>
+        public static string RabbitMQHelpAutoCustomTransactionIDCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpAutoCustomTransactionIDCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provide a CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we&apos;ll look at this property, and based on that we&apos;ll be able to match a response with a request.
         /// </summary>
         public static string RabbitMQHelpCorrelationID {

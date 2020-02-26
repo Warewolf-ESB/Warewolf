@@ -3105,7 +3105,7 @@ namespace Dev2.Activities.Specs.Composition
                 DisplayName = rabbitMqname,
                 Message = jsonMsg
             };
-            dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = correlationID;
+            //dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = correlationID;
             _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
 
@@ -4051,7 +4051,7 @@ namespace Dev2.Activities.Specs.Composition
                 QueueName = "Queue1",
                 Message = "msg"
             };
-            dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = "CorrelationID";
+           // dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = "CorrelationID";
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
         }
 
