@@ -29,6 +29,8 @@ using System.Linq;
 using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Data.ServiceModel;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 {
@@ -160,44 +162,79 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Pieter Terblanche")]
         [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
-        public void RabbitMQPublishDesignerViewModel2_Constructor2()
+        public void RabbitMQPublishDesignerViewModel2_Validate_Expect_NoErrors()
         {
-            var modelSource = new Mock<IRabbitMQSourceModel>();
-            modelSource.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
-                      
-            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
-            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
-            
-            var updatemanager = new Mock<IStudioUpdateManager>();
-            var queryManager = new Mock<IQueryManager>();
-
-            var server = new Mock<IServer>();           
-            server.Setup(server1 => server1.UpdateRepository).Returns(updatemanager.Object);
-            server.Setup(server1 => server1.QueryProxy).Returns(queryManager.Object);
-
-            var mockMainViewModel = new Mock<IShellViewModel>();
-            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
-            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
-            CustomContainer.Register(mockMainViewModel.Object);
-
-            CustomContainer.LoadedTypes = new List<Type>
-            {
-                typeof(RabbitMQServiceSourceDefinition)
-            };
             //------------Setup for test--------------------------
-            var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem());
-            vm.QueueName = "";
-            vm.Message = null;
-            vm.SelectedRabbitMQSource = null;
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+            var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem(), model.Object)
+            {
+                QueueName = "Test",
+                Message = "msg",
+                SelectedRabbitMQSource = new Mock<IRabbitMQServiceSourceDefinition>().Object
+            };
 
             //------------Execute Test---------------------------
             vm.Validate();
 
             //------------Assert Results-------------------------
-            Assert.IsNotNull(vm);           
+            var errors = vm.Errors;
+            Assert.IsNull(errors);
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
+        public void RabbitMQPublishDesignerViewModel2_Constructor2()
+        {
+            //------------Setup for test--------------------------
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(ManageRabbitMQSourceModel)
+            };
+
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            
+            var mockUpdateManager = new Mock<IStudioUpdateManager>();
+            var mockQueryManager = new Mock<IQueryManager>();
+            
+            var guidOne = Guid.NewGuid();
+            var guidTwo = Guid.NewGuid();
+
+            var rabbitMqSourceOne = new RabbitMQSource {ResourceID = guidOne, ResourceName = "ResourceOne", HostName = "HostOne"};
+            var rabbitMqSourceTwo = new RabbitMQSource {ResourceID = guidTwo, ResourceName = "ResourceTwo", HostName = "HostTwo"};
+            var rabbitMqServiceSourceDefinitions = new List<IRabbitMQServiceSourceDefinition>
+            {
+                new RabbitMQServiceSourceDefinition(rabbitMqSourceOne),
+                new RabbitMQServiceSourceDefinition(rabbitMqSourceTwo),
+            };
+            mockQueryManager.Setup(o => o.FetchRabbitMQServiceSources()).Returns(rabbitMqServiceSourceDefinitions);
+
+            var server = new Mock<IServer>();           
+            server.Setup(server1 => server1.UpdateRepository).Returns(mockUpdateManager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(mockQueryManager.Object);
+            
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            
+            var publishRabbitMqActivity = new PublishRabbitMQActivity();
+            //------------Execute Test---------------------------
+            var vm = new RabbitMQPublishDesignerViewModel2(ModelItemUtils.CreateModelItem(publishRabbitMqActivity));
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, vm.RabbitMQSources.Count);
+            Assert.AreEqual(guidOne, vm.RabbitMQSources[0].ResourceID);
+            Assert.AreEqual("ResourceOne", vm.RabbitMQSources[0].ResourceName);
+            Assert.AreEqual("HostOne", vm.RabbitMQSources[0].HostName);
+            Assert.AreEqual(guidTwo, vm.RabbitMQSources[1].ResourceID);
+            Assert.AreEqual("ResourceTwo", vm.RabbitMQSources[1].ResourceName);
+            Assert.AreEqual("HostTwo", vm.RabbitMQSources[1].HostName);
+        }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
@@ -216,6 +253,102 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             Assert.AreEqual(1, options.Count);
             Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
             Assert.AreEqual("CorrelationID", options[0].Name);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
+        public void RabbitMQPublishDesignerViewModel2_LoadBasicProperties_IsNull_SetBasicProperties()
+        {
+            var properties = new RabbitMqPublishOptions();
+            var basicProperties = CreateModelProperty("BasicProperties", null).Object;
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "BasicProperties", true).Returns(basicProperties);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            var rabbitMQPublishDesignerViewModel2 = new RabbitMQPublishDesignerViewModel2(mockModelItem.Object, new Mock<IRabbitMQSourceModel>().Object);
+            var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
+
+            Assert.AreEqual(1, options.Count);
+            Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
+            Assert.AreEqual("CorrelationID", options[0].Name);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
+        public void RabbitMQPublishDesignerViewModel2_BasicProperties_UpdateBasicPropertiesModelItem()
+        {
+            var properties = new RabbitMqPublishOptions();
+            var basicProperties = CreateModelProperty("BasicProperties", properties).Object;
+            var mockProperties = new Mock<ModelPropertyCollection>();
+            mockProperties.Protected().Setup<ModelProperty>("Find", "BasicProperties", true).Returns(basicProperties);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
+            var rabbitMQPublishDesignerViewModel2 = new RabbitMQPublishDesignerViewModel2(mockModelItem.Object, new Mock<IRabbitMQSourceModel>().Object);
+            var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
+            rabbitMQPublishDesignerViewModel2.BasicProperties.Notify();
+            Assert.AreEqual(1, options.Count);
+            Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
+            Assert.AreEqual("CorrelationID", options[0].Name);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
+        public void RabbitMQPublishDesignerViewModel2_EditRabbitMQSourceCommand_ExistingSourceId()
+        {
+            //------------Setup for test--------------------------
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(ManageRabbitMQSourceModel)
+            };
+
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+
+            var mockUpdateManager = new Mock<IStudioUpdateManager>();
+            var mockQueryManager = new Mock<IQueryManager>();
+
+            var guidOne = Guid.NewGuid();
+            var guidTwo = Guid.NewGuid();
+
+            var rabbitMqSourceOne = new RabbitMQSource { ResourceID = guidOne, ResourceName = "ResourceOne", HostName = "HostOne" };
+            var rabbitMqSourceTwo = new RabbitMQSource { ResourceID = guidTwo, ResourceName = "ResourceTwo", HostName = "HostTwo" };
+            var rabbitMqServiceSourceDefinitionOne = new RabbitMQServiceSourceDefinition(rabbitMqSourceOne);
+            var rabbitMqServiceSourceDefinitionTwo = new RabbitMQServiceSourceDefinition(rabbitMqSourceTwo);
+
+            var rabbitMqServiceSourceDefinitions = new List<IRabbitMQServiceSourceDefinition>
+            {
+                rabbitMqServiceSourceDefinitionOne,
+                rabbitMqServiceSourceDefinitionTwo,
+            };
+            mockQueryManager.Setup(o => o.FetchRabbitMQServiceSources()).Returns(rabbitMqServiceSourceDefinitions);
+
+            var server = new Mock<IServer>();
+            server.Setup(server1 => server1.UpdateRepository).Returns(mockUpdateManager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(mockQueryManager.Object);
+
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var publishRabbitMqActivity = new PublishRabbitMQActivity();
+            //------------Execute Test---------------------------
+            var vm = new RabbitMQPublishDesignerViewModel2(ModelItemUtils.CreateModelItem(publishRabbitMqActivity));
+            //------------Execute Test---------------------------
+
+            vm.SelectedRabbitMQSource = rabbitMqServiceSourceDefinitionOne;
+
+            Assert.IsTrue(vm.EditRabbitMQSourceCommand.CanExecute(null));
+
+            vm.EditRabbitMQSourceCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(rabbitMqServiceSourceDefinitionOne, vm.SelectedRabbitMQSource);
         }
 
         [TestMethod]
