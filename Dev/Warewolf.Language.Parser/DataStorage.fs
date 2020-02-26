@@ -28,7 +28,7 @@ type WarewolfAtom =
     | Float of float
     | Int of int
     | DataString of string
-    | JsonObject of JContainer
+    | JsonObject of JToken
     | Nothing
     | NullPlaceholder
     | PositionedValue of (int * WarewolfAtom)

@@ -879,7 +879,7 @@ let atomtoJToken (x:WarewolfAtom )=
         | Float a -> new JValue(a) :> JToken
         | Int a -> new JValue(a) :> JToken
         | DataString a -> new JValue(a) :> JToken
-        | JsonObject a -> a :> JToken
+        | JsonObject a -> a
         | Nothing -> null :> JToken
         | NullPlaceholder -> null :> JToken
         | PositionedValue (_,b) ->  new JValue(b.ToString()) :> JToken
