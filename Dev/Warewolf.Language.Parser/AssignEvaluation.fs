@@ -156,7 +156,7 @@ and expressionToObjectForJson (obj : JToken) (exp : JsonIdentifierExpression) (r
     | IndexNestedNameExpression a ->
         match a.Next with
         | Terminal ->
-            let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JValue(evalResultToString res))
+            let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (evalResultToJToken res)
             List.map (fun x -> expressionToObjectForJson (x) (a.Next) res) allProperties |> List.head
         | _ ->
             if (a.Index = Index.Last) then
