@@ -387,10 +387,13 @@ and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : 
         let buffer = parseLanguageExpression lang update
         match buffer with
         | RecordSetExpression a when env.RecordSets.ContainsKey a.Name -> let b = evalRecordsSet a env
-                                                                          match shouldEscape with
-                                                                            |true -> let d =  Seq.map (warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString) b |> fun a -> a                                                                                      
-                                                                                     WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",d))
-                                                                            |false-> WarewolfAtomListresult(b)
+                                                                          match a.Index with
+                                                                          | IntIndex i -> WarewolfAtomResult(b.[0])
+                                                                          | _ -> 
+                                                                              match shouldEscape with
+                                                                                |true -> let d =  Seq.map (warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString) b |> fun a -> a                                                                                      
+                                                                                         WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",d))
+                                                                                |false-> WarewolfAtomListresult(b)
                                                                           
         | ScalarExpression a when env.Scalar.ContainsKey a ->
                                                              let b =  evalScalar a env

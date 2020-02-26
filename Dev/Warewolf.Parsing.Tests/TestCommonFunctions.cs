@@ -88,6 +88,36 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("CommonFunctions")]
+        public void CommonFunctions_atomtoString_GivenJsonEmptyArray_ExpectCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var eEnv = new ExecutionEnvironment();
+            eEnv.AssignJson(new AssignValue("[[@a]]", "{\"aa\":1}"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.b]]", "{\"bb\":2}"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.c]]", "[[@a]]"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a2(1)]]", "{\"indexNested\": 3}"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.d]]", "[[@a2]]"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.e()]]", "{\"ee\":4}"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.f]]", "[]"), 0);
+            var env = ExtractEnvironment(eEnv);
+
+            var result = EvaluationFunctions.eval(env, 0, false, "[[@a]]");
+            var a = CommonFunctions.evalResultToString(result);
+            var json = (JObject)JsonConvert.DeserializeObject(a);
+            Assert.AreEqual(1, json["aa"]);
+            Assert.AreEqual(2, json["b"]["bb"]);
+            Assert.AreEqual(1, json["c"]["aa"]);
+            Assert.AreEqual(2, json["c"]["b"]["bb"]);
+            Assert.AreEqual(1, ((JArray)json["d"]).Count);
+            Assert.AreEqual(3, json["d"][0]["indexNested"]);
+            Assert.AreEqual(1, ((JArray)json["e"]).Count);
+            Assert.AreEqual(4, json["e"][0]["ee"]);
+            Assert.AreEqual(0, ((JArray)json["f"]).Count, "empty json array expected");
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CommonFunctions_MethodName")]
         public void CommonFunctions_MethodName_AtomRecordToString_ExpectCorrectString()
