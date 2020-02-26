@@ -124,7 +124,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             Assert.IsFalse(vm.IsMessageFocused);
             Assert.IsNull(vm.SelectedRabbitMQSource);
             Assert.AreEqual(vm.QueueName, "Q1");
-            Assert.AreEqual(vm.BasicProperties.Options[0].Name, "CorrelationID");
+            Assert.AreEqual(vm.BasicProperties.Options[0].Name, "AutoCorrelation");
             Assert.AreEqual(vm.IsDurable, false);
             Assert.AreEqual(vm.IsExclusive, false);
             Assert.AreEqual(vm.IsAutoDelete, false);
@@ -251,8 +251,9 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
 
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
-            Assert.AreEqual("CorrelationID", options[0].Name);
+            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
+            Assert.AreEqual("AutoCorrelation", options[0].Name);
+            
         }
 
         [TestMethod]
@@ -271,8 +272,9 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
 
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
-            Assert.AreEqual("CorrelationID", options[0].Name);
+            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
+            Assert.AreEqual("AutoCorrelation", options[0].Name);
+            
         }
 
         [TestMethod]
@@ -291,8 +293,8 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
             rabbitMQPublishDesignerViewModel2.BasicProperties.Notify();
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionAutocomplete), options[0].GetType());
-            Assert.AreEqual("CorrelationID", options[0].Name);
+            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
+            Assert.AreEqual("AutoCorrelation", options[0].Name);
         }
 
         [TestMethod]
