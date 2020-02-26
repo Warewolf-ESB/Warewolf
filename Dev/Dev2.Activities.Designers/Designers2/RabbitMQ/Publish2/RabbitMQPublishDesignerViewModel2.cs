@@ -28,8 +28,6 @@ using Dev2.Studio.Interfaces;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.UI;
-using Dev2.Studio.Core;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 {
@@ -41,20 +39,14 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
         readonly IServer _server;
         IShellViewModel _shellViewModel;
 
-        [ExcludeFromCodeCoverage]
         public RabbitMQPublishDesignerViewModel2(ModelItem modelItem)
-           : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
-        {
-
-        }
-        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
             : base(modelItem)
-        {
-            _server = server;
-            _shellViewModel = shellViewModel;
+        {  
             _modelItem = modelItem;
-          
-            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel,server);
+            VerifyArgument.IsNotNull("modelItem", modelItem);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel);
             SetupCommonViewModelProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Publish;
         }
@@ -68,15 +60,15 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
             SetupCommonViewModelProperties();
         }
 
-        void SetupCommonViewModelProperties()
+        private void SetupCommonViewModelProperties()
         {
             ShowLarge = false;
 
-            EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMQSource(), o => IsRabbitMQSourceSelected);
-            NewRabbitMQSourceCommand = new RelayCommand(o => NewRabbitMQSource());
+            EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMqSource(), o => IsRabbitMQSourceSelected);
+            NewRabbitMQSourceCommand = new RelayCommand(o => NewRabbitMqSource());
 
-            RabbitMQSources = LoadRabbitMQSources();
-            SetSelectedRabbitMQSource(null);
+            RabbitMQSources = LoadRabbitMqSources();
+            SetSelectedRabbitMqSource(null);
             AddTitleBarLargeToggle();
             LoadBasicProperties();
         }
@@ -85,11 +77,11 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 
         private void LoadBasicProperties()
         { 
-            var basicProperties = _modelItem.Properties["BasicProperties"].ComputedValue as RabbitMqPublishOptions;
+            var basicProperties = _modelItem.Properties["BasicProperties"]?.ComputedValue as RabbitMqPublishOptions;
             if (basicProperties is null)
             {
                 basicProperties = new RabbitMqPublishOptions();
-                _modelItem.Properties["BasicProperties"].SetValue(basicProperties);
+                _modelItem.Properties["BasicProperties"]?.SetValue(basicProperties);
             }
             var result = new List<IOption>();
             var failureOptions = OptionConvertor.Convert(basicProperties);
@@ -133,10 +125,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 
         public IRabbitMQServiceSourceDefinition SelectedRabbitMQSource
         {
-            get
-            {
-                return _selectedRabbitMQSource;
-            }
+            get => _selectedRabbitMQSource;
             set
             {
                 _selectedRabbitMQSource = value;
@@ -150,76 +139,70 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 
         Guid RabbitMQSourceResourceId
         {
-            get
-            {
-                return GetProperty<Guid>();
-            }
-            set
-            {
-                SetProperty(value);
-            }
+            get => GetProperty<Guid>();
+            set => SetProperty(value);
         }
 
         public string QueueName
         {
-            get { return GetProperty<string>(); }
-            set { SetProperty(value); }
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
        
         public bool IsDurable
         {
-            get { return GetProperty<bool>(); }
-            set { SetProperty(value); }
+            get => GetProperty<bool>();
+            set => SetProperty(value);
         }
 
         public bool IsExclusive
         {
-            get { return GetProperty<bool>(); }
-            set { SetProperty(value); }
+            get => GetProperty<bool>();
+            set => SetProperty(value);
         }
 
         public bool IsAutoDelete
         {
-            get { return GetProperty<bool>(); }
-            set { SetProperty(value); }
+            get => GetProperty<bool>();
+            set => SetProperty(value);
         }
 
         public string Message
         {
-            get { return GetProperty<string>(); }
-            set { SetProperty(value); }
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
         public string Result
         {
-            get { return GetProperty<string>(); }
-            set { SetProperty(value); }
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
-        ObservableCollection<IRabbitMQServiceSourceDefinition> LoadRabbitMQSources()
+        private ObservableCollection<IRabbitMQServiceSourceDefinition> LoadRabbitMqSources()
         {
-            var rabbitMQSources = _model.RetrieveSources();
-            return rabbitMQSources.ToObservableCollection();
+            var rabbitMqSources = _model.RetrieveSources();
+            return rabbitMqSources.ToObservableCollection();
         }
 
-        void SetSelectedRabbitMQSource(IRabbitMQServiceSourceDefinition rabbitMQSource)
+        private void SetSelectedRabbitMqSource(IRabbitMQServiceSourceDefinition rabbitMqSource)
         {
-            var selectRabbitMQSource = rabbitMQSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
-            SelectedRabbitMQSource = selectRabbitMQSource;
+            var selectRabbitMqSource = rabbitMqSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
+            SelectedRabbitMQSource = selectRabbitMqSource;
         }
 
-        void EditRabbitMQSource()
+        private void EditRabbitMqSource()
         {
             _model.EditSource(SelectedRabbitMQSource);
-            RabbitMQSources = LoadRabbitMQSources();
-            var editedRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
-            SetSelectedRabbitMQSource(editedRabbitMQSources);
+            RabbitMQSources = LoadRabbitMqSources();
+            var editedRabbitMqSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
+            SetSelectedRabbitMqSource(editedRabbitMqSources);
         }
 
-        void NewRabbitMQSource()
+        private void NewRabbitMqSource()
         {
             _model.CreateNewSource();
-            RabbitMQSources = LoadRabbitMQSources();
+            RabbitMQSources = LoadRabbitMqSources();
         }
 
         public override void Validate()
@@ -245,7 +228,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
             }
         }
 
-        IRuleSet GetRuleSet(string propertyName)
+        private IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 
@@ -270,7 +253,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged(string propertyName = null)
+        private void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
