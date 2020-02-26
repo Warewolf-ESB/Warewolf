@@ -13,10 +13,10 @@ namespace Warewolf.UnitTestAttributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
     public class Depends : Attribute, IDisposable
     {
-        readonly List<string> RigOpsHosts =  new List<string>
+        static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "T004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
+            "T004124.premier.local",
             "localhost"
         };
         private string SelectedHost = "";
@@ -74,7 +74,14 @@ namespace Warewolf.UnitTestAttributes
         {
             if (EnableDocker)
             {
-                throw new Exception("Cannot use this static method with EnableDocker set to true. You must use Container.IP property of an instance instead.");
+                if (containerType == ContainerType.CIRemote)
+                {
+                    return RigOpsHosts.FirstOrDefault() + ":3144";
+                }
+                else
+                {
+                    return RigOpsHosts.FirstOrDefault();
+                }
             }
             else
             {
