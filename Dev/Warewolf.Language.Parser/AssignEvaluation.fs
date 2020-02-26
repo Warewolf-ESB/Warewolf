@@ -236,6 +236,7 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
         addAtomicPropertyToJson asJObj a.Name myValue |> ignore
         asJObj :> JToken
     | _ -> failwith "top level assign cannot be a nested expresssion"
+(*
 
 and assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (exp : JsonIdentifierExpression) : WarewolfEnvironment = 
     let evalResult = ((evalResultToString res).TrimEnd ' ').TrimStart ' '
@@ -273,13 +274,14 @@ and assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (ex
         else objectFromExpression exp res obj |> ignore
         addedenv
     | _ -> failwith "top level assign cannot be a nested expresssion"
+*)
 
 and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResult) (exp : JsonIdentifierExpression) : WarewolfEnvironment = 
     let evalResult = ((evalResultToString res).TrimEnd ' ').TrimStart ' '
 
     match exp with
     | NameExpression a -> 
-        if (evalResult.StartsWith "{" && evalResult.EndsWith "}") then
+        if (isJsonString evalResult) then
             let actualValue = JContainer.Parse evalResult :?> JContainer
             let addedenv = addOrReturnJsonObjects env a.Name (new JObject())
             addToJsonObjects addedenv a.Name actualValue            
@@ -289,7 +291,7 @@ and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResu
         let actualRes = match res with
             | WarewolfEvalResult.WarewolfAtomResult atomResult -> match atomResult with
                                                                       | WarewolfAtom.DataString ds ->
-                                                                        if (evalResult.StartsWith "{" && evalResult.EndsWith "}") then
+                                                                        if (isJsonString evalResult) then
                                                                             let actualValue = JContainer.Parse evalResult
                                                                             WarewolfAtomResult(JsonObject(actualValue))
                                                                         else
@@ -312,7 +314,7 @@ and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResu
                     | Last -> indexes
                     | Star -> if indexes.Length = 0 then [1] else indexes
                     | _ -> failwith "invalid index"
-            if (evalResult.StartsWith "{" && evalResult.EndsWith "}") || (evalResult.StartsWith "[{" && evalResult.EndsWith "}]") then
+            if (isJsonString evalResult) || (evalResult.StartsWith "[{" && evalResult.EndsWith "}]") then
                 let actualValue = JContainer.Parse evalResult
                 List.map (fun a -> addValueToJArray arr a actualValue) actualIndexes |> ignore
             else
@@ -321,6 +323,12 @@ and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResu
         else objectFromExpression exp res obj |> ignore
         addedenv
     | _ -> failwith "top level assign cannot be a nested expresssion"
+
+and isJsonString (str : string) : bool =
+    let isJsonOb = (str.StartsWith "{" && str.EndsWith "}")
+    let isJsonArr = (str.StartsWith "[" && str.EndsWith "]" && str.[1] <> '[')
+    isJsonOb || isJsonArr
+
 
 and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifierExpression = 
     match a with
@@ -648,4 +656,3 @@ and evalAssignWithFrameStrict (value : IAssignValue) (update : int) (env : Warew
 let removeFraming (env : WarewolfEnvironment) = 
     let recsets = Map.map (fun _ b -> { b with Frame = 0 }) env.RecordSets
     { env with RecordSets = recsets }
-
