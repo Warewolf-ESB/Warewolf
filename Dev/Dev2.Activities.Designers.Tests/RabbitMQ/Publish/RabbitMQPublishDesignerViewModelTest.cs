@@ -26,6 +26,8 @@ using Warewolf.Options;
 using Warewolf.UI;
 using Moq.Protected;
 using System.Linq;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Core;
 
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 {
@@ -154,6 +156,46 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             StringAssert.Contains(errors[0].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqSourceNotNullErrorTest);
             StringAssert.Contains(errors[1].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqQueueNameNotNullErrorTest);
             StringAssert.Contains(errors[2].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqMessageNotNullErrorTest);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RabbitMQPublishDesignerViewModel2))]
+        public void RabbitMQPublishDesignerViewModel2_Constructor2()
+        {
+            var modelSource = new Mock<IRabbitMQSourceModel>();
+            modelSource.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+                      
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            
+            var updatemanager = new Mock<IStudioUpdateManager>();
+            var queryManager = new Mock<IQueryManager>();
+
+            var server = new Mock<IServer>();           
+            server.Setup(server1 => server1.UpdateRepository).Returns(updatemanager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(queryManager.Object);
+
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(RabbitMQServiceSourceDefinition)
+            };
+            //------------Setup for test--------------------------
+            var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem(),server.Object,mockMainViewModel.Object);
+            vm.QueueName = "";
+            vm.Message = null;
+            vm.SelectedRabbitMQSource = null;
+
+            //------------Execute Test---------------------------
+            vm.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(vm);           
         }
         [TestMethod]
         [Owner("Candice Daniel")]

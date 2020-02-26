@@ -28,7 +28,8 @@ using Dev2.Studio.Interfaces;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.UI;
-
+using Dev2.Studio.Core;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
 {
@@ -37,15 +38,23 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
         readonly IRabbitMQSourceModel _model;
         private readonly ModelItem _modelItem;
         private OptionsWithNotifier _basicProperties;
-        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem)
-            : base(modelItem)
-        {  
-            _modelItem = modelItem;
-            VerifyArgument.IsNotNull("modelItem", modelItem);
+        readonly IServer _server;
+        IShellViewModel _shellViewModel;
 
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var server = shellViewModel.ActiveServer;
-            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel);
+        [ExcludeFromCodeCoverage]
+        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem)
+           : this(modelItem, ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
+        {
+
+        }
+        public RabbitMQPublishDesignerViewModel2(ModelItem modelItem, IServer server, IShellViewModel shellViewModel)
+            : base(modelItem)
+        {
+            _server = server;
+            _shellViewModel = shellViewModel;
+            _modelItem = modelItem;
+          
+            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel,server);
             SetupCommonViewModelProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Publish;
         }
@@ -53,7 +62,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
         public RabbitMQPublishDesignerViewModel2(ModelItem modelItem, IRabbitMQSourceModel model)
             : base(modelItem)
         {
-            VerifyArgument.IsNotNull("modelItem", modelItem);
             VerifyArgument.IsNotNull("model", model);
             _modelItem = modelItem;
             _model = model;
