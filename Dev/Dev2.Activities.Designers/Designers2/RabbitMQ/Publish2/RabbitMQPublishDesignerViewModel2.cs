@@ -39,7 +39,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
         readonly IRabbitMQSourceModel _model;
         private readonly ModelItem _modelItem;
         private OptionsWithNotifier _basicProperties;
-
        
         public RabbitMQPublishDesignerViewModel2(ModelItem modelItem)
             : base(modelItem)
@@ -87,8 +86,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
                 _modelItem.Properties["BasicProperties"]?.SetValue(basicProperties);
             }
             var result = new List<IOption>();
-            var failureOptions = OptionConvertor.Convert(basicProperties);
-            result.AddRange(failureOptions);
+            var options = OptionConvertor.Convert(basicProperties);
+            result.AddRange(options);
             BasicProperties = new OptionsWithNotifier { Options = result };
         }
         public OptionsWithNotifier BasicProperties
