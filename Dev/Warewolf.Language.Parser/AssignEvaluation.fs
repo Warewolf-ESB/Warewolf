@@ -178,8 +178,24 @@ and expressionToObjectForJson (obj : JToken) (exp : JsonIdentifierExpression) (r
                     let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
                     List.map (fun x -> expressionToObjectForJson (x) (a.Next) res) allProperties |> List.head
             else
-                let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
-                List.map (fun x -> expressionToObjectForJson (x) (a.Next) res) allProperties |> List.head
+                let jobj = obj :?> JObject
+                let props = jobj.Properties()
+                let aa = a
+                let value = (new JObject() :> JToken)
+                let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = aa.ObjectName) props
+                match theProp with
+                | None -> 
+                    let arr = new JArray()
+                    let indexes = (indexToInt a.Index arr)
+                    let arr2 = List.map (fun a -> addValueToJArray arr a (value)) indexes
+                    let prop = new JProperty(aa.ObjectName, snd arr2.Head)
+                    let allProperties = List.map fst arr2
+                    let result = List.map (fun x -> expressionToObjectForJson (x) (a.Next) res) allProperties |> List.head
+                    jobj.Add(prop) |> ignore
+                    result
+                | _ -> 
+                    let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
+                    List.map (fun x -> expressionToObjectForJson (x) (a.Next) res) allProperties |> List.head
 
 and objectFromExpressionForJson (exp : JsonIdentifierExpression) (res : WarewolfEvalResult) (obj : JContainer) =
     match exp with

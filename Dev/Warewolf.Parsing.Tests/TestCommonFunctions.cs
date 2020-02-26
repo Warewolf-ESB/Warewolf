@@ -59,6 +59,34 @@ namespace WarewolfParsingTest
             Assert.AreEqual(1, ((JArray)json["d"]).Count);
         }
 
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("CommonFunctions")]
+        public void CommonFunctions_atomtoString_GivenCircularJson_ExpectCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var eEnv = new ExecutionEnvironment();
+            eEnv.AssignJson(new AssignValue("[[@a]]", "{\"aa\":1}"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.b()]]", "{\"bb\":2}"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.c(1).a1]]", "[[@a]]"), 0);
+            eEnv.AssignJson(new AssignValue("[[@a.c(1).a1.aa]]", "55"), 0);
+            var env = ExtractEnvironment(eEnv);
+
+            var result = EvaluationFunctions.eval(env, 0, false, "[[@a]]");
+            var a = CommonFunctions.evalResultToString(result);
+
+            var json = (JObject)JsonConvert.DeserializeObject(a);
+            Assert.AreEqual(1, json["aa"]);
+            Assert.AreEqual(1, ((JArray)json["b"]).Count);
+            Assert.AreEqual(2, json["b"][0]["bb"]);
+            var c1 = ((JArray)json["c"])[0];
+            Assert.AreEqual(55, c1["a1"]["aa"]);
+            Assert.AreEqual(2, c1["a1"]["b"][0]["bb"]);
+            Assert.IsFalse(((JObject)c1["a1"]).ContainsKey("c"));
+            //Assert.AreEqual(1, ((JArray)c1["a1"]["c"]).Count); // this should not exist, it is an artifact of the assign in progress when c(1).a1 is being assigned its parent @a
+        }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory("CommonFunctions")]
