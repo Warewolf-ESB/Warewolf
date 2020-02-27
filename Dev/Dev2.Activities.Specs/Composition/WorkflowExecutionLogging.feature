@@ -7,11 +7,11 @@ Scenario: Workflow execution entry point detailed log
     Given an existing workflow "Hello World"
 	When a "Hello World" workflow request is received
     Then a detailed entry log is created
-    | one     | two     | three   |
-    | value 1 | value 2 | value 3 |
+    | nodeType      | displayName                   |
+    | DsfDecision   | If [[Name]] <> (Not Equal)    |
     And it has these input parameter values
-    | one     | two     | three   |
-    | value 1 | value 2 | value 3 |
+    | variable | value   |
+    | Name     | Nothing |
 
 Scenario: Workflow execution stops on error detailed logs
     Given "Hello World" workflow execution entry point detailed logs are created and logged
