@@ -14,14 +14,15 @@ Scenario: Workflow execution entry point detailed log
     | Name     | Nothing |
 
 Scenario: Workflow execution stops on error detailed logs
-    Given "Hello World" workflow execution entry point detailed logs are created and logged
+    Given "Hello World" stop on error is set to "true"
+    And workflow execution entry point detailed logs are created and logged
     When a workflow stops on error
     Then a detailed on error log entry is created
     | one     | two     | three   |
     | value 1 | value 2 | value 3 |
 
 Scenario: Workflow execution completed detailed logs
-    Given "Hello World" workflow execution entry point detailed logs are created and logged
+    Given workflow execution entry point detailed logs are created and logged
     And a workflow stops on error has no logs
     Then a detailed execution completed log entry is created
     | one     | two     | three   |
@@ -31,7 +32,7 @@ Scenario: Workflow execution completed detailed logs
     | value 1 | value 2 | value 3 |
 
 Scenario: Workflow execution failure detailed logs
-    Given "Hello World" workflow execution entry point detailed logs are created and logged
+    Given workflow execution entry point detailed logs are created and logged
     And a workflow stops on error has no logs
     When a workflow execution has an exception
     Then a detailed execution exception log entry is created
