@@ -26,15 +26,25 @@ using Warewolf.Resource.Errors;
 using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Warewolf.Data.Options;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809",
+        "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml",
+        "Tool_Utility_Rabbit_MQ_Publish")]
     public class PublishRabbitMQActivity : DsfBaseActivity, IEquatable<PublishRabbitMQActivity>
     {
         public PublishRabbitMQActivity()
+            : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance,new ConnectionFactory())
         {
+        }
+
+        public PublishRabbitMQActivity(IResourceCatalog resourceCatalog,ConnectionFactory connectionFactory)
+        {
+            ResourceCatalog = resourceCatalog;
+            ConnectionFactory = connectionFactory;
             DisplayName = "RabbitMQ Publish";
             if (BasicProperties is null)
             {
@@ -44,21 +54,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         public Guid RabbitMQSourceResourceId { get; set; }
         public RabbitMqPublishOptions BasicProperties { get; set; }
-        [Inputs("Queue Name")]
-        [FindMissing] public string QueueName { get; set; }
+        [Inputs("Queue Name")] [FindMissing] public string QueueName { get; set; }
 
 
-        [FindMissing]
-        public bool IsDurable { get; set; }
+        [FindMissing] public bool IsDurable { get; set; }
 
-        [FindMissing]
-        public bool IsExclusive { get; set; }
+        [FindMissing] public bool IsExclusive { get; set; }
 
         [FindMissing] public bool IsAutoDelete { get; set; }
 
-        [Inputs("Message")]
-        [FindMissing]
-        public string Message { get; set; }
+        [Inputs("Message")] [FindMissing] public string Message { get; set; }
 
         [NonSerialized] ConnectionFactory _connectionFactory;
 
@@ -76,9 +81,10 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
 
         public override IEnumerable<StateVariable> GetState()
-        { 
+        {
             var serializer = new Dev2JsonSerializer();
-            return new[] {
+            return new[]
+            {
                 new StateVariable
                 {
                     Name = "QueueName",
@@ -130,26 +136,28 @@ namespace Dev2.Activities.RabbitMQ.Publish
             };
         }
 
-        private IDSFDataObject DataObject
-        {
-            get; set;
-        }
+        private IDSFDataObject DataObject { get; set; }
+
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             DataObject = dataObject;
             base.ExecuteTool(dataObject, update);
         }
+
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
                 var CorrelationID = "";
-                RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
+                RabbitMQSource =
+                    ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID,
+                        RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
                     return new List<string> {ErrorResource.RabbitSourceHasBeenDeleted};
@@ -200,20 +208,21 @@ namespace Dev2.Activities.RabbitMQ.Publish
                             {
                                 if (DataObject.CustomTransactionID.Length > 0)
                                 {
-                                    basicProperties.CorrelationId =DataObject.CustomTransactionID;
+                                    basicProperties.CorrelationId = DataObject.CustomTransactionID;
                                 }
                                 else
                                 {
-                                    basicProperties.CorrelationId =  DataObject.ExecutionID.ToString();
+                                    basicProperties.CorrelationId = DataObject.ExecutionID.ToString();
                                 }
                             }
                             CorrelationID = basicProperties.CorrelationId;
                         }
-                        
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug($"Message published to queue {queueName} {CorrelationID} ", GlobalConstants.WarewolfDebug);
+
+                Dev2Logger.Debug($"Message published to queue {queueName} {CorrelationID} ",
+                    GlobalConstants.WarewolfDebug);
                 return new List<string> {"Success"};
             }
             catch (Exception ex)

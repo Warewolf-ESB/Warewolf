@@ -38,25 +38,30 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Construct_Paramterless_SetsDefaultPropertyValues()
         {
-            //------------Setup for test--------------------------
-
             //------------Execute Test---------------------------
             var publishRabbitMQActivity = new PublishRabbitMQActivity();
             //------------Assert Results-------------------------
             Assert.IsNotNull(publishRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Publish", publishRabbitMQActivity.DisplayName);
         }
-
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
-        public void PublishRabbitMQActivity_Execute_Sucess()
+        public void PublishRabbitMQActivity_Execute_Success()
         {
             //------------Setup for test--------------------------
-            var publishRabbitMQActivity = new PublishRabbitMQActivity();
-
+            var env = CreateExecutionEnvironment();
             const string queueName = "Q1", message = "Test Message";
+            var param = new Dictionary<string, string> {{"QueueName", queueName}, {"Message", message}};
             var body = Encoding.UTF8.GetBytes(message);
+            
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
+           
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             var connectionFactory = new Mock<ConnectionFactory>();
@@ -64,7 +69,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var channel = new Mock<IModel>();
             var mockBasicProperties = new Mock<IBasicProperties>();
             mockBasicProperties.SetupAllProperties();
-
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(rabbitMQSource.Object);
@@ -74,16 +78,15 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             channel.Setup(c => c.BasicPublish(string.Empty, queueName, null, body));
             channel.Setup(c => c.CreateBasicProperties()).Returns(mockBasicProperties.Object);
 
-            var p = new PrivateObject(publishRabbitMQActivity);
-            p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, connectionFactory.Object);
 
             //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution",
-                new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } }) as List<string>;
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(param);
 
             //------------Assert Results-------------------------
-            resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+            resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.AtLeastOnce);
             connectionFactory.Verify(c => c.CreateConnection(), Times.Once);
             connection.Verify(c => c.CreateModel(), Times.Once);
             channel.Verify(
@@ -99,28 +102,33 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.IsTrue(mockBasicProperties.Object.Persistent);
         }
 
+      
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_NullSource()
         {
             //------------Setup for test--------------------------
-            var publishRabbitMQActivity = new PublishRabbitMQActivity();
-
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns<RabbitMQSource>(null);
 
-            var p = new PrivateObject(publishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var env = CreateExecutionEnvironment();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
+
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, new ConnectionFactory());
 
             //------------Execute Test---------------------------
-
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>());
             //------------Assert Results-------------------------
-            if (p.Invoke("PerformExecution", new Dictionary<string, string>()) is List<string> result)
-            {
-                Assert.AreEqual(result[0], "Failure: Source has been deleted.");
-            }
+
+            Assert.AreEqual(result[0], "Failure: Source has been deleted.");
         }
 
         [TestMethod]
@@ -129,24 +137,28 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         public void PublishRabbitMQActivity_Execute_Failure_NoParams()
         {
             //------------Setup for test--------------------------
-            var publishRabbitMQActivity = new PublishRabbitMQActivity();
-
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(rabbitMQSource.Object);
 
-            var p = new PrivateObject(publishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var env = CreateExecutionEnvironment();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
+
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, new ConnectionFactory());
 
             //------------Execute Test---------------------------
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>());
 
             //------------Assert Results-------------------------
-            if (p.Invoke("PerformExecution", new Dictionary<string, string>()) is List<string> result)
-            {
-                Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
-            }
+            Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
         }
 
         [TestMethod]
@@ -155,25 +167,26 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         public void PublishRabbitMQActivity_Execute_Failure_InvalidParams()
         {
             //------------Setup for test--------------------------
-            var publishRabbitMQActivity = new PublishRabbitMQActivity();
-
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
-
+            var param = new Dictionary<string, string> { };
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(rabbitMQSource.Object);
 
-            var p = new PrivateObject(publishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var env = CreateExecutionEnvironment();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
 
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, new ConnectionFactory());
             //------------Execute Test---------------------------
-
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(param);
             //------------Assert Results-------------------------
-            if (p.Invoke("PerformExecution",
-                new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) is List<string> result)
-            {
-                Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
-            }
+            Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
         }
 
         [TestMethod]
@@ -183,8 +196,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         public void PublishRabbitMQActivity_Execute_Failure_NullException()
         {
             //------------Setup for test--------------------------
-            var publishRabbitMQActivity = new PublishRabbitMQActivity();
-
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             var connectionFactory = new Mock<ConnectionFactory>();
@@ -193,14 +204,21 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
                 .Returns(rabbitMQSource.Object);
             connectionFactory.Setup(c => c.CreateConnection()).Returns<IConnection>(null);
 
-            var p = new PrivateObject(publishRabbitMQActivity);
-            p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var env = CreateExecutionEnvironment();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
+
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, connectionFactory.Object);
 
             //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution",
-                new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
-
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(new Dictionary<string, string>
+                {{"QueueName", "Q1"}, {"Message", "Test message"}});
+            //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.Fail("Exception not thrown");
         }
@@ -293,11 +311,30 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             //------------Assert Results-------------------------
             foreach (var entry in iter)
             {
-
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+        static IExecutionEnvironment CreateExecutionEnvironment()
+        {
+            return new ExecutionEnvironment();
+        }
+        class TestPublishRabbitMQActivity : PublishRabbitMQActivity
+        {
+            public TestPublishRabbitMQActivity(IResourceCatalog resourceCatalog, ConnectionFactory connectionFactory)
+                : base(resourceCatalog, connectionFactory)
+            {
+            }
 
+            public void TestExecuteTool(IDSFDataObject dataObject)
+            {
+                base.ExecuteTool(dataObject, 0);
+            }
+
+            public List<string> TestPerformExecution(Dictionary<string, string> evaluatedValues)
+            {
+                return base.PerformExecution(evaluatedValues);
             }
         }
     }
