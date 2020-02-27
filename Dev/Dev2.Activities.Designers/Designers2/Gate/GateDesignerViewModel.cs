@@ -213,9 +213,12 @@ namespace Dev2.Activities.Designers2.Gate
         {
             if (Options?.Options != null)
             {
-                var gateOptions = _modelItem.Properties["GateOptions"]?.ComputedValue as GateOptions;
-                _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options, gateOptions));
-                OnPropertyChanged(nameof(Options));
+                var newGateOptions = new GateOptions
+                {
+                    GateOpts = (_modelItem.Properties["GateOptions"]?.ComputedValue as GateOptions).GateOpts
+                };
+                OptionConvertor.Convert(typeof(GateOptions), Options.Options, newGateOptions);
+                _modelItem.Properties["GateOptions"]?.SetValue(newGateOptions);
             }
         }
 
