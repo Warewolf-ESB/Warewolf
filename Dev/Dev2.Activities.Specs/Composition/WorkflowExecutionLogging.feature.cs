@@ -97,24 +97,20 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("a \"Hello World\" workflow request is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "one",
-                        "two",
-                        "three"});
+                        "nodeType",
+                        "displayName"});
             table1.AddRow(new string[] {
-                        "value 1",
-                        "value 2",
-                        "value 3"});
+                        "DsfDecision",
+                        "If [[Name]] <> (Not Equal)"});
 #line 9
     testRunner.Then("a detailed entry log is created", ((string)(null)), table1, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "one",
-                        "two",
-                        "three"});
+                        "variable",
+                        "value"});
             table2.AddRow(new string[] {
-                        "value 1",
-                        "value 2",
-                        "value 3"});
+                        "Name",
+                        "Nothing"});
 #line 12
     testRunner.And("it has these input parameter values", ((string)(null)), table2, "And ");
 #line hidden

@@ -18,16 +18,18 @@ using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -123,17 +125,13 @@ namespace Dev2.Activities.Specs.Composition
             var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
 
             Assert.IsNotNull(resultId);
-            //TODO: These should pass
-            /*mockStateNotifier.Verify(o => o.LogExecutionInputs(), Times.Once); //TODO: Suggest we add LogExecutionInputs with parameters might be string or json 
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
-            mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>()), Times.Once);
-            mockStateNotifier.Verify(o => o.LogPostExecuteState(It.IsAny<IDev2Activity>(), It.IsAny<IDev2Activity>()), Times.Once);*/
 
+            _scenarioContext.Add(nameof(mockExecutionManager), mockExecutionManager);
+           
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
         }
 
-
-        private static void NewSerciveEndPoint(IResourceModel workflow, out DsfDataObject dataObject, out EsbExecuteRequest request, out Guid workspaceId, out Mock<IExecutionManager> mockExecutionManager)
+        private void NewSerciveEndPoint(IResourceModel workflow, out DsfDataObject dataObject, out EsbExecuteRequest request, out Guid workspaceId, out Mock<IExecutionManager> mockExecutionManager)
         {
             //Start: TODO: This to be moved to EsbServicesEndpointBuilder 
             var mockPrincipal = new Mock<IPrincipal>();
@@ -147,6 +145,7 @@ namespace Dev2.Activities.Specs.Composition
                 ExecutionID = Guid.NewGuid(), 
                 ServiceName = workflow.DisplayName, 
                 ExecutingUser = mockPrincipal.Object,
+                WorkspaceID = Guid.NewGuid(),
                 IsDebug = false,
                 RunWorkflowAsync = true,
                 StateNotifier = mockStateNotifier.Object,
@@ -158,7 +157,9 @@ namespace Dev2.Activities.Specs.Composition
                     CompressOldLogFiles = true
                 }
             };
-            dataObject.Environment.Assign("[[Name]]", "somename", 0);
+            _scenarioContext.Add(nameof(dataObject), dataObject);
+            _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
+            //dataObject.Environment.Assign("[[Name]]", "somename", 0);
             //End
 
             request = new EsbExecuteRequest();
@@ -189,13 +190,42 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"a detailed entry log is created")]
         public void ThenADetailedLogEntryIsCreated(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var nodeTable = table.CreateSet<NodeLogTable>().ToList();
+
+            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+            var mockExecutionManager = _scenarioContext.Get<Mock<IExecutionManager>>("mockExecutionManager");
+            var dataObject = _scenarioContext.Get<IDSFDataObject>("dataObject");
+
+            var resource = new ResourceCatalog().Parse(dataObject.WorkspaceID, dataObject.ResourceID, dataObject.ExecutionID.ToString());
+            var displayName = resource.GetDisplayName();
+            var nextNode = resource.GetNextNodes().ToList()[0];
+            var nodeType = resource.GetType();
+            _scenarioContext.Add(nameof(resource), resource);
+
+            Assert.AreEqual(nodeTable[0].NodeType, nodeType.Name);
+            Assert.AreEqual(nodeTable[0].DisplayName, displayName.Trim());
+            
+            //TODO: These should pass
+            //mockStateNotifier.Verify(o => o.LogExecutionInputs(), Times.Once); //TODO: Suggest we add LogExecutionInputs with parameters might be string or json 
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(resource), Times.Once); //TODO: this should pass
+            mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), dataObject.ExecutionID.ToString()), Times.Once);
+            //mockStateNotifier.Verify(o => o.LogExecutionOutputs(), Times.Once); //TODO: Suggest we add LogExecutionOutputs with parameters might be string or json 
+            mockStateNotifier.Verify(o => o.LogPostExecuteState(resource, nextNode), Times.Once);
+
+            mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
         }
 
         [Then(@"it has these input parameter values")]
         public void ThenItHasTheseInputParameterValues(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var inputTable = table.CreateSet<InputTable>().ToList();
+
+            var dataObject = _scenarioContext.Get<IDSFDataObject>("dataObject");
+
+            var dataListTO = new DataListTO(dataObject.DataList.ToString());
+
+            //alteration of this list to be assert to the incoming table
+            Assert.IsNotNull(dataListTO.Inputs[0]);
         }
 
         [Then(@"a detailed execution completed log entry is created")]
@@ -240,5 +270,17 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Pending();
         }
 
+    }
+
+    internal class InputTable
+    {
+        public string Variable { get; internal set; }
+    }
+
+    internal class NodeLogTable
+    {
+        public string DisplayName { get; set; }
+
+        public string NodeType { get; set; }
     }
 }
