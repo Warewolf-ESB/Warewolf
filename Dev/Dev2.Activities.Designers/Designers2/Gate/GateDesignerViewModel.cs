@@ -294,7 +294,6 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _options = value;
                 OnPropertyChanged(nameof(Options));
-                _options.OptionChanged += UpdateOptionsModelItem;
             }
         }
 
