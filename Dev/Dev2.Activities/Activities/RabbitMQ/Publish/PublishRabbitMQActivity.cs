@@ -221,7 +221,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                     }
                 }
 
-                Dev2Logger.Debug($"Message published to queue {queueName} {CorrelationID} ",
+                Dev2Logger.Debug($"Message published to queue {queueName} CorrelationId: {CorrelationID} ",
                     GlobalConstants.WarewolfDebug);
                 return new List<string> {"Success"};
             }
