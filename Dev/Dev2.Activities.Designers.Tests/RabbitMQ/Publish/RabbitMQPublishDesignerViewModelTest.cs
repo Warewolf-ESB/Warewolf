@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
             var vm = new RabbitMQPublishDesignerViewModel2(CreateModelItem(), model.Object);
             vm.QueueName = "Q1";
-            vm.BasicProperties = basicProperties;
+            vm.BasicPropertiesOptions = basicProperties;
             vm.IsDurable = false;
             vm.IsExclusive = false;
             vm.IsAutoDelete = false;
@@ -124,7 +124,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             Assert.IsFalse(vm.IsMessageFocused);
             Assert.IsNull(vm.SelectedRabbitMQSource);
             Assert.AreEqual(vm.QueueName, "Q1");
-            Assert.AreEqual(vm.BasicProperties.Options[0].Name, "AutoCorrelation");
+            Assert.AreEqual(vm.BasicPropertiesOptions.Options[0].Name, "AutoCorrelation");
             Assert.AreEqual(vm.IsDurable, false);
             Assert.AreEqual(vm.IsExclusive, false);
             Assert.AreEqual(vm.IsAutoDelete, false);
@@ -248,7 +248,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             var rabbitMQPublishDesignerViewModel2 = new RabbitMQPublishDesignerViewModel2(mockModelItem.Object, new Mock<IRabbitMQSourceModel>().Object);
-            var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
+            var options = rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Options.ToList();
 
             Assert.AreEqual(1, options.Count);
             Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
@@ -269,7 +269,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             var rabbitMQPublishDesignerViewModel2 = new RabbitMQPublishDesignerViewModel2(mockModelItem.Object, new Mock<IRabbitMQSourceModel>().Object);
-            var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
+            var options = rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Options.ToList();
 
             Assert.AreEqual(1, options.Count);
             Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
@@ -290,8 +290,8 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             var rabbitMQPublishDesignerViewModel2 = new RabbitMQPublishDesignerViewModel2(mockModelItem.Object, new Mock<IRabbitMQSourceModel>().Object);
-            var options = rabbitMQPublishDesignerViewModel2.BasicProperties.Options.ToList();
-            rabbitMQPublishDesignerViewModel2.BasicProperties.Notify();
+            var options = rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Options.ToList();
+            rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Notify();
             Assert.AreEqual(1, options.Count);
             Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
             Assert.AreEqual("AutoCorrelation", options[0].Name);

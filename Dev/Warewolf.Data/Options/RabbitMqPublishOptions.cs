@@ -13,7 +13,7 @@ using Warewolf.Options;
 
 namespace Warewolf.Data.Options
 {
-    public class RabbitMqPublishOptions
+    public class RabbitMqPublishOptions : IOptionConvertParameter
     {
         public RabbitMqPublishOptions()
         {
@@ -26,6 +26,13 @@ namespace Warewolf.Data.Options
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.RabbitMQToolTipAutoCorrelationID))]
         [Orientation(Orientation.Horizontal)]
         public AutoCorrelation AutoCorrelation { get; set; } = new Auto();
+
+        public void Notify()
+        {
+            OnChange?.Invoke();
+        }
+        public delegate void NotifyHandler();
+        public event NotifyHandler OnChange;
     }
 
     public class AutoCorrelation

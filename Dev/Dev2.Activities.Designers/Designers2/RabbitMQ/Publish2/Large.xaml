@@ -124,7 +124,7 @@
         <ListBox x:Name="BasicPropertiesListBox"
                  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                 ItemsSource="{Binding BasicProperties, Converter={StaticResource OptionViewConverter}}"
+                 ItemsSource="{Binding BasicPropertiesOptions, Converter={StaticResource OptionViewConverter}}"
                  ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                  ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
                  Margin="{StaticResource ControlBorderTop}"

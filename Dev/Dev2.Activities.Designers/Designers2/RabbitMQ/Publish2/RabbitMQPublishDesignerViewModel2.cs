@@ -85,28 +85,31 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish2
                 basicProperties = new RabbitMqPublishOptions();
                 _modelItem.Properties["BasicProperties"]?.SetValue(basicProperties);
             }
+
+            basicProperties.OnChange += UpdateBasicPropertiesModelItem;
+            _basicPropertiesInst = basicProperties;
             var result = new List<IOption>();
             var options = OptionConvertor.Convert(basicProperties);
             result.AddRange(options);
-            BasicProperties = new OptionsWithNotifier { Options = result };
+            BasicPropertiesOptions = new OptionsWithNotifier { Options = result };
         }
-        public OptionsWithNotifier BasicProperties
+        private RabbitMqPublishOptions _basicPropertiesInst { get; set; }
+        public OptionsWithNotifier BasicPropertiesOptions
         {
             get => _basicProperties;
             set
             {
                 _basicProperties = value;
-                OnPropertyChanged(nameof(BasicProperties));
-                _basicProperties.OptionChanged += UpdateBasicPropertiesModelItem;
+                OnPropertyChanged(nameof(BasicPropertiesOptions));
             }
         }
         private void UpdateBasicPropertiesModelItem()
         {
-            if (BasicProperties?.Options != null)
+            if (BasicPropertiesOptions?.Options != null)
             {
-                var basicProperties = _modelItem.Properties["BasicProperties"]?.ComputedValue as RabbitMqPublishOptions;
-                _modelItem.Properties["BasicProperties"]?.SetValue(OptionConvertor.Convert(typeof(RabbitMqPublishOptions), BasicProperties.Options, basicProperties));
-                OnPropertyChanged(nameof(BasicProperties));
+                _modelItem.Properties["BasicProperties"]?.ClearValue();
+                OptionConvertor.Convert(typeof(RabbitMqPublishOptions), BasicPropertiesOptions.Options, _basicPropertiesInst);
+                _modelItem.Properties["BasicProperties"]?.SetValue(_basicPropertiesInst);
             }
         }
         public RelayCommand NewRabbitMQSourceCommand { get; private set; }

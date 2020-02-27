@@ -321,7 +321,7 @@ namespace Dev2.DynamicServices
         public IServiceTestModelTO ServiceTest { get; set; }
 
         public Guid? ExecutionID { get; set; }
-        public string CustomTransactionID { get; set; }
+        public string CustomTransactionID { get; set; } = "";
         public string WebUrl { get; set; }
         public IStateNotifier StateNotifier { get; set; }
         public IDev2WorkflowSettings Settings { get; set; }
