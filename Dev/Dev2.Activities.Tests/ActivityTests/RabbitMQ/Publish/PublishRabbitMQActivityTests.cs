@@ -46,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.IsNotNull(publishRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Publish", publishRabbitMQActivity.DisplayName);
         }
-       
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution",
-                new Dictionary<string, string> {{"QueueName", queueName}, {"Message", message}}) as List<string>;
+                new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } }) as List<string>;
 
             //------------Assert Results-------------------------
             resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             //------------Assert Results-------------------------
             if (p.Invoke("PerformExecution",
-                new Dictionary<string, string> {{"Param1", "Blah1"}, {"Param2", "Blah2"}}) is List<string> result)
+                new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) is List<string> result)
             {
                 Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
             }
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution",
-                new Dictionary<string, string> {{"QueueName", "Q1"}, {"Message", "Test message"}});
+                new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
 
             //------------Assert Results-------------------------
             Assert.Fail("Exception not thrown");
@@ -223,9 +223,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
                 IsAutoDelete = false,
                 Result = "[[res]]",
             };
-            
 
-          //  (act.BasicProperties.AutoCorrela) = "test-123";
+
+            //  (act.BasicProperties.AutoCorrela) = "test-123";
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
             Assert.AreEqual(8, stateItems.Count());
@@ -242,7 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
                 {
                     Name = "BasicProperties",
                     Type = StateVariable.StateType.Input,
-                    Value = "test-123"
+                    Value = "Warewolf.Data.Options.RabbitMqPublishOptions"
                 },
                 new StateVariable
                 {
@@ -293,19 +293,11 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             //------------Assert Results-------------------------
             foreach (var entry in iter)
             {
-                if (entry.value.Name == "BasicProperties")
-                {
-                    Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
-                    Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
-                    var basicProperties = JsonConvert.DeserializeObject<RabbitMqPublishOptions>(entry.value.Value);
-                   // Assert.AreEqual(entry.expectValue.Value, basicProperties.CorrelationID);
-                }
-                else
-                {
-                    Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
-                    Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
-                    Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
-                }
+
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+
             }
         }
     }
