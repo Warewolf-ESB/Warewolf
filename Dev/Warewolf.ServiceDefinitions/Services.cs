@@ -34,5 +34,9 @@ namespace Warewolf.Service
 
         public const string GateResume = nameof(GateResume);
     }
+    public static class Cluster
+    {
+        public const string GetClusterSettings = nameof(GetClusterSettings);
+    }
 
 }

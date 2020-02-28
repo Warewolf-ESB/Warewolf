@@ -37,21 +37,23 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void Get_AppConfig_Configuration()
+        public void ClusterSettings_Get_AppConfig_Configuration()
         {
             string expectedClusterKey = Guid.NewGuid().ToString(); // TODO: this should be more than just a guid. something like key+servername
 
             var mockFileWrapper = new Mock<IFile>();
+            mockFileWrapper.Setup(o => o.Exists("fakeClusterSettings.json")).Returns(true);
+            mockFileWrapper.Setup(o => o.ReadAllText("fakeClusterSettings.json")).Returns("{\"Key\":\"" + expectedClusterKey + "\"}");
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
-            var settings = new ClusterSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
+            var settings = new ClusterSettings("fakeClusterSettings.json", mockFileWrapper.Object, mockDirectoryWrapper.Object);
+            Assert.AreEqual(1, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual(expectedClusterKey, settings.Key);
         }
 
         [TestMethod]
-        public void GetClusterSettings_Constants()
+        public void ClusterSettings_Constants()
         {
             Assert.AreEqual(@"C:\ProgramData\Warewolf\Server Settings\clusterSettings.json", ClusterSettings.SettingsPath);
         }

@@ -207,5 +207,18 @@ namespace Dev2.Common
         }
 
         public string Key => _settings.Key;
+
+
+        public ClusterSettingsData Get()
+        {
+            var result = new ClusterSettingsData();
+            foreach (var prop in typeof(ClusterSettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+            return result;
+        }
     }
 }

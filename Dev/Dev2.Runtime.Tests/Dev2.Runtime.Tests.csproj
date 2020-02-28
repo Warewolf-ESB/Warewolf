@@ -139,6 +139,7 @@
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="RuntimeServicesTests.cs" />
     <Compile Include="Search\ActivitySearcherTests.cs" />
     <Compile Include="Search\ResourceSearcherTests.cs" />
     <Compile Include="Search\TestSearcherTests.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Services\FindDependenciesTests.cs" />
     <Compile Include="Services\GetExecutionHistoryTests.cs" />
     <Compile Include="Services\GetServerInformationTest.cs" />
+    <Compile Include="Services\GetClusterSettingsServiceTests.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />
     <Compile Include="Services\GetFilesTests.cs" />
     <Compile Include="Services\GetVersionTest.cs" />

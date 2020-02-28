@@ -961,6 +961,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return output;
         }
 
+        public ClusterSettingsData GetClusterSettings(IServer currentEnv)
+        {
+            var comController = new CommunicationController { ServiceName = Cluster.GetClusterSettings };
+            var output = comController.ExecuteCommand<ClusterSettingsData>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+            return output;
+        }
+
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public DbTableList GetDatabaseTables(DbSource dbSource)
