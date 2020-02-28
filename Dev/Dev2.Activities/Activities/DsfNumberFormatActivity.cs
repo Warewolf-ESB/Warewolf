@@ -242,7 +242,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void UpdateResultRegions(IExecutionEnvironment environment, string result, int update)
         {
-            environment.Assign(Result, result, update);
+            environment.AssignString(Result, result, update);
         }
 
         #endregion Override Methods
