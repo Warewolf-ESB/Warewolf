@@ -104,7 +104,7 @@ namespace QueueWorker
                     else
                     {
                         Console.WriteLine("Failed to start queue worker: No queue source.");
-                        logger.Error("Failed to start queue worker: No queue source", _config.QueueName);
+                        //logger.Error("Failed to start queue worker: No queue source", _config.QueueName);
                     }
                 }
                 catch (Exception ex)

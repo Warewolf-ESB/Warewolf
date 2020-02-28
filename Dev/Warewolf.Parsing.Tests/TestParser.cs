@@ -266,21 +266,37 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        public void WarewolfParse_Eval_Recset_ExpectAnAtom()
+        public void WarewolfParse_Eval_Recset_ExpectAListOfAtoms()
         {
-
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            
+
             var val = x.Item.First();
 
             Assert.IsTrue(val.IsInt);
             var intval = val as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(2, intval.Item);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Recset_ExpectAnAtom()
+        {
+            var env = CreateTestEnvWithData();
+
+            var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
+            Assert.IsTrue(ast.IsWarewolfAtomResult);
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             
+            var val = x.Item;
+
+            Assert.IsTrue(val.IsInt);
+            var intval = val as DataStorage.WarewolfAtom.Int;
+            Assert.AreEqual(2, intval.Item);
         }
 
         [TestMethod]

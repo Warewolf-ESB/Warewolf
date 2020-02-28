@@ -199,7 +199,7 @@ namespace WarewolfParsingTest
             {
                 sb.Append(s);
             }
-            var expected = "{\"scalars\":{\"r\":\"s\",\"s\":\"s\",\"x\":1,\"y\":\"y\"},\"record_sets\":{\"Rec\":{\"WarewolfPositionColumn\":[1,2,3,4],\"a\":[1,2,3,2],\"b\":[\"a\",\"b\",\"c\",\"c\"]}},\"json_objects\":{\"Person\":{\"Name\":\"bob\",\"Age\":22,\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[\"2\",\"3\"]},\"array\":[\"bob\"],\"arrayObj\":[{\"Name\":\"bob\"},{\"Name\":\"bobe\"}]}}";
+            var expected = "{\"scalars\":{\"r\":\"s\",\"s\":\"s\",\"x\":1,\"y\":\"y\"},\"record_sets\":{\"Rec\":{\"WarewolfPositionColumn\":[1,2,3,4],\"a\":[1,2,3,2],\"b\":[\"a\",\"b\",\"c\",\"c\"]}},\"json_objects\":{\"Person\":{\"Name\":\"bob\",\"Age\":22,\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[2,3]},\"array\":[\"bob\"],\"arrayObj\":[{\"Name\":\"bob\"},{\"Name\":\"bobe\"}]}}";
 
             var actual = sb.ToString();
             Assert.AreEqual(expected, actual);

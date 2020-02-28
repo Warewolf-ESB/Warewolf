@@ -20,7 +20,7 @@ using Warewolf.Options;
 
 namespace Warewolf.Data.Options
 {
-    public class GateOptions
+    public class GateOptions : IOptionConvertParameter
     {
         public GateOptions()
         { }
@@ -33,6 +33,13 @@ namespace Warewolf.Data.Options
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionGateResumeToolTip))]
         [Orientation(Orientation.Horizontal)]
         public OnResumeBase GateOpts { get; set; } = new Continue();
+
+        public void Notify()
+        {
+            OnChange?.Invoke();
+        }
+        public delegate void NotifyHandler();
+        public event NotifyHandler OnChange;
     }
 
     public class OnResumeBase

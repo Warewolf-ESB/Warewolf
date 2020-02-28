@@ -121,6 +121,7 @@ namespace Dev2.Interfaces
         IServiceTestModelTO ServiceTest { get; set; }
         List<Guid> TestsResourceIds { get; set; }
         Guid? ExecutionID { get; set; }
+        string CustomTransactionID { get; set; }
         string WebUrl { get; set; }
         bool IsSubExecution { get; set; }
         string QueryString { get; set; }

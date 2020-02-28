@@ -40,7 +40,12 @@ namespace Warewolf.Auditing
         [JsonProperty("ExecutionID")]
         [DataMember]
         public string ExecutionID { get; set; }
-
+        
+        [Column(Name = "CustomTransactionID", CanBeNull = true)]
+        [JsonProperty("CustomTransactionID")]
+        [DataMember]
+        public string CustomTransactionID { get; set; }
+        
         [Column(Name = "ExecutionOrigin", CanBeNull = true)]
         [JsonProperty("ExecutionOrigin")]
         [DataMember]
@@ -188,6 +193,7 @@ namespace Warewolf.Auditing
             var dev2Serializer = new Dev2JsonSerializer();
             WorkflowID = dsfDataObject.ResourceID.ToString();
             ExecutionID = dsfDataObject.ExecutionID.ToString();
+            CustomTransactionID = dsfDataObject.CustomTransactionID;
             ExecutionOrigin = Convert.ToInt64(dsfDataObject.ExecutionOrigin);
             IsSubExecution = Convert.ToBoolean(dsfDataObject.IsSubExecution);
             IsRemoteWorkflow = Convert.ToBoolean(dsfDataObject.IsRemoteWorkflow());
