@@ -314,7 +314,11 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if (dsfDataObject.StopExecution)
                 {
-                    _stateNotifier.LogStopExecutionState(next);
+                    if (dsfDataObject.Settings.EnableDetailedLogging)
+                    {
+                        _stateNotifier.LogStopExecutionState(next);
+                    }
+
                     dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                     break;
                 }
