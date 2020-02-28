@@ -152,7 +152,14 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 			    do {
 				    # Increment build number.
 				    [int]$NewBuildNumber = $FullVersionString.Split(".")[3]
-				    $NewBuildNumber++
+                    if ($NewBuildNumber -eq $null) 
+                    {
+                        $NewBuildNumber = 0
+                    }
+                    else
+                    {
+                        $NewBuildNumber++
+                    }
 				    $FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
 				    Write-Host Next version would be `"$FullVersionString`". Checking against Origin repo...
 				    # Check tag against origin

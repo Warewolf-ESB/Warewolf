@@ -125,7 +125,6 @@
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
     <Compile Include="ESB\Execution\ExecutionManager.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
-    <Compile Include="ESB\Execution\LogManager.cs" />
     <Compile Include="ESB\Execution\PerfmonExecutionContainer.cs" />
     <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
     <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
@@ -267,7 +266,7 @@
       <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.112</Version>

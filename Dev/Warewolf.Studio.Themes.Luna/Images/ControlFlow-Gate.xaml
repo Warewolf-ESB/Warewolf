@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="ControlFlow-Gate">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 7.3244444,9.6 H 2.2435 V 25.958802 H 7.2005189 L 7.3244444,26.127594 7.7581835,26.7465 H 9.6325563 V 11.456176 a 12.918396,11.730318 0 0 0 -2.3081119,2.742877 z" />
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 2.24,13.729985 V 26.7465 H 15.231278 V 10.996892 A 65.27486,10.409084 0 0 0 2.24,12.132561 Z" />
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 24.568889,26.127535 V 25.958738 H 29.6735 V 9.6 h -5.104611 v 4.655994 A 12.43419,11.204359 0 0 0 22.367818,11.597436 V 26.747 h 1.76398 z" />
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 16.6735,12.405765 V 26.7465 H 29.668199 V 12.193218 A 64.031313,10.22923 0 0 0 16.676513,11.017952 Z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingBrush x:Key="ControlFlow-Gate-Icon">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 7.3244444,9.6 H 2.2435 V 25.958802 H 7.2005189 L 7.3244444,26.127594 7.7581835,26.7465 H 9.6325563 V 11.456176 a 12.918396,11.730318 0 0 0 -2.3081119,2.742877 z" />
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 2.24,13.729985 V 26.7465 H 15.231278 V 10.996892 A 65.27486,10.409084 0 0 0 2.24,12.132561 Z" />
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 24.568889,26.127535 V 25.958738 H 29.6735 V 9.6 h -5.104611 v 4.655994 A 12.43419,11.204359 0 0 0 22.367818,11.597436 V 26.747 h 1.76398 z" />
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 16.6735,12.405765 V 26.7465 H 29.668199 V 12.193218 A 64.031313,10.22923 0 0 0 16.676513,11.017952 Z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+</ResourceDictionary>

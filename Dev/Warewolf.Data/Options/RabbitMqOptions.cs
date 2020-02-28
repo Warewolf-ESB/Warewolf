@@ -18,6 +18,8 @@ namespace Warewolf.Options
         {
         }
 
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionRabbitMqDurableHelpText))]
+        [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionRabbitMqDurableToolTip))]
         public bool Durable { get; set; }
     }
 }
