@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
@@ -12,10 +13,18 @@ namespace Warewolf.UnitTestAttributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
     public class Depends : Attribute, IDisposable
     {
+        static readonly List<string> RigOpsHosts =  new List<string>
+        {
+            "RSAKLFSVRHST1.premier.local",
+            "RSAKLFWYNAND.premier.local",
+            "T004124.premier.local",
+            "localhost"
+        };
+        private string SelectedHost = "";
+        
+        static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
-        static readonly string RigOpsIP = "T004124.premier.local";
-        static readonly string BackupServer = "SVRDEV.premier.local";
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
         static readonly string BackupCIRemotePort = "3142";
         static readonly bool EnableDocker = true;
@@ -68,11 +77,11 @@ namespace Warewolf.UnitTestAttributes
             {
                 if (containerType == ContainerType.CIRemote)
                 {
-                    return RigOpsIP + ":3144";
+                    return RigOpsHosts.FirstOrDefault() + ":3144";
                 }
                 else
                 {
-                    return RigOpsIP;
+                    return RigOpsHosts.FirstOrDefault();
                 }
             }
             else
@@ -112,17 +121,23 @@ namespace Warewolf.UnitTestAttributes
                 using (var client = new WebClientWithExtendedTimeout
                     {Credentials = CredentialCache.DefaultNetworkCredentials})
                 {
-                    string result = "";
-                    string containerType = ConvertToString(_containerType);
-                    string address = $"http://{RigOpsIP}:3142/public/Container/Async/Start/{containerType}.json";
-                    try
+                    var result = "";
+                    var retryCount = 0;
+                    var containerType = ConvertToString(_containerType);
+                    do
                     {
-                        result = client.DownloadString(address);
-                    }
-                    catch (WebException)
-                    {
-                        //use backup values instead
-                    }
+                        SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                        var address = $"http://{SelectedHost}:3142/public/Container/Async/Start/{containerType}.json";
+                        try
+                        {
+                            result = client.DownloadString(address);
+                        }
+                        catch (WebException)
+                        {
+                            retryCount++;
+                        }
+                    } while (result == "" && retryCount < RigOpsHosts.Count);
+
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
                     if (string.IsNullOrEmpty(Container.Port))
@@ -132,11 +147,11 @@ namespace Warewolf.UnitTestAttributes
 
                     if (_containerType == ContainerType.CIRemote)
                     {
-                        Container.IP = RigOpsIP + ":3144";
+                        Container.IP = SelectedHost + ":3144";
                     }
                     else
                     {
-                        Container.IP = RigOpsIP;
+                        Container.IP = SelectedHost;
                     }
                 }
             }
@@ -184,6 +199,10 @@ namespace Warewolf.UnitTestAttributes
                     return "6379";
                 case ContainerType.AnonymousRedis:
                     return "6380";
+                case ContainerType.AnonymousWarewolf:
+                    return "3148";
+                case ContainerType.Warewolf:
+                    return "3146";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -199,7 +218,7 @@ namespace Warewolf.UnitTestAttributes
             {
                 var result =
                     client.DownloadString(
-                        $"http://{RigOpsIP}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
+                        $"http://{SelectedHost}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
                 var JSONObj = JsonConvert.DeserializeObject<StopContainer>(result);
                 if (JSONObj.Result != "Success" &&
                     JSONObj.Result != "This API does not support stopping Linux containers." && JSONObj.Result != "")
@@ -281,7 +300,7 @@ namespace Warewolf.UnitTestAttributes
             if (EnableDocker)
             {
                 UpdateSourcesConnectionStrings(
-                    $"HostName={RigOpsIP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
+                    $"HostName={Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
                     knownServerSources);
             }
             else
