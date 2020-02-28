@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dev2.Interfaces
 {
-    public interface ILogManager
+    public interface ILogManager : IDisposable
     {
         IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject);
-    }
-
-    public interface ILogManagerImplementation
-    {
-        IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject);
     }
 }
