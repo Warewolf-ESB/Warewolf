@@ -217,6 +217,8 @@ namespace Dev2.Runtime.ESB.Execution
 
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
+            IDev2Activity lastActivity = null;
+
             if (dsfDataObject.Settings is null)
             {
                 dsfDataObject.Settings = new Dev2WorkflowSettingsTO
@@ -247,27 +249,27 @@ namespace Dev2.Runtime.ESB.Execution
                 }
 
                 IDev2Activity next;
-                IDev2Activity lastActivity = null;
-                try
+
+                lastActivity = resource;
+                if (resource is IStateNotifierRequired stateNotifierRequired)
                 {
-                    lastActivity = resource;
-                    if (resource is IStateNotifierRequired stateNotifierRequired)
-                    {
-                        stateNotifierRequired.SetStateNotifier(_stateNotifier);
-                    }
-                    next = resource.Execute(dsfDataObject, update);
+                    stateNotifierRequired.SetStateNotifier(_stateNotifier);
                 }
-                catch (Exception e)
-                {
-                    _stateNotifier.LogExecuteException(e, lastActivity);
-                    Dev2Logger.Debug(e, GlobalConstants.WarewolfError);
-                    throw;
-                }
+                next = resource.Execute(dsfDataObject, update);
+
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
 
-                if(dsfDataObject.Settings.EnableDetailedLogging)
+                if (dsfDataObject.Settings.EnableDetailedLogging)
                 {
                     _stateNotifier.LogExecuteCompleteState(lastActivity);
+                }
+            }
+            catch (Exception exception)
+            {
+                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
+                if (dsfDataObject.Settings.EnableDetailedLogging)
+                {
+                    _stateNotifier.LogExecuteException(exception, lastActivity);
                 }
             }
             finally
