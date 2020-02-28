@@ -323,7 +323,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
+                Server = _containerOps.Container.IP,
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
@@ -331,10 +331,7 @@ namespace Dev2.Tests.Runtime.Services
                 Password = "test123",
                 ConnectionTimeout = 30
             };
-            if (Depends.EnableDocker)
-            {
-                dbSource.Port = int.Parse(_containerOps.Container.Port);
-            }
+            dbSource.Port = int.Parse(_containerOps.Container.Port);
 
             return dbSource;
         }

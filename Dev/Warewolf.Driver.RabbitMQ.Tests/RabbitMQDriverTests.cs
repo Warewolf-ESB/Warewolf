@@ -36,11 +36,11 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RabbitMQSource))]
+        [TestCategory(nameof(RabbitMQDriverTests))]
         public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new RabbitMQSource();
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst();
             var queueName = TestQueueNameGenerator.GetName;
 
             var testConsumer = new TestConsumer();
@@ -75,11 +75,12 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(RabbitMQSource))]
+        [TestCategory(nameof(RabbitMQDriverTests))]
+        [Depends(Depends.ContainerType.RabbitMQ)]
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new RabbitMQSource();
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst();
             var queueName = TestQueueNameGenerator.GetName;
 
             var config = new RabbitConfig
@@ -122,7 +123,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public TestPublishSuccess()
             {
-                _factory = new ConnectionFactory() { HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, UserName = "test", Password = "test" };
+                _factory = new ConnectionFactory() { HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ), UserName = "test", Password = "test" };
             }
 
             private IConnection NewConnection()

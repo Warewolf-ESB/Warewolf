@@ -332,6 +332,8 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.Settings.KeepLogsForDays, clonedObject.Settings.KeepLogsForDays);
             Assert.AreNotEqual(dataObject.AuthCache, clonedObject.AuthCache);
             Assert.AreEqual(dataObject.ExecutionException, clonedObject.ExecutionException);
+            Assert.AreEqual(dataObject.Gates, dataObject.Gates);
+            Assert.AreEqual(dataObject.Environment, clonedObject.Environment);
             Assert.AreEqual(dataObject.CustomTransactionID, clonedObject.CustomTransactionID);
         }
 
