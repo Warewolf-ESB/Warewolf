@@ -210,7 +210,7 @@ and Clean(buffer : LanguageExpression) =
         else ComplexExpression a)
 
 ///Simple parse. convert a string to a language expression
-and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression = 
+and parseLanguageExpressionWithoutUpdate (lang : string) (noTypeCast : ShouldTypeCast) : LanguageExpression = 
     if (lang.Contains "[[") then 
         let exp = ParseCache.TryFind lang
         match exp with
@@ -225,7 +225,10 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
             with
                 | :? System.IndexOutOfRangeException as ex ->
                      raise ex
-    else WarewolfAtomExpression(parseAtom lang)
+    else 
+        match noTypeCast with
+        | No -> WarewolfAtomExpression(DataString lang)
+        | Yes -> WarewolfAtomExpression(parseAtom lang)
 
  and parseLanguageExpressionWithoutUpdateStrict (lang : string) : LanguageExpression = 
     if (lang.Contains "[[" && lang.EndsWith"]]") then 
@@ -245,8 +248,9 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
     else WarewolfAtomExpression(parseAtom lang)
 
 ///Simple parse. convert a string to a language expression and replace * with the update value
-and parseLanguageExpression (lang : string) (update : int) : LanguageExpression = 
-    let data = parseLanguageExpressionWithoutUpdate lang
+and parseLanguageExpression (lang : string) (update : int) (shouldTypeCast : ShouldTypeCast) : LanguageExpression = 
+    let data = parseLanguageExpressionWithoutUpdate lang shouldTypeCast
+
     match update with
     | 0 -> data
     | _ -> 
@@ -384,7 +388,7 @@ and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : 
                     let x = List.map DataString v 
                     WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",x))
         
-        let buffer = parseLanguageExpression lang update
+        let buffer = parseLanguageExpression lang update ShouldTypeCast.Yes
         match buffer with
         | RecordSetExpression a when env.RecordSets.ContainsKey a.Name -> let b = evalRecordsSet a env
                                                                           match a.Index with
@@ -481,7 +485,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> JsonObject(a))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
@@ -489,7 +493,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> JsonObject(a))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
@@ -498,13 +502,13 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> JsonObject(a))
             if Seq.length data = 1 then
                 WarewolfAtomResult(Seq.exactlyOne data)
             else
                 if Seq.isEmpty data then
                     if jPath = "$."+(jsonIdentifierToName a) then
-                        WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+                        WarewolfAtomResult(JsonObject(jo))
                     else failwith "non existent object"                        
                 else
                     WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
@@ -520,7 +524,7 @@ and evalJsonForJson (env : WarewolfEnvironment) (update : int) (shouldEscape:boo
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> JsonObject(a))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
@@ -528,7 +532,7 @@ and evalJsonForJson (env : WarewolfEnvironment) (update : int) (shouldEscape:boo
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> JsonObject(a))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
@@ -537,7 +541,7 @@ and evalJsonForJson (env : WarewolfEnvironment) (update : int) (shouldEscape:boo
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> JsonObject(a))
             if Seq.length data = 1 then
                 WarewolfAtomResult(Seq.exactlyOne data)
             else
@@ -591,7 +595,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
                     let x = List.map DataString v 
                     WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",x))
     
-    let buffer =  parseLanguageExpression lang update
+    let buffer =  parseLanguageExpression lang update ShouldTypeCast.Yes
                         
     match buffer with
         | RecordSetExpression a ->  evalRecordsSet a env |> Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) )|> WarewolfAtomListresult 
@@ -622,7 +626,7 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
                 DataString evaled
             else DataString (eval env update false evaled |>  evalResultToString)
     
-    let buffer =  parseLanguageExpression lang update
+    let buffer =  parseLanguageExpression lang update ShouldTypeCast.Yes
                         
     match buffer with
         | RecordSetExpression a ->  evalRecordsSet a env |> Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) )|> WarewolfAtomListresult 
@@ -647,7 +651,7 @@ and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : strin
         match exp with
         | Some a when update = 0 -> a
         | _ -> 
-            let temp = parseLanguageExpression lang update
+            let temp = parseLanguageExpression lang update ShouldTypeCast.Yes
             temp
     match buffer with
     | ComplexExpression a -> 
@@ -671,7 +675,7 @@ and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : strin
 
 /// get the base expression given a string [[[[a]]] could evaluate to [[b]] for instance
 and evalToExpressionAndParse (env : WarewolfEnvironment) (update : int) (langs : string) = 
-    evalToExpression env update langs |> fun a -> parseLanguageExpression a update
+    evalToExpression env update langs |> fun a -> parseLanguageExpression a update ShouldTypeCast.Yes
 
 /// get the base expression given a string [[[[a]]] could evaluate to [[b]] for instance
 and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string) : string = 
@@ -682,7 +686,7 @@ and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string)
         match exp with
         | Some a when update = 0 -> a
         | _ -> 
-            let temp = parseLanguageExpression lang update
+            let temp = parseLanguageExpression lang update ShouldTypeCast.Yes
             temp
     match buffer with
     | ComplexExpression a -> 
@@ -726,7 +730,7 @@ and evalWithPositions (env : WarewolfEnvironment) (update : int) (lang : string)
         match exp with
         | Some a when update = 0 -> a
         | _ -> 
-            let temp = parseLanguageExpression lang update
+            let temp = parseLanguageExpression lang update ShouldTypeCast.Yes
             temp
     match buffer with
     | RecordSetExpression a -> WarewolfAtomListresult((evalRecordsSetWithPositions a env))
@@ -760,7 +764,7 @@ and evalIndexes (env : WarewolfEnvironment) (update : int) (lang : string) =
         match exp with
         | Some a when update = 0 -> a
         | _ -> 
-            let temp = parseLanguageExpression lang update
+            let temp = parseLanguageExpression lang update ShouldTypeCast.Yes
             temp
     match buffer with
     | ComplexExpression a -> EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a)
