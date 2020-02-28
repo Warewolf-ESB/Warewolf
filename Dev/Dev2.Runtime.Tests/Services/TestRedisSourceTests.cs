@@ -122,8 +122,8 @@ namespace Dev2.Tests.Runtime.Services
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
-                Port = "6380",
+                HostName = Depends.GetAddress(Depends.ContainerType.AnonymousRedis),
+                Port = Depends.GetPort(Depends.ContainerType.AnonymousRedis),
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();
