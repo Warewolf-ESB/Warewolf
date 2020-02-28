@@ -142,7 +142,7 @@ namespace Dev2.Data.Tests.ServiceModel
         {
             //-------------------------------Arrange-----------------------------
             string xmlString = $@"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Rabbit MQ Source"" ResourceType=""RabbitMQSource"" IsValid=""false"" 
-                                               ConnectionString=""HostName={(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP)};Port=;UserName=test;Password=test;VirtualHost=/"" Type=""RabbitMQSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
+                                               ConnectionString=""HostName={(Depends.GetAddress(Depends.ContainerType.RabbitMQ))};Port=;UserName=test;Password=test;VirtualHost=/"" Type=""RabbitMQSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Rabbit MQ Source</DisplayName>
                                           <AuthorRoles>
                                           </AuthorRoles>
@@ -156,7 +156,7 @@ namespace Dev2.Data.Tests.ServiceModel
             //----------------------Pre-Assert---------------------------------
             Assert.AreEqual(nameof(RabbitMQSource), rabbitMqSource.ResourceType);
             Assert.AreEqual(5672, rabbitMqSource.Port);
-            Assert.AreEqual(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, rabbitMqSource.HostName);
+            Assert.AreEqual(Depends.GetAddress(Depends.ContainerType.RabbitMQ), rabbitMqSource.HostName);
             Assert.AreEqual("test", rabbitMqSource.UserName);
             Assert.AreEqual("test", rabbitMqSource.Password);
             Assert.AreEqual("/", rabbitMqSource.VirtualHost);
@@ -176,8 +176,8 @@ namespace Dev2.Data.Tests.ServiceModel
         public void RabbitMQSource_NewConnection_GivenNoArgConstructor_ConnectionSuccess()
         {
             //-------------------------------Arrange-----------------------------
-            var port = 5672;
-            var hostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP;
+            var port = int.Parse(Depends.GetPort(Depends.ContainerType.RabbitMQ));
+            var hostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ);
             var userName = "test";
             var password = "test";
             var virtualHost = "/";
@@ -192,8 +192,8 @@ namespace Dev2.Data.Tests.ServiceModel
             };
             //----------------------Pre-Assert---------------------------------
             Assert.AreEqual(nameof(RabbitMQSource), rabbitMqSource.ResourceType);
-            Assert.AreEqual(5672, rabbitMqSource.Port);
-            Assert.AreEqual(Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP, rabbitMqSource.HostName);
+            Assert.AreEqual(int.Parse(Depends.GetPort(Depends.ContainerType.RabbitMQ)), rabbitMqSource.Port);
+            Assert.AreEqual(Depends.GetAddress(Depends.ContainerType.RabbitMQ), rabbitMqSource.HostName);
             Assert.AreEqual("test", rabbitMqSource.UserName);
             Assert.AreEqual("test", rabbitMqSource.Password);
             Assert.AreEqual("/", rabbitMqSource.VirtualHost);

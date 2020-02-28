@@ -18,7 +18,9 @@ using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Data;
 using Dev2.Data.Decision;
+using Dev2.Data.Settings;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -42,12 +44,8 @@ namespace ActivityUnitTests
     [TestClass]
     public class BaseActivityUnitTest
     {
-        
-       
-
         public BaseActivityUnitTest()
         {
-            Config.Server.EnableDetailedLogging = false;
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             TestStartNode = new FlowStep
             {
@@ -57,7 +55,6 @@ namespace ActivityUnitTests
       
         }
 
-        
         protected Guid ExecutionId { get; set; }
 
         protected string TestData { get; set; }
@@ -128,7 +125,6 @@ namespace ActivityUnitTests
                     }
                 };
 
-
                 VisualBasic.SetSettings(builder, vbs);
 
                 return builder;
@@ -138,7 +134,6 @@ namespace ActivityUnitTests
 
         protected IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
-            Config.Server.EnableDetailedLogging = false;
             using (ServiceAction svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" })
             {
                 svc.SetActivity(FlowchartProcess);
@@ -209,6 +204,7 @@ namespace ActivityUnitTests
                 }
                 dataObject.ExecutionToken = new ExecutionToken();
                 var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+                dataObject.Settings = new Dev2WorkflowSettingsTO { EnableDetailedLogging = false };
 
                 errors.ClearErrors();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
@@ -257,13 +253,10 @@ namespace ActivityUnitTests
                     ParentThreadID = 1
                 };
 
-
-                // we need to set this now ;)
-
                 mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, false)).Verifiable();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
                 var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
-
+                dataObject.Settings = new Dev2WorkflowSettingsTO{ EnableDetailedLogging = false };
                 errors.ClearErrors();
                 wfec.Eval(FlowchartProcess,dataObject, 0);
 

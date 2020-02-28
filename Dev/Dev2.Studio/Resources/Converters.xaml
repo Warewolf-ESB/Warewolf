@@ -11,7 +11,8 @@
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:converters6="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
                     xmlns:enums="clr-namespace:Dev2.Data.Interfaces.Enums;assembly=Dev2.Data.Interfaces"
-                    xmlns:converters7="clr-namespace:Dev2.Studio.Core.AppResources.Converters">
+                    xmlns:converters7="clr-namespace:Dev2.Studio.Core.AppResources.Converters"
+                    xmlns:ui="clr-namespace:Warewolf.UI;assembly=Warewolf.UI">
 
     <activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
@@ -61,7 +62,10 @@
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
     <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
     <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
-    
+    <ui:OptionViewConverter x:Key="OptionViewConverter"/>
+    <ui:WorkflowNameConverter x:Key="WorkflowNameConverter"/>
+    <ui:OrientationConverter x:Key="OrientationConverter"/>
+
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
             <converters:EnumCollection>

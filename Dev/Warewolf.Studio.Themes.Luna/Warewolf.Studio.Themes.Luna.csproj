@@ -158,6 +158,8 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="SharedResourceDictionary.cs" />
+    <Resource Include="Images\gate-closed.png" />
+    <Resource Include="Images\gate-open.png" />
     <None Include="app.config" />
     <None Include="Warewolf.Studio.Themes.Luna.ruleset" />
     <Resource Include="Images\Filter.png" />
@@ -408,6 +410,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Images\AssignObject.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Images\ControlFlow-Gate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -988,6 +994,10 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
+      <Project>{b7faa26b-ddcb-4967-9fcb-89afba92e726}</Project>
+      <Name>Warewolf.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
@@ -1005,7 +1015,7 @@
       <Version>4.5.0.8</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
