@@ -333,6 +333,8 @@ namespace Dev2.Tests
             Assert.AreNotEqual(dataObject.AuthCache, clonedObject.AuthCache);
             Assert.AreEqual(dataObject.ExecutionException, clonedObject.ExecutionException);
             Assert.AreEqual(dataObject.CustomTransactionID, clonedObject.CustomTransactionID);
+            Assert.AreEqual(dataObject.Gates, dataObject.Gates);
+            Assert.AreEqual(dataObject.Environment, clonedObject.Environment);
         }
 
         #region Debug Mode Test
