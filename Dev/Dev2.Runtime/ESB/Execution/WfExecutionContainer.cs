@@ -247,7 +247,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     _stateNotifier.LogPreExecuteState(resource);
                 }
-                
+
                 IDev2Activity next;
 
                 lastActivity = resource;

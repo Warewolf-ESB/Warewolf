@@ -22,7 +22,7 @@ namespace Dev2.ServerLifeCycleWorkers
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IExecutionManager>(new ExecutionManager());
-            CustomContainer.Register<ILogManager>(new LogManager());
+            CustomContainer.Register<ILogManager>(LogManager.Instance);
             CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
 
