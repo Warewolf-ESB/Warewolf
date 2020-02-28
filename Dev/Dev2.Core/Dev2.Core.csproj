@@ -177,6 +177,7 @@
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="Interfaces\IDev2EmailSender.cs" />
+    <Compile Include="Interfaces\ILogManager.cs" />
     <Compile Include="Interfaces\IStateListener.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
