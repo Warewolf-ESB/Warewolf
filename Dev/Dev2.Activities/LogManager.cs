@@ -16,14 +16,18 @@ using Warewolf.Auditing;
 
 namespace Dev2
 {
-    public class LogManagerImplementation : ILogManagerImplementation, IDisposable
+    public class LogManager : ILogManager
     {
         IStateAuditLogger _logger;
-        private static ILogManagerImplementation _instance;
-
+        private static ILogManager _instance;
+        private bool _isDisposed = false;
         private static readonly object _lock = new object();
 
-        public static ILogManagerImplementation Instance
+        private LogManager()
+        {
+        }
+
+        public static ILogManager Instance
         {
             get
             {
@@ -33,7 +37,7 @@ namespace Dev2
                     {
                         if (_instance is null)
                         {
-                            _instance = new LogManagerImplementation();
+                            _instance = new LogManager();
                         }
                     }
                 }
@@ -41,7 +45,7 @@ namespace Dev2
             }
         }
 
-        public IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
+        public IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
             var stateNotifier = new StateNotifier();
 
@@ -54,7 +58,6 @@ namespace Dev2
             return stateNotifier;
         }
 
-        private bool _isDisposed = false;
         protected virtual void Dispose(bool disposing)
         {
             if (!_isDisposed)
@@ -71,24 +74,6 @@ namespace Dev2
         public void Dispose()
         {
             Dispose(true);
-        }
-    }
-    public class LogManager : ILogManager
-    {
-        private readonly ILogManagerImplementation _logManagerImplementation;
-        public LogManager() : this(LogManagerImplementation.Instance)
-        {
-
-        }
-
-        public LogManager(ILogManagerImplementation logManagerImplementation)
-        {
-            _logManagerImplementation = logManagerImplementation;
-        }
-
-        public IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
-        {
-            return _logManagerImplementation.CreateStateNotifierImpl(dsfDataObject);
         }
     }
 }
