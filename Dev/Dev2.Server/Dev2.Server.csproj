@@ -333,10 +333,6 @@
       <Project>{a44298cd-2e74-4b81-a115-cf9497c982f2}</Project>
       <Name>Warewolf.Logger</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.QueueWorker\Warewolf.QueueWorker.csproj">
-      <Project>{88794bac-c9ea-48a6-a9c4-0a76a44caede}</Project>
-      <Name>Warewolf.QueueWorker</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
@@ -463,7 +459,7 @@
       <Version>6.9.9</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Npgsql">
       <Version>3.0.5</Version>

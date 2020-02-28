@@ -133,7 +133,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table930, "Given ");
 #line 20
- testRunner.And("User as \".\\Administrator\" and with \"Dev2@dmin123\" as password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User as \"WarewolfAdmin\" and with \"W@rEw0lf@dm1n\" as password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
@@ -179,7 +179,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Public Server Source", new string[] {
                         "Ignore"});
-#line 33
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table932 = new TechTalk.SpecFlow.Table(new string[] {
@@ -188,11 +188,11 @@ this.ScenarioSetup(scenarioInfo);
             table932.AddRow(new string[] {
                         "http://wolfs-den.premier.local:3142",
                         "Public"});
-#line 34
+#line 35
  testRunner.Given("I create a server source as", ((string)(null)), table932, "Given ");
-#line 37
- testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
+ testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 39
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

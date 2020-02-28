@@ -231,7 +231,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
         {
             key = "key" + Guid.NewGuid();
-            hostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP;
+            hostName = Depends.GetAddress(Depends.ContainerType.Redis);
             password = "";
             port = 6380;
         }

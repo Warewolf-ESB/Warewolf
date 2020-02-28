@@ -327,6 +327,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid MySQL server")]
         public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL);
 
+        [Given("I depend on a valid MSSQL server")]
+        public void GivenIGetaValidMSSQLServer() => _containerOps = new Depends(Depends.ContainerType.MSSQL);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -4506,7 +4509,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == resourceId);
-
+            dbSource.ServerName += "," + _containerOps.Container.Port;
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
@@ -4522,8 +4525,6 @@ namespace Dev2.Activities.Specs.Composition
                 Id = dbSource.Id
             };
             var testResults = dbServiceModel.TestService(databaseService);
-
-
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {

@@ -11,17 +11,23 @@
 using RabbitMQ.Client;
 using Warewolf.Streams;
 using Warewolf.Triggers;
+using Warewolf.UnitTestAttributes;
 
-namespace Warewolf.Driver.RabbitMQ
+namespace Warewolf.Driver.RabbitMQ.Tests
 {
-    public class RabbitMQSource : IQueueConnectionFactory
+    public class ValidRealRabbitMQSourceForTestingAgainst : IQueueConnectionFactory
     {
         private readonly ConnectionFactory _factory;
 
-        public RabbitMQSource()
+        public ValidRealRabbitMQSourceForTestingAgainst()
         {
-            //TODO: Use a resource file configs here for Hostname, ect
-            _factory = new ConnectionFactory() { HostName = "172.27.14.50", UserName = "test", Password = "test" };
+            _factory = new ConnectionFactory()
+            {
+                HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ),
+                Port = int.Parse(Depends.GetPort(Depends.ContainerType.RabbitMQ)),
+                UserName = "test",
+                Password = "test"
+            };
         }
 
         public IQueueConnection NewConnection(IStreamConfig config)

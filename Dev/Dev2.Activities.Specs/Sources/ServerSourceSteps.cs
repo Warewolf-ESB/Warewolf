@@ -29,6 +29,7 @@ namespace Dev2.Activities.Specs.Sources
     [Binding]
     public sealed class ServerSourceSteps : RecordSetBases
     {
+        Depends declaredDependency;
         IServer environmentModel;
         public ServerSourceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -40,10 +41,9 @@ namespace Dev2.Activities.Specs.Sources
 
         string GetIPAddress(string server)
         {
-            var serverName = server.Replace("http://", "").Replace(":3142", "");
+            var serverName = server.Replace("http://", "").Replace(":3142", "").Replace(":3144", "").Replace(":" + declaredDependency.Container.Port, "");
             var ipHostInfo = Dns.GetHostEntry(serverName);
             var ipAddress = ipHostInfo.AddressList[0];
-
             return ipAddress.ToString();
         }
 
@@ -69,12 +69,23 @@ namespace Dev2.Activities.Specs.Sources
                 environmentModel.ResourceRepository.DeleteResource(resourceModel);
                 environmentModel.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
             }
+            declaredDependency?.Dispose();
         }
 
         [Given(@"I create a server source as")]
         public void GivenICreateAServerSourceAs(Table table)
         {
             var address = table.Rows[0]["Address"];
+            if (address == "http://tst-ci-remote.premier.local:3142")
+            {
+                declaredDependency = new Depends(Depends.ContainerType.CIRemote);
+                address = "http://" + declaredDependency.Container.IP;
+            }
+            else if (address == "http://wolfs-den.premier.local:3142")
+            {
+                declaredDependency = new Depends(Depends.ContainerType.AnonymousWarewolf);
+                address = "http://" + declaredDependency.Container.IP + ":" + declaredDependency.Container.Port;
+            }
             if (!address.Contains("localhost"))
             {
                 var ipAddress = GetIPAddress(address);
