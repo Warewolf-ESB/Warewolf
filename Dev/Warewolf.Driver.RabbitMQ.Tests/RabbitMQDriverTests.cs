@@ -134,7 +134,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             public BasicGetResult GetSentMessage(string queueName)
             {
                 _channel = NewConnection().CreateModel();
-                var getResults = _channel.BasicGet(queue: queueName, noAck: false);
+                var getResults = _channel.BasicGet(queue: queueName, autoAck: false);
                 return getResults;
             }
 
@@ -168,7 +168,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public bool IsDataReceived { get; internal set; }
 
-            public Task<ConsumerResult> Consume(byte[] body)
+            public Task<ConsumerResult> Consume(byte[] body,string customTransactionID)
             {
                 if (body != null)
                 {

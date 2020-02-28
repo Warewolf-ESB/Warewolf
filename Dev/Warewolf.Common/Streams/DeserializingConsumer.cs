@@ -14,7 +14,7 @@ namespace Warewolf.Streams
             _consumer = consumer;
         }
 
-        public Task<ConsumerResult> Consume(byte[] body)
+        public Task<ConsumerResult> Consume(byte[] body, string customTransactionID)
         {
             var item = _deserializer.Deserialize<T>(body);
             return _consumer.Consume(item);

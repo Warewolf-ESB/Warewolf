@@ -1,6 +1,7 @@
 ﻿module DataStorage
 
 open System.Diagnostics.CodeAnalysis
+open Newtonsoft.Json.Linq
 
 [<ExcludeFromCodeCoverage>]
 let PositionColumn = "WarewolfPositionColumn"
@@ -27,6 +28,7 @@ type WarewolfAtom =
     | Float of float
     | Int of int
     | DataString of string
+    | JsonObject of JToken
     | Nothing
     | NullPlaceholder
     | PositionedValue of (int * WarewolfAtom)
@@ -38,6 +40,7 @@ type WarewolfAtom =
             a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
+        | JsonObject a -> a.ToString()
         | Nothing -> ""
         | NullPlaceholder -> ""
         | PositionedValue(_, b) -> b.ToString()

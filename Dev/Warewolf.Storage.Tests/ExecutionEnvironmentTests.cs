@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -1775,8 +1775,8 @@ namespace Warewolf.Storage.Tests
 
             var warewolfEvalResult = _environment.EvalForJson("[[rec(1).a]]");
 
-            var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            Assert.AreEqual("some value", (result.Item[0] as DataStorage.WarewolfAtom.DataString).Item);
+            var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.AreEqual("some value", (result.Item as DataStorage.WarewolfAtom.DataString).Item);
         }
 
         [TestMethod]

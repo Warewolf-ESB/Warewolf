@@ -387,10 +387,17 @@ and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : 
         let buffer = parseLanguageExpression lang update
         match buffer with
         | RecordSetExpression a when env.RecordSets.ContainsKey a.Name -> let b = evalRecordsSet a env
-                                                                          match shouldEscape with
-                                                                            |true -> let d =  Seq.map (warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString) b |> fun a -> a                                                                                      
-                                                                                     WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",d))
-                                                                            |false-> WarewolfAtomListresult(b)
+                                                                          match a.Index with
+                                                                          | IntIndex i ->
+                                                                                       match shouldEscape with
+                                                                                         | true ->  let escape = warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString
+                                                                                                    WarewolfAtomResult(escape b.[0])
+                                                                                         | false -> WarewolfAtomResult(b.[0])
+                                                                          | _ -> 
+                                                                              match shouldEscape with
+                                                                                |true -> let d =  Seq.map (warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString) b |> fun a -> a                                                                                      
+                                                                                         WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",d))
+                                                                                |false-> WarewolfAtomListresult(b)
                                                                           
         | ScalarExpression a when env.Scalar.ContainsKey a ->
                                                              let b =  evalScalar a env
@@ -498,6 +505,45 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
                 if Seq.isEmpty data then
                     if jPath = "$."+(jsonIdentifierToName a) then
                         WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+                    else failwith "non existent object"                        
+                else
+                    WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+        else failwith "non existent object"
+    | ComplexExpression a -> eval env update shouldEscape (languageExpressionToString lang)
+    | WarewolfAtomExpression a -> WarewolfAtomResult(a)
+and evalJsonForJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : LanguageExpression) =     
+    match lang with
+    | ScalarExpression a -> 
+        if env.JsonObjects.ContainsKey a then WarewolfAtomResult(JsonObject(env.JsonObjects.[a]))
+        else failwith "non existent object"
+    | RecordSetExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
+        if env.JsonObjects.ContainsKey a.Name then 
+            let jo = env.JsonObjects.[a.Name]
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            WarewolfAtomListresult
+                (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+        else failwith "non existent object"
+    | RecordSetNameExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
+        if env.JsonObjects.ContainsKey a.Name then 
+            let jo = env.JsonObjects.[a.Name]
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            WarewolfAtomListresult
+                (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+        else failwith "non existent object"
+    
+    | JsonIdentifierExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
+        if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
+            let jo = env.JsonObjects.[(jsonIdentifierToName a)]
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
+            if Seq.length data = 1 then
+                WarewolfAtomResult(Seq.exactlyOne data)
+            else
+                if Seq.isEmpty data then
+                    if jPath = "$."+(jsonIdentifierToName a) then
+                        WarewolfAtomResult(WarewolfAtom.JsonObject(jo))
                     else failwith "non existent object"                        
                 else
                     WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
