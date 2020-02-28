@@ -204,8 +204,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()))
                 .Verifiable();
+
+            var logManagerMock = new Mock<ILogManager>();
+            logManagerMock.Setup(o => o.CreateStateNotifier(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
+
             var wfExecutionContainer = new WfExecutionContainer(serviceAction, mockDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object,
-                mockExecutionManager.Object, mockStateNotifier.Object);
+                mockExecutionManager.Object, logManagerMock.Object);
 
             wfExecutionContainer.Eval(FlowchartProcess, mockDataObject.Object, 0);
 
@@ -242,7 +246,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
             mockStateNotifier.Setup(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>())).Verifiable();
 
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, mockStateNotifier.Object);
+            var logManagerMock = new Mock<ILogManager>();
+            logManagerMock.Setup(o => o.CreateStateNotifier(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
+
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, logManagerMock.Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
@@ -285,7 +292,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
             mockStateNotifier.Setup(o => o.LogExecuteException(It.IsAny<Exception>(), It.IsAny<IDev2Activity>())).Verifiable();
 
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, mockStateNotifier.Object);
+            var logManagerMock = new Mock<ILogManager>();
+            logManagerMock.Setup(o => o.CreateStateNotifier(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
+
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockExecutionManager.Object, logManagerMock.Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);

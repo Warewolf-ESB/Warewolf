@@ -204,14 +204,14 @@ namespace Dev2.Runtime.ESB.Execution
         readonly IExecutionManager _executionManager;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, theWorkspace, esbChannel, CustomContainer.Get<IExecutionManager>(), null)
+            : this(sa, dataObj, theWorkspace, esbChannel, CustomContainer.Get<IExecutionManager>(), new LogManager())
         {
         }
 
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager, IStateNotifier stateNotifier)
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager, ILogManager logManager)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _stateNotifier = stateNotifier ?? LogManager.CreateStateNotifier(dataObj);
+            _stateNotifier = logManager.CreateStateNotifier(dataObj);
             _executionManager = executionManager;
         }
 

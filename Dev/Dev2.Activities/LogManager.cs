@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -11,16 +11,36 @@
 
 using System;
 using Dev2.Interfaces;
-using Dev2.Common.Interfaces.Logging;
 using Warewolf.Logger;
 using Warewolf.Auditing;
 
 namespace Dev2
 {
-    public class LogManagerImplementation : IDisposable
+    public class LogManagerImplementation : ILogManagerImplementation, IDisposable
     {
         IStateAuditLogger _logger;
-      
+        private static ILogManagerImplementation _instance;
+
+        private static readonly object _lock = new object();
+
+        public static ILogManagerImplementation Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new LogManagerImplementation();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
         public IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {
             var stateNotifier = new StateNotifier();
@@ -42,6 +62,7 @@ namespace Dev2
                 if (disposing)
                 {
                     _logger?.Dispose();
+                    ((IDisposable)_instance).Dispose();
                 }
                 _isDisposed = true;
             }
@@ -52,39 +73,22 @@ namespace Dev2
             Dispose(true);
         }
     }
-
-    public class LogManager : IDisposable
+    public class LogManager : ILogManager
     {
-        private static LogManagerImplementation _instance;
-
-        private static readonly object _lock = new object();
-
-        private static LogManagerImplementation Instance
+        private readonly ILogManagerImplementation _logManagerImplementation;
+        public LogManager() : this(LogManagerImplementation.Instance)
         {
-            get
-            {
-                if (_instance is null)
-                {
-                    lock (_lock)
-                    {
-                        if (_instance is null)
-                        {
-                            _instance = new LogManagerImplementation();
-                        }
-                    }
-                }
-                return _instance;
-            }
+
         }
 
-        public static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
+        public LogManager(ILogManagerImplementation logManagerImplementation)
         {
-            return Instance.CreateStateNotifierImpl(dsfDataObject);
+            _logManagerImplementation = logManagerImplementation;
         }
 
-        public void Dispose()
+        public IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
-            ((IDisposable)_instance).Dispose();
+            return _logManagerImplementation.CreateStateNotifierImpl(dsfDataObject);
         }
     }
 }
