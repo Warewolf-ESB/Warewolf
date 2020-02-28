@@ -69,6 +69,8 @@ let EvalMultiAssign (values : IAssignValue seq) (update : int) (env : WarewolfEn
 
 let EvalAssignWithFrame (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssignWithFrame value update env
+let EvalAssignWithFrameTypeCast (value : IAssignValue) (update : int) (env : WarewolfEnvironment) (shouldTypeCast :  ShouldTypeCast) = 
+   AssignEvaluation.evalAssignWithFrameTypeCast value update env shouldTypeCast
 
 let EvalAssignWithFrameStrict (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssignWithFrameStrict value update env
@@ -100,7 +102,7 @@ let EvalUpdate (exp : string) (env : WarewolfEnvironment) (update : int)
 let EvalDataShape (exp : string) (env : WarewolfEnvironment) = AssignEvaluation.evalDataShape exp 0 env
 
 let IsValidRecsetExpression(exp : string) = 
-    let parsed = EvaluationFunctions.parseLanguageExpression exp 0
+    let parsed = EvaluationFunctions.parseLanguageExpression exp 0 ShouldTypeCast.Yes
     match parsed with
     | LanguageExpression.WarewolfAtomExpression _ -> true
     | LanguageExpression.ComplexExpression _ -> true
@@ -119,7 +121,7 @@ let IsValidRecsetExpression(exp : string) =
     | _ -> true
 
 let RecordsetExpressionExists (exp : string) (env : WarewolfEnvironment) = 
-    let parsed = EvaluationFunctions.parseLanguageExpression exp 0
+    let parsed = EvaluationFunctions.parseLanguageExpression exp 0 ShouldTypeCast.Yes
     match parsed with
     | LanguageExpression.WarewolfAtomExpression _ -> false
     | LanguageExpression.ComplexExpression _ -> false
@@ -221,7 +223,7 @@ let EvalEnv (env : WarewolfEnvironment) =
     }
 
 let EvalEnvExpressionToRecordSet (name : string) (update : int) (env : WarewolfEnvironment) =
-    let buffer = EvaluationFunctions.parseLanguageExpression name update
+    let buffer = EvaluationFunctions.parseLanguageExpression name update ShouldTypeCast.Yes
     match buffer with
     | RecordSetNameExpression a when env.RecordSets.ContainsKey a.Name -> EvaluationFunctions.evalDataSetExpression env update a
     | _ -> raise (new Dev2.Common.Common.NullValueInVariableException("recordset not found",EvaluationFunctions.languageExpressionToString buffer))

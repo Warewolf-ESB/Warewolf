@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Common.Common;
-
+using static DataStorage;
 
 namespace WarewolfParsingTest
 {
@@ -221,7 +221,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[Rec(*).a]]")).Item);
+            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[Rec(*).a]]", ShouldTypeCast.Yes)).Item);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.atomtoString(res), "123");
         }
@@ -236,7 +236,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Rec(1).a]]")).Item);
+            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Rec(1).a]]", ShouldTypeCast.Yes)).Item);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.atomtoString(res), "1");
         }
@@ -864,7 +864,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[@arrayObj().Name]] [[@arrayObj().Name]]"));
+            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[@arrayObj().Name]] [[@arrayObj().Name]]", ShouldTypeCast.Yes));
             //------------Assert Results-------------------------
             Assert.AreEqual("bobe bobe", CommonFunctions.evalResultToString(res));
         }
@@ -877,7 +877,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate("1"));
+            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate("1", ShouldTypeCast.Yes));
             //------------Assert Results-------------------------
             Assert.AreEqual("1", CommonFunctions.evalResultToString(res));
         }

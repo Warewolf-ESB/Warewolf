@@ -6,8 +6,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Gma.DataStructures.StringSearch;
-
-
+using static DataStorage;
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -161,7 +160,7 @@ namespace Dev2.Studio.Core.DataList
         {
             try
             {
-                var languageExpression = EvaluationFunctions.parseLanguageExpression(a, 0);
+                var languageExpression = EvaluationFunctions.parseLanguageExpression(a, 0, ShouldTypeCast.Yes);
                 return languageExpression;
             }
             catch (Exception)
