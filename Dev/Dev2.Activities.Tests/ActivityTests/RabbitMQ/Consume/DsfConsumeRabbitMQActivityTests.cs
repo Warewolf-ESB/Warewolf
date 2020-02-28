@@ -926,7 +926,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new RabbitMQSource
             {
-                HostName = Depends.EnableDocker?Depends.RigOpsIP:Depends.SVRDEVIP,
+                HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ),
                 Port = 5672,
                 UserName = "test",
                 Password = "test"

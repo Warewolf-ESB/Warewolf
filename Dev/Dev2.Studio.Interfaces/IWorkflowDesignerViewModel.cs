@@ -12,6 +12,7 @@
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -42,6 +43,7 @@ namespace Dev2.Studio.Interfaces
         void CreateBlankWorkflow();
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
         string GetAndUpdateWorkflowLinkWithWorkspaceID();
+        List<NameValue> GetSelectableGates(string uniqueId);
     }
 
     public interface IMergePreviewWorkflowDesignerViewModel : IWorkflowDesignerViewModel

@@ -1,0 +1,170 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Gate.Large"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.Gate"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+                               xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
+                               MinWidth="350"
+                               Width="350"
+                               Height="Auto"
+                               MinHeight="335"
+                               MaxWidth="450"
+                               mc:Ignorable="d" 
+                               d:DesignHeight="450" 
+                               d:DesignWidth="800"
+                               d:DataContext="{d:DesignInstance local:GateDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
+    </core:ActivityDesignerTemplate.RightButtons>
+
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Allow through the gate if"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  HorizontalAlignment="Stretch" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="#" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="Match" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="Match Type" HorizontalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="3" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                        <TextBlock Text="Match" HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
+                <ListBox x:Name="ConditionsListBox" 
+                         Grid.Row="1"
+                         ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}" 
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Padding="1,0,1,1">
+                </ListBox>
+            </Grid>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="On Failure"/>
+
+            <Grid Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
+                <ComboBox x:Name="cbExistingGates"
+                          Grid.Column="1"
+                          ItemsSource="{Binding Gates, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="SelectedGate"
+                          DisplayMemberPath="Name"
+                          ToolTip="{x:Static languages:Tooltips.ExistingGatesToolTip}"
+                          IsEditable="False"
+                          IsEnabled="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedGate, Mode=TwoWay}">
+                    <i:Interaction.Behaviors>
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.ExistingGatesHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </Grid>
+        </Grid>
+
+        <GroupBox x:Name="OnErrorGroupBox"             
+                  Style="{StaticResource ActivityGroupBoxStyle}"
+                  VerticalContentAlignment="Stretch"
+                  Grid.Row="2"
+                  Width="Auto">
+            <GroupBox.Header>
+                <TextBlock Text="On Resume" Margin="1" Padding="1" />
+            </GroupBox.Header>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Execute this"/>
+
+                <Border BorderBrush="#CFD6E1"
+                        BorderThickness="1"
+                        Grid.Row="1"
+                        CornerRadius="12">
+                    <sap:WorkflowItemPresenter x:Name="DropPoint"
+                                               AllowDrop="False"
+                                               HintText="Drop Activity Here"
+                                               BorderBrush="Black"
+                                               BorderThickness="2"
+                                               MinHeight="50"
+                                               ToolTip="{x:Static languages:Tooltips.GateExecuteThisTooltip}"
+                                               Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay, Converter={StaticResource ModelItemToActivityConverter}}">
+                        <AutomationProperties.AutomationId>
+                            <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                                <Binding Path="ModelItem.AutomationID" />
+                            </MultiBinding>
+                        </AutomationProperties.AutomationId>
+                    </sap:WorkflowItemPresenter>
+                </Border>
+
+                <ListBox x:Name="OptionsListBox" 
+                         Grid.Row="2"
+                         ItemsSource="{Binding Options, Converter={StaticResource OptionViewConverter}}" 
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Margin="{StaticResource ControlBorderTop}"
+                         BorderBrush="Transparent">
+                </ListBox>
+            </Grid>
+        </GroupBox>
+
+        <errors:OnError Grid.Row="3" />
+    </Grid>
+</core:ActivityDesignerTemplate>

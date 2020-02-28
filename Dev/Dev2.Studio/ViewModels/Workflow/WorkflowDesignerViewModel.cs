@@ -93,6 +93,9 @@ using System.IO;
 using Dev2.Common.Interfaces;
 using System.Xml;
 using Dev2.Common.ExtMethods;
+using Dev2.Activities.Designers2.Gate;
+using Dev2.Activities;
+using Warewolf.Data.Options;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -1987,6 +1990,53 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public List<NameValue> GetSelectableGates(string uniqueId)
+        {
+            var serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
+            var treeNodes = serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
+
+            var list = new List<NameValue> { new NameValue { Name = "End", Value = Guid.Empty.ToString() } };
+            try
+            {
+                IEnumerable<IDev2Activity> connectedList(IDev2Activity activity)
+                {
+                    var ret = new List<IDev2Activity>();
+                    ret.Add(activity);
+                    if (activity.NextNodes is null)
+                    {
+                        return ret;
+                    }
+
+                    foreach (var nextActivity in activity.NextNodes)
+                    {
+                        ret.AddRange(connectedList(nextActivity));
+                    }
+                    return ret.Where(o => o.IsGate);
+                }
+
+                bool found = false;
+                var allGates = connectedList(treeNodes[0].Activity)
+                    .Cast<GateActivity>()
+                    .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is Continue);
+
+                var selectableGates = allGates
+                    .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));
+
+                foreach (var gate in selectableGates)
+                {
+                    var id = gate.UniqueID;
+                    var activityName = gate.GetDisplayName();
+                    var nameValue = new NameValue { Name = activityName, Value = id };
+                    list.Add(nameValue);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error loading selectable gates. Exception: " + ex.Message, GlobalConstants.ServerWorkspaceID.ToString());
+            }
+            return list;
+        }
+
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
             if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
@@ -2207,6 +2257,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
 
+            if (dp is Border border && border.DataContext is GateDesignerViewModel gateDesignerViewModel)
+            {
+                gateDesignerViewModel.ClearGates();
+                string uniqueId = gateDesignerViewModel.ModelItem.Properties["UniqueID"].ComputedValue.ToString();
+                var gates = GetSelectableGates(uniqueId);
+                gateDesignerViewModel.Gates = gates;
+            }
+
             var dp1 = dp as Run;
             if (dp1?.Parent is TextBlock && dp1.DataContext.GetType().Name.Contains("FlowchartDesigner"))
             {
@@ -2360,6 +2418,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("AdvancedRecordsetActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("GateActivity");
         }
         
         bool WorkflowDropFromResourceToolboxItem(IDataObject dataObject, string isWorkflow, bool dropOccured, bool handled)

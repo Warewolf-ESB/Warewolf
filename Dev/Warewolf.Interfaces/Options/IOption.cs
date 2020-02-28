@@ -9,23 +9,70 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using Warewolf.Data;
 
 namespace Warewolf.Options
 {
-    public interface IOption : ICloneable, IComparable
+    public interface IEnabled
+    {
+        bool Enabled { get; set; }
+    }
+
+    public interface IOptionHelp
+    {
+        string HelpText { get; set; }
+        string Tooltip { get; set; }
+    }
+
+    public interface IOption : ICloneable, IComparable, IOptionHelp
     {
         string Name { get; set; }
     }
 
-    public interface IOptionBasic<T> : IOption, IOptionNotifyUpdate<T>
+    public interface IOptionMultiData : IOption, INotifyPropertyChanged
+    {
+        string Value { get; set; }
+        Dictionary<string, IEnumerable<IOption>> Options { get; }
+        IEnumerable<IOption> SelectedOptions { get; }
+    }
+    public interface IOptionComboBox : IOptionMultiData
+    {
+        
+    }
+
+    public interface IOptionRadioButton : IOptionMultiData
+    {
+
+    }
+
+    public interface IOptionBasic<T> : IOption
     {
         T Value { get; set; }
         T Default { get; }
     }
 
+    public interface IOptionBasic<TKey, TValue> : IOption
+    {
+        KeyValuePair<TKey, TValue> Value { get; set; }
+        KeyValuePair<TKey, TValue> Default { get; }
+    }
+     
+
     public interface IOptionAutocomplete : IOptionBasic<string>
     {
         string[] Suggestions { get; }
+    }
+
+    public interface IOptionEnum : IOptionBasic<int>
+    {
+        IEnumerable<KeyValuePair<string, int>> Values { get; set; }
+    }
+
+    public interface IOptionEnumGen : IOptionBasic<string, int>
+    {
+        IEnumerable<KeyValuePair<string, int>> Values { get; set; }
     }
 
     public interface IOptionInt : IOptionBasic<int>
@@ -38,22 +85,24 @@ namespace Warewolf.Options
 
     }
 
-    public interface IOptionNotifyUpdate<T>
+    public interface IWorkflow : INamedGuid
     {
-        event EventHandler<OptionValueChangedArgs<T>> ValueUpdated;
+        ICollection<IServiceInputBase> Inputs { get; set; }
     }
 
-    public class OptionValueChangedArgs<T>
+    public interface IOptionActivity : IOption
     {
-        public OptionValueChangedArgs(string name, T oldValue, T newValue)
-        {
-            Name = name;
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
+        object Value { get; set; }
+    }
 
-        public string Name { get; }
-        public T OldValue { get; }
-        public T NewValue { get; }
+    public interface IOptionWorkflow : IOption
+    {
+        IWorkflow Workflow { get; }
+    }
+
+    public interface IOptionConvertable
+    {
+        IOption[] ToOptions();
+        void FromOption(IOption option);
     }
 }

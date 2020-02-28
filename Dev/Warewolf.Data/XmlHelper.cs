@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace Dev2.Data.Util
+namespace Warewolf.Data
 {
     public static class XmlHelper
     {

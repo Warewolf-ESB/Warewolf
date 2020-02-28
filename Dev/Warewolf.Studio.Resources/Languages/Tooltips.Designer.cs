@@ -1432,6 +1432,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If the gate conditions fail and &quot;Continue&quot; has been selected, then select an existing gate to roll back to..
+        /// </summary>
+        public static string ExistingGatesToolTip {
+            get {
+                return ResourceManager.GetString("ExistingGatesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand or collapse all execution nodes..
         /// </summary>
         public static string ExpandCollapseAllToolTip {
@@ -1677,6 +1686,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string FormatNumberToolTipRoundvalue {
             get {
                 return ResourceManager.GetString("FormatNumberToolTipRoundvalue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute an Activity when there is a failure in the Gate referencing this Gate..
+        /// </summary>
+        public static string GateExecuteThisTooltip {
+            get {
+                return ResourceManager.GetString("GateExecuteThisTooltip", resourceCulture);
             }
         }
         
@@ -3178,6 +3196,7 @@ namespace Warewolf.Studio.Resources.Languages {
             }
         }
         
+            
         /// <summary>
         ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
@@ -3247,6 +3266,159 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string OpenVersionTooltip {
             get {
                 return ResourceManager.GetString("OpenVersionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionAutocompleteTooltip.
+        /// </summary>
+        public static string OptionAutocompleteTooltip {
+            get {
+                return ResourceManager.GetString("OptionAutocompleteTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionBoolTooltip.
+        /// </summary>
+        public static string OptionBoolTooltip {
+            get {
+                return ResourceManager.GetString("OptionBoolTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionComboboxTooltip.
+        /// </summary>
+        public static string OptionComboboxTooltip {
+            get {
+                return ResourceManager.GetString("OptionComboboxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionConditionToolTip.
+        /// </summary>
+        public static string OptionConditionToolTip {
+            get {
+                return ResourceManager.GetString("OptionConditionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumGenTooltip.
+        /// </summary>
+        public static string OptionEnumGenTooltip {
+            get {
+                return ResourceManager.GetString("OptionEnumGenTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionEnumTooltip.
+        /// </summary>
+        public static string OptionEnumTooltip {
+            get {
+                return ResourceManager.GetString("OptionEnumTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the retry count..
+        /// </summary>
+        public static string OptionGateCountToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the delay increment between every retry attempt.
+        /// </summary>
+        public static string OptionGateIncrementToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateIncrementToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the maximum retry count. The tool will keep retrying until the maximum retry count is hit.
+        /// </summary>
+        public static string OptionGateMaxRetriesToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateMaxRetriesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the resume workflow or API that will be executed on retry.
+        /// </summary>
+        public static string OptionGateResumeEndpointToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateResumeEndpointToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select whether the Gate Tool will continue on error or end the workflow.
+        /// </summary>
+        public static string OptionGateResumeToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateResumeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the retry strategy that will be actioned.
+        /// </summary>
+        public static string OptionGateStrategyToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateStrategyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the Timeout of each retry.
+        /// </summary>
+        public static string OptionGateTimeoutToolTip {
+            get {
+                return ResourceManager.GetString("OptionGateTimeoutToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionIntTooltip.
+        /// </summary>
+        public static string OptionIntTooltip {
+            get {
+                return ResourceManager.GetString("OptionIntTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set if the queue is durable.
+        /// </summary>
+        public static string OptionRabbitMqDurableToolTip {
+            get {
+                return ResourceManager.GetString("OptionRabbitMqDurableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionRadioButtonTooltip.
+        /// </summary>
+        public static string OptionRadioButtonTooltip {
+            get {
+                return ResourceManager.GetString("OptionRadioButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OptionWorkflowTooltip.
+        /// </summary>
+        public static string OptionWorkflowTooltip {
+            get {
+                return ResourceManager.GetString("OptionWorkflowTooltip", resourceCulture);
             }
         }
         
@@ -3869,7 +4041,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time in seconds before the key expires. Default is 5 Seconds..
+        ///   Looks up a localized string similar to Time in seconds before the key expires. Default is 5 Seconds.
         /// </summary>
         public static string RedisTTLToolTip {
             get {
@@ -5661,6 +5833,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Decision {
             get {
                 return ResourceManager.GetString("Tool_Flow_Decision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: gate retry stop end.
+        /// </summary>
+        public static string Tool_Flow_Gate {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Gate", resourceCulture);
             }
         }
         

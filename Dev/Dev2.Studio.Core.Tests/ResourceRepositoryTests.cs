@@ -22,8 +22,9 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
+
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -46,12 +47,13 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Dev2.Triggers;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
+using Warewolf.Options;
+using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Triggers;
 
@@ -2561,6 +2563,55 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
             _repo.SaveServerSettings(_environmentModel.Object, serverSettingsData);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_FindOptionsBy_ExecuteCommand_Given_TargetEnvironment_IsNull_ExpectedFail()
+        {
+            //----------------------Arrange----------------------
+            using (var sut = new ResourceRepository(new Mock<IServer>().Object))
+            {
+                //----------------------Act--------------------------
+                var result = sut.FindOptionsBy(null, string.Empty);
+                //----------------------Assert-----------------------
+                Assert.AreEqual(0, result.Count);
+            };
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_FindOptionsBy_ExecuteCommand_Given_TargetEnvironment_IsNotNull_ExpectedOptions()
+        {
+            //----------------------Arrange----------------------
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(o => o.IsConnected).Returns(true);
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.Connection).Returns(mockEnvironmentConnection.Object);
+            mockServer.Setup(o => o.IsConnected).Returns(true);
+
+            var executeOptions = new List<IOption>() { new OptionBool { Name = "Breakfast", Value = true }, new OptionAutocomplete { Name = "TestName", Value = "TestValue", Suggestions = new string[] { "TestSuggestion1", "TestSuggestion2" } } }.ToList();
+
+            var commController = new Mock<ICommunicationController>();
+            commController.Setup(o => o.ExecuteCommand<List<IOption>>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>())).Returns(executeOptions);
+
+            using (var resourceRepository = new ResourceRepository(new Mock<IServer>().Object))
+            {
+                resourceRepository.GetCommunicationController = someName => commController.Object;
+                //----------------------Act--------------------------
+                var result = resourceRepository.FindOptionsBy(mockServer.Object, OptionsService.GateResume);
+                //----------------------Assert-----------------------
+                Assert.AreEqual(2, result.Count);
+
+                Assert.AreEqual("Breakfast", ((OptionBool)result[0]).Name);
+                Assert.AreEqual(true, ((OptionBool)result[0]).Value);
+
+                Assert.AreEqual("TestName", ((OptionAutocomplete)result[1]).Name);
+                Assert.AreEqual("TestValue", ((OptionAutocomplete)result[1]).Value);
+            };
         }
 
         static Mock<IEnvironmentConnection> CreateEnvironmentConnection()
