@@ -20,12 +20,12 @@ namespace Warewolf.Data.Options
         }
 
         [DataValue("Correlation")]
-        [MultiDataProvider( typeof(ExecutionID),typeof(CustomTransactionID), typeof(Manual))]
+        [MultiDataProvider(typeof(ExecutionID), typeof(CustomTransactionID), typeof(Manual))]
         [OptionUX(nameof(OptionCombobox))]
         [HelpText(nameof(Studio.Resources.Languages.HelpText.RabbitMQHelpAutoCorrelationID))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.RabbitMQToolTipAutoCorrelationID))]
         [Orientation(Orientation.Horizontal)]
-        public AutoCorrelation AutoCorrelation { get; set; } 
+        public AutoCorrelation AutoCorrelation { get; set; } = new ExecutionID();
 
         public void Notify()
         {
