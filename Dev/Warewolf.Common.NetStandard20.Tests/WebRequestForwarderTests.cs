@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Common;
+using Warewolf.Data;
 using Warewolf.Web;
 
 namespace Warewolf.Web.Tests
@@ -32,20 +33,22 @@ namespace Warewolf.Web.Tests
             //-----------------------------Arrange------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-
+            var headers = new Headers();
+            headers.CustomTransactionID = "customTransactionID";
             var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("Connected") };
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             mockHttpClient.Setup(o => o.GetAsync(It.IsAny<string>())).Returns(Task.Run(() => response));
 
-            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>())).Returns(mockHttpClient.Object);
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);
             //-----------------------------Act----------------------------------
             var factory = mockHttpClientFactory.Object;
-            var client = factory.New(new Uri("http://warewolf.io"),"","","");
+          
+            var client = factory.New(new Uri("http://warewolf.io"),"","",headers);
             client.GetAsync("/person/1");
             //-----------------------------Assert-------------------------------
             mockHttpClient.Verify(o => o.GetAsync(It.IsAny<string>()), Times.Once);
-            mockHttpClientFactory.Verify(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>()), Times.Once);
+            mockHttpClientFactory.Verify(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),headers), Times.Once);
         }
 
         [TestMethod]
@@ -55,14 +58,15 @@ namespace Warewolf.Web.Tests
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-
-            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>()));
+            var headers = new Headers();
+            headers.CustomTransactionID = "customTransactionID";
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers));
             var factory = mockHttpClientFactory.Object;
             //-----------------------------Act----------------------------------
 
-            var client = factory.New("http://warewolf.io", "Bob", "TheBuilder","customTransactionID");
+            var client = factory.New("http://warewolf.io", "Bob", "TheBuilder",headers);
             //-----------------------------Assert-------------------------------
-            mockHttpClientFactory.Verify(o => o.New("http://warewolf.io", "Bob", "TheBuilder","customTransactionID"), Times.Once);
+            mockHttpClientFactory.Verify(o => o.New("http://warewolf.io", "Bob", "TheBuilder",headers), Times.Once);
         }
 
         [TestMethod]
@@ -72,15 +76,16 @@ namespace Warewolf.Web.Tests
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-
-            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>()));
+            var headers = new Headers();
+            headers.CustomTransactionID = "customTransactionID";
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),headers));
             var factory = mockHttpClientFactory.Object;
             var uri = new Uri("http://warewolf.io");
             //-----------------------------Act----------------------------------
-
-            var client = factory.New(uri, "Bob", "TheBuilder","customTransactionID");
+           
+            var client = factory.New(uri, "Bob", "TheBuilder",headers);
             //-----------------------------Assert-------------------------------
-            mockHttpClientFactory.Verify(o => o.New(uri, "Bob", "TheBuilder","customTransactionID"), Times.Once);
+            mockHttpClientFactory.Verify(o => o.New(uri, "Bob", "TheBuilder",headers), Times.Once);
         }
 
         [TestMethod]
@@ -94,8 +99,9 @@ namespace Warewolf.Web.Tests
             var factory = new HttpClientFactory();
 
            //-----------------------------Act----------------------------------
-
-            var client = factory.New("http://warewolf.io", "Bob", "TheBuilder","customTransactionID");
+           var headers = new Headers();
+           headers.CustomTransactionID = "customTransactionID";
+            var client = factory.New("http://warewolf.io", "Bob", "TheBuilder",headers);
             //-----------------------------Assert-------------------------------
             Assert.IsTrue(client.HasCredentials);
         }
@@ -110,8 +116,9 @@ namespace Warewolf.Web.Tests
 
             var uri = new Uri("http://warewolf.io");
             //-----------------------------Act----------------------------------
-
-            var client = factory.New(uri, "Bob", "TheBuilder","customTransactionID");
+            var headers = new Headers();
+            headers.CustomTransactionID = "customTransactionID";
+            var client = factory.New(uri, "Bob", "TheBuilder",headers);
             //-----------------------------Assert-------------------------------
             Assert.IsTrue(client.HasCredentials);
         }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Warewolf.Data;
 
 namespace Warewolf.Streams
@@ -14,7 +15,7 @@ namespace Warewolf.Streams
             _consumer = consumer;
         }
 
-        public Task<ConsumerResult> Consume(byte[] body, string customTransactionID)
+        public Task<ConsumerResult> Consume(byte[] body, Headers headers)
         {
             var item = _deserializer.Deserialize<T>(body);
             return _consumer.Consume(item);

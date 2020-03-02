@@ -10,6 +10,7 @@
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Warewolf.Data;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
@@ -42,8 +43,9 @@ namespace Warewolf.Driver.RabbitMQ
             eventConsumer.Received += (model, eventArgs) =>
             {
                 var body = eventArgs.Body;
-                var customTransactionID = eventArgs.BasicProperties.CorrelationId;
-                var resultTask = consumer.Consume(body,customTransactionID);
+                var headers = new Warewolf.Data.Headers();
+                headers.CustomTransactionID = eventArgs.BasicProperties.CorrelationId;
+                var resultTask = consumer.Consume(body, headers);
                 resultTask.Wait();
                 if (resultTask.Result == Data.ConsumerResult.Success)
                 {
