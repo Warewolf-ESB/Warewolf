@@ -168,7 +168,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public bool IsDataReceived { get; internal set; }
 
-            public Task<ConsumerResult> Consume(byte[] body,string customTransactionID)
+            public Task<ConsumerResult> Consume(byte[] body, Warewolf.Data.Headers headers)
             {
                 if (body != null)
                 {

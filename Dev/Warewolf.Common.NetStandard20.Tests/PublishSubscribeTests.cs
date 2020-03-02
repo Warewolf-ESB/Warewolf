@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Threading;
 using System.Text;
+using Warewolf.Data;
 
 namespace Warewolf.Streams
 {
@@ -62,7 +63,7 @@ namespace Warewolf.Streams
         {
             readonly IPublisher _publisher;
             byte[] _publishedBytes = null;
-            string _customTransactionID = "";
+            Headers _headers = new Headers();
             readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
             public ConnectionForTesting()
             {
@@ -70,7 +71,6 @@ namespace Warewolf.Streams
                 publisher.Setup(o => o.Publish(It.IsAny<byte[]>())).Callback<byte[]>(bytes
                     => {
                         _publishedBytes = bytes;
-                        _customTransactionID = "";
                         _waitHandle.Set();
                     });
 
@@ -81,7 +81,7 @@ namespace Warewolf.Streams
             public void StartConsuming(IStreamConfig config, IConsumer consumer)
             {
                 _waitHandle.WaitOne();
-                consumer.Consume(_publishedBytes, _customTransactionID);
+                consumer.Consume(_publishedBytes, _headers);
             }
         }
     }
