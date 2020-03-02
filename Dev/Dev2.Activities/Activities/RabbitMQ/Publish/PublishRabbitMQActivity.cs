@@ -1,7 +1,7 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using RabbitMQ.Client;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
@@ -23,52 +24,58 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Dev2.Common.State;
+using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
+using Warewolf.Data.Options;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    public class DsfPublishRabbitMQActivity : DsfBaseActivity, IEquatable<DsfPublishRabbitMQActivity>
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
+    public class PublishRabbitMQActivity : DsfBaseActivity, IEquatable<PublishRabbitMQActivity>
     {
-        #region Ctor
-
-        public DsfPublishRabbitMQActivity()
+        public PublishRabbitMQActivity()
+            : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance,new ConnectionFactory())
         {
-            DisplayName = "RabbitMQ Publish";
         }
 
-        #endregion Ctor
+        public PublishRabbitMQActivity(IResourceCatalog resourceCatalog,ConnectionFactory connectionFactory)
+        {
+            ResourceCatalog = resourceCatalog;
+            ConnectionFactory = connectionFactory;
+            DisplayName = "RabbitMQ Publish";
+            if (BasicProperties is null)
+            {
+                BasicProperties = new RabbitMqPublishOptions();
+            }
+        }
 
         public Guid RabbitMQSourceResourceId { get; set; }
-
-        [Inputs("Queue Name")]
-        [FindMissing]
+        public RabbitMqPublishOptions BasicProperties { get; set; }
+        
+        [Inputs("Queue Name")] 
+        [FindMissing] 
         public string QueueName { get; set; }
 
-        [FindMissing]
+        [FindMissing] 
         public bool IsDurable { get; set; }
 
-        [FindMissing]
+        [FindMissing] 
         public bool IsExclusive { get; set; }
 
-        [FindMissing]
+        [FindMissing] 
         public bool IsAutoDelete { get; set; }
 
-        [Inputs("Message")]
-        [FindMissing]
+        [Inputs("Message")] 
+        [FindMissing] 
         public string Message { get; set; }
 
-        [NonSerialized]
+        [NonSerialized] 
         ConnectionFactory _connectionFactory;
 
         internal ConnectionFactory ConnectionFactory
         {
-            get
-            {
-                return _connectionFactory ?? (_connectionFactory = new ConnectionFactory());
-            }
-            set
-            {
-                _connectionFactory = value;
-            }
+            get => _connectionFactory ?? (_connectionFactory = new ConnectionFactory());
+            set => _connectionFactory = value;
         }
 
         internal IConnection Connection { get; set; }
@@ -80,12 +87,19 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         public override IEnumerable<StateVariable> GetState()
         {
-            return new[] {
+            return new[]
+            {
                 new StateVariable
                 {
                     Name = "QueueName",
                     Value = QueueName,
                     Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Name = nameof(BasicProperties),
+                    Value = BasicProperties?.ToString(),
                 },
                 new StateVariable
                 {
@@ -110,7 +124,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
                     Name = "RabbitMQSourceResourceId",
                     Value = RabbitMQSourceResourceId.ToString(),
                     Type = StateVariable.StateType.Input
-                },new StateVariable
+                },
+                new StateVariable
                 {
                     Name = "IsAutoDelete",
                     Value = IsAutoDelete.ToString(),
@@ -118,29 +133,41 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 },
                 new StateVariable
                 {
-                    Name="Result",
+                    Name = "Result",
                     Value = Result,
                     Type = StateVariable.StateType.Output
-                }                
+                }
             };
         }
 
-        #region Overrides of DsfBaseActivity
+        private IDSFDataObject DataObject { get; set; }
+
+        protected override void OnExecute(NativeActivityContext context)
+        {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject, 0);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            DataObject = dataObject;
+            base.ExecuteTool(dataObject, update);
+        }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
+                var CorrelationID = "";
                 RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
-                    return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
+                    return new List<string> {ErrorResource.RabbitSourceHasBeenDeleted};
                 }
 
-                if (!evaluatedValues.TryGetValue("QueueName", out string queueName) ||
-                    !evaluatedValues.TryGetValue("Message", out string message))
+                if (!evaluatedValues.TryGetValue("QueueName", out string queueName) || !evaluatedValues.TryGetValue("Message", out string message))
                 {
-                    return new List<string> { ErrorResource.RabbitQueueNameAndMessageRequired };
+                    return new List<string> {ErrorResource.RabbitQueueNameAndMessageRequired};
                 }
 
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
@@ -159,11 +186,44 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
+                        if (BasicProperties.AutoCorrelation is Manual properties)
+                        {
+                            basicProperties.CorrelationId = properties.CorrelationID;
+                            CorrelationID = properties.CorrelationID;
+                        }
+                        else
+                        {
+                            if (BasicProperties.AutoCorrelation is Auto autoProperties)
+                            {
+                                switch (autoProperties.AutoCorrelation)
+                                {
+                                    case AutoCorrelationAction.ExecutionID:
+                                        basicProperties.CorrelationId = DataObject.ExecutionID.ToString();
+                                        break;
+                                    case AutoCorrelationAction.CustomTransactionID:
+                                        basicProperties.CorrelationId = DataObject.CustomTransactionID;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                if (DataObject.CustomTransactionID.Length > 0)
+                                {
+                                    basicProperties.CorrelationId = DataObject.CustomTransactionID;
+                                }
+                                else
+                                {
+                                    basicProperties.CorrelationId = DataObject.ExecutionID.ToString();
+                                }
+                            }
+                            CorrelationID = basicProperties.CorrelationId;
+                        }
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
-                Dev2Logger.Debug($"Message published to queue {queueName}", GlobalConstants.WarewolfDebug);
-                return new List<string> { "Success" };
+
+                Dev2Logger.Debug($"Message published to queue {queueName} CorrelationId: {CorrelationID} ", GlobalConstants.WarewolfDebug);
+                return new List<string> {"Success"};
             }
             catch (Exception ex)
             {
@@ -172,10 +232,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
             }
         }
 
-        #endregion Overrides of DsfBaseActivity
-
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public bool Equals(DsfPublishRabbitMQActivity other)
+        public bool Equals(PublishRabbitMQActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
@@ -188,16 +246,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return true;
             }
 
-            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitMQSource, other.RabbitMQSource);
             return base.Equals(other)
-                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
-                && string.Equals(QueueName, other.QueueName)
-                && IsDurable == other.IsDurable
-                && IsExclusive == other.IsExclusive
-                && IsAutoDelete == other.IsAutoDelete
-                && string.Equals(Message, other.Message)
-                && string.Equals(DisplayName, other.DisplayName)
-                && isSourceEqual;
+                   && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
+                   && string.Equals(QueueName, other.QueueName)
+                   && IsDurable == other.IsDurable
+                   && IsExclusive == other.IsExclusive
+                   && IsAutoDelete == other.IsAutoDelete
+                   && string.Equals(Message, other.Message)
+                   && string.Equals(DisplayName, other.DisplayName)
+                   && isSourceEqual;
         }
 
         public override bool Equals(object obj)
@@ -217,7 +275,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return false;
             }
 
-            return Equals((DsfPublishRabbitMQActivity)obj);
+            return Equals((PublishRabbitMQActivity) obj);
         }
 
         public override int GetHashCode()

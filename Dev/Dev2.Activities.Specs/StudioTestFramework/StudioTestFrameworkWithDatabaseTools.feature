@@ -61,9 +61,6 @@ Scenario: Test WF with MySql
 		When I save
 		And I run the test
 		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "MySqlTestWF" is deleted as cleanup
 
 Scenario: Test WF with Sql Server
 		Given I depend on a valid MSSQL server
@@ -84,9 +81,6 @@ Scenario: Test WF with Sql Server
 		When I save
 		And I run the test
 		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "SqlTestWF" is deleted as cleanup
 
 Scenario: Test WF with Oracle
 		Given I have a workflow "oracleTestWF"
@@ -108,9 +102,6 @@ Scenario: Test WF with Oracle
 		When I save
 		And I run the test
 		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "oracleTestWF" is deleted as cleanup
 		
 Scenario: Test WF with PostGre Sql
 		Given I depend on a valid PostgreSQL server
@@ -121,18 +112,15 @@ Scenario: Test WF with PostGre Sql
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test
-		And a new test is added	
+		And a new test is added
 		And test name starts with "Test 1"
 		And I Add "get_countries" as TestStep
-		And I add StepOutputs as 
+		And I add StepOutputs as
 		| Variable Name             | Condition | Value          |
 		| [[get_countries(1).id]]   | =         | 2              |
 		When I save
 		And I run the test
 		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "PostGreTestWF" is deleted as cleanup
 
 Scenario: Test WF with Decision
 		Given I have a workflow "DecisionTestWF"
@@ -153,9 +141,6 @@ Scenario: Test WF with Decision
 		When I save
 		And I run the test
 		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "DecisionTestWF" is deleted as cleanup
 
 Scenario: Test WF with SqlBulk Insert
 		Given I depend on a valid MSSQL server
@@ -175,7 +160,4 @@ Scenario: Test WF with SqlBulk Insert
 		| [[result]]    | =         | Success |
 		When I save
 		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "SqlBulkTestWF" is deleted as cleanup		
+		Then test result is Passed	

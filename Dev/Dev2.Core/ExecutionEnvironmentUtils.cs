@@ -108,8 +108,7 @@ namespace Dev2
                 var x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
                 if ((x == enDev2ColumnArgumentDirection.Both || x == requestIODirection) && (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult))
                 {
-                        var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
-                        outputObj.Add(objName, eval);
+                    ParseDataItemToOutputs(outputObj, objName, warewolfEvalResult.Item);
                 }
             }
         }
@@ -146,7 +145,8 @@ namespace Dev2
                     var i = 0;
                     foreach (var warewolfAtom in dataItem.Value)
                     {
-                        jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
+                        ParseDataItemToOutputs(jObjForArray, dataItem.Key, warewolfAtom);
+
                         dataItem = CreateDataItem(newArray, dataItem, jObjForArray, i, warewolfAtom);
                         jObjForArray = new JObject();
                         i++;
@@ -164,10 +164,30 @@ namespace Dev2
             else
             {
                 var jToken = newArray[i] as JObject;
-                jToken?.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
+                ParseDataItemToOutputs(jToken, dataItem.Key, warewolfAtom);
             }
 
             return dataItem;
+        }
+
+        static void ParseDataItemToOutputs(JObject jObject, string key, DataStorage.WarewolfAtom warewolfAtom)
+        {
+            if (warewolfAtom is DataStorage.WarewolfAtom.DataString stringResult)
+            {
+                jObject.Add(key, stringResult.Item);
+            }
+            else if (warewolfAtom is DataStorage.WarewolfAtom.Int intResult)
+            {
+                jObject.Add(key, intResult.Item);
+            }
+            else if (warewolfAtom is DataStorage.WarewolfAtom.Float floatResult)
+            {
+                jObject.Add(key, floatResult.Item);
+            }
+            else
+            {
+                jObject.Add(key, warewolfAtom.ToString());
+            }
         }
 
         public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, string dataList, int update) => GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
@@ -207,7 +227,7 @@ namespace Dev2
                 return;
             }
             if (!toLoad.IsJSON())
-            {           
+            {
                 toLoad = toLoad.ToCleanXml();
                 var sXNode = JsonConvert.SerializeXNode(XDocument.Parse(toLoad), Newtonsoft.Json.Formatting.Indented, true);
                 inputObject = JsonConvert.DeserializeObject(sXNode) as JObject;
@@ -346,7 +366,7 @@ namespace Dev2
                     }
                     else
                     {
-                       ContinueLoadingXmlIntoEnvironment(dataObject, inputDefs, update, level, c);
+                        ContinueLoadingXmlIntoEnvironment(dataObject, inputDefs, update, level, c);
                     }
                 }
             }
@@ -583,7 +603,7 @@ namespace Dev2
             var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
             var rs = serviceOutputMapping.RecordSetName;
 
-            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(rs,rsType==enRecordsetIndexType.Star))))
+            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(rs, rsType == enRecordsetIndexType.Star))))
             {
                 if (started)
                 {
@@ -610,7 +630,7 @@ namespace Dev2
             var value = row[serviceOutputMapping.MappedFrom];
             var colDataType = row.Table.Columns[serviceOutputMapping.MappedFrom].DataType;
             if (colDataType.Name == "Byte[]")
-            {                
+            {
                 value = Encoding.UTF8.GetString(value as byte[]);
             }
             if (update != 0)
@@ -642,7 +662,7 @@ namespace Dev2
 
     public class Schema
     {
-        
+
 
         [JsonProperty("type")]
         public string Type { get; set; }

@@ -110,13 +110,11 @@ let rec tryParseAtom (data : string) =
 ///Parse a float. 
 and tryFloatParseAtom (data : string) = 
     let mutable value = 0.0m
-    let mutable valuse = 0.0
+    let mutable values = 0.0
     if data.StartsWith("0") && (not (data.StartsWith("0."))) then DataString data
     else if (data.Contains(".")) then 
-        let success = System.Decimal.TryParse(data, &value) && System.Double.TryParse(data, &valuse)
-        if success then 
-            if (data.EndsWith("0")) && success then DataString data
-            else Float(System.Convert.ToDouble(value))
+        let success = System.Decimal.TryParse(data, &value) && System.Double.TryParse(data, &values)
+        if success then Float(System.Convert.ToDouble(value))
         else DataString data
     else DataString data
 

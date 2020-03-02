@@ -1326,7 +1326,7 @@ namespace Dev2.Activities.Specs.Composition
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
-            Assert.AreEqual(count, children, String.Join(", ", debugStates.Select(val=>val.DisplayName)));
+            Assert.AreEqual(count, children, String.Join(", ", debugStates.Select(val => val.DisplayName)));
         }
 
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" has at least ""(.*)"" nested children")]
@@ -3076,10 +3076,10 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
-        [Given(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
-        [Then(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
-        [When(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
-        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string result)
+        [Given(@"""(.*)"" contains a DsfRabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [Then(@"""(.*)"" contains a DsfRabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [When(@"""(.*)"" contains a DsfRabbitMQPublish ""(.*)"" into ""(.*)""")]
+        public void GivenContainsADsfRabbitMQPublishInto(string parentName, string rabbitMqname, string result)
         {
             var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
             var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
@@ -3091,6 +3091,24 @@ namespace Dev2.Activities.Specs.Composition
                 DisplayName = rabbitMqname,
                 Message = jsonMsg
             };
+            _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
+        }
+
+        [Given(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [Then(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [When(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string correlationID, string result)
+        {
+            var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
+            var dsfPublishRabbitMqActivity = new PublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+              ,
+                Result = result,
+                DisplayName = rabbitMqname,
+                Message = jsonMsg
+            };
+            //dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = correlationID;
             _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
 
@@ -4001,19 +4019,17 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQPublish ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQPublishInto(string parentName, string activityName, string variable)
         {
-            var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
+            var dsfPublishRabbitMqActivity = new PublishRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-                ,
-                Result = variable
-                ,
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Result = variable,
                 DisplayName = activityName
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
         }
 
-        [Given(@"""(.*)"" contains RabbitMQPublish and Queue1 ""(.*)"" into ""(.*)""")]
-        public void GivenContainsRabbitandQueue1MQPublishInto(string parentName, string activityName, string variable)
+        [Given(@"""(.*)"" contains DsfRabbitMQPublish and Queue1 ""(.*)"" into ""(.*)""")]
+        public void GivenContainsDsfRabbitandQueue1MQPublishInto(string parentName, string activityName, string variable)
         {
             var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
             {
@@ -4025,6 +4041,20 @@ namespace Dev2.Activities.Specs.Composition
                 QueueName = "Queue1",
                 Message = "msg"
             };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
+        }
+        [Given(@"""(.*)"" contains RabbitMQPublish and Queue1 - CorrelationID ""(.*)"" into ""(.*)""")]
+        public void GivenContainsRabbitandQueue1MQPublishInto(string parentName, string activityName, string variable)
+        {
+            var dsfPublishRabbitMqActivity = new PublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Result = variable,
+                DisplayName = activityName,
+                QueueName = "Queue1",
+                Message = "msg"
+            };
+           // dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = "CorrelationID";
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
         }
 
@@ -4509,7 +4539,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == resourceId);
-
+            dbSource.ServerName += "," + _containerOps.Container.Port;
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
@@ -4525,8 +4555,6 @@ namespace Dev2.Activities.Specs.Composition
                 Id = dbSource.Id
             };
             var testResults = dbServiceModel.TestService(databaseService);
-
-
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
@@ -5139,7 +5167,7 @@ namespace Dev2.Activities.Specs.Composition
 
         [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type """"(.*)""Decision""(.*)""Hello World"" as")]
         public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeDecisionHelloWorldAs(int expectedCount, string searchString, string auditType, string activityName, string workflowName, Table table)
-        { 
+        {
             //TODO: Fix in new Implementation
             //var results = Dev2StateAuditLogger.Query(item =>
             //(workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
@@ -5159,18 +5187,18 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)"" as")]
         public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string activityName, string auditType, string workflowName, Table table)
         {
-               //TODO: correct with new implementation
-               //Thread.Sleep(1000);
-               //var results = Dev2StateAuditLogger.Query(item =>
-               //   (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
-               //   (auditType == "" || item.AuditType.Equals(auditType)) &&
-               //   (activityName == "" || (
-               //       (item.NextActivity != null && item.NextActivity.Contains(activityName)) ||
-               //       (item.NextActivityType != null && item.NextActivityType.Contains(activityName)) ||
-               //       (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
-               //       (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
-               //   ))
-               //);
+            //TODO: correct with new implementation
+            //Thread.Sleep(1000);
+            //var results = Dev2StateAuditLogger.Query(item =>
+            //   (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+            //   (auditType == "" || item.AuditType.Equals(auditType)) &&
+            //   (activityName == "" || (
+            //       (item.NextActivity != null && item.NextActivity.Contains(activityName)) ||
+            //       (item.NextActivityType != null && item.NextActivityType.Contains(activityName)) ||
+            //       (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
+            //       (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
+            //   ))
+            //);
             //   Assert.AreEqual(expectedCount, results.Count(), string.Join(" ", results.Select(entry => entry.WorkflowName + " " + entry.AuditDate + " " + entry.AdditionalDetail).ToList()));
 
             //if (results.Any() && table.Rows.Count > 0)
