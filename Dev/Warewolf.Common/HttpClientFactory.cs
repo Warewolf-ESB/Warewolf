@@ -12,19 +12,20 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using Warewolf.Data;
 using Warewolf.Web;
 
 namespace Warewolf.Common
 {
     public interface IHttpClientFactory
     {
-        IHttpClient New(Uri uri, string userName, string password,string customTransactionID);
-        IHttpClient New(string url, string userName, string password,string customTransactionID);
+        IHttpClient New(Uri uri, string userName, string password, Headers headers);
+        IHttpClient New(string url, string userName, string password, Headers headers);
     }
 
     public class HttpClientFactory : IHttpClientFactory
     {
-        public IHttpClient New(Uri uri, string userName, string password,string customTransactionID)
+        public IHttpClient New(Uri uri, string userName, string password, Headers headers)
         {
             var baseAddress = uri.GetLeftPart(UriPartial.Authority);
             var httpClientHandler = new HttpClientHandler();
@@ -48,21 +49,21 @@ namespace Warewolf.Common
                 credential.Password = password;
 
                 httpClientHandler.Credentials = credential;
-                
+
                 hasCredentials = true;
             }
             var client = new HttpClient(httpClientHandler)
             {
                 BaseAddress = new Uri(baseAddress)
             };
-            client.DefaultRequestHeaders.Add("CustomTransactionID", customTransactionID);
+            client.DefaultRequestHeaders.Add("CustomTransactionID", headers.CustomTransactionID);
+            client.DefaultRequestHeaders.Add("ExecutionID", headers.ExecutionID.ToString());
             return new HttpClientWrapper(client, hasCredentials);
         }
 
-        public IHttpClient New(string url, string userName, string password, string customTransactionID)
+        public IHttpClient New(string url, string userName, string password, Headers headers)
         {
-            return New(new Uri(url), userName, password, customTransactionID);
+            return New(new Uri(url), userName, password, headers);
         }
-        
     }
 }
