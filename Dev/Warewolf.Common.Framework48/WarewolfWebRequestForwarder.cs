@@ -46,11 +46,11 @@ namespace Warewolf.Common
             _mapEntireMessage = mapEntireMessage;
         }
 
-        public async Task<ConsumerResult> Consume(byte[] body,string customTransactionID)
+        public async Task<ConsumerResult> Consume(byte[] body, Headers headers)
         {
             var postBody = BuildPostBody(body); 
 
-            using (var execution = await SendEventToWarewolf(_url, postBody,customTransactionID))
+            using (var execution = await SendEventToWarewolf(_url, postBody, headers))
             {
                 if (!execution.IsSuccessStatusCode)
                 {
@@ -69,12 +69,12 @@ namespace Warewolf.Common
             return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, string customTransactionID)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, Headers headers)
         {
-            using (var client = _httpClientFactory.New(uri, _username, _password,customTransactionID))
+            using (var client = _httpClientFactory.New(uri, _username, _password, headers))
             {
                 return await client.PostAsync(uri,postData);
             }
         }
-    }
+    }    
 }
