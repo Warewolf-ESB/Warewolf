@@ -259,7 +259,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
 
-                if (dsfDataObject.Settings.EnableDetailedLogging)
+                if (dsfDataObject.Settings.EnableDetailedLogging && !dsfDataObject.StopExecution)
                 {
                     _stateNotifier.LogExecuteCompleteState(lastActivity);
                 }
@@ -316,7 +316,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (dsfDataObject.Settings.EnableDetailedLogging)
                     {
-                        _stateNotifier.LogStopExecutionState(next);
+                        _stateNotifier.LogStopExecutionState(lastActivity);
                     }
 
                     dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());

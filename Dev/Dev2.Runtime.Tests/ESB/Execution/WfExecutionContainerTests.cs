@@ -215,7 +215,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             mockExecutionEnvironment.Verify(o => o.Eval(It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
             mockExecutionEnvironment.Verify(o => o.FetchErrors(), Times.Exactly(1));
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()), Times.Exactly(1));
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
         }
 
 
