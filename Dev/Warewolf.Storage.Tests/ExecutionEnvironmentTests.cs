@@ -469,7 +469,14 @@ namespace Warewolf.Storage.Tests
             var list = _environment.EvalAsList("[[@Obj]]", 0).ToArray();
 
             Assert.AreEqual(1, list.Length);
-            Assert.AreEqual("{" + Environment.NewLine + "  \"Name\": \"Bob\"" + Environment.NewLine + "}", (list[0] as DataStorage.WarewolfAtom.DataString).Item);
+            if (list[0] is DataStorage.WarewolfAtom.JsonObject firstItem)
+            {
+                Assert.AreEqual("Bob", firstItem.Item["Name"]);
+            }
+            else
+            {
+                Assert.Fail("expected JsonObject");
+            }
         }
 
         [TestMethod]
@@ -1569,7 +1576,14 @@ namespace Warewolf.Storage.Tests
             var resultItem = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
 
             Assert.IsNotNull(resultItem);
-            Assert.AreEqual("Bob", (resultItem as DataStorage.WarewolfAtom.DataString).Item);
+            if (resultItem is DataStorage.WarewolfAtom.JsonObject firstItem)
+            {
+                Assert.AreEqual("Bob", firstItem.Item);
+            }
+            else
+            {
+                Assert.Fail("expected JsonObject");
+            }
         }
 
         [TestMethod]
