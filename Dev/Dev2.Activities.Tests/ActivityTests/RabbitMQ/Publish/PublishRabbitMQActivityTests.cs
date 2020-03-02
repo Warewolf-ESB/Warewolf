@@ -75,7 +75,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.QueueDeclare(queueName, false, false, false, null));
-            channel.Setup(c => c.BasicPublish(string.Empty, queueName, null, body));
+            channel.Setup(c => c.BasicPublish(string.Empty, queueName, It.IsAny<bool>(), null, body));
             channel.Setup(c => c.CreateBasicProperties()).Returns(mockBasicProperties.Object);
 
             var publishRabbitMQActivity =
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
                 c => c.QueueDeclare(It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(),
                     It.IsAny<IDictionary<string, object>>()), Times.Once);
             channel.Verify(
-                c => c.BasicPublish(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<IBasicProperties>(),
+                c => c.BasicPublish(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<IBasicProperties>(),
                     It.IsAny<byte[]>()), Times.Once);
             Assert.AreEqual(result[0], "Success");
             Assert.IsTrue(mockBasicProperties.Object.Persistent);
