@@ -30,15 +30,17 @@ using Warewolf.Data.Options;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809",
+        "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml",
+        "Tool_Utility_Rabbit_MQ_Publish")]
     public class PublishRabbitMQActivity : DsfBaseActivity, IEquatable<PublishRabbitMQActivity>
     {
         public PublishRabbitMQActivity()
-            : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance,new ConnectionFactory())
+            : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ConnectionFactory())
         {
         }
 
-        public PublishRabbitMQActivity(IResourceCatalog resourceCatalog,ConnectionFactory connectionFactory)
+        public PublishRabbitMQActivity(IResourceCatalog resourceCatalog, ConnectionFactory connectionFactory)
         {
             ResourceCatalog = resourceCatalog;
             ConnectionFactory = connectionFactory;
@@ -51,26 +53,18 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         public Guid RabbitMQSourceResourceId { get; set; }
         public RabbitMqPublishOptions BasicProperties { get; set; }
-        
-        [Inputs("Queue Name")] 
-        [FindMissing] 
-        public string QueueName { get; set; }
 
-        [FindMissing] 
-        public bool IsDurable { get; set; }
+        [Inputs("Queue Name")] [FindMissing] public string QueueName { get; set; }
 
-        [FindMissing] 
-        public bool IsExclusive { get; set; }
+        [FindMissing] public bool IsDurable { get; set; }
 
-        [FindMissing] 
-        public bool IsAutoDelete { get; set; }
+        [FindMissing] public bool IsExclusive { get; set; }
 
-        [Inputs("Message")] 
-        [FindMissing] 
-        public string Message { get; set; }
+        [FindMissing] public bool IsAutoDelete { get; set; }
 
-        [NonSerialized] 
-        ConnectionFactory _connectionFactory;
+        [Inputs("Message")] [FindMissing] public string Message { get; set; }
+
+        [NonSerialized] ConnectionFactory _connectionFactory;
 
         internal ConnectionFactory ConnectionFactory
         {
@@ -158,14 +152,17 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             try
             {
-                var CorrelationID = "";
-                RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
+                var CorrelationID = GetCorrelationID();
+                RabbitMQSource =
+                    ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID,
+                        RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
                     return new List<string> {ErrorResource.RabbitSourceHasBeenDeleted};
                 }
 
-                if (!evaluatedValues.TryGetValue("QueueName", out string queueName) || !evaluatedValues.TryGetValue("Message", out string message))
+                if (!evaluatedValues.TryGetValue("QueueName", out string queueName) ||
+                    !evaluatedValues.TryGetValue("Message", out string message))
                 {
                     return new List<string> {ErrorResource.RabbitQueueNameAndMessageRequired};
                 }
@@ -186,43 +183,13 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
-                        if (BasicProperties.AutoCorrelation is Manual properties)
-                        {
-                            basicProperties.CorrelationId = properties.CorrelationID;
-                            CorrelationID = properties.CorrelationID;
-                        }
-                        else
-                        {
-                            if (BasicProperties.AutoCorrelation is Auto autoProperties)
-                            {
-                                switch (autoProperties.AutoCorrelation)
-                                {
-                                    case AutoCorrelationAction.ExecutionID:
-                                        basicProperties.CorrelationId = DataObject.ExecutionID.ToString();
-                                        break;
-                                    case AutoCorrelationAction.CustomTransactionID:
-                                        basicProperties.CorrelationId = DataObject.CustomTransactionID;
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                if (DataObject.CustomTransactionID.Length > 0)
-                                {
-                                    basicProperties.CorrelationId = DataObject.CustomTransactionID;
-                                }
-                                else
-                                {
-                                    basicProperties.CorrelationId = DataObject.ExecutionID.ToString();
-                                }
-                            }
-                            CorrelationID = basicProperties.CorrelationId;
-                        }
+                        basicProperties.CorrelationId = CorrelationID;
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
 
-                Dev2Logger.Debug($"Message published to queue {queueName} CorrelationId: {CorrelationID} ", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Message published to queue {queueName} CorrelationId: {CorrelationID} ",
+                    GlobalConstants.WarewolfDebug);
                 return new List<string> {"Success"};
             }
             catch (Exception ex)
@@ -232,6 +199,34 @@ namespace Dev2.Activities.RabbitMQ.Publish
             }
         }
 
+        public string GetCorrelationID()
+        {
+            if (BasicProperties.AutoCorrelation is Manual properties)
+            {
+                return properties.CorrelationID.ToString();
+            }
+            else
+            {
+                if (BasicProperties.AutoCorrelation is CustomTransactionID)
+                {
+                    return DataObject.CustomTransactionID;
+                }
+
+                if (BasicProperties.AutoCorrelation is ExecutionID)
+                {
+                    return DataObject.ExecutionID.ToString();
+                }
+
+                if (DataObject.CustomTransactionID.Length > 0)
+                {
+                    return DataObject.CustomTransactionID;
+                }
+                else
+                {
+                    return DataObject.ExecutionID.ToString();
+                }
+            }
+        }
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(PublishRabbitMQActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
