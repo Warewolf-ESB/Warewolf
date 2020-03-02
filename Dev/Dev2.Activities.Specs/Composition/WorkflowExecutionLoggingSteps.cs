@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
@@ -30,6 +31,8 @@ using System.Linq;
 using System.Security.Principal;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -41,6 +44,9 @@ namespace Dev2.Activities.Specs.Composition
         private const int EXPECTED_NUMBER_OF_RESOURCES = 108;
         private static IResourceModel _resourceModel;
         private ScenarioContext _scenarioContext;
+        private IPrincipal _principal;
+        private IExecutionEnvironment _environment;
+        private WarewolfPerformanceCounterManager _performanceCounterLocater;
 
         [BeforeFeature()]
         private static void Setup()
@@ -52,6 +58,9 @@ namespace Dev2.Activities.Specs.Composition
         public WorkflowExecutionLoggingSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
+            _principal = BuildPrincipal();
+            _environment = BuildExecutionEnvironmet();
+            _performanceCounterLocater = BuildPerfomanceCounter();
         }
 
         private static void ConnectAndLoadServer()
@@ -79,25 +88,30 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"an existing workflow ""(.*)""")]
         public void GivenAnExistingWorkflow(string wfName)
         {
-            var workflow = _environmentModel.ResourceRepository.FindSingle(o => o.ResourceName == wfName);
+            var workflow = GetWorkflow(wfName);
             _scenarioContext.Add(wfName, workflow);
-            
-            Assert.IsNotNull(workflow, workflow +" was not found.");
+
+            Assert.IsNotNull(workflow, workflow + " was not found.");
+        }
+
+        private static IResourceModel GetWorkflow(string wfName)
+        {
+            return _environmentModel.ResourceRepository.FindSingle(o => o.ResourceName == wfName);
         }
 
         [Given(@"""(.*)"" stop on error is set to ""(.*)""")]
         public void GivenStopOnErrorIsSetTo(string wfName, bool stopOnError)
         {
-            /*var workflow = _scenarioContext.Get<IResourceModel>(wfName);
+            var workflow = GetWorkflow(wfName);
             var mockStateNotifier = new Mock<IStateNotifier>();
 
-            var principal = BuildPrincipal();
-            var dataObject = BuildDataObject(workflow, principal, mockStateNotifier.Object, stopOnError);
-            if(stopOnError)
+            var dataObject = BuildDataObject(workflow, _principal, mockStateNotifier.Object, _environment, stopOnError);
+            _scenarioContext.Add("dataObject", dataObject);
+
+            if (stopOnError)
             {
                 dataObject.Environment.AddError("False error from spec");
             }
-            _scenarioContext.Add(nameof(dataObject), dataObject);*/
 
         }
 
@@ -113,7 +127,7 @@ namespace Dev2.Activities.Specs.Composition
             Given(@"an existing workflow ""Hello World""");
             When(@"a ""Hello World"" workflow request is received");
 
-            var table = new Table("nodeType", "displayName");
+            var table = new Table("key", "value");
             table.AddRow("DsfDecision", "If [[Name]] <> (Not Equal)");
 
             Then(@"a detailed entry log is created", table);
@@ -122,27 +136,27 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"a workflow stops on error has no logs")]
         public void GivenAWorkflowStopsOnErrorHasNoLogs()
         {
-            ScenarioContext.Current.Pending();
+            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+            var resource = _scenarioContext.Get<DsfDecision>("resource");
+
+            mockStateNotifier.Verify(o => o.LogStopExecutionState(resource), Times.Never);
         }
 
         [When(@"a ""(.*)"" workflow request is received")]
         public void WhenAWorkflowRequestIsReceived(string wfName)
         {
             var workflow = _scenarioContext.Get<IResourceModel>(wfName);
+            var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
+
             var mockStateNotifier = new Mock<IStateNotifier>();
             _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
-
-            var principal = BuildPrincipal();
-            var dataObject = BuildDataObject(workflow, principal, mockStateNotifier.Object, false);
-            _scenarioContext.Add("dataObject", dataObject);
 
             var mockExecutionManager = new Mock<IExecutionManager>();
             var executionManager = mockExecutionManager.Object;
 
             var esbServicesEndpoint = new EsbServicesEndpoint();
-            var performanceCounterLocater = BuildPerfomanceCounter();
 
-            CustomContainer.Register<IWarewolfPerformanceCounterLocater>(performanceCounterLocater);
+            CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounterLocater);
             CustomContainer.Register<IExecutionManager>(executionManager);
             var mockLogManager = new Mock<ILogManager>();
             mockLogManager.Setup(o => o.CreateStateNotifier(dataObject)).Returns(mockStateNotifier.Object);
@@ -182,7 +196,7 @@ namespace Dev2.Activities.Specs.Composition
             return mockPrincipal.Object;
         }
 
-        private static DsfDataObject BuildDataObject(IResourceModel workflow, IPrincipal principal, IStateNotifier stateNotifier, bool stopOnError)
+        private static DsfDataObject BuildDataObject(IResourceModel workflow, IPrincipal principal, IStateNotifier stateNotifier, IExecutionEnvironment environment, bool stopOnError)
         {
             return new DsfDataObject("", Guid.NewGuid())
             {
@@ -194,7 +208,8 @@ namespace Dev2.Activities.Specs.Composition
                 IsDebug = false,
                 StopExecution = stopOnError,
                 RunWorkflowAsync = true,
-                StateNotifier = stateNotifier,
+                StateNotifier = null,
+                Environment = environment,
                 Settings = new Dev2WorkflowSettingsTO
                 {
                     EnableDetailedLogging = true,
@@ -205,33 +220,41 @@ namespace Dev2.Activities.Specs.Composition
             };
         }
 
+        private static ExecutionEnvironment BuildExecutionEnvironmet()
+        {
+            var env = new ExecutionEnvironment();
+            env.Assign("[[Name]]", "", 0);
+            env.Assign("[[servicename]]", @"Hello World.json", 0);
+            return env;
+        }
+
         [Then(@"a detailed entry log is created")]
         public void ThenADetailedLogEntryIsCreated(Table table)
         {
             var nodeTable = table.CreateSet<NodeLogTable>().ToList();
 
-            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
-            var mockExecutionManager = _scenarioContext.Get<Mock<IExecutionManager>>("mockExecutionManager");
             var dataObject = _scenarioContext.Get<IDSFDataObject>("dataObject");
-            IDev2Activity resource = GetWFsFirstNode(dataObject);
+            IDev2Activity resource = (DsfDecision)GetWFsFirstNode(dataObject);
 
             var displayName = resource.GetDisplayName();
-            var nextNode = resource.GetNextNodes().ToList()[0];
             var nodeType = resource.GetType();
             _scenarioContext.Add(nameof(resource), resource);
 
-            Assert.AreEqual(nodeTable[0].NodeType, nodeType.Name);
-            Assert.AreEqual(nodeTable[0].DisplayName, displayName.Trim());
+            Assert.AreEqual(nodeTable[0].Key, nodeType.Name);
+            Assert.AreEqual(nodeTable[0].Value, displayName.Trim());
 
-            //TODO: These should pass
-            //mockStateNotifier.Verify(o => o.LogExecutionInputs(), Times.Once); //TODO: Suggest we add LogExecutionInputs with parameters might be string or json 
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(resource), Times.Once); //TODO: this should pass
-            //mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), dataObject.ExecutionID.ToString()), Times.Once);
-            //mockStateNotifier.Verify(o => o.LogExecutionOutputs(), Times.Once); //TODO: Suggest we add LogExecutionOutputs with parameters might be string or json 
-            //mockStateNotifier.Verify(o => o.LogPostExecuteState(resource, nextNode), Times.Once);
-            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(resource), Times.Once); //TODO: this should pass
+        }
 
-            mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
+        [Then(@"it has these input parameter values")]
+        public void ThenItHasTheseInputParameterValues(Table table)
+        {
+            var nodeTable = table.CreateSet<NodeLogTable>().ToList();
+
+            var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
+            var acctualInput = Eval(dataObject, "[[Name]]");
+
+            Assert.AreEqual(nodeTable[0].Key, "[[Name]]");
+            Assert.AreEqual(nodeTable[0].Value, acctualInput);
         }
 
         private static IDev2Activity GetWFsFirstNode(IDSFDataObject dataObject)
@@ -239,35 +262,61 @@ namespace Dev2.Activities.Specs.Composition
             return new ResourceCatalog().Parse(dataObject.WorkspaceID, dataObject.ResourceID, dataObject.ExecutionID.ToString());
         }
 
-        [Then(@"it has these input parameter values")]
-        public void ThenItHasTheseInputParameterValues(Table table)
-        {
-            var inputTable = table.CreateSet<InputTable>().ToList();
-
-            var dataObject = _scenarioContext.Get<IDSFDataObject>("dataObject");
-
-            var dataListTO = new DataListTO(dataObject.DataList.ToString());
-
-            //alteration of this list to be assert to the incoming table
-            Assert.IsNotNull(dataListTO.Inputs[0]);
-        }
-
         [Then(@"a detailed execution completed log entry is created")]
         public void ThenADetailedExecutionCompletedLogEntryIsCreated(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var nodeTable = table.CreateSet<NodeLogTable>().ToList();
+
+            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+            var resource = _scenarioContext.Get<DsfDecision>("resource");
+            var lastExecutedNode = resource.GetNextNodes().ToList()[0];
+            var lastNodeType = lastExecutedNode.GetType();
+
+            Assert.AreEqual(nodeTable[0].Key, lastNodeType.Name);
+            Assert.AreEqual(nodeTable[0].Value, lastExecutedNode.GetDisplayName().Trim());
+
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(lastExecutedNode), Times.Once);
         }
 
         [Then(@"it has these output parameter values")]
         public void ThenItHasTheseOutputParameterValues(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var nodeTable = table.CreateSet<NodeLogTable>().ToList();
+
+            var resource = _scenarioContext.Get<DsfDecision>("resource");
+            var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
+            var lastNode = resource.GetNextNodes().ToList()[0].GetOutputs();
+            var messageVariable = lastNode[0];
+            string actual = Eval(dataObject, messageVariable);
+
+            Assert.AreEqual(nodeTable[0].Key, messageVariable);
+            Assert.AreEqual(nodeTable[0].Value, actual);
+
+        }
+
+        private static string Eval(DsfDataObject dataObject, string messageVariable)
+        {
+            var warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(messageVariable), 0, true);
+
+            var atomResult = (warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
+            var actual = (atomResult as DataStorage.WarewolfAtom.DataString).Item;
+            return actual;
         }
 
         [When(@"a workflow stops on error")]
         public void WhenAWorkflowStopsOnError()
         {
-            ScenarioContext.Current.Pending();
+            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+            var resource = _scenarioContext.Get<DsfDecision>("resource");
+
+            mockStateNotifier.Verify(o => o.LogStopExecutionState(resource), Times.Once);
+        }
+
+        [Then(@"execution is complete")]
+        public void ThenExecutionIsComplete()
+        {
+            var mockExecutionManager = _scenarioContext.Get<Mock<IExecutionManager>>("mockExecutionManager");
+            mockExecutionManager.Verify(o => o.CompleteExecution());
         }
 
         [Then(@"a detailed on error log entry is created")]
@@ -303,8 +352,8 @@ namespace Dev2.Activities.Specs.Composition
 
     internal class NodeLogTable
     {
-        public string DisplayName { get; set; }
+        public string Value { get; set; }
 
-        public string NodeType { get; set; }
+        public string Key { get; set; }
     }
 }
