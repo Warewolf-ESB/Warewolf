@@ -204,7 +204,7 @@ namespace Dev2.Runtime.ESB.Execution
         readonly IExecutionManager _executionManager;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, theWorkspace, esbChannel, CustomContainer.Get<IExecutionManager>(), LogManager.Instance)
+            : this(sa, dataObj, theWorkspace, esbChannel, CustomContainer.Get<IExecutionManager>(), CustomContainer.Get<ILogManager>())
         {
         }
 

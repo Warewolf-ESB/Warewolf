@@ -144,6 +144,9 @@ namespace Dev2.Activities.Specs.Composition
 
             CustomContainer.Register<IWarewolfPerformanceCounterLocater>(performanceCounterLocater);
             CustomContainer.Register<IExecutionManager>(executionManager);
+            var mockLogManager = new Mock<ILogManager>();
+            mockLogManager.Setup(o => o.CreateStateNotifier(dataObject)).Returns(mockStateNotifier.Object);
+            CustomContainer.Register<ILogManager>(mockLogManager.Object);
 
             var workspaceId = Guid.NewGuid();
             var request = new EsbExecuteRequest();
@@ -152,8 +155,6 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resultId);
 
             _scenarioContext.Add(nameof(mockExecutionManager), mockExecutionManager);
-           
-            mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
         }
 
         private WarewolfPerformanceCounterManager BuildPerfomanceCounter()
@@ -212,8 +213,8 @@ namespace Dev2.Activities.Specs.Composition
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
             var mockExecutionManager = _scenarioContext.Get<Mock<IExecutionManager>>("mockExecutionManager");
             var dataObject = _scenarioContext.Get<IDSFDataObject>("dataObject");
+            IDev2Activity resource = GetWFsFirstNode(dataObject);
 
-            var resource = new ResourceCatalog().Parse(dataObject.WorkspaceID, dataObject.ResourceID, dataObject.ExecutionID.ToString());
             var displayName = resource.GetDisplayName();
             var nextNode = resource.GetNextNodes().ToList()[0];
             var nodeType = resource.GetType();
@@ -221,15 +222,21 @@ namespace Dev2.Activities.Specs.Composition
 
             Assert.AreEqual(nodeTable[0].NodeType, nodeType.Name);
             Assert.AreEqual(nodeTable[0].DisplayName, displayName.Trim());
-            
+
             //TODO: These should pass
             //mockStateNotifier.Verify(o => o.LogExecutionInputs(), Times.Once); //TODO: Suggest we add LogExecutionInputs with parameters might be string or json 
-            //mockStateNotifier.Verify(o => o.LogPreExecuteState(resource), Times.Once); //TODO: this should pass
+            mockStateNotifier.Verify(o => o.LogPreExecuteState(resource), Times.Once); //TODO: this should pass
             //mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<object>(), dataObject.ExecutionID.ToString()), Times.Once);
             //mockStateNotifier.Verify(o => o.LogExecutionOutputs(), Times.Once); //TODO: Suggest we add LogExecutionOutputs with parameters might be string or json 
             //mockStateNotifier.Verify(o => o.LogPostExecuteState(resource, nextNode), Times.Once);
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(resource), Times.Once); //TODO: this should pass
 
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
+        }
+
+        private static IDev2Activity GetWFsFirstNode(IDSFDataObject dataObject)
+        {
+            return new ResourceCatalog().Parse(dataObject.WorkspaceID, dataObject.ResourceID, dataObject.ExecutionID.ToString());
         }
 
         [Then(@"it has these input parameter values")]
