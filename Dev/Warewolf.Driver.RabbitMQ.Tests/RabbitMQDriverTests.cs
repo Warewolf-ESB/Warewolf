@@ -40,7 +40,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst();
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(new Depends(Depends.ContainerType.RabbitMQ));
             var queueName = TestQueueNameGenerator.GetName;
 
             var testConsumer = new TestConsumer();
@@ -76,11 +76,10 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [Depends(Depends.ContainerType.RabbitMQ)]
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst();
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(new Depends(Depends.ContainerType.RabbitMQ));
             var queueName = TestQueueNameGenerator.GetName;
 
             var config = new RabbitConfig
@@ -99,7 +98,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
                 var publisher = connection.NewPublisher(config);
                 publisher.Publish(data);
             
-                using (var testPublishSuccess = new TestPublishSuccess(TODO))
+                using (var testPublishSuccess = new TestPublishSuccess(new Depends(Depends.ContainerType.RabbitMQ)))
                 {
                     var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
                     //------------------------Assert----------------------
