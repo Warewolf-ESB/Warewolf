@@ -21,7 +21,6 @@ using Dev2.Runtime;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -42,11 +41,12 @@ namespace Dev2.Activities.Specs.Composition
         //Start: TODO: Move this to WorkflowExecutionLoggingHooks
         private static IServer _environmentModel;
         private const int EXPECTED_NUMBER_OF_RESOURCES = 108;
-        private static IResourceModel _resourceModel;
         private ScenarioContext _scenarioContext;
         private IPrincipal _principal;
         private IExecutionEnvironment _environment;
         private WarewolfPerformanceCounterManager _performanceCounterLocater;
+        private bool _expectException;
+        private readonly Exception _falseException = new Exception("False exception from WorkflowExecutionLoggingSteps");
 
         [BeforeFeature()]
         private static void Setup()
@@ -147,9 +147,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var workflow = _scenarioContext.Get<IResourceModel>(wfName);
             var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
-
-            var mockStateNotifier = new Mock<IStateNotifier>();
-            _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
+            var mockStateNotifier = SetupMockStateNotifier();
 
             var mockExecutionManager = new Mock<IExecutionManager>();
             var executionManager = mockExecutionManager.Object;
@@ -169,6 +167,18 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resultId);
 
             _scenarioContext.Add(nameof(mockExecutionManager), mockExecutionManager);
+        }
+
+        private Mock<IStateNotifier> SetupMockStateNotifier()
+        {
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            if (_expectException)
+            {
+                mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Throws(_falseException);
+            }
+            _expectException = false;
+            _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
+            return mockStateNotifier;
         }
 
         private WarewolfPerformanceCounterManager BuildPerfomanceCounter()
@@ -325,29 +335,37 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"the workflow is expected to throw exception")]
+        public void GivenTheWorkflowIsExpectedToThrowException()
+        {
+            _expectException = true; 
+        }
+
         [When(@"a workflow execution has an exception")]
         public void WhenAWorkflowExecutionHasAnException()
         {
-            ScenarioContext.Current.Pending();
+            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+
+            mockStateNotifier.Verify(o => o.LogExecuteException(_falseException, null));
         }
 
         [Then(@"a detailed execution exception log entry is created")]
         public void ThenADetailedExecutionExceptionLogEntryIsCreated(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var nodeTable = table.CreateSet<NodeLogTable>().ToList();
+
+            Assert.AreEqual(nodeTable[0].Key, _falseException.GetType().Name);
+            Assert.AreEqual(nodeTable[0].Value, _falseException.Message);
         }
 
-        [Then(@"a detailed execution completed log entry is has no logs")]
-        public void ThenADetailedExecutionCompletedLogEntryIsHasNoLogs()
+        [Then(@"a detailed execution completed log entry will have no logs")]
+        public void ThenADetailedExecutionCompletedLogEntryWillHaveNoLogs()
         {
-            ScenarioContext.Current.Pending();
+            var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
         }
 
-    }
-
-    internal class InputTable
-    {
-        public string Variable { get; internal set; }
     }
 
     internal class NodeLogTable

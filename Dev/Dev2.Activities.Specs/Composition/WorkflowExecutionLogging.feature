@@ -36,10 +36,13 @@ Scenario: Workflow execution completed detailed logs
 
 Scenario: Workflow execution failure detailed logs
     Given "Hello World" stop on error is set to "false"
+    And the workflow is expected to throw exception
     And workflow execution entry point detailed logs are created and logged
     And a workflow stops on error has no logs
     When a workflow execution has an exception
     Then a detailed execution exception log entry is created
-    | one     | two     | three   |
-    | value 1 | value 2 | value 3 |
-    And a detailed execution completed log entry is has no logs
+    | key       | value                                               |
+    | Exception | False exception from WorkflowExecutionLoggingSteps  |
+    And a detailed execution completed log entry will have no logs
+    And execution is complete
+
