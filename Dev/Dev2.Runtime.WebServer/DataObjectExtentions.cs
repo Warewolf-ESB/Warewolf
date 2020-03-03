@@ -130,6 +130,10 @@ namespace Dev2.Runtime.WebServer
                 {
                     dataObject.ExecutionID = Guid.Parse(executionID);
                 }
+                else
+                {
+                    dataObject.ExecutionID = Guid.NewGuid();
+                }
             }
         }
         public static void SetupForWebDebug(this IDSFDataObject dataObject, WebRequestTO webRequest)

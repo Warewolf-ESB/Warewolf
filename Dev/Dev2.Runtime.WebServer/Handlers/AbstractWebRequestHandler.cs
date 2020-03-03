@@ -131,12 +131,12 @@ namespace Dev2.Runtime.WebServer.Handlers
             internal void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IResource resource)
             {
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
+                _dataObject.SetHeaders(headers);
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
                 _dataObject.SetEmitionType(webRequest, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
-                _dataObject.SetHeaders(headers);
                 if (_dataObject.ServiceName == null)
                 {
                     _dataObject.ServiceName = serviceName;
@@ -478,8 +478,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     IsFromWebServer = true,
                     ExecutingUser = user,
                     ServiceName = serviceName,
-                    WorkspaceID = workspaceGuid,
-                    ExecutionID = Guid.NewGuid(),
+                    WorkspaceID = workspaceGuid
                 };
         }
     }
