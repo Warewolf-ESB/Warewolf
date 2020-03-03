@@ -99,7 +99,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
                 var publisher = connection.NewPublisher(config);
                 publisher.Publish(data);
             
-                using (var testPublishSuccess = new TestPublishSuccess())
+                using (var testPublishSuccess = new TestPublishSuccess(TODO))
                 {
                     var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
                     //------------------------Assert----------------------
@@ -121,9 +121,9 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             private IConnection _connection;
             private IModel _channel;
 
-            public TestPublishSuccess()
+            public TestPublishSuccess(Depends dependency)
             {
-                _factory = new ConnectionFactory() { HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ), UserName = "test", Password = "test" };
+                _factory = new ConnectionFactory() { HostName = dependency.Container.IP, UserName = "test", Password = "test" };
             }
 
             private IConnection NewConnection()
