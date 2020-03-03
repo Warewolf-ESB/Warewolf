@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
             var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
@@ -107,7 +107,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
             var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
@@ -146,11 +146,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
             var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
@@ -189,7 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
             var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
             var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
@@ -228,12 +227,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         }
         
-        static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
+        static void TestAnonymousAuth(Depends dependency, out string key, out string hostName, out string password, out int port)
         {
             key = "key" + Guid.NewGuid();
-            hostName = Depends.GetAddress(Depends.ContainerType.Redis);
+            hostName = dependency.Container.IP;
             password = "";
-            port = 6380;
+            port = int.Parse(dependency.Container.Port);
         }
 
         private static void GenerateSUTInstance(string key, string hostName, int port, string password, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)

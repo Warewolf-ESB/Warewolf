@@ -10,10 +10,9 @@ using Newtonsoft.Json;
 
 namespace Warewolf.UnitTestAttributes
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
     public class Depends : Attribute, IDisposable
     {
-        static readonly List<string> RigOpsHosts =  new List<string>
+        public static readonly List<string> RigOpsHosts =  new List<string>
         {
             "RSAKLFSVRHST1.premier.local",
             "RSAKLFWYNAND.premier.local",
@@ -70,44 +69,6 @@ namespace Warewolf.UnitTestAttributes
             }
 
             throw new ArgumentOutOfRangeException();
-        }
-
-        public static string GetAddress(ContainerType containerType)
-        {
-            if (EnableDocker)
-            {
-                if (containerType == ContainerType.CIRemote)
-                {
-                    return RigOpsHosts.FirstOrDefault() + ":3144";
-                }
-                else
-                {
-                    return RigOpsHosts.FirstOrDefault();
-                }
-            }
-            else
-            {
-                if (containerType == ContainerType.CIRemote)
-                {
-                    return BackupCIRemoteServer + ":" + BackupCIRemotePort;
-                }
-                else
-                {
-                    return BackupServer;
-                }
-            }
-        }
-
-        public static string GetPort(ContainerType containerType)
-        {
-            if (EnableDocker && containerType == ContainerType.CIRemote)
-            {
-                return "3144";
-            }
-            else
-            {
-                return GetBackupPort(containerType);
-            }
         }
 
         public Container Container;

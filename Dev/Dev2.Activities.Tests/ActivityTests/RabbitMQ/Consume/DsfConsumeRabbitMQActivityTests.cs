@@ -928,8 +928,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new RabbitMQSource
             {
-                HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ),
-                Port = 5672,
+                HostName = dependency.Container.IP,
+                Port = dependency.Container.Port,
                 UserName = "test",
                 Password = "test"
             };
