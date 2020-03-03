@@ -15,7 +15,7 @@ let distinctValues (recset:WarewolfRecordset) (columnName:string) (positions:int
 
 /// asign a listof values to a column
 let assignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) (update:int) (startPositions:Map<string,int>) =
-    let parsed = EvaluationFunctions.parseLanguageExpression exp update
+    let parsed = EvaluationFunctions.parseLanguageExpression exp update ShouldTypeCast.Yes
     let data = List.ofSeq datas
     let mutable env = oldenv
     match parsed with 
@@ -51,12 +51,12 @@ let evalDistinct (env:WarewolfEnvironment) (cols:string seq) (distictcols:string
     let EvalDistinctValuesFromExp  (indexes: int seq)  (recset: RecordSetColumnIdentifier) =
          distinctValues env.RecordSets.[recset.Name] recset.Column indexes      
     let baseexps = Seq.map (evalToExpression env update) cols 
-    let inter = baseexps|> Seq.map (fun a -> parseLanguageExpression a update) |> Seq.map ToRecset
+    let inter = baseexps|> Seq.map (fun a -> parseLanguageExpression a update ShouldTypeCast.Yes) |> Seq.map ToRecset
     let resultsIds = Map.map (fun (_:string) (b:WarewolfRecordset) -> b.Count:int) env.RecordSets
 
     if 1= (Seq.distinctBy (fun (a:RecordSetColumnIdentifier) -> a.Name.GetHashCode()) inter |> Seq.length) then
         let cols = inter|> Seq.collect EvalDistinctInner |> Seq.distinct |> Seq.sort  
-        let values = Seq.map (evalToExpression env update) distictcols  |> Seq.map (fun a ->  parseLanguageExpression a update)  |> Seq.map ToRecset |>   Seq.map (EvalDistinctValuesFromExp cols) |> Seq.zip  result
+        let values = Seq.map (evalToExpression env update) distictcols  |> Seq.map (fun a ->  parseLanguageExpression a update ShouldTypeCast.Yes)  |> Seq.map ToRecset |>   Seq.map (EvalDistinctValuesFromExp cols) |> Seq.zip  result
         let mutable foldingenv = env
         for (a,b) in values do
           foldingenv<- assignFromList foldingenv b a update resultsIds
