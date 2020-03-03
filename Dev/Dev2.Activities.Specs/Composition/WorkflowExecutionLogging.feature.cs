@@ -190,24 +190,26 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
     testRunner.Given("\"Hello World\" stop on error is set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
-    testRunner.And("workflow execution entry point detailed logs are created and logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the workflow is expected to throw exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
-    testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("workflow execution entry point detailed logs are created and logged", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
+    testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
     testRunner.When("a workflow execution has an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "one",
-                        "two",
-                        "three"});
+                        "key",
+                        "value"});
             table5.AddRow(new string[] {
-                        "value 1",
-                        "value 2",
-                        "value 3"});
-#line 42
+                        "Exception",
+                        "False exception from WorkflowExecutionLoggingSteps"});
+#line 43
     testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table5, "Then ");
-#line 45
-    testRunner.And("a detailed execution completed log entry is has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+    testRunner.And("a detailed execution completed log entry will have no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+    testRunner.And("execution is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
