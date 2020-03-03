@@ -67,7 +67,7 @@ namespace Warewolf.Data.Options
         [Description("Manual CorrelationID")]
         public Manual()
         {
-            Correlation = CorrelationAction.ManualID;
+            Correlation = CorrelationAction.Manual;
         }
     }
 
@@ -75,6 +75,6 @@ namespace Warewolf.Data.Options
     {
         ExecutionID = 0,
         CustomTransactionID = 1,
-        ManualID = 2
+        Manual = 2
     }
 }
