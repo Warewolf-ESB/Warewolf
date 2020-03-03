@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace Warewolf.Common
             _mapEntireMessage = mapEntireMessage;
         }
 
-        public async Task<ConsumerResult> Consume(byte[] body, Headers headers)
+        public async Task<ConsumerResult> Consume(byte[] body, object headers)
         {
             var postBody = BuildPostBody(body); 
 
@@ -69,9 +70,15 @@ namespace Warewolf.Common
             return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, Headers headers)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, object headers)
         {
-            using (var client = _httpClientFactory.New(uri, _username, _password, headers))
+            var additionalRequestHeaders = new NameValueCollection();
+            if (headers is Headers httpHeaders)
+            {
+                additionalRequestHeaders[nameof(httpHeaders.CustomTransactionID)] = httpHeaders.CustomTransactionID;
+                additionalRequestHeaders[nameof(httpHeaders.ExecutionID)] = httpHeaders.ExecutionID.ToString();
+            }
+            using (var client = _httpClientFactory.New(uri, _username, _password, additionalRequestHeaders))
             {
                 return await client.PostAsync(uri,postData);
             }

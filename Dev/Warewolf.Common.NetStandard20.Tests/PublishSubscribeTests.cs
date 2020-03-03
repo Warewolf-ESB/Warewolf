@@ -56,7 +56,7 @@ namespace Warewolf.Streams
             t.Join();
 
             mockDeserializer.Verify(o => o.Deserialize<SBase>(It.IsAny<byte[]>()), Times.Once);
-            mockConsumer.Verify(o => o.Consume(expectedDeserializedValue), Times.Once);
+            mockConsumer.Verify(o => o.Consume(expectedDeserializedValue, null), Times.Once);
         }
 
         class ConnectionForTesting : IConnection
@@ -81,7 +81,7 @@ namespace Warewolf.Streams
             public void StartConsuming(IStreamConfig config, IConsumer consumer)
             {
                 _waitHandle.WaitOne();
-                consumer.Consume(_publishedBytes, _headers);
+                consumer.Consume(_publishedBytes, null);
             }
         }
     }

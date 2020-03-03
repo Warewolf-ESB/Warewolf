@@ -15,10 +15,10 @@ namespace Warewolf.Streams
             _consumer = consumer;
         }
 
-        public Task<ConsumerResult> Consume(byte[] body, Headers headers)
+        public Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var item = _deserializer.Deserialize<T>(body);
-            return _consumer.Consume(item);
+            return _consumer.Consume(item, parameters);
         }
     }
 }

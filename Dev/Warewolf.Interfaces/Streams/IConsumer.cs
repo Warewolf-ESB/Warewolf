@@ -15,10 +15,10 @@ namespace Warewolf.Streams
 {
     public interface IConsumer
     {
-        Task<ConsumerResult> Consume(byte[] body, Headers headers);
+        Task<ConsumerResult> Consume(byte[] body, object parameters);
     }
     public interface IConsumer<in T>
     {
-        Task<ConsumerResult> Consume(T item);
+        Task<ConsumerResult> Consume(T item, object parameters);
     }
 }

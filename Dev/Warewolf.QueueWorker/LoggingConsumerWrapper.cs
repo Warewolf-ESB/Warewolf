@@ -32,8 +32,9 @@ namespace QueueWorker
             _userName = userName;
         }
 
-        public Task<ConsumerResult> Consume(byte[] body, Headers headers)
+        public Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
+            var headers = parameters as Headers;
             if (headers.ExecutionID is null)
             {
                 headers.ExecutionID = Guid.NewGuid();

@@ -108,7 +108,7 @@ namespace Warewolf.Logger
             {
                 var serializer = new Dev2JsonSerializer();
                 var msg = serializer.Deserialize<T>(message);
-                consumer.Consume(msg);
+                consumer.Consume(msg, null);
             };
         }
     }
