@@ -25,12 +25,12 @@ namespace Warewolf.Streams
             var mockPublisher = new Mock<IConsumer<SBase>>();
             var publisher = mockPublisher.Object;
             var myS = new S("s");
-            publisher.Consume(myS);
+            publisher.Consume(myS, null);
             var myS1 = new SBase("s1");
-            publisher.Consume(myS1);
+            publisher.Consume(myS1, null);
 
-            mockPublisher.Verify(o => o.Consume(myS), Times.Once);
-            mockPublisher.Verify(o => o.Consume(myS1), Times.Once);
+            mockPublisher.Verify(o => o.Consume(myS, null), Times.Once);
+            mockPublisher.Verify(o => o.Consume(myS1, null), Times.Once);
         }
     }
 }

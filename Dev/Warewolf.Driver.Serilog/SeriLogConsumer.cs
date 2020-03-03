@@ -30,7 +30,7 @@ namespace Warewolf.Driver.Serilog
             _publisher = connection.NewPublisher();
         }
 
-        public Task<ConsumerResult> Consume(IAuditEntry item)
+        public Task<ConsumerResult> Consume(IAuditEntry item, object parameters)
         {
             try
             {

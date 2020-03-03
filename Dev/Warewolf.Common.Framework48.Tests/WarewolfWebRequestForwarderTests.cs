@@ -12,6 +12,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +34,8 @@ namespace Warewolf.Common.Tests
             //---------------------------------Arrange--------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var headers = new Headers();
-            headers.CustomTransactionID = new Guid().ToString();
+            var headers = new NameValueCollection();
+            headers["CustomTransactionID"] = new Guid().ToString();
             mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);
             
@@ -56,8 +57,8 @@ namespace Warewolf.Common.Tests
             //---------------------------------Arrange--------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var headers = new Headers();
-            headers.CustomTransactionID = new Guid().ToString();
+            var headers = new NameValueCollection();
+            headers["CustomTransactionID"] = new Guid().ToString();
             
             mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);
@@ -82,8 +83,8 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             var postBody = "";
-            var headers = new Headers();
-            headers.CustomTransactionID = new Guid().ToString();          
+            var headers = new NameValueCollection();
+            headers["CustomTransactionID"] = new Guid().ToString();          
             mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; }).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);
 
@@ -112,8 +113,8 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             var postBody = "";
-            var headers = new Headers();
-            headers.CustomTransactionID = new Guid().ToString();           
+            var headers = new NameValueCollection();
+            headers["CustomTransactionID"] = new Guid().ToString();           
             mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string o, string p) => { postBody = p; }).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);
 
@@ -142,8 +143,8 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockPublisher = new Mock<IPublisher>();
             mockPublisher.Setup(p => p.Publish(It.IsAny<byte[]>())).Verifiable();
-            var headers = new Headers();
-            headers.CustomTransactionID = new Guid().ToString();           
+            var headers = new NameValueCollection();
+            headers["CustomTransactionID"] = new Guid().ToString();           
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);
@@ -169,8 +170,8 @@ namespace Warewolf.Common.Tests
             var mockHttpClient = new Mock<IHttpClient>();
             var mockPublisher = new Mock<IPublisher>();
             mockPublisher.Setup(p => p.Publish(It.IsAny<byte[]>())).Verifiable();
-            var headers = new Headers();
-            headers.CustomTransactionID = new Guid().ToString();           
+            var headers = new NameValueCollection();
+            headers["CustomTransactionID"] = new Guid().ToString();           
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers)).Returns(mockHttpClient.Object);

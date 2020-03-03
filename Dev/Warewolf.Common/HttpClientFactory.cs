@@ -10,6 +10,7 @@
 
 
 using System;
+using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using Warewolf.Data;
@@ -19,13 +20,13 @@ namespace Warewolf.Common
 {
     public interface IHttpClientFactory
     {
-        IHttpClient New(Uri uri, string userName, string password, Headers headers);
-        IHttpClient New(string url, string userName, string password, Headers headers);
+        IHttpClient New(Uri uri, string userName, string password, NameValueCollection headers);
+        IHttpClient New(string url, string userName, string password, NameValueCollection headers);
     }
 
     public class HttpClientFactory : IHttpClientFactory
     {
-        public IHttpClient New(Uri uri, string userName, string password, Headers headers)
+        public IHttpClient New(Uri uri, string userName, string password, NameValueCollection headers)
         {
             var baseAddress = uri.GetLeftPart(UriPartial.Authority);
             var httpClientHandler = new HttpClientHandler();
@@ -56,12 +57,14 @@ namespace Warewolf.Common
             {
                 BaseAddress = new Uri(baseAddress)
             };
-            client.DefaultRequestHeaders.Add("CustomTransactionID", headers.CustomTransactionID);
-            client.DefaultRequestHeaders.Add("ExecutionID", headers.ExecutionID.ToString());
+            foreach (var name in headers.AllKeys)
+            {
+                client.DefaultRequestHeaders.Add(name, headers[name]);
+            }
             return new HttpClientWrapper(client, hasCredentials);
         }
 
-        public IHttpClient New(string url, string userName, string password, Headers headers)
+        public IHttpClient New(string url, string userName, string password, NameValueCollection headers)
         {
             return New(new Uri(url), userName, password, headers);
         }

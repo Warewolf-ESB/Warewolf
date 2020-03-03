@@ -85,7 +85,7 @@ namespace Warewolf.Trigger.Queue.Tests
 
             public bool IsDataReceived { get; internal set; }
 
-            public Task<ConsumerResult> Consume(byte[] body, Headers headers)
+            public Task<ConsumerResult> Consume(byte[] body, object parameters)
             {
                 IsDataReceived = true;
                 return Task.FromResult(ConsumerResult.Success);
