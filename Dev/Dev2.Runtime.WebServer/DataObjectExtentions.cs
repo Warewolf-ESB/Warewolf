@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System;
+ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -116,7 +116,7 @@ namespace Dev2.Runtime.WebServer
                 dataObject.ReturnType = EmitionTypes.XML;
             }
         }
-        public static void SetCustomTransactionID(this IDSFDataObject dataObject, NameValueCollection headers)
+        public static void SetHeaders(this IDSFDataObject dataObject, NameValueCollection headers)
         {
             if (headers != null)
             {
@@ -124,6 +124,11 @@ namespace Dev2.Runtime.WebServer
                 if (!string.IsNullOrEmpty(customTransactionId))
                 {
                     dataObject.CustomTransactionID = customTransactionId;
+                }
+                var executionID = headers.Get("ExecutionID");
+                if (!string.IsNullOrEmpty(executionID))
+                {
+                    dataObject.ExecutionID = Guid.Parse(executionID);
                 }
             }
         }
