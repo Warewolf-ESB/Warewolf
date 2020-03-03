@@ -1258,7 +1258,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canViewRunAllTests = value;
-                ExplorerTooltips.RunAllTestsTooltip = _canViewRunAllTests ? Resources.Languages.Tooltips.RunAllTestsToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.RunAllTestsTooltip = _canViewRunAllTests
+                    ? IsFolder ? Resources.Languages.Tooltips.RunAllFolderTestsToolTip :
+                    Resources.Languages.Tooltips.RunAllTestsToolTip
+                    : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateTest);
             }
         }
