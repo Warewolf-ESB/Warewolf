@@ -918,10 +918,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
-        [Depends(Depends.ContainerType.RabbitMQ)]
         public void PerformSerialization_ShouldNotError()
         {
             //------------Setup for test--------------------------
+            var dependency = new Depends(Depends.ContainerType.RabbitMQ);
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
             var connectionFactory = new Mock<ConnectionFactory>();
 
@@ -929,7 +929,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var rabbitMQSource = new RabbitMQSource
             {
                 HostName = dependency.Container.IP,
-                Port = dependency.Container.Port,
+                Port = int.Parse(dependency.Container.Port),
                 UserName = "test",
                 Password = "test"
             };

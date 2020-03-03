@@ -102,19 +102,12 @@ namespace Warewolf.UnitTestAttributes
 
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
-                    if (string.IsNullOrEmpty(Container.Port))
+                    if (int.TryParse(Container.Port, out _))
                     {
                         Container.Port = GetBackupPort(_containerType);
                     }
 
-                    if (_containerType == ContainerType.CIRemote)
-                    {
-                        Container.IP = SelectedHost + ":3144";
-                    }
-                    else
-                    {
-                        Container.IP = SelectedHost;
-                    }
+                    Container.IP = SelectedHost;
                 }
             }
             else
