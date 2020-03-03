@@ -203,11 +203,11 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (BasicProperties.AutoCorrelation is Manual properties)
             {
-                return properties.CorrelationID.ToString();
+                return properties.CorrelationID;
             }
             else
             {
-                if (BasicProperties.AutoCorrelation is CustomTransactionID)
+                if (BasicProperties.AutoCorrelation is CustomTransactionID || DataObject.CustomTransactionID.Length > 0)
                 {
                     return DataObject.CustomTransactionID;
                 }
@@ -217,14 +217,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                     return DataObject.ExecutionID.ToString();
                 }
 
-                if (DataObject.CustomTransactionID.Length > 0)
-                {
-                    return DataObject.CustomTransactionID;
-                }
-                else
-                {
-                    return DataObject.ExecutionID.ToString();
-                }
+                return DataObject.ExecutionID.ToString();
             }
         }
 #pragma warning disable S1541 // Methods and properties should not be too complex
