@@ -42,7 +42,7 @@ namespace QueueWorker
             var executionId = Guid.Parse(headers.ExecutionID.ToString());
             string strBody = System.Text.Encoding.UTF8.GetString(body);
 
-            _logger.StartExecution($"{headers.CustomTransactionID} processing body {strBody} ");
+            _logger.StartExecution($"[{executionId}] - {headers.CustomTransactionID} processing body {strBody} ");
             var startDate = DateTime.UtcNow;
 
             var task = _consumer.Consume(body, headers);
@@ -51,7 +51,7 @@ namespace QueueWorker
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
-                _logger.Warn($"{headers.CustomTransactionID} failure processing body {strBody}");
+                _logger.Warn($"[{executionId}] - {headers.CustomTransactionID} failure processing body {strBody}");
                 CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration, headers.CustomTransactionID);
             }, TaskContinuationOptions.OnlyOnFaulted);
 
@@ -62,14 +62,14 @@ namespace QueueWorker
 
                 if (requestForwarderResult.Result == ConsumerResult.Success)
                 {
-                    _logger.Info($"{headers.CustomTransactionID} success processing body {strBody}");
+                    _logger.Info($"[{executionId}] - {headers.CustomTransactionID} success processing body {strBody}");
                     var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId,headers.CustomTransactionID);
                     var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
                     _logger.ExecutionSucceeded(executionEntry);
                 }
                 else
                 {
-                    _logger.Error($"Failed to execute {_resourceId + " " + strBody}");
+                    _logger.Error($"Failed to execute {_resourceId + " [" + executionId + "] " + strBody}");
                     CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration,headers.CustomTransactionID);
                 }
 
