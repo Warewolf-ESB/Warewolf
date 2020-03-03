@@ -365,16 +365,20 @@ and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
         |> IndexNestedNameExpression
     | JsonIdentifierExpression x -> x
 
-and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
+and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironment) (shouldTypeCast : ShouldTypeCast) = 
     let left = parseLanguageExpression value.Name update
     let jsonId = languageExpressionToJsonIdentifier left
-    let right = evalForJson env update false value.Value
+    let right = 
+        if (shouldTypeCast = ShouldTypeCast.No) then
+            WarewolfAtomResult(DataString value.Value)
+        else
+            evalForJson env update false value.Value
     assignGivenAValueForJson env right jsonId
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env
 
-and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
+and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : IAssignValue) (shouldTypeCast : ShouldTypeCast) = 
     let l = EvaluationFunctions.parseLanguageExpressionStrict value.Name update    
     let left = 
         match l with
@@ -419,13 +423,13 @@ and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : 
                         | RecordSetExpression b -> addToRecordSetFramed env b x
                         | RecordSetNameExpression c ->
                                                     if env.RecordSets.ContainsKey(value.Name) then env
-                                                    else evalJsonAssign value  update env
+                                                    else evalJsonAssign value  update env shouldTypeCast
                         | JsonIdentifierExpression d -> failwith (sprintf "invalid variable assigned to %s" value.Name)
                         | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to %s" value.Name)
                         | _ -> 
                             let expression = (evalToExpression env update value.Name)
                             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
-                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
+                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value)) shouldTypeCast
                     | WarewolfAtomListresult x -> 
                         match left with
                         | ScalarExpression a -> addToScalars env a (Seq.last x)
@@ -444,7 +448,7 @@ and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : 
                         | _ -> 
                             let expression = (evalToExpression env update value.Name)
                             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
-                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
+                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value)) shouldTypeCast
                     | _ -> failwith "assigning an entire recordset to a variable is not defined"
 
     match hadException with
@@ -452,8 +456,8 @@ and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : 
     | _ -> raise hadException
 
 
-and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
-    let l = EvaluationFunctions.parseLanguageExpression value.Name update    
+and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) (shouldTypeCast : ShouldTypeCast) = 
+    let l = EvaluationFunctions.parseLanguageExpression value.Name update ShouldTypeCast.Yes
     let left = 
         match l with
         | ComplexExpression a -> 
@@ -467,10 +471,14 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
         | _ -> l    
     let rightParse = 
         if value.Value = null then LanguageExpression.WarewolfAtomExpression Nothing
-        else EvaluationFunctions.parseLanguageExpression value.Value update    
+        else EvaluationFunctions.parseLanguageExpression value.Value update shouldTypeCast
     let (right, excep) = try
                             if value.Value = null then (WarewolfAtomResult Nothing, null)
-                            else ((eval env update false value.Value), null)
+                            else
+                                if (shouldTypeCast = ShouldTypeCast.Yes) then
+                                    ((eval env update false value.Value), null)
+                                else
+                                    (WarewolfAtomResult(DataString value.Value), null)
                          with
                             | e -> (WarewolfAtomResult NullPlaceholder, e)
     let shouldUseLast = 
@@ -492,13 +500,13 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                         | RecordSetExpression b -> addToRecordSetFramed env b x
                         | RecordSetNameExpression c ->
                                                     if env.RecordSets.ContainsKey(value.Name) then env
-                                                    else evalJsonAssign value  update env
-                        | JsonIdentifierExpression d -> evalJsonAssign (new WarewolfParserInterop.AssignValue(value.Name, evalResultToString right)) update env                                
+                                                    else evalJsonAssign value  update env shouldTypeCast
+                        | JsonIdentifierExpression d -> evalJsonAssign (new WarewolfParserInterop.AssignValue(value.Name, evalResultToString right)) update env shouldTypeCast
                         | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to %s" value.Name)
                         | _ -> 
                             let expression = (evalToExpression env update value.Name)
                             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
-                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
+                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value)) shouldTypeCast
                     | WarewolfAtomListresult x -> 
                         match left with
                         | ScalarExpression a -> addToScalars env a (Seq.last x)
@@ -517,7 +525,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                         | _ -> 
                             let expression = (evalToExpression env update value.Name)
                             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
-                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
+                            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value)) shouldTypeCast
                     | _ -> failwith "assigning an entire recordset to a variable is not defined"
 
     match excep with
@@ -600,7 +608,7 @@ and addAtomToRecordSetWithFraming (rset : WarewolfRecordset) (columnName : strin
 
 and evalMultiAssignList (env : WarewolfEnvironment) (value : WarewolfAtom seq) (exp : string) (update : int) 
     (shouldUseLast : bool) = 
-    let left = EvaluationFunctions.parseLanguageExpression exp update
+    let left = EvaluationFunctions.parseLanguageExpression exp update ShouldTypeCast.Yes
     match left with
     | RecordSetExpression b -> addToRecordSetFramedWithAtomList env b value shouldUseLast update None
     | ScalarExpression s -> 
@@ -610,7 +618,7 @@ and evalMultiAssignList (env : WarewolfEnvironment) (value : WarewolfAtom seq) (
     | _ -> failwith "Only recsets and scalars can be assigned from a list"
 
 and evalDataShape (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    let left = EvaluationFunctions.parseLanguageExpression exp update
+    let left = EvaluationFunctions.parseLanguageExpression exp update ShouldTypeCast.Yes
     match left with
     | ScalarExpression a -> 
         match env.Scalar.TryFind a with
@@ -647,7 +655,7 @@ and replaceDataset (env : WarewolfEnvironment) (data : WarewolfRecordset) (name 
     { env with RecordSets = recsets }
 
 and evalMultiAssign (values : IAssignValue seq) (update : int) (env : WarewolfEnvironment) = 
-    let env = Seq.fold (fun a b -> evalMultiAssignOp a update b) env values
+    let env = Seq.fold (fun a b -> evalMultiAssignOp a update b ShouldTypeCast.Yes) env values
     let recsets = Map.map (fun _ b -> { b with Frame = 0 }) env.RecordSets
     { env with RecordSets = recsets }
 
@@ -660,12 +668,16 @@ and updateColumnWithValue (rset : WarewolfRecordset) (columnName : string) (valu
     else { rset with Data = Map.add columnName (createFilled rset.Count value) rset.Data }
 
 and evalAssignWithFrame (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
-    let envass = evalMultiAssignOp env update value
+    let envass = evalMultiAssignOp env update value ShouldTypeCast.Yes
+    let recsets = envass.RecordSets
+    { envass with RecordSets = recsets }
+and evalAssignWithFrameTypeCast (value : IAssignValue) (update : int) (env : WarewolfEnvironment) (shouldTypeCast : ShouldTypeCast) = 
+    let envass = evalMultiAssignOp env update value shouldTypeCast
     let recsets = envass.RecordSets
     { envass with RecordSets = recsets }
 
 and evalAssignWithFrameStrict (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
-    let envass = evalMultiAssignOpStrict env update value
+    let envass = evalMultiAssignOpStrict env update value ShouldTypeCast.Yes
     let recsets = envass.RecordSets
     { envass with RecordSets = recsets }
 
