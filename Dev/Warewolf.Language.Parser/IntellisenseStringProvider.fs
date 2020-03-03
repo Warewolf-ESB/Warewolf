@@ -11,6 +11,7 @@ open EvaluationFunctions
 open Microsoft.FSharp.Text.Lexing
 open System
 open System.Diagnostics.CodeAnalysis
+open DataStorage
 
 let Tokenisers = "!#$%^&*()-=_+{}|:\"?><`~<>?:'{}| ".ToCharArray()
 
@@ -167,7 +168,7 @@ let rec getCaretPositionInString (lst : LanguageExpression list) (caretPosition 
     | [] -> i
 
 let rec doReplace (text : string) (caretPosition : int) (replacement : string) = 
-    let parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate text
+    let parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate text ShouldTypeCast.Yes
     match parsed with
     | ComplexExpression a -> 
         let caret = getCaretPosition a caretPosition "" 0

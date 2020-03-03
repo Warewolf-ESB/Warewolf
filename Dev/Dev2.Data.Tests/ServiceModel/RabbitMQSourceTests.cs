@@ -12,6 +12,7 @@ using System;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RabbitMQ.Client.Exceptions;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Data.Tests.ServiceModel
@@ -162,10 +163,17 @@ namespace Dev2.Data.Tests.ServiceModel
             Assert.AreEqual("/", rabbitMqSource.VirtualHost);
 
             //-------------------------------Act---------------------------------
-            using (var rabbitConnection = rabbitMqSource.NewConnection())
+            try
             {
-                //-------------------------------Assert------------------------------
-                Assert.IsTrue(rabbitConnection.IsOpen);
+                using (var rabbitConnection = rabbitMqSource.NewConnection())
+                {
+                    //-------------------------------Assert------------------------------
+                    Assert.IsTrue(rabbitConnection.IsOpen);
+                }
+            }
+            catch (BrokerUnreachableException e)
+            {
+                Assert.Inconclusive(e.Message);
             }
         }
 
@@ -199,10 +207,17 @@ namespace Dev2.Data.Tests.ServiceModel
             Assert.AreEqual("/", rabbitMqSource.VirtualHost);
 
             //-------------------------------Act---------------------------------
-            using (var rabbitConnection = rabbitMqSource.NewConnection())
+            try
             {
-                //-------------------------------Assert------------------------------
-                Assert.IsTrue(rabbitConnection.IsOpen);
+                using (var rabbitConnection = rabbitMqSource.NewConnection())
+                {
+                    //-------------------------------Assert------------------------------
+                    Assert.IsTrue(rabbitConnection.IsOpen);
+                }
+            }
+            catch (BrokerUnreachableException e)
+            {
+                Assert.Inconclusive(e.Message);
             }
         }
     }

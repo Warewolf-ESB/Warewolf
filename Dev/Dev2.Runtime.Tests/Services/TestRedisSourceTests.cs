@@ -133,10 +133,24 @@ namespace Dev2.Tests.Runtime.Services
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var jsonResult = testRedisSource.Execute(values, null);
-            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(result.HasError, result.Message.ToString());
+            try
+            {
+                var jsonResult = testRedisSource.Execute(values, null);
+                var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+                //---------------Test Result -----------------------
+                Assert.IsFalse(result.HasError, result.Message.ToString());
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
     }
 }

@@ -15,6 +15,9 @@ let GetDecimalPlaces(decimalNumber : float) =
             decimalPlaces <- decimalPlaces + 1
     decimalPlaces
 
+type ShouldTypeCast = No | Yes
+
+
 /// Performance enhancements
 [<ExcludeFromCodeCoverage>]
 type WarewolfAttribute = 

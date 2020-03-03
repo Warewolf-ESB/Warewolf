@@ -36,7 +36,7 @@ and applyIndexes (data : WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (
         newdata
 ///overall sort function
 and sortRecset (exp : string) (desc : bool) (update : int) (env : WarewolfEnvironment) = 
-    let left = parseLanguageExpression exp update
+    let left = parseLanguageExpression exp update ShouldTypeCast.Yes
     match left with
     | RecordSetExpression b -> 
         let recsetopt = env.RecordSets.TryFind b.Name
