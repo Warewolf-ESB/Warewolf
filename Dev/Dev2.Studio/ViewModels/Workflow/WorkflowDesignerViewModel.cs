@@ -200,6 +200,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _firstWorkflowChange = true;
             _workflowDesignerHelper = new WorkflowDesignerWrapper();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            _shellViewModel = Application.Current?.MainWindow?.DataContext as ShellViewModel;
         }
 
         public void SetPermission(Permissions permission)
@@ -443,6 +444,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _canRunAllTests = value;
                 RunAllTestsTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
+                RunCoverageTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunCoverageToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanRunAllTests");
             }
         }
@@ -454,6 +456,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _runAllTestsTooltip = value;
                 OnPropertyChanged("RunAllTestsTooltip");
+            }
+        }
+        
+        public string RunCoverageTooltip
+        {
+            get => _runCoverageTooltip;
+            set
+            {
+                _runCoverageTooltip = value;
+                OnPropertyChanged(nameof(RunCoverageTooltip));
             }
         }
 
@@ -856,18 +868,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }));
 
-        public ICommand RunAllTestsCommand => _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(param =>
-        {
-            if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-            {
-                var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                if (mvm?.ActiveItem != null)
-                {
-                    mvm.RunAllTests(string.Empty, mvm.ActiveItem.ContextualResourceModel.ID);
-                }
-            }
-        }));
-
         public ICommand DuplicateCommand => _duplicateCommand ?? (_duplicateCommand = new DelegateCommand(param =>
         {
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
@@ -915,6 +915,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             MergeWorkflow();
         }));
 
+        public IShellViewModel ShellViewModel => _shellViewModel ?? CustomContainer.Get<IShellViewModel>();
+        
         private static void MergeWorkflow()
         {
             var shellViewModel = Application.Current.MainWindow.DataContext as ShellViewModel;
@@ -2517,6 +2519,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         string _queueEventTooltip;
         string _createTestTooltip;
         string _runAllTestsTooltip;
+        string _runCoverageTooltip;
         string _duplicateTooltip;
         string _deployTooltip;
         string _showDependenciesTooltip;
@@ -2895,6 +2898,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected bool _isPaste;
+        private IShellViewModel _shellViewModel;
 
         public System.Action WorkflowChanged { get; set; }
     }
