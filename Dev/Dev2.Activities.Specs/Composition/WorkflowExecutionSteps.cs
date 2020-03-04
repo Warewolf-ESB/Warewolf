@@ -3097,7 +3097,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
         [Then(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
         [When(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
-        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string correlationID, string result)
+        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string result)
         {
             var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
             var dsfPublishRabbitMqActivity = new PublishRabbitMQActivity
@@ -3108,7 +3108,6 @@ namespace Dev2.Activities.Specs.Composition
                 DisplayName = rabbitMqname,
                 Message = jsonMsg
             };
-            //dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = correlationID;
             _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
 
