@@ -90,13 +90,25 @@
                     </MenuItem>
 
                     <MenuItem Name="RunAllTests"
-                              Command="{Binding RunAllTestsCommand}"
+                              Command="{Binding DataContext.ShellViewModel.RunAllTestsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                              CommandParameter="{Binding .}"
                               Header="Run All Tests"
                               IsEnabled="{Binding CanRunAllTests}"
                               Style="{StaticResource MenuItemStyle}"
                               ToolTip="{Binding RunAllTestsTooltip}">
                         <MenuItem.Icon>
                             <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="RunAllCoverage"
+                              Command="{Binding DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                              CommandParameter="{Binding .}"
+                              Header="Run Tests Coverage"
+                              IsEnabled="{Binding CanRunAllTests}"
+                              Style="{StaticResource MenuItemStyle}"
+                              ToolTip="{Binding RunCoverageTooltip}">
+                        <MenuItem.Icon>
+                            <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem.Icon>
