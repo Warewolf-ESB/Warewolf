@@ -102,7 +102,7 @@ namespace Warewolf.UnitTestAttributes
 
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
-                    if (int.TryParse(Container.Port, out _))
+                    if (!int.TryParse(Container.Port, out _))
                     {
                         Container.Port = GetBackupPort(_containerType);
                     }
