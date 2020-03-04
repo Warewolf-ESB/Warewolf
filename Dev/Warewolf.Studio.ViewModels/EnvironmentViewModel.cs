@@ -209,11 +209,6 @@ namespace Warewolf.Studio.ViewModels
                 Process.Start(Resources.Languages.Core.MyWarewolfUrl);
             });
             
-            RunAllTestsCommand = new DelegateCommand(() =>
-            {
-                shellViewModel.RunAllTests(ResourcePath, ResourceId);
-            });
-
             DeployCommand = new DelegateCommand(() =>
             {
                 shellViewModel.AddDeploySurface(AsList().Union<IExplorerTreeItem>(new[] { this }));
@@ -822,7 +817,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
-        public ICommand RunAllTestsCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         [ExcludeFromCodeCoverage]
         public ICommand RenameCommand { get; set; }

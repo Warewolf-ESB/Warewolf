@@ -512,47 +512,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        [TestCategory(nameof(ExplorerItemViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void RunAllTestsCommand()
-        {
-            //arrange
-            _target.ResourceType = "WorkflowService";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-            _explorerTooltips.Setup(explorerTooltips => explorerTooltips.RunAllTestsTooltip)
-                .Returns(Resources.Languages.Tooltips.RunAllTestsToolTip);
-            _target.CanViewRunAllTests = true;
-            //act
-            Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
-            _target.RunAllTestsCommand.Execute(null);
-            Assert.AreEqual(Resources.Languages.Tooltips.RunAllTestsToolTip, _target.ExplorerTooltips.RunAllTestsTooltip);
-            //assert
-            _shellViewModelMock.Verify(it => it.RunAllTests(null, _target.ResourceId));
-        }
-        
-        [TestMethod,Timeout(60000)]
-        [TestCategory(nameof(ExplorerItemViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void RunAllFolderTestsCommand()
-        {
-            //arrange
-            _target.ResourceType = "Folder";
-            _target.IsFolder = true;
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-            _explorerTooltips.Setup(explorerTooltips => explorerTooltips.RunAllTestsTooltip)
-                .Returns(Resources.Languages.Tooltips.RunAllFolderTestsToolTip);
-            _target.CanViewRunAllTests = true;
-            //act
-            Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
-            _target.RunAllTestsCommand.Execute(null);
-            Assert.AreEqual(Resources.Languages.Tooltips.RunAllFolderTestsToolTip, _target.ExplorerTooltips.RunAllTestsTooltip);
-            //assert
-            _shellViewModelMock.Verify(it => it.RunAllTests(null, _target.ResourceId));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestViewSwaggerCommand()
         {
             //arrange
