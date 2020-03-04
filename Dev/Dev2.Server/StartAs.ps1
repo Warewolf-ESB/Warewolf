@@ -26,6 +26,10 @@ if ($WarewolfServerProcess) {
         if ($Error[1].Exception.Message -eq "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."){
             exit 1
         }
+		NET user "$Username" "$Password" /Y
+        if ($Error[1].Exception.Message -eq "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."){
+            exit 1
+        }
 	    Write-Host 3. Add Warewolf Administrator to Administrators group.
 	    NET localgroup "Administrators" "$Username" /ADD
 	    Write-Host 4. Add Warewolf Administrator to Warewolf Administrators group.
@@ -59,5 +63,9 @@ if ($WarewolfServerProcess) {
 	sc.exe start "Warewolf Server"
 }
 if ($NoExit.IsPresent) {
-	ping -t localhost
+	if (Test-Path "$PSScriptRoot\pauseloop.exe") {
+		&"$PSScriptRoot\pauseloop.exe"
+	} else {
+		ping -t localhost
+	}
 }
