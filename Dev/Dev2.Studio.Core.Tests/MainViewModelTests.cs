@@ -4248,6 +4248,135 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ShellViewModel_RunCoverageCommand_ExplorerItemViewModel()
+        {
+            var resourceId = Guid.NewGuid();
+            var resourceName = "ResourceName";
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(o => o.ResourceName).Returns(resourceName);
+            mockResourceModel.Setup(o => o.ID).Returns(resourceId);
+            mockResourceModel.Setup(o => o.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(o => o.DataList).Returns("<DataList><scalar1 Description=\"\" IsEditable=\"True\" " +
+                                                                          "ColumnIODirection=\"Input\" /><scalar2 Description=\"\" IsEditable=\"True\" " +
+                                                                          "ColumnIODirection=\"Input\" /></DataList>");
+
+            var environmentId = Guid.NewGuid();
+            
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadContextualResourceModel(resourceId)).Returns(mockResourceModel.Object);
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.DisplayName).Returns("Localhost");
+            mockServer.Setup(o => o.Name).Returns("Localhost");
+            mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            var mockBrowserPopupController = new Mock<IBrowserPopupController>();
+            var mockPopupController = new Mock<IPopupController>();
+            var mockViewFactory = new Mock<IViewFactory>();
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourcePath).Returns(resourceName);
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(resourceId);
+            
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(o => o.ActiveServer).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.Get(environmentId)).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.Source).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.All()).Returns(new List<IServer>());
+            CustomContainer.Register(mockServerRepository.Object);
+
+            var mockWorksurfaceContext = new Mock<IWorksurfaceContextManager>();
+            mockWorksurfaceContext.Setup(o => o.RunAllTestsForService(mockResourceModel.Object)).Verifiable();
+            
+            var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockBrowserPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
+
+            shellViewModel.WorksurfaceContextManager = mockWorksurfaceContext.Object;
+            
+            var explorerItemViewModel = new ExplorerItemViewModel(mockServer.Object, mockExplorerTreeItem.Object, null, shellViewModel, mockPopupController.Object);
+            explorerItemViewModel.ResourcePath = resourceName;
+            explorerItemViewModel.ResourceId = resourceId;
+            
+            Assert.IsTrue((shellViewModel.RunCoverageCommand.CanExecute(null)));
+            shellViewModel.RunCoverageCommand.Execute(explorerItemViewModel);
+            
+            mockResourceRepository.Verify(o => o.LoadContextualResourceModel(resourceId), Times.Once());
+            mockWorksurfaceContext.Verify(o => o.RunAllTestsForService(mockResourceModel.Object), Times.Once());
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ShellViewModel_RunCoverageCommand_EnvironmentViewModel()
+        {
+            var resourceId = Guid.NewGuid();
+            var resourceName = "ResourceName";
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(o => o.ResourceName).Returns(resourceName);
+            mockResourceModel.Setup(o => o.ID).Returns(resourceId);
+            mockResourceModel.Setup(o => o.ResourceType).Returns(ResourceType.Server);
+            mockResourceModel.Setup(o => o.DataList).Returns("<DataList><scalar1 Description=\"\" IsEditable=\"True\" " +
+                                                                          "ColumnIODirection=\"Input\" /><scalar2 Description=\"\" IsEditable=\"True\" " +
+                                                                          "ColumnIODirection=\"Input\" /></DataList>");
+
+            var environmentId = Guid.NewGuid();
+            
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.DisplayName).Returns("Localhost");
+            mockServer.Setup(o => o.Name).Returns("Localhost");
+            mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            var mockBrowserPopupController = new Mock<IBrowserPopupController>();
+            var mockPopupController = new Mock<IPopupController>();
+            var mockViewFactory = new Mock<IViewFactory>();
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourcePath).Returns(resourceName);
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(resourceId);
+            
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(o => o.ActiveServer).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.Get(environmentId)).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.Source).Returns(mockServer.Object);
+            mockServerRepository.Setup(o => o.All()).Returns(new List<IServer>());
+            CustomContainer.Register(mockServerRepository.Object);
+
+            var mockWorksurfaceContext = new Mock<IWorksurfaceContextManager>();
+            mockWorksurfaceContext.Setup(o => o.RunAllTestsForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>())).Verifiable();
+            
+            var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockBrowserPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
+
+            shellViewModel.WorksurfaceContextManager = mockWorksurfaceContext.Object;
+            
+            var environmentViewModel = new EnvironmentViewModel(mockServer.Object, shellViewModel);
+            environmentViewModel.ResourcePath = resourceName;
+            environmentViewModel.ResourceId = resourceId;
+            
+            Assert.IsTrue((shellViewModel.RunCoverageCommand.CanExecute(null)));
+            shellViewModel.RunCoverageCommand.Execute(environmentViewModel);
+            
+            mockResourceRepository.Verify(o => o.LoadContextualResourceModel(resourceId), Times.Once());
+            mockWorksurfaceContext.Verify(o => o.RunAllTestsForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>()), Times.Once());
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DeployResource_GivenIsNew_ShouldReturnNull()
         {
