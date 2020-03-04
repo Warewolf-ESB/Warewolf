@@ -8,13 +8,28 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
+using System.Collections.Generic;
 
 namespace Warewolf.Data
 {
     public class Headers
     {
-        public string CustomTransactionID { get; set; }
-        public Guid? ExecutionID { get; set; }
+        Dictionary<string, string[]> _headers = new Dictionary<string, string[]>();
+       
+        public string[] this[string key, string[] default_=null]
+        {
+            get => KeyExists(key) ? _headers[key] : default_;
+            set => _headers[key] = value;
+        }
+
+        public bool KeyExists(string key)
+        {
+            return _headers.ContainsKey(key);
+        }
+
+        public IEnumerator<KeyValuePair<string, string[]>> GetEnumerator()
+        {
+            return _headers.GetEnumerator();
+        }
     }
 }

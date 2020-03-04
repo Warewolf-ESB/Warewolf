@@ -44,7 +44,7 @@ namespace Warewolf.Driver.RabbitMQ
             {
                 var body = eventArgs.Body;
                 var headers = new Warewolf.Data.Headers();
-                headers.CustomTransactionID = eventArgs.BasicProperties.CorrelationId;
+                headers["CustomTransactionID"] = new[] { eventArgs.BasicProperties.CorrelationId };
                 var resultTask = consumer.Consume(body, headers);
                 resultTask.Wait();
                 if (resultTask.Result == Data.ConsumerResult.Success)

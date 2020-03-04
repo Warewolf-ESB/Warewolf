@@ -34,8 +34,8 @@ namespace Warewolf.Web.Tests
             //-----------------------------Arrange------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var headers = new NameValueCollection();
-            headers["CustomTransactionID"] = "customTransactionID";
+            var headers = new Headers();
+            headers["CustomTransactionID"] = new [] {"customTransactionID"};
             var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("Connected") };
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
@@ -59,8 +59,8 @@ namespace Warewolf.Web.Tests
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var headers = new NameValueCollection();
-            headers["CustomTransactionID"] = "customTransactionID";
+            var headers = new Headers();
+            headers["CustomTransactionID"] = new [] {"customTransactionID"};
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers));
             var factory = mockHttpClientFactory.Object;
             //-----------------------------Act----------------------------------
@@ -77,8 +77,8 @@ namespace Warewolf.Web.Tests
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var headers = new NameValueCollection();
-            headers["CustomTransactionID"] = "customTransactionID";
+            var headers = new Headers();
+            headers["CustomTransactionID"] = new [] {"customTransactionID"};
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),headers));
             var factory = mockHttpClientFactory.Object;
             var uri = new Uri("http://warewolf.io");
@@ -100,8 +100,8 @@ namespace Warewolf.Web.Tests
             var factory = new HttpClientFactory();
 
            //-----------------------------Act----------------------------------
-           var headers = new NameValueCollection();
-           headers["CustomTransactionID"] = "customTransactionID";
+           var headers = new Headers();
+           headers["CustomTransactionID"] = new [] {"customTransactionID"};
             var client = factory.New("http://warewolf.io", "Bob", "TheBuilder",headers);
             //-----------------------------Assert-------------------------------
             Assert.IsTrue(client.HasCredentials);
@@ -117,8 +117,8 @@ namespace Warewolf.Web.Tests
 
             var uri = new Uri("http://warewolf.io");
             //-----------------------------Act----------------------------------
-            var headers = new NameValueCollection();
-            headers["CustomTransactionID"] = "customTransactionID";
+            var headers = new Headers();
+            headers["CustomTransactionID"] = new [] {"customTransactionID"};
             var client = factory.New(uri, "Bob", "TheBuilder",headers);
             //-----------------------------Assert-------------------------------
             Assert.IsTrue(client.HasCredentials);

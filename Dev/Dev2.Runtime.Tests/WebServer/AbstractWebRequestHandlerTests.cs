@@ -40,7 +40,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Warewolf.Data;
 using Warewolf.Storage.Interfaces;
+using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -1124,7 +1126,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = postDataMock.IsXml();
+            var isXml = StringExtension.IsXml(postDataMock);
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -1198,7 +1200,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = postDataMock.IsXml();
+            var isXml = StringExtension.IsXml(postDataMock);
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -1232,7 +1234,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = postDataMock.IsXml();
+            var isXml = StringExtension.IsXml(postDataMock);
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -2176,7 +2178,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Object.SetHeaders(headers.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(null, dataObject.Object.CustomTransactionID);
-            Assert.AreEqual(null, dataObject.Object.ExecutionID);
+            Assert.IsNotNull(dataObject.Object.ExecutionID); //New guid is created is nothing is set in the header
         }
     }
 
