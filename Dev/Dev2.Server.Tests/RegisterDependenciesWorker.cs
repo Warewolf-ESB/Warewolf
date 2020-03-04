@@ -2,6 +2,8 @@
 using Dev2.ServerLifeCycleWorkers;
 
 using Dev2.Runtime;
+using Dev2.Interfaces;
+using Dev2.Common;
 
 namespace Dev2.Server.Tests
 {
@@ -17,7 +19,10 @@ namespace Dev2.Server.Tests
             worker.Execute();
             Assert.IsNotNull(CustomContainer.Get<IActivityParser>());
             Assert.IsNotNull(CustomContainer.Get<IExecutionManager>());
+            Assert.IsNotNull(CustomContainer.Get<ILogManager>());
             Assert.IsNotNull(CustomContainer.Get<IResumableExecutionContainerFactory>());
+            Assert.IsNotNull(CustomContainer.Get<IFieldAndPropertyMapper>());
         }
+            
     }
 }
