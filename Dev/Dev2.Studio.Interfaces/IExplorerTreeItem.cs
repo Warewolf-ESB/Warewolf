@@ -57,7 +57,6 @@ namespace Dev2.Studio.Interfaces
 
         ICommand ViewApisJsonCommand { get; set; }
         ICommand ViewExecutionLoggingCommand { get; set; }
-        ICommand RunAllTestsCommand { get; set; }
         ICommand DeployCommand { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand CreateFolderCommand { get; set; }

@@ -54,27 +54,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod,Timeout(60000)]
-        [TestCategory(nameof(EnvironmentViewModel))]
-        [Owner("Pieter Terblanche")]
-        public void RunAllTestsCommand()
-        {
-            //arrange
-            _target.ResourceType = "ServerSource";
-            _target.IsServer = true;
-            _target.ResourceId = Guid.Empty;
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-            _explorerTooltips.Setup(explorerTooltips => explorerTooltips.RunAllTestsTooltip)
-                .Returns(Resources.Languages.Tooltips.RunAllServerTestsToolTip);
-            _target.CanViewRunAllTests = true;
-            //act
-            Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
-            _target.RunAllTestsCommand.Execute(null);
-            Assert.AreEqual(Resources.Languages.Tooltips.RunAllServerTestsToolTip, _target.ExplorerTooltips.RunAllTestsTooltip);
-            //assert
-            _shellViewModelMock.Verify(it => it.RunAllTests("", _target.ResourceId));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestRefreshCommandChildrenAllowResourceCheck()
         {
             //arrange
@@ -135,7 +114,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canCreateFolderCommand = _target.CreateFolderCommand.CanExecute(null);
             var canDeployCommand = _target.DeployCommand.CanExecute(null);
-            var canRunAllTestsCommand = _target.RunAllTestsCommand.CanExecute(null);
             var canCreateNewWcfSourceCommand = _target.NewWcfSourceCommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
@@ -160,7 +138,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
             Assert.IsTrue(canCreateFolderCommand);
             Assert.IsTrue(canDeployCommand);
-            Assert.IsTrue(canRunAllTestsCommand);
             Assert.IsTrue(canCreateNewWcfSourceCommand);
             Assert.IsTrue(canViewApisJsonCommand);
         }

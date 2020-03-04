@@ -100,11 +100,6 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewQueueEvent(resourceId);
         }
 
-        public void RunAllTestsCommand(string ResourcePath, Guid resourceId)
-        {
-            _shellViewModel.RunAllTests(ResourcePath, resourceId);
-        }
-
         public void CopyUrlCommand(Guid resourceId, IServer server)
         {
             _shellViewModel.CopyUrlLink(resourceId, server);

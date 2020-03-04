@@ -348,10 +348,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _explorerItemViewModelCommandController.QueueEventCommand(ResourceId);
             });
-            RunAllTestsCommand = new DelegateCommand(type =>
-            {
-                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourcePath, ResourceId);
-            });
             CopyUrlCommand = new DelegateCommand(type =>
             {
                 _explorerItemViewModelCommandController.CopyUrlCommand(ResourceId, Server);
@@ -1005,7 +1001,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DebugBrowserCommand { get; set; }
         public ICommand ScheduleCommand { get; set; }
         public ICommand QueueEventCommand { get; set; }
-        public ICommand RunAllTestsCommand { get; set; }
         public ICommand CopyUrlCommand { get; set; }
 
         public bool ForcedRefresh
