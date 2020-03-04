@@ -178,7 +178,8 @@
 
                                     <MenuItem Header="Test Editor" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem Name="RunAllTests"
-                                                  Command="{Binding RunAllTestsCommand}"
+                                                  Command="{Binding DataContext.ShellViewModel.RunAllTestsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                  CommandParameter="{Binding .}"
                                                   Header="Run All Tests"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   IsEnabled="{Binding CanViewRunAllTests}"
@@ -189,7 +190,7 @@
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Name="RunAllCoverage"
-                                                  Command="{Binding PlacementTarget.DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                  Command="{Binding DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                                   CommandParameter="{Binding .}"
                                                   Header="Run Tests Coverage"
                                                   Style="{StaticResource MenuItemStyle}"
@@ -705,7 +706,8 @@
                                                 </MenuItem>
 
                                                 <MenuItem Name="RunAllTestsItem"
-								                          Command="{Binding RunAllTestsCommand}"
+                                                          Command="{Binding DataContext.ShellViewModel.RunAllTestsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                          CommandParameter="{Binding .}"
 								                          Header="Run All Tests"
 								                          IsEnabled="{Binding CanViewRunAllTests}"
 								                          Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -727,7 +729,7 @@
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem Name="RunAllCoverageItem"
-                                                          Command="{Binding PlacementTarget.DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                          Command="{Binding DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                                           CommandParameter="{Binding .}"
                                                           Header="Run Tests Coverage"
                                                           IsEnabled="{Binding CanViewRunAllTests}"
