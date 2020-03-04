@@ -53,6 +53,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(RedisSources))]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
+            try
+            {
             var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
             var source = new RedisSource
             {
@@ -61,9 +63,21 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Port = dependency.Container.Port
             }.ToString();
 
-            var handler = new RedisSources();
-            var result = handler.Test(source);
-            Assert.IsTrue(result.IsValid, result.ErrorMessage);
+                var handler = new RedisSources();
+                var result = handler.Test(source);
+                Assert.IsTrue(result.IsValid, result.ErrorMessage);
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         [TestMethod]
