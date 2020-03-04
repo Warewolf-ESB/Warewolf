@@ -403,6 +403,10 @@ namespace Dev2.Studio.ViewModels
                     resourcePath = environmentViewModel.ResourcePath;
                     resourceId = environmentViewModel.ResourceId;
                     break;
+                case WorkflowDesignerViewModel workflowDesignerViewModel:
+                    resourcePath = workflowDesignerViewModel.ResourceModel.GetSavePath() + workflowDesignerViewModel.ResourceModel.DisplayName;
+                    resourceId = workflowDesignerViewModel.ResourceModel.ID;
+                    break;
             }
             
             RunCoverage(resourcePath, resourceId);
@@ -1263,11 +1267,33 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void RunAllTests(string ResourcePath, Guid resourceId)
+        private ICommand _runAllTestsCommand;
+        public ICommand RunAllTestsCommand => _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(RunAllTests));
+
+        private void RunAllTests(object explorerObj)
         {
-            RunAllTests(ResourcePath, resourceId, new ExternalProcessExecutor());
+            var resourcePath = "";
+            var resourceId = Guid.Empty;
+            switch (explorerObj)
+            {
+                case ExplorerItemViewModel explorerItem:
+                    resourcePath = explorerItem.ResourcePath;
+                    resourceId = explorerItem.ResourceId;
+                    break;
+                case EnvironmentViewModel environmentViewModel:
+                    resourcePath = environmentViewModel.ResourcePath;
+                    resourceId = environmentViewModel.ResourceId;
+                    break;
+                case WorkflowDesignerViewModel workflowDesignerViewModel:
+                    resourcePath = workflowDesignerViewModel.ResourceModel.GetSavePath() + workflowDesignerViewModel.ResourceModel.DisplayName;
+                    resourceId = workflowDesignerViewModel.ResourceModel.ID;
+                    break;
+            }
+            
+            RunAllTests(resourcePath, resourceId, new ExternalProcessExecutor());
         }
-        public void RunAllTests(string ResourcePath, Guid resourceId, IExternalProcessExecutor ProcessExecutor)
+
+        public void RunAllTests(string resourcePath, Guid resourceId, IExternalProcessExecutor processExecutor)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
@@ -1278,11 +1304,8 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                var resourcePath = environmentModel?.Connection.WebServerUri + "secure/" + ResourcePath;
-                if (resourcePath != null)
-                {
-                    _worksurfaceContextManager.RunAllTestsForFolder(resourcePath, ProcessExecutor);
-                }
+                var secureResourcePath = environmentModel?.Connection.WebServerUri + "secure/" + resourcePath;
+                _worksurfaceContextManager.RunAllTestsForFolder(secureResourcePath, processExecutor);
             }
         }
 
