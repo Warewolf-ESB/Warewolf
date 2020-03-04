@@ -3196,7 +3196,6 @@ namespace Warewolf.Studio.Resources.Languages {
             }
         }
         
-            
         /// <summary>
         ///   Looks up a localized string similar to Create a new server source.
         /// </summary>
@@ -4041,7 +4040,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time in seconds before the key expires. Default is 5 Seconds.
+        ///   Looks up a localized string similar to Time in seconds before the key expires. Default is 5 Seconds..
         /// </summary>
         public static string RedisTTLToolTip {
             get {
@@ -4203,6 +4202,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RunAllTestsToolTip {
             get {
                 return ResourceManager.GetString("RunAllTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run coverage in browser for this resource.
+        /// </summary>
+        public static string RunCoverageToolTip {
+            get {
+                return ResourceManager.GetString("RunCoverageToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run coverage in browser for all resources in this folder.
+        /// </summary>
+        public static string RunFolderCoverageToolTip {
+            get {
+                return ResourceManager.GetString("RunFolderCoverageToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run coverage in browser for all resources.
+        /// </summary>
+        public static string RunServerCoverageToolTip {
+            get {
+                return ResourceManager.GetString("RunServerCoverageToolTip", resourceCulture);
             }
         }
         

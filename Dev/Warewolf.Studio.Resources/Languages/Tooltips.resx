@@ -766,6 +766,15 @@ Returns the output of the script, if any.</value>
   <data name="RunAllTestsToolTip" xml:space="preserve">
     <value>Run all tests in browser for this resource</value>
   </data>
+  <data name="RunServerCoverageToolTip" xml:space="preserve">
+    <value>Run coverage in browser for all resources</value>
+  </data>
+  <data name="RunFolderCoverageToolTip" xml:space="preserve">
+    <value>Run coverage in browser for all resources in this folder</value>
+  </data>
+  <data name="RunCoverageToolTip" xml:space="preserve">
+    <value>Run coverage in browser for this resource</value>
+  </data>
   <data name="RollbackTooltip" xml:space="preserve">
     <value>Roll back to this version</value>
   </data>
