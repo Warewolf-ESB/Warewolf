@@ -1037,8 +1037,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid ActivityId { get; set; }
 
-        public bool IsGate { get; set; }
-
         public virtual FlowNode GetFlowNode()
         {
             var flowStep = new FlowStep { Action = this as Activity };
