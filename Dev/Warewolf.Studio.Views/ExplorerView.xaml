@@ -11,6 +11,7 @@
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
              x:Name="ExplorerViewControl"
              KeyUp="ExplorerView_OnKeyUp"
              d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
@@ -185,6 +186,18 @@
                                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                             <MenuItem.Icon>
                                                 <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="RunAllCoverage"
+                                                  Command="{Binding PlacementTarget.DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                  CommandParameter="{Binding .}"
+                                                  Header="Run Tests Coverage"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  IsEnabled="{Binding CanViewRunAllTests}"
+                                                  ToolTip="{x:Static languages:Tooltips.RunServerCoverageToolTip}"
+                                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                            <MenuItem.Icon>
+                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem.Icon>
@@ -711,6 +724,29 @@
                                                     </MenuItem.Style>
                                                     <MenuItem.Icon>
                                                         <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="RunAllCoverageItem"
+                                                          Command="{Binding PlacementTarget.DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                          CommandParameter="{Binding .}"
+                                                          Header="Run Tests Coverage"
+                                                          IsEnabled="{Binding CanViewRunAllTests}"
+                                                          Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <MenuItem.Style>
+                                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                            <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.RunCoverageToolTip}" />
+                                                            <Style.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.RunFolderCoverageToolTip}" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </MenuItem.Style>
+                                                    <MenuItem.Icon>
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem.Icon>
