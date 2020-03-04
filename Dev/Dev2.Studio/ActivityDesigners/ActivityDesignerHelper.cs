@@ -103,6 +103,7 @@ using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
+using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -196,6 +197,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointDeleteFileActivity), typeof(SharePointDeleteFileDesigner) },
                 { typeof(SharepointMoveFileActivity), typeof(SharePointMoveFileDesigner) },
                 { typeof(DsfWcfEndPointActivity),typeof(WcfEndPointDesigner)},
+                { typeof(PublishRabbitMQActivity), typeof(RabbitMQPublishDesigner2) },
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },

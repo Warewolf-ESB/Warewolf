@@ -19,7 +19,6 @@ namespace Dev2
         IDev2Activity Execute(IDSFDataObject data, int update);
         IEnumerable<IDev2Activity> NextNodes { get; set; }
         Guid ActivityId { get; set; }
-        bool IsGate { get; set; }
 
         List<string> GetOutputs();
         IEnumerable<IDev2Activity> GetChildrenNodes();

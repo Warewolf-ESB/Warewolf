@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Common.Common;
-
+using static DataStorage;
 
 namespace WarewolfParsingTest
 {
@@ -221,7 +221,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[Rec(*).a]]")).Item);
+            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[Rec(*).a]]", ShouldTypeCast.Yes)).Item);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.atomtoString(res), "123");
         }
@@ -236,7 +236,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Rec(1).a]]")).Item);
+            var res = EvaluationFunctions.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Rec(1).a]]", ShouldTypeCast.Yes)).Item);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.atomtoString(res), "1");
         }
@@ -757,7 +757,7 @@ namespace WarewolfParsingTest
         {
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
-            const string expected = "{\"Name\":\"bob\",\"Age\":22,\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[\"2\",\"3\"]}";
+            const string expected = "{\"Name\":\"bob\",\"Age\":22,\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[2,3]}";
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.eval(env, 0, false, "[[@Person]]");
             //------------Assert Results-------------------------
@@ -864,7 +864,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[@arrayObj().Name]] [[@arrayObj().Name]]"));
+            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[@arrayObj().Name]] [[@arrayObj().Name]]", ShouldTypeCast.Yes));
             //------------Assert Results-------------------------
             Assert.AreEqual("bobe bobe", CommonFunctions.evalResultToString(res));
         }
@@ -877,7 +877,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate("1"));
+            var res = EvaluationFunctions.evalJson(env, 0, false, EvaluationFunctions.parseLanguageExpressionWithoutUpdate("1", ShouldTypeCast.Yes));
             //------------Assert Results-------------------------
             Assert.AreEqual("1", CommonFunctions.evalResultToString(res));
         }
@@ -893,7 +893,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var val = EvaluationFunctions.eval(env, 0, true, "[[escapeValue]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("C:\\test",CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("some\\ test\\ with\\ a\\ tab\\ character\\tin\\ it", CommonFunctions.evalResultToString(val));
         }
 
         [TestMethod]
@@ -907,7 +907,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var val = EvaluationFunctions.eval(env, 0, false, "[[escapeValue]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("C:\test",CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("some test with a tab character\tin it", CommonFunctions.evalResultToString(val));
         }
 
         [TestMethod]
@@ -922,8 +922,8 @@ namespace WarewolfParsingTest
             var val = EvaluationFunctions.eval(env, 0, true, "[[esc(1).val]]");
             var val2 = EvaluationFunctions.eval(env, 0, true, "[[esc(2).val]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("C:\\temp", CommonFunctions.evalResultToString(val));
-            Assert.AreEqual("C:\\tval", CommonFunctions.evalResultToString(val2));
+            Assert.AreEqual("some\\tstring", CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("another\\tstring", CommonFunctions.evalResultToString(val2));
         }
 
         [TestMethod]
@@ -938,8 +938,8 @@ namespace WarewolfParsingTest
             var val = EvaluationFunctions.eval(env, 0, false, "[[esc(1).val]]");
             var val2 = EvaluationFunctions.eval(env, 0, false, "[[esc(2).val]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("C:\temp", CommonFunctions.evalResultToString(val));
-            Assert.AreEqual("C:\tval", CommonFunctions.evalResultToString(val2));
+            Assert.AreEqual("some\tstring", CommonFunctions.evalResultToString(val));
+            Assert.AreEqual("another\tstring", CommonFunctions.evalResultToString(val2));
         }
 
         public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
@@ -955,9 +955,9 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(1).b]]", "a", 0);
             env.Assign("[[Rec(2).b]]", "b", 0);
             env.Assign("[[Rec(3).b]]", "c", 0);
-            env.Assign("[[escapeValue]]","C:\test",0);
-            env.Assign("[[esc(1).val]]", "C:\temp", 0);
-            env.Assign("[[esc(2).val]]", "C:\tval", 0);
+            env.Assign("[[escapeValue]]", "some test with a tab character\tin it", 0);
+            env.Assign("[[esc(1).val]]", "some\tstring", 0);
+            env.Assign("[[esc(2).val]]", "another\tstring", 0);
             env.Assign("[[x]]", "1", 0);
             env.Assign("[[y]]", "y", 0);
             env.AssignJson(new AssignValue("[[@Person.Name]]", "bob"), 0);

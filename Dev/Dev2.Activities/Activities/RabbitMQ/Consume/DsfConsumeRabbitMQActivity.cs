@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -34,7 +34,9 @@ using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Consume
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799",
+        "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml",
+        "Tool_Utility_Rabbit_MQ_Consume")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity, IEquatable<DsfConsumeRabbitMQActivity>
     {
         internal List<string> _messages;
@@ -42,8 +44,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
         ushort _prefetch;
         int _timeOut;
         public bool IsObject { get; set; }
-        [FindMissing]
-        public string ObjectName { get; set; }
+        [FindMissing] public string ObjectName { get; set; }
+
         public DsfConsumeRabbitMQActivity()
             : this(new ResponseManager())
         {
@@ -65,24 +67,17 @@ namespace Dev2.Activities.RabbitMQ.Consume
         }
 
 
-
         public Guid RabbitMQSourceResourceId { get; set; }
 
-        [Inputs("Queue Name")]
-        [FindMissing]
-        public string QueueName { get; set; }
+        [Inputs("Queue Name")] [FindMissing] public string QueueName { get; set; }
 
-        [FindMissing]
-        public string Response { get; set; }
+        [FindMissing] public string Response { get; set; }
 
-        [FindMissing]
-        [Inputs("Prefetch")]
-        public string Prefetch { get; set; }
+        [FindMissing] [Inputs("Prefetch")] public string Prefetch { get; set; }
 
         public bool Acknowledge { get; set; }
 
-        [FindMissing]
-        public string TimeOut { get; set; }
+        [FindMissing] public string TimeOut { get; set; }
 
         public bool ReQueue { get; set; }
 
@@ -90,19 +85,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public bool ShouldSerializeConsumer() => false;
 
-        [NonSerialized]
-        ConnectionFactory _connectionFactory;
+        [NonSerialized] ConnectionFactory _connectionFactory;
 
         internal ConnectionFactory ConnectionFactory
         {
-            get
-            {
-                return _connectionFactory ?? (_connectionFactory = new ConnectionFactory());
-            }
-            set
-            {
-                _connectionFactory = value;
-            }
+            get { return _connectionFactory ?? (_connectionFactory = new ConnectionFactory()); }
+            set { _connectionFactory = value; }
         }
 
         public bool ShouldSerializeConnectionFactory() => false;
@@ -119,7 +107,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public override IEnumerable<StateVariable> GetState()
         {
-            return new[] {
+            return new[]
+            {
                 new StateVariable
                 {
                     Name = "QueueName",
@@ -155,12 +144,14 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     Name = "RabbitMQSourceResourceId",
                     Value = RabbitMQSourceResourceId.ToString(),
                     Type = StateVariable.StateType.Input
-                },new StateVariable
+                },
+                new StateVariable
                 {
                     Name = "ReQueue",
                     Value = ReQueue.ToString(),
                     Type = StateVariable.StateType.Input
-                },new StateVariable
+                },
+                new StateVariable
                 {
                     Name = "TimeOut",
                     Value = TimeOut,
@@ -168,14 +159,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 },
                 new StateVariable
                 {
-                    Name="Result",
+                    Name = "Result",
                     Value = Result,
                     Type = StateVariable.StateType.Output
-                }
-                ,
+                },
                 new StateVariable
                 {
-                    Name="Response",
+                    Name = "Response",
                     Value = Response,
                     Type = StateVariable.StateType.Output
                 }
@@ -188,7 +178,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
             _messages = new List<string>();
             try
             {
-                RabbitSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
+                RabbitSource =
+                    ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID,
+                        RabbitMQSourceResourceId);
                 if (RabbitSource == null || RabbitSource.ResourceType != enSourceType.RabbitMQSource.ToString())
                 {
                     _messages.Add(ErrorResource.RabbitSourceHasBeenDeleted);
@@ -200,10 +192,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     _messages.Add(ErrorResource.RabbitQueueNameRequired);
                     return _messages;
                 }
+
                 if (!evaluatedValues.TryGetValue("Prefetch", out var prefetch))
                 {
                     prefetch = string.Empty;
                 }
+
                 ConnectionFactory.HostName = RabbitSource.HostName;
                 ConnectionFactory.Port = RabbitSource.Port;
                 ConnectionFactory.UserName = RabbitSource.UserName;
@@ -217,7 +211,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
                         PerformExecutionOnChannel(queueName, prefetch);
                     }
                 }
-                return new List<string> { _result };
+
+                return new List<string> {_result};
             }
             catch (Exception ex)
             {
@@ -226,6 +221,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
+        private string CorrelationID { get; set; } = "";
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         private void PerformExecutionOnChannel(string queueName, string prefetch)
@@ -237,11 +233,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 _timeOut = int.Parse(TimeOut);
             }
 
-            _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort)0 : ushort.Parse(prefetch);
+            _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort) 0 : ushort.Parse(prefetch);
             if (_prefetch == 0)
             {
                 _prefetch = ushort.MaxValue;
             }
+
             Channel.BasicQos(0, _prefetch, Acknowledge);
             var msgCount = 0;
             if (ReQueue)
@@ -268,7 +265,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     {
                         throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                     }
-
                 }
             }
             else
@@ -288,6 +284,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     {
                         messageCount = 0;
                     }
+
                     Consumer = new QueueingBasicConsumer(Channel);
                     try
                     {
@@ -303,11 +300,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     {
                         var ea = Consumer.Queue.Dequeue();
                         var body = ea.Body;
-
                         _messages.Add(Encoding.Default.GetString(body));
+                        CorrelationID = ea.BasicProperties.CorrelationId;
                         tag = ea.DeliveryTag;
                         msgCount++;
                     }
+
                     if (tag.HasValue)
                     {
                         Channel.BasicAck(tag.Value, _prefetch != 1);
@@ -318,6 +316,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     }
                 }
             }
+            Dev2Logger.Debug($"Message consumed from queue {queueName} CorrelationId: {CorrelationID} ",
+                GlobalConstants.WarewolfDebug);
         }
 
         private int ExecuteWithTimeout(string queueName, int msgCount)
@@ -332,7 +332,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
             }
             ulong? tag = null;
-            while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out var basicDeliverEventArgs) && _prefetch > msgCount)
+            while (Consumer.Queue.Dequeue((int) TimeSpan.FromSeconds(_timeOut).TotalMilliseconds,
+                       out var basicDeliverEventArgs) && _prefetch > msgCount)
             {
                 if (basicDeliverEventArgs == null)
                 {
@@ -342,6 +343,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     var body = basicDeliverEventArgs.Body;
                     _messages.Add(Encoding.Default.GetString(body));
+                    CorrelationID = basicDeliverEventArgs.BasicProperties.CorrelationId;
                     tag = basicDeliverEventArgs.DeliveryTag;
                 }
                 msgCount++;
@@ -350,15 +352,15 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 Channel.BasicAck(tag.Value, _prefetch != 1);
             }
-
+            Dev2Logger.Debug($"Message consumed from queue {queueName} CorrelationId: {CorrelationID} ",
+                GlobalConstants.WarewolfDebug);
             return msgCount;
         }
 
 
-
         #region Overrides of DsfBaseActivity
 
-        public override List<string> GetOutputs() => new List<string> { Response, Result };
+        public override List<string> GetOutputs() => new List<string> {Response, Result};
 
         #endregion
 
@@ -406,6 +408,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 ResponseManager.IsObject = IsObject;
                 ResponseManager.ObjectName = ObjectName;
             }
+            dataObject.CustomTransactionID = CorrelationID;
             base.AssignResult(dataObject, update);
             if (!string.IsNullOrEmpty(ObjectName) && IsObject && (_messages?.Any() ?? false))
             {
@@ -468,20 +471,20 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitSource, other.RabbitSource);
             return base.Equals(other)
-                && string.Equals(Result, other.Result)
-                && Prefetch == other.Prefetch
-                && TimeOut == other.TimeOut
-                && IsObject == other.IsObject
-                && string.Equals(ObjectName, other.ObjectName)
-                && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
-                && string.Equals(QueueName, other.QueueName)
-                && string.Equals(DisplayName, other.DisplayName)
-                && string.Equals(Response, other.Response)
-                && string.Equals(Prefetch, other.Prefetch)
-                && Acknowledge == other.Acknowledge
-                && string.Equals(TimeOut, other.TimeOut)
-                && ReQueue == other.ReQueue
-                && isSourceEqual;
+                   && string.Equals(Result, other.Result)
+                   && Prefetch == other.Prefetch
+                   && TimeOut == other.TimeOut
+                   && IsObject == other.IsObject
+                   && string.Equals(ObjectName, other.ObjectName)
+                   && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
+                   && string.Equals(QueueName, other.QueueName)
+                   && string.Equals(DisplayName, other.DisplayName)
+                   && string.Equals(Response, other.Response)
+                   && string.Equals(Prefetch, other.Prefetch)
+                   && Acknowledge == other.Acknowledge
+                   && string.Equals(TimeOut, other.TimeOut)
+                   && ReQueue == other.ReQueue
+                   && isSourceEqual;
         }
 
         public override bool Equals(object obj)
@@ -501,7 +504,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 return false;
             }
 
-            return Equals((DsfConsumeRabbitMQActivity)obj);
+            return Equals((DsfConsumeRabbitMQActivity) obj);
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex

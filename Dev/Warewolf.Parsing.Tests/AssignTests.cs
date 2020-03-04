@@ -3,7 +3,7 @@ using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-
+using static DataStorage;
 
 namespace WarewolfParsingTest
 {
@@ -85,7 +85,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = EvaluationFunctions.parseLanguageExpression("[[rec([[a]]).a]]", 1);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec([[a]]).a]]", 1, ShouldTypeCast.Yes);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
@@ -121,7 +121,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = EvaluationFunctions.parseLanguageExpression("[[rec(1).a]]", 3);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec(1).a]]", 3, ShouldTypeCast.Yes);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
@@ -157,7 +157,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = EvaluationFunctions.parseLanguageExpression("[[rec(1)]]", 3);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec(1)]]", 3, ShouldTypeCast.Yes);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
@@ -193,7 +193,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = EvaluationFunctions.parseLanguageExpression("[[rec([[a]])]]", 1);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec([[a]])]]", 1, ShouldTypeCast.Yes);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);

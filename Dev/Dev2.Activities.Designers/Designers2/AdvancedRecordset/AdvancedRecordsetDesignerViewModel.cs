@@ -41,6 +41,7 @@ using System.Text;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Common;
 using Dev2.Activities.Utils;
+using static DataStorage;
 
 namespace Dev2.Activities.Designers2.AdvancedRecordset
 {
@@ -253,7 +254,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         public StringBuilder CleanUpSql()
         {
             var sqlString = new StringBuilder();
-            if (EvaluationFunctions.parseLanguageExpressionWithoutUpdate(SqlQuery) is ComplexExpression res)
+            if (EvaluationFunctions.parseLanguageExpressionWithoutUpdate(SqlQuery, ShouldTypeCast.Yes) is ComplexExpression res)
             {
                 foreach (var i in res.Item)
                 {

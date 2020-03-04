@@ -2013,7 +2013,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         ret.AddRange(connectedList(nextActivity));
                     }
-                    return ret.Where(o => o.IsGate);
+                    return ret.Where(o => (o is GateActivity));
                 }
 
                 bool found = false;

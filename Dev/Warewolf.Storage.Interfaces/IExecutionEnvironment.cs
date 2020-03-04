@@ -19,6 +19,7 @@ namespace Warewolf.Storage.Interfaces
         CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
 
         void Assign(string exp, string value, int update);
+        void AssignString(string exp, string value, int update);
 
         void AssignStrict(string exp, string value, int update);
 		void AssignWithFrame(IEnumerable<IAssignValue> values, int update);

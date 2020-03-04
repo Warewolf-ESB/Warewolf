@@ -14,7 +14,7 @@ let rec evalForDataMerge (env : WarewolfEnvironment) (update : int) (lang : stri
         match exp with
         | Some a when update = 0 -> a
         | _ -> 
-            let temp = parseLanguageExpression lang update
+            let temp = parseLanguageExpression lang update ShouldTypeCast.Yes
             temp
     match buffer with
     | RecordSetExpression a -> [ WarewolfAtomListresult((evalRecordsSet a env)) ]
