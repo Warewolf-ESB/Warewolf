@@ -20,13 +20,13 @@ namespace Warewolf.Common
 {
     public interface IHttpClientFactory
     {
-        IHttpClient New(Uri uri, string userName, string password, NameValueCollection headers);
-        IHttpClient New(string url, string userName, string password, NameValueCollection headers);
+        IHttpClient New(Uri uri, string userName, string password, Headers headers);
+        IHttpClient New(string url, string userName, string password, Headers headers);
     }
 
     public class HttpClientFactory : IHttpClientFactory
     {
-        public IHttpClient New(Uri uri, string userName, string password, NameValueCollection headers)
+        public IHttpClient New(Uri uri, string userName, string password, Headers headers)
         {
             var baseAddress = uri.GetLeftPart(UriPartial.Authority);
             var httpClientHandler = new HttpClientHandler();
@@ -57,14 +57,17 @@ namespace Warewolf.Common
             {
                 BaseAddress = new Uri(baseAddress)
             };
-            foreach (var name in headers.AllKeys)
+            foreach (var keyValues in headers)
             {
-                client.DefaultRequestHeaders.Add(name, headers[name]);
+                foreach (var value in keyValues.Value)
+                {
+                    client.DefaultRequestHeaders.Add(keyValues.Key, value);
+                }
             }
             return new HttpClientWrapper(client, hasCredentials);
         }
 
-        public IHttpClient New(string url, string userName, string password, NameValueCollection headers)
+        public IHttpClient New(string url, string userName, string password, Headers headers)
         {
             return New(new Uri(url), userName, password, headers);
         }

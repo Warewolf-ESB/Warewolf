@@ -9,7 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,11 +46,11 @@ namespace Warewolf.Common
             _mapEntireMessage = mapEntireMessage;
         }
 
-        public async Task<ConsumerResult> Consume(byte[] body, object headers)
+        public async Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var postBody = BuildPostBody(body); 
 
-            using (var execution = await SendEventToWarewolf(_url, postBody, headers))
+            using (var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers))
             {
                 if (!execution.IsSuccessStatusCode)
                 {
@@ -70,15 +69,9 @@ namespace Warewolf.Common
             return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, object headers)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, Headers headers)
         {
-            var additionalRequestHeaders = new NameValueCollection();
-            if (headers is Headers httpHeaders)
-            {
-                additionalRequestHeaders[nameof(httpHeaders.CustomTransactionID)] = httpHeaders.CustomTransactionID;
-                additionalRequestHeaders[nameof(httpHeaders.ExecutionID)] = httpHeaders.ExecutionID.ToString();
-            }
-            using (var client = _httpClientFactory.New(uri, _username, _password, additionalRequestHeaders))
+            using (var client = _httpClientFactory.New(uri, _username, _password, headers))
             {
                 return await client.PostAsync(uri,postData);
             }

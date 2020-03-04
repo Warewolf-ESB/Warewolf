@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Warewolf.Auditing;
 using Warewolf.Data;
@@ -35,25 +36,26 @@ namespace QueueWorker
         public Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var headers = parameters as Headers;
-            if (headers.ExecutionID is null)
+            if (!headers.KeyExists("ExecutionID"))
             {
-                headers.ExecutionID = Guid.NewGuid();
+                headers["ExecutionID"] = new[] { Guid.NewGuid().ToString() };
             }
-
-            var executionId = Guid.Parse(headers.ExecutionID.ToString());
+            var empty = new string[] { };
+            var executionId = Guid.Parse(headers["ExecutionID"].FirstOrDefault());
+            var customTransactionID = headers["CustomTransactionID", empty].FirstOrDefault();
             string strBody = System.Text.Encoding.UTF8.GetString(body);
 
-            _logger.StartExecution($"[{executionId}] - {headers.CustomTransactionID} processing body {strBody} ");
+            _logger.StartExecution($"[{executionId}] - {customTransactionID} processing body {strBody} ");
             var startDate = DateTime.UtcNow;
 
-            var task = _consumer.Consume(body, headers);
+            var task = _consumer.Consume(body, parameters);
 
             task.ContinueWith((requestForwarderResult) =>
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
-                _logger.Warn($"[{executionId}] - {headers.CustomTransactionID} failure processing body {strBody}");
-                CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration, headers.CustomTransactionID);
+                _logger.Warn($"[{executionId}] - {customTransactionID} failure processing body {strBody}");
+                CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration, customTransactionID);
             }, TaskContinuationOptions.OnlyOnFaulted);
 
             task.ContinueWith((requestForwarderResult) =>
@@ -63,15 +65,15 @@ namespace QueueWorker
 
                 if (requestForwarderResult.Result == ConsumerResult.Success)
                 {
-                    _logger.Info($"[{executionId}] - {headers.CustomTransactionID} success processing body {strBody}");
-                    var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId,headers.CustomTransactionID);
+                    _logger.Info($"[{executionId}] - {customTransactionID} success processing body {strBody}");
+                    var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId,customTransactionID);
                     var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
                     _logger.ExecutionSucceeded(executionEntry);
                 }
                 else
                 {
                     _logger.Error($"Failed to execute {_resourceId + " [" + executionId + "] " + strBody}");
-                    CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration,headers.CustomTransactionID);
+                    CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration,customTransactionID);
                 }
 
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
