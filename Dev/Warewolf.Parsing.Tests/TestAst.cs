@@ -170,5 +170,30 @@ namespace WarewolfParsingTest
             Assert.ThrowsException<DataStorage.WarewolfInvalidComparisonException>(() => DataStorage.CompareAtoms(int1, bob));
             //------------Assert Results-------------------------
         }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(DataStorage))]
+        public void DataStorage_TryParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsDataStringTrue()
+        {
+            Assert.IsTrue(DataStorage.tryParseAtom("0123").IsDataString);
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(DataStorage))]
+        public void DataStorage_TryFloatParseAtom_GivenInputStringStartsWithZero_ShouldReturnIsDataStringTrue()
+        {
+            Assert.IsTrue(DataStorage.tryFloatParseAtom("01.0").IsDataString);
+        }
+
+        [TestMethod]
+        [Owner("Devaji Chotaliya")]
+        [TestCategory(nameof(DataStorage))]
+        public void DataStorage_TryFloatParseAtom_GivenInputStringEndsWithZero_ShouldReturnIsFloatTrue()
+        {
+            Assert.IsTrue(DataStorage.tryFloatParseAtom("1500.50").IsFloat);
+            Assert.IsTrue(DataStorage.tryFloatParseAtom("0.0").IsFloat);
+        }
     }
 }

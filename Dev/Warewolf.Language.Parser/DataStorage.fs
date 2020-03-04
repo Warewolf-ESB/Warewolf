@@ -1,6 +1,7 @@
 ﻿module DataStorage
 
 open System.Diagnostics.CodeAnalysis
+open Newtonsoft.Json.Linq
 
 [<ExcludeFromCodeCoverage>]
 let PositionColumn = "WarewolfPositionColumn"
@@ -13,6 +14,9 @@ let GetDecimalPlaces(decimalNumber : float) =
             powers <- powers * 10.0
             decimalPlaces <- decimalPlaces + 1
     decimalPlaces
+
+type ShouldTypeCast = No | Yes
+
 
 /// Performance enhancements
 [<ExcludeFromCodeCoverage>]
@@ -27,6 +31,7 @@ type WarewolfAtom =
     | Float of float
     | Int of int
     | DataString of string
+    | JsonObject of JToken
     | Nothing
     | NullPlaceholder
     | PositionedValue of (int * WarewolfAtom)
@@ -38,6 +43,7 @@ type WarewolfAtom =
             a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
+        | JsonObject a -> a.ToString()
         | Nothing -> ""
         | NullPlaceholder -> ""
         | PositionedValue(_, b) -> b.ToString()
@@ -107,13 +113,11 @@ let rec tryParseAtom (data : string) =
 ///Parse a float. 
 and tryFloatParseAtom (data : string) = 
     let mutable value = 0.0m
-    let mutable valuse = 0.0
+    let mutable values = 0.0
     if data.StartsWith("0") && (not (data.StartsWith("0."))) then DataString data
     else if (data.Contains(".")) then 
-        let success = System.Decimal.TryParse(data, &value) && System.Double.TryParse(data, &valuse)
-        if success then 
-            if (data.EndsWith("0")) && success then DataString data
-            else Float(System.Convert.ToDouble(value))
+        let success = System.Decimal.TryParse(data, &value) && System.Double.TryParse(data, &values)
+        if success then Float(System.Convert.ToDouble(value))
         else DataString data
     else DataString data
 

@@ -116,12 +116,12 @@
                                       FilterMode="Contains"
                                       ValueMemberPath="Value" 
                                       ItemsSource="{Binding Path=Suggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Text="{Binding Path=DataContext.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Text="{Binding Path=DataContext.Value, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource AutoCompleteBoxStyle}" 
                                       ToolTip="{Binding Path=DataContext.Tooltip}"
                                       IsEnabled="{Binding Path=DataContext.Enabled, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wi:IEnabled}, AncestorLevel=1}}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{Binding Path=HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
+                    <core:HelpSetter Text="{Binding Path=DataContext.HelpText}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
         </Grid>

@@ -47,6 +47,10 @@ namespace Warewolf.Storage
 
             _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
         }
+        public void AssignString(string exp, string value, int update)
+        {
+            _inner.AssignString(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
+        }
 
         string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp) => exp.Replace(_alias, datasource);
 

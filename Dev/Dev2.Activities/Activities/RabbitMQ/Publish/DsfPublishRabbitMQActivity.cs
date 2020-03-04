@@ -26,7 +26,6 @@ using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
     public class DsfPublishRabbitMQActivity : DsfBaseActivity, IEquatable<DsfPublishRabbitMQActivity>
     {
         #region Ctor
