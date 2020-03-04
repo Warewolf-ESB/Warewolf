@@ -11,7 +11,9 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -45,6 +47,13 @@ namespace Dev2.Runtime.ESB.Control
 
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
+
+            if (Config.Server.EnableDetailedLogging)
+            {
+                var stateNotifier = CustomContainer.Get<ILogManager>()?.CreateStateNotifier(dataObject);
+                dataObject.StateNotifier = stateNotifier;
+            }
+
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = null;
