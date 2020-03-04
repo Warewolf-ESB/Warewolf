@@ -386,6 +386,28 @@ namespace Dev2.Studio.ViewModels
             return null;
         }
 
+        private ICommand _runCoverageCommand;
+        public ICommand RunCoverageCommand => _runCoverageCommand ?? (_runCoverageCommand = new DelegateCommand(RunCoverage));
+
+        private void RunCoverage(object explorerObj)
+        {
+            var resourcePath = "";
+            var resourceId = Guid.Empty;
+            switch (explorerObj)
+            {
+                case ExplorerItemViewModel explorerItem:
+                    resourcePath = explorerItem.ResourcePath;
+                    resourceId = explorerItem.ResourceId;
+                    break;
+                case EnvironmentViewModel environmentViewModel:
+                    resourcePath = environmentViewModel.ResourcePath;
+                    resourceId = environmentViewModel.ResourceId;
+                    break;
+            }
+            
+            RunCoverage(resourcePath, resourceId);
+        }
+
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
@@ -1218,6 +1240,28 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void RunCoverage(string resourcePath, Guid resourceId)
+        {
+            RunCoverage(resourcePath, resourceId, new ExternalProcessExecutor());
+        }
+
+        private void RunCoverage(string resourcePath, Guid resourceId, IExternalProcessExecutor processExecutor)
+        {
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            
+            if (contextualResourceModel != null)
+            {
+                //TODO: Replace with RunCoverage
+                _worksurfaceContextManager.RunAllTestsForService(contextualResourceModel);
+            }
+            else
+            {
+                //TODO: Replace with RunCoverage
+                var secureResourcePath = environmentModel?.Connection.WebServerUri + "secure/" + resourcePath;
+                _worksurfaceContextManager.RunAllTestsForFolder(secureResourcePath, processExecutor);
+            }
+        }
 
         public void RunAllTests(string ResourcePath, Guid resourceId)
         {
