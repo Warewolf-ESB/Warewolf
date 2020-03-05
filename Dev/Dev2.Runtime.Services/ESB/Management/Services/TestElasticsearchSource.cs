@@ -44,7 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     HostName = elasticsearchServiceSourceDefinition.HostName,
                     Port = elasticsearchServiceSourceDefinition.Port,
-                    Password = elasticsearchServiceSourceDefinition.Password
+                    Password = elasticsearchServiceSourceDefinition.Password,
+                    AuthenticationType = elasticsearchServiceSourceDefinition.AuthenticationType,
                 });
                 msg.HasError = false;
                 msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);
