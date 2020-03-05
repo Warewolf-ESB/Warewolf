@@ -40,9 +40,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Warewolf.Data;
 using Warewolf.Storage.Interfaces;
-using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -1126,7 +1124,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = StringExtension.IsXml(postDataMock);
+            var isXml = postDataMock.IsXml();
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -1200,7 +1198,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = StringExtension.IsXml(postDataMock);
+            var isXml = postDataMock.IsXml();
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -1234,7 +1232,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = StringExtension.IsXml(postDataMock);
+            var isXml = postDataMock.IsXml();
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
