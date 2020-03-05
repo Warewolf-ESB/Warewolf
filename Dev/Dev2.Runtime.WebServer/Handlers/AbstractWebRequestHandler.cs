@@ -138,6 +138,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObject.SetupForRemoteInvoke(headers);
                 _dataObject.SetEmitionType(webRequest, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
+                _dataObject.SetCustomTransactionID(headers);
                 if (_dataObject.ServiceName == null)
                 {
                     _dataObject.ServiceName = serviceName;

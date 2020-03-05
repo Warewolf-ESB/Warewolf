@@ -6,10 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-
-
-
-
+using static DataStorage;
 
 namespace WarewolfParsingTest
 {
@@ -501,27 +498,27 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAValue_addsObjectIfItDoesNotExist()
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
+        public void AssignEvaluation_assignGivenAValueForJson_addsObjectIfItDoesNotExist()
         {
             var env = CreateTestEnvWithData();
 
             var result = PublicFunctions.EvalEnvExpression("[[a]]", 0, false, env);
 
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Person", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Person")))));
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Person", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Person")))));
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAValueCreatesValidJson_addsObjectIfItDoesNotExist()
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
+        public void AssignEvaluation_assignGivenAValueForJsonCreatesValidJson_addsObjectIfItDoesNotExist()
         {
             var env = CreateTestEnvWithData();
 
             var result = PublicFunctions.EvalEnvExpression("[[a]]", 0, false, env);
 
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Age")))));
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Age")))));
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
             Assert.AreEqual("{\r\n  \"Age\": 5\r\n}", env2.JsonObjects["Bob"].ToString());
@@ -557,11 +554,11 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignObject_ArrayJson_Last()
         {
             var env = CreateTestEnvWithData();
-            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env);
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             Assert.AreEqual("[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]", env2.JsonObjects["Person"].ToString());
@@ -574,12 +571,12 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignObject_Json()
         {
             var env = CreateTestEnvWithData();
 
-            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[@Person]]", "{\"Name\":\"a\"}"), 0, env);
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[@Person]]", "{\"Name\":\"a\"}"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             var nameValue = PublicFunctions.EvalEnvExpression("[[@Person.Name]]", 0, false, env2);
@@ -591,12 +588,12 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignObject_ArrayJson_Last_TwoObjects()
         {
             var env = CreateTestEnvWithData();
-            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env);
-            var env3 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"h\"}"), 0, env2);
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env, ShouldTypeCast.Yes);
+            var env3 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"h\"}"), 0, env2, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             var nameValue = PublicFunctions.EvalEnvExpression("[[@Person().Name]]", 0, false, env3);
@@ -608,12 +605,12 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAValue_ArrayJson_Last()
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
+        public void AssignEvaluation_assignGivenAValueForJson_ArrayJson_Last()
         {
             var env = CreateTestEnvWithData();
 
-            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person().Name]]", "a"), 0, env);
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person().Name]]", "a"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
@@ -621,12 +618,12 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAValue_ArrayJson_index()
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
+        public void AssignEvaluation_assignGivenAValueForJson_ArrayJson_index()
         {
             var env = CreateTestEnvWithData();
 
-            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env);
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
@@ -634,36 +631,36 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAValue_ArrayJson_Star()
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
+        public void AssignEvaluation_assignGivenAValueForJson_ArrayJson_Star()
         {
             var env = CreateTestEnvWithData();
 
-            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env);
-            env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(2).Name]]", "a"), 0, env2);
-            env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(*).Name]]", "x"), 0, env2);
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env, ShouldTypeCast.Yes);
+            env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(2).Name]]", "a"), 0, env2, ShouldTypeCast.Yes);
+            env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(*).Name]]", "x"), 0, env2, ShouldTypeCast.Yes);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"x\"\r\n  },\r\n  {\r\n    \"Name\": \"x\"\r\n  }\r\n]");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         [ExpectedException(typeof(Exception))]
-        public void AssignEvaluation_assignGivenAValue_ArrayJson_InvalidIndex()
+        public void AssignEvaluation_assignGivenAValueForJson_ArrayJson_InvalidIndex()
         {
             var env = CreateTestEnvWithData();
 
-            AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(abc).Name]]", "a"), 0, env);
+            AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(abc).Name]]", "a"), 0, env, ShouldTypeCast.Yes);
 
             Assert.Fail("Failed");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         [ExpectedException(typeof(Exception))]
-        public void AssignEvaluation_assignGivenAValue_ArrayJson_InvalidNamesExpresion()
+        public void AssignEvaluation_assignGivenAValueForJson_ArrayJson_InvalidNamesExpresion()
         {
             var exp = LanguageAST.JsonIdentifierExpression.Terminal;
             var res = new JObject();
@@ -673,19 +670,19 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnObjectValueCreatesValidJson_addsObjectIfItDoesNotExistIntLastAndAddsProperty()
         {
             var env = CreateTestEnvWithData();
             var x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child.Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child.Name]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": {\r\n    \"Name\": \"2\"\r\n  }\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": {\r\n    \"Name\": 2\r\n  }\r\n}");
         }
 
         [TestMethod]
@@ -781,7 +778,7 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         [ExpectedException(typeof(Exception))]
         public void AssignEvaluation_FailsIfExpressionIsNotOfCorrectType()
         {
@@ -789,46 +786,46 @@ namespace WarewolfParsingTest
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             var val = LanguageAST.JsonIdentifierExpression.Terminal;
-            AssignEvaluation.assignGivenAValue(env, result, val);
+            AssignEvaluation.assignGivenAValueForJson(env, result, val);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_addsArrayIfItDoesNotExistIntLastAndAddsProperty()
         {
             var env = CreateTestEnvWithData();
             var x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(1).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(1).Name]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\"\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    }\r\n  ]\r\n}");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_LastIndex_addsArrayIfItDoesNotExistIntLastAndAddsProperty()
         {
             var env = CreateTestEnvWithData();
             var x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\"\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    }\r\n  ]\r\n}");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_LastIndex_MutateArray()
         {
             var env = CreateTestEnvWithData();
@@ -836,19 +833,19 @@ namespace WarewolfParsingTest
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]", ShouldTypeCast.Yes);
 
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
 
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\"\r\n    },\r\n    {\r\n      \"Name\": \"4\"\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    },\r\n    {\r\n      \"Name\": 4\r\n    }\r\n  ]\r\n}");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_LastIndex_MutateArray_differentProperties()
         {
             var env = CreateTestEnvWithData();
@@ -856,20 +853,20 @@ namespace WarewolfParsingTest
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
-            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Age]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]", ShouldTypeCast.Yes);
+            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Age]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
 
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val2.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual("{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\",\r\n      \"Age\": \"4\"\r\n    }\r\n  ]\r\n}", env2.JsonObjects["Person"].ToString());
+            Assert.AreEqual("{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2,\r\n      \"Age\": 4\r\n    }\r\n  ]\r\n}", env2.JsonObjects["Person"].ToString());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_StarIndex_MutateArray()
         {
             var env = CreateTestEnvWithData();
@@ -878,21 +875,21 @@ namespace WarewolfParsingTest
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, false, env);
             var thirdResult = PublicFunctions.EvalEnvExpression("[[rec(3).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
-            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]", ShouldTypeCast.Yes);
+            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
 
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, thirdResult, val2.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, thirdResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"Bob\"\r\n    },\r\n    {\r\n      \"Name\": \"Bob\"\r\n    }\r\n  ]\r\n}");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_StarIndex_MutateArray_AndAddAProperty()
         {
             var env = CreateTestEnvWithData();
@@ -901,45 +898,47 @@ namespace WarewolfParsingTest
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, false, env);
             var thirdResult = PublicFunctions.EvalEnvExpression("[[rec(3).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
-            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]");
-            var parsed3 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Age]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]", ShouldTypeCast.Yes);
+            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]", ShouldTypeCast.Yes);
+            var parsed3 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Age]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
             var val3 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed3;
 
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, thirdResult, val2.Item);
-            env2 = AssignEvaluation.assignGivenAValue(env2, result, val3.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, thirdResult, val2.Item);
+            env2 = AssignEvaluation.assignGivenAValueForJson(env2, result, val3.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             var obj = env2.JsonObjects["Person"];
-            Assert.AreEqual(obj.ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"Bob\"\r\n    },\r\n    {\r\n      \"Name\": \"Bob\"\r\n    }\r\n  ],\r\n  \"Age\": \"2\"\r\n}");
+            Assert.AreEqual(obj.ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"Bob\"\r\n    },\r\n    {\r\n      \"Name\": \"Bob\"\r\n    }\r\n  ],\r\n  \"Age\": 2\r\n}");
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_Invalid()
         {
             var env = CreateTestEnvWithData();
             var x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(1).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(1).Name]]", ShouldTypeCast.Yes);
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
+            var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\"\r\n    }\r\n  ]\r\n}");
+            var expected = "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    }\r\n  ]\r\n}";
+            var actual = env2.JsonObjects["Person"].ToString();
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_LanguageExpressionToJsonExpression()
         {
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Child(1).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Child(1).Name]]", ShouldTypeCast.Yes);
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
             Assert.IsTrue(exp.IsIndexNestedNameExpression);
             var exp2 = (exp as LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression).Item;
@@ -955,40 +954,40 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_Scalar()
         {
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Child]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Child]]", ShouldTypeCast.Yes);
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
             Assert.IsNotNull(exp);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_CompleteRecset()
         {
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Child()]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Child()]]", ShouldTypeCast.Yes);
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         [ExpectedException(typeof(Exception))]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_Atom()
         {
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("bob");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("bob", ShouldTypeCast.Yes);
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [TestCategory("AssignEvaluation_assignGivenAValueForJson")]
         [ExpectedException(typeof(Exception))]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_Complex()
         {
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[[[bob]]]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[[[bob]]]]", ShouldTypeCast.Yes);
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
         }
         [TestMethod]
@@ -1032,7 +1031,7 @@ namespace WarewolfParsingTest
 
             var value2 = jContainer.First;
             var token2 = ((JProperty)value2).Value;
-            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2);
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2.ToString());
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -1055,7 +1054,7 @@ namespace WarewolfParsingTest
 
             var value2 = jContainer.First;
             var token2 = ((JProperty)value2).Value;
-            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2);
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2.ToString());
 
         }
         DataStorage.WarewolfEnvironment CreateTestEnvWithData()

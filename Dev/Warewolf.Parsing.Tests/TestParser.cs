@@ -6,8 +6,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-
-
+using static DataStorage;
 
 namespace WarewolfParsingTest
 {
@@ -17,7 +16,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestScalar()
         {
-            var ast = EvaluationFunctions.parseLanguageExpression("[[a]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[a]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsScalarExpression);
             if (ast is LanguageAST.LanguageExpression.ScalarExpression astval)
             {
@@ -32,7 +31,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestRecsetExpressionLastIndex()
         {
-            var ast = EvaluationFunctions.parseLanguageExpression("[[rec().a]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec().a]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsRecordSetExpression);
             if (ast is LanguageAST.LanguageExpression.RecordSetExpression astval)
             {
@@ -49,7 +48,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestRecsetExpressionStarIndex()
         {
-            var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*).a]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*).a]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsRecordSetExpression);
             if (ast is LanguageAST.LanguageExpression.RecordSetExpression astval)
             {
@@ -66,7 +65,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestRecsetNameExpressionStarIndex()
         {
-            var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*)]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec(*)]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsRecordSetNameExpression);
             if (ast is LanguageAST.LanguageExpression.RecordSetNameExpression astval)
             {
@@ -82,7 +81,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestRecsetNameExpressionLastIndex()
         {
-            var ast = EvaluationFunctions.parseLanguageExpression("[[rec()]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[rec()]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsRecordSetNameExpression);
             if (ast is LanguageAST.LanguageExpression.RecordSetNameExpression astval)
             {
@@ -100,7 +99,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpression("[[1rec().a]]", 0);
+                EvaluationFunctions.parseLanguageExpression("[[1rec().a]]", 0, ShouldTypeCast.Yes);
                 Assert.Fail("No Exception thrown");
             }
             catch (Exception e)
@@ -115,7 +114,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpression("[[1rec(*).a]]", 0);
+                EvaluationFunctions.parseLanguageExpression("[[1rec(*).a]]", 0, ShouldTypeCast.Yes);
                 Assert.Fail("No Exception thrown");
             }
             catch (Exception e)
@@ -130,7 +129,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpression("[[1rec()]]", 0);
+                EvaluationFunctions.parseLanguageExpression("[[1rec()]]", 0, ShouldTypeCast.Yes);
                 Assert.Fail("No Exception thrown");
             }
             catch (Exception e)
@@ -145,7 +144,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpression("[[1rec(*)]]", 0);
+                EvaluationFunctions.parseLanguageExpression("[[1rec(*)]]", 0, ShouldTypeCast.Yes);
                 Assert.Fail("No Exception thrown");
             }
             catch (Exception e)
@@ -160,7 +159,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpression("[[rec().1a]]", 0);
+                EvaluationFunctions.parseLanguageExpression("[[rec().1a]]", 0, ShouldTypeCast.Yes);
                 Assert.Fail("No Exception thrown");
             }
             catch (Exception e)
@@ -176,7 +175,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpression("[[rec(*).1a]]", 0);
+                EvaluationFunctions.parseLanguageExpression("[[rec(*).1a]]", 0, ShouldTypeCast.Yes);
                 Assert.Fail("No Exception thrown");
             }
             catch (Exception e)
@@ -191,7 +190,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_Nested_ExpectComplex()
         {
 
-            var ast = EvaluationFunctions.parseLanguageExpression("[[[[a]]]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[[[a]]]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsComplexExpression);
             if (ast is LanguageAST.LanguageExpression.ComplexExpression astval)
             {
@@ -214,7 +213,7 @@ namespace WarewolfParsingTest
         {
 
 
-            var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[a]]]]]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[a]]]]]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsComplexExpression);
             if (ast is LanguageAST.LanguageExpression.ComplexExpression astval)
             {
@@ -239,7 +238,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_NestedDataSet_ExpectComplex_MultiNested()
         {
 
-            var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0, ShouldTypeCast.Yes);
             Assert.IsTrue(ast.IsComplexExpression);
             if (ast is LanguageAST.LanguageExpression.ComplexExpression astval)
             {
@@ -266,21 +265,37 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        public void WarewolfParse_Eval_Recset_ExpectAnAtom()
+        public void WarewolfParse_Eval_Recset_ExpectAListOfAtoms()
         {
-
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            
+
             var val = x.Item.First();
 
             Assert.IsTrue(val.IsInt);
             var intval = val as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(2, intval.Item);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Recset_ExpectAnAtom()
+        {
+            var env = CreateTestEnvWithData();
+
+            var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
+            Assert.IsTrue(ast.IsWarewolfAtomResult);
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             
+            var val = x.Item;
+
+            Assert.IsTrue(val.IsInt);
+            var intval = val as DataStorage.WarewolfAtom.Int;
+            Assert.AreEqual(2, intval.Item);
         }
 
         [TestMethod]
@@ -1962,7 +1977,7 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_LanguageExpressionToString_NestedJsonArrayOfObjects()
         {
-            var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Age]]"));
+            var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Age]]", ShouldTypeCast.Yes));
             Assert.AreEqual("[[@Person.Child(*).Age]]", str);
         }
 
@@ -1971,7 +1986,7 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_LanguageExpressionToString_NestedProperty()
         {
-            var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child]]"));
+            var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child]]", ShouldTypeCast.Yes));
             Assert.AreEqual("[[@Person.Child]]", str);
         }
 
@@ -1982,7 +1997,7 @@ namespace WarewolfParsingTest
         {
             try
             {
-                EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@this.new(1).val(x).s]]");
+                EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@this.new(1).val(x).s]]", ShouldTypeCast.Yes);
                 Assert.Fail("Expected exception");
             }
             catch(Exception e)

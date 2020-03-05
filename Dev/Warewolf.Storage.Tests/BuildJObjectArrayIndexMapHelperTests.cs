@@ -10,6 +10,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WarewolfParserInterop;
+using static DataStorage;
 
 namespace Warewolf.Storage.Tests
 {
@@ -44,7 +45,7 @@ namespace Warewolf.Storage.Tests
             var test = new BuildJObjectArrayIndexMapHelper(env);
             const string exp = "[[@ob.users(*).name]]";
 
-            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp, ShouldTypeCast.Yes) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
 
             var indexMap = test.Build(parsedExpression.Item, exp);
 
@@ -68,7 +69,7 @@ namespace Warewolf.Storage.Tests
 
             const string exp = "[[@users(*).name]]";
 
-            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp, ShouldTypeCast.Yes) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
 
             var indexMap = test.Build(parsedExpression.Item, exp);
 
@@ -90,7 +91,7 @@ namespace Warewolf.Storage.Tests
 
             const string exp = "[[@ob.user.friends(*).name]]";
 
-            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp, ShouldTypeCast.Yes) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
 
             var indexMap = test.Build(parsedExpression.Item, exp);
 
@@ -111,7 +112,7 @@ namespace Warewolf.Storage.Tests
 
             const string exp = "[[@ob.user.addresses(*).name]]";
 
-            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp, ShouldTypeCast.Yes) as LanguageAST.LanguageExpression.JsonIdentifierExpression;
 
             var indexMap = test.Build(parsedExpression.Item, exp);
 

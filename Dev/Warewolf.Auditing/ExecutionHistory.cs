@@ -36,10 +36,11 @@ namespace Warewolf.Auditing
 
     public class ExecutionInfo : IExecutionInfo
     {
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, Guid executionId, string failureReason)
+        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, Guid executionId, string failureReason, string customTransactionID)
         {
 
             ExecutionId = executionId;
+            CustomTransactionID = customTransactionID;
             Success = success;
             EndDate = endDate;
             Duration = duration;
@@ -47,16 +48,17 @@ namespace Warewolf.Auditing
             FailureReason = failureReason;
         }
         [JsonConstructor]
-        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, Guid executionId)
-            : this(startDate, duration, endDate, success, executionId, "")
+        public ExecutionInfo(DateTime startDate, TimeSpan duration, DateTime endDate, QueueRunStatus success, Guid executionId, string customTransactionID)
+            : this(startDate, duration, endDate, success, executionId, "",customTransactionID)
         {
             ExecutionId = executionId;
+            CustomTransactionID = customTransactionID;
             Success = success;
             EndDate = endDate;
             Duration = duration;
             StartDate = startDate;
         }
-
+        public string CustomTransactionID { get; private set; }
         public DateTime StartDate { get; private set; }
         public TimeSpan Duration { get; private set; }
         public DateTime EndDate { get; private set; }

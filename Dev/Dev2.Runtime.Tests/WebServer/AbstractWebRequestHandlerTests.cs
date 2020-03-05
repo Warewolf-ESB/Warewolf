@@ -2104,6 +2104,77 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ResourceID = Guid.Empty, Times.Exactly(1));
             dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<List<Guid>>(), Times.Exactly(1));
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetCustomTransactionID_ShouldSetDataObjectCustomTransactionID()
+        {
+            var principal = new Mock<IPrincipal>();
+            GetExecutingUser(principal);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.CustomTransactionID).Returns("");
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            var testingCustomTransactionID = "testingCustomTransactionID";
+            var headers = new Mock<NameValueCollection>();
+            headers.Setup(collection => collection.Get("CustomTransactionID")).Returns(testingCustomTransactionID);
+            var webRequestTO = new WebRequestTO()
+            {
+                ServiceName = ""
+            };
+            handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
+            //---------------Execute Test ----------------------            
+            dataObject.Object.SetCustomTransactionID(headers.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(testingCustomTransactionID, dataObject.Object.CustomTransactionID);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_SetCustomTransactionID_CustomTransactionID_DoesNotExistOnHeader()
+        {
+            var principal = new Mock<IPrincipal>();
+            GetExecutingUser(principal);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            //dataObject.SetupGet(o => o.CustomTransactionID).Returns("");
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            var headers = new Mock<NameValueCollection>();
+            headers.Setup(collection => collection.Get("Content-Type")).Returns("application/json");
+            var webRequestTO = new WebRequestTO()
+            {
+                ServiceName = ""
+            };
+            handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
+            //---------------Execute Test ----------------------            
+            dataObject.Object.SetCustomTransactionID(headers.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(null, dataObject.Object.CustomTransactionID);
+        }
     }
 
     class TestAbstractWebRequestDataObjectFactory : AbstractWebRequestHandler.IDataObjectFactory
