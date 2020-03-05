@@ -30,5 +30,12 @@ namespace Warewolf.Service
 
         public const string GateResume = nameof(GateResume);
     }
-
+    public static class SaveElasticsearchSource
+    {
+        public const string ElasticsearchSource = nameof(ElasticsearchSource);
+    }
+    public static class TestElasticsearchSource
+    {
+        public const string ElasticsearchSource = nameof(ElasticsearchSource);
+    }
 }
