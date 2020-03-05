@@ -401,6 +401,9 @@ The window will be reloaded when you click OK.</value>
   <data name="RedisNewHeaderLabel" xml:space="preserve">
     <value>New Redis Source</value>
   </data>
+  <data name="ElasticsearchNewHeaderLabel" xml:space="preserve">
+    <value>New Elasticsearch Source</value>
+  </data>
   <data name="SharePointServiceNewHeaderLabel" xml:space="preserve">
     <value>New SharePoint Service Source</value>
   </data>

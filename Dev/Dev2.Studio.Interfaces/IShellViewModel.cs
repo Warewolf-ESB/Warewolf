@@ -67,6 +67,7 @@ namespace Dev2.Studio.Interfaces
         void NewPluginSource(string resourcePath);
         void NewWebSource(string resourcePath);
         void NewRedisSource(string resourcePath);
+        void NewElasticsearchSource(string resourcePath);
         void NewEmailSource(string resourcePath);
         void NewExchangeSource(string resourcePath);
         void NewRabbitMQSource(string resourcePath);
