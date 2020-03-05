@@ -143,6 +143,7 @@
     <Compile Include="PathOperations\ImpersonationDelegate.cs" />
     <Compile Include="PathOperations\ImpersonationOperation.cs" />
     <Compile Include="PathOperations\ValidateAuthorization.cs" />
+    <Compile Include="ServiceModel\ElasticsearchSource.cs" />
     <Compile Include="ServiceModel\RedisSource.cs" />
     <Compile Include="Util\OperationsHelper.cs" />
     <Compile Include="IComplexObject.cs" />
