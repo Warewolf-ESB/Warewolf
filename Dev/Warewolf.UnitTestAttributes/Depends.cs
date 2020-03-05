@@ -465,8 +465,6 @@ namespace Warewolf.UnitTestAttributes
         public string ID { get; set; }
         public string IP { get; set; }
         public string Port { get; set; }
-        public string Host { get; set; }
-        public string Domain { get; set; }
     }
 
     class StopContainer
