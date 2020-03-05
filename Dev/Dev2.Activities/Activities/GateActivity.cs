@@ -47,7 +47,6 @@ namespace Dev2.Activities
             : base(nameof(Gate))
         {
             DisplayName = nameof(Gate);
-            IsGate = true;
             if (GateOptions is null)
             {
                 GateOptions = new GateOptions();

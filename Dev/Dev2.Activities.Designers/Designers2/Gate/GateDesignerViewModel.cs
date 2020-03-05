@@ -126,11 +126,16 @@ namespace Dev2.Activities.Designers2.Gate
                 gateOptions = new GateOptions();
                 _modelItem.Properties["GateOptions"].SetValue(gateOptions);
             }
+
+            gateOptions.OnChange += UpdateOptionsModelItem;
+            _gateOptionsInst = gateOptions;
             var result = new List<IOption>();
             var failureOptions = OptionConvertor.Convert(gateOptions);
             result.AddRange(failureOptions);
             Options = new OptionsWithNotifier { Options = result };
         }
+
+        private GateOptions _gateOptionsInst { get; set; }
 
         public ICommand DeleteConditionCommand { get; set; }
 
@@ -213,9 +218,10 @@ namespace Dev2.Activities.Designers2.Gate
         {
             if (Options?.Options != null)
             {
-                var gateOptions = _modelItem.Properties["GateOptions"]?.ComputedValue as GateOptions;
-                _modelItem.Properties["GateOptions"]?.SetValue(OptionConvertor.Convert(typeof(GateOptions), Options.Options, gateOptions));
-                OnPropertyChanged(nameof(Options));
+                _modelItem.Properties["GateOptions"]?.ClearValue();
+                // Call Convert to ensure the model is _fully_ updated
+                OptionConvertor.Convert(typeof(GateOptions), Options.Options, _gateOptionsInst);
+                _modelItem.Properties["GateOptions"]?.SetValue(_gateOptionsInst);
             }
         }
 
@@ -288,7 +294,6 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _options = value;
                 OnPropertyChanged(nameof(Options));
-                _options.OptionChanged += UpdateOptionsModelItem;
             }
         }
 

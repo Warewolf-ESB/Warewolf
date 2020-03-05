@@ -483,7 +483,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
@@ -520,7 +520,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
@@ -558,7 +558,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
             channel.Setup(c => c.BasicAck(It.IsAny<ulong>(), It.IsAny<bool>()));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
@@ -596,7 +596,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
             channel.Setup(c => c.BasicAck(It.IsAny<ulong>(), It.IsAny<bool>()));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
@@ -644,7 +644,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
             channel.Setup(c => c.BasicAck(It.IsAny<ulong>(), It.IsAny<bool>()));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
@@ -692,7 +692,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()))
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()))
                 .Throws(new Exception(string.Format("Queue '{0}' not found", queueName)));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
@@ -733,7 +733,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()))
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()))
                 .Throws(new Exception($"Queue '{queueName}' not found"));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
@@ -774,7 +774,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()))
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()))
                 .Throws(new Exception(string.Format("Queue '{0}' not found", queueName)));
             channel.Setup(c => c.BasicGet(It.IsAny<string>(), It.IsAny<bool>()))
                 .Throws(new Exception(string.Format("Queue '{0}' not found", queueName)));
@@ -819,7 +819,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(),
+                It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(),
+                It.IsAny<IBasicConsumer>()));
             var basicGetResult1 = new BasicGetResult(1, true, queueName, "", 1, new BasicProperties(), Encoding.Default.GetBytes("hello"));
             var basicGetResult2 = new BasicGetResult(2, true, queueName, "", 1, new BasicProperties(), Encoding.Default.GetBytes("world"));
             channel.SetupSequence(model => model.BasicGet(queueName, It.IsAny<bool>())).Returns(basicGetResult1).Returns(basicGetResult2);
@@ -857,7 +859,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
             var basicGetResult1 = new BasicGetResult(1, true, queueName, "", 1, new BasicProperties(), Encoding.Default.GetBytes("hello"));
             var basicGetResult2 = new BasicGetResult(2, true, queueName, "", 1, new BasicProperties(), Encoding.Default.GetBytes("world"));
             channel.SetupSequence(model => model.BasicGet(queueName, It.IsAny<bool>())).Returns(basicGetResult1).Returns(basicGetResult2);
@@ -894,7 +896,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
-            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()));
 
             var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
@@ -963,8 +965,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.Fail(e.Message);
             }
-
-
         }
 
         [TestMethod]

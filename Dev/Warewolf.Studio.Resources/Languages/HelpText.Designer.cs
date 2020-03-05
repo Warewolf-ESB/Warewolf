@@ -2816,6 +2816,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use ExecutionID or CustomTransactionID from Header as CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we&apos;ll look at this property, and based on that we&apos;ll be able to match a response with a request.
+        /// </summary>
+        public static string RabbitMQHelpAutoCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpAutoCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we&apos;ll look at this property, and based on that we&apos;ll be able to match a response with a request.
+        /// </summary>
+        public static string RabbitMQHelpAutoCustomTransactionIDCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpAutoCustomTransactionIDCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we&apos;ll look at this property, and based on that we&apos;ll be able to match a response with a request.
+        /// </summary>
+        public static string RabbitMQHelpCorrelationID {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpCorrelationID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If set, the Queue is deleted when all consumers have 	finished using it. The last consumer can be cancelled either 	explicitly or because its channel is closed. If there was no 	consumer ever on the queue, it won&apos;t be deleted. Applications 	can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpIsAutoDelete {

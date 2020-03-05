@@ -144,6 +144,16 @@
     <Compile Include="Designers2\ExchangeNewEmail\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish2\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish2\RabbitMQPublishDesigner2.xaml.cs">
+      <DependentUpon>RabbitMQPublishDesigner2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish2\RabbitMQPublishDesignerViewModel2.cs" />
+    <Compile Include="Designers2\RabbitMQ\Publish2\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\RedisCache\RedisValidatorDesignerViewModel.cs" />
     <Compile Include="Designers2\RedisCounter\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
@@ -1565,6 +1575,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\FindIndex\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish2\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish2\RabbitMQPublishDesigner2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish2\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
