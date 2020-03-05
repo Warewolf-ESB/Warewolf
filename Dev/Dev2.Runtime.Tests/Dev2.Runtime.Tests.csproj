@@ -252,6 +252,7 @@
     <Compile Include="Services\TerminateExecutionTest.cs" />
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
     <Compile Include="Services\PingTests.cs" />
+    <Compile Include="Services\TestElasticsearchSourceTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
     <Compile Include="Services\FetchAllTestsTest.cs" />
