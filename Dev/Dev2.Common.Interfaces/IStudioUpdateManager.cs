@@ -16,6 +16,7 @@ namespace Dev2.Common.Interfaces
         void Save(IDbSource toDbSource);
         void Save(IWebServiceSource model);
         void Save(IRedisServiceSource redisServiceSource);
+        void Save(IElasticsearchServiceSource elasticsearchServiceSource);
         void Save(IPluginSource source);
         void Save(IComPluginSource source);
         void Save(IEmailServiceSource emailServiceSource);
@@ -31,6 +32,7 @@ namespace Dev2.Common.Interfaces
         void TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
         void TestConnection(IRedisServiceSource redisServiceSource);
+        void TestConnection(IElasticsearchServiceSource elasticsearchServiceSource);
         void TestConnection(ISharepointServerSource sharePointServiceSource);
         string TestConnection(IEmailServiceSource emailServiceSource);
         string TestConnection(IExchangeSource emailServiceSource);

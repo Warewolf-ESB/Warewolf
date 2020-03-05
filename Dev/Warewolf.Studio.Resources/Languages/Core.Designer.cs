@@ -1586,5 +1586,11 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("WebserviceNewHeaderLabel", resourceCulture);
             }
         }
+
+        public static string ElasticsearchNewHeaderLabel {  
+            get {
+                return ResourceManager.GetString("ElasticsearchNewHeaderLabel", resourceCulture);
+                } 
+        }
     }
 }

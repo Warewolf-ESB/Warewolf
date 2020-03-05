@@ -52,11 +52,11 @@ namespace Dev2.Studio.Interfaces.Enums
         OAuthSource,
         WebSource,
         RedisSource,
+        ElasticsearchSource,
         PluginSource,
         ComPluginSource,
         SharepointServerSource,
         Exchange,
-
         RabbitMQSource,
         WcfSource,
         ServiceTestsViewer,
