@@ -87,6 +87,8 @@
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DLLChooser.cs" />
     <Compile Include="DummyServiceTest.cs" />
+    <Compile Include="ElasticsearchSourceModel.cs" />
+    <Compile Include="ElasticsearchSourceViewModel.cs" />
     <Compile Include="ExplorerTooltips.cs" />
     <Compile Include="FileChooser.cs" />
     <Compile Include="FileChooserModel.cs" />
