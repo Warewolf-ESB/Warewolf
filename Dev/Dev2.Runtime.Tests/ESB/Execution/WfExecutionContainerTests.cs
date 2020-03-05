@@ -26,6 +26,7 @@ using Warewolf.Storage;
 using WarewolfParserInterop;
 using Warewolf.Storage.Interfaces;
 using Dev2.Runtime;
+using Microsoft.VisualBasic.Activities;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -73,6 +74,23 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                         StartNode = TestStartNode
                     }
                 };
+
+                var vbs = new VisualBasicSettings
+                {
+                    ImportReferences =     {
+                        new VisualBasicImportReference {
+                            Assembly = "Unlimited.Framework",
+                            Import = "Unlimited.Framework"
+                        },
+                        new VisualBasicImportReference{
+                             Assembly = "Unlimited.Applications.BusinessDesignStudio.Activities",
+                             Import = "Unlimited.Applications.BusinessDesignStudio.Activities"
+
+                        }
+                    }
+                };
+
+                VisualBasic.SetSettings(builder, vbs);
 
                 return builder;
             }
