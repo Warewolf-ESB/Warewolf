@@ -22,8 +22,8 @@ namespace Dev2.Tests.Runtime.ESB
 {
     public class RemoteWorkflowExecutionContainerMock : RemoteWorkflowExecutionContainer
     {
-        public RemoteWorkflowExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
-            : base(sa, dataObj, theWorkspace, esbChannel, resourceCatalog)
+        public RemoteWorkflowExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog, IWebRequestFactory webRequestFactory)
+            : base(sa, dataObj, theWorkspace, esbChannel, resourceCatalog, webRequestFactory)
         {
         }
 
@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.ESB
         public string GetRequestUri { get; set; }
         public string FetchRemoteDebugItemsUri { get; set; }
         public string LogExecutionUrl { get; private set; }
-        public WebRequest LogExecutionWebRequest { get; private set; }
+        public IWebRequest LogExecutionWebRequest { get; private set; }
 
         protected override string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode)
         {
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region Overrides of RemoteWorkflowExecutionContainer
 
-        protected override void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
+        protected override void ExecuteWebRequestAsync(IWebRequest buildGetWebRequest)
         {
             LogExecutionUrl = buildGetWebRequest.RequestUri.ToString();
             LogExecutionWebRequest = buildGetWebRequest;
