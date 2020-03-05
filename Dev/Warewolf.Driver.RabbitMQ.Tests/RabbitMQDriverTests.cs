@@ -79,7 +79,8 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(new Depends(Depends.ContainerType.RabbitMQ));
+            var dependency = new Depends(Depends.ContainerType.RabbitMQ);
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(dependency);
             var queueName = TestQueueNameGenerator.GetName;
 
             var config = new RabbitConfig
@@ -98,7 +99,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
                 var publisher = connection.NewPublisher(config);
                 publisher.Publish(data);
             
-                using (var testPublishSuccess = new TestPublishSuccess(new Depends(Depends.ContainerType.RabbitMQ)))
+                using (var testPublishSuccess = new TestPublishSuccess(dependency))
                 {
                     var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
                     //------------------------Assert----------------------
@@ -122,7 +123,13 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public TestPublishSuccess(Depends dependency)
             {
-                _factory = new ConnectionFactory() { HostName = dependency.Container.IP, UserName = "test", Password = "test" };
+                _factory = new ConnectionFactory()
+                {
+                    HostName = dependency.Container.IP,
+                    Port = int.Parse(dependency.Container.Port),
+                    UserName = "test",
+                    Password = "test"
+                };
             }
 
             private IConnection NewConnection()
