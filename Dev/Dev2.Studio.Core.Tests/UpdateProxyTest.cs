@@ -898,7 +898,7 @@ namespace Dev2.Core.Tests
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
             var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
             var controller = new Mock<ICommunicationController>();
-            comms.Setup(a => a.CreateController("SaveElasticseachSource")).Returns(controller.Object);
+            comms.Setup(a => a.CreateController("SaveElasticsearchSource")).Returns(controller.Object);
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
@@ -919,7 +919,7 @@ namespace Dev2.Core.Tests
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
             var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
             var controller = new Mock<ICommunicationController>();
-            comms.Setup(a => a.CreateController("SaveElasticseachSource")).Returns(controller.Object);
+            comms.Setup(a => a.CreateController("SaveElasticsearchSource")).Returns(controller.Object);
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
