@@ -384,6 +384,17 @@
                                                 <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
+                                        <MenuItem Name="NewElasticsearchSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewElasticsearchSourceCommand}"
+                                                  CommandParameter="ElasticsearchSource"
+                                                  Header="New Elasticsearch Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding ExplorerTooltips.NewElasticsearchSourceTooltip}">
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewElasticsearchSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
                                     </MenuItem>
                                 </ContextMenu>
                             </Grid.ContextMenu>
@@ -982,6 +993,17 @@
 									                      ToolTip="{Binding ExplorerTooltips.NewSharepointSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewSharepointSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewElasticsearchSourceItem"
+                                                          Style="{StaticResource MenuItemStyle}"
+                                                          Command="{Binding NewElasticsearchSourceCommand}"
+                                                          CommandParameter="ElasticsearchSource"
+                                                          Header="New Elasticsearch Source"
+                                                          IsEnabled="{Binding CanCreateSource}"
+                                                          ToolTip="{Binding ExplorerTooltips.NewElasticsearchSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewElasticsearchSourceIcon}"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                             </MenuItem>
