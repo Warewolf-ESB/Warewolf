@@ -22,5 +22,6 @@ namespace Dev2.Common.Interfaces
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }
+        AuthenticationType AuthenticationType { get; set; }
     }
 }

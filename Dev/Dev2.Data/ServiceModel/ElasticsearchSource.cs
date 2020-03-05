@@ -15,6 +15,8 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
@@ -24,23 +26,28 @@ namespace Dev2.Data.ServiceModel
         const string DefaultPort = "9300";
         public string HostName { get; set; }
         public string Password { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public AuthenticationType AuthenticationType { get; set; }
         public string Port { get; set; }
         
         public ElasticsearchSource()
         {
             ResourceID = Guid.Empty;
             ResourceType = "ElasticsearchSource";
+            AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
         }
         
         public ElasticsearchSource(XElement xml) : base(xml)
         {
             ResourceType = "ElasticsearchSource";
+            AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "HostName", string.Empty },
                 { "Port", string.Empty },
+                { "AuthenticationType", string.Empty },
                 { "Password", string.Empty }
             }; 
             
@@ -51,6 +58,7 @@ namespace Dev2.Data.ServiceModel
             HostName = properties["HostName"];
             Port = properties["Port"];
             Password = properties["Password"];
+            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
         
         public override XElement ToXml()
@@ -59,8 +67,16 @@ namespace Dev2.Data.ServiceModel
             var connectionString = string.Join(";",
                 $"HostName={HostName}",
                 $"Port={Port}",
-                $"Password={Password}"
+                $"AuthenticationType={AuthenticationType}"
             );
+
+            if (AuthenticationType == AuthenticationType.Password)
+            {
+                connectionString = string.Join(";",
+                    connectionString,
+                    $"Password={Password}"
+                );
+            }
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),

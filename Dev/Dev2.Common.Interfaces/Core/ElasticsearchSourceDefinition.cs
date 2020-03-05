@@ -11,6 +11,7 @@
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces.Core
 {
@@ -23,6 +24,7 @@ namespace Dev2.Common.Interfaces.Core
         }
         public ElasticsearchSourceDefinition(IElasticsearchSource source)
         {
+            AuthenticationType = source.AuthenticationType;
             Id = source.ResourceID;
             Name = source.ResourceName;
             Password = source.Password;
@@ -32,6 +34,7 @@ namespace Dev2.Common.Interfaces.Core
         }
         public string HostName { get; set; }
         public string Password { get; set; }
+        public AuthenticationType AuthenticationType { get; set; }
         public string Port { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
@@ -53,6 +56,7 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(Password, other.Password);
             equals &= Id == other.Id;
             equals &= string.Equals(Name, other.Name);
+            equals &= AuthenticationType == other.AuthenticationType;
             return equals;
         }
 
@@ -72,6 +76,7 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(Password, other.Password);
             equals &= Id == other.Id;
             equals &= string.Equals(Name, other.Name);
+            equals &= AuthenticationType == other.AuthenticationType;
             return equals;
         }
 

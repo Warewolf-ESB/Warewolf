@@ -38,6 +38,7 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         readonly string _warewolfserverName;
 
+        AuthenticationType _authenticationType;
         IElasticsearchServiceSource _elasticsearchServiceSource;
         readonly IElasticsearchSourceModel _elasticsearchSourceModel;
         CancellationTokenSource _token;
@@ -57,6 +58,7 @@ namespace Warewolf.Studio.ViewModels
             Executor = executor;
             _elasticsearchSourceModel = elasticsearchSourceModel;
             _warewolfserverName = elasticsearchSourceModel.ServerName;
+            _authenticationType = AuthenticationType.Anonymous;
             _hostName = string.Empty;
             _port = "9200";
             _password = string.Empty;
@@ -138,6 +140,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+        public bool PasswordSelected => AuthenticationType == AuthenticationType.Password;
         public string Password
         {
             get => _password;
@@ -146,6 +149,21 @@ namespace Warewolf.Studio.ViewModels
                 _password = value;
                 OnPropertyChanged(() => Password);
                 ResetTestValue();
+            }
+        }
+        public AuthenticationType AuthenticationType
+        {
+            get => _authenticationType;
+            set
+            {
+                if (_authenticationType != value)
+                {
+                    _authenticationType = value;
+                    OnPropertyChanged(() => AuthenticationType);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => PasswordSelected);
+                    ResetTestValue();
+                }
             }
         }
         public ICommand TestCommand { get; set; }
@@ -362,6 +380,7 @@ namespace Warewolf.Studio.ViewModels
             ResourceName = source.Name;
             HostName = source.HostName;
             Port = source.Port;
+            AuthenticationType = source.AuthenticationType;
             Password = source.Password;
         }
 
@@ -374,7 +393,8 @@ namespace Warewolf.Studio.ViewModels
             if (_elasticsearchServiceSource == null)
             {
                 return new ElasticsearchSourceDefinition
-                {
+                { 
+                    AuthenticationType = AuthenticationType,
                     HostName = HostName,
                     Port = Port,
                     Password = Password,
@@ -387,6 +407,7 @@ namespace Warewolf.Studio.ViewModels
                 _elasticsearchServiceSource.HostName = HostName;
                 _elasticsearchServiceSource.Port = Port;
                 _elasticsearchServiceSource.Password = Password;
+                _elasticsearchServiceSource.AuthenticationType = AuthenticationType;
                 return _elasticsearchServiceSource;
             }
         }
@@ -404,6 +425,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = Item.Name,
                 HostName = HostName,
                 Port = Port,
+                AuthenticationType = AuthenticationType,
                 Password = Password,
                 Id = Item.Id,
                 Path = Item.Path
