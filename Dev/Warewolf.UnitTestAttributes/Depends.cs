@@ -39,7 +39,8 @@ namespace Warewolf.UnitTestAttributes
             CIRemote = 5,
             Redis = 6,
             AnonymousRedis = 7,
-            AnonymousWarewolf = 8
+            AnonymousWarewolf = 8,
+            Elasticsearch = 9
         }
 
         ContainerType _containerType;
@@ -66,6 +67,8 @@ namespace Warewolf.UnitTestAttributes
                     return "AnonymousRedis";
                 case ContainerType.AnonymousWarewolf:
                     return "AnonymousWarewolf";
+                case ContainerType.Elasticsearch:
+                    return "Elasticsearch";
             }
 
             throw new ArgumentOutOfRangeException();
