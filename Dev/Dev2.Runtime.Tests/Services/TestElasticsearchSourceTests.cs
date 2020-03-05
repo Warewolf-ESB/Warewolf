@@ -122,7 +122,8 @@ namespace Dev2.Tests.Runtime.Services
                 Id = Guid.Empty,
                 Name = "Name",
                 HostName = Depends.GetAddress(Depends.ContainerType.Elasticsearch),
-                Port = Depends.GetPort(Depends.ContainerType.Elasticsearch)
+                Port = Depends.GetPort(Depends.ContainerType.Elasticsearch),
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testElasticsearchSource = new TestElasticsearchSource();
             var values = new Dictionary<string, StringBuilder>
@@ -140,7 +141,7 @@ namespace Dev2.Tests.Runtime.Services
             }
             catch (Exception e)
             {
-                if (e.Message.Contains("could not connect to Elasticsearch Instance"))
+                if (e.Message.Contains("could not connect to elasticsearch Instance"))
                 {
                     Assert.Inconclusive(e.Message);
                 }
