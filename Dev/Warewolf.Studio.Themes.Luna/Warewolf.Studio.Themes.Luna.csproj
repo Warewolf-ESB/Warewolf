@@ -425,6 +425,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Images\Elasticsearch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Images\Email-Source.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
