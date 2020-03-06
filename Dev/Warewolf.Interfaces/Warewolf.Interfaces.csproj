@@ -25,5 +25,10 @@
   <ItemGroup>
     <PackageReference Include="Fleck" Version="1.1.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Warewolf.Data, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\TestResults\Deploy_Pieter.Terblanche 2020-03-04 15_35_12\Out\Warewolf.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
 
