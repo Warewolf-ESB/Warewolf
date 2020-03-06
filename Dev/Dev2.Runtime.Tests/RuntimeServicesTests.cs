@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime
 
             var names = services.Select(o => o.Name).ToDictionary((s) => s);
 
-            Assert.AreEqual(129, names.Count);
+            Assert.AreEqual(130, names.Count);
             Assert.IsTrue(names.ContainsKey("SavePerformanceCounters"));
             Assert.IsTrue(names.ContainsKey("DeleteAllTestsService"));
             Assert.IsTrue(names.ContainsKey("ReloadResourceService"));
@@ -155,6 +155,7 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(names.ContainsKey("DeleteItemService"));
             Assert.IsTrue(names.ContainsKey("ReloadTestsService"));
             Assert.IsTrue(names.ContainsKey("GetClusterSettings"));
+            Assert.IsTrue(names.ContainsKey("SaveClusterSettings"));
             Assert.IsTrue(names.ContainsKey("SaveDbService"));
             Assert.IsTrue(names.ContainsKey("FetchComPluginActions"));
         }
