@@ -25,6 +25,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -127,8 +128,16 @@ namespace Dev2.Activities.Specs.Composition
             Given(@"an existing workflow ""Hello World""");
             When(@"a ""Hello World"" workflow request is received");
 
+            _scenarioContext.TryGetValue<bool>("expectException", out bool expectException);
             var table = new Table("key", "value");
-            table.AddRow("DsfDecision", "If [[Name]] <> (Not Equal)");
+            if (expectException)
+            {
+                table.AddRow("IDev2ActivityProxy", "SpecActivity");
+            }
+            else
+            {
+                table.AddRow("DsfDecision", "If [[Name]] <> (Not Equal)");
+            }
 
             Then(@"a detailed entry log is created", table);
         }
@@ -137,7 +146,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenAWorkflowStopsOnErrorHasNoLogs()
         {
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
-            var resource = _scenarioContext.Get<DsfDecision>("resource");
+            var resource = _scenarioContext.Get<IDev2Activity>("resource");
 
             mockStateNotifier.Verify(o => o.LogStopExecutionState(resource), Times.Never);
         }
@@ -172,11 +181,6 @@ namespace Dev2.Activities.Specs.Composition
         private Mock<IStateNotifier> SetupMockStateNotifier()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
-            if (_expectException)
-            {
-                mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Throws(_falseException);
-            }
-            _expectException = false;
             _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
             return mockStateNotifier;
         }
@@ -218,7 +222,7 @@ namespace Dev2.Activities.Specs.Composition
                 IsDebug = false,
                 StopExecution = stopOnError,
                 RunWorkflowAsync = true,
-                StateNotifier = null,
+                StateNotifier = stateNotifier,
                 Environment = environment,
                 Settings = new Dev2WorkflowSettingsTO
                 {
@@ -244,7 +248,7 @@ namespace Dev2.Activities.Specs.Composition
             var nodeTable = table.CreateSet<NodeLogTable>().ToList();
 
             var dataObject = _scenarioContext.Get<IDSFDataObject>("dataObject");
-            IDev2Activity resource = (DsfDecision)GetWFsFirstNode(dataObject);
+            IDev2Activity resource = GetWFsFirstNode(dataObject);
 
             var displayName = resource.GetDisplayName();
             var nodeType = resource.GetType();
@@ -338,15 +342,28 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"the workflow is expected to throw exception")]
         public void GivenTheWorkflowIsExpectedToThrowException()
         {
-            _expectException = true; 
+            var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
+            
+            var activityParserMock = new Mock<IActivityParser>();
+            var activityMock = new Mock<IDev2Activity>();
+
+            activityMock.Setup(o => o.GetDisplayName()).Returns("SpecActivity");
+            activityMock.Setup(o => o.Execute(dataObject, 0)).Throws(_falseException);
+            activityParserMock.Setup(o => o.Parse(It.IsAny<DynamicActivity>())).Returns(activityMock.Object);
+            CustomContainer.Register<IActivityParser>(activityParserMock.Object);
+            _scenarioContext.Add("activityMock", activityMock.Object);
+
+            var expectException = _expectException = true;
+            _scenarioContext.Add("expectException", expectException);
         }
 
         [When(@"a workflow execution has an exception")]
         public void WhenAWorkflowExecutionHasAnException()
         {
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
+            var activityMock = _scenarioContext.Get<IDev2Activity>("activityMock");
 
-            mockStateNotifier.Verify(o => o.LogExecuteException(_falseException, null));
+            mockStateNotifier.Verify(o => o.LogExecuteException(_falseException, activityMock));
         }
 
         [Then(@"a detailed execution exception log entry is created")]
