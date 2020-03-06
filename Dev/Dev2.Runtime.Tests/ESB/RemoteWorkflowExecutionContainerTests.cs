@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual(1, testWebRequest.GetResponseCallCount);
             Assert.AreEqual("", testWebRequest.Headers.Get("From"));
             Assert.AreEqual("RemoteWarewolfServer", testWebRequest.Headers.Get("Cookie"));
-            Assert.AreEqual(expectedExecutionID.ToString(), testWebRequest.Headers.Get("ExecutionID"));
+            Assert.AreEqual(expectedExecutionID.ToString(), testWebRequest.Headers.Get("Warewolf-Execution-Id"));
         }
 
         [TestMethod]

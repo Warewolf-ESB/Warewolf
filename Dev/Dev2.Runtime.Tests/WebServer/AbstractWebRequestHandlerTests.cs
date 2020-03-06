@@ -2130,8 +2130,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var testingCustomTransactionID = "testingCustomTransactionID";
             var executionId = Guid.NewGuid();
             var headers = new Mock<NameValueCollection>();
-            headers.Setup(collection => collection.Get("CustomTransactionID")).Returns(testingCustomTransactionID);
-            headers.Setup(collection => collection.Get("ExecutionID")).Returns(executionId.ToString());
+            headers.Setup(collection => collection.Get("Warewolf-Custom-Transaction-Id")).Returns(testingCustomTransactionID);
+            headers.Setup(collection => collection.Get("Warewolf-Execution-Id")).Returns(executionId.ToString());
             var webRequestTO = new WebRequestTO()
             {
                 ServiceName = ""
