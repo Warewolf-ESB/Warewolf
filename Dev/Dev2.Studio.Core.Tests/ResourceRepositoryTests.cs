@@ -2589,6 +2589,28 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_SaveClusterSettings_ExpectSettings()
+        {
+            var expectedMsg = new ExecuteMessage();
+            Setup();
+            var conn = SetupConnection();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new Dev2JsonSerializer().SerializeToBuilder(expectedMsg));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var clusterSettingsData = new ClusterSettingsData
+            {
+                Key = "asdfasdf", LeaderServerResourceId = Guid.NewGuid(), LeaderServerKey = "fdsafdsa",
+            };
+            
+            var msg = _repo.SaveClusterSettings(_environmentModel.Object, clusterSettingsData);
+            Assert.IsNotNull(msg);
+            Assert.IsFalse(msg.HasError);
+        }
+
+        [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceRepository))]
         public void ResourceRepository_FindOptionsBy_ExecuteCommand_Given_TargetEnvironment_IsNull_ExpectedFail()
