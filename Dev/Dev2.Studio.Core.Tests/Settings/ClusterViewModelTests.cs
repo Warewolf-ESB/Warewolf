@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -20,6 +19,7 @@ using Dev2.Settings.Clusters;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Configuration;
 using Warewolf.Options;
 
 namespace Dev2.Core.Tests.Settings
@@ -46,7 +46,8 @@ namespace Dev2.Core.Tests.Settings
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new ClusterViewModel();
+            var mockPopupController = new Mock<IPopupController>();
+            var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -57,10 +58,52 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_ResourceType()
+        {
+            //------------Setup for test--------------------------
+            var mockPopupController = new Mock<IPopupController>();
+            var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(IServerSource), viewModel.ResourceType);
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_ClusterSettings()
+        {
+            //------------Setup for test--------------------------
+            var mockPopupController = new Mock<IPopupController>();
+
+            var mockServer = new Mock<IServer>();
+
+            var clusterSettingsData = new ClusterSettingsData
+            {
+                Key = "zxcvzxcv", LeaderServerResourceId = Guid.NewGuid(), LeaderServerKey = "asdfasdf"
+            };
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetClusterSettings(mockServer.Object))
+                .Returns(clusterSettingsData);
+            
+            var viewModel = new ClusterViewModel(mockResourceRepository.Object, mockServer.Object, mockPopupController.Object);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ClusterSettings);
+            Assert.AreEqual(clusterSettingsData.Key, viewModel.ClusterSettings.Key);
+            Assert.AreEqual(clusterSettingsData.LeaderServerResourceId, viewModel.ClusterSettings.LeaderServerResourceId);
+            Assert.AreEqual(clusterSettingsData.LeaderServerKey, viewModel.ClusterSettings.LeaderServerKey);
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
         public void ClusterViewModel_CopyKeyCommand()
         {
             //------------Setup for test--------------------------
-            var viewModel = new ClusterViewModel();
+            var mockPopupController = new Mock<IPopupController>();
+            var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
             //------------Execute Test---------------------------
             var canExecute = viewModel.CopyKeyCommand.CanExecute(null);
             //------------Assert Results-------------------------
@@ -79,37 +122,11 @@ namespace Dev2.Core.Tests.Settings
             
             CustomContainer.Register(mockPopupController.Object);
             
-            var viewModel = new ClusterViewModel();
+            var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
             
             viewModel.TestKeyCommand.Execute(null);
             mockPopupController.Verify(model => model.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ClusterViewModel))]
-        public void ClusterViewModel_Filter()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = new ClusterViewModel();
-            //------------Execute Test---------------------------
-            Assert.AreEqual(6, viewModel.Followers.Count());
-
-            viewModel.Filter = "One";
-            Assert.AreEqual(1, viewModel.Followers.Count());
-            
-            viewModel.Filter = "";
-            Assert.AreEqual(6, viewModel.Followers.Count());
-            
-            viewModel.Filter = "one";
-            Assert.AreEqual(1, viewModel.Followers.Count());
-            
-            viewModel.Filter = "";
-            Assert.AreEqual(6, viewModel.Followers.Count());
-            
-            viewModel.Filter = "ONE";
-            Assert.AreEqual(1, viewModel.Followers.Count());
         }
         
         [TestMethod]
@@ -135,7 +152,7 @@ namespace Dev2.Core.Tests.Settings
             CustomContainer.Register(mockShellViewModel.Object);
             
             //-------------------------Act---------------------------
-            var serverOptions = new ServerOptions();
+            var serverOptions = new LeaderServerOptions();
             var result = OptionConvertor.Convert(serverOptions);
 
             //-------------------------Assert------------------------

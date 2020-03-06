@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -21,12 +20,13 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Warewolf;
+using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
 
 namespace Dev2.Settings.Clusters
 {
-    public class ServerOptions : BindableBase
+    public class LeaderServerOptions : BindableBase
     {
         private NamedGuid _leader;
 
@@ -68,23 +68,50 @@ namespace Dev2.Settings.Clusters
     {
         private string _filter;
         private IEnumerable<ServerFollower> _followers;
-        private ObservableCollection<Server> _servers;
-        private string _clusterKey;
-        private ServerOptions _serverOptions;
+        private ClusterSettingsData _clusterSettings;
+        private readonly IPopupController _popupController;
 
-        public ClusterViewModel()
+        public ClusterViewModel(IResourceRepository resourceRepository, IServer server, IPopupController popupController)
         {
-            CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
-            TestKeyCommand = new DelegateCommand(o => TestClusterKey());
-            LoadServerFollowers();
-            ServerOptions = new ServerOptions();
-            _serverOptions.PropertyChanged += (sender, args) =>
+            _popupController = popupController;
+            try
             {
-                if (args.PropertyName == nameof(ServerOptions.Leader))
+                ClusterSettings = resourceRepository.GetClusterSettings(server);
+                ClusterSettings.PropertyChanged += (sender, args) =>
                 {
-                    OnPropertyChanged(nameof(ResourceId));
-                }
-            };
+                    if (args.PropertyName == nameof(ClusterSettings.LeaderServerResourceId))
+                    {
+                        OnPropertyChanged(nameof(TestKeyCommand));
+                    }
+                };
+                CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
+                TestKeyCommand = new DelegateCommand(o => TestClusterKey());
+                LoadServerFollowers();
+                LeaderServerOptions = new LeaderServerOptions();
+                LeaderServerOptions.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName != nameof(LeaderServerOptions.Leader))
+                    {
+                        return;
+                    }
+
+                    ClusterSettings.LeaderServerResourceId = LeaderServerOptions?.Leader?.Value ?? Guid.Empty;
+                };
+            }
+            catch (Exception e)
+            {
+                popupController.ShowErrorMessage(e.Message);
+            }
+        }
+
+        public ClusterSettingsData ClusterSettings
+        {
+            get => _clusterSettings;
+            set
+            {
+                _clusterSettings = value; 
+                OnPropertyChanged(nameof(ClusterSettings));
+            }
         }
 
         private void LoadServerFollowers()
@@ -111,9 +138,9 @@ namespace Dev2.Settings.Clusters
             return follower;
         }
 
-        private static void CopyClusterKey()
+        private void CopyClusterKey()
         {
-            Clipboard.SetText(Guid.NewGuid().ToString());
+            Clipboard.SetText(ClusterSettings.Key ?? "invalid key");
         }
 
         private static void TestClusterKey()
@@ -124,31 +151,9 @@ namespace Dev2.Settings.Clusters
         }
 
         public Type ResourceType => typeof(IServerSource);
-        public Guid ResourceId => ServerOptions?.Leader?.Value ?? Guid.Empty;
         public ICommand CopyKeyCommand { get; }
         public ICommand TestKeyCommand { get; }
 
-        public string ClusterKey
-        {
-            get => _clusterKey;
-            set
-            {
-                _clusterKey = value;
-                OnPropertyChanged(nameof(ClusterKey));
-                OnPropertyChanged(nameof(TestKeyCommand));
-            }
-        }
-
-        public ObservableCollection<Server> Servers
-        {
-            get => _servers;
-            private set
-            {
-                _servers = value;
-                OnPropertyChanged(nameof(Servers));
-            }
-        }
-        
         public IEnumerable<ServerFollower> Followers
         {
             get => _followers;
@@ -171,16 +176,7 @@ namespace Dev2.Settings.Clusters
             }
         }
 
-        public ServerOptions ServerOptions
-        {
-            get => _serverOptions;
-            set
-            {
-                _serverOptions = value;
-                OnPropertyChanged(nameof(ServerOptions));
-                OnPropertyChanged(nameof(ResourceId));
-            }
-        }
+        public LeaderServerOptions LeaderServerOptions { get; set; }
 
         private void FilterFollowers(string value)
         {

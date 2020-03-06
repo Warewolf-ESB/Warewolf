@@ -54,8 +54,8 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-                    <ListBox x:Name="ConditionsListBox" 
-                             ItemsSource="{Binding ServerOptions, Converter={StaticResource OptionViewConverter}}" 
+                    <ListBox x:Name="LeaderServerOptionsListBox" 
+                             ItemsSource="{Binding LeaderServerOptions, Converter={StaticResource OptionViewConverter}}" 
                              ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                              ItemContainerStyle="{StaticResource ListBoxItemTransparentStyle}"
                              BorderBrush="Transparent">
@@ -65,7 +65,7 @@
                 <TextBlock x:Name="KeyTextBlock" Text="Cluster Key" Grid.Column="0" Grid.Row="1"
                            Margin="{StaticResource ControlBorderTop}" />
                 <TextBox x:Name="KeyTextBox"
-                         Text="{Binding ClusterKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Text="{Binding ClusterSettings.LeaderServerKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Column="1"
                          Grid.Row="1"
                          Margin="1,3,0,0"
