@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
 namespace Warewolf
@@ -108,6 +109,15 @@ namespace Warewolf
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             PropertyChanged?.Invoke(this, args);
+        }
+        
+        [Obsolete("OnPropertyChanged<T>(Expression<Func<T>> propertyExpression) is deprecated, please use OnPropertyChanged([CallerMemberName]string propertyName = null) instead.")]
+        protected void OnPropertyChanged<T>(Expression<Func<T>> propertyExpression)
+        {
+            if (propertyExpression.Body is MemberExpression memberExpression)
+            {
+                OnPropertyChanged(memberExpression.Member.Name);
+            }
         }
     }
 }

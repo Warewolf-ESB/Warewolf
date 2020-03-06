@@ -91,6 +91,10 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
       <Project>{cc1b89cd-3222-4019-a0d1-58664f92cc47}</Project>
       <Name>Warewolf.Studio.AntiCorruptionLayer</Name>

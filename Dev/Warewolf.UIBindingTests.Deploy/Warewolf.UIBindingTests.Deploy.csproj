@@ -110,6 +110,10 @@
       <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.UIBindingTests.Core</Name>
