@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going bac
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,18 +15,15 @@ using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
-using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Activities;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using TechTalk.SpecFlow;
@@ -39,52 +36,23 @@ namespace Dev2.Activities.Specs.Composition
     [Binding]
     public class WorkflowExecutionLoggingSteps : Steps
     {
-        //Start: TODO: Move this to WorkflowExecutionLoggingHooks
-        private static IServer _environmentModel;
-        private const int EXPECTED_NUMBER_OF_RESOURCES = 108;
+        private IServer _environmentModel;
         private ScenarioContext _scenarioContext;
-        private IPrincipal _principal;
+        private readonly IPrincipal _principal;
         private IExecutionEnvironment _environment;
         private WarewolfPerformanceCounterManager _performanceCounterLocater;
         private bool _expectException;
         private readonly Exception _falseException = new Exception("False exception from WorkflowExecutionLoggingSteps");
 
-        [BeforeFeature(tags: "ConnectAndLoadServer")]
-        private static void Setup()
-        {
-            ConnectAndLoadServer();
-            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count >= EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
-        }
-
-        public WorkflowExecutionLoggingSteps(ScenarioContext scenarioContext)
+        public WorkflowExecutionLoggingSteps(ScenarioContext scenarioContext, FeatureContext featureContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _principal = BuildPrincipal();
+            _environmentModel = featureContext.Get<IServer>("environmentModel")?? throw new ArgumentNullException(nameof(featureContext));
+            _performanceCounterLocater = featureContext.Get<WarewolfPerformanceCounterManager>("performanceCounterLocater");
+            _principal = featureContext.Get<IPrincipal>("principal");
             _environment = BuildExecutionEnvironmet();
-            _performanceCounterLocater = BuildPerfomanceCounter();
+            _expectException = false;
         }
-
-        private static void ConnectAndLoadServer()
-        {
-            _environmentModel = ServerRepository.Instance.Source;
-            _environmentModel.ConnectAsync().Wait(60000);
-            if (_environmentModel.IsConnected)
-            {
-                _environmentModel.ResourceRepository.Load(true);
-            }
-            else
-            {
-                throw new Exception("Failed to connect to localhost Warewolf server.");
-            }
-        }
-
-        [AfterFeature(tags: "ConnectAndLoadServer")]
-        private static void Cleanup()
-        {
-            //TODO: release all resource used by this feature 
-        }
-        //End of beforeFeature hook
-
 
         [Given(@"an existing workflow ""(.*)""")]
         public void GivenAnExistingWorkflow(string wfName)
@@ -95,7 +63,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(workflow, workflow + " was not found.");
         }
 
-        private static IResourceModel GetWorkflow(string wfName)
+        private IResourceModel GetWorkflow(string wfName)
         {
             return _environmentModel.ResourceRepository.FindSingle(o => o.ResourceName == wfName);
         }
@@ -183,31 +151,6 @@ namespace Dev2.Activities.Specs.Composition
             var mockStateNotifier = new Mock<IStateNotifier>();
             _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
             return mockStateNotifier;
-        }
-
-        private WarewolfPerformanceCounterManager BuildPerfomanceCounter()
-        {
-            var _mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
-            var _performanceCounterFactory = _mockPerformanceCounterFactory.Object;
-
-            var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                        {
-                                                            new WarewolfCurrentExecutionsPerformanceCounter(_performanceCounterFactory),
-                                                            new WarewolfNumberOfErrors(_performanceCounterFactory),
-                                                            new WarewolfRequestsPerSecondPerformanceCounter(_performanceCounterFactory),
-                                                            new WarewolfAverageExecutionTimePerformanceCounter(_performanceCounterFactory),
-                                                            new WarewolfNumberOfAuthErrors(_performanceCounterFactory),
-                                                            new WarewolfServicesNotFoundCounter(_performanceCounterFactory),
-                                                        }, new List<IResourcePerformanceCounter>());
-
-            return new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, _performanceCounterFactory);
-        }
-
-        private static IPrincipal BuildPrincipal()
-        { 
-            var mockPrincipal = new Mock<IPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
-            return mockPrincipal.Object;
         }
 
         private static DsfDataObject BuildDataObject(IResourceModel workflow, IPrincipal principal, IStateNotifier stateNotifier, IExecutionEnvironment environment, bool stopOnError)

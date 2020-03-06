@@ -89,6 +89,7 @@
       <DependentUpon>WorkflowResume.feature</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Hooks\ConnectAndLoadServerResourcesHooks.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>
