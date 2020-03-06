@@ -129,12 +129,13 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 	    $FullVersionString = git -C "$PSScriptRoot" tag --points-at HEAD
 	    if (-not [string]::IsNullOrEmpty($FullVersionString))  {
 		    $FullVersionString = $FullVersionString.Trim()
-		    if ($FullVersionString -Match " ") {
+            $MultiTags = $FullVersionString.Split("\n")
+            if ($MultiTags.Count -gt 1) {
 			    # This commit has more than one tag, using first tag
 			    Write-Host This commit has more than one tags as `"$FullVersionString`".
-			    $FullVersionString = $FullVersionString.Split(" ")[0]
+                $FullVersionString = $MultiTags[-1]
 			    Write-Host Using last tag as `"$FullVersionString`".
-		    }
+            }
 		    # This version is already tagged.
 		    Write-Host You are up to date with version `"$FullVersionString`".
 	    } else {
