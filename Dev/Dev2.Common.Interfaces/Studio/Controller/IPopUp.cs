@@ -36,6 +36,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
             string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible, bool applyToAll);
 
         MessageBoxResult ShowNotConnected();
+        MessageBoxResult ShowErrorMessage(string error);
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
         MessageBoxResult ShowCorruptTaskResult(string errorMessage);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);

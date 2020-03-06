@@ -1007,6 +1007,45 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PopupController))]
+        public void PopupController_ShowErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            var errorMsg = "This is a error message";
+            //------------Execute Test---------------------------
+            popupController.ShowErrorMessage(errorMsg);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Error", header);
+            Assert.AreEqual(errorMsg, description);
+            Assert.AreEqual(MessageBoxImage.Error, imageType);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("PopupController_ShowSaveErrorDialog")]
         public void PopupController_ShowSaveErrorDialog_SetProperties_AllPropertiesDisplayed()

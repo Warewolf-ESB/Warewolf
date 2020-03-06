@@ -102,6 +102,19 @@ namespace Dev2.Studio.Controller
             ApplyToAll = false;
             return Show();
         }
+        
+        public MessageBoxResult ShowErrorMessage(string error)
+        {
+            AssignCommonValues("Error", error, MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowRollbackVersionMessage(string displayName)
         {
