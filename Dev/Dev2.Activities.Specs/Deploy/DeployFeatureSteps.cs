@@ -37,15 +37,15 @@ namespace Dev2.Activities.Specs.Deploy
         {
             WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            ConnectToRemoteServerContainer();
+            ConnectToRemoteServerContainer(new Depends(Depends.ContainerType.CIRemote));
             var localhost = ServerRepository.Instance.Source;
             _scenarioContext.Add("sourceServer", localhost);
             localhost.Connect();
         }
 
-        void ConnectToRemoteServerContainer()
+        void ConnectToRemoteServerContainer(Depends dependency)
         {
-            string destinationServer = Depends.GetAddress(Depends.ContainerType.CIRemote) + Depends.GetPort(Depends.ContainerType.CIRemote);
+            string destinationServer = dependency.Container.IP + ":" + dependency.Container.Port;
 
             var formattableString = $"http://{destinationServer}";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))
