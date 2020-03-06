@@ -37,6 +37,7 @@ namespace Warewolf.Service
     public static class Cluster
     {
         public const string GetClusterSettings = nameof(GetClusterSettings);
+        public static string SaveClusterSettings = nameof(SaveClusterSettings);
     }
 
 }

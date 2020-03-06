@@ -973,6 +973,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return output;
         }
 
+        public ExecuteMessage SaveClusterSettings(IServer currentEnv, ClusterSettingsData clusterSettings)
+        {
+            var comController = new CommunicationController { ServiceName = Cluster.SaveClusterSettings };
+            comController.AddPayloadArgument("ClusterSettingsData", _serializer.Serialize(clusterSettings));
+            var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+            return output;
+        }
+
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public DbTableList GetDatabaseTables(DbSource dbSource)

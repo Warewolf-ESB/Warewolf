@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
+using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Configuration;
 using Warewolf.Data;
@@ -70,19 +71,36 @@ namespace Dev2.Settings.Clusters
         private IEnumerable<ServerFollower> _followers;
         private ClusterSettingsData _clusterSettings;
         private readonly IPopupController _popupController;
+        private readonly IResourceRepository _resourceRepository;
+        private readonly IServer _server;
+        private ClusterViewModel _item;
 
+        public ClusterViewModel()
+        {
+
+        }
         public ClusterViewModel(IResourceRepository resourceRepository, IServer server, IPopupController popupController)
         {
             _popupController = popupController;
+            _resourceRepository = resourceRepository;
+            _server = server;
             try
             {
                 ClusterSettings = resourceRepository.GetClusterSettings(server);
+                var leaderServerKey = ClusterSettings.LeaderServerKey;
+                if (leaderServerKey is null)
+                {
+                    ClusterSettings.LeaderServerKey = string.Empty;
+                }
                 ClusterSettings.PropertyChanged += (sender, args) =>
                 {
-                    if (args.PropertyName == nameof(ClusterSettings.LeaderServerResourceId))
+                    if (args.PropertyName == nameof(ClusterSettings.Key))
                     {
-                        OnPropertyChanged(nameof(TestKeyCommand));
+                        return;
                     }
+
+                    IsDirty = !Equals(Item);
+                    OnPropertyChanged(nameof(TestKeyCommand));
                 };
                 CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
                 TestKeyCommand = new DelegateCommand(o => TestClusterKey());
@@ -96,6 +114,7 @@ namespace Dev2.Settings.Clusters
                     }
 
                     ClusterSettings.LeaderServerResourceId = LeaderServerOptions?.Leader?.Value ?? Guid.Empty;
+                    IsDirty = !Equals(Item);
                 };
             }
             catch (Exception e)
@@ -143,17 +162,18 @@ namespace Dev2.Settings.Clusters
             Clipboard.SetText(ClusterSettings.Key ?? "invalid key");
         }
 
-        private static void TestClusterKey()
+        private void TestClusterKey()
         {
-            var popupController = CustomContainer.Get<IPopupController>();
-            popupController?.Show("Success!", "Test Cluster Key", MessageBoxButton.OK, MessageBoxImage.Information,
+            _popupController?.Show("Success!", "Test Cluster Key", MessageBoxButton.OK, MessageBoxImage.Information,
                 string.Empty, false, false, true, false, false, false);
         }
 
         public Type ResourceType => typeof(IServerSource);
+        [JsonIgnore]
         public ICommand CopyKeyCommand { get; }
+        [JsonIgnore]
         public ICommand TestKeyCommand { get; }
-
+        [JsonIgnore]
         public IEnumerable<ServerFollower> Followers
         {
             get => _followers;
@@ -163,7 +183,7 @@ namespace Dev2.Settings.Clusters
                 OnPropertyChanged(nameof(Followers));
             }
         }
-
+        [JsonIgnore]
         public string Filter
         {
             get => _filter;
@@ -212,6 +232,35 @@ namespace Dev2.Settings.Clusters
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        public void Save()
+        {
+            _resourceRepository.SaveClusterSettings(_server, ClusterSettings);
+            SetItem(this);
+        }
+        
+        [JsonIgnore]
+        private ClusterViewModel Item
+        {
+            get => _item;
+            set
+            {
+                _item = value;
+                OnPropertyChanged();
+            }
+        }
+        public void SetItem(ClusterViewModel clusterViewModel)
+        {
+            Item = Clone(clusterViewModel);
+        }
+
+        private static ClusterViewModel Clone(ClusterViewModel clusterViewModel)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(clusterViewModel, new JsonSerializerSettings { ContractResolver = resolver });
+            var clone = JsonConvert.DeserializeObject<ClusterViewModel>(ser);
+            return clone;
         }
     }
 }

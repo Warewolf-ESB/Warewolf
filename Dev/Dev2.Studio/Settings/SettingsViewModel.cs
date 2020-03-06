@@ -418,6 +418,7 @@ namespace Dev2.Settings
         protected virtual ClusterViewModel CreateClusterViewModel()
         {
             var clusterViewModel = new ClusterViewModel(CurrentEnvironment.ResourceRepository, Server, _popupController);
+            clusterViewModel.SetItem(clusterViewModel);
             return clusterViewModel;
         }
 
@@ -449,6 +450,17 @@ namespace Dev2.Settings
             if (PerfmonViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(PerfmonViewModel, OnIsDirtyPropertyChanged);
+                PerfmonViewModel.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        OnIsDirtyPropertyChanged(null, new EventArgs());
+                    }
+                };
+            }
+            if (ClusterViewModel != null)
+            {
+                isDirtyProperty.AddValueChanged(ClusterViewModel, OnIsDirtyPropertyChanged);
                 PerfmonViewModel.PropertyChanged += (sender, args) =>
                 {
                     if (args.PropertyName == "IsDirty")
@@ -579,7 +591,7 @@ namespace Dev2.Settings
 
                     if (ClusterViewModel.IsDirty)
                     {
-                        //ClusterViewModel.Save();
+                        ClusterViewModel.Save();
                     }
                     var isWritten = WriteSettings();
                     if (isWritten)

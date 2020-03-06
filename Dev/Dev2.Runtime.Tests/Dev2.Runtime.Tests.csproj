@@ -240,6 +240,7 @@
     <Compile Include="Services\ReloadTestsTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />
+    <Compile Include="Services\SaveClusterSettingsServiceTests.cs" />
     <Compile Include="Services\SaveComPluginSourceTests.cs" />
     <Compile Include="Services\SavePluginServiceTests.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />

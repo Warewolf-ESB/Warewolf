@@ -90,5 +90,6 @@ namespace Dev2.Studio.Interfaces
         List<ISearchResult> Filter(ISearch searchValue);
         ExecuteMessage DeleteQueue(ITriggerQueue triggerQueue);
         ClusterSettingsData GetClusterSettings(IServer currentEnv);
+        ExecuteMessage SaveClusterSettings(IServer currentEnv, ClusterSettingsData clusterSettings);
     }
 }
