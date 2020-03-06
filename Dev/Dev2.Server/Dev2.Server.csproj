@@ -412,6 +412,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Binaries\pauseloop.exe">
+      <Link>pauseloop.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Main.ico" />
   </ItemGroup>
   <ItemGroup>
