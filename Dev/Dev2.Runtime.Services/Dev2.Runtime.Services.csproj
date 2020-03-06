@@ -122,7 +122,9 @@
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
+    <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
     <Compile Include="ESB\Management\Services\GetFilterListService.cs" />
@@ -337,6 +339,7 @@
     <Compile Include="ServiceModel\Data\WcfService.cs" />
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\ElasticsearchSources.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginRuntimeHandler.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\IRuntime.cs" />

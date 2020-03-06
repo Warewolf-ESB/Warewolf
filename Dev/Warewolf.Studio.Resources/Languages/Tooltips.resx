@@ -1171,6 +1171,30 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisTimeoutToolTip" xml:space="preserve">
     <value>Redis Timeout for stored data</value>
   </data>
+  <data name="ElasticsearchSourceHostNameTooltip" xml:space="preserve">
+    <value>ElasticsearchSourceHostNameTooltip</value>
+  </data>
+  <data name="ElasticsearchSourcePortTooltip" xml:space="preserve">
+    <value>ElasticsearchSourcePortTooltip</value>
+  </data>
+  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
+    <value>The server password</value>
+  </data>
+  <data name="ElasticsearchTestTooltip" xml:space="preserve">
+    <value>Test the elasticsearch source connection</value>
+  </data>
+  <data name="ElasticsearchCancelTestTooltip" xml:space="preserve">
+    <value>Cancel the test execution</value>
+  </data>
+  <data name="ElasticsearchServersToolTip" xml:space="preserve">
+    <value>Select a preconfigured elasticsearch source.</value>
+  </data>
+  <data name="ElasticsearchNewSourceToolTip" xml:space="preserve">
+    <value>Create a new Elasticsearch Server Source</value>
+  </data>
+  <data name="ElasticsearchEditSourceToolTip" xml:space="preserve">
+    <value>Edit Elasticsearch Server Source</value>
+  </data>
   <data name="ManageWebSourceDefaultQueryTooltip" xml:space="preserve">
     <value>Optional default query</value>
   </data>
