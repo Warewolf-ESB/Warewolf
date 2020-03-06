@@ -205,6 +205,35 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public void SaveElasticsearchServiceSource(IElasticsearchServiceSource elasticsearchServiceSource, Guid serverWorkspaceId)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveElasticsearchSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument(SaveElasticsearchSource.ElasticsearchSource, serialiser.SerializeToBuilder(elasticsearchServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+        }
+        public void TestConnection(IElasticsearchServiceSource elasticsearchServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestElasticsearchSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument(TestElasticsearchSource.ElasticsearchSource, serialiser.SerializeToBuilder(elasticsearchServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+        }
         public void TestConnection(IRedisServiceSource redisServiceSource)
         {
             var con = Connection;

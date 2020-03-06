@@ -1174,6 +1174,51 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit the selected elasticsearch connection properties.
+        /// </summary>
+        public static string ElasticsearchEditSourceHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchEditSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new elasticsearch connection.
+        /// </summary>
+        public static string ElasticsearchNewSourceHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchNewSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured elasticsearch source..
+        /// </summary>
+        public static string ElasticsearchSourceHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Elasticsearch server name to connect to..
+        /// </summary>
+        public static string ElasticsearchSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourceHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which elasticsearch listens is 9200..
+        /// </summary>
+        public static string ElasticsearchSourcePortHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the path to the attachments you want to send, separated by a semicolon ;.
         /// </summary>
         public static string EmailHelpAttachments {

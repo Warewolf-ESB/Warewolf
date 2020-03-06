@@ -14,4 +14,4 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
 
-ENTRYPOINT &.\Server\StartAs.ps1 -NoExit
+CMD .\Server\StartAs.ps1 -NoExit

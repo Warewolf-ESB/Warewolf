@@ -92,6 +92,7 @@ namespace Dev2.Studio.ViewModels
 		bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
         void NewRedisSource(string resourcePath);
+        void NewElasticsearchSource(string resourcePath);
         void NewPluginSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
         void NewWcfSource(string resourcePath);
@@ -597,6 +598,16 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IRedisServiceSource>(_shellViewModel.EventPublisher, new RedisSourceViewModel(new RedisSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new RedisSourceControl(), ActiveServer));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void NewElasticsearchSource(string resourcePath)
+        {
+            var saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ElasticsearchNewHeaderLabel);
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ElasticsearchSource);
+            key.ServerID = ActiveServer.ServerID;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IElasticsearchServiceSource>(_shellViewModel.EventPublisher, new ElasticsearchSourceViewModel(new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ElasticsearchSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 

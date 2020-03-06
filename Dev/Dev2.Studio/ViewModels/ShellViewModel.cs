@@ -100,6 +100,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newOdbcSourceCommand;
         private AuthorizeCommand<string> _newWebSourceCommand;
         private AuthorizeCommand<string> _newRedisSourceCommand;
+        private AuthorizeCommand<string> _newElasticsearchSourceCommand;
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
         private AuthorizeCommand<string> _newExchangeSourceCommand;
@@ -433,6 +434,10 @@ namespace Dev2.Studio.ViewModels
         public IAuthorizeCommand<string> NewRedisSourceCommand
         {
             get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(@""), param => IsActiveServerConnected()));
+        }
+        public IAuthorizeCommand<string> NewElasticsearchSourceCommand
+        {
+            get => _newElasticsearchSourceCommand ?? (_newElasticsearchSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewElasticsearchSource(@""), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewServerSourceCommand
         {
@@ -867,6 +872,10 @@ namespace Dev2.Studio.ViewModels
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.RedisSource;
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessRedisSource(_contextualResourceModel, workSurfaceKey));
                         break;
+                    case "ElasticsearchSource":
+                        workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ElasticsearchSource;
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessElasticsearchSource(_contextualResourceModel, workSurfaceKey));
+                        break;
                     case "ComPluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ComPluginSource;
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessComPluginSource(_contextualResourceModel, workSurfaceKey));
@@ -1047,6 +1056,18 @@ namespace Dev2.Studio.ViewModels
                 new RedisSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IRedisServiceSource>(EventPublisher, viewModel, PopupProvider, new RedisSourceControl(), ActiveServer);
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
+            return workSurfaceContextViewModel;
+        }
+        WorkSurfaceContextViewModel ProcessElasticsearchSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
+        {
+            var def = new ElasticsearchSourceDefinition() { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
+
+            var viewModel = new ElasticsearchSourceViewModel(
+                new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, new ExternalProcessExecutor());
+            var vm = new SourceViewModel<IElasticsearchServiceSource>(EventPublisher, viewModel, PopupProvider, new ElasticsearchSourceControl(), ActiveServer);
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
@@ -1440,6 +1461,7 @@ namespace Dev2.Studio.ViewModels
         public void NewWebSource(string resourcePath) => _worksurfaceContextManager.NewWebSource(resourcePath);
 
         public void NewRedisSource(string resourcePath) => _worksurfaceContextManager.NewRedisSource(resourcePath);
+        public void NewElasticsearchSource(string resourcePath) => _worksurfaceContextManager.NewElasticsearchSource(resourcePath);
 
         public void NewPluginSource(string resourcePath) => _worksurfaceContextManager.NewPluginSource(resourcePath);
 

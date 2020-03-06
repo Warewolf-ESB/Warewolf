@@ -29,6 +29,7 @@ namespace Dev2.Studio.Interfaces
         string NewRabbitMqSourceTooltip { get; set; }
         string NewDropboxSourceTooltip { get; set; }
         string NewSharepointSourceTooltip { get; set; }
+        string NewElasticsearchSourceTooltip { get; set; }
         string DebugInputsTooltip { get; set; }
         string DebugStudioTooltip { get; set; }
         string DebugBrowserTooltip { get; set; }
