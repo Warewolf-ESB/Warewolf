@@ -1514,7 +1514,7 @@ namespace Dev2.Studio.ViewModels
             if (workSurfaceContextViewModel == null)
             {
                 var helpViewModel = _worksurfaceContextManager.ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
-                await helpViewModel?.LoadBrowserUri(Version.CommunityPageUri);
+                helpViewModel?.LoadBrowserUri(Version.CommunityPageUri);
             }
             else
             {
