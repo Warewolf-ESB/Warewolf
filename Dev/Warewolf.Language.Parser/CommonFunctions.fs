@@ -4,6 +4,7 @@ open LanguageAST
 open DataStorage
 open System.Diagnostics.CodeAnalysis
 open System
+open Newtonsoft.Json.Linq
 
 [<ExcludeFromCodeCoverage>]
 type WarewolfEvalResult = 
@@ -54,6 +55,7 @@ let atomtoString (x : WarewolfAtom) =
         a.ToString(sprintf "F%i" places)
     | Int a -> a.ToString()
     | DataString a -> a
+    | JsonObject a -> a.ToString()
     | Nothing -> null
     | NullPlaceholder -> null
     | PositionedValue(_, b) -> b.ToString()
@@ -65,6 +67,7 @@ let warewolfAtomRecordtoString (x : WarewolfAtomRecord) =
         a.ToString(sprintf "F%i" places)
     | Int a -> a.ToString()
     | DataString a -> a
+    | JsonObject a -> a.ToString()
     | Nothing -> ""
     | NullPlaceholder -> ""
     | PositionedValue(_, b) -> b.ToString()
@@ -96,14 +99,36 @@ let atomToJsonCompatibleObject (a : WarewolfAtom) : System.Object =
         | z when z.ToLower() = "true" -> true :> System.Object
         | z when z.ToLower() = "false" -> false :> System.Object
         | _ -> a :> System.Object
+    | JsonObject jo -> jo :> System.Object
     | Float a -> a :> System.Object
     | Nothing -> null :> System.Object
-    | _ -> "" :> System.Object
+    | NullPlaceholder -> "" :> System.Object
+    | PositionedValue (i, atom) -> "" :> System.Object
+
+let atomToJToken (a : WarewolfAtom) : JToken =
+    match a with
+    | Int a -> JValue(a) :> JToken
+    | DataString a ->
+        match a with
+        | z when z.ToLower() = "true" -> JValue(true) :> JToken
+        | z when z.ToLower() = "false" -> JValue(false) :> JToken
+        | _ -> JValue(a) :> JToken
+    | JsonObject jo -> jo
+    | Float a -> JValue(a) :> JToken
+    | Nothing -> null :> JToken
+    | NullPlaceholder -> null :> JToken
+    | PositionedValue (i,atom) -> JValue("") :> JToken
 
 let evalResultToJsonCompatibleObject (a : WarewolfEvalResult) : System.Object = 
     match a with
     | WarewolfAtomResult x -> atomToJsonCompatibleObject x
     | WarewolfAtomListresult x -> Seq.map atomToJsonCompatibleObject x :> System.Object
+    | _ -> failwith "json eval results can only work on atoms"
+
+let evalResultToJToken (a : WarewolfEvalResult) : Newtonsoft.Json.Linq.JToken =
+    match a with
+    | WarewolfAtomResult x -> atomToJToken x
+    | WarewolfAtomListresult x -> JArray(Seq.map atomToJToken x) :> JToken
     | _ -> failwith "json eval results can only work on atoms"
 
 let atomToInt (a : WarewolfAtom) = 

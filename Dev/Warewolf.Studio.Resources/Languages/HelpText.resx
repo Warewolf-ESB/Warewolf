@@ -1230,6 +1230,15 @@
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
     <value>The name of the queue as it appears on the server of the source provided</value>
   </data>
+  <data name="RabbitMQHelpCorrelationID" xml:space="preserve">
+    <value>Provide a CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we'll look at this property, and based on that we'll be able to match a response with a request</value>
+  </data>
+  <data name="RabbitMQHelpAutoCorrelationID" xml:space="preserve">
+    <value>Use ExecutionID or CustomTransactionID from Header as CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we'll look at this property, and based on that we'll be able to match a response with a request</value>
+  </data>
+  <data name="RabbitMQHelpAutoCustomTransactionIDCorrelationID" xml:space="preserve">
+    <value>Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from. When we receive a message in the callback queue we'll look at this property, and based on that we'll be able to match a response with a request</value>
+  </data>
   <data name="RabbitMQHelpRequeue" xml:space="preserve">
     <value>Marking this as True will leave the	message you consumed in the Queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;</value>
   </data>

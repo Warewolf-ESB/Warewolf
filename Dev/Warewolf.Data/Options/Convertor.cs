@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,9 +17,17 @@ using Warewolf.Data.Options;
 
 namespace Warewolf.Options
 {
+    public interface IOptionConvertParameter
+    {
+        void Notify();
+    }
     public static class OptionConvertor
     {
         public static IOption[] Convert(object o)
+        {
+            return Convert(o, o as IOptionConvertParameter);
+        }
+        public static IOption[] Convert(object o, IOptionConvertParameter topLevelInstance)
         {
             var result = new List<IOption>();
 
@@ -33,14 +41,14 @@ namespace Warewolf.Options
                 var properties = type.GetProperties();
                 foreach (var prop in properties)
                 {
-                    result.Add(PropertyToOption(o, prop));
+                    result.Add(PropertyToOption(o, prop, topLevelInstance));
                 }
 
                 return result.ToArray();
             }
         }
 
-        private static IOption PropertyToOption(object instance, PropertyInfo prop)
+        private static IOption PropertyToOption(object instance, PropertyInfo prop, IOptionConvertParameter topLevelInstance)
         {
             var helptextAttr = prop.GetCustomAttributes().Where(o => o is HelpTextAttribute).Cast<HelpTextAttribute>().FirstOrDefault();
             var tooltipAttr = prop.GetCustomAttributes().Where(o => o is TooltipAttribute).Cast<TooltipAttribute>().FirstOrDefault();
@@ -64,7 +72,7 @@ namespace Warewolf.Options
                 {
                     result.Tooltip = tooltipAttr.Get();
                 }
-                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionAutocomplete)o).Value); };
+                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionAutocomplete)o).Value); topLevelInstance?.Notify(); };
 
                 return result;
             }
@@ -108,7 +116,7 @@ namespace Warewolf.Options
                     optionInt.Tooltip = tooltipAttr.Get();
                 }
 
-                optionInt.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionInt)o).Value); };
+                optionInt.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionInt)o).Value); topLevelInstance?.Notify(); };
                 return optionInt;
             }
             else if (prop.PropertyType.IsAssignableFrom(typeof(IWorkflow)))
@@ -133,6 +141,7 @@ namespace Warewolf.Options
                     {
                         prop.SetValue(instance, ((OptionWorkflow)o).Workflow);
                     }
+                    topLevelInstance?.Notify();
                 };
                 return optionWorkflow;
             }
@@ -151,7 +160,7 @@ namespace Warewolf.Options
                 {
                     optionBool.Tooltip = tooltipAttr.Get();
                 }
-                optionBool.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionBool)o).Value); };
+                optionBool.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionBool)o).Value); topLevelInstance?.Notify(); };
 
                 return optionBool;
             }
@@ -178,7 +187,7 @@ namespace Warewolf.Options
                 {
                     result.Tooltip = tooltipAttr.Get();
                 }
-                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionEnum)o).Value); };
+                result.PropertyChanged += (o, e) => { prop.SetValue(instance, ((OptionEnum)o).Value); topLevelInstance?.Notify(); };
 
                 return result;
             }
@@ -254,7 +263,7 @@ namespace Warewolf.Options
                         object value = propertyValue != null && propertyValue.GetType() == optionType.GetType() ? propertyValue : optionType;
 
                         var type = optionType.GetType();
-                        returnVal.Options[type.Name] = OptionConvertor.Convert(value).Where(o => o.Name != fieldValueName);
+                        returnVal.Options[type.Name] = OptionConvertor.Convert(value, topLevelInstance).Where(o => o.Name != fieldValueName);
                     }
                     optionCount = optionTypes.Length;
                 }
@@ -263,11 +272,11 @@ namespace Warewolf.Options
                     var calcOrientation = optionCount == 2 ? Orientation.Horizontal : Orientation.Vertical;
                     optionRadioButton.Orientation = orientation ?? calcOrientation;
 
-                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionRadioButtons)o)); };
+                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionRadioButtons)o)); topLevelInstance?.Notify(); };
                 }
                 else
                 {
-                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionCombobox)o)); };
+                    returnVal.PropertyChanged += (o, e) => { prop.SetValue(instance, ExtractValueFromOptionMultiData(instance, prop, (OptionCombobox)o)); topLevelInstance?.Notify(); };
                 }
                 return returnVal;
             }

@@ -33,7 +33,7 @@ namespace Warewolf.Tests
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Information";
-
+            audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
@@ -66,7 +66,7 @@ namespace Warewolf.Tests
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Information";
-
+            audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
@@ -98,7 +98,7 @@ namespace Warewolf.Tests
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Warning";
-
+            audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
@@ -131,7 +131,7 @@ namespace Warewolf.Tests
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Error";
-
+            audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
@@ -164,7 +164,7 @@ namespace Warewolf.Tests
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Fatal";
-
+            audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
@@ -196,7 +196,7 @@ namespace Warewolf.Tests
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
             audit.AuditType = "Something Else";
-
+            audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
             var mockLoggerPublisher = new Mock<ILoggerPublisher>();
@@ -229,6 +229,7 @@ namespace Warewolf.Tests
             public Exception Exception { get; set; }
             public string ExecutingUser { get; set; }
             public string ExecutionID { get; set; }
+            public string CustomTransactionID  { get; set; }
             public long ExecutionOrigin { get; set; }
             public string ExecutionOriginDescription { get; set; }
             public string ExecutionToken { get; set; }

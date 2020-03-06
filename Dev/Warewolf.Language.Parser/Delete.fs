@@ -38,7 +38,7 @@ let rec deleteExpressionIndex (b:RecordSetName) (ind: LanguageExpression) (updat
 
 ///delete overall function
 and evalDelete (exp:string) (update:int)   (env:WarewolfEnvironment) =
-    let left = parseLanguageExpression exp update
+    let left = parseLanguageExpression exp update ShouldTypeCast.Yes
     match left with 
                 |   RecordSetNameExpression b ->  match b.Index with
                                                                  | Star -> deleteValues  b.Name env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )

@@ -26,6 +26,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using static DataStorage;
 
 namespace Dev2.Activities
 {
@@ -270,7 +271,7 @@ namespace Dev2.Activities
             {
                 try
                 {
-                    var languageExpression = EvaluationFunctions.parseLanguageExpression(serviceTestStep.StepOutputs?[0].Variable, 0);
+                    var languageExpression = EvaluationFunctions.parseLanguageExpression(serviceTestStep.StepOutputs?[0].Variable, 0, ShouldTypeCast.Yes);
                     if (languageExpression.IsJsonIdentifierExpression)
                     {
                         var jToken = JToken.Parse(serviceTestStep.StepOutputs?[0].Value) as JContainer ?? serviceTestStep.StepOutputs?[0].Value.DeserializeToObject();

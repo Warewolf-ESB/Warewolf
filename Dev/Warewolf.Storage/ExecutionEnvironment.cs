@@ -23,9 +23,7 @@ using System.Text;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-
-
-
+using static DataStorage;
 
 namespace Warewolf.Storage
 {
@@ -140,6 +138,24 @@ namespace Warewolf.Storage
                 Errors.Add(err.Message);
             }
         }
+        public void AssignString(string exp, string value, int update)
+        {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return;
+            }
+            try
+            {
+                var envTemp = PublicFunctions.EvalAssignWithFrameTypeCast(new AssignValue(exp, value), update, _env, ShouldTypeCast.No);
+
+                _env = envTemp;
+                CommitAssign();
+            }
+            catch (Exception err)
+            {
+                Errors.Add(err.Message);
+            }
+        }
 
         public void AssignStrict(string exp, string value, int update)
         {
@@ -232,7 +248,7 @@ namespace Warewolf.Storage
 
         public bool HasRecordSet(string recordsetName)
         {
-            var x = EvaluationFunctions.parseLanguageExpression(recordsetName, 0);
+            var x = EvaluationFunctions.parseLanguageExpression(recordsetName, 0, ShouldTypeCast.Yes);
             if (x.IsRecordSetNameExpression && x is LanguageAST.LanguageExpression.RecordSetNameExpression recsetName)
             {
                 return _env.RecordSets.ContainsKey(recsetName.Item.Name);
@@ -300,7 +316,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = EvaluationFunctions.parseLanguageExpression(a, 0);
+                var x = EvaluationFunctions.parseLanguageExpression(a, 0, ShouldTypeCast.Yes);
                 return x.IsRecordSetNameExpression;
             }
             catch (Exception)
@@ -314,7 +330,7 @@ namespace Warewolf.Storage
             errorMessage = string.Empty;
             try
             {
-                var x = EvaluationFunctions.parseLanguageExpression(expression, update);
+                var x = EvaluationFunctions.parseLanguageExpression(expression, update, ShouldTypeCast.Yes);
                 if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression ||
                     x.IsRecordSetNameExpression)
                 {
@@ -427,7 +443,7 @@ namespace Warewolf.Storage
 
         public string ToStar(string expression)
         {
-            var exp = EvaluationFunctions.parseLanguageExpression(expression, 0);
+            var exp = EvaluationFunctions.parseLanguageExpression(expression, 0, ShouldTypeCast.Yes);
             if (exp.IsRecordSetExpression && exp is LanguageAST.LanguageExpression.RecordSetExpression rec)
             {
                 return $"[[{rec.Item.Name}(*).{rec.Item.Column}]]";
@@ -525,7 +541,7 @@ namespace Warewolf.Storage
 
         public static string ConvertToIndex(string outputVar, int i)
         {
-            var output = EvaluationFunctions.parseLanguageExpression(outputVar, 0);
+            var output = EvaluationFunctions.parseLanguageExpression(outputVar, 0, ShouldTypeCast.Yes);
             if (output.IsRecordSetExpression && output is LanguageAST.LanguageExpression.RecordSetExpression recSetExpr)
             {
                 var outputidentifier = recSetExpr.Item;
@@ -541,7 +557,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = EvaluationFunctions.parseLanguageExpression(assignVar, 0);
+                var x = EvaluationFunctions.parseLanguageExpression(assignVar, 0, ShouldTypeCast.Yes);
                 return x.IsRecordSetExpression;
             }
             catch (Exception)
@@ -554,7 +570,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = EvaluationFunctions.parseLanguageExpression(assignVar, 0);
+                var x = EvaluationFunctions.parseLanguageExpression(assignVar, 0, ShouldTypeCast.Yes);
                 return x.IsScalarExpression;
             }
             catch (Exception)
@@ -567,7 +583,7 @@ namespace Warewolf.Storage
 
         public static string GetPositionColumnExpression(string recordset)
         {
-            var rec = EvaluationFunctions.parseLanguageExpression(recordset, 0);
+            var rec = EvaluationFunctions.parseLanguageExpression(recordset, 0, ShouldTypeCast.Yes);
             if (!rec.IsRecordSetExpression && !rec.IsRecordSetNameExpression)
             {
                 return recordset;
@@ -605,7 +621,7 @@ namespace Warewolf.Storage
                 {
                     return;
                 }
-                var envTemp = AssignEvaluation.evalJsonAssign(value, update, _env);
+                var envTemp = AssignEvaluation.evalJsonAssign(value, update, _env, ShouldTypeCast.Yes);
                 _env = envTemp;
             }
             catch (Exception err)
@@ -622,7 +638,7 @@ namespace Warewolf.Storage
                 return null;
             }
 
-            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp, ShouldTypeCast.Yes);
             if (parsedExpression.IsJsonIdentifierExpression && parsedExpression is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
             {
                 if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
@@ -644,7 +660,7 @@ namespace Warewolf.Storage
 
             if (!string.IsNullOrEmpty(exp))
             {
-                var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+                var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp, ShouldTypeCast.Yes);
 
                 if (parsedExpression.IsJsonIdentifierExpression)
                 {
