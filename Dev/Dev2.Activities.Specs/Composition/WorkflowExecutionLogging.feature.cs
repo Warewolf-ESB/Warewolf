@@ -45,7 +45,8 @@ namespace Dev2.Activities.Specs.Composition
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WorkflowExecutionLogging", "    In order to get a detailed workflow execution log\r\n    As a warewolf user\r\n  " +
-                    "  I want to be able to list all entry to exit execution log points", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "  I want to be able to list all entry to exit execution log points", ProgrammingLanguage.CSharp, new string[] {
+                        "ConnectAndLoadServer"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,16 +87,17 @@ namespace Dev2.Activities.Specs.Composition
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution entry point detailed log")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ConnectAndLoadServer")]
         public virtual void WorkflowExecutionEntryPointDetailedLog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution entry point detailed log", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
-    testRunner.Given("\"Hello World\" stop on error is set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
-    testRunner.And("an existing workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("\"Hello World\" stop on error is set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
+    testRunner.And("an existing workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
  testRunner.When("a \"Hello World\" workflow request is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -104,7 +106,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "DsfDecision",
                         "If [[Name]] <> (Not Equal)"});
-#line 10
+#line 11
     testRunner.Then("a detailed entry log is created", ((string)(null)), table1, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -113,9 +115,9 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "[[Name]]",
                         "World"});
-#line 13
+#line 14
     testRunner.And("it has these input parameter values", ((string)(null)), table2, "And ");
-#line 16
+#line 17
     testRunner.And("execution is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -124,6 +126,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution stops on error detailed logs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ConnectAndLoadServer")]
         public virtual void WorkflowExecutionStopsOnErrorDetailedLogs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution stops on error detailed logs", ((string[])(null)));
@@ -144,6 +147,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution completed detailed logs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ConnectAndLoadServer")]
         public virtual void WorkflowExecutionCompletedDetailedLogs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution completed detailed logs", ((string[])(null)));
@@ -182,6 +186,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow execution failure detailed logs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecutionLogging")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ConnectAndLoadServer")]
         public virtual void WorkflowExecutionFailureDetailedLogs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow execution failure detailed logs", ((string[])(null)));
