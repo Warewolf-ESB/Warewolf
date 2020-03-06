@@ -10,13 +10,13 @@ using Newtonsoft.Json;
 
 namespace Warewolf.UnitTestAttributes
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
     public class Depends : Attribute, IDisposable
     {
-        static readonly List<string> RigOpsHosts =  new List<string>
+        public static readonly List<string> RigOpsHosts =  new List<string>
         {
             "RSAKLFSVRHST1.premier.local",
             "RSAKLFWYNAND.premier.local",
+            "PIETER.premier.local",
             "T004124.premier.local",
             "localhost"
         };
@@ -71,44 +71,6 @@ namespace Warewolf.UnitTestAttributes
             throw new ArgumentOutOfRangeException();
         }
 
-        public static string GetAddress(ContainerType containerType)
-        {
-            if (EnableDocker)
-            {
-                if (containerType == ContainerType.CIRemote)
-                {
-                    return RigOpsHosts.FirstOrDefault() + ":3144";
-                }
-                else
-                {
-                    return RigOpsHosts.FirstOrDefault();
-                }
-            }
-            else
-            {
-                if (containerType == ContainerType.CIRemote)
-                {
-                    return BackupCIRemoteServer + ":" + BackupCIRemotePort;
-                }
-                else
-                {
-                    return BackupServer;
-                }
-            }
-        }
-
-        public static string GetPort(ContainerType containerType)
-        {
-            if (EnableDocker && containerType == ContainerType.CIRemote)
-            {
-                return "3144";
-            }
-            else
-            {
-                return GetBackupPort(containerType);
-            }
-        }
-
         public Container Container;
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
@@ -140,19 +102,12 @@ namespace Warewolf.UnitTestAttributes
 
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
-                    if (string.IsNullOrEmpty(Container.Port))
+                    if (!int.TryParse(Container.Port, out _))
                     {
                         Container.Port = GetBackupPort(_containerType);
                     }
 
-                    if (_containerType == ContainerType.CIRemote)
-                    {
-                        Container.IP = SelectedHost + ":3144";
-                    }
-                    else
-                    {
-                        Container.IP = SelectedHost;
-                    }
+                    Container.IP = SelectedHost;
                 }
             }
             else
@@ -510,8 +465,6 @@ namespace Warewolf.UnitTestAttributes
         public string ID { get; set; }
         public string IP { get; set; }
         public string Port { get; set; }
-        public string Host { get; set; }
-        public string Domain { get; set; }
     }
 
     class StopContainer
