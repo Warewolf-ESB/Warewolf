@@ -84,12 +84,6 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-        [Given(@"""(.*)"" workflow execution entry point detailed logs are created and logged")]
-        public void GivenWorkflowExecutionEntryPointDetailedLogsAreCreatedAndLogged(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [Given(@"workflow execution entry point detailed logs are created and logged")]
         public void GivenWorkflowExecutionEntryPointDetailedLogsAreCreatedAndLogged()
         {
@@ -274,12 +268,6 @@ namespace Dev2.Activities.Specs.Composition
         {
             var mockExecutionManager = _scenarioContext.Get<Mock<IExecutionManager>>("mockExecutionManager");
             mockExecutionManager.Verify(o => o.CompleteExecution());
-        }
-
-        [Then(@"a detailed on error log entry is created")]
-        public void ThenADetailedOnErrorLogEntryIsCreated(Table table)
-        {
-            ScenarioContext.Current.Pending();
         }
 
         [Given(@"the workflow is expected to throw exception")]
