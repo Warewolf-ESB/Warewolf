@@ -165,7 +165,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
+#pragma warning disable CC0021
             Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
+#pragma warning restore CC0021
 
             var serviceName = DataObject.ServiceName;
 
@@ -198,8 +200,9 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString());
+#pragma warning disable CC0021
             Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
-
+#pragma warning restore CC0021
             return Guid.Empty;
         }
 

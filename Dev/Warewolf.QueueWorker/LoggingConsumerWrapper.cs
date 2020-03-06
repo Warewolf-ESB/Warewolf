@@ -36,13 +36,13 @@ namespace QueueWorker
         public Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var headers = parameters as Headers;
-            if (!headers.KeyExists("ExecutionID"))
+            if (!headers.KeyExists("Warewolf-Execution-Id"))
             {
-                headers["ExecutionID"] = new[] { Guid.NewGuid().ToString() };
+                headers["Warewolf-Execution-Id"] = new[] { Guid.NewGuid().ToString() };
             }
             var empty = new string[] { };
-            var executionId = Guid.Parse(headers["ExecutionID"].FirstOrDefault());
-            var customTransactionID = headers["CustomTransactionID", empty].FirstOrDefault();
+            var executionId = Guid.Parse(headers["Warewolf-Execution-Id"].FirstOrDefault());
+            var customTransactionID = headers["Custom-Transaction-Id", empty].FirstOrDefault();
             string strBody = System.Text.Encoding.UTF8.GetString(body);
 
             _logger.StartExecution($"[{executionId}] - {customTransactionID} processing body {strBody} ");
