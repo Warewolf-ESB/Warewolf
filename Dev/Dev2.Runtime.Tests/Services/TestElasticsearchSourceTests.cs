@@ -117,12 +117,13 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var source = new ElasticsearchSourceDefinition()
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = Depends.GetAddress(Depends.ContainerType.Elasticsearch),
-                Port = Depends.GetPort(Depends.ContainerType.Elasticsearch),
+                HostName = dependency.Container.IP,
+                Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testElasticsearchSource = new TestElasticsearchSource();
