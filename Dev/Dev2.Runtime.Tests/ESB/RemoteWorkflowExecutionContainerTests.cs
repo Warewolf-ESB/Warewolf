@@ -116,13 +116,26 @@ namespace Dev2.Tests.Runtime.ESB
         [TestCategory(nameof(RemoteWorkflowExecutionContainer))]
         public void RemoteWorkflowExecutionContainer_Execute()
         {
+            var expectedExecutionID = Guid.NewGuid();
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             var testWebRequest = new TestWebRequest();
             mockWebRequestFactory.Setup(o => o.New(It.IsAny<string>())).Returns(testWebRequest);
             var webRequestFactory = mockWebRequestFactory.Object;
-            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList></DataList>","", "<DataList><NumericGUID>74272317-2264-4564-3988-700350008298</NumericGUID></DataList>", webRequestFactory);
+            var dataListShape = "<DataList></DataList>";
+            var webResponse = "<DataList><NumericGUID>74272317-2264-4564-3988-700350008298</NumericGUID></DataList>";
+            var dataObj = new DsfDataObject(dataListShape, Guid.NewGuid())
+            {
+                ExecutionID = expectedExecutionID,
+                EnvironmentID = _connection.ResourceID,
+                ServiceName = "Test",
+                RemoteInvokeResultShape = new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"),
+                Environment = new ExecutionEnvironment(),
+                IsDebug = true
+            };
+
+            var container = CreateExecutionContainer(resourceCatalog.Object, dataListShape, "", webResponse, webRequestFactory, dataObj);
 
             container.Execute(out ErrorResultTO errors, 0);
 
@@ -141,6 +154,7 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual(1, testWebRequest.GetResponseCallCount);
             Assert.AreEqual("", testWebRequest.Headers.Get("From"));
             Assert.AreEqual("RemoteWarewolfServer", testWebRequest.Headers.Get("Cookie"));
+            Assert.AreEqual(expectedExecutionID.ToString(), testWebRequest.Headers.Get("ExecutionID"));
         }
 
         [TestMethod]
@@ -195,28 +209,26 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
         }
 
-        static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog,
-            string dataListShape = "<DataList></DataList>", string dataListData = "",
-            string webResponse = "<DataList><NumericGUID>74272317-2264-4564-3988-700350008298</NumericGUID></DataList>")
+        static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog, string dataListShape = "<DataList></DataList>", string dataListData = "", string webResponse = "<DataList><NumericGUID>74272317-2264-4564-3988-700350008298</NumericGUID></DataList>")
         {
-            return CreateExecutionContainer(resourceCatalog, dataListShape, dataListData, webResponse, new WebRequestFactory());
-        }
-
-        static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog, string dataListShape, string dataListData, string webResponse, IWebRequestFactory webRequestFactory)
-        {
-
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.EnvironmentID).Returns(_connection.ResourceID);
             dataObj.Setup(d => d.ServiceName).Returns("Test");
             dataObj.Setup(d => d.RemoteInvokeResultShape).Returns(new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"));
             dataObj.Setup(d => d.Environment).Returns(new ExecutionEnvironment());
             dataObj.Setup(d => d.IsDebug).Returns(true);
-            ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObj.Object,new StringBuilder(dataListData),dataListShape, 0);
+            return CreateExecutionContainer(resourceCatalog, dataListShape, dataListData, webResponse, new WebRequestFactory(), dataObj.Object);
+        }
+
+        private static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog, string dataListShape, string dataListData, string webResponse, IWebRequestFactory webRequestFactory, IDSFDataObject dataObj)
+        {
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObj, new StringBuilder(dataListData), dataListShape, 0);
             var sa = new ServiceAction();
             var workspace = new Mock<IWorkspace>();
             var esbChannel = new Mock<IEsbChannel>();
 
-            var container = new RemoteWorkflowExecutionContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object, resourceCatalog, webRequestFactory)
+            var container = new RemoteWorkflowExecutionContainerMock(sa, dataObj, workspace.Object, esbChannel.Object,
+                resourceCatalog, webRequestFactory)
             {
                 GetRequestRespsonse = webResponse
             };
