@@ -1,4 +1,5 @@
-﻿Feature: WorkflowExecutionLogging
+﻿@ConnectAndLoadServer
+Feature: WorkflowExecutionLogging
     In order to get a detailed workflow execution log
     As a warewolf user
     I want to be able to list all entry to exit execution log points
@@ -14,7 +15,6 @@ Scenario: Workflow execution entry point detailed log
     | key       | value     |
     | [[Name]]  | World     |
     And execution is complete
-
 
 Scenario: Workflow execution stops on error detailed logs
     Given "Hello World" stop on error is set to "true"

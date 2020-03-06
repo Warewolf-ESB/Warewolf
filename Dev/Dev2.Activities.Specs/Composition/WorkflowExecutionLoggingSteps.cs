@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Composition
         private bool _expectException;
         private readonly Exception _falseException = new Exception("False exception from WorkflowExecutionLoggingSteps");
 
-        [BeforeFeature()]
+        [BeforeFeature(tags: "ConnectAndLoadServer")]
         private static void Setup()
         {
             ConnectAndLoadServer();
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        [AfterFeature]
+        [AfterFeature(tags: "ConnectAndLoadServer")]
         private static void Cleanup()
         {
             //TODO: release all resource used by this feature 
