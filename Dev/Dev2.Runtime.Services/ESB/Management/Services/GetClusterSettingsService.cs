@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2Logger.Info("Get Cluster Settings Service", GlobalConstants.WarewolfInfo);
 
-            var settings = serializer.SerializeToBuilder(Config.Cluster);
+            var settings = serializer.SerializeToBuilder(Config.Cluster.Get());
             return settings;
         }
 

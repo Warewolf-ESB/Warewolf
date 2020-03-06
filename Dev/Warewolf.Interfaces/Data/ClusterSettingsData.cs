@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,9 +11,29 @@ using System;
 
 namespace Warewolf.Configuration
 {
-    public class ClusterSettingsData : IEquatable<ClusterSettingsData>
+    public class ClusterSettingsData : BindableBase, IEquatable<ClusterSettingsData>
     {
-        public string Key { get; set; }
+        private Guid _leaderServerResourceId;
+        private string _leaderServerKey;
+        private string _key;
+
+        public string Key
+        {
+            get => _key;
+            set => SetProperty(ref _key, value);
+        }
+
+        public Guid LeaderServerResourceId
+        {
+            get => _leaderServerResourceId;
+            set => SetProperty(ref _leaderServerResourceId, value);
+        }
+
+        public string LeaderServerKey
+        {
+            get => _leaderServerKey;
+            set => SetProperty(ref _leaderServerKey, value);
+        }
 
         public bool Equals(ClusterSettingsData other)
         {

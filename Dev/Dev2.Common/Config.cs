@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -193,7 +193,7 @@ namespace Dev2.Common
         public string Endpoint => _settings.Endpoint;
     }
 
-    public class ClusterSettings : ConfigSettingsBase<ClusterSettingsData>
+   public class ClusterSettings : ConfigSettingsBase<ClusterSettingsData>
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
         public ClusterSettings()
@@ -206,7 +206,39 @@ namespace Dev2.Common
         {
         }
 
-        public string Key => _settings.Key;
+        public string Key
+        {
+            get
+            {
+                if (_settings.Key is null)
+                {
+                    _settings.Key = Guid.NewGuid().ToString();
+                    Save();
+                }
+                
+                return _settings.Key;
+            }
+        }
+
+        public string LeaderServerKey
+        {
+            get => _settings.LeaderServerKey;
+            set
+            {
+                _settings.LeaderServerKey = value;
+                Save();
+            }
+        }
+
+        public Guid LeaderServerResourceId
+        {
+            get => _settings.LeaderServerResourceId;
+            set
+            {
+                _settings.LeaderServerResourceId = value;
+                Save();
+            }
+        }
 
 
         public ClusterSettingsData Get()

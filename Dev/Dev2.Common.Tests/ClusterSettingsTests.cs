@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,11 +26,15 @@ namespace Dev2.Common.Tests
             var expectedClusterSettingsData = new ClusterSettingsData
             {
                 Key = "asdfasdfsadf",
+                LeaderServerResourceId = Guid.Empty,
+                LeaderServerKey = "fdsafdsafds",
             };
 
             var serverSettingsData = new ClusterSettingsData
             {
                 Key = "asdfasdfsadf",
+                LeaderServerResourceId = Guid.Empty,
+                LeaderServerKey = "fdsafdsafds",
             };
 
             Assert.IsTrue(serverSettingsData.Equals(expectedClusterSettingsData));
@@ -47,7 +51,7 @@ namespace Dev2.Common.Tests
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
             var settings = new ClusterSettings("fakeClusterSettings.json", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            Assert.AreEqual(1, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
+            Assert.AreEqual(3, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual(expectedClusterKey, settings.Key);
         }

@@ -89,5 +89,6 @@ namespace Dev2.Studio.Interfaces
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
         List<ISearchResult> Filter(ISearch searchValue);
         ExecuteMessage DeleteQueue(ITriggerQueue triggerQueue);
+        ClusterSettingsData GetClusterSettings(IServer currentEnv);
     }
 }
