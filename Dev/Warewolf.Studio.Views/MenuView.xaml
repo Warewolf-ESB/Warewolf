@@ -165,7 +165,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding DeployCommand}"
+                    Command="{Binding ShellViewModel.DeployCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuDeployToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"

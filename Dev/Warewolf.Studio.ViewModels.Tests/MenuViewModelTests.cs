@@ -93,12 +93,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod,Timeout(60000)]
-        public void TestDeployCommand()
-        {
-            Assert.AreSame(_deployCommandMock.Object, _target.DeployCommand);
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestSaveCommand()
         {
             Assert.AreSame(_saveCommand, _target.SaveCommand);
