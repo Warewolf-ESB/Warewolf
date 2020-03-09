@@ -9,7 +9,6 @@
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
-             xmlns:views="clr-namespace:Warewolf.Studio.Views"
              Width="150"
              d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -134,7 +133,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding SaveCommand}"
+                    Command="{Binding ShellViewModel.SaveCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuSaveToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
@@ -370,7 +369,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding OpenSettingsCommand}"
+                    Command="{Binding ShellViewModel.SettingsCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuSettingsToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"

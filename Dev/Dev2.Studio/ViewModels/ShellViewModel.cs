@@ -1621,7 +1621,6 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => ViewInBrowserCommand);
                 if (MenuViewModel != null)
                 {
-                    MenuViewModel.SaveCommand = SaveCommand;
                     MenuViewModel.ExecuteServiceCommand = DebugCommand;
                 }
             }

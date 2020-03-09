@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,14 +12,12 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-
 using Dev2;
 using Dev2.Instrumentation;
 
@@ -42,37 +40,24 @@ namespace Warewolf.Studio.ViewModels
         {
             ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
-            SaveCommand = _viewModel.SaveCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
-            OnPropertyChanged(() => SaveCommand);
             OnPropertyChanged(() => ExecuteServiceCommand);
-            CheckForNewVersion(_viewModel);
-            CheckForNewVersionCommand = new DelegateCommand(_viewModel.DisplayDialogForNewVersion);
-            SupportCommand = new DelegateCommand(() =>
-            {
-                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                if (applicationTracker != null)
-                {
-                    applicationTracker.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
-                                                        Resources.Languages.TrackEventHelp.Help);
-                }
-                Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
-            });
-
+            CheckForNewVersion();
+            CheckForNewVersionCommand = new DelegateCommand(ShellViewModel.DisplayDialogForNewVersion);
+            SupportCommand = new DelegateCommand(OpenSupport);
             LockCommand = new DelegateCommand(Lock);
             SlideOpenCommand = new DelegateCommand(() =>
             {
                 if (!_isOverLock)
                 {
-                    SlideOpen(_viewModel);
+                    SlideOpen();
                 }
             });
             SlideClosedCommand = new DelegateCommand(() =>
             {
-                
-                if (_viewModel.MenuPanelWidth >= 80 && !_isOverLock)
+                if (ShellViewModel.MenuPanelWidth >= 80 && !_isOverLock)
                 {
-                    SlideClosed(_viewModel);
+                    SlideClosed();
                 }
             });
             IsOverLockCommand = new DelegateCommand(() => _isOverLock = true);
@@ -82,7 +67,13 @@ namespace Warewolf.Studio.ViewModels
             IsPanelOpen = true;
             IsPopoutViewOpen = false;
             DebugIcon = FontAwesomeIcon.Bug;
-            
+        }
+
+        private static void OpenSupport()
+        {
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker?.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory, Resources.Languages.TrackEventHelp.Help);
+            Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
         }
 
         public IShellViewModel ShellViewModel
@@ -102,15 +93,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand SupportCommand { get; set; }
-        public ICommand SaveCommand
-        {
-            get => _saveCommand;
-            set
-            {
-                _saveCommand = value;
-                OnPropertyChanged(() => SaveCommand);
-            }
-        }
         public ICommand ExecuteServiceCommand
         {
             get => _executeServiceCommand;
@@ -149,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            _viewModel?.HelpViewModel?.UpdateHelpText(helpText);
+            ShellViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public void Lock()
@@ -176,18 +158,18 @@ namespace Warewolf.Studio.ViewModels
             UpdateProperties();
         }
 
-        void SlideOpen(IShellViewModel mainViewModel)
+        void SlideOpen()
         {
             if (IsPanelLockedOpen)
             {
                 IsPanelOpen = true;
-                mainViewModel.MenuExpanded = IsPanelOpen;
+                ShellViewModel.MenuExpanded = IsPanelOpen;
                 ButtonWidth = ButtonWidthLarge;
                 UpdateProperties();
             }
         }
 
-        void SlideClosed(IShellViewModel mainViewModel)
+        void SlideClosed()
         {
             if (IsPopoutViewOpen)
             {
@@ -195,14 +177,14 @@ namespace Warewolf.Studio.ViewModels
             }
             if (IsPanelLockedOpen && !IsPanelOpen)
             {
-                mainViewModel.MenuExpanded = !IsPanelOpen;
+                ShellViewModel.MenuExpanded = !IsPanelOpen;
                 IsPanelOpen = !IsPanelOpen;
             }
             else
             {
                 if (IsPanelLockedOpen && IsPanelOpen)
                 {
-                    mainViewModel.MenuExpanded = !IsPanelOpen;
+                    ShellViewModel.MenuExpanded = !IsPanelOpen;
                     ButtonWidth = ButtonWidthLarge;
                     IsPanelOpen = !IsPanelOpen;
                 }
@@ -211,12 +193,9 @@ namespace Warewolf.Studio.ViewModels
             UpdateProperties();
         }
 
-        async void CheckForNewVersion(IShellViewModel mainViewModel)
+        async void CheckForNewVersion()
         {
-            if(mainViewModel != null)
-            {
-                HasNewVersion = await mainViewModel.CheckForNewVersionAsync().ConfigureAwait(true);
-            }
+            HasNewVersion = await ShellViewModel.CheckForNewVersionAsync().ConfigureAwait(true);
         }
 
         public int ButtonWidth { get; set; }
@@ -246,91 +225,20 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsPopoutViewOpen { get; set; }
 
-        public string NewLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogNewLabel;
-                }
+        public string NewLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogNewLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
-        public string SaveLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogSaveLabel;
-                }
+        public string SaveLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogSaveLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
-        public string DeployLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogDeployLabel;
-                }
+        public string DeployLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogDeployLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
-        public string SearchLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogSearchLabel;
-                }
-                return string.Empty;
-            }
-        }
-        public string TaskLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogTaskLabel;
-                }
+        public string SearchLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogSearchLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
+        public string TaskLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogTaskLabel : string.Empty;
 
-        public string SchedulerLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogSchedulerLabel;
-                }
+        public string SchedulerLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogSchedulerLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
+        public string QueueEventsLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogQueueEventsLabel : string.Empty;
 
-        public string QueueEventsLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogQueueEventsLabel;
-                }
-
-                return string.Empty;
-            }
-        }
         public bool IsProcessing
         {
             get => _isProcessing;
@@ -353,54 +261,13 @@ namespace Warewolf.Studio.ViewModels
                 return string.Empty;
             }
         }
-        public string SettingsLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogSettingsLabel;
-                }
+        public string SettingsLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogSettingsLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
-        public string SupportLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogSupportLabel;
-                }
+        public string SupportLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogSupportLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
-        public string NewVersionLabel
-        {
-            get
-            {
-                if (ButtonWidth >= ButtonWidthLarge)
-                {
-                    return Resources.Languages.Core.MenuDialogNewVersionLabel;
-                }
+        public string NewVersionLabel => ButtonWidth >= ButtonWidthLarge ? Resources.Languages.Core.MenuDialogNewVersionLabel : string.Empty;
 
-                return string.Empty;
-            }
-        }
-        public string LockLabel
-        {
-            get
-            {
-                if (IsPanelLockedOpen)
-                {
-                    return Resources.Languages.Core.MenuDialogLockLabel;
-                }
-
-                return Resources.Languages.Core.MenuDialogUnLockLabel;
-            }
-        }
+        public string LockLabel => IsPanelLockedOpen ? Resources.Languages.Core.MenuDialogLockLabel : Resources.Languages.Core.MenuDialogUnLockLabel;
 
         public object DataContext { get; set; }
     }
