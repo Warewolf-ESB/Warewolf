@@ -95,6 +95,7 @@ using WarewolfParserInterop;
 using Dev2.Runtime.Hosting;
 using Dev2.Infrastructure.Tests;
 using Warewolf.UnitTestAttributes;
+using Activity = System.Activities.Activity;
 
 namespace Dev2.Activities.Specs.Composition
 {
