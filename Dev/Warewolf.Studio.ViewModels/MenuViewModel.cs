@@ -41,7 +41,6 @@ namespace Warewolf.Studio.ViewModels
             ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             CheckForNewVersion();
-            CheckForNewVersionCommand = new DelegateCommand(ShellViewModel.DisplayDialogForNewVersion);
             SupportCommand = new DelegateCommand(OpenSupport);
             LockCommand = new DelegateCommand(Lock);
             SlideOpenCommand = new DelegateCommand(() =>
@@ -94,7 +93,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand LockCommand { get; set; }
         public ICommand SlideOpenCommand { get; set; }
         public ICommand SlideClosedCommand { get; set; }
-        public ICommand CheckForNewVersionCommand { get; set; }
 
         public string LockImage => IsPanelLockedOpen ? @"UnlockAlt" : @"Lock";
 

@@ -301,6 +301,9 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        private ICommand _checkForNewVersionCommand;
+        public ICommand CheckForNewVersionCommand => _checkForNewVersionCommand ?? (_checkForNewVersionCommand = new DelegateCommand(param => DisplayDialogForNewVersion()));
+
         IResourcePickerDialog _currentResourcePicker;
 
         public ICommand AddWorkflowCommand

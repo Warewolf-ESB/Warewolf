@@ -127,6 +127,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand DebugCommand { get; }
         IAuthorizeCommand SettingsCommand { get; }
         ICommand SearchCommand { get; }
+        ICommand CheckForNewVersionCommand { get; }
         ICommand AddWorkflowCommand { get; }
         IAuthorizeCommand SchedulerCommand { get; }
         IAuthorizeCommand QueueEventsCommand { get; }

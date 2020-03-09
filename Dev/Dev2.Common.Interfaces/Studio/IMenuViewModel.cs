@@ -15,7 +15,6 @@ namespace Dev2.Common.Interfaces.Studio
 {
     public interface IMenuViewModel
     {
-        ICommand CheckForNewVersionCommand { get; set; }
         ICommand LockCommand { get; set; }
         ICommand SlideOpenCommand { get; set; }
         ICommand SlideClosedCommand { get; set; }

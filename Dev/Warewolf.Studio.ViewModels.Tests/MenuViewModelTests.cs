@@ -92,17 +92,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod,Timeout(60000)]
-        public void TestCheckForNewVersionCommand()
-        {
-            //act
-            _target.CheckForNewVersionCommand.Execute(null);
-            Assert.IsTrue(_target.CheckForNewVersionCommand.CanExecute(null));
-
-            //assert
-            _mainViewModelMock.Verify(it => it.DisplayDialogForNewVersion());
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestSupportCommand()
         {
             Assert.IsTrue(_target.SupportCommand.CanExecute(null));

@@ -4337,6 +4337,34 @@ namespace Dev2.Core.Tests
 
             popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl));
         }
+        
+        [TestMethod]
+        [TestCategory(nameof(ShellViewModel))]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_CheckForNewVersionCommand_ShouldCallLatestVersionPage()
+        {
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(p => p.ShowPopup(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            var envRepo = new Mock<IServerRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IServer>());
+            var environmentModel = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            environmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            envRepo.Setup(e => e.Source).Returns(environmentModel.Object);
+
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(envRepo.Object);
+            mockVersionChecker.Setup(checker => checker.GetNewerVersionAsync()).Returns(Task.FromResult(true));
+            var vieFactory = new Mock<IViewFactory>();
+            var viewMock = new Mock<IView>();
+            vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
+            var vm = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, mockVersionChecker.Object, vieFactory.Object, false, popupController.Object);
+            vm.CheckForNewVersionCommand.Execute(null);
+
+            popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl));
+        }
 
         public class IEnvironmentRepository
         {
