@@ -1,9 +1,9 @@
-﻿@Database
-Feature: PostgresSqlConnector
+﻿Feature: PostgresSqlConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
 
+@Database
 Scenario: Creating PostgresSql Connector
 	Given I drag a PostgresSql Server database connector
 	When I select DemoPostgres as the source
@@ -20,7 +20,7 @@ Scenario: Creating PostgresSql Connector
 	| name | salary | age |
 	| Bill | 4200   | 45  |
 
-@OpeningSavedWorkflowWithPostgresServerTool
+@Database
 Scenario: Opening Saved workflow with PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
@@ -33,7 +33,7 @@ Scenario: Opening Saved workflow with PostgresSql tool
 	| fname | [[fname]] | false         |
 	And Validate PostgresSql Is Enabled
 
-@ChangeTheSourceOnExistingPostgresql	
+@Database
 Scenario: Change the source on existing PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
@@ -46,7 +46,7 @@ Scenario: Change the source on existing PostgresSql tool
 	| fname | [[fname]] | false         |
 	And Validate PostgresSql Is Enabled
 
-@ChangeTheActionOnExistingPostgresql
+@Database
 Scenario: Change the action on existing PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
@@ -59,6 +59,7 @@ Scenario: Change the action on existing PostgresSql tool
 	| fname | [[fname]] | false         |  
 	And Validate PostgresSql Is Enabled
 
+@Database
 Scenario: Change the recordset on existing PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
@@ -71,7 +72,7 @@ Scenario: Change the recordset on existing PostgresSql tool
 	| fname | [[fname]] | false         |
 	And Validate PostgresSql Is Enabled
 
-@ExecutePostgresServerWithTimeout
+@DatabaseTimeout
 Scenario: Execute Postgres Server With Timeout
 	Given this test depends on a remote Postgres database container
     And I have workflow "PostgreWorkflowForTimeout" with "PostgresActivity" Postgres database connector
