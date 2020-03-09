@@ -43,7 +43,6 @@ namespace Warewolf.Studio.ViewModels
             ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             SaveCommand = _viewModel.SaveCommand;
-            OpenSearchCommand = _viewModel.SearchCommand;
             OpenTasksCommand = _viewModel.TasksCommand;
             OpenQueueEventsCommand = _viewModel.QueueEventsCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
@@ -116,7 +115,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand OpenSettingsCommand { get; set; }
-        public ICommand OpenSearchCommand { get; set; }
         public ICommand OpenQueueEventsCommand { get; set; }
         public ICommand OpenTasksCommand { get; set; }
         public ICommand ExecuteServiceCommand

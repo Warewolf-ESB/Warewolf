@@ -98,12 +98,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(_saveCommand, _target.SaveCommand);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestOpenSearchCommand()
-        {
-            Assert.AreSame(_openSearchCommand, _target.OpenSearchCommand);
-        }
-
         [TestMethod, Timeout(60000)]
         public void TestOpenTasksCommand()
         {

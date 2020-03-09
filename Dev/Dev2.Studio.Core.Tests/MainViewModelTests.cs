@@ -2963,6 +2963,35 @@ namespace Dev2.Core.Tests
             _shellViewModel.SchedulerCommand.Execute(null);
             mockWM.Verify(manager => manager.AddSchedulerWorkSurface());
         }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ShellViewModel))]
+        public void ShellViewModel_SearchCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+         
+            var env = SetupEnvironment();
+         
+            //------------Execute Test---------------------------
+            _shellViewModel.ActiveServer = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(_shellViewModel.ActiveServer);
+            Assert.IsTrue(_shellViewModel.ActiveServer.IsConnected);
+            Assert.IsTrue(_shellViewModel.ActiveServer.CanStudioExecute);
+         
+            var canExecute = _shellViewModel.SearchCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+         
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.SearchView(It.IsAny<IWorkSurfaceKey>())).Verifiable();
+            _shellViewModel.WorksurfaceContextManager = mockWM.Object;
+            _shellViewModel.SearchCommand.Execute(null);
+            mockWM.Verify(manager => manager.SearchView(It.IsAny<IWorkSurfaceKey>()));
+        }
 
         static Mock<IServer> SetupEnvironment()
         {
