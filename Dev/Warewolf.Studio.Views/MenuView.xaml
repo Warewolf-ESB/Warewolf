@@ -103,7 +103,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding NewServiceCommand}"
+                    Command="{Binding ShellViewModel.NewServiceCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuNewServiceToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"

@@ -42,7 +42,6 @@ namespace Warewolf.Studio.ViewModels
         {
             ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
-            NewServiceCommand = _viewModel.NewServiceCommand;
             DeployCommand = _viewModel.DeployCommand;
             SaveCommand = _viewModel.SaveCommand;
             OpenSearchCommand = _viewModel.SearchCommand;
@@ -110,7 +109,6 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand SupportCommand { get; set; }
         public ICommand DeployCommand { get; set; }
-        public ICommand NewServiceCommand { get; set; }
         public ICommand SaveCommand
         {
             get => _saveCommand;

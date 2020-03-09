@@ -15,7 +15,6 @@ namespace Dev2.Common.Interfaces.Studio
 {
     public interface IMenuViewModel
     {
-        ICommand NewServiceCommand { get; set; }
         ICommand DeployCommand { get; set; }
         ICommand SaveCommand { get; set; }
         ICommand OpenSettingsCommand { get; set; }
