@@ -1,4 +1,4 @@
-<Source ID="9fe9a5d8-4d6c-4cbc-ab8c-27d9154e4cfb" Name="testElasticsearchSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="HostName=RSAKLFWYNAND.premier.local;Port=4200;UserName=test;Password=test;VirtualHost=/" Type="ElasticsearchSource" ServerVersion="0.0.6159.17243" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="9fe9a5d8-4d6c-4cbc-ab8c-27d9154e4cfb" Name="testElasticsearchSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="HostName=RSAKLFWYNAND;Port=9200;UserName=test;VirtualHost=/" Type="ElasticsearchSource" ServerVersion="0.0.6159.17243" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>testElasticsearchSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
