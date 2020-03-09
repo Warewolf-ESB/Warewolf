@@ -52,6 +52,8 @@ namespace Warewolf.Studio.Views
         public string GetHostName() => ElasticsearchHostNameTextbox.Text;
 
         public string GetPassword() => PasswordTextBox.Password;
+        
+        public string GetUsername() => UserNameTextBox.Text;
 
         public string GetPort() => ElasticsearchPortTextbox.Text;
 
@@ -78,7 +80,10 @@ namespace Warewolf.Studio.Views
         {
             PasswordTextBox.Password = password;
         }
-
+        public void EnterUsername(string username)
+        {
+            UserNameTextBox.Text = username;
+        }
         public void EnterHostName(string hostName)
         {
             ElasticsearchHostNameTextbox.Text = hostName;
@@ -108,7 +113,7 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                UserRadioButton.IsChecked = true;
+                PasswordRadioButton.IsChecked = true;
             }
         }
     }

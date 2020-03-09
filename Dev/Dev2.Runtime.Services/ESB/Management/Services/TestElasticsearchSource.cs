@@ -45,6 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     HostName = elasticsearchServiceSourceDefinition.HostName,
                     Port = elasticsearchServiceSourceDefinition.Port,
                     Password = elasticsearchServiceSourceDefinition.Password,
+                    Username = elasticsearchServiceSourceDefinition.Username,
                     AuthenticationType = elasticsearchServiceSourceDefinition.AuthenticationType,
                 });
                 msg.HasError = false;

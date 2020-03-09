@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     {
         string HostName { get; set; }
         string Password { get; set; }
+        string Username { get; set; }
         string Port { get; set; }
         AuthenticationType AuthenticationType { get; set; }
     }

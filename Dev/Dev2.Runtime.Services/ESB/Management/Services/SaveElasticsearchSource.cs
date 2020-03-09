@@ -70,6 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Port = elasticsearchSourceDef.Port,
                     AuthenticationType = elasticsearchSourceDef.AuthenticationType,
                     Password = elasticsearchSourceDef.Password, 
+                    Username = elasticsearchSourceDef.Username, 
                     ResourceName = elasticsearchSourceDef.Name
                 };
 

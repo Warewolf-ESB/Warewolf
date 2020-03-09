@@ -126,7 +126,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 HostName = hostName,
                 Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "test"
+                Password = "test",
+                Username =  "test"
             }.ToString();
 
             try
@@ -159,7 +160,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 HostName = "http://ddd",
                 Port = "9300",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "Password"
+                Password = "test",
+                Username =  "test"
             }.ToString();
 
             var handler = new ElasticsearchSources();

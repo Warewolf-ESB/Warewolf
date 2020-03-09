@@ -28,10 +28,12 @@ namespace Dev2.Common.Interfaces.Core
             Id = source.ResourceID;
             Name = source.ResourceName;
             Password = source.Password;
+            Username = source.Username;
             HostName = source.HostName;
             Port = source.Port;
             Path = source.GetSavePath();
         }
+        public string Username { get; set; }
         public string HostName { get; set; }
         public string Password { get; set; }
         public AuthenticationType AuthenticationType { get; set; }
@@ -54,6 +56,7 @@ namespace Dev2.Common.Interfaces.Core
             var equals = true;
             equals &= string.Equals(HostName, other.HostName);
             equals &= string.Equals(Password, other.Password);
+            equals &= string.Equals(Username, other.Username);
             equals &= Id == other.Id;
             equals &= string.Equals(Name, other.Name);
             equals &= AuthenticationType == other.AuthenticationType;
@@ -74,6 +77,7 @@ namespace Dev2.Common.Interfaces.Core
             var equals = true;
             equals &= string.Equals(HostName, other.HostName);
             equals &= string.Equals(Password, other.Password);
+            equals &= string.Equals(Username, other.Username);
             equals &= Id == other.Id;
             equals &= string.Equals(Name, other.Name);
             equals &= AuthenticationType == other.AuthenticationType;
@@ -103,6 +107,7 @@ namespace Dev2.Common.Interfaces.Core
             {
                 var hashCode = HostName?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Username?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

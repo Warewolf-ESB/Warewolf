@@ -87,7 +87,12 @@ namespace Dev2.Runtime.ServiceModel
                 var uri = new Uri(source.HostName + ":" + source.Port);  
                 var isValid = false; 
                 var errorMessage = "";
-                var settings = new ConnectionSettings(uri).RequestTimeout(TimeSpan.FromMinutes(2));;
+                var settings = new ConnectionSettings(uri).RequestTimeout(TimeSpan.FromMinutes(2));
+                if (source.AuthenticationType == AuthenticationType.Password)
+                {
+                    settings.BasicAuthentication(source.Username, source.Password);
+                }
+
                 var client = new ElasticClient(settings);
                 var result = client.Ping();
                 isValid = result.IsValid;

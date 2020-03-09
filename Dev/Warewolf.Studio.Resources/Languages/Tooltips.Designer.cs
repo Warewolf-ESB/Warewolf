@@ -1335,7 +1335,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server password.
+        ///   Looks up a localized string similar to The Elasticsearch database password.
         /// </summary>
         public static string ElasticsearchPasswordTooltip {
             get {
