@@ -43,7 +43,6 @@ namespace Warewolf.Studio.ViewModels
             ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             SaveCommand = _viewModel.SaveCommand;
-            OpenQueueEventsCommand = _viewModel.QueueEventsCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
             OnPropertyChanged(() => SaveCommand);
@@ -114,7 +113,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand OpenSettingsCommand { get; set; }
-        public ICommand OpenQueueEventsCommand { get; set; }
         public ICommand ExecuteServiceCommand
         {
             get => _executeServiceCommand;

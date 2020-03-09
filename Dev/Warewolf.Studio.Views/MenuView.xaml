@@ -298,7 +298,7 @@
                                 MouseLeave="MenuTaskButton_MouseLeave"
                                 HorizontalAlignment="Left"
                                 HorizontalContentAlignment="Left"
-                                Command="{Binding OpenQueueEventsCommand}"
+                                Command="{Binding ShellViewModel.QueueEventsCommand}"
                                 Style="{StaticResource SideMenuButtonStyle}"
                                 ToolTip="{x:Static languages:Tooltips.MenuQueueEventsToolTip}">
                             <DockPanel Width="Auto"
