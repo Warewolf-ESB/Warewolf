@@ -202,7 +202,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding OpenSearchCommand}"
+                    Command="{Binding ShellViewModel.SearchCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuSearchToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
@@ -261,7 +261,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding OpenTasksCommand}"
+                    Command="{Binding ShellViewModel.TasksCommand}"
                     PreviewMouseMove="MenuTaskButton_PreviewMouseMove"
                     MouseLeave="MenuTaskButton_MouseLeave"
                     Style="{StaticResource SideMenuButtonStyle}"
