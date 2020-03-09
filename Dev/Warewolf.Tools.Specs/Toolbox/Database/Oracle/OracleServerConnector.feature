@@ -113,7 +113,7 @@ Scenario: Change Recordset Name on Oracle Tool
 	| CountryID   | [[Pr_Cities().CountryID]]   |
 	| Description | [[Pr_Cities().Description]] |	
 		
-@SqlDatabaseBroker
+@DatabaseTimeout
 Scenario: Execute Oracle Server With Timeout
     Given I have workflow "OracleWorkflowForTimeout" with "OracleActivity" Oracle database connector
     And Oracle Server Source is Enabled
