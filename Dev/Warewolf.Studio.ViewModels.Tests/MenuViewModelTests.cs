@@ -99,12 +99,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestOpenSettingsCommand()
-        {
-            Assert.AreSame(_openSettingsCommand, _target.OpenSettingsCommand);
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestExecuteServiceCommand()
         {
             Assert.AreSame(_executeServiceCommand, _target.ExecuteServiceCommand);
