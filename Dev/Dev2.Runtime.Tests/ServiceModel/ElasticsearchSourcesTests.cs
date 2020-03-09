@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new ElasticsearchSources();
             var elasticsearchSource = new ElasticsearchSource();
             var result = handler.Test(elasticsearchSource);
-            Assert.IsFalse(result.IsValid);
+            Assert.IsTrue(result.IsValid);
         }
 
         [TestMethod]
@@ -54,13 +54,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             try
-            {
+            { 
                 var dependency = new Depends(Depends.ContainerType.Elasticsearch);
                 var source = new ElasticsearchSource
                 {
                     HostName = dependency.Container.IP,
-                    AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
-                    Port = "9300"
+                    Port = dependency.Container.Port,
+                    AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
                 }.ToString();
 
                 var handler = new ElasticsearchSources();
@@ -89,14 +89,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 HostName = "ddd:222",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
-                Port = "9300"
+                Port = "9200"
             }.ToString();
             try
             {
                 var handler = new ElasticsearchSources();
                 var result = handler.Test(source);
                 Assert.IsFalse(result.IsValid);
-                Assert.AreEqual("could not connect to elasticsearch Instance at ddd:222:9300\r\nNo such host is known", result.ErrorMessage);
+                Assert.AreEqual("could not connect to elasticsearch Instance at ddd:222:9200\r\nNo such host is known",result.ErrorMessage);
             }
             catch (Exception e)
             {
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var source = new ElasticsearchSource
             {
                 HostName = dependency.Container.IP,
-                Port = "9300",
+                Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "pass123"
             }.ToString();

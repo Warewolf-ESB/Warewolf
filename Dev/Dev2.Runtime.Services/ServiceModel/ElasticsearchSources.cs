@@ -15,6 +15,7 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using Nest;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
@@ -83,14 +84,21 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                //TODO: Connect to Elasticsearch source via serilog??
-                //var isValid = false;
-               // var errorMessage = "";
-                
+                var uri = new Uri(source.HostName + ":" + source.Port);  
+                var isValid = false; 
+                var errorMessage = "";
+                var settings = new ConnectionSettings(uri).RequestTimeout(TimeSpan.FromMinutes(2));;
+                var client = new ElasticClient(settings);
+                var result = client.Ping();
+                isValid = result.IsValid;
+                if (!isValid)
+                {
+                    errorMessage = "could not connect to elasticsearch Instance";
+                }
                 return new ValidationResult
                 {
-                    IsValid = true,
-                    ErrorMessage = ""
+                    IsValid = isValid,
+                    ErrorMessage = errorMessage
                 };
             }
             catch (Exception e)

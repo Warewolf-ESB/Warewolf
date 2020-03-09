@@ -23,7 +23,8 @@ namespace Dev2.Data.ServiceModel
 {
     public class ElasticsearchSource : Resource, IDisposable, IResourceSource, IElasticsearchSource
     { 
-        const string DefaultPort = "9300";
+        const string DefaultPort = "9200";
+        private const string DefaultHostname = "http://localhost";
         public string HostName { get; set; }
         public string Password { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
@@ -36,6 +37,7 @@ namespace Dev2.Data.ServiceModel
             ResourceType = "ElasticsearchSource";
             AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
+            HostName = DefaultHostname;
         }
         
         public ElasticsearchSource(XElement xml) : base(xml)
