@@ -21,6 +21,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using RabbitMQ.Client.Exceptions;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
@@ -69,35 +70,50 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            try
+            {
+                //----------------------Arrange----------------------
+                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
-            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
-            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
-            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
-            //----------------------Act--------------------------
-            sut.TestExecuteTool(mockDataObject.Object);
-            sut.TestPerformExecution(evel);
+                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+                GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+                //----------------------Act--------------------------
+                sut.TestExecuteTool(mockDataObject.Object);
+                sut.TestPerformExecution(evel);
 
-            var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
-            //----------------------Assert-----------------------
-            var actualInnerActivity = sut.ActivityFunc.Handler;
+                var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
+                //----------------------Assert-----------------------
+                var actualInnerActivity = sut.ActivityFunc.Handler;
 
-            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+                Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
-            Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(4, debugInputs.Count);
+                Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+                Assert.AreEqual(4, debugInputs.Count);
 
-            Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
-            AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
-            AssertDebugItems(debugInputs, 1, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
+                Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
+                AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
+                AssertDebugItems(debugInputs, 1, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
 
-            AssertDebugItems(debugInputs, 2, 0, "1", null, "", "");
-            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId1]]", "=", "ObjectName1");
+                AssertDebugItems(debugInputs, 2, 0, "1", null, "", "");
+                AssertDebugItems(debugInputs, 2, 1, null, "[[objectId1]]", "=", "ObjectName1");
 
-            AssertDebugItems(debugInputs, 3, 0, "2", null, "", "");
-            AssertDebugItems(debugInputs, 3, 1, null, "[[objectId2]]", "=", "ObjectName2");
+                AssertDebugItems(debugInputs, 3, 0, "2", null, "", "");
+                AssertDebugItems(debugInputs, 3, 1, null, "[[objectId2]]", "=", "ObjectName2");
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         [TestMethod]
@@ -107,79 +123,107 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            try
+            {
 
-            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
-            var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
-            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2), new ActivityDTO(isCalValue, "ObjectName3", 3) } };
+                //----------------------Arrange----------------------
+                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2), new ActivityDTO(isCalValue, "ObjectName3", 3) } };
 
 
-            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
-            //----------------------Act--------------------------
-            sut.TestExecuteTool(mockDataObject.Object);
-            sut.TestPerformExecution(evel);
+                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+                GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+                //----------------------Act--------------------------
+                sut.TestExecuteTool(mockDataObject.Object);
+                sut.TestPerformExecution(evel);
 
-            var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
-            //----------------------Assert-----------------------
-            var actualInnerActivity = sut.ActivityFunc.Handler;
+                var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
+                //----------------------Assert-----------------------
+                var actualInnerActivity = sut.ActivityFunc.Handler;
 
-            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+                Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
-            Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(5, debugInputs.Count);
+                Assert.IsTrue(debugInputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+                Assert.AreEqual(5, debugInputs.Count);
 
-            Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
-            AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
-            AssertDebugItems(debugInputs, 1, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
+                Assert.AreEqual(1, debugInputs[0].ResultsList.Count);
+                AssertDebugItems(debugInputs, 0, 0, "Key", null, "=", sut.Key);
+                AssertDebugItems(debugInputs, 1, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
 
-            AssertDebugItems(debugInputs, 2, 0, "1", null, "", "");
-            AssertDebugItems(debugInputs, 2, 1, null, "[[objectId1]]", "=", "ObjectName1");
+                AssertDebugItems(debugInputs, 2, 0, "1", null, "", "");
+                AssertDebugItems(debugInputs, 2, 1, null, "[[objectId1]]", "=", "ObjectName1");
 
-            AssertDebugItems(debugInputs, 3, 0, "2", null, "", "");
-            AssertDebugItems(debugInputs, 3, 1, null, "[[objectId2]]", "=", "ObjectName2");
+                AssertDebugItems(debugInputs, 3, 0, "2", null, "", "");
+                AssertDebugItems(debugInputs, 3, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
-            AssertDebugItems(debugInputs, 4, 0, "3", null, "", "");
-            AssertDebugItems(debugInputs, 4, 1, null, isCalValue, "=", isCalValue);
+                AssertDebugItems(debugInputs, 4, 0, "3", null, "", "");
+                AssertDebugItems(debugInputs, 4, 1, null, isCalValue, "=", isCalValue);
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            try {
+                //----------------------Arrange----------------------
+                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
-            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
-            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
 
-            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
-            //----------------------Act--------------------------
-            sut.TestExecuteTool(mockDataObject.Object);
-            sut.TestPerformExecution(evel);
+                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+                GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+                //----------------------Act--------------------------
+                sut.TestExecuteTool(mockDataObject.Object);
+                sut.TestPerformExecution(evel);
 
-            var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
-            //----------------------Assert-----------------------
-            var actualInnerActivity = sut.ActivityFunc.Handler;
+                var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+                //----------------------Assert-----------------------
+                var actualInnerActivity = sut.ActivityFunc.Handler;
 
-            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+                Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
 
-            Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(3, debugOutputs.Count);
+                Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+                Assert.AreEqual(3, debugOutputs.Count);
 
-            Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
-            AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
+                Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
+                AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
 
-            AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
-            AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+                AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
+                AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
 
-            AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
-            AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
-
+                AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
+                AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         [TestMethod]
@@ -189,51 +233,64 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {
             //----------------------Arrange----------------------
-            TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
+            try {
+                //----------------------Arrange----------------------
+                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
 
-            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
-            var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
-            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-            GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
-            //----------------------Act--------------------------
-            sut.TestExecuteTool(mockDataObject.Object);
-            sut.TestPerformExecution(evel);
+                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+                GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+                //----------------------Act--------------------------
+                sut.TestExecuteTool(mockDataObject.Object);
+                sut.TestPerformExecution(evel);
 
-            var timer = new Stopwatch();
-            timer.Start();
-            do
+                var timer = new Stopwatch();
+                timer.Start();
+                do
+                {
+                    Thread.Sleep(1000);
+                } while (timer.Elapsed < TimeSpan.FromMilliseconds(sut.TTL));
+                timer.Stop();
+
+                var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+                //----------------------Assert-----------------------
+                var actualInnerActivity = sut.ActivityFunc.Handler;
+
+                Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
+
+                Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
+                Assert.AreEqual(3, debugOutputs.Count);
+
+                Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
+                AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
+
+                AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
+                AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
+
+                AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
+                AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
+            }
+            catch (Exception e)
             {
-                Thread.Sleep(1000);
-            } while (timer.Elapsed < TimeSpan.FromMilliseconds(sut.TTL));
-            timer.Stop();
-
-            var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
-            //----------------------Assert-----------------------
-            var actualInnerActivity = sut.ActivityFunc.Handler;
-
-            Assert.AreEqual("Assign", actualInnerActivity.DisplayName);
-
-            Assert.IsTrue(debugOutputs is List<DebugItem>, "Debug inputs must return List<DebugItem>");
-            Assert.AreEqual(3, debugOutputs.Count);
-
-            Assert.AreEqual(1, debugOutputs[0].ResultsList.Count);
-            AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
-
-            AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
-            AssertDebugItems(debugOutputs, 1, 1, null, "[[objectId1]]", "=", "ObjectName1");
-
-            AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
-            AssertDebugItems(debugOutputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
-
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
         
-        static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
+        static void TestAnonymousAuth(Depends dependency, out string key, out string hostName, out string password, out int port)
         {
             key = "key" + Guid.NewGuid();
-            hostName = Depends.GetAddress(Depends.ContainerType.Redis);
+            hostName = dependency.Container.IP;
             password = "";
-            port = 6380;
+            port = int.Parse(dependency.Container.Port);
         }
 
         private static void GenerateSUTInstance(string key, string hostName, int port, string password, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)

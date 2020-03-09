@@ -251,7 +251,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var options = rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Options.ToList();
 
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
+            Assert.AreEqual(typeof(OptionCombobox), options[0].GetType());
             Assert.AreEqual("AutoCorrelation", options[0].Name);
             
         }
@@ -272,7 +272,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var options = rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Options.ToList();
 
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
+            Assert.AreEqual(typeof(OptionCombobox), options[0].GetType());
             Assert.AreEqual("AutoCorrelation", options[0].Name);
             
         }
@@ -293,7 +293,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             var options = rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Options.ToList();
             rabbitMQPublishDesignerViewModel2.BasicPropertiesOptions.Notify();
             Assert.AreEqual(1, options.Count);
-            Assert.AreEqual(typeof(OptionRadioButtons), options[0].GetType());
+            Assert.AreEqual(typeof(OptionCombobox), options[0].GetType());
             Assert.AreEqual("AutoCorrelation", options[0].Name);
         }
 

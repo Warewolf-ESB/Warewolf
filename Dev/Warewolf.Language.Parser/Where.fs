@@ -14,7 +14,7 @@ let rec evalWhere (env : WarewolfEnvironment) (lang : string) (update : int) (fu
         match exp with
         | Some a -> a
         | _ -> 
-            let temp = parseLanguageExpression lang update
+            let temp = parseLanguageExpression lang update ShouldTypeCast.Yes
             temp
     match buffer with
     | RecordSetExpression a -> (evalRecordsSetExpressionWhere a env update func)
