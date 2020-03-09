@@ -18,10 +18,12 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFWYNAND.premier.local",
             "PIETER.premier.local",
             "T004124.premier.local",
+            "RSAKLFWYNAND.premier.local",
             "localhost"
         };
         private string SelectedHost = "";
         
+        static readonly string ElasticsearchServer = "RSAKLFWYNAND.premier.local";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
@@ -136,6 +138,9 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.PostGreSQL:
                     InjectPostGreSQLContainer(EnableDocker);
                     break;
+                case ContainerType.Elasticsearch:
+                    InjectElasticContainer(EnableDocker);
+                    break;
             }
         }
 
@@ -161,6 +166,8 @@ namespace Warewolf.UnitTestAttributes
                     return "3148";
                 case ContainerType.Warewolf:
                     return "3146";
+                case ContainerType.Elasticsearch:
+                    return "4200";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -247,7 +254,7 @@ namespace Warewolf.UnitTestAttributes
                     knownMssqlServerSources);
             }
         }
-
+        
         void InjectRabbitMQContainer(bool EnableDocker)
         {
             var knownServerSources = new List<string>()
@@ -267,7 +274,25 @@ namespace Warewolf.UnitTestAttributes
                     knownServerSources);
             }
         }
-
+        private void InjectElasticContainer(bool enableDocker)
+        {
+            var knownServerSources = new List<string>()
+            {
+                @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.bite",
+                @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.xml"
+            };
+            if (EnableDocker)
+            {
+                UpdateSourcesConnectionStrings(
+                    $"HostName={Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
+                    knownServerSources);
+            }
+            else
+            {
+                UpdateSourcesConnectionStrings($"HostName={ElasticsearchServer};UserName=test;Password=test;VirtualHost=/",
+                    knownServerSources);
+            }
+        }
         void InjectPostGreSQLContainer(bool EnableDocker)
         {
             var knownServerSources = new List<string>()
