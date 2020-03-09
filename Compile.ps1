@@ -129,19 +129,21 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 	    $FullVersionString = git -C "$PSScriptRoot" tag --points-at HEAD
 	    if (-not [string]::IsNullOrEmpty($FullVersionString))  {
 		    $FullVersionString = $FullVersionString.Trim()
-		    if ($FullVersionString -Match " ") {
+            $MultiTags = $FullVersionString.Split("\n")
+            if ($MultiTags.Count -gt 1) {
 			    # This commit has more than one tag, using first tag
 			    Write-Host This commit has more than one tags as `"$FullVersionString`".
-			    $FullVersionString = $FullVersionString.Split(" ")[0]
+                $FullVersionString = $MultiTags[-1]
 			    Write-Host Using last tag as `"$FullVersionString`".
-		    }
+            }
 		    # This version is already tagged.
 		    Write-Host You are up to date with version `"$FullVersionString`".
 	    } else {
 		    # This version is not already tagged.
 		    Write-Host This version is not tagged, generating new tag...
 		    # Get last known version
-		    $FullVersionString = git -C "$PSScriptRoot" describe --abbrev=0 --tags
+            $AllTags = git -C "$PSScriptRoot" tag -l --sort=-version:refname
+		    $FullVersionString = $AllTags[0]
 		    if ([string]::IsNullOrEmpty($FullVersionString)) {
 			    Write-Host No local tags found in git history. 
 			    exit 1
