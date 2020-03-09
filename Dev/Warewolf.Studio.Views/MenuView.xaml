@@ -229,7 +229,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding OpenSchedulerCommand}"
+                    Command="{Binding ShellViewModel.SchedulerCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.MenuSchedulerToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
