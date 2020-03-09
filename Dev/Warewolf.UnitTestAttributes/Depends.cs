@@ -22,7 +22,7 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string ElasticsearchServer = "rsaklfwynand";
+        static readonly string ElasticsearchServer = "http://rsaklfwynand";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
@@ -283,7 +283,7 @@ namespace Warewolf.UnitTestAttributes
             if (EnableDocker)
             {
                 UpdateSourcesConnectionStrings(
-                    $"HostName={Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
+                    $"HostName=http://{Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
                     knownServerSources);
             }
             else
