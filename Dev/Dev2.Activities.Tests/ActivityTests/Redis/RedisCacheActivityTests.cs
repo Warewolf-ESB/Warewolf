@@ -27,6 +27,7 @@ using Warewolf.Driver.Redis;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
+using Activity = System.Activities.Activity;
 
 namespace Dev2.Tests.Activities.ActivityTests.Redis
 {
