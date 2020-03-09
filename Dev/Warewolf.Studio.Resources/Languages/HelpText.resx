@@ -1796,6 +1796,9 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="UserAuthenticationHelp" xml:space="preserve">
     <value>Connect with a specific user account.</value>
   </data>
+  <data name="AnonymousAuthenticationHelp" xml:space="preserve">
+    <value>Connect Anonymously.</value>
+  </data>
   <data name="UserNameAuthenticationHelp" xml:space="preserve">
     <value>The full username of the account you want to use to connect to this resource.</value>
   </data>

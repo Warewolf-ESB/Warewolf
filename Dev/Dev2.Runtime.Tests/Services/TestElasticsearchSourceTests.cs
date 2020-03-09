@@ -113,7 +113,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestElasticsearchSource))]
         [Depends(Depends.ContainerType.Elasticsearch)]
-        public void TestElasticsearchSource_Execute_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
+        public void TestElasticsearchSource_Execute_Auth_Anonymous_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
@@ -126,6 +126,53 @@ namespace Dev2.Tests.Runtime.Services
                 HostName = hostName,
                 Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+            };
+            var testElasticsearchSource = new TestElasticsearchSource();
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"ElasticsearchSource", source.SerializeToJsonStringBuilder()}
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+                var jsonResult = testElasticsearchSource.Execute(values, null);
+                var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+                //---------------Test Result -----------------------
+                Assert.IsFalse(result.HasError, result.Message.ToString());
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to elasticsearch Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+        
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TestElasticsearchSource))]
+        [Depends(Depends.ContainerType.Elasticsearch)]
+        public void TestElasticsearchSource_Execute_Auth_Password_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
+        {
+            //---------------Set up test pack-------------------
+            var serializer = new Dev2JsonSerializer();
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var source = new ElasticsearchSourceDefinition()
+            {
+                Id = Guid.Empty,
+                Name = "Name",
+                HostName = hostName,
+                Port = dependency.Container.Port,
+                Username = "test",
+                Password =  "test",
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password
             };
             var testElasticsearchSource = new TestElasticsearchSource();
             var values = new Dictionary<string, StringBuilder>

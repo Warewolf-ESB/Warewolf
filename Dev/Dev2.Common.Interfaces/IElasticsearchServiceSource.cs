@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces
     {
         string HostName { get; set; }
         string Password { get; set; }
+        string Username { get; set; }
         string Port { get; set; }
         string Name { get; set; }
         string Path { get; set; }

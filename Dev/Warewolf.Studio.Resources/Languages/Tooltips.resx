@@ -1180,6 +1180,10 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
     <value>The server password</value>
   </data>
+  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
+    <value>The Elasticsearch database password</value>
+  </data>
+  
   <data name="ElasticsearchTestTooltip" xml:space="preserve">
     <value>Test the elasticsearch source connection</value>
   </data>

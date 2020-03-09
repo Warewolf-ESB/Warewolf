@@ -27,6 +27,7 @@ namespace Dev2.Data.ServiceModel
         private const string DefaultHostname = "http://localhost";
         public string HostName { get; set; }
         public string Password { get; set; }
+        public string Username { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
         public string Port { get; set; }
@@ -50,7 +51,8 @@ namespace Dev2.Data.ServiceModel
                 { "HostName", string.Empty },
                 { "Port", string.Empty },
                 { "AuthenticationType", string.Empty },
-                { "Password", string.Empty }
+                { "Password", string.Empty },
+                { "Username", string.Empty}
             }; 
             
             var conString = xml.AttributeSafe("ConnectionString");
@@ -59,6 +61,7 @@ namespace Dev2.Data.ServiceModel
             ParseProperties(connectionString, properties);
             HostName = properties["HostName"];
             Port = properties["Port"];
+            Username = properties["Username"];
             Password = properties["Password"];
             AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
@@ -76,6 +79,7 @@ namespace Dev2.Data.ServiceModel
             {
                 connectionString = string.Join(";",
                     connectionString,
+                    $"Username={Username}",
                     $"Password={Password}"
                 );
             }

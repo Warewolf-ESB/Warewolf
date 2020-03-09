@@ -100,10 +100,10 @@
                                              ConverterParameter={x:Static serviceModel:AuthenticationType.Anonymous}}" 
                          Content="Anonymous">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.WindowsAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.AnonymousAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
-            <RadioButton x:Name="UserRadioButton" 
+            <RadioButton x:Name="PasswordRadioButton" 
                          ToolTip="{x:Static languages:Tooltips.PasswordAuthenticationToolTip}" 
                          VerticalAlignment="Center" 
                          HorizontalAlignment="Left" 
@@ -111,7 +111,7 @@
                                              ConverterParameter={x:Static serviceModel:AuthenticationType.Password}}" 
                          Content="Password">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.UserAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </StackPanel>
@@ -124,14 +124,26 @@
               Visibility="{Binding Path=PasswordSelected,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=Authentication, Path=ActualWidth}"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Margin="{StaticResource ControlBorderTop}" Text="{x:Static languages:Core.PasswordLabel}"/>
+            <TextBlock   Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" Text="{x:Static languages:Core.UserNameLabel}"/>
+            <TextBox x:Name="UserNameTextBox" 
+                     Grid.Row="0" 
+                     Grid.Column="1" 
+                     ToolTip="{x:Static languages:Tooltips.ElasticsearchPasswordTooltip}"
+                     Text="{Binding Username,UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock   Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" Text="{x:Static languages:Core.PasswordLabel}"/>
             <PasswordBox x:Name="PasswordTextBox" 
                          Grid.Column="1"
+                         Grid.Row="1"
                          ToolTip="{x:Static languages:Tooltips.ElasticsearchPasswordTooltip}"
                          Margin="{StaticResource ControlBorderTop}"
                          passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true" 

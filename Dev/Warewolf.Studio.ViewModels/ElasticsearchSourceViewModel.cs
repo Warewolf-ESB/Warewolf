@@ -31,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         string _hostName;
         string _port;
         string _password;
+        private string _username;
         bool _testPassed;
         bool _testFailed;
         string _testMessage;
@@ -62,6 +63,7 @@ namespace Warewolf.Studio.ViewModels
             _hostName = string.Empty;
             _port = "9200";
             _password = string.Empty;
+            _username = string.Empty;
             HeaderText = Resources.Languages.Core.ElasticsearchNewHeaderLabel;
             Header = Resources.Languages.Core.ElasticsearchNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
@@ -148,6 +150,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _password = value;
                 OnPropertyChanged(() => Password);
+                ResetTestValue();
+            }
+        }
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged(() => Username);
                 ResetTestValue();
             }
         }
@@ -370,7 +382,9 @@ namespace Warewolf.Studio.ViewModels
         {
             HostName = HostName,
             Password = Password,
+            Username = Username,
             Name = ResourceName,
+            AuthenticationType = AuthenticationType,
             Port = Port,
             Id = _elasticsearchServiceSource?.Id ?? Guid.NewGuid()
         };
@@ -382,6 +396,7 @@ namespace Warewolf.Studio.ViewModels
             Port = source.Port;
             AuthenticationType = source.AuthenticationType;
             Password = source.Password;
+            Username = source.Username;
         }
 
         void Save(IElasticsearchServiceSource source) => _elasticsearchSourceModel.Save(source);
@@ -398,6 +413,7 @@ namespace Warewolf.Studio.ViewModels
                     HostName = HostName,
                     Port = Port,
                     Password = Password,
+                    Username = Username,
                     Name = ResourceName,
                     Id = _elasticsearchServiceSource?.Id ?? SelectedGuid
                 };
@@ -407,6 +423,7 @@ namespace Warewolf.Studio.ViewModels
                 _elasticsearchServiceSource.HostName = HostName;
                 _elasticsearchServiceSource.Port = Port;
                 _elasticsearchServiceSource.Password = Password;
+                _elasticsearchServiceSource.Username = Username;
                 _elasticsearchServiceSource.AuthenticationType = AuthenticationType;
                 return _elasticsearchServiceSource;
             }
@@ -427,6 +444,7 @@ namespace Warewolf.Studio.ViewModels
                 Port = Port,
                 AuthenticationType = AuthenticationType,
                 Password = Password,
+                Username = Username,
                 Id = Item.Id,
                 Path = Item.Path
             };

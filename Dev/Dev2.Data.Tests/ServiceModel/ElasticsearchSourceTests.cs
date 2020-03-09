@@ -50,7 +50,7 @@ namespace Dev2.Data.Tests.ServiceModel
         public void ElasticsearchSource_Validate_ToXml_AuthenticationType_Anonymous()
         {
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Elasticsearch Source"" ResourceType=""ElasticsearchSource"" IsValid=""false"" 
-                                               ConnectionString=""HostName=localhost;Port=9200;UserName=warewolf;Password=;AuthenticationType=Anonymous"" Type=""ElasticsearchSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
+                                               ConnectionString=""HostName=localhost;Port=9200;UserName=;Password=;AuthenticationType=Anonymous"" Type=""ElasticsearchSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Elasticsearch Source</DisplayName>
                                           <AuthorRoles>
                                           </AuthorRoles>
@@ -68,6 +68,7 @@ namespace Dev2.Data.Tests.ServiceModel
             Assert.AreEqual("9200", elasticsearchSourceWithXml.Port);
             Assert.AreEqual("localhost", elasticsearchSourceWithXml.HostName);
             Assert.AreEqual("", elasticsearchSourceWithXml.Password);
+            Assert.AreEqual("", elasticsearchSourceWithXml.Username);
             Assert.AreEqual(AuthenticationType.Anonymous, elasticsearchSourceWithXml.AuthenticationType);
         }
         [TestMethod]
@@ -76,7 +77,7 @@ namespace Dev2.Data.Tests.ServiceModel
         public void ElasticsearchSource_Validate_ToXml_AuthenticationType_Password()
         {
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Elasticsearch Source"" ResourceType=""ElasticsearchSource"" IsValid=""false"" 
-                                               ConnectionString=""HostName=localhost;Port=9200;UserName=warewolf;Password=test123;AuthenticationType=Password"" Type=""ElasticsearchSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
+                                               ConnectionString=""HostName=localhost;Port=9200;UserName=test;Password=test;AuthenticationType=Password"" Type=""ElasticsearchSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Elasticsearch Source</DisplayName>
                                           <AuthorRoles>
                                           </AuthorRoles>
@@ -93,7 +94,8 @@ namespace Dev2.Data.Tests.ServiceModel
             Assert.AreEqual(nameof(ElasticsearchSource), elasticsearchSourceWithXml.ResourceType);
             Assert.AreEqual("9200", elasticsearchSourceWithXml.Port);
             Assert.AreEqual("localhost", elasticsearchSourceWithXml.HostName);
-            Assert.AreEqual("test123", elasticsearchSourceWithXml.Password);
+            Assert.AreEqual("test", elasticsearchSourceWithXml.Password);
+            Assert.AreEqual("test", elasticsearchSourceWithXml.Username);
             Assert.AreEqual(AuthenticationType.Password, elasticsearchSourceWithXml.AuthenticationType);
         }
     }
