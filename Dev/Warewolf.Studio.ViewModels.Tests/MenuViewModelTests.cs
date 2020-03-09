@@ -92,12 +92,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod,Timeout(60000)]
-        public void TestExecuteServiceCommand()
-        {
-            Assert.AreSame(_executeServiceCommand, _target.ExecuteServiceCommand);
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestCheckForNewVersionCommand()
         {
             //act

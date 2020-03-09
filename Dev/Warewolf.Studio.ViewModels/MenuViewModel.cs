@@ -40,8 +40,6 @@ namespace Warewolf.Studio.ViewModels
         {
             ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
-            ExecuteServiceCommand = _viewModel.DebugCommand;
-            OnPropertyChanged(() => ExecuteServiceCommand);
             CheckForNewVersion();
             CheckForNewVersionCommand = new DelegateCommand(ShellViewModel.DisplayDialogForNewVersion);
             SupportCommand = new DelegateCommand(OpenSupport);
@@ -93,15 +91,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand SupportCommand { get; set; }
-        public ICommand ExecuteServiceCommand
-        {
-            get => _executeServiceCommand;
-            set
-            {
-                _executeServiceCommand = value;
-                OnPropertyChanged(() => ExecuteServiceCommand);
-            }
-        }
         public ICommand LockCommand { get; set; }
         public ICommand SlideOpenCommand { get; set; }
         public ICommand SlideClosedCommand { get; set; }

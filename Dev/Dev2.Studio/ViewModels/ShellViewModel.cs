@@ -1619,10 +1619,6 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => QuickDebugCommand);
                 NotifyOfPropertyChange(() => QuickViewInBrowserCommand);
                 NotifyOfPropertyChange(() => ViewInBrowserCommand);
-                if (MenuViewModel != null)
-                {
-                    MenuViewModel.ExecuteServiceCommand = DebugCommand;
-                }
             }
             base.OnActivationProcessed(item, success);
         }

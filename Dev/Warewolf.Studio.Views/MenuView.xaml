@@ -332,7 +332,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding ExecuteServiceCommand}"
+                    Command="{Binding ShellViewModel.DebugCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Tooltips.DebugToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
