@@ -118,11 +118,12 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
             var source = new ElasticsearchSourceDefinition()
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = dependency.Container.IP,
+                HostName = hostName,
                 Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };

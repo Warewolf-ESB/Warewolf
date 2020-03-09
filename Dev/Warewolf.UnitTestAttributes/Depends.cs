@@ -15,14 +15,14 @@ namespace Warewolf.UnitTestAttributes
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
             "RSAKLFSVRHST1.premier.local",
-            "RSAKLFWYNAND",
+            "rsaklfwynand",
             "PIETER.premier.local",
             "T004124.premier.local",
             "localhost"
         };
         private string SelectedHost = "";
         
-        static readonly string ElasticsearchServer = "http://rsaklfwynand";
+        static readonly string ElasticsearchServer = "rsaklfwynand";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
@@ -166,7 +166,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.Warewolf:
                     return "3146";
                 case ContainerType.Elasticsearch:
-                    return "4200";
+                    return "9200";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -288,7 +288,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                UpdateSourcesConnectionStrings($"HostName={ElasticsearchServer};UserName=test;Password=test;VirtualHost=/",
+                UpdateSourcesConnectionStrings($"HostName=http://{ElasticsearchServer};UserName=test;Password=test;VirtualHost=/",
                     knownServerSources);
             }
         }

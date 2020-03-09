@@ -56,9 +56,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
             try
             { 
                 var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+                var hostName = "http://" + dependency.Container.IP;
                 var source = new ElasticsearchSource
                 {
-                    HostName = dependency.Container.IP,
+                    HostName = hostName,
                     Port = dependency.Container.Port,
                     AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
                 }.ToString();
@@ -83,11 +84,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSources))]
-        public void ElasticsearchSources_Test_With_InvalidHost__AuthenticationType_Anonymous_Expected_InvalidValidationResult()
+        [Depends(Depends.ContainerType.Elasticsearch)]
+        public void ElasticsearchSources_Test_With_InvalidHost_AuthenticationType_Anonymous_Expected_InvalidValidationResult()
         {
             var source = new ElasticsearchSource
             {
-                HostName = "ddd:222",
+                HostName = "http://ddd",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
                 Port = "9200"
             }.ToString();
@@ -96,7 +98,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 var handler = new ElasticsearchSources();
                 var result = handler.Test(source);
                 Assert.IsFalse(result.IsValid);
-                Assert.AreEqual("could not connect to elasticsearch Instance at ddd:222:9200\r\nNo such host is known",result.ErrorMessage);
+                Assert.AreEqual("could not connect to elasticsearch Instance",result.ErrorMessage);
             }
             catch (Exception e)
             {
@@ -118,12 +120,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
             var source = new ElasticsearchSource
             {
-                HostName = dependency.Container.IP,
+                HostName = hostName,
                 Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "pass123"
+                Password = "test"
             }.ToString();
 
             try
@@ -150,9 +153,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(ElasticsearchSources))]
         public void ElasticsearchSources_Test_With_InvalidHost_AuthenticationType_Password_Expected_InvalidValidationResult()
         {
+            
             var source = new ElasticsearchSource
             {
-                HostName = "ddd",
+                HostName = "http://ddd",
                 Port = "9300",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "Password"
@@ -161,7 +165,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new ElasticsearchSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("could not connect to elasticsearch Instance at ddd:9300\r\nNo such host is known", result.ErrorMessage);
+            Assert.AreEqual("could not connect to elasticsearch Instance", result.ErrorMessage);
         }
     }
 }
