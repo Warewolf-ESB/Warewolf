@@ -77,7 +77,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(dynamicService);
             Assert.IsNotNull(dynamicService.Actions);
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestElasticsearchSource))]
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Runtime.Services
         public void TestElasticsearchSource_Execute_ResourceIDNotPresent_ErrorResult()
         {
             //------------Setup for test--------------------------
-            var values = new Dictionary<string, StringBuilder> { { "item", new StringBuilder() } };
+            var values = new Dictionary<string, StringBuilder> {{"item", new StringBuilder()}};
             var testElasticsearchSource = new TestElasticsearchSource();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestElasticsearchSource))]
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime.Services
             var testElasticsearchSource = new TestElasticsearchSource();
             var values = new Dictionary<string, StringBuilder>
             {
-                { "ElasticsearchSource", source.SerializeToJsonStringBuilder() }
+                {"ElasticsearchSource", source.SerializeToJsonStringBuilder()}
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
