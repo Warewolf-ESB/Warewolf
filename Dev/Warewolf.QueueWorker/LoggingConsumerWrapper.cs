@@ -42,7 +42,7 @@ namespace QueueWorker
             }
             var empty = new string[] { };
             var executionId = Guid.Parse(headers["Warewolf-Execution-Id"].FirstOrDefault());
-            var customTransactionID = headers["Custom-Transaction-Id", empty].FirstOrDefault();
+            var customTransactionID = headers["Warewolf-Custom-Transaction-Id", empty].FirstOrDefault();
             string strBody = System.Text.Encoding.UTF8.GetString(body);
 
             _logger.StartExecution($"[{executionId}] - {customTransactionID} processing body {strBody} ");
