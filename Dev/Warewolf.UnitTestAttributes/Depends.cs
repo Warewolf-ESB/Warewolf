@@ -18,12 +18,12 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFWYNAND.premier.local",
             "PIETER.premier.local",
             "T004124.premier.local",
-            "RSAKLFWYNAND.premier.local",
+            "rsaklfwynand",
             "localhost"
         };
         private string SelectedHost = "";
         
-        static readonly string ElasticsearchServer = "RSAKLFWYNAND.premier.local";
+        static readonly string ElasticsearchServer = "rsaklfwynand";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
