@@ -80,7 +80,7 @@
                     Height="35"
                     Margin="12,0,0,0"
                     HorizontalAlignment="Left"
-                    Command="{Binding StartPageCommand}"
+                    Command="{Binding ShellViewModel.ShowStartPageCommand}"
 					ToolTip="{x:Static languages:Tooltips.StartPageToolTip}"
                     Style="{StaticResource ButtonTransparentStyle}">
                 <Button.Content>

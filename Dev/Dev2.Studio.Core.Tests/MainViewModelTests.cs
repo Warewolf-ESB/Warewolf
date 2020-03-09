@@ -769,6 +769,23 @@ namespace Dev2.Core.Tests
             var langHelpCtx = _shellViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
             Assert.IsNotNull(langHelpCtx);
         }
+        
+        [TestMethod,Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ShellViewModel))]
+        public void ShellViewModel_ShowStartPage_Execute_Expect_No_Exception()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            _shellViewModel.Items.Clear();
+            
+            //------------Execute Test---------------------------
+            Assert.IsTrue(_shellViewModel.ShowStartPageCommand.CanExecute(null));
+            
+            _shellViewModel.ShowStartPageCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

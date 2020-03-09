@@ -51,6 +51,9 @@
     <CodeAnalysisRuleSet>Dev2.Common.Interfaces.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dev2.Studio.Interfaces, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\TestResults\Deploy_Pieter.Terblanche 2020-03-04 15_35_12\Out\Dev2.Studio.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />

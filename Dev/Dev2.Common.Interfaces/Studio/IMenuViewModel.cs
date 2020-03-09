@@ -9,6 +9,7 @@
 */
 
 using System.Windows.Input;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Common.Interfaces.Studio
 {
@@ -47,8 +48,7 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand IsNotOverLockCommand { get; }
         ICommand SupportCommand { get; }
         bool IsProcessing { get; set; }
-        ICommand StartPageCommand { get; }
-
+        IShellViewModel ShellViewModel { get; }
         void Lock();
     }
 }

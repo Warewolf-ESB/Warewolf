@@ -93,24 +93,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod,Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("MenuViewModel_ShowStartPage")]
-        public void MenuViewModel_ShowStartPage_Execute_Result()
-        {
-            //------------Setup for test--------------------------
-            var call = false;
-            var x = new DelegateCommand(() => { call = true; });
-            _mainViewModelMock.Setup(a => a.ShowStartPageCommand).Returns(x);
-            _target = new MenuViewModel(_mainViewModelMock.Object);
-
-            //------------Execute Test---------------------------
-            _target.StartPageCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(call);
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestNewCommand()
         {
             Assert.AreSame(_newCommand, _target.NewServiceCommand);
@@ -156,12 +138,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestExecuteServiceCommand()
         {
             Assert.AreSame(_executeServiceCommand, _target.ExecuteServiceCommand);
-        }
-
-        [TestMethod,Timeout(60000)]
-        public void TestStartPageCommand()
-        {
-            Assert.AreSame(_startPageCommandMock.Object, _target.StartPageCommand);
         }
 
         [TestMethod,Timeout(60000)]

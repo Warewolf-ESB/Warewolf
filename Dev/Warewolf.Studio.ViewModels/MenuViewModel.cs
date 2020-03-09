@@ -29,7 +29,7 @@ namespace Warewolf.Studio.ViewModels
     {
         bool _hasNewVersion;
         bool _panelLockedOpen;
-        readonly IShellViewModel _viewModel;
+        private IShellViewModel _viewModel;
         bool _isOverLock;
         ICommand _saveCommand;
         ICommand _executeServiceCommand;
@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
 
         public MenuViewModel(IShellViewModel mainViewModel)
         {
-            _viewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
+            ShellViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
             DeployCommand = _viewModel.DeployCommand;
@@ -51,7 +51,6 @@ namespace Warewolf.Studio.ViewModels
             OpenQueueEventsCommand = _viewModel.QueueEventsCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
-            StartPageCommand = _viewModel.ShowStartPageCommand;
             OnPropertyChanged(() => SaveCommand);
             OnPropertyChanged(() => ExecuteServiceCommand);
             CheckForNewVersion(_viewModel);
@@ -93,6 +92,12 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
+        public IShellViewModel ShellViewModel
+        {
+            get => _viewModel;
+            set => SetProperty(ref _viewModel, value);
+        }
+        
         public FontAwesomeIcon DebugIcon
         {
             get => _debugIcon;
@@ -155,8 +160,6 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand IsOverLockCommand { get; private set; }
         public ICommand IsNotOverLockCommand { get; private set; }
-
-        public ICommand StartPageCommand { get; private set; }
 
         public void UpdateHelpDescriptor(string helpText)
         {
