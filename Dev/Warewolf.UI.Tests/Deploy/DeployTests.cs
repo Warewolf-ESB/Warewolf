@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Reflection;
-using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -161,10 +159,10 @@ namespace Warewolf.UI.Tests
             UIMap.Click_Deploy_Ribbon_Button();
         }
 
-        static ContainerLauncher _containerOps;
+        static Depends _containerOps;
 
         [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext) => _containerOps = TestLauncher.StartLocalCIRemoteContainer(testContext.ResultsDirectory);
+        public static void MyClassInitialize(TestContext testContext) => _containerOps = new Depends(Depends.ContainerType.CIRemote);
 
         [ClassCleanup]
         public static void CleanupContainer() => _containerOps?.Dispose();
