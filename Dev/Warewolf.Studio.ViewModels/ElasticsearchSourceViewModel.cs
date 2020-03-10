@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -47,7 +47,55 @@ namespace Warewolf.Studio.ViewModels
 
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
+        
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
+            : this(elasticsearchSourceModel)
+        {
+            VerifyArgument.IsNotNull(nameof(requestServiceNameViewModel), requestServiceNameViewModel);
 
+            _elasticsearchSourceModel = elasticsearchSourceModel;
+            RequestServiceNameViewModel = requestServiceNameViewModel;
+
+            HeaderText = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
+            HostName = string.Empty;
+            Port = "9200";
+            Username = string.Empty;
+            Password = string.Empty;
+        }
+
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IElasticsearchSourceDefinition elasticsearchServiceSource,IAsyncWorker asyncWorker)
+            : this(elasticsearchSourceModel)
+        {
+            VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
+            asyncWorker.Start(() => elasticsearchSourceModel.FetchSource(elasticsearchServiceSource.Id), source =>
+            {
+                _elasticsearchServiceSource = source;
+                _elasticsearchServiceSource.Path = elasticsearchServiceSource.Path;
+                SetupHeaderTextFromExisting();
+                ToItem();
+                FromModel(elasticsearchServiceSource);
+            });
+        }
+        
+      
+        ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel)
+            : base("ElasticsearchSource")
+        {
+            VerifyArgument.IsNotNull(nameof(elasticsearchSourceModel), elasticsearchSourceModel);
+
+            _elasticsearchSourceModel = elasticsearchSourceModel;
+
+            TestCommand = new DelegateCommand(TestConnection, CanTest);
+            OkCommand = new DelegateCommand(SaveConnection, CanSave);
+            CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
+            
+            Testing = false;
+            TestPassed = false;
+            TestFailed = false;
+            TestMessage = "";
+        }
+        
         public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
             : base("ElasticsearchSource")
         {
@@ -100,6 +148,21 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
+        void ToItem()
+        {
+            Item = new ElasticsearchSourceDefinition
+            {
+                HostName = _elasticsearchServiceSource.HostName,
+                Password = _elasticsearchServiceSource.Password,
+                Username = _elasticsearchServiceSource.Username,
+                Port = _elasticsearchServiceSource.Port,
+                Name = _elasticsearchServiceSource.Name,
+                Id = _elasticsearchServiceSource.Id,
+                AuthenticationType = _elasticsearchServiceSource.AuthenticationType,
+                Path = _elasticsearchServiceSource.Path,
+            };
+        }
+
         public override string Name
         {
             get => ResourceName;
@@ -116,6 +179,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
+        public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
         public string HostName
         {
             get => _hostName;
@@ -212,11 +276,13 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Testing
         {
-            get => _testing;
-            private set
+            get
+            {
+                return _testing;
+            }
+            set
             {
                 _testing = value;
-
                 OnPropertyChanged(() => Testing);
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(CancelTestCommand);
