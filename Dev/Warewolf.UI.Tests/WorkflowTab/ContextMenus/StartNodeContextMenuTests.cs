@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestStack.White.UIItems.WindowItems;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
@@ -10,6 +11,8 @@ namespace Warewolf.UI.Tests.ContextMenu
     [CodedUITest]
     public class StartNodeContextMenuTests
     {
+        private Window _studioWindow;
+        
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
@@ -58,7 +61,7 @@ namespace Warewolf.UI.Tests.ContextMenu
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.AssertStudioIsRunning();
+            _studioWindow = UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap

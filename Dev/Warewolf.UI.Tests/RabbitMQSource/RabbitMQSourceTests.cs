@@ -2,10 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
-using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.RabbitMQSource.RabbitMQSourceUIMapClasses;
+using Warewolf.UI.Tests;
 
 namespace Warewolf.UI.Tests.RabbitMQSource
 {
@@ -21,7 +21,7 @@ namespace Warewolf.UI.Tests.RabbitMQSource
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Open_RabbitMQSource_From_ExplorerContextMenu_UITests()
         {
-            using (ContainerLauncher RabbitMQContainer = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults")))
+            using (var RabbitMQContainer = new Depends(Depends.ContainerType.RabbitMQ))
             {
                 //Create Source
                 ExplorerUIMap.Select_NewRabbitMQSource_From_ExplorerContextMenu();

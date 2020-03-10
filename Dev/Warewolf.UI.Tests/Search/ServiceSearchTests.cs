@@ -1,8 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
-using System.Reflection;
-using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 
@@ -18,7 +16,7 @@ namespace Warewolf.UI.Tests.Search
         [Ignore]//TODO: Re-introduce this ui test once the build rig has been moved to the new domain hosted at premier.local
         public void Search_For_Hello_World_On_Remote_Server()
         {
-            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new Depends(Depends.ContainerType.CIRemote);
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
             Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteConnectionIntegration);
@@ -37,7 +35,7 @@ namespace Warewolf.UI.Tests.Search
         [Ignore]//TODO: Re-introduce this ui test once the build rig has been moved to the new domain hosted at premier.local
         public void Given_Match_WholeWord_And_Case_And_Hello_World_Returns_Row()
         {
-            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new Depends(Depends.ContainerType.CIRemote);
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
             Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteConnectionIntegration);
@@ -160,7 +158,7 @@ namespace Warewolf.UI.Tests.Search
             UIMap.AssertStudioIsRunning();
         }
 
-        static ContainerLauncher _containerOps;
+        static Depends _containerOps;
 
         [TestCleanup]
         public void CleanupContainer() => _containerOps?.Dispose();

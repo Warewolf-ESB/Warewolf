@@ -14,7 +14,11 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using TechTalk.SpecFlow;
+using TestStack.White;
+using TestStack.White.Factory;
+using TestStack.White.UIItems.WindowItems;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
@@ -71,11 +75,13 @@ namespace Warewolf.UI.Tests
 
         [Given("The Warewolf Studio is running")]
         [Then("The Warewolf Studio is running")]
-        public void AssertStudioIsRunning()
+        public Window AssertStudioIsRunning()
         {
-            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
+            var getStudio = Application.Attach("Warewolf Studio");
+            var window = getStudio.GetWindows().FirstOrDefault(w => w.Title.Contains("Warewolf"));
+            Assert.IsNotNull(window, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
-
+            return window;
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()

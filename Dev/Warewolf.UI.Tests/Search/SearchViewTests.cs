@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.Reflection;
-using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
@@ -39,12 +38,19 @@ namespace Warewolf.UI.Tests.Search
         [TestCategory(nameof(Search))]
         public void Clicking_Edit_Server_Button_Opens_Server_Source_Tab()
         {
-            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
-            Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteConnectionIntegration);
-            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.EditServerSource);
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source tab did not open after clicking Edit Server Source Button.");
+            using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
+            {
+                Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
+                Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab
+                    .SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
+                Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteConnectionIntegration);
+                Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab
+                    .SearchConnectControlCustom.EditServerSource);
+                Assert.IsTrue(
+                    ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan
+                        .ServerSourceTab.Exists,
+                    "Server Source tab did not open after clicking Edit Server Source Button.");
+            }
         }
 
         [TestMethod]
@@ -162,11 +168,6 @@ namespace Warewolf.UI.Tests.Search
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-
-        static ContainerLauncher _containerOps;
-
-        [TestCleanup]
-        public void CleanupContainer() => _containerOps?.Dispose();
 
         public ExplorerUIMap ExplorerUIMap
         {
