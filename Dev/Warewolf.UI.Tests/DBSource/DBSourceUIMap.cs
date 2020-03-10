@@ -213,31 +213,31 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             {
                 case "MySQL":
                     _dependency = new Depends(Depends.ContainerType.MySQL);
-                    break;
+                    return;
                 case "MSSQL":
                     _dependency = new Depends(Depends.ContainerType.MSSQL);
-                    break;
+                    return;
                 case "PostGreSQL":
                     _dependency = new Depends(Depends.ContainerType.PostGreSQL);
-                    break;
+                    return;
                 case "Warewolf":
                     _dependency = new Depends(Depends.ContainerType.Warewolf);
-                    break;
+                    return;
                 case "RabbitMQ":
                     _dependency = new Depends(Depends.ContainerType.RabbitMQ);
-                    break;
+                    return;
                 case "CIRemote":
                     _dependency = new Depends(Depends.ContainerType.CIRemote);
-                    break;
+                    return;
                 case "Redis":
                     _dependency = new Depends(Depends.ContainerType.Redis);
-                    break;
+                    return;
                 case "AnonymousRedis":
                     _dependency = new Depends(Depends.ContainerType.AnonymousRedis);
-                    break;
+                    return;
                 case "AnonymousWarewolf":
                     _dependency = new Depends(Depends.ContainerType.AnonymousWarewolf);
-                    break;
+                    return;
             }
 
             throw new ArgumentOutOfRangeException();
