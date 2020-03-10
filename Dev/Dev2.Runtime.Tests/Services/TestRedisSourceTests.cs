@@ -113,17 +113,17 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void TestRedisSource_Execute_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------
+            var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
             var serializer = new Dev2JsonSerializer();
             var source = new RedisSourceDefinition()
             {
                 Id = Guid.Empty,
                 Name = "Name",
-                HostName = Depends.GetAddress(Depends.ContainerType.AnonymousRedis),
-                Port = Depends.GetPort(Depends.ContainerType.AnonymousRedis),
+                HostName = dependency.Container.IP,
+                Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testRedisSource = new TestRedisSource();

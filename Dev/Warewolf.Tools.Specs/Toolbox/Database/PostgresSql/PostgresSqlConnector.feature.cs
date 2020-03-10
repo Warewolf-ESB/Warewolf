@@ -297,12 +297,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Postgres Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExecutePostgresServerWithTimeout")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlDatabaseBroker")]
         public virtual void ExecutePostgresServerWithTimeout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Postgres Server With Timeout", new string[] {
-                        "ExecutePostgresServerWithTimeout"});
+                        "SqlDatabaseBroker"});
 #line 75
 this.ScenarioSetup(scenarioInfo);
 #line 76
