@@ -77,12 +77,15 @@ namespace Warewolf.UI.Tests
         [Then("The Warewolf Studio is running")]
         public Window AssertStudioIsRunning()
         {
-            var getStudio = Application.Attach("Warewolf Studio");
-            var window = getStudio.GetWindows().FirstOrDefault(w => w.Title.Contains("Warewolf"));
-            Assert.IsNotNull(window, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
+            if (_window == null)
+            {
+                _window = Application.Attach("Warewolf Studio").GetWindows().FirstOrDefault();
+            }
+
+            Assert.IsNotNull(_window, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
             Playback.Wait(1000);
-            return window;
+            return _window;
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
@@ -1096,6 +1099,7 @@ namespace Warewolf.UI.Tests
         }
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
+        private static Window _window;
 
         #endregion
     }
