@@ -901,7 +901,7 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
         }
         
         #region Properties
-        public Name Name
+        public new Name Name
         {
             get
             {

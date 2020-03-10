@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UI.Tests
@@ -35,9 +34,9 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void RefreshExplorerAfterConnectingToRemoteDoesNotRefreshLocalhost()
         {
+            var _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             try
             {
-                _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
                 ExplorerUIMap.Collapse_Localhost();
                 ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
                 Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
@@ -59,11 +58,6 @@ namespace Warewolf.UI.Tests
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-
-        static ContainerLauncher _containerOps;
-
-        [TestCleanup]
-        public void CleanupContainer() => _containerOps?.Dispose();
 
         UIMap UIMap
         {

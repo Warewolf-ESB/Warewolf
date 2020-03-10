@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -9,10 +8,6 @@ using TechTalk.SpecFlow;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Warewolf.Test.Agent;
-using System.IO;
-using System.Reflection;
 
 namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 {
