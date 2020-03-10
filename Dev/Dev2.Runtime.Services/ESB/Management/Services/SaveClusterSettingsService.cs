@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ClusterSettingsData", out StringBuilder resourceDefinition);
                 var clusterSettings = serializer.Deserialize<Warewolf.Configuration.ClusterSettingsData>(resourceDefinition);
 
-                Config.Cluster.LeaderServerResourceId = clusterSettings.LeaderServerResourceId;
+                Config.Cluster.LeaderServerResource = clusterSettings.LeaderServerResource;
                 Config.Cluster.LeaderServerKey = clusterSettings.LeaderServerKey;
                 
                 msg.HasError = false;

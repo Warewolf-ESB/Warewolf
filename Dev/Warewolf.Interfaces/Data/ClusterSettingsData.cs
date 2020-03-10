@@ -13,7 +13,7 @@ namespace Warewolf.Configuration
 {
     public class ClusterSettingsData : BindableBase, IEquatable<ClusterSettingsData>
     {
-        private Guid _leaderServerResourceId;
+        private INamedGuid _leaderServerResource;
         private string _leaderServerKey;
         private string _key;
 
@@ -23,10 +23,10 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _key, value);
         }
 
-        public Guid LeaderServerResourceId
+        public INamedGuid LeaderServerResource
         {
-            get => _leaderServerResourceId;
-            set => SetProperty(ref _leaderServerResourceId, value);
+            get => _leaderServerResource;
+            set => SetProperty(ref _leaderServerResource, value);
         }
 
         public string LeaderServerKey

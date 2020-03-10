@@ -20,6 +20,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Configuration;
+using Warewolf.Data;
 using Warewolf.Options;
 
 namespace Dev2.Core.Tests.Settings
@@ -80,7 +81,9 @@ namespace Dev2.Core.Tests.Settings
 
             var clusterSettingsData = new ClusterSettingsData
             {
-                Key = "zxcvzxcv", LeaderServerResourceId = Guid.NewGuid(), LeaderServerKey = "asdfasdf"
+                Key = "zxcvzxcv", 
+                LeaderServerResource = new NamedGuid { Name = "test", Value = Guid.NewGuid(),}, 
+                LeaderServerKey = "asdfasdf"
             };
 
             var mockResourceRepository = new Mock<IResourceRepository>();
@@ -92,7 +95,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ClusterSettings);
             Assert.AreEqual(clusterSettingsData.Key, viewModel.ClusterSettings.Key);
-            Assert.AreEqual(clusterSettingsData.LeaderServerResourceId, viewModel.ClusterSettings.LeaderServerResourceId);
+            Assert.AreEqual(clusterSettingsData.LeaderServerResource, viewModel.ClusterSettings.LeaderServerResource);
             Assert.AreEqual(clusterSettingsData.LeaderServerKey, viewModel.ClusterSettings.LeaderServerKey);
         }
         
@@ -113,6 +116,35 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_IsTestKeyEnabled()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            
+            var mockServer = new Mock<IServer>();
+
+            var leaderServerResource = new NamedGuid {Name = "test", Value = Guid.NewGuid(),};
+            var clusterSettingsData = new ClusterSettingsData
+            {
+                LeaderServerResource = leaderServerResource, 
+            };
+            
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetClusterSettings(mockServer.Object))
+                .Returns(clusterSettingsData);
+            
+            var viewModel = new ClusterViewModel(mockResourceRepository.Object, mockServer.Object, mockPopupController.Object);
+            viewModel.SetItem(viewModel);
+            Assert.IsFalse(viewModel.IsTestKeyEnabled);
+
+            viewModel.LeaderServerOptions.Leader = leaderServerResource;
+            viewModel.ClusterSettings.LeaderServerKey = "asdfasdf";
+            
+            Assert.IsTrue(viewModel.IsTestKeyEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
         public void ClusterViewModel_TestClusterKey()
         {
             //------------Setup for test--------------------------
@@ -127,6 +159,74 @@ namespace Dev2.Core.Tests.Settings
             viewModel.TestKeyCommand.Execute(null);
             mockPopupController.Verify(model => model.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_LeaderServerOptions_IsDirty()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            
+            var mockServer = new Mock<IServer>();
+
+            var leaderServerResource = new NamedGuid {Name = "test", Value = Guid.NewGuid(),};
+            var leaderServerResource2 = new NamedGuid {Name = "test2", Value = Guid.NewGuid(),};
+            var clusterSettingsData = new ClusterSettingsData
+            {
+                LeaderServerResource = leaderServerResource, 
+            };
+            
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetClusterSettings(mockServer.Object))
+                .Returns(clusterSettingsData);
+            
+            var viewModel = new ClusterViewModel(mockResourceRepository.Object, mockServer.Object, mockPopupController.Object);
+
+            viewModel.SetItem(viewModel);
+            Assert.IsFalse(viewModel.IsDirty);
+
+            viewModel.LeaderServerOptions.Leader = leaderServerResource2;
+            
+            Assert.IsTrue(viewModel.IsDirty);
+            
+            viewModel.LeaderServerOptions.Leader = leaderServerResource;
+            
+            Assert.IsFalse(viewModel.IsDirty);
+        }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ClusterViewModel))]
+        public void ClusterViewModel_ClusterSettings_IsDirty()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            
+            var mockServer = new Mock<IServer>();
+
+            var leaderServerResource = new NamedGuid {Name = "test", Value = Guid.NewGuid(),};
+            var leaderServerResource2 = new NamedGuid {Name = "test2", Value = Guid.NewGuid(),};
+            var clusterSettingsData = new ClusterSettingsData
+            {
+                LeaderServerResource = leaderServerResource, 
+            };
+            
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetClusterSettings(mockServer.Object))
+                .Returns(clusterSettingsData);
+            
+            var viewModel = new ClusterViewModel(mockResourceRepository.Object, mockServer.Object, mockPopupController.Object);
+
+            viewModel.SetItem(viewModel);
+            Assert.IsFalse(viewModel.IsDirty);
+
+            viewModel.ClusterSettings.LeaderServerKey = "asdfasdf";
+            
+            Assert.IsTrue(viewModel.IsDirty);
+            
+            viewModel.ClusterSettings.LeaderServerKey = "";
+            
+            Assert.IsFalse(viewModel.IsDirty);
         }
         
         [TestMethod]

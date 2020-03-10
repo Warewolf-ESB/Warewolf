@@ -78,6 +78,7 @@
                 
                 <Button x:Name="TestKey"
                         Command="{Binding TestKeyCommand}"
+                        IsEnabled="{Binding IsTestKeyEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Content="Test Key"
                         HorizontalAlignment="Right"
                         Grid.Column="2"

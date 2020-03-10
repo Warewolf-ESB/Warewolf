@@ -74,6 +74,7 @@ namespace Dev2.Settings.Clusters
         private readonly IResourceRepository _resourceRepository;
         private readonly IServer _server;
         private ClusterViewModel _item;
+        private bool _isTestKeyEnabled;
 
         public ClusterViewModel()
         {
@@ -99,13 +100,22 @@ namespace Dev2.Settings.Clusters
                         return;
                     }
 
-                    IsDirty = !Equals(Item);
-                    OnPropertyChanged(nameof(TestKeyCommand));
+                    UpdateIsDirty();
+                    IsTestKeyEnabled = CanTestKey();
                 };
                 CopyKeyCommand = new DelegateCommand(o => CopyClusterKey());
                 TestKeyCommand = new DelegateCommand(o => TestClusterKey());
                 LoadServerFollowers();
                 LeaderServerOptions = new LeaderServerOptions();
+                if (ClusterSettings.LeaderServerResource != null)
+                {
+                    LeaderServerOptions.Leader = new NamedGuid
+                    {
+                        Name = ClusterSettings.LeaderServerResource.Name,
+                        Value = ClusterSettings.LeaderServerResource.Value,
+                    };
+                }
+
                 LeaderServerOptions.PropertyChanged += (sender, args) =>
                 {
                     if (args.PropertyName != nameof(LeaderServerOptions.Leader))
@@ -113,13 +123,33 @@ namespace Dev2.Settings.Clusters
                         return;
                     }
 
-                    ClusterSettings.LeaderServerResourceId = LeaderServerOptions?.Leader?.Value ?? Guid.Empty;
-                    IsDirty = !Equals(Item);
+                    ClusterSettings.LeaderServerResource = LeaderServerOptions?.Leader;
+                    UpdateIsDirty();
+                    IsTestKeyEnabled = CanTestKey();
                 };
             }
             catch (Exception e)
             {
                 popupController.ShowErrorMessage(e.Message);
+            }
+        }
+
+        private void UpdateIsDirty()
+        {
+            var isDirty = !ClusterSettings.LeaderServerKey.Equals(Item.ClusterSettings.LeaderServerKey);
+            isDirty |= !LeaderServerOptions.Leader.Value.Equals(Item.LeaderServerOptions.Leader.Value);
+            IsDirty = isDirty;
+        }
+
+        private bool CanTestKey() => LeaderServerOptions.Leader != null && !string.IsNullOrWhiteSpace(ClusterSettings.LeaderServerKey);
+
+        public bool IsTestKeyEnabled
+        {
+            get => _isTestKeyEnabled;
+            set
+            {
+                _isTestKeyEnabled = value; 
+                OnPropertyChanged(nameof(IsTestKeyEnabled));
             }
         }
 
@@ -169,11 +199,8 @@ namespace Dev2.Settings.Clusters
         }
 
         public Type ResourceType => typeof(IServerSource);
-        [JsonIgnore]
         public ICommand CopyKeyCommand { get; }
-        [JsonIgnore]
         public ICommand TestKeyCommand { get; }
-        [JsonIgnore]
         public IEnumerable<ServerFollower> Followers
         {
             get => _followers;
@@ -183,7 +210,6 @@ namespace Dev2.Settings.Clusters
                 OnPropertyChanged(nameof(Followers));
             }
         }
-        [JsonIgnore]
         public string Filter
         {
             get => _filter;
@@ -195,7 +221,6 @@ namespace Dev2.Settings.Clusters
                 FilterFollowers(value.ToLower());
             }
         }
-
         public LeaderServerOptions LeaderServerOptions { get; set; }
 
         private void FilterFollowers(string value)
@@ -240,7 +265,6 @@ namespace Dev2.Settings.Clusters
             SetItem(this);
         }
         
-        [JsonIgnore]
         private ClusterViewModel Item
         {
             get => _item;
@@ -255,12 +279,33 @@ namespace Dev2.Settings.Clusters
             Item = Clone(clusterViewModel);
         }
 
-        private static ClusterViewModel Clone(ClusterViewModel clusterViewModel)
+        private ClusterViewModel Clone(ClusterViewModel clusterViewModel)
         {
-            var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(clusterViewModel, new JsonSerializerSettings { ContractResolver = resolver });
-            var clone = JsonConvert.DeserializeObject<ClusterViewModel>(ser);
-            return clone;
+            if (MemberwiseClone() is ClusterViewModel clone)
+            {
+                clone.LeaderServerOptions = null;
+                clone.ClusterSettings = null;
+
+                var leaderServerOptions = clusterViewModel.LeaderServerOptions;
+                clone.LeaderServerOptions = new LeaderServerOptions
+                {
+                    Leader = new NamedGuid
+                    {
+                        Name = leaderServerOptions.Leader.Name,
+                        Value = leaderServerOptions.Leader.Value,
+                    }
+                };
+                var clusterSettingsData = clusterViewModel.ClusterSettings;
+                clone.ClusterSettings = new ClusterSettingsData
+                {
+                    Key = clusterSettingsData.Key,
+                    LeaderServerKey = clusterSettingsData.LeaderServerKey,
+                    LeaderServerResource = clusterSettingsData.LeaderServerResource,
+                };
+
+                return clone;
+            }
+            return this;
         }
     }
 }

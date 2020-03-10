@@ -14,6 +14,7 @@ using Moq;
 using System;
 using System.IO;
 using Warewolf.Configuration;
+using Warewolf.Data;
 
 namespace Dev2.Common.Tests
 {
@@ -26,14 +27,14 @@ namespace Dev2.Common.Tests
             var expectedClusterSettingsData = new ClusterSettingsData
             {
                 Key = "asdfasdfsadf",
-                LeaderServerResourceId = Guid.Empty,
+                LeaderServerResource = new NamedGuid { Name = "", Value = Guid.Empty,},
                 LeaderServerKey = "fdsafdsafds",
             };
 
             var serverSettingsData = new ClusterSettingsData
             {
                 Key = "asdfasdfsadf",
-                LeaderServerResourceId = Guid.Empty,
+                LeaderServerResource = new NamedGuid { Name = "", Value = Guid.Empty,},
                 LeaderServerKey = "fdsafdsafds",
             };
 

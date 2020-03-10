@@ -52,6 +52,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
+using Warewolf.Data;
 using Warewolf.Options;
 using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
@@ -2602,7 +2603,9 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var clusterSettingsData = new ClusterSettingsData
             {
-                Key = "asdfasdf", LeaderServerResourceId = Guid.NewGuid(), LeaderServerKey = "fdsafdsa",
+                Key = "asdfasdf", 
+                LeaderServerResource = new NamedGuid { Name = "", Value = Guid.NewGuid(),},
+                LeaderServerKey = "fdsafdsa",
             };
             
             var msg = _repo.SaveClusterSettings(_environmentModel.Object, clusterSettingsData);
