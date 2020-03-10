@@ -1,9 +1,9 @@
-﻿@Database
-Feature: MySqlConnector
+﻿Feature: MySqlConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
-
+	
+@Database
 Scenario: Creating mysql server connector
 	Given I drag in mysql connector tool
 	And Source is enabled for mysql connector tool
@@ -20,7 +20,8 @@ Scenario: Creating mysql server connector
 	And The Connector and Calculate Outputs appear for mysql connector tool
 	Then I click OK on mysql connector tool
 	And The recordset name appear as "SomeRecordSet" on mysql connector tool
-	
+
+@Database
 Scenario: Opening exisitng mysql server connector tool
 	Given I open an existing mysql connector tool
 	And Source is enabled and set to "DemoSqlsource" on mysql connector tool
@@ -30,6 +31,7 @@ Scenario: Opening exisitng mysql server connector tool
 	Then I click validate on mysql connector tool
 	And The outputs appear as "DemoSqlsource" on mysql connector tool
 
+@Database
 Scenario: Change the source on existing mysql server connector tool
 	Given I open an existing mysql connector tool
 	And Source is enabled and set to "DemoSqlsource" on mysql connector tool
@@ -41,6 +43,7 @@ Scenario: Change the source on existing mysql server connector tool
 	And Inputs on mysql connector tool is null
 	Then I click validate on mysql connector tool
 
+@Database
 Scenario: Change the action on existing mysql server connector tool
 	Given I open an existing mysql connector tool
 	And Source is enabled and set to "DemoSqlsource" on mysql connector tool
@@ -51,6 +54,7 @@ Scenario: Change the action on existing mysql server connector tool
 	And Inputs on mysql connector tool is null
 	Then I click validate on mysql connector tool
 
+@Database
 Scenario: Change the recordset on existing mysql server connector tool
 	Given I open an existing mysql connector tool
 	And Source is enabled and set to "DemoSqlsource" on mysql connector tool
@@ -60,7 +64,7 @@ Scenario: Change the recordset on existing mysql server connector tool
 	When I select "AnotherAction" Action for mysql connector tool
 	Then The recordset name changes to "SomeRecordSet" for mysql connector tool
 	
-@ExecuteMySqlServerWithTimeout
+@SqlDatabaseBroker
 Scenario: Execute MySql Server With Timeout
     Given I have workflow "MySqlWorkflowForTimeout" with "MySqlActivity" MySql database connector
     And Mysql server is Enabled

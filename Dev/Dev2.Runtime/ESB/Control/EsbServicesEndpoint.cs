@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -48,13 +49,10 @@ namespace Dev2.Runtime.ESB.Control
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
 
-            if (Config.Server.EnableDetailedLogging)
-            {
-                var stateNotifier = CustomContainer.Get<ILogManager>()?.CreateStateNotifier(dataObject);
+                var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(dataObject);
                 dataObject.StateNotifier = stateNotifier;
-            }
 
-            var resultID = GlobalConstants.NullDataListID;
+                var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = null;
             Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>

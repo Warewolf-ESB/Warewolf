@@ -13,6 +13,7 @@ using Dev2.Common;
 using Dev2.Interfaces;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
+using Warewolf.Auditing;
 
 namespace Dev2.ServerLifeCycleWorkers
 {
@@ -22,7 +23,7 @@ namespace Dev2.ServerLifeCycleWorkers
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IExecutionManager>(new ExecutionManager());
-            CustomContainer.Register<ILogManager>(LogManager.Instance);
+            CustomContainer.Register<IStateNotifierFactory>(new StateNotifierFactory());
             CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
 

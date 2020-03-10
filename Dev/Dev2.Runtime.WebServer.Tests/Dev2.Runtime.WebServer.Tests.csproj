@@ -68,6 +68,10 @@
       <Project>{4d0919c0-8fa4-480c-8629-00eb128ddee9}</Project>
       <Name>Dev2.Runtime.WebServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
       <Name>Warewolf.Storage.Interfaces</Name>

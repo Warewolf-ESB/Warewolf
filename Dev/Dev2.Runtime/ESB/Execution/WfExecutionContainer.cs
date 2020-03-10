@@ -29,6 +29,7 @@ using System;
 using System.Activities;
 using System.Linq;
 using System.Threading;
+using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -222,8 +223,6 @@ namespace Dev2.Runtime.ESB.Execution
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-
-                dsfDataObject.StateNotifier?.LogPreExecuteState(resource);
 
                 var lastActivity = resource;
 

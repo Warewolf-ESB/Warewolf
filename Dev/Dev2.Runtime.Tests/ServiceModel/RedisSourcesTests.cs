@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.CompilerServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ServiceModel;
@@ -50,17 +51,17 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             try
             {
-                var source = new RedisSource
-                {
-                    HostName = Depends.GetAddress(Depends.ContainerType.AnonymousRedis),
-                    AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
-                    Port = "6380"
-                }.ToString();
+            var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
+            var source = new RedisSource
+            {
+                HostName = dependency.Container.IP,
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
+                Port = dependency.Container.Port
+            }.ToString();
 
                 var handler = new RedisSources();
                 var result = handler.Test(source);
@@ -113,13 +114,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
-        [Depends(Depends.ContainerType.Redis)]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
+            var dependency = new Depends(Depends.ContainerType.Redis);
             var source = new RedisSource
             {
-                HostName = Depends.GetAddress(Depends.ContainerType.Redis),
-                Port = "6379",
+                HostName = dependency.Container.IP,
+                Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
                 Password = "pass123"
             }.ToString();

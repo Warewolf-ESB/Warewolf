@@ -18,10 +18,10 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Web;
 using Warewolf.Storage.Interfaces;
-using Dev2;
 using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Enums;
-using Warewolf.Data.Options;
+using Warewolf;
+using Warewolf.Auditing;
 
 namespace Dev2.Interfaces
 {
@@ -32,7 +32,7 @@ namespace Dev2.Interfaces
         public int NumberOfRetries { get; set; }
     }
     
-    public interface IDSFDataObject
+    public interface IDSFDataObject : IExecutionContext
     {
         Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
