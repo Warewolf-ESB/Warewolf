@@ -15,7 +15,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
         [TestCategory("Database Tools")]
         public void OracleDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
-
             Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.Exists, "Oracle database tool does not exist after dragging in from the toolbox");
             // Small View
             DatabaseToolsUIMap.OracleDatabaseTool_ChangeView_With_DoubleClick();
@@ -40,7 +39,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.IsFalse(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username textbox is not enabled.");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password textbos is not enabled.");
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("SVRDEV");
             DBSourceUIMap.IEnterRunAsUserTestUserOnDatabaseSource("testuser", "test123");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
