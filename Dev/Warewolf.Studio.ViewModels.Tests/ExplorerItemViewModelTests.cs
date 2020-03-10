@@ -416,23 +416,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestNewServiceCommand()
-        {
-            //arrange
-            _target.ResourceType = "WorkflowService";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewServiceCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.NewService(_target.ResourcePath));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestContextMenuDebugCommand()
         {
             //arrange
@@ -1159,7 +1142,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewServiceCommand = _target.NewServiceCommand.CanExecute(null);
             var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
             var canCreateNewSqlServerSourceCommand = _target.NewSqlServerSourceCommand.CanExecute(null);
             var canCreateNewMySqlSourceCommand = _target.NewMySqlSourceCommand.CanExecute(null);
@@ -1180,7 +1162,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewServiceCommand);
             Assert.IsTrue(canCreateNewServerCommand);
             Assert.IsTrue(canCreateNewSqlServerSourceCommand);
             Assert.IsTrue(canCreateNewMySqlSourceCommand);

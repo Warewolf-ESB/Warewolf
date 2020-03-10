@@ -149,7 +149,8 @@
                                              Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}"
                                              KeyUp="ExplorerContextMenuView_OnKeyUp">
                                     <MenuItem Name="NewService"
-                                              Command="{Binding NewServiceCommand}"
+                                              Command="{Binding ShellViewModel.NewServiceCommand}"
+                                              CommandParameter="{Binding ResourcePath}"
                                               Header="New Workflow Service"
                                               Style="{StaticResource MenuItemStyle}"
                                               InputGestureText="[Ctrl+W]"
@@ -160,7 +161,7 @@
                                             <Image Style="{StaticResource NewServiceIcon}"/>
                                         </MenuItem.Icon>
                                         <MenuItem.InputBindings>
-                                            <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
+                                            <KeyBinding Key="W" Command="{Binding ShellViewModel.NewServiceCommand}" CommandParameter="{Binding ResourcePath}" Modifiers="Control" />
                                         </MenuItem.InputBindings>
                                     </MenuItem>
 
@@ -500,7 +501,8 @@
                                             </MenuItem>
 
                                             <MenuItem Name="NewServiceItem"
-								                      Command="{Binding NewServiceCommand}"
+                                                      Command="{Binding ShellViewModel.NewServiceCommand}"
+                                                      CommandParameter="{Binding ResourcePath}"
 								                      Header="New Workflow Service"
 								                      InputGestureText="[Ctrl+W]"
 								                      IsEnabled="{Binding CanCreateWorkflowService}"
@@ -523,7 +525,7 @@
                                                     <Image Style="{StaticResource NewServiceIcon}"/>
                                                 </MenuItem.Icon>
                                                 <MenuItem.InputBindings>
-                                                    <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
+                                                    <KeyBinding Key="W" Command="{Binding ShellViewModel.NewServiceCommand}" CommandParameter="{Binding ResourcePath}" Modifiers="Control" />
                                                 </MenuItem.InputBindings>
                                             </MenuItem>
 

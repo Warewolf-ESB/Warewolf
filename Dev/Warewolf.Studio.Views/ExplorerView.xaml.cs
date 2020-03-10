@@ -1,4 +1,14 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 ﻿using System;
 using System.Activities.Presentation;
 using System.Windows;
@@ -443,7 +453,7 @@ namespace Warewolf.Studio.Views
             {
                 if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    explorerItemViewModel.NewServiceCommand.Execute(null);
+                    explorerItemViewModel.ShellViewModel.NewServiceCommand.Execute(null);
                 }
                 if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
                 {
@@ -461,7 +471,7 @@ namespace Warewolf.Studio.Views
         {
             if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                environmentViewModel.NewServiceCommand.Execute(null);
+                environmentViewModel.ShellViewModel.NewServiceCommand.Execute(null);
             }
             if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {

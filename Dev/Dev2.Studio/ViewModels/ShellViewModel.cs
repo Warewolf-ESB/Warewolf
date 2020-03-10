@@ -403,7 +403,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewServiceCommand
         {
-            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
+            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewPluginSourceCommand
         {
