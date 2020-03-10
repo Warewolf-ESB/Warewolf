@@ -21,6 +21,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -83,7 +84,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestCategory(nameof(EsbServicesEndpoint))]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing_And_DataObject_StateNotifier_IsSet()
         {
-            var mockLogManager = new Mock<ILogManager>();
+            var mockLogManager = new Mock<IStateNotifierFactory>();
             var mockStateNotifier = new Mock<IStateNotifier>();
             var esbServicesEndpoint = new EsbServicesEndpoint();
 
@@ -99,8 +100,8 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
             dataObject.Environment.Assign("[[Name]]", "somename", 0);
 
-            mockLogManager.Setup(o => o.CreateStateNotifier(dataObject)).Returns(mockStateNotifier.Object);
-            CustomContainer.Register<ILogManager>(mockLogManager.Object);
+            mockLogManager.Setup(o => o.New(dataObject)).Returns(mockStateNotifier.Object);
+            CustomContainer.Register<IStateNotifierFactory>(mockLogManager.Object);
 
             var request = new EsbExecuteRequest();
             var workspaceId = Guid.NewGuid();

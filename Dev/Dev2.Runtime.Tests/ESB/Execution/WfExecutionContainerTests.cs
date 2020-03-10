@@ -28,6 +28,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Runtime;
 using Microsoft.VisualBasic.Activities;
 using Dev2.Activities;
+using Warewolf.Auditing;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -229,16 +230,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockStateNotifier.Setup(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()))
                 .Verifiable();
 
-            var logManagerMock = new Mock<ILogManager>();
-            logManagerMock.Setup(o => o.CreateStateNotifier(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
+            var logManagerMock = new Mock<IStateNotifierFactory>();
+            logManagerMock.Setup(o => o.New(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
 
             CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
-            CustomContainer.Register<ILogManager>(logManagerMock.Object);
+            CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
             var wfExecutionContainer = new WfExecutionContainer(serviceAction, mockDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object);
 
             wfExecutionContainer.Eval(FlowchartProcess, mockDataObject.Object, 0);
 
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()), Times.Exactly(1));
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
         }
@@ -247,7 +247,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
-        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogPreExecuteStateAndLogExecuteCompleteState()
+        public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
             var dataObjectMock = new Mock<IDSFDataObject>();
@@ -271,14 +271,14 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dataObjectMock.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
 
-            mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
+            mockStateNotifier.Setup(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
             mockStateNotifier.Setup(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>())).Verifiable();
 
-            var logManagerMock = new Mock<ILogManager>();
-            logManagerMock.Setup(o => o.CreateStateNotifier(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
+            var logManagerMock = new Mock<IStateNotifierFactory>();
+            logManagerMock.Setup(o => o.New(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
 
             CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
-            CustomContainer.Register<ILogManager>(logManagerMock.Object);
+            CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
             var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
 
             //--------------Act----------------------------------
@@ -286,7 +286,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
@@ -331,17 +330,17 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dataObjectMock.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
 
-            mockStateNotifier.Setup(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
+            mockStateNotifier.Setup(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
             mockStateNotifier.Setup(o => o.LogExecuteException(It.IsAny<Exception>(), It.IsAny<IDev2Activity>())).Verifiable();
 
-            var logManagerMock = new Mock<ILogManager>();
-            logManagerMock.Setup(o => o.CreateStateNotifier(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
+            var logManagerMock = new Mock<IStateNotifierFactory>();
+            logManagerMock.Setup(o => o.New(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
 
             activityMock.Setup(o => o.Execute(dataObjectMock.Object, 0)).Throws(falseException);
             activityParserMock.Setup(o => o.Parse(It.IsAny<DynamicActivity>())).Returns(activityMock.Object);
 
             CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
-            CustomContainer.Register<ILogManager>(logManagerMock.Object);
+            CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
             CustomContainer.Register<IActivityParser>(activityParserMock.Object);
             var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
 
@@ -350,7 +349,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNotNull(dataObjectMock.Object.ExecutionException);
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteException(falseException, activityMock.Object), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);

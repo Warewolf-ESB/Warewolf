@@ -107,7 +107,8 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
 
-            mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
+            mockDirectory.Setup(o => o.Exists(EnvironmentVariables.ResourcePath)).Returns(false);
+            mockDirectory.Setup(o => o.Exists(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources"))).Returns(true);
             mockDirectory.Setup(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true))
                 .Verifiable();
             mockDirectory.Setup(o => o.CleanUp(It.IsAny<string>()))
