@@ -239,7 +239,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             wfExecutionContainer.Eval(FlowchartProcess, mockDataObject.Object, 0);
 
-            mockStateNotifier.Verify(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()), Times.Exactly(1));
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
         }
@@ -287,7 +286,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
-            mockStateNotifier.Verify(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
@@ -351,7 +349,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNotNull(dataObjectMock.Object.ExecutionException);
-            mockStateNotifier.Verify(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteException(falseException, activityMock.Object), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
