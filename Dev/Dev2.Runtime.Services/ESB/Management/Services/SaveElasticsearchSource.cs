@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue(Warewolf.Service.SaveElasticsearchSource.ElasticsearchSource, out StringBuilder resourceDefinition);
 
-                IElasticsearchServiceSource elasticsearchSourceDef = serializer.Deserialize<ElasticsearchSourceDefinition>(resourceDefinition);
+                IElasticsearchSourceDefinition elasticsearchSourceDef = serializer.Deserialize<ElasticsearchSourceDefinition>(resourceDefinition);
 
                 if (elasticsearchSourceDef.Path == null)
                 {

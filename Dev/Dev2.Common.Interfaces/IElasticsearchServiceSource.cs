@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IElasticsearchServiceSource : IEquatable<IElasticsearchServiceSource>
+    public interface IElasticsearchSourceDefinition : IEquatable<IElasticsearchSourceDefinition>
     {
         string HostName { get; set; }
         string Password { get; set; }
