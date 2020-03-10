@@ -24,8 +24,8 @@ namespace Dev2.Activities.Specs.Search
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
         }
-
-        [BeforeScenario]
+        
+        [BeforeScenario("WarewolfSearch")]
         public void Setup()
         {
             var search = new Search(_scenarioContext);
