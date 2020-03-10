@@ -28,6 +28,7 @@ using System.Linq;
 using System.Security.Principal;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using Warewolf.Auditing;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -127,9 +128,9 @@ namespace Dev2.Activities.Specs.Composition
 
             CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounterLocater);
             CustomContainer.Register<IExecutionManager>(executionManager);
-            var mockLogManager = new Mock<ILogManager>();
-            mockLogManager.Setup(o => o.CreateStateNotifier(dataObject)).Returns(mockStateNotifier.Object);
-            CustomContainer.Register<ILogManager>(mockLogManager.Object);
+            var mockLogManager = new Mock<IStateNotifierFactory>();
+            mockLogManager.Setup(o => o.New(dataObject)).Returns(mockStateNotifier.Object);
+            CustomContainer.Register<IStateNotifierFactory>(mockLogManager.Object);
 
             var workspaceId = Guid.NewGuid();
             var request = new EsbExecuteRequest();

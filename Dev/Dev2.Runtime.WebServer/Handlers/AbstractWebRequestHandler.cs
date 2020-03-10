@@ -42,6 +42,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Warewolf.Auditing;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -159,11 +160,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                         CompressOldLogFiles = true
                     };
                 }
-                if (Config.Server.EnableDetailedLogging)
-                {
-                   var stateNotifier = CustomContainer.Get<ILogManager>()?.CreateStateNotifier(_dataObject);
-                    _dataObject.StateNotifier = stateNotifier;
-                }
+                
+                var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(_dataObject);
+                _dataObject.StateNotifier = stateNotifier;
             }
 
             internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
