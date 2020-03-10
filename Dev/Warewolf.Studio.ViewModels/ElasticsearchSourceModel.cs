@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Data.ServiceModel;
 using System;
+using System.Collections.Generic;
 using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
@@ -35,31 +36,21 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = serverName.Substring(0, serverName.IndexOf("(", StringComparison.Ordinal));
             }
         }
-        public ElasticsearchSourceModel(IStudioUpdateManager updateManager, IQueryManager queryManager, IShellViewModel shellViewModel)
-        {
-            _updateRepository = updateManager;
-            _queryManager = queryManager;
-            _shellViewModel = shellViewModel;
-        }
+        
+        public void CreateNewSource() => _shellViewModel.NewElasticsearchSource(string.Empty);
+        public ICollection<IElasticsearchSourceDefinition> RetrieveSources() => new List<IElasticsearchSourceDefinition>(_queryManager.FetchElasticsearchServiceSources());
+        public void EditSource(IElasticsearchSourceDefinition source) => _shellViewModel.EditResource(source);
+        
         public IElasticsearchSourceDefinition FetchSource(Guid id)
         {
             var xaml = _queryManager.FetchResourceXaml(id);
-            var elasticsearchSource = new ElasticsearchSource(xaml.ToXElement());
+            var source = new ElasticsearchSource(xaml.ToXElement());
 
-            var def = new ElasticsearchSourceDefinition(elasticsearchSource);
+            var def = new ElasticsearchSourceDefinition(source);
             return def;
         }
+        public void Save(IElasticsearchSourceDefinition source) => _updateRepository.Save(source);
         
-        public void Save(IElasticsearchSourceDefinition toElasticsearchSource)
-        {
-            _updateRepository.Save(toElasticsearchSource);
-        }
-        
-        public void TestConnection(IElasticsearchSourceDefinition resource)
-        {
-            _updateRepository.TestConnection(resource);
-        }
+        public void TestConnection(IElasticsearchSourceDefinition source) => _updateRepository.TestConnection(source);
     }
-
-  
 }
