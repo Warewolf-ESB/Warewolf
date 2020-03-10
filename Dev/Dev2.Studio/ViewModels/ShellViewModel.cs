@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1401,7 +1401,13 @@ namespace Dev2.Studio.ViewModels
             var view = _factory.GetViewGivenServerResourceType("ExchangeSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
-
+        public void EditResource(IElasticsearchSourceDefinition selectedSource, IWorkSurfaceKey key)
+        {
+            var view = _factory.GetViewGivenServerResourceType("ElasticsearchSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
+        }
+        
+        public void EditResource(IElasticsearchSourceDefinition selectedSource) => EditResource(selectedSource, null);
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource) => EditResource(selectedSource, null);
 
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key)
@@ -1461,7 +1467,6 @@ namespace Dev2.Studio.ViewModels
         public void NewWebSource(string resourcePath) => _worksurfaceContextManager.NewWebSource(resourcePath);
 
         public void NewRedisSource(string resourcePath) => _worksurfaceContextManager.NewRedisSource(resourcePath);
-        public void NewElasticsearchSource(string resourcePath) => _worksurfaceContextManager.NewElasticsearchSource(resourcePath);
 
         public void NewPluginSource(string resourcePath) => _worksurfaceContextManager.NewPluginSource(resourcePath);
 
@@ -1493,6 +1498,7 @@ namespace Dev2.Studio.ViewModels
 
         public void NewRabbitMQSource(string resourcePath) => _worksurfaceContextManager.NewRabbitMQSource(resourcePath);
 
+        public void NewElasticsearchSource(string resourcePath) => _worksurfaceContextManager.NewElasticsearchSource(resourcePath);
         public void NewSharepointSource(string resourcePath) => _worksurfaceContextManager.NewSharepointSource(resourcePath);
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)

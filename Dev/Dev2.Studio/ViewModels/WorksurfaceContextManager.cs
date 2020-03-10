@@ -81,6 +81,7 @@ namespace Dev2.Studio.ViewModels
         void EditResource(IExchangeSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IView view);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
+        void EditResource(IElasticsearchSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(IWcfServerSource selectedSource, IView view);
         void EditResource(IWcfServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void NewService(string resourcePath);
@@ -472,6 +473,17 @@ namespace Dev2.Studio.ViewModels
             var vm = new SourceViewModel<IRabbitMQServiceSourceDefinition>(_shellViewModel.EventPublisher, viewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.RabbitMQSource, selectedSource.ResourceID);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
+            OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditResource(IElasticsearchSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
+        {
+            var viewModel = new ElasticsearchSourceViewModel(new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, _shellViewModel), selectedSource, _shellViewModel.AsyncWorker);
+            var vm = new SourceViewModel<IElasticsearchSourceDefinition>(_shellViewModel.EventPublisher, viewModel, _shellViewModel.PopupProvider, view, ActiveServer);
+
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.RabbitMQSource, selectedSource.Id);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
