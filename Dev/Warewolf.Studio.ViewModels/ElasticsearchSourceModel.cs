@@ -13,20 +13,21 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Data.ServiceModel;
 using System;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ElasticsearchSourceModel : IElasticsearchSourceModel
     {
         readonly IStudioUpdateManager _updateRepository;
-        readonly IQueryManager _queryProxy;
-
+        readonly IQueryManager _queryManager;
+        readonly IShellViewModel _shellViewModel;
         public string ServerName { get; set; }
         
-        public ElasticsearchSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
+        public ElasticsearchSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryManager, string serverName)
         {
             _updateRepository = updateRepository;
-            _queryProxy = queryProxy;
+            _queryManager = queryManager;
 
             ServerName = serverName;
             if (ServerName.Contains("("))
@@ -34,22 +35,27 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = serverName.Substring(0, serverName.IndexOf("(", StringComparison.Ordinal));
             }
         }
-        
-        public IElasticsearchServiceSource FetchSource(Guid id)
+        public ElasticsearchSourceModel(IStudioUpdateManager updateManager, IQueryManager queryManager, IShellViewModel shellViewModel)
         {
-            var xaml = _queryProxy.FetchResourceXaml(id);
+            _updateRepository = updateManager;
+            _queryManager = queryManager;
+            _shellViewModel = shellViewModel;
+        }
+        public IElasticsearchSourceDefinition FetchSource(Guid id)
+        {
+            var xaml = _queryManager.FetchResourceXaml(id);
             var elasticsearchSource = new ElasticsearchSource(xaml.ToXElement());
 
             var def = new ElasticsearchSourceDefinition(elasticsearchSource);
             return def;
         }
         
-        public void Save(IElasticsearchServiceSource toElasticsearchSource)
+        public void Save(IElasticsearchSourceDefinition toElasticsearchSource)
         {
             _updateRepository.Save(toElasticsearchSource);
         }
         
-        public void TestConnection(IElasticsearchServiceSource resource)
+        public void TestConnection(IElasticsearchSourceDefinition resource)
         {
             _updateRepository.TestConnection(resource);
         }

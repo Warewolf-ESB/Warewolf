@@ -205,7 +205,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void SaveElasticsearchServiceSource(IElasticsearchServiceSource elasticsearchServiceSource, Guid serverWorkspaceId)
+        public void SaveElasticsearchServiceSource(IElasticsearchSourceDefinition elasticsearchServiceSource, Guid serverWorkspaceId)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController(nameof(SaveElasticsearchSource));
@@ -217,7 +217,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-        public void TestConnection(IElasticsearchServiceSource elasticsearchServiceSource)
+        public void TestConnection(IElasticsearchSourceDefinition elasticsearchServiceSource)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController(nameof(TestElasticsearchSource));

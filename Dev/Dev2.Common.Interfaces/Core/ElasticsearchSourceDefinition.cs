@@ -15,7 +15,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces.Core
 {
-    public class ElasticsearchSourceDefinition : IElasticsearchServiceSource, IEquatable<ElasticsearchSourceDefinition>
+    public class ElasticsearchSourceDefinition : IElasticsearchSourceDefinition, IEquatable<ElasticsearchSourceDefinition>
     {
         [ExcludeFromCodeCoverage]
         public ElasticsearchSourceDefinition()
@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core
         public string Path { get; set; }
         public Guid Id { get; set; }
 
-     public bool Equals(IElasticsearchServiceSource other)
+     public bool Equals(IElasticsearchSourceDefinition other)
         {
             if (other is null)
             {

@@ -902,7 +902,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -923,7 +923,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }

@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -25,7 +25,7 @@ using System.Windows.Threading;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ElasticsearchSourceViewModel : SourceBaseImpl<IElasticsearchServiceSource>, IElasticsearchSourceViewModel
+    public class ElasticsearchSourceViewModel : SourceBaseImpl<IElasticsearchSourceDefinition>, IElasticsearchSourceViewModel
     {
         string _headerText;
         string _hostName;
@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
         readonly string _warewolfserverName;
 
         AuthenticationType _authenticationType;
-        IElasticsearchServiceSource _elasticsearchServiceSource;
+        IElasticsearchSourceDefinition _elasticsearchServiceSource;
         readonly IElasticsearchSourceModel _elasticsearchSourceModel;
         CancellationTokenSource _token;
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
@@ -78,7 +78,7 @@ namespace Warewolf.Studio.ViewModels
             _requestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchServiceSource elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
             : this(elasticsearchSourceModel, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
@@ -378,7 +378,7 @@ namespace Warewolf.Studio.ViewModels
             _elasticsearchSourceModel.TestConnection(ToNewSource());
         }
 
-        IElasticsearchServiceSource ToNewSource() => new ElasticsearchSourceDefinition
+        IElasticsearchSourceDefinition ToNewSource() => new ElasticsearchSourceDefinition
         {
             HostName = HostName,
             Password = Password,
@@ -389,7 +389,7 @@ namespace Warewolf.Studio.ViewModels
             Id = _elasticsearchServiceSource?.Id ?? Guid.NewGuid()
         };
 
-        public override void FromModel(IElasticsearchServiceSource source)
+        public override void FromModel(IElasticsearchSourceDefinition source)
         {
             ResourceName = source.Name;
             HostName = source.HostName;
@@ -399,11 +399,11 @@ namespace Warewolf.Studio.ViewModels
             Username = source.Username;
         }
 
-        void Save(IElasticsearchServiceSource source) => _elasticsearchSourceModel.Save(source);
+        void Save(IElasticsearchSourceDefinition source) => _elasticsearchSourceModel.Save(source);
 
         public override void Save() => SaveConnection();
 
-        IElasticsearchServiceSource ToSource()
+        IElasticsearchSourceDefinition ToSource()
         {
             if (_elasticsearchServiceSource == null)
             {
@@ -429,7 +429,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override IElasticsearchServiceSource ToModel()
+        public override IElasticsearchSourceDefinition ToModel()
         {
             if (Item == null)
             {

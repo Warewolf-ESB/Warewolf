@@ -17,7 +17,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SaveDbService(IDatabaseService dbService);
         void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceId);
         void SaveRedisServiceSource(IRedisServiceSource redisServiceSource, Guid serverWorkspaceId);
-        void SaveElasticsearchServiceSource(IElasticsearchServiceSource elasticsearchServiceSource, Guid serverWorkspaceId);
+        void SaveElasticsearchServiceSource(IElasticsearchSourceDefinition elasticsearchServiceSource, Guid serverWorkspaceId);
         void SaveSharePointServiceSource(ISharepointServerSource resource, Guid serverWorkspaceID);
         void SaveWebservice(IWebService model, Guid serverWorkspaceID);
         void SavePluginSource(IPluginSource source, Guid serverWorkspaceID);
@@ -38,7 +38,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 		DataTable TestDbService(IDatabaseService inputValues);
         void TestConnection(IWebServiceSource resource);
         void TestConnection(IRedisServiceSource redisServiceSource);
-        void TestConnection(IElasticsearchServiceSource elasticServiceSource);
+        void TestConnection(IElasticsearchSourceDefinition elasticServiceSource);
         void TestConnection(ISharepointServerSource resource);
         string TestWebService(IWebService inputValues);
         string TestPluginService(IPluginService inputValues);

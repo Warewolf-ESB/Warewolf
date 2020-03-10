@@ -32,8 +32,8 @@ namespace Dev2.Common.Interfaces
     public interface IElasticsearchSourceModel
     {
         string ServerName { get; set; }
-        void TestConnection(IElasticsearchServiceSource resource);
-        void Save(IElasticsearchServiceSource toElasticsearchSource);
-        IElasticsearchServiceSource FetchSource(Guid id);
+        void TestConnection(IElasticsearchSourceDefinition resource);
+        void Save(IElasticsearchSourceDefinition toElasticsearchSource);
+        IElasticsearchSourceDefinition FetchSource(Guid id);
     }
 }
