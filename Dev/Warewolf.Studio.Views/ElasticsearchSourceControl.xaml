@@ -134,7 +134,7 @@
             <TextBox x:Name="UserNameTextBox" 
                      Grid.Row="0" 
                      Grid.Column="1" 
-                     ToolTip="{x:Static languages:Tooltips.ElasticsearchPasswordTooltip}"
+                     ToolTip="{x:Static languages:Tooltips.ElasticsearchUsernameTooltip}"
                      Text="{Binding Username,UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
@@ -185,7 +185,7 @@
                     Content="{x:Static languages:Core.TestConnectionLabel}" 
                     ToolTip="{x:Static languages:Tooltips.ElasticsearchTestTooltip}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.ElasticsearchSourceTestConnectionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button x:Name="CancelButton" Width="120" 

@@ -1172,18 +1172,20 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Redis Timeout for stored data</value>
   </data>
   <data name="ElasticsearchSourceHostNameTooltip" xml:space="preserve">
-    <value>ElasticsearchSourceHostNameTooltip</value>
+     <value>The address of the Elasticsearch server name to connect to. </value>
   </data>
   <data name="ElasticsearchSourcePortTooltip" xml:space="preserve">
-    <value>ElasticsearchSourcePortTooltip</value>
+    <value>The default port on which elasticsearch listens is 9200.</value>
   </data>
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
     <value>The server password</value>
   </data>
+  <data name="ElasticsearchUsernameTooltip" xml:space="preserve">
+    <value>The Elasticsearch server username</value>
+  </data>  
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The Elasticsearch database password</value>
-  </data>
-  
+    <value>The Elasticsearch server password</value>
+  </data>  
   <data name="ElasticsearchTestTooltip" xml:space="preserve">
     <value>Test the elasticsearch source connection</value>
   </data>
