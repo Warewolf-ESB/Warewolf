@@ -25,5 +25,7 @@ Scenario: Create DB Source From Tool
 	And I Select NewSQLServerDatabaseSource FromSqlServerTool
 	And I Can Select Hostname From Server Source Wizard Dropdownlist
 	And I Type SVRDEV into DB Source Wizard Server Textbox
+	And I Click UserButton On Database Source
+	And I Enter TestUser Username "testuser" And Password "test123" on Database source
 	And I Click DB Source Wizard Test Connection Button
 	Then The DB Source Wizard Test Succeeded Image Is Visible
