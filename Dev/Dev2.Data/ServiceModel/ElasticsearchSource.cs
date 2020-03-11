@@ -35,7 +35,7 @@ namespace Dev2.Data.ServiceModel
         public ElasticsearchSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = "ElasticsearchSource";
+            ResourceType = nameof(ElasticsearchSource);
             AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
             HostName = DefaultHostname;
@@ -43,7 +43,7 @@ namespace Dev2.Data.ServiceModel
         
         public ElasticsearchSource(XElement xml) : base(xml)
         {
-            ResourceType = "ElasticsearchSource";
+            ResourceType = nameof(ElasticsearchSource);
             AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
