@@ -23,8 +23,25 @@ using Warewolf.Streams;
 
 namespace Warewolf.Logger
 {
+    public interface IAuditCommandConsumerFactory
+    {
+        IAuditCommandConsumer New(SeriLogConsumer innerConsumer, IWebSocketConnection socket, IWriter writer);
+    }
 
-    public class AuditCommandConsumer : IConsumer<AuditCommand>
+    public class AuditCommandConsumerFactory : IAuditCommandConsumerFactory
+    {
+        public IAuditCommandConsumer New(SeriLogConsumer innerConsumer, IWebSocketConnection socket, IWriter writer)
+        {
+            return new AuditCommandConsumer(innerConsumer, socket, writer);
+        }
+    }
+
+    public interface IAuditCommandConsumer : IConsumer<AuditCommand>
+    {
+        new Task<ConsumerResult> Consume(AuditCommand item);
+    }
+
+    public class AuditCommandConsumer : IAuditCommandConsumer, IConsumer<AuditCommand>
     {
         private readonly IWebSocketConnection _socket;
         private readonly IWriter _writer;

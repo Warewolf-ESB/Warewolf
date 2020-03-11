@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,16 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Streams;
 
-namespace Warewolf.Logging
+namespace Warewolf.Streams
 {
-    public interface ILoggerContext
+    public interface ISourceConnectionFactory 
     {
-         ILoggerSource Source { get; }
-         ILoggerConfig LoggerConfig { get; set; }
-         ISourceConnectionFactory LeaderSource { get; }
-         IStreamConfig LeaderConfig { get; set; }
-         bool Verbose { get; }
+        IConnection NewConnection();
     }
 }

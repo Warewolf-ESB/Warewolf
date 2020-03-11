@@ -12,8 +12,9 @@ using Dev2.Common.Serializers;
 using Fleck;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Warewolf.Auditing;
+using Warewolf.Data;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
@@ -50,6 +51,7 @@ namespace Warewolf.Logger
         private readonly IWriter _writer;
         private IWebSocketServerWrapper _server;
         private readonly ILoggerContext _loggerContext;
+        private IAuditCommandConsumerFactory _auditCommandConsumerFactory;
 
         public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
         {
@@ -57,6 +59,12 @@ namespace Warewolf.Logger
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             _loggerContext = loggerContext ?? throw new ArgumentNullException(nameof(loggerContext));
         }
+        public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext, IAuditCommandConsumerFactory auditCommandConsumerFactory)
+            : this(webSocketServerFactory, writer, loggerContext)
+        {
+            _auditCommandConsumerFactory = auditCommandConsumerFactory;
+        }
+
 
         public void Start(IList<IWebSocketConnection> clients)
         {
@@ -80,12 +88,15 @@ namespace Warewolf.Logger
                     _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
                 };
 
-                var consumer = new SeriLogConsumer(_loggerContext);
-                socket.StartConsuming(new AuditCommandConsumer(consumer, socket, _writer));
+
+                var innerConsumer = new SeriLogConsumer(_loggerContext);
+                var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);
+                socket.StartConsuming(new ForwardingConsumer(defaultConsumer, _loggerContext));
             });
         }
 
         private bool _disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -100,6 +111,37 @@ namespace Warewolf.Logger
             Dispose(true);
         }
     }
+
+    internal class ForwardingConsumer : IConsumer<AuditCommand>
+    {
+        private readonly IAuditCommandConsumer _defaultConsumer;
+        private static IConnection _leaderConnection;
+        private readonly IPublisher _publisher;
+
+        public ForwardingConsumer(IAuditCommandConsumer defaultConsumer, ILoggerContext loggerContext)
+        {
+            _defaultConsumer = defaultConsumer;
+            _leaderConnection = loggerContext.LeaderSource?.NewConnection();
+            _publisher = _leaderConnection?.NewPublisher(loggerContext.LeaderConfig);
+        }
+
+        public Task<ConsumerResult> Consume(AuditCommand item)
+        {
+            try
+            {
+                var serialize = new JsonSerializer();
+                var serilizedLog = serialize.Serialize<AuditCommand>(item);
+
+                _publisher.Publish(serilizedLog);
+                return Task.FromResult(ConsumerResult.Success);
+            }
+            catch
+            {
+                return _defaultConsumer.Consume(item);
+            }
+        }
+    }
+
     public static class Ext
     {
         public static void StartConsuming<T>(this IWebSocketConnection socket, IConsumer<T> consumer)
