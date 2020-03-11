@@ -25,7 +25,7 @@ namespace Dev2.Common.Interfaces
         bool TestFailed { get; set; }
         string TestMessage { get; }
         bool Testing { get; }
-        string ResourceName { get; set; }
+        string Name { get; set; }
         ICommand OkCommand { get; set; }
     }
 

@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<IElasticsearchSourceModel> _elasticsearchSourceModel;
         Mock<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
-        Mock<ElasticsearchSourceDefinition> _elasticsearchSourceDefinition;
+        Mock<IElasticsearchSourceDefinition> _elasticsearchSourceDefinition;
         List<string> _changedProperties;
         ElasticsearchSourceViewModel _elasticsearchourceViewModelWithTask;
         ElasticsearchSourceViewModel _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition;
@@ -43,27 +43,23 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _elasticsearchSourceModel = new Mock<IElasticsearchSourceModel>();
             _requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
-            _elasticsearchSourceDefinition = new Mock<ElasticsearchSourceDefinition>();
+            _elasticsearchSourceDefinition = new Mock<IElasticsearchSourceDefinition>();
             _requestServiceNameViewModelTask = Task.FromResult(_requestServiceNameViewModel.Object);
             _changedProperties = new List<string>();
-            _elasticsearchourceViewModelWithTask = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object,
-                _requestServiceNameViewModelTask);
-            _elasticsearchourceViewModelWithTask.PropertyChanged += (sender, e) =>
-            {
-                _changedProperties.Add(e.PropertyName);
-            };
+            _elasticsearchourceViewModelWithTask = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask);
+            _elasticsearchourceViewModelWithTask.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
             _asyncWorkerMock = new Mock<IAsyncWorker>();
-            _elasticsearchSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>()))
-                .Returns(_elasticsearchSourceDefinition.Object);
+            _elasticsearchSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(_elasticsearchSourceDefinition.Object);
             _asyncWorkerMock.Setup(worker =>
                     worker.Start(
-                        It.IsAny<Func<ElasticsearchSourceDefinition>>(),
-                        It.IsAny<Action<ElasticsearchSourceDefinition>>()))
-                .Callback<Func<ElasticsearchSourceDefinition>, Action<ElasticsearchSourceDefinition>>((func, action) =>
-                {
-                    var dbSource = func.Invoke();
-                    action?.Invoke(dbSource);
-                });
+                        It.IsAny<Func<IElasticsearchSourceDefinition>>(),
+                        It.IsAny<Action<IElasticsearchSourceDefinition>>()))
+                .Callback<Func<IElasticsearchSourceDefinition>, Action<IElasticsearchSourceDefinition>>(
+                    (func, action) =>
+                    {
+                        var dbSource = func.Invoke();
+                        action?.Invoke(dbSource);
+                    });
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition = new ElasticsearchSourceViewModel(
                 _elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, _asyncWorkerMock.Object);
         }
@@ -75,7 +71,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IElasticsearchSourceModel_ThrowsException()
         {
-            //act
             new ElasticsearchSourceViewModel(null, _requestServiceNameViewModelTask);
         }
 
@@ -101,8 +96,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             ElasticsearchSourceDefinition elasticsearchSourceDefinition = null;
 
-            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, elasticsearchSourceDefinition,
-                new SynchronousAsyncWorker());
+            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker());
         }
 
         [TestMethod, Timeout(60000)]
@@ -122,8 +116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void
             ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_ElasticsearchSourceDefinition_IAsyncWorker_IsNotNull()
         {
-            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object,
-                _elasticsearchSourceDefinition.Object, new SynchronousAsyncWorker());
+            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, new SynchronousAsyncWorker());
             Assert.IsNotNull(source);
         }
 
@@ -141,7 +134,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var result = _elasticsearchourceViewModelWithTask.TestCommand.CanExecute(null);
 
-            //assert
             Assert.IsTrue(result);
         }
 
@@ -154,7 +146,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = _elasticsearchourceViewModelWithTask.OkCommand.CanExecute(null);
             Assert.IsTrue(result);
         }
-        
+
         [TestMethod, Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
@@ -163,13 +155,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = _elasticsearchourceViewModelWithTask.CancelTestCommand.CanExecute(null);
             Assert.IsFalse(result);
         }
-        
-        [TestMethod,Timeout(60000)]
+
+        [TestMethod, Timeout(60000)]
         public void ElasticsearchSourceViewModel_TestCancelTestCommand_Execute()
         {
             _elasticsearchourceViewModelWithTask.CancelTestCommand.Execute(null);
         }
-        
+
         [TestMethod, Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
@@ -196,31 +188,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port = expectedPort;
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username = expectedUsername;
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password = expectedPassword;
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType =
-                AuthenticationType.Password;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType = AuthenticationType.Password;
 
             _elasticsearchSourceDefinition.SetupGet(it => it.Path).Returns(expectedResourcePath);
             _elasticsearchSourceDefinition.SetupGet(it => it.Name).Returns(expectedResourceName);
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item =
-                _elasticsearchSourceDefinition.Object;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item = _elasticsearchSourceDefinition.Object;
 
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.OkCommand.Execute(null);
 
             //assert
             Assert.IsFalse(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.TestPassed);
-            Assert.AreSame(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item,
-                _elasticsearchSourceDefinition.Object);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HeaderText,
-                expectedResourceName);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Header,
-                expectedHeader);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName,
-                expectedHostName);
+            Assert.AreSame(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item, _elasticsearchSourceDefinition.Object);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HeaderText, expectedResourceName);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Header, expectedHeader);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName, expectedHostName);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port, expectedPort);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username,
-                expectedUsername);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password,
-                expectedPassword);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username, expectedUsername);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password, expectedPassword);
 
             _elasticsearchSourceDefinition.VerifySet(x => x.HostName = expectedHostName);
             _elasticsearchSourceDefinition.VerifySet(x => x.Port = expectedPort);
@@ -269,7 +253,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.ResourceName = expectedValue;
             var value = _elasticsearchourceViewModelWithTask.ResourceName;
 
-            //assert
+
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains(expectedValue));
         }
@@ -438,14 +422,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedUsername = "Username";
             var expectedPassword = "Password";
             var expectedAuthenticationType = AuthenticationType.Password;
-            
+
             _elasticsearchourceViewModelWithTask.HostName = expectedHostName;
             _elasticsearchourceViewModelWithTask.Port = expectedPort;
             _elasticsearchourceViewModelWithTask.Username = expectedUsername;
             _elasticsearchourceViewModelWithTask.Password = expectedPassword;
             _elasticsearchourceViewModelWithTask.AuthenticationType = expectedAuthenticationType;
             _elasticsearchourceViewModelWithTask.Item = null;
-            
+
             var result = _elasticsearchourceViewModelWithTask.ToModel();
 
             Assert.IsNotNull(result);
@@ -469,7 +453,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedUsername = "Username";
             var expectedPassword = "Password";
             var expectedAuthenticationType = AuthenticationType.Password;
-            
+
             _elasticsearchourceViewModelWithTask.HostName = expectedHostName;
             _elasticsearchourceViewModelWithTask.Port = expectedPort;
             _elasticsearchourceViewModelWithTask.Username = expectedUsername;
@@ -517,21 +501,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.TestPassed);
-            Assert.AreSame(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item,
-                _elasticsearchSourceDefinition.Object);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HeaderText,
-                expectedResourceName);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Header,
-                expectedHeader);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName,
-                expectedHostName);
+            Assert.AreSame(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item, _elasticsearchSourceDefinition.Object);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HeaderText, expectedResourceName);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Header, expectedHeader);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName, expectedHostName);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port, expectedPort);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username,
-                expectedUsername);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password,
-                expectedPassword);
-            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType,
-                expectedAuthenticationType);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username, expectedUsername);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password, expectedPassword);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType, expectedAuthenticationType);
 
             _elasticsearchSourceDefinition.VerifySet(x => x.HostName = expectedHostName);
             _elasticsearchSourceDefinition.VerifySet(x => x.Port = expectedPort);
@@ -550,8 +527,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedResourcePath = "ResourcePath";
 
             _requestServiceNameViewModel.Setup(x => x.ShowSaveDialog()).Returns(MessageBoxResult.OK);
-            _requestServiceNameViewModel.SetupGet(it => it.ResourceName)
-                .Returns(new ResourceName(expectedResourcePath, expectedResourceName));
+            _requestServiceNameViewModel.SetupGet(it => it.ResourceName).Returns(new ResourceName(expectedResourcePath, expectedResourceName));
 
             _elasticsearchourceViewModelWithTask.Save();
 
@@ -582,7 +558,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(mainViewModelMock.Object);
 
             _elasticsearchourceViewModelWithTask.UpdateHelpDescriptor(helpText);
-
             helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
         }
 
@@ -628,7 +603,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.Username = "Username";
             _elasticsearchourceViewModelWithTask.Password = "Password";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
-            
+
             var result = _elasticsearchourceViewModelWithTask.CanTest();
 
             Assert.IsFalse(result);
@@ -643,7 +618,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.Username = "";
             _elasticsearchourceViewModelWithTask.Password = "Password";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
-            
+
             var result = _elasticsearchourceViewModelWithTask.CanTest();
 
             Assert.IsFalse(result);
@@ -658,12 +633,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.Username = "";
             _elasticsearchourceViewModelWithTask.Password = "";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
-     
+
             var result = _elasticsearchourceViewModelWithTask.CanTest();
 
             Assert.IsFalse(result);
         }
-        
+
         [TestMethod, Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
@@ -672,7 +647,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.HostName = "";
             _elasticsearchourceViewModelWithTask.Username = "";
             _elasticsearchourceViewModelWithTask.Password = "";
-     
+
             var result = _elasticsearchourceViewModelWithTask.CanTest();
 
             Assert.IsFalse(result);
