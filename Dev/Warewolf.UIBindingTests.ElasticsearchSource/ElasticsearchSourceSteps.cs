@@ -86,6 +86,180 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             _scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
             _scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ElasticsearchSourceViewModel>(Utils.ViewModelNameKey));
         }
+        [Given(@"I open New Elasticsearch Source")]
+        public void GivenIOpenNewElasticsearchSource()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" tab is opened")]
+        public void ThenTabIsOpened(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"title is ""(.*)""")]
+        public void ThenTitleIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I type HostName as a valid anonymous Elasticsearch server")]
+        public void GivenITypeHostNameAsAValidAnonymousElasticsearchServer()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"server port is ""(.*)""")]
+        public void ThenServerPortIs(int p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"I type port number as ""(.*)""")]
+        public void ThenITypePortNumberAs(int p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void ThenIs(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"I Select Authentication Type as ""(.*)""")]
+        public void ThenISelectAuthenticationTypeAs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Password field is ""(.*)""")]
+        public void ThenPasswordFieldIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Test Connecton is ""(.*)""")]
+        public void WhenTestConnectonIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"""(.*)"" is ""(.*)""")]
+        public void WhenIs(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I save as ""(.*)""")]
+        public void WhenISaveAs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"the save dialog is opened")]
+        public void ThenTheSaveDialogIsOpened()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I type HostName as a valid Elasticsearch server")]
+        public void GivenITypeHostNameAsAValidElasticsearchServer()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I type port number as ""(.*)""")]
+        public void GivenITypePortNumberAs(int p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"""(.*)"" is ""(.*)""")]
+        public void GivenIs(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I Select Authentication Type as ""(.*)""")]
+        public void GivenISelectAuthenticationTypeAs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Password field is ""(.*)""")]
+        public void GivenPasswordFieldIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I type Password")]
+        public void GivenITypePassword()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I save the source")]
+        public void WhenISaveTheSource()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I type HostName as ""(.*)""")]
+        public void GivenITypeHostNameAs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Validation message is thrown")]
+        public void WhenValidationMessageIsThrown()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Validation message is Not thrown")]
+        public void WhenValidationMessageIsNotThrown()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I Select Authentication Type as ""(.*)""")]
+        public void WhenISelectAuthenticationTypeAs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Password field is ""(.*)""")]
+        public void WhenPasswordFieldIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I open ""(.*)"" Elasticsearch source")]
+        public void GivenIOpenElasticsearchSource(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"HostName is ""(.*)""")]
+        public void ThenHostNameIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Select Authentication Type as ""(.*)""")]
+        public void ThenSelectAuthenticationTypeAs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I change HostName to ""(.*)""")]
+        public void WhenIChangeHostNameTo(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [AfterScenario(@"ElasticsearchSource")]
         public void Cleanup()
         {
