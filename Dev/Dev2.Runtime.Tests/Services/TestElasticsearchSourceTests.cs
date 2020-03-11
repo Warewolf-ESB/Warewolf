@@ -112,7 +112,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestElasticsearchSource))]
-        [Depends(Depends.ContainerType.Elasticsearch)]
         public void TestElasticsearchSource_Execute_Auth_Anonymous_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------
@@ -157,7 +156,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestElasticsearchSource))]
-        [Depends(Depends.ContainerType.Elasticsearch)]
         public void TestElasticsearchSource_Execute_Auth_Password_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------

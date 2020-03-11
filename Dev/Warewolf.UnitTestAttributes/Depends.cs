@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Warewolf.UnitTestAttributes
 {
-    public class Depends : Attribute, IDisposable
+    public class Depends : IDisposable
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
