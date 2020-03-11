@@ -32,6 +32,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var handler = new ElasticsearchSources();
             var elasticsearchSource = new ElasticsearchSource();
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            elasticsearchSource.HostName = hostName;
             var result = handler.Test(elasticsearchSource);
             Assert.IsTrue(result.IsValid);
         }
