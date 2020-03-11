@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Workspaces;
 using System;
