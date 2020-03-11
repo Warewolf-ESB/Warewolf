@@ -55,13 +55,14 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
             Assert.AreEqual(dependency.Container.IP, viewModel.HostName);
         }
+
         [BeforeFeature(@"ElasticsearchSource")]
         public static void SetupForSystem()
         {
             Utils.SetupResourceDictionary();
             var ElasticsearchSourceControl = new ElasticsearchSourceControl();
             var mockStudioUpdateManager = new Mock<IElasticsearchSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
+            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("rsaklfwynand");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
@@ -89,175 +90,233 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         [Given(@"I open New Elasticsearch Source")]
         public void GivenIOpenNewElasticsearchSource()
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            Assert.IsNotNull(elasticsearchSourceControl);
         }
 
         [Then(@"""(.*)"" tab is opened")]
-        public void ThenTabIsOpened(string p0)
+        public void ThenTabIsOpened(string headerText)
         {
-            ScenarioContext.Current.Pending();
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
+            Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"title is ""(.*)""")]
-        public void ThenTitleIs(string p0)
+        public void ThenTitleIs(string title)
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(title, viewModel.HeaderText);
+            Assert.AreEqual(title, elasticsearchSourceControl.GetHeaderText());
         }
 
         [Given(@"I type HostName as a valid anonymous Elasticsearch server")]
         public void GivenITypeHostNameAsAValidAnonymousElasticsearchServer()
         {
-            ScenarioContext.Current.Pending();
+            _containerOps = new Depends(Depends.ContainerType.Elasticsearch);
+            TypeDependencyHostName(new Depends(Depends.ContainerType.Elasticsearch));
         }
 
         [Then(@"server port is ""(.*)""")]
-        public void ThenServerPortIs(int p0)
+        public void ThenServerPortIs(int port)
         {
-            ScenarioContext.Current.Pending();
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            Assert.AreEqual(port.ToString(), viewModel.Port);
+            Assert.AreEqual(port.ToString(), elasticsearchSourceControl.GetPort());
         }
 
+        [Given(@"I type port number as ""(.*)""")]
         [Then(@"I type port number as ""(.*)""")]
-        public void ThenITypePortNumberAs(int p0)
+        [When(@"I change port number to ""(.*)""")]
+        public void ThenITypePortNumberAs(string portNumber)
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.EnterPortNumber(portNumber);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(portNumber, viewModel.Port);
         }
 
-        [Then(@"""(.*)"" is ""(.*)""")]
-        public void ThenIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
+        [Given(@"I Select Authentication Type as ""(.*)""")]
+        [When(@"I Select Authentication Type as ""(.*)""")]
         [Then(@"I Select Authentication Type as ""(.*)""")]
-        public void ThenISelectAuthenticationTypeAs(string p0)
+        [Then(@"Select Authentication Type as ""(.*)""")]
+        [When(@"I edit Authentication Type as ""(.*)""")]
+        [Given(@"Select Authentication Type as ""(.*)""")]
+        public void ThenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
-            ScenarioContext.Current.Pending();
+            var authenticationType = String.Equals(authenticationTypeString, "Password",
+             StringComparison.OrdinalIgnoreCase)
+             ? AuthenticationType.Password
+             : AuthenticationType.Anonymous;
+
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.SetAuthenticationType(authenticationType);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
         }
 
+        [Given(@"Password field is ""(.*)""")]
+        [When(@"Password field is ""(.*)""")]
         [Then(@"Password field is ""(.*)""")]
-        public void ThenPasswordFieldIs(string p0)
+        public void ThenPasswordFieldIs(string visibility)
         {
-            ScenarioContext.Current.Pending();
+            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            var databaseDropDownVisibility = elasticsearchSourceControl.GetPasswordVisibility();
+            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
 
+        [Then(@"Test Connecton is ""(.*)""")]
         [When(@"Test Connecton is ""(.*)""")]
-        public void WhenTestConnectonIs(string p0)
+        public void WhenTestConnectonIs(string successString)
         {
-            ScenarioContext.Current.Pending();
+            var mockUpdateManager = _scenarioContext.Get<Mock<IElasticsearchSourceModel>>("updateManager");
+            var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
+            var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
+            if (isSuccess)
+            {
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IElasticsearchSourceDefinition>()));
+            }
+            else if (isLongRunning)
+            {
+                var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IElasticsearchSourceDefinition>()));
+                viewModel.AsyncWorker = new AsyncWorker();
+            }
+            else
+            {
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IElasticsearchSourceDefinition>()))
+                    .Throws(new WarewolfTestException(_illegalCharactersInPath, new Exception(_illegalCharactersInPath)));
+            }
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.PerformTestConnection();
         }
 
-        [When(@"""(.*)"" is ""(.*)""")]
-        public void WhenIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [When(@"I save as ""(.*)""")]
-        public void WhenISaveAs(string p0)
+        public void WhenISaveAs(string resourceName)
         {
-            ScenarioContext.Current.Pending();
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            mockRequestServiceNameViewModel.Setup(model => model.ResourceName).Returns(new ResourceName("", resourceName));
+            mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.PerformSave();
         }
 
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
-            ScenarioContext.Current.Pending();
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            mockRequestServiceNameViewModel.Verify();
         }
 
         [Given(@"I type HostName as a valid Elasticsearch server")]
         public void GivenITypeHostNameAsAValidElasticsearchServer()
         {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I type port number as ""(.*)""")]
-        public void GivenITypePortNumberAs(int p0)
-        {
-            ScenarioContext.Current.Pending();
+            _containerOps = new Depends(Depends.ContainerType.Elasticsearch);
+            TypeDependencyHostName(new Depends(Depends.ContainerType.Elasticsearch));
         }
 
         [Given(@"""(.*)"" is ""(.*)""")]
-        public void GivenIs(string p0, string p1)
+        [When(@"""(.*)"" is ""(.*)""")]
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void GivenIs(string controlName, string enabledString)
         {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I Select Authentication Type as ""(.*)""")]
-        public void GivenISelectAuthenticationTypeAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Password field is ""(.*)""")]
-        public void GivenPasswordFieldIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Given(@"I type Password")]
+        [When(@"I type Password")]
+        [Then(@"I type Password")]
         public void GivenITypePassword()
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.EnterPassword("pass123");
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual("pass123", viewModel.Password);
         }
 
         [When(@"I save the source")]
         public void WhenISaveTheSource()
         {
-            ScenarioContext.Current.Pending();
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.PerformSave();
         }
 
         [Given(@"I type HostName as ""(.*)""")]
-        public void GivenITypeHostNameAs(string p0)
+        [Then(@"I type HostName as ""(.*)""")]
+        [When(@"I change HostName to ""(.*)""")]
+        public void GivenITypeHostNameAs(string hostName)
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.EnterHostName(hostName);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(hostName, viewModel.HostName);
         }
 
+        [Given(@"Validation message is thrown")]
         [When(@"Validation message is thrown")]
+        [Then(@"Validation message is thrown")]
         public void WhenValidationMessageIsThrown()
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            var errorMessageFromControl = elasticsearchSourceControl.GetErrorMessage();
+            var errorMessageOnViewModel = viewModel.TestMessage;
+            Assert.AreNotEqual(string.IsNullOrEmpty(errorMessageFromControl), errorMessageOnViewModel);
+            var isErrorMessage = !errorMessageOnViewModel.Contains("Passed");
+            Assert.IsTrue(isErrorMessage);
         }
 
         [When(@"Validation message is Not thrown")]
         public void WhenValidationMessageIsNotThrown()
         {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I Select Authentication Type as ""(.*)""")]
-        public void WhenISelectAuthenticationTypeAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Password field is ""(.*)""")]
-        public void WhenPasswordFieldIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            var errorMessageFromControl = elasticsearchSourceControl.GetErrorMessage();
+            var errorMessageOnViewModel = viewModel.TestMessage;
+            var isErrorMessageOnViewModel = !errorMessageOnViewModel.Contains("Passed");
+            var isErrorMessageOnControl = !errorMessageFromControl.Contains("Passed");
+            Assert.IsFalse(isErrorMessageOnViewModel);
+            Assert.IsFalse(isErrorMessageOnControl);
         }
 
         [Given(@"I open ""(.*)"" Elasticsearch source")]
-        public void GivenIOpenElasticsearchSource(string p0)
+        public void GivenIOpenElasticsearchSource(string resourceName)
         {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            var mockStudioUpdateManager = new Mock<IElasticsearchSourceModel>();
+            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("rsaklfwynand");
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockExecutor = new Mock<IExternalProcessExecutor>();
+
+            var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
+            {
+                Name = "Test-Elasticsearch",
+                HostName = "http://rsaklfwynand",
+                Password = "pass123",
+                Port = "9200"
+            };
+            mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(elasticsearchSourceDefinition);
+            var elasticsearchSourceViewModel = new ElasticsearchSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
+            elasticsearchSourceControl.DataContext = elasticsearchSourceViewModel;
+            _scenarioContext.Remove("viewModel");
+            _scenarioContext.Add("viewModel", elasticsearchSourceViewModel);
         }
 
+        [Given(@"HostName is ""(.*)""")]
+        [When(@"HostName is ""(.*)""")]
         [Then(@"HostName is ""(.*)""")]
-        public void ThenHostNameIs(string p0)
+        public void ThenHostNameIs(string hostName)
         {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Select Authentication Type as ""(.*)""")]
-        public void ThenSelectAuthenticationTypeAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I change HostName to ""(.*)""")]
-        public void WhenIChangeHostNameTo(string p0)
-        {
-            ScenarioContext.Current.Pending();
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(hostName, viewModel.HostName);
+            Assert.AreEqual(hostName, elasticsearchSourceControl.GetHostName());
         }
 
         [AfterScenario(@"ElasticsearchSource")]
