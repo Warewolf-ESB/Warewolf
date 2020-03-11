@@ -38,6 +38,8 @@ namespace Warewolf.Service
     {
         public const string GetClusterSettings = nameof(GetClusterSettings);
         public static string SaveClusterSettings = nameof(SaveClusterSettings);
+        public static string TestClusterLeaderConnection = nameof(TestClusterLeaderConnection);
+        public static string TestClusterConnection = nameof(TestClusterConnection);
     }
 
 }
