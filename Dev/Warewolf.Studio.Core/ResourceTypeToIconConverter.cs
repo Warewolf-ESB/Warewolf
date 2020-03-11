@@ -53,6 +53,8 @@ namespace Warewolf.Studio.Core
                         return _dict[CustomMenuIcons.MySqlSource] as DrawingImage;
                     case "PostgreSQL":
                         return _dict["PostgreSource"] as DrawingImage;
+                    case "ElasticsearchSource":
+                        return _dict["ElasticsearchSource"] as DrawingImage;
                     case "ODBC":
                         return _dict["OdbcSource"] as DrawingImage;
                     case "RedisSource":
