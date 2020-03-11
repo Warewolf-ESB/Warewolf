@@ -86,7 +86,7 @@ namespace Dev2.Studio.Core
         public void TestConnection(IWebServiceSource serverSource) => UpdateManagerProxy.TestConnection(serverSource);
 
         public void TestConnection(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.TestConnection(redisServiceSource);
-        public void TestConnection(IElasticsearchSourceDefinition elasticServiceSource) => UpdateManagerProxy.TestConnection(elasticServiceSource);
+        public string TestConnection(IElasticsearchSourceDefinition elasticServiceSource) => UpdateManagerProxy.TestConnection(elasticServiceSource);
 
         public void TestConnection(ISharepointServerSource sharePointServiceSource) => UpdateManagerProxy.TestConnection(sharePointServiceSource);
 
