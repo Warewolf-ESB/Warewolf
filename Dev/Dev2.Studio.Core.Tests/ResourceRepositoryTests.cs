@@ -2612,6 +2612,30 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsNotNull(msg);
             Assert.IsFalse(msg.HasError);
         }
+        
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_TestClusterSettings_Expect_NoError()
+        {
+            var expectedMsg = new ExecuteMessage();
+            Setup();
+            var conn = SetupConnection();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new Dev2JsonSerializer().SerializeToBuilder(expectedMsg));
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var clusterSettingsData = new ClusterSettingsData
+            {
+                Key = "asdfasdf", 
+                LeaderServerResource = new NamedGuid { Name = "", Value = Guid.NewGuid(),},
+                LeaderServerKey = "fdsafdsa",
+            };
+            
+            var msg = _repo.TestClusterSettings(_environmentModel.Object, clusterSettingsData);
+            Assert.IsNotNull(msg);
+            Assert.IsFalse(msg.HasError);
+        }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]

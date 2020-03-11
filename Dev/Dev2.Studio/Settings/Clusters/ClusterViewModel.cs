@@ -14,10 +14,13 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Network;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Runtime.Hosting;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Warewolf;
@@ -194,8 +197,23 @@ namespace Dev2.Settings.Clusters
 
         private void TestClusterKey()
         {
-            _popupController?.Show("Success!", "Test Cluster Key", MessageBoxButton.OK, MessageBoxImage.Information,
-                string.Empty, false, false, true, false, false, false);
+            try
+            {
+                var result = _resourceRepository.TestClusterSettings(_server, ClusterSettings);
+                if (result.HasError)
+                {
+                    _popupController.ShowErrorMessage(result.Message.ToString());
+                }
+                else
+                {
+                    _popupController.Show("Success!", "Test Cluster Settings", MessageBoxButton.OK, MessageBoxImage.Information,
+                        string.Empty, false, false, true, false, false, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                _popupController.ShowErrorMessage(ex.Message);
+            }
         }
 
         public Type ResourceType => typeof(IServerSource);

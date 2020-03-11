@@ -91,5 +91,6 @@ namespace Dev2.Studio.Interfaces
         ExecuteMessage DeleteQueue(ITriggerQueue triggerQueue);
         ClusterSettingsData GetClusterSettings(IServer currentEnv);
         ExecuteMessage SaveClusterSettings(IServer currentEnv, ClusterSettingsData clusterSettings);
+        ExecuteMessage TestClusterSettings(IServer server, ClusterSettingsData clusterSettings);
     }
 }
