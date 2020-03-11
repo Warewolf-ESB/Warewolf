@@ -32,7 +32,7 @@ namespace Dev2.Common.Interfaces
         void TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
         void TestConnection(IRedisServiceSource redisServiceSource);
-        void TestConnection(IElasticsearchSourceDefinition elasticsearchServiceSource);
+        string TestConnection(IElasticsearchSourceDefinition elasticsearchServiceSource);
         void TestConnection(ISharepointServerSource sharePointServiceSource);
         string TestConnection(IEmailServiceSource emailServiceSource);
         string TestConnection(IExchangeSource emailServiceSource);

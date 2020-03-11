@@ -217,12 +217,12 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-        public void TestConnection(IElasticsearchSourceDefinition elasticsearchServiceSource)
+        public string TestConnection(IElasticsearchSourceDefinition elasticsearchServiceSource)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController(nameof(TestElasticsearchSource));
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument(TestElasticsearchSource.ElasticsearchSource, serialiser.SerializeToBuilder(elasticsearchServiceSource));
+            comsController.AddPayloadArgument(nameof(ElasticsearchSource), serialiser.SerializeToBuilder(elasticsearchServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -233,6 +233,8 @@ namespace Dev2.Studio.Core
             {
                 throw new WarewolfTestException(output.Message.ToString(), null);
             }
+
+            return output.Message.ToString();
         }
         public void TestConnection(IRedisServiceSource redisServiceSource)
         {

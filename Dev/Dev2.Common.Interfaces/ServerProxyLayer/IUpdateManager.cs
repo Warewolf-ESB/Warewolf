@@ -38,7 +38,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 		DataTable TestDbService(IDatabaseService inputValues);
         void TestConnection(IWebServiceSource resource);
         void TestConnection(IRedisServiceSource redisServiceSource);
-        void TestConnection(IElasticsearchSourceDefinition elasticServiceSource);
+        string TestConnection(IElasticsearchSourceDefinition elasticServiceSource);
         void TestConnection(ISharepointServerSource resource);
         string TestWebService(IWebService inputValues);
         string TestPluginService(IPluginService inputValues);

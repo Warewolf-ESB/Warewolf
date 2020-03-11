@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -24,6 +24,13 @@ namespace Warewolf.Studio.ViewModels
         readonly IQueryManager _queryManager;
         readonly IShellViewModel _shellViewModel;
         public string ServerName { get; set; }
+        
+        public ElasticsearchSourceModel(IStudioUpdateManager updateManager, IQueryManager queryManager, IShellViewModel shellViewModel)
+        {
+            _updateRepository = updateManager;
+            _queryManager = queryManager;
+            _shellViewModel = shellViewModel;
+        }
         
         public ElasticsearchSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryManager, string serverName)
         {
@@ -51,6 +58,6 @@ namespace Warewolf.Studio.ViewModels
         }
         public void Save(IElasticsearchSourceDefinition source) => _updateRepository.Save(source);
         
-        public void TestConnection(IElasticsearchSourceDefinition source) => _updateRepository.TestConnection(source);
+        public string TestConnection(IElasticsearchSourceDefinition source) => _updateRepository.TestConnection(source);
     }
 }
