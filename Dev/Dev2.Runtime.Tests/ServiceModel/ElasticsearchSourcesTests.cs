@@ -49,7 +49,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSources))]
-        [Depends(Depends.ContainerType.Elasticsearch)]
         public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             try
@@ -83,7 +82,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSources))]
-        [Depends(Depends.ContainerType.Elasticsearch)]
         public void ElasticsearchSources_Test_With_InvalidHost_AuthenticationType_Anonymous_Expected_InvalidValidationResult()
         {
             var source = new ElasticsearchSource
@@ -115,7 +113,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSources))]
-        [Depends(Depends.ContainerType.Elasticsearch)]
         public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
