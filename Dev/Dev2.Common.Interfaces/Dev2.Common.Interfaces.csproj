@@ -189,7 +189,7 @@
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
     <Compile Include="IDropboxResult.cs" />
-    <Compile Include="IElasticsearchServiceSource.cs" />
+    <Compile Include="IElasticsearchSourceDefinition.cs" />
     <Compile Include="IElasticsearchSourceViewModel.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEmailSource.cs" />
