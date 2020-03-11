@@ -20,6 +20,7 @@ using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Configuration;
+using Warewolf.Data;
 using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common
@@ -231,7 +232,7 @@ namespace Dev2.Common
             }
         }
 
-        public INamedGuid LeaderServerResource
+        public NamedGuid LeaderServerResource
         {
             get => _settings.LeaderServerResource;
             set

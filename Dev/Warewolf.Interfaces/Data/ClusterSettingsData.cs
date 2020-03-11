@@ -8,12 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 using System;
+using Warewolf.Data;
 
 namespace Warewolf.Configuration
 {
     public class ClusterSettingsData : BindableBase, IEquatable<ClusterSettingsData>
     {
-        private INamedGuid _leaderServerResource;
+        private NamedGuid _leaderServerResource;
         private string _leaderServerKey;
         private string _key;
 
@@ -23,7 +24,7 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _key, value);
         }
 
-        public INamedGuid LeaderServerResource
+        public NamedGuid LeaderServerResource
         {
             get => _leaderServerResource;
             set => SetProperty(ref _leaderServerResource, value);
