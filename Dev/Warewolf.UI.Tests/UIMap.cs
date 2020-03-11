@@ -1099,7 +1099,7 @@ namespace Warewolf.UI.Tests
         }
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
-        private static Window _window;
+        public static Window _window;
 
         #endregion
     }

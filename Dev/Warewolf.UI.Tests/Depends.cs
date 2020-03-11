@@ -476,7 +476,7 @@ namespace Warewolf.UI.Tests
         protected override System.Net.WebRequest GetWebRequest(Uri uri)
         {
             System.Net.WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 3 * 60 * 1000;
+            w.Timeout = 10 * 1000;
             return w;
         }
     }
