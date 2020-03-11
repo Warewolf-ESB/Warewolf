@@ -196,6 +196,7 @@
         </StackPanel>
         <TextBox TextWrapping="WrapWithOverflow" 
                  Grid.Row="5"
+                 Grid.ColumnSpan="2"
                  VerticalAlignment="Top"
                  HorizontalAlignment="Left"
                  x:Name="ErrorTextBlock" 
