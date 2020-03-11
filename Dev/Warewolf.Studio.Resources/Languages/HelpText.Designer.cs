@@ -108,7 +108,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connect Anonymously..
+        ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationHelp {
             get {
@@ -1224,6 +1224,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ElasticsearchSourcePortHelp {
             get {
                 return ResourceManager.GetString("ElasticsearchSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the elasticsearch source connection.
+        /// </summary>
+        public static string ElasticsearchSourceTestConnectionHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourceTestConnectionHelp", resourceCulture);
             }
         }
         

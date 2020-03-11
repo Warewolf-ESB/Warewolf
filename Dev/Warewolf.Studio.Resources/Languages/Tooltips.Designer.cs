@@ -1335,7 +1335,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Elasticsearch database password.
+        ///   Looks up a localized string similar to The Elasticsearch server password.
         /// </summary>
         public static string ElasticsearchPasswordTooltip {
             get {
@@ -1353,7 +1353,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ElasticsearchSourceHostNameTooltip.
+        ///   Looks up a localized string similar to The address of the Elasticsearch server name to connect to. .
         /// </summary>
         public static string ElasticsearchSourceHostNameTooltip {
             get {
@@ -1362,7 +1362,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ElasticsearchSourcePortTooltip.
+        ///   Looks up a localized string similar to The default port on which elasticsearch listens is 9200..
         /// </summary>
         public static string ElasticsearchSourcePortTooltip {
             get {
@@ -1376,6 +1376,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ElasticsearchTestTooltip {
             get {
                 return ResourceManager.GetString("ElasticsearchTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Elasticsearch server username.
+        /// </summary>
+        public static string ElasticsearchUsernameTooltip {
+            get {
+                return ResourceManager.GetString("ElasticsearchUsernameTooltip", resourceCulture);
             }
         }
         
