@@ -11,6 +11,7 @@ using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System;
+using TestStack.White.UIItems.Finders;
 
 namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
 {
@@ -144,7 +145,7 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         [Then(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
         public void Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            UIMap._window.Get(SearchCriteria.ByAutomationId("DatabaseComboxBox")).Click();
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsExcelFilesDB);
             Assert.AreEqual("Excel Files", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIExcelFilesText.DisplayText);
         }
