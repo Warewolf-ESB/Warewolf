@@ -190,12 +190,6 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewOdbcSource(resourcePath);
         }
 
-        public void NewServerSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewServerSource(resourcePath);
-        }
-
         static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
             shellViewModel.SetActiveServer(server.EnvironmentID);

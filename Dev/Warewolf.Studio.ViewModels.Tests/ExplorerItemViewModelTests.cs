@@ -126,23 +126,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestNewServerCommand()
-        {
-            //arrange
-            _target.ResourceType = "ServerSource";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewServerCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.NewServerSource(_target.ResourcePath));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestNewSqlServerSourceCommand()
         {
             //arrange
@@ -391,7 +374,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.NewSharepointSourceSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+            Assert.IsTrue(_target.NewSharepointSourceSourceCommand.CanExecute(null));
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
@@ -408,7 +391,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.NewDropboxSourceSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+            Assert.IsTrue(_target.NewDropboxSourceSourceCommand.CanExecute(null));
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
@@ -520,7 +503,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.ViewSwaggerCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+            Assert.IsTrue(_target.ViewSwaggerCommand.CanExecute(null));
 
             //assert
 
@@ -542,7 +525,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mock.SetupGet(it => it.Connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
             _target.Server = mock.Object;
             _target.ViewApisJsonCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+            Assert.IsTrue(_target.ViewApisJsonCommand.CanExecute(null));
 
             //assert
 
@@ -1142,7 +1125,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
             var canCreateNewSqlServerSourceCommand = _target.NewSqlServerSourceCommand.CanExecute(null);
             var canCreateNewMySqlSourceCommand = _target.NewMySqlSourceCommand.CanExecute(null);
             var canCreateNewPostgreSqlSourceCommand = _target.NewPostgreSqlSourceCommand.CanExecute(null);
@@ -1162,7 +1144,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewServerCommand);
             Assert.IsTrue(canCreateNewSqlServerSourceCommand);
             Assert.IsTrue(canCreateNewMySqlSourceCommand);
             Assert.IsTrue(canCreateNewPostgreSqlSourceCommand);

@@ -225,7 +225,8 @@
                                     <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem Name="NewServerSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewServerCommand}"
+                                                  Command="{Binding ShellViewModel.NewServerSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewServerSourceTooltip}">
@@ -836,7 +837,8 @@
                                                 </MenuItem.Style>
                                                 <MenuItem Name="NewServerSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewServerCommand}"
+									                      Command="{Binding ShellViewModel.NewServerSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New Server Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewServerSourceTooltip}">

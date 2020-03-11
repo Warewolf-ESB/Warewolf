@@ -249,11 +249,6 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, Server.Connection.WebServerUri);
             });
 
-            NewServerCommand = new DelegateCommand(o =>
-            {
-                _explorerItemViewModelCommandController.NewServerSourceCommand(ResourcePath, Server);
-            });
-
             NewSqlServerSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewSqlServerSourceCommand(ResourcePath, Server);
@@ -978,7 +973,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanderVisible);
             }
         }
-        public ICommand NewServerCommand { get; set; }
         public ICommand NewSqlServerSourceCommand { get; set; }
         public ICommand NewMySqlSourceCommand { get; set; }
         public ICommand NewPostgreSqlSourceCommand { get; set; }
