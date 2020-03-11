@@ -25,7 +25,7 @@ using System.Windows.Threading;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ElasticsearchSourceViewModel : SourceBaseImpl<IElasticsearchSourceDefinition>, IElasticsearchSourceViewModel
+    public class ElasticsearchSourceViewModel : SourceBaseImpl<IElasticsearchSourceDefinition>,        IElasticsearchSourceViewModel
     {
         string _headerText;
         string _hostName;
@@ -37,17 +37,15 @@ namespace Warewolf.Studio.ViewModels
         string _testMessage;
         bool _testing;
         string _resourceName;
-        readonly string _warewolfserverName;
 
         AuthenticationType _authenticationType;
         IElasticsearchSourceDefinition _elasticsearchServiceSource;
         readonly IElasticsearchSourceModel _elasticsearchSourceModel;
         CancellationTokenSource _token;
-        readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
-        
+
         public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : this(elasticsearchSourceModel)
         {
@@ -64,7 +62,7 @@ namespace Warewolf.Studio.ViewModels
             Password = string.Empty;
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IElasticsearchSourceDefinition elasticsearchServiceSource,IAsyncWorker asyncWorker)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker)
             : this(elasticsearchSourceModel)
         {
             VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
@@ -78,7 +76,6 @@ namespace Warewolf.Studio.ViewModels
             });
         }
         
-      
         ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel)
             : base("ElasticsearchSource")
         {
@@ -89,13 +86,13 @@ namespace Warewolf.Studio.ViewModels
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
-            
+
             Testing = false;
             TestPassed = false;
             TestFailed = false;
             TestMessage = "";
         }
-        
+
         public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
             : base("ElasticsearchSource")
         {
@@ -106,7 +103,6 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker = asyncWorker;
             Executor = executor;
             _elasticsearchSourceModel = elasticsearchSourceModel;
-            _warewolfserverName = elasticsearchSourceModel.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
             _hostName = string.Empty;
             _port = "9200";
@@ -123,14 +119,14 @@ namespace Warewolf.Studio.ViewModels
             : this(elasticsearchSourceModel, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull(nameof(requestServiceNameViewModel), requestServiceNameViewModel);
-            _requestServiceNameViewModel = requestServiceNameViewModel;
+            RequestServiceNameViewModel = requestServiceNameViewModel;
         }
 
         public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
             : this(elasticsearchSourceModel, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
-            _warewolfserverName = elasticsearchSourceModel.ServerName;
+          
             AsyncWorker.Start(() => elasticsearchSourceModel.FetchSource(elasticsearchServiceSource.Id), source =>
             {
                 _elasticsearchServiceSource = source;
@@ -276,10 +272,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Testing
         {
-            get
-            {
-                return _testing;
-            }
+            get { return _testing; }
             set
             {
                 _testing = value;
@@ -310,35 +303,11 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            var serverName = _warewolfserverName;
-            if (serverName.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+            if (_elasticsearchServiceSource != null)
             {
-                HeaderText = (_elasticsearchServiceSource == null ? ResourceName : _elasticsearchServiceSource.Name).Trim();
-                Header = (_elasticsearchServiceSource == null ? ResourceName : _elasticsearchServiceSource.Name).Trim();
+                var headerText = _elasticsearchServiceSource.Name ?? Name;
+                HeaderText = Header = !string.IsNullOrWhiteSpace(headerText) ? headerText.Trim() : "";
             }
-            else
-            {
-                HeaderText = (_elasticsearchServiceSource == null ? ResourceName : _elasticsearchServiceSource.Name).Trim();
-                Header = (_elasticsearchServiceSource == null ? ResourceName : _elasticsearchServiceSource.Name).Trim();
-            }
-        }
-
-        public IRequestServiceNameViewModel GetRequestServiceNameViewModel()
-        {
-            if (_requestServiceNameViewModel != null)
-            {
-                _requestServiceNameViewModel.Wait();
-                if (_requestServiceNameViewModel.Exception == null)
-                {
-                    return _requestServiceNameViewModel.Result;
-                }
-
-                else
-                {
-                    throw _requestServiceNameViewModel.Exception;
-                }
-            }
-            return null;
         }
 
         public override bool CanSave() => TestPassed || CanTest();
@@ -347,22 +316,23 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_elasticsearchServiceSource == null)
             {
-                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
-
-                if (res == MessageBoxResult.OK)
+                RequestServiceNameViewModel.Wait();
+                if (RequestServiceNameViewModel.Exception == null)
                 {
-                    ResourceName = GetRequestServiceNameViewModel().ResourceName.Name;
-                    var src = ToSource();
-                    src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
-                    Save(src);
-                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
-                    {
-                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
-                    }
+                    var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+                    var res = requestServiceNameViewModel.ShowSaveDialog();
 
-                    Item = src;
-                    _elasticsearchServiceSource = src;
-                    SetupHeaderTextFromExisting();
+                    if (res == MessageBoxResult.OK)
+                    {
+                        ResourceName = requestServiceNameViewModel.ResourceName.Name;
+                        var src = ToSource();
+                        src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
+                        Save(src);
+                        AfterSave(requestServiceNameViewModel, src);
+                        Item = src;
+                        _elasticsearchServiceSource = src;
+                        SetupHeaderTextFromExisting();
+                    }
                 }
             }
             else
@@ -374,7 +344,13 @@ namespace Warewolf.Studio.ViewModels
                 SetupHeaderTextFromExisting();
             }
         }
-
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IElasticsearchSourceDefinition source)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, source.Id);
+            }
+        }
         bool CanCancelTest() => Testing;
 
         void CancelTest()
@@ -415,19 +391,19 @@ namespace Warewolf.Studio.ViewModels
         {
             _token = new CancellationTokenSource();
             AsyncWorker.Start(SetupProgressSpinner, () =>
-            {
-                TestMessage = "Passed";
-                TestFailed = false;
-                TestPassed = true;
-                Testing = false;
-            },
-            _token, exception =>
-            {
-                TestFailed = true;
-                TestPassed = false;
-                Testing = false;
-                TestMessage = GetExceptionMessage(exception);
-            });
+                {
+                    TestMessage = "Passed";
+                    TestFailed = false;
+                    TestPassed = true;
+                    Testing = false;
+                },
+                _token, exception =>
+                {
+                    TestFailed = true;
+                    TestPassed = false;
+                    Testing = false;
+                    TestMessage = GetExceptionMessage(exception);
+                });
         }
 
         void SetupProgressSpinner()
@@ -473,16 +449,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_elasticsearchServiceSource == null)
             {
-                return new ElasticsearchSourceDefinition
-                { 
-                    AuthenticationType = AuthenticationType,
-                    HostName = HostName,
-                    Port = Port,
-                    Password = Password,
-                    Username = Username,
-                    Name = ResourceName,
-                    Id = _elasticsearchServiceSource?.Id ?? SelectedGuid
-                };
+                return ToNewSource();
             }
             else
             {
