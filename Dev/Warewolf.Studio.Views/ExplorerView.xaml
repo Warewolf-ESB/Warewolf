@@ -236,7 +236,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewSqlServerSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewSqlServerSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewSqlServerSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New SQL Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewSqlServerSourceTooltip}">
@@ -848,7 +849,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewSqlServerSourceItem"
                                                           Style="{StaticResource MenuItemStyle}"
-                                                          Command="{Binding NewSqlServerSourceCommand}"
+                                                          Command="{Binding ShellViewModel.NewSqlServerSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
                                                           Header="New SQL Server Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewSqlServerSourceTooltip}">

@@ -97,7 +97,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewSqlServerSourceCommand = _target.NewSqlServerSourceCommand.CanExecute(null);
             var canCreateNewMySqlSourceCommand = _target.NewMySqlSourceCommand.CanExecute(null);
             var canCreateNewPostgreSqlSourceCommand = _target.NewPostgreSqlSourceCommand.CanExecute(null);
             var canCreateNewOracleSourceCommand = _target.NewOracleSourceCommand.CanExecute(null);
@@ -119,7 +118,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewSqlServerSourceCommand);
             Assert.IsTrue(canCreateNewMySqlSourceCommand);
             Assert.IsTrue(canCreateNewPostgreSqlSourceCommand);
             Assert.IsTrue(canCreateNewOracleSourceCommand);
