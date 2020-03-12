@@ -318,7 +318,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             req.ContentType = "application/x-www-form-urlencoded";
             req.ContentLength = data.Length;
-            req.Headers.Add("ExecutionId", DataObject.ExecutionID.ToString());
+            req.Headers.Add("Warewolf-Execution-Id", DataObject.ExecutionID.ToString());
 
             using (Stream requestStream = req.GetRequestStream())
             {
