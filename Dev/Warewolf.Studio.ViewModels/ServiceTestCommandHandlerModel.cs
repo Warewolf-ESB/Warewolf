@@ -209,7 +209,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunTestStep(IServiceTestModel selectedServiceTest, IServiceTestStep resTestStep)
         {
-            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.ActivityID == resTestStep.ActivityID).ToList();
             foreach (var serviceTestStep in serviceTestSteps)
             {
                 var resServiceTestStep = serviceTestStep.As<ServiceTestStep>();
@@ -266,7 +266,7 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var child in resTestStepchildren)
             {
-                var childServiceTestSteps = serviceTestStepChildren.Where(testStep => testStep.UniqueId == child.UniqueId).ToList();
+                var childServiceTestSteps = serviceTestStepChildren.Where(testStep => testStep.ActivityID == child.ActivityID).ToList();
                 foreach (var childServiceTestStep in childServiceTestSteps)
                 {
                     childServiceTestStep.Result = child.Result;

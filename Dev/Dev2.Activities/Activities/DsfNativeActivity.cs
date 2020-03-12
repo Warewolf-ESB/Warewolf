@@ -488,7 +488,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.IsServiceTestExecution)
             {
                 var serviceTestSteps = dataObject.ServiceTest?.TestSteps;
-                var stepToBeAsserted = serviceTestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name && step.ActivityType != typeof(DsfEnhancedDotNetDllActivity).Name);
+                var stepToBeAsserted = serviceTestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.ActivityID == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name && step.ActivityType != typeof(DsfEnhancedDotNetDllActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
                     if (stepToBeAsserted.Result != null)
@@ -609,7 +609,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var serviceTestSteps = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children ?? new List<IServiceTestStep>().ToObservableCollection());
                 var testSteps = serviceTestSteps as IList<IServiceTestStep> ?? serviceTestSteps?.ToList();
                 var assertSteps = testSteps?.Where(step => step.Type == StepType.Assert
-                                                                             && step.UniqueId == Guid.Parse(UniqueID)
+                                                                             && step.ActivityID == Guid.Parse(UniqueID)
                                                                              && step.ActivityType != typeof(DsfForEachActivity).Name
                                                                              && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name
                                                                              && step.ActivityType != typeof(DsfSequenceActivity).Name) ?? new List<IServiceTestStep>();

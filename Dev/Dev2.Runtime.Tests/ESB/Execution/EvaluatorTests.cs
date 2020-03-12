@@ -138,7 +138,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var testStepTwo = new ServiceTestStepTO
             {
-                UniqueId = helloWorldId,
+                ActivityID = helloWorldId,
                 StepDescription = "StepTwo"
             };
 
@@ -631,7 +631,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(1, serviceTest.TestSteps[1].Children.Count);
             Assert.AreEqual("ChildStep", serviceTest.TestSteps[1].Children[0].StepDescription);
             Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Children[0].Result.RunTestResult);
-            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].UniqueId);
+            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].ActivityID);
         }
 
         [TestMethod]
@@ -773,7 +773,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(1, serviceTest.TestSteps[1].Children.Count);
             Assert.AreEqual("ChildStep", serviceTest.TestSteps[1].Children[0].StepDescription);
             Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Children[0].Result.RunTestResult);
-            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].UniqueId);
+            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].ActivityID);
         }
 
         [TestMethod]
@@ -915,7 +915,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(1, serviceTest.TestSteps[1].Children.Count);
             Assert.AreEqual("ChildStep", serviceTest.TestSteps[1].Children[0].StepDescription);
             Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Children[0].Result.RunTestResult);
-            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].UniqueId);
+            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].ActivityID);
         }
 
         [TestMethod]
@@ -983,7 +983,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(1, serviceTest.TestSteps[1].Children.Count);
             Assert.AreEqual("ChildStep", serviceTest.TestSteps[1].Children[0].StepDescription);
             Assert.AreEqual(RunResult.TestPending, serviceTest.TestSteps[1].Children[0].Result.RunTestResult);
-            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].UniqueId);
+            Assert.AreEqual(helloWorldId, serviceTest.TestSteps[1].Children[0].ActivityID);
         }
 
         internal class EvaluatorTestSetup
@@ -1021,7 +1021,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
                 var testStepOne = new ServiceTestStepTO
                 {
-                    UniqueId = stepOneUniqueId,
+                    ActivityID = stepOneUniqueId,
                     StepDescription = "StepOne"
                 };
                 return testStepOne;
@@ -1040,7 +1040,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 return new ServiceTestStepTO
                 {
-                    UniqueId = HelloWorldId,
+                    ActivityID = HelloWorldId,
                     StepDescription = "ChildStep"
                 };
             }
@@ -1049,7 +1049,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 var testStepTwo = new ServiceTestStepTO
                 {
-                    UniqueId = HelloWorldId,
+                    ActivityID = HelloWorldId,
                     StepDescription = "StepTwo"
                 };
                 if (includeStepOutputs)

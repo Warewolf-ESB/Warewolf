@@ -1645,7 +1645,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, serviceTestModel.TestSteps.Count);
             var testStep = serviceTestModel.TestSteps[0];
             Assert.IsNotNull(testStep);
-            Assert.AreEqual(uniqueID, testStep.UniqueId.ToString());
+            Assert.AreEqual(uniqueID, testStep.ActivityID.ToString());
             Assert.AreEqual(activityTypeName, testStep.ActivityType);
             Assert.AreEqual(outputs, testStep.StepOutputs);
             Assert.AreEqual(StepType.Assert, testStep.Type);

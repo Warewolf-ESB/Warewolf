@@ -6,9 +6,10 @@ namespace Dev2.Data
 {
     public class ServiceTestStepTO : IServiceTestStep
     {
-        public ServiceTestStepTO(Guid stepUniqueId, string stepActivityType, ObservableCollection<IServiceTestOutput> outputs, StepType stepType)
+        public ServiceTestStepTO(Guid activityID, string stepActivityType, ObservableCollection<IServiceTestOutput> outputs, StepType stepType)
         {
-            UniqueId = stepUniqueId;
+            ActivityID = activityID;
+            UniqueID = activityID;
             ActivityType = stepActivityType;
             Type = stepType;
             StepOutputs = outputs;
@@ -20,7 +21,13 @@ namespace Dev2.Data
             Children = new ObservableCollection<IServiceTestStep>();
         }
 
-        public Guid UniqueId { get; set; }
+        private Guid _activityID;
+        public Guid ActivityID 
+        {
+            get => _activityID == Guid.Empty ? UniqueID : _activityID;
+            set => _activityID = value;
+        }
+        public Guid UniqueID { get; set; }
         public string ActivityType { get; set; }
         public StepType Type { get; set; }
         public ObservableCollection<IServiceTestOutput> StepOutputs { get; set; }
