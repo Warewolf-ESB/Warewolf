@@ -20,12 +20,13 @@ using Warewolf.Execution;
 
 namespace Dev2.Runtime.ESB.Management
 {
-    public interface IEsbManagementEndpoint : ISpookyLoadable<string>
+    public abstract class EsbManagementEndpointBase : IEsbManagementEndpoint
     {
-        StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);        
-        DynamicService CreateServiceEntry();
-        Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs);
-        AuthorizationContext GetAuthorizationContextForService();
-        bool CanExecute(CanExecuteArg arg);
+        public abstract StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);
+        public abstract DynamicService CreateServiceEntry();
+        public abstract Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs);
+        public abstract AuthorizationContext GetAuthorizationContextForService();
+        public bool CanExecute(CanExecuteArg arg) => true;
+        public abstract string HandlesType();
     }
 }

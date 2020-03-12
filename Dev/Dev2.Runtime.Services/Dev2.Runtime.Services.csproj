@@ -121,6 +121,7 @@
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
+    <Compile Include="ESB\Management\Services\EsbManagementEndpointBase.cs" />
     <Compile Include="ESB\Management\Services\SaveClusterSettingsService.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\GetClusterSettingsService.cs" />

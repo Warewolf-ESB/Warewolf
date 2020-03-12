@@ -18,6 +18,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -57,7 +58,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public abstract Guid Execute(out ErrorResultTO errors, int update);
         public abstract bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext);
-
+        public abstract bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject);
         public abstract IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity);
         public virtual SerializableResource FetchRemoteResource(Guid serviceId, string serviceName, bool isDebugMode) { throw new NotImplementedException(); }
         /// <summary>
