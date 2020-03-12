@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsTrue(UIMap.MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager);
             var dockWidthAfter = UIMap.MainStudioWindow.DockManager.Width;
-            Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");
+            Assert.IsTrue(dockWidthBefore < dockWidthAfter, "Then Menu Bar did not Open/Close");
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText.Exists, "Side Menu Bar is Open.");
         }
 
