@@ -1,9 +1,9 @@
-﻿@Explorer
-Feature: Explorer
+﻿Feature: Explorer
 	In order to manage services
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
-
+  
+@DragFromExplorer
 Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
@@ -15,12 +15,14 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	And I Click DebugInput Debug Button
 	And I Click Debug Output GenericResource Name
 	
+@OpenFromExplorer
 Scenario: Opening and Editing Workflow from Explorer Remote
 	Given The Warewolf Studio is running
 	When I Connect To Remote Server
 	And I Filter the Explorer with "Hello World"
 	When I open "Hello World" in Remote Connection Integration
 	
+@OpenFromExplorer
 Scenario: Opening Workflow local and remote using right click
    Given The Warewolf Studio is running
    When I Connect To Remote Server
@@ -32,6 +34,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Select Open From Explorer Context Menu
    Then Local "Hello World" is open
 
+@DeleteFromExplorer
  Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
    When I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
@@ -39,6 +42,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Select Delete From Explorer Context Menu
    When I Click MessageBox Yes
  
+@DeleteFromExplorer
  Scenario: Deleting a Folder in localhost
    Given The Warewolf Studio is running
    When I Filter the Explorer with "FolderToDelete" 
@@ -46,12 +50,14 @@ Scenario: Opening Workflow local and remote using right click
    And I Select Delete From Explorer Context Menu
    And I Click MessageBox Yes 
 
+ @FilterExplorer
  Scenario: Filter Should Clear On Connection Of Remote Server
    Given The Warewolf Studio is running
    When I Filter the Explorer with "Hello World" 
    When I Connect To Remote Server
    Then Filter Textbox is cleared
 
+@DeleteFromExplorer
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running
    When I Connect To Remote Server
@@ -66,6 +72,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Select Delete From Explorer Context Menu
    And I Click MessageBox Yes 
 
+@FilterExplorer
 Scenario: Clear filter  
    Given The Warewolf Studio is running 
    When I Filter the Explorer with "Hello World"
@@ -73,6 +80,7 @@ Scenario: Clear filter
    And I Click Explorer Filter Clear Button
    Then Filter Textbox is cleared
 
+@DragFromExplorer
 Scenario: Drag on service from Explorer and change input and output
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
