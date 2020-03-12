@@ -41,14 +41,16 @@ namespace Dev2.Runtime.Hosting
         readonly object _loadLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
 
-        readonly ResourceCatalogPluginContainer _catalogPluginContainer;
+        ResourceCatalogPluginContainer _catalogPluginContainer;
         static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
         {
             var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
             if (resourceCatalog is null)
             {
-                resourceCatalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-                CustomContainer.Register<IResourceCatalog>(resourceCatalog);
+                var newResourceCatalog = new ResourceCatalog(new DynamicService[] { });
+                CustomContainer.Register<IResourceCatalog>(newResourceCatalog);
+
+                newResourceCatalog.Initialize(EsbManagementServiceLocator.GetServices());
             }
             return resourceCatalog;
         }, LazyThreadSafetyMode.PublicationOnly);
@@ -62,13 +64,16 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalog(IEnumerable<DynamicService> managementServices)
         {
+        }
+        public void Initialize(IEnumerable<DynamicService> managementServices)
+        {
             InitializeWorkspaceResources();
             _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
 
-        readonly IServerVersionRepository _serverVersionRepository;
+        IServerVersionRepository _serverVersionRepository;
         readonly IDirectory _directoryWrapper = new DirectoryWrapper();
         public void CleanUpOldVersionControlStructure()
         {
