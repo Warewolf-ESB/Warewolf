@@ -307,7 +307,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var testSteps = new ObservableCollection<IServiceTestStep>();
             var serviceTestStep = new Mock<IServiceTestStep>();
-            serviceTestStep.SetupGet(step => step.UniqueId).Returns(resourceId);
+            serviceTestStep.SetupGet(step => step.ActivityID).Returns(resourceId);
             //AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -409,7 +409,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestStep = new Mock<IServiceTestStep>();
             var testSteps = new ObservableCollection<IServiceTestStep>() { serviceTestStep.Object };
 
-            serviceTestStep.SetupGet(step => step.UniqueId).Returns(resourceId);
+            serviceTestStep.SetupGet(step => step.ActivityID).Returns(resourceId);
             //AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -552,7 +552,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("DsfMultiAssignActivity", serviceTestSteps[0].ActivityType);
             Assert.AreEqual("Set the output variable (1)", serviceTestSteps[0].StepDescription);
             Assert.AreEqual(1, serviceTestSteps[0].StepOutputs.Count);
-            Assert.AreEqual("670132e7-80d4-4e41-94af-ba4a71b28118".ToGuid(), serviceTestSteps[0].UniqueId);
+            Assert.AreEqual("670132e7-80d4-4e41-94af-ba4a71b28118".ToGuid(), serviceTestSteps[0].ActivityID);
             Assert.AreEqual(StepType.Assert, serviceTestSteps[0].Type);
         }
 
@@ -984,7 +984,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
             var o = (IServiceTestStep)parameters[1];
-            Assert.AreEqual(uniqueID, o.UniqueId.ToString());
+            Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
         }
 
@@ -1027,7 +1027,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
             var o = (IServiceTestStep)parameters[1];
-            Assert.AreEqual(uniqueID, o.UniqueId.ToString());
+            Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
         }
 
@@ -1070,7 +1070,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
             var o = (IServiceTestStep)parameters[1];
-            Assert.AreEqual(uniqueID, o.UniqueId.ToString());
+            Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
         }
 
@@ -1202,7 +1202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     ID = Guid.NewGuid()
                 }
             };
-            dotNetDllActivity.UniqueID = serviceTestStep.UniqueId.ToString();
+            dotNetDllActivity.UniqueID = serviceTestStep.ActivityID.ToString();
             dotNetDllActivity.MethodsToRun = new List<IPluginAction>()
             {
                 new PluginAction() {ID = Guid.Empty},

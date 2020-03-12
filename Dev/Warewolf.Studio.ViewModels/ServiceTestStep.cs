@@ -27,6 +27,7 @@ namespace Warewolf.Studio.ViewModels
         StepType _type;
         string _activityType;
         ObservableCollection<IServiceTestOutput> _stepOutputs;
+        Guid _activityId;
         Guid _uniqueId;
         IServiceTestStep _parent;
         ObservableCollection<IServiceTestStep> _children;
@@ -43,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
-            UniqueId = uniqueId;
+            ActivityID = uniqueId;
             ActivityType = activityTypeName;
             StepOutputs = serviceTestOutputs;
             Type = stepType;
@@ -56,15 +57,26 @@ namespace Warewolf.Studio.ViewModels
             TestPending = true;
         }
 
-        public Guid UniqueId
+        public Guid ActivityID
+        {
+            get => _activityId;
+            set
+            {
+                _activityId = value;
+                OnPropertyChanged(() => ActivityID);
+            }
+        }
+
+        public Guid UniqueID
         {
             get => _uniqueId;
             set
             {
                 _uniqueId = value;
-                OnPropertyChanged(() => UniqueId);
+                OnPropertyChanged(() => UniqueID);
             }
         }
+
 
         [JsonIgnore]
         public ImageSource StepIcon
