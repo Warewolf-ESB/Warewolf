@@ -18,6 +18,7 @@ using System.Linq;
 using TechTalk.SpecFlow;
 using TestStack.White;
 using TestStack.White.Factory;
+using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WindowItems;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
@@ -554,7 +555,7 @@ namespace Warewolf.UI.Tests
         [Then("I Click New Workflow Ribbon Button")]
         public void Click_NewWorkflow_RibbonButton()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(6, 6));
+            _window.Get(SearchCriteria.ByText("New")).Click();
             WaitForControlVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
