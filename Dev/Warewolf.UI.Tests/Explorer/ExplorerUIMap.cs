@@ -14,6 +14,7 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
+using TestStack.White.UIItems.Finders;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
@@ -594,11 +595,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         }
 
         [When(@"I Filter the Explorer with ""(.*)""")]
-        public void Filter_Explorer(string FilterText)
-        {
-            UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, 60000);
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
-        }
+        public void Filter_Explorer(string FilterText) => UIMap._window.Get(SearchCriteria.ByAutomationId("SearchTextBox")).Enter(FilterText);
 
         [When(@"First Remote Server has loaded")]
         public void WhenFirstRemoteServerHasLoaded()
