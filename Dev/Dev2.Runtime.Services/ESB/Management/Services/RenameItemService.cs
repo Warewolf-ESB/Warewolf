@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,9 +26,9 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class RenameItemService : IEsbManagementEndpoint
+    public class RenameItemService : EsbManagementEndpointBase
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("itemToRename", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
@@ -40,10 +40,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override  AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
         IExplorerServerResourceRepository _serverExplorerRepository;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override  StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             IExplorerRepositoryResult item=null;
             var serializer = new Dev2JsonSerializer();
@@ -102,8 +102,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             set => _serverExplorerRepository = value;
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><itemToRename ColumnIODirection=\"Input\"/><newName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override  DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><itemToRename ColumnIODirection=\"Input\"/><newName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "RenameItemService";
+        public override  string HandlesType() => "RenameItemService";
     }
 }

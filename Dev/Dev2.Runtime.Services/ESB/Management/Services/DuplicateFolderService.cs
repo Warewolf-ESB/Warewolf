@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,11 +23,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class DuplicateFolderService : IEsbManagementEndpoint
+    public class DuplicateFolderService : EsbManagementEndpointBase
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override  AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         readonly IResourceCatalog _catalog;
 
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public  override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             values.TryGetValue("NewResourceName", out StringBuilder newResourceName);
@@ -74,8 +74,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(success);
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override  DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "DuplicateFolderService";
+        public override  string HandlesType() => "DuplicateFolderService";
     }
 }

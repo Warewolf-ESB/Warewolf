@@ -27,13 +27,13 @@ using Connection = Dev2.Data.ServiceModel.Connection;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class TestClusterConnection : IEsbManagementEndpoint
+    public class TestClusterConnection : EsbManagementEndpointBase
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Test Cluster Connection", GlobalConstants.WarewolfInfo);
@@ -118,9 +118,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => Cluster.TestClusterConnection;
+        public override string HandlesType() => Cluster.TestClusterConnection;
     }
 
     public class TestClusterResult : ExecuteMessage

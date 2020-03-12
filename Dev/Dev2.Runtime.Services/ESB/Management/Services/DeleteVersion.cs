@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,11 +24,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class DeleteVersion : IEsbManagementEndpoint
+    public class DeleteVersion : EsbManagementEndpointBase
     {
         IServerVersionRepository _serverExplorerRepository;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceId", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
@@ -38,11 +38,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         #region Implementation of IEsbManagementEndpoint
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             var execMessage = new ExecuteMessage { HasError = false };
@@ -92,8 +92,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #endregion
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "DeleteVersion";
+        public override string HandlesType() => "DeleteVersion";
     }
 }

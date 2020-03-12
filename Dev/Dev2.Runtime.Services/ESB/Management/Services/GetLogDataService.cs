@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,12 @@ using Warewolf.Driver.Serilog;
 using Warewolf.Auditing;
 using Warewolf.Logging;
 using System.Threading;
+using Dev2.Common.Interfaces.Enums;
 using Warewolf.Interfaces.Auditing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
+    public class GetLogDataService : EsbManagementEndpointBase
     {
         private readonly IWebSocketPool _webSocketPool;
         private readonly TimeSpan _waitTimeOut;
@@ -42,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             _waitTimeOut = waitTimeOut;
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             IWebSocketWrapper client = null;
             
@@ -94,9 +95,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "GetLogDataService";
+        public override string HandlesType() => "GetLogDataService";
+        
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
     }
 
     public static class LogDataCache

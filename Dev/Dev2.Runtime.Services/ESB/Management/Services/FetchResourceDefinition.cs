@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ using Dev2.Communication;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchResourceDefinition : IEsbManagementEndpoint
+    public class FetchResourceDefinition : EsbManagementEndpointBase
     {
         private IResourceDefinationCleaner _resourceDefinationCleaner;
         private IResourceCatalog _resourceCatalog;
@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
@@ -64,14 +64,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.View;
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.View;
 
         [ExcludeFromCodeCoverage]
         public FetchResourceDefinition()
         {
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             try
@@ -108,9 +108,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder) => Cleaner.DecryptAllPasswords(stringBuilder);
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => @"FetchResourceDefinitionService";
+        public override string HandlesType() => @"FetchResourceDefinitionService";
 
     }
 }

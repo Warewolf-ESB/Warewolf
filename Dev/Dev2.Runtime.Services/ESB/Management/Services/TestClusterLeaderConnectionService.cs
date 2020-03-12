@@ -20,9 +20,9 @@ using Warewolf.Service;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class TestClusterLeaderConnectionService : IEsbManagementEndpoint
+    public class TestClusterLeaderConnectionService : EsbManagementEndpointBase
     {
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var clusterResult = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
@@ -53,12 +53,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(clusterResult);
         }
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => Cluster.TestClusterLeaderConnection;
+        public override string HandlesType() => Cluster.TestClusterLeaderConnection;
     }
 }

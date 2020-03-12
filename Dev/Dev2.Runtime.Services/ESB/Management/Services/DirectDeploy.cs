@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,14 +28,14 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class DirectDeploy : IEsbManagementEndpoint
+    public class DirectDeploy : EsbManagementEndpointBase
     {
         bool _existingResource;
         IConnections _connections;
         IResourceCatalog _resourceCatalog;
         ITestCatalog _testCatalog;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             _existingResource = false;
             requestArgs.TryGetValue("ResourceDefinition", out StringBuilder resourceDefinition);
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
+        public override AuthorizationContext GetAuthorizationContextForService()
         {
             if (_existingResource)
             {
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.DeployTo;
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var toReturn = new List<DeployResult>();
             var serializer = new Dev2JsonSerializer();
@@ -229,8 +229,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "DirectDeploy";
+        public override string HandlesType() => "DirectDeploy";
     }
 }

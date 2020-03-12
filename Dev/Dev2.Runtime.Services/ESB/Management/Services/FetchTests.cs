@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,15 +22,11 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
-
-
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchTests : IEsbManagementEndpoint
+    public class FetchTests : EsbManagementEndpointBase
     {
-
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
@@ -42,11 +38,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override  AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         ITestCatalog _testCatalog;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override  StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             try
@@ -89,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override  DynamicService CreateServiceEntry()
         {
             var newDs = new DynamicService { Name = HandlesType() };
             var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -98,6 +94,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType() => "FetchTests";
+        public override  string HandlesType() => "FetchTests";
     }
 }

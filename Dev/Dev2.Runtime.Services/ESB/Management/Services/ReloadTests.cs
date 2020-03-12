@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,11 +21,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class ReloadTests : IEsbManagementEndpoint
+    public class ReloadTests : EsbManagementEndpointBase
     {
         #region Implementation of IEsbManagementEndpoint
         
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var result = new CompressedExecuteMessage { HasError = false };
             try
@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(result);
         }
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override  Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override  AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public ITestCatalog TestCatalog
         {
@@ -66,8 +66,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #endregion
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override  DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "ReloadTestsService";
+        public override  string HandlesType() => "ReloadTestsService";
     }
 }

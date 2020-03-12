@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,9 +25,9 @@ using System.Threading.Tasks;
 
 namespace Dev2.Runtime.ESB.Management
 {
-    public abstract class WorkflowManagementEndpointAbstract : IEsbManagementEndpoint
+    public abstract class WorkflowManagementEndpointAbstract : EsbManagementEndpointBase
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
@@ -38,9 +38,9 @@ namespace Dev2.Runtime.ESB.Management
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
 
-        public virtual StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             try
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var newDs = new DynamicService { Name = HandlesType() };
             var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -78,6 +78,6 @@ namespace Dev2.Runtime.ESB.Management
 
 
         abstract protected ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values);
-        abstract public string HandlesType();
+        abstract public override string HandlesType();
     }
 }
