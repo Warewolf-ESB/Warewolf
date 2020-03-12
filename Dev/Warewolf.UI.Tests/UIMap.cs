@@ -152,7 +152,7 @@ namespace Warewolf.UI.Tests
 
         public void Close_And_Lock_Side_Menu_Bar()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
+            _window.Get(SearchCriteria.ByText("Unlock Menu")).Click();
             Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer);
             Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
         }
