@@ -95,14 +95,22 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void Edit_Server_Removes_Server_From_Explorer()
         {
-            _containerOps = new Depends(Depends.ContainerType.CIRemote);
-            ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
-            ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists, "Remote server is not loaded in the Explorer after selecting it from the connect control dropdown list.");
-            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
-            SettingsUIMap.ChangeServerAuthenticationType();
-            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer), "Remote server is still loaded in the Explorer after clicking edit in the connect control.");
+            using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
+            {
+                ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
+                Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
+                ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();
+                Assert.IsTrue(
+                    ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer
+                        .Exists,
+                    "Remote server is not loaded in the Explorer after selecting it from the connect control dropdown list.");
+                ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+                SettingsUIMap.ChangeServerAuthenticationType();
+                Assert.IsFalse(
+                    UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer
+                        .ExplorerTree.FirstRemoteServer),
+                    "Remote server is still loaded in the Explorer after clicking edit in the connect control.");
+            }
         }
 
         [TestMethod]
@@ -162,11 +170,6 @@ namespace Warewolf.UI.Tests
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-
-        static Depends _containerOps;
-
-        [TestCleanup]
-        public void CleanupContainer() => _containerOps?.Dispose();
 
         UIMap UIMap
         {

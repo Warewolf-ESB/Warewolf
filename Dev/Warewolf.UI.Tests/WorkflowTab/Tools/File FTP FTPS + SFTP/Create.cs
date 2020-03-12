@@ -32,12 +32,22 @@ namespace Warewolf.UI.Tests.Tools
         [TestCategory("File Tools")]
         public void PathCreateTool_FileSystemIntellisenseProvider_UITest()
         {
-            _containerOps = new Depends(Depends.ContainerType.CIRemote);
-            FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit.Text = @"\\SVRPDC.premier.local\";
-            FileToolsUIMap.Open_CreateTool_LargeView();
-            FileToolsUIMap.Click_Create_Done_Button();
-            Keyboard.SendKeys(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit, "{END}{BACK}");
-            Assert.IsTrue(UIMap.MainStudioWindow.IntellisenseOptionsList.FirstOption.Exists, "No file system provided intellisense results are showing.");
+            using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
+            {
+                FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab
+                    .WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner
+                    .WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit
+                    .Text = @"\\SVRPDC.premier.local\";
+                FileToolsUIMap.Open_CreateTool_LargeView();
+                FileToolsUIMap.Click_Create_Done_Button();
+                Keyboard.SendKeys(
+                    FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab
+                        .WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner
+                        .WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox
+                        .TextEdit, "{END}{BACK}");
+                Assert.IsTrue(UIMap.MainStudioWindow.IntellisenseOptionsList.FirstOption.Exists,
+                    "No file system provided intellisense results are showing.");
+            }
         }
 
         #region Additional test attributes
@@ -50,11 +60,6 @@ namespace Warewolf.UI.Tests.Tools
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Drag_Toolbox_Create_Onto_DesignSurface();
         }
-
-        static Depends _containerOps;
-
-        [TestCleanup]
-        public void CleanupContainer() => _containerOps?.Dispose();
 
         UIMap UIMap
         {
