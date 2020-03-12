@@ -366,15 +366,15 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             //         return false;
             //     }
             // }
-            if (!seenSecondVersionConflict && !seenConflict)
-            {
-                seenSecondVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
-                if (seenSecondVersionConflict && OKButtonReady)
-                {
-                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
-                    return false;
-                }
-            }
+            // if (!seenSecondVersionConflict && !seenConflict)
+            // {
+            //     seenSecondVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+            //     if (seenSecondVersionConflict && OKButtonReady)
+            //     {
+            //         Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            //         return false;
+            //     }
+            // }
             if (!seenConflict)
             {
                 seenConflict = DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists;
