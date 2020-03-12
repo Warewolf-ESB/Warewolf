@@ -25,6 +25,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -129,6 +130,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
+        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject) => true;
 
         string ExecutePostRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
         {

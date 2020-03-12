@@ -29,6 +29,7 @@ using System;
 using System.Activities;
 using System.Linq;
 using System.Threading;
+using Dev2.Runtime.ESB.Management;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -350,6 +351,8 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute", executionId);
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
+        
+        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject) => true;
     }
 
 

@@ -25,6 +25,7 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
@@ -173,6 +174,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
+        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject) => true;
 
         static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
         {
