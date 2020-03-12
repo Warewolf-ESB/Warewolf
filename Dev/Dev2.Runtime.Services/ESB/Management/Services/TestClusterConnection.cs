@@ -27,13 +27,27 @@ using Connection = Dev2.Data.ServiceModel.Connection;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class TestClusterConnection : EsbManagementEndpointBase
+    public class TestClusterConnection : IEsbManagementEndpoint
     {
-        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+        private static IConnections _connections;
+        private static IResourceCatalog _resourceCatalog;
+        public TestClusterConnection()
+            : this(new Connections(), Hosting.ResourceCatalog.Instance)
+        {
 
-        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        }
 
-        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public TestClusterConnection(IConnections connections, IResourceCatalog resourceCatalog)
+        {
+            _connections = connections;
+            _resourceCatalog = resourceCatalog;
+        }
+        
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Test Cluster Connection", GlobalConstants.WarewolfInfo);
@@ -49,8 +63,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             private readonly Dev2JsonSerializer _serializer;
             private readonly ClusterSettingsData _clusterSettings;
-            private IConnections _connections;
-            private IResourceCatalog _resourceCatalog;
 
             public TestConn(Dev2JsonSerializer serializer, ClusterSettingsData clusterSettings)
             {
@@ -60,10 +72,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             public ExecuteMessage TestConnection()
             {
-                var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, _clusterSettings.LeaderServerResource.Value);
+                var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, _clusterSettings.LeaderServerResource.Value);
                 var destination = resource as Connection;
                 
-                var canConnectToServer = Connections.CanConnectToServer(destination);
+                var canConnectToServer = _connections.CanConnectToServer(destination);
                 if (!canConnectToServer.IsValid)
                 {
                     return new ExecuteMessage {HasError = true, Message = new StringBuilder(canConnectToServer.ErrorMessage)};
@@ -86,24 +98,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder("no cluster key for leader specified")};
             }
 
-            public IConnections Connections
-            {
-                private get => _connections ?? (_connections = new Connections());
-                set => _connections = value;
-            }
-
-            public IResourceCatalog ResourceCatalog
-            {
-                private get => _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
-                set => _resourceCatalog = value;
-            }
-
             private async Task<TestClusterResult> InvokeRemoteInternalServiceAsync(Connection destination, Envelope envelope)
             {
-                var proxy = Connections.CreateHubProxy(destination);
+                var proxy = _connections.CreateHubProxy(destination);
                 var messageId = Guid.NewGuid();
 
-                return proxy.Invoke<TestClusterResult>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).Result;
+                var task = proxy.Invoke<TestClusterResult>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId);
+                task.Wait();
+                return task.Result;
             }
 
             private Envelope BuildEnvelope(EsbExecuteRequest esbExecuteRequest)
@@ -118,9 +120,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType() => Cluster.TestClusterConnection;
+        public string HandlesType() => Cluster.TestClusterConnection;
     }
 
     public class TestClusterResult : ExecuteMessage
