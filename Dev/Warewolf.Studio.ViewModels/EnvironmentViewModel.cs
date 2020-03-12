@@ -97,12 +97,6 @@ namespace Warewolf.Studio.ViewModels
             _children = new ObservableCollection<IExplorerItemViewModel>();
             ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
 
-            NewMySqlSourceCommand = new DelegateCommand(() =>
-            {
-                UpdateActiveEnvironment(shellViewModel);
-                shellViewModel.NewMySqlSource(ResourcePath);
-            });
-
             NewPostgreSqlSourceCommand = new DelegateCommand(() =>
             {
                 UpdateActiveEnvironment(shellViewModel);
@@ -770,7 +764,6 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        public ICommand NewMySqlSourceCommand { get; set; }
         public ICommand NewPostgreSqlSourceCommand { get; set; }
         public ICommand NewOracleSourceCommand { get; set; }
         public ICommand NewOdbcSourceCommand { get; set; }

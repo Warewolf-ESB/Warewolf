@@ -247,7 +247,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewMySqlSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewMySqlSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewMySqlSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New MySQL Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewMySqlSourceTooltip}">
@@ -860,7 +861,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewMySqlSourceItem"
                                                           Style="{StaticResource MenuItemStyle}"
-                                                          Command="{Binding NewMySqlSourceCommand}"
+                                                          Command="{Binding ShellViewModel.NewMySqlSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
                                                           Header="New MySQL Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewMySqlSourceTooltip}">

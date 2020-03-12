@@ -164,11 +164,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewWcfSource(resourcePath);
         }
-        public void NewMySqlSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewMySqlSource(resourcePath);
-        }
         public void NewPostgreSqlSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);

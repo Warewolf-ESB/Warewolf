@@ -411,11 +411,11 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {
-            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
+            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewMySqlSourceCommand
         {
-            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
+            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
         {
