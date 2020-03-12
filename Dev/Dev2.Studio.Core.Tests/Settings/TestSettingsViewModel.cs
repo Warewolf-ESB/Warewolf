@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,12 +12,12 @@ using System.IO;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings;
+using Dev2.Settings.Clusters;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Security;
@@ -32,6 +32,7 @@ namespace Dev2.Core.Tests.Settings
     {
         SecurityViewModel _theSecurityViewModel;
         PerfcounterViewModel _thePerfcounterViewModel;
+        private ClusterViewModel _clusterViewModelTest;
 
         public TestSettingsViewModel()
         {
@@ -52,14 +53,8 @@ namespace Dev2.Core.Tests.Settings
 
         public SecurityViewModel TheSecurityViewModel
         {
-            get
-            {
-                return _theSecurityViewModel;
-            }
-            set
-            {
-                _theSecurityViewModel = value;
-            }
+            get => _theSecurityViewModel;
+            set => _theSecurityViewModel = value;
         }
         public LogSettingsViewModel TheLogSettingsViewModel { get; set; }
         protected override SecurityViewModel CreateSecurityViewModel()
@@ -74,14 +69,22 @@ namespace Dev2.Core.Tests.Settings
 
         public PerfcounterViewModel ThePerfcounterViewModel
         {
-            get
-            {
-                return _thePerfcounterViewModel;
-            }
-            set
-            {
-                _thePerfcounterViewModel = value;
-            }
+            get => _thePerfcounterViewModel;
+            set => _thePerfcounterViewModel = value;
+        }
+
+        public ClusterViewModel ClusterViewModelTest
+        {
+            get => _clusterViewModelTest;
+            set => _clusterViewModelTest = value;
+        }
+
+        protected override ClusterViewModel CreateClusterViewModel()
+        {
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var mockServer = new Mock<IServer>();
+            var mockPopupController = new Mock<IPopupController>();
+            return ClusterViewModelTest ?? new ClusterViewModel(mockResourceRepository.Object, mockServer.Object, mockPopupController.Object);
         }
 
         protected override LogSettingsViewModel CreateLoggingViewModel()
