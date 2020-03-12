@@ -130,7 +130,7 @@ namespace Dev2.Runtime.WebServer
         {
             if (headers != null)
             {
-                var customTransactionId = headers.Get("Warewolf-Custom-Transaction-ID");
+                var customTransactionId = headers.Get("Warewolf-Custom-Transaction-Id");
                 if (!string.IsNullOrEmpty(customTransactionId))
                 {
                     dataObject.CustomTransactionID = customTransactionId;
