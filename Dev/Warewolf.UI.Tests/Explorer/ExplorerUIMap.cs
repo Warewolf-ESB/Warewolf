@@ -284,7 +284,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "First Item does not exist in tree.");
-            Assert.AreEqual(tabName, WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
+            Assert.IsTrue(tabName.Contains(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText));
         }
 
         [When(@"I Select NewWorkFlowService From ContextMenu")]
