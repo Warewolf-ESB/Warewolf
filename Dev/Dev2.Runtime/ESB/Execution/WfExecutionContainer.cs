@@ -30,6 +30,7 @@ using System.Activities;
 using System.Linq;
 using System.Threading;
 using Dev2.Runtime.ESB.Management;
+using Warewolf.Execution;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -352,7 +353,16 @@ namespace Dev2.Runtime.ESB.Execution
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
         
-        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject) => true;
+        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject)
+        {  var resourceId = eme.GetResourceID(Request.Args);
+            var authorizationContext = eme.GetAuthorizationContextForService();
+            var isFollower = string.IsNullOrWhiteSpace(Config.Cluster.LeaderServerKey);
+            if (isFollower && eme.CanExecute(new CanExecuteArg{ IsFollower = isFollower }))
+            {
+                return false;
+            }
+            return CanExecute(resourceId, dataObject, authorizationContext);
+        }
     }
 
 

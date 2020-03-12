@@ -31,6 +31,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Warewolf.Execution;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -130,8 +131,16 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
-        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject) => true;
-
+        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject)
+        {  var resourceId = eme.GetResourceID(Request.Args);
+            var authorizationContext = eme.GetAuthorizationContextForService();
+            var isFollower = string.IsNullOrWhiteSpace(Config.Cluster.LeaderServerKey);
+            if (isFollower && eme.CanExecute(new CanExecuteArg{ IsFollower = isFollower }))
+            {
+                return false;
+            }
+            return CanExecute(resourceId, dataObject, authorizationContext);
+        }
         string ExecutePostRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
         {
             var result = string.Empty;
