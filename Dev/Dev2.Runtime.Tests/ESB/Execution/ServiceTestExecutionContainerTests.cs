@@ -28,8 +28,10 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -306,7 +308,40 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Test Result -----------------------
             Assert.IsTrue(execute);
         }
-
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ServiceTestExecutionContainer))]
+        public void ServiceTestExecutionContainer_CanExecute_IEsbManagementEndpoint_GivenArgs_ShouldPassThrough()
+        {
+            //---------------Set up test pack-------------------
+            const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
+            var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(Datalist) };
+            var dsfObj = new Mock<IDSFDataObject>();
+            dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false)).Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
+            var workSpace = new Mock<IWorkspace>();
+            
+            var securityPermissions = new List<WindowsGroupPermission>
+            {
+                new WindowsGroupPermission { IsServer = true, WindowsGroup = "TestGroup", Permissions = AuthorizationContext.DeployFrom.ToPermissions() },
+                new WindowsGroupPermission { IsServer = true, WindowsGroup = "NETWORK SERVICE", Permissions = AuthorizationContext.DeployTo.ToPermissions() }
+            };
+            var securitySettingsTo = new SecuritySettingsTO(securityPermissions);
+            var channel = new Mock<IEsbChannel>();
+            var endpoint = new Mock<IEsbManagementEndpoint>();
+            endpoint.Setup(e => e.Execute(It.IsAny<Dictionary<string, StringBuilder>>(), It.IsAny<IWorkspace>())).Returns(new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTo));
+            var esbExecuteRequest = new EsbExecuteRequest();
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(serviceTestExecutionContainer);
+            Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
+            Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
+            //---------------Execute Test ----------------------
+            var execute = serviceTestExecutionContainer.CanExecute(endpoint.Object, dsfObj.Object);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(execute);
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
