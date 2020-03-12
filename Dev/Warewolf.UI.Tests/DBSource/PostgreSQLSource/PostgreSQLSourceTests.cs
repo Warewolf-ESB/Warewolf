@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.PostgreSQLSource
         [TestMethod]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void Test_MySQLSource_ConnectionTimeout_UITests()
+        public void Test_PostGreSQLSource_ConnectionTimeout_UITests()
         {
             //Create Source
             ExplorerUIMap.Select_NewPostgreSQLSource_From_ExplorerContextMenu();
@@ -68,7 +68,7 @@ namespace Warewolf.UI.Tests.PostgreSQLSource
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            _dependency = new Depends(Depends.ContainerType.MSSQL);
+            _dependency = new Depends(Depends.ContainerType.PostGreSQL);
         }
 
         [TestCleanup]

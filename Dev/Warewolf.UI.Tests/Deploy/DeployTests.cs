@@ -159,14 +159,6 @@ namespace Warewolf.UI.Tests
             UIMap.Click_Deploy_Ribbon_Button();
         }
 
-        static Depends _containerOps;
-
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext) => _containerOps = new Depends(Depends.ContainerType.CIRemote);
-
-        [ClassCleanup]
-        public static void CleanupContainer() => _containerOps?.Dispose();
-
         public UIMap UIMap
         {
             get
