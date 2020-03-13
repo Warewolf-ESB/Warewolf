@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.Search
     {
         [TestMethod]
         [TestCategory("Service Search")]
-        [Ignore]//TODO: Re-introduce this ui test once the build rig has been moved to the new domain hosted at premier.local
+        [Ignore]//TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void Search_For_Hello_World_On_Remote_Server()
         {
             using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
@@ -39,7 +39,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [TestCategory("Service Search")]
-        [Ignore]//TODO: Re-introduce this ui test once the build rig has been moved to the new domain hosted at premier.local
+        [Ignore]//TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void Given_Match_WholeWord_And_Case_And_Hello_World_Returns_Row()
         {
             using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))

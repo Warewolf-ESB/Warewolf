@@ -47,23 +47,31 @@ namespace Warewolf.UI.Tests.ServerSource
         [TestMethod]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void SaveNewServerSource_GivenSourceName()
         {
-            _containerOps = new Depends(Depends.ContainerType.CIRemote);
-            //Create Source
-            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
-            Keyboard.SendKeys("{ESC}");
-            ServerSourceUIMap.Select_Server_Authentication_User();
-            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
-            //Save Source
-            const string sourceName = "NewCodedUITestServerSource";
-            UIMap.Save_With_Ribbon_Button_And_Dialog(sourceName);
-            ExplorerUIMap.Filter_Explorer(sourceName);
-            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
+            {
+                //Create Source
+                ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+                ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+                ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote.premier.local");
+                Keyboard.SendKeys("{ESC}");
+                ServerSourceUIMap.Select_Server_Authentication_User();
+                ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
+                Assert.IsTrue(
+                    ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan
+                        .ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled,
+                    "Test Connection button not enabled");
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
+                //Save Source
+                const string sourceName = "NewCodedUITestServerSource";
+                UIMap.Save_With_Ribbon_Button_And_Dialog(sourceName);
+                ExplorerUIMap.Filter_Explorer(sourceName);
+                Assert.IsTrue(
+                    ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem
+                        .Exists, "Source did not save in the explorer UI.");
+            }
         }
 
         [TestMethod]
@@ -197,6 +205,7 @@ namespace Warewolf.UI.Tests.ServerSource
 
         [TestMethod]
         [TestCategory("Server Sources")]
+        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
             _containerOps = new Depends(Depends.ContainerType.CIRemote);
