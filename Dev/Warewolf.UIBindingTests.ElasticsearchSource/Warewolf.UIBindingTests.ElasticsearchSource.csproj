@@ -99,7 +99,7 @@
     <Compile Include="BuildConfig.cs" />
     <Compile Include="ElasticsearchSourceSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Elasticsearch Source1.feature.cs">
+    <Compile Include="Elasticsearch Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Elasticsearch Source.feature</DependentUpon>
@@ -110,7 +110,7 @@
     <None Include="packages.config" />
     <None Include="Elasticsearch Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Elasticsearch Source1.feature.cs</LastGenOutput>
+      <LastGenOutput>Elasticsearch Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
