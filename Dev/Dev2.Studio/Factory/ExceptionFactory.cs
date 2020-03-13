@@ -117,9 +117,15 @@ namespace Dev2.Studio.Factory
                 OutputPath = GetUniqueOutputPath?.Invoke(".txt"),
                 DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle
             };
-            vm.GetStudioLogFile();
-            vm.ServerLogFile = await ExceptionViewModel.GetServerLogFile();
 
+            try
+            {
+                vm.GetStudioLogFile();
+                vm.ServerLogFile = await ExceptionViewModel.GetServerLogFile();
+            } catch
+            {
+                // could not get log data, we should still try to return
+            }
             vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;

@@ -27,12 +27,9 @@ namespace Warewolf.Core
 
         public string DownloadString(string address)
         {
-            using (var client = _webClient)
+            if (!String.IsNullOrEmpty(address))
             {
-                if (!String.IsNullOrEmpty(address))
-                {
-                    return client.DownloadString(address);
-                }
+                return _webClient.DownloadString(address);
             }
             return null;
         }
@@ -74,18 +71,23 @@ namespace Warewolf.Core
         }
         
         public bool IsBusy { get; private set; }
-        
 
-        #region Implementation of IDisposable
+        private bool isDisposed = false; // To detect redundant calls
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (disposing)
+                {
+                    _webClient.Dispose();
+                }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+                isDisposed = true;
+            }
+        }
         public void Dispose()
         {
-            _webClient.Dispose();
+            Dispose(true);
         }
-
-        #endregion
     }
 }

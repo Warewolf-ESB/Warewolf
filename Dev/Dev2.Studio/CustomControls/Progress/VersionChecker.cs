@@ -26,6 +26,7 @@ namespace Dev2.Studio.Core.Helpers
         readonly Func<Version> _versionGetter;
 
         bool _isDone;
+        private Task<Version> _latestVersionTask;
         Version _latest;
         Version _current;
 
@@ -41,6 +42,21 @@ namespace Dev2.Studio.Core.Helpers
             _webClient = webClient;
             _versionGetter = versionGetter;
             _isDone = false;
+
+            var t = new Task<Task<Version>>(async () =>
+            {
+                try
+                {
+                    var version = await _webClient.DownloadStringAsync(InstallerResources.WarewolfVersion);
+                    return new Version(version);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            });
+            t.Start();
+            _latestVersionTask = t.Result;
         }
 
         #region Latest
@@ -107,33 +123,14 @@ namespace Dev2.Studio.Core.Helpers
         #endregion
 
         #region GetLatestVersion
-
-        async Task<Version> GetLatestVersionAsync()
+        Task<Version> GetLatestVersionAsync()
         {
-
-            try
-            {
-                var version = await _webClient.DownloadStringAsync(InstallerResources.WarewolfVersion);
-                return new Version(version);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return _latestVersionTask;
         }
 
         Version GetLatestVersion()
         {
-
-            try
-            {
-                var version = _webClient.DownloadString(InstallerResources.WarewolfVersion);
-                return new Version(version);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return _latestVersionTask.Result;
         }
 
         #endregion
