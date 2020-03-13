@@ -64,7 +64,7 @@ Scenario: Change the recordset on existing mysql server connector tool
 	When I select "AnotherAction" Action for mysql connector tool
 	Then The recordset name changes to "SomeRecordSet" for mysql connector tool
 	
-@SqlDatabaseBroker
+@DatabaseTimeout
 Scenario: Execute MySql Server With Timeout
     Given I have workflow "MySqlWorkflowForTimeout" with "MySqlActivity" MySql database connector
     And Mysql server is Enabled

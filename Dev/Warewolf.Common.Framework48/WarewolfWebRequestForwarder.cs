@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -46,11 +46,11 @@ namespace Warewolf.Common
             _mapEntireMessage = mapEntireMessage;
         }
 
-        public async Task<ConsumerResult> Consume(byte[] body,string customTransactionID)
+        public async Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var postBody = BuildPostBody(body); 
 
-            using (var execution = await SendEventToWarewolf(_url, postBody,customTransactionID))
+            using (var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers))
             {
                 if (!execution.IsSuccessStatusCode)
                 {
@@ -69,12 +69,12 @@ namespace Warewolf.Common
             return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, string customTransactionID)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, Headers headers)
         {
-            using (var client = _httpClientFactory.New(uri, _username, _password,customTransactionID))
+            using (var client = _httpClientFactory.New(uri, _username, _password, headers))
             {
                 return await client.PostAsync(uri,postData);
             }
         }
-    }
+    }    
 }

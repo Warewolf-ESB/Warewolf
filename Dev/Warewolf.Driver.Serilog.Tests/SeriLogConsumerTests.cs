@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,10 +10,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Serilog;
 using System;
-using System.Text;
 using Warewolf.Data;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
@@ -52,7 +50,7 @@ namespace Warewolf.Tests
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
 
             //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
+            var response = seriLogConsumer.Consume(message, null);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Info(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
             Assert.AreEqual(expected: ConsumerResult.Success, actual: response.Result);
@@ -85,7 +83,7 @@ namespace Warewolf.Tests
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
 
             //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
+            var response = seriLogConsumer.Consume(message, null);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Info(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
@@ -117,7 +115,7 @@ namespace Warewolf.Tests
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
 
             //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
+            var response = seriLogConsumer.Consume(message, null);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Warn(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
@@ -150,7 +148,7 @@ namespace Warewolf.Tests
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
 
             //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
+            var response = seriLogConsumer.Consume(message, null);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Error(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
@@ -183,7 +181,7 @@ namespace Warewolf.Tests
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
 
             //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
+            var response = seriLogConsumer.Consume(message, null);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Fatal(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
@@ -215,7 +213,7 @@ namespace Warewolf.Tests
             var seriLogConsumer = new SeriLogConsumer(mockLoggerContext.Object);
 
             //------------------------------Act---------------------------------
-            var response = seriLogConsumer.Consume(message);
+            var response = seriLogConsumer.Consume(message, null);
             //------------------------------Assert------------------------------
             mockLoggerPublisher.Verify(p => p.Debug(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
         }
