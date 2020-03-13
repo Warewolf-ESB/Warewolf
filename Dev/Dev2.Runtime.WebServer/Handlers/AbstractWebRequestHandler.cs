@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -134,12 +134,12 @@ namespace Dev2.Runtime.WebServer.Handlers
             internal void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IResource resource)
             {
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
-                _dataObject.SetHeaders(headers);
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
                 _dataObject.SetEmitionType(webRequest, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
+                _dataObject.SetCustomTransactionID(headers);
                 if (_dataObject.ServiceName == null)
                 {
                     _dataObject.ServiceName = serviceName;
@@ -160,7 +160,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         CompressOldLogFiles = true
                     };
                 }
-                
+
                 var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(_dataObject);
                 _dataObject.StateNotifier = stateNotifier;
             }
@@ -241,7 +241,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (webRequest.ServiceName.EndsWith(".xml") || _dataObject.ReturnType == EmitionTypes.XML)
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                } else
+                }
+                else
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
@@ -310,7 +311,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 var esbExecuteRequest = new EsbExecuteRequest
                 {
-                    
+
                     ServiceName = serviceName,
                 };
                 foreach (string key in webRequest.Variables)
@@ -495,7 +496,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                     IsFromWebServer = true,
                     ExecutingUser = user,
                     ServiceName = serviceName,
-                    WorkspaceID = workspaceGuid
+                    WorkspaceID = workspaceGuid,
+                    ExecutionID = Guid.NewGuid(),
                 };
         }
     }

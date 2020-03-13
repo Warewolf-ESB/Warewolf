@@ -125,7 +125,7 @@ namespace Warewolf.Logger
             _publisher = _leaderConnection?.NewPublisher(loggerContext.LeaderConfig);
         }
 
-        public Task<ConsumerResult> Consume(AuditCommand item)
+        public Task<ConsumerResult> Consume(AuditCommand item, object parameters)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace Warewolf.Logger
             }
             catch
             {
-                return _defaultConsumer.Consume(item);
+                return _defaultConsumer.Consume(item, null);
             }
         }
     }
@@ -150,7 +150,7 @@ namespace Warewolf.Logger
             {
                 var serializer = new Dev2JsonSerializer();
                 var msg = serializer.Deserialize<T>(message);
-                consumer.Consume(msg);
+                consumer.Consume(msg, null);
             };
         }
     }
