@@ -164,7 +164,7 @@ namespace Dev2.Runtime.ESB.Execution
             return isAuthorized;
         }
 
-        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject)
+        bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject)
         {
             var resourceId = eme.GetResourceID(Request.Args);
             var authorizationContext = eme.GetAuthorizationContextForService();

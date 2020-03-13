@@ -352,17 +352,6 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute", executionId);
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
-        
-        public override bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject)
-        {  var resourceId = eme.GetResourceID(Request.Args);
-            var authorizationContext = eme.GetAuthorizationContextForService();
-            var isFollower = string.IsNullOrWhiteSpace(Config.Cluster.LeaderServerKey);
-            if (isFollower && eme.CanExecute(new CanExecuteArg{ IsFollower = isFollower }))
-            {
-                return false;
-            }
-            return CanExecute(resourceId, dataObject, authorizationContext);
-        }
     }
 
 
