@@ -400,11 +400,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Oracle Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlDatabaseBroker")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         public virtual void ExecuteOracleServerWithTimeout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Oracle Server With Timeout", new string[] {
-                        "SqlDatabaseBroker"});
+                        "DatabaseTimeout"});
 #line 115
 this.ScenarioSetup(scenarioInfo);
 #line 116
