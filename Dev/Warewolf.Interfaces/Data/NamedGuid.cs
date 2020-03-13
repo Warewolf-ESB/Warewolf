@@ -100,5 +100,14 @@ namespace Warewolf.Data
                 return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value.GetHashCode());
             }
         }
+
+        public NamedGuid Clone()
+        {
+            return new NamedGuid
+            {
+                _name = _name,
+                _value = _value,
+            };
+        }
     }
 }

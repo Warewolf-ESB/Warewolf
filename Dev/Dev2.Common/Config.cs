@@ -234,7 +234,7 @@ namespace Dev2.Common
 
         public NamedGuid LeaderServerResource
         {
-            get => _settings.LeaderServerResource;
+            get => _settings.LeaderServerResource ?? new NamedGuid();
             set
             {
                 _settings.LeaderServerResource = value;

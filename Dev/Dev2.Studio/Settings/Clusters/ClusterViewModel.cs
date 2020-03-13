@@ -32,7 +32,7 @@ namespace Dev2.Settings.Clusters
 {
     public class LeaderServerOptions : BindableBase
     {
-        private NamedGuid _leader;
+        private NamedGuid _leader = new NamedGuid();
 
         [DataProvider(typeof(ResourceDataProvider))]
         public NamedGuid Leader
@@ -56,6 +56,16 @@ namespace Dev2.Settings.Clusters
                         .ToArray();
                 }
             }
+        }
+
+        public LeaderServerOptions Clone()
+        {
+            var result = (LeaderServerOptions)MemberwiseClone(); ;
+            if (result.Leader is null)
+            {
+                result.Leader = new NamedGuid();
+            }
+            return result;
         }
     }
     public class Server
@@ -301,25 +311,9 @@ namespace Dev2.Settings.Clusters
         {
             if (MemberwiseClone() is ClusterViewModel clone)
             {
-                clone.LeaderServerOptions = null;
-                clone.ClusterSettings = null;
-
                 var leaderServerOptions = clusterViewModel.LeaderServerOptions;
-                clone.LeaderServerOptions = new LeaderServerOptions
-                {
-                    Leader = new NamedGuid
-                    {
-                        Name = leaderServerOptions.Leader.Name,
-                        Value = leaderServerOptions.Leader.Value,
-                    }
-                };
-                var clusterSettingsData = clusterViewModel.ClusterSettings;
-                clone.ClusterSettings = new ClusterSettingsData
-                {
-                    Key = clusterSettingsData.Key,
-                    LeaderServerKey = clusterSettingsData.LeaderServerKey,
-                    LeaderServerResource = clusterSettingsData.LeaderServerResource,
-                };
+                clone.LeaderServerOptions = clusterViewModel.LeaderServerOptions.Clone();
+                clone.ClusterSettings = this.ClusterSettings.Clone();
 
                 return clone;
             }

@@ -14,7 +14,7 @@ namespace Warewolf.Configuration
 {
     public class ClusterSettingsData : BindableBase, IEquatable<ClusterSettingsData>
     {
-        private NamedGuid _leaderServerResource;
+        private NamedGuid _leaderServerResource = new NamedGuid();
         private string _leaderServerKey;
         private string _key;
 
@@ -42,6 +42,13 @@ namespace Warewolf.Configuration
             equals &= string.Equals(Key, other.Key);
 
             return equals;
+        }
+
+        public ClusterSettingsData Clone()
+        {
+            var result = (ClusterSettingsData)MemberwiseClone();
+            result.LeaderServerResource = LeaderServerResource.Clone();
+            return result;
         }
     }
 }
