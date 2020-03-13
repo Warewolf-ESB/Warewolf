@@ -32,7 +32,7 @@ namespace Dev2.Studio.Core
         public string GetServerVersion()
         {
             var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
-            var version = controller.ExecuteCommand<string>(Connection, Guid.Empty);
+            var version = controller.ExecuteCommand<string>(Connection, Guid.Empty, 10000);
             return string.IsNullOrEmpty(version) ? Warewolf.Studio.Resources.Languages.Core.ServerVersionUnavailable : version;
         }
 

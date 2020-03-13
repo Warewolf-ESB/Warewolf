@@ -45,6 +45,7 @@ namespace Dev2.Studio.Interfaces
 
         Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId);
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId);
+        StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout);
 
         IHubProxyWrapper EsbProxy { get; }
 

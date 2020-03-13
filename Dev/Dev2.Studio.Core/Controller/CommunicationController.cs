@@ -39,6 +39,7 @@ namespace Dev2.Controller
         void AddPayloadArgument(string key, StringBuilder value);
         
         T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, int timeout) where T : class;
         
         Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
 
@@ -57,12 +58,12 @@ namespace Dev2.Controller
         public string ServiceName { get; set; }
 
         public EsbExecuteRequest ServicePayload { get; private set; }
-        
+
         public void AddPayloadArgument(string key, string value)
         {
             AddPayloadArgument(key, new StringBuilder(value));
         }
-        
+
         public void AddPayloadArgument(string key, StringBuilder value)
         {
             if (ServicePayload == null)
@@ -100,8 +101,12 @@ namespace Dev2.Controller
             popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, false, true, false, false, false);
         }
-        
+
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
+        {
+            return ExecuteCommand<T>(connection, workspaceId, 60000);
+        }
+        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, int timeout) where T : class
         {
             var serializer = new Dev2JsonSerializer();
             var popupController = CustomContainer.Get<IPopupController>();
@@ -118,7 +123,7 @@ namespace Dev2.Controller
 
                 ServicePayload.ServiceName = ServiceName;
                 var toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = connection.ExecuteCommand(toSend, workspaceId);
+                var payload = connection.ExecuteCommand(toSend, workspaceId, timeout);
                 ValidatePayload(connection, payload, popupController);
                 var executeCommand = serializer.Deserialize<T>(payload);
                 if (executeCommand == null)
@@ -301,17 +306,19 @@ namespace Dev2.Controller
                 var toSend = serializer.SerializeToBuilder(ServicePayload);
                 var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
 
-                try
+                if (payload.Length > 0)
                 {
-                    var message = serializer.Deserialize<CompressedExecuteMessage>(payload).GetDecompressedMessage();
-                    return serializer.Deserialize<T>(message);
-                }
-                catch (NullReferenceException e)
-                {
-
-                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
-                    var val = serializer.Deserialize<T>(payload);
-                    return val;
+                    try
+                    {
+                        var message = serializer.Deserialize<CompressedExecuteMessage>(payload).GetDecompressedMessage();
+                        return serializer.Deserialize<T>(message);
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
+                        var val = serializer.Deserialize<T>(payload);
+                        return val;
+                    }
                 }
             }
             return default(T);

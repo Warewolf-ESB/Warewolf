@@ -493,13 +493,17 @@ namespace Dev2.Network
 
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId)
         {
+            return ExecuteCommand(xmlRequest, workspaceId, 120000);
+        }
+        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout)
+        {
             if (xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
             
             var executeRequestAsync = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true));
-            if (executeRequestAsync.Wait(120000))
+            if (executeRequestAsync.Wait(timeout))
             {
                 return executeRequestAsync.Result;
             }

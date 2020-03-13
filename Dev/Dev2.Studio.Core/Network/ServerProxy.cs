@@ -103,6 +103,7 @@ namespace Dev2.Network
         }
 
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId) => _wrappedConnection.ExecuteCommand(xmlRequest, workspaceId);
+        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout) => _wrappedConnection.ExecuteCommand(xmlRequest, workspaceId, timeout);
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId) => await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true);
 
