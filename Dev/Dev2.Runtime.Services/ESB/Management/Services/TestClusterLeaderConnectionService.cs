@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Warewolf.Service;
+using WarewolfCOMIPC.Client;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -24,33 +25,44 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var clusterResult = new ExecuteMessage();
-            var serializer = new Dev2JsonSerializer();
 
+            var serializer = new Dev2JsonSerializer();
+            var clusterResult = Execute(values);
+            return serializer.SerializeToBuilder(clusterResult);
+        }
+        static TestClusterResult Execute(Dictionary<string, StringBuilder> values)
+        {
             try
             {
                 Dev2Logger.Info("Test Cluster Leader Connection Service", GlobalConstants.WarewolfInfo);
-                values.TryGetValue("LeaderServerKey", out StringBuilder leaderServerKey);
+                values.TryGetValue("LeaderServerKey", out StringBuilder submittedKey);
 
                 var clusterSettings = Config.Cluster.Get();
-                if (clusterSettings.Key != leaderServerKey?.ToString())
+                var isValidKey = clusterSettings.Key == submittedKey?.ToString();
+                if (isValidKey)
                 {
-                    clusterResult.HasError = true;
-                    clusterResult.Message = new StringBuilder("the cluster key provided does not match");
+                    return new TestClusterResult
+                    {
+                        HasError = false,
+                        Success = true,
+                    };
                 }
-                else
+
+                return new TestClusterResult
                 {
-                    clusterResult.HasError = false;
-                }
+                    HasError = true,
+                    Message = new StringBuilder("the cluster key provided does not match"),
+                };
             }
             catch (Exception err)
             {
-                clusterResult.HasError = true;
-                clusterResult.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                return new TestClusterResult
+                {
+                    HasError = true,
+                    Message = new StringBuilder(err.Message),
+                };
             }
-
-            return serializer.SerializeToBuilder(clusterResult);
         }
 
         public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;

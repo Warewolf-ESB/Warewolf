@@ -100,12 +100,28 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             private async Task<TestClusterResult> InvokeRemoteInternalServiceAsync(Connection destination, Envelope envelope)
             {
-                var proxy = _connections.CreateHubProxy(destination);
-                var messageId = Guid.NewGuid();
+                try
+                {
 
-                var task = proxy.Invoke<TestClusterResult>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId);
-                task.Wait();
-                return task.Result;
+                    var proxy = _connections.CreateHubProxy(destination);
+                    var messageId = Guid.NewGuid();
+
+                    await proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId)
+                        .ConfigureAwait(false);
+                    return proxy.Invoke<string>("FetchExecutePayloadFragment",
+                            new FutureReceipt {PartID = 0, RequestID = messageId})
+                        .ContinueWith((fragmentInvokeResult) =>
+                            _serializer.Deserialize<TestClusterResult>(fragmentInvokeResult.Result)).Result;
+                }
+                catch (Exception e)
+                {
+                    return new TestClusterResult
+                    {
+                        Message = new StringBuilder(e.Message),
+                        Success = false,
+                        HasError = true,
+                    };
+                }
             }
 
             private Envelope BuildEnvelope(EsbExecuteRequest esbExecuteRequest)
