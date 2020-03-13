@@ -14,6 +14,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
 
         [TestMethod]
         [TestCategory("Sharepoint Tools")]
+        [Ignore]//TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             Assert.IsTrue(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Exists, "Sharepoint Copy tool does does not exist after dragging tool from toolbox.");

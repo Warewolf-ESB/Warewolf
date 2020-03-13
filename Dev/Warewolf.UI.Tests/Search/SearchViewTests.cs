@@ -30,6 +30,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [TestCategory(nameof(Search))]
+        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void Clicking_Edit_Server_Button_Opens_Server_Source_Tab()
         {
             using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))

@@ -58,6 +58,7 @@ Scenario: Opening Workflow local and remote using right click
    Then Filter Textbox is cleared
 
 @DeleteFromExplorer
+@Ignore #TODO: Re-introduce this test once the move to the new domain (premier.local) is done
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running
    When I Connect To Remote Server
