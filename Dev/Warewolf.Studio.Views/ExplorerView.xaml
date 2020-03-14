@@ -258,7 +258,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewPostgreSqlSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewPostgreSqlSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewPostgreSqlSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New PostgreSQL Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewPostgreSqlSourceTooltip}">
@@ -872,7 +873,7 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewPostgreSqlSourceItem"
                                                           Style="{StaticResource MenuItemStyle}"
-                                                          Command="{Binding NewPostgreSqlSourceCommand}"
+                                                          Command="{Binding ShellViewModel.NewPostgreSqlSourceCommand}"
                                                           Header="New PostgreSQL Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewPostgreSqlSourceTooltip}">

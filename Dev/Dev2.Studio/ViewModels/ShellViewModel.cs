@@ -419,7 +419,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
         {
-            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
+            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewOracleSourceCommand
         {
