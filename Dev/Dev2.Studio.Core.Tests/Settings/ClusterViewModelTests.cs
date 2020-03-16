@@ -134,6 +134,7 @@ namespace Dev2.Core.Tests.Settings
             
             var viewModel = new ClusterViewModel(mockResourceRepository.Object, mockServer.Object, mockPopupController.Object);
             viewModel.SetItem(viewModel);
+            Assert.IsFalse(viewModel.IsValidKey);
             Assert.IsFalse(viewModel.IsTestKeyEnabled);
 
             viewModel.LeaderServerOptions.Leader = leaderServerResource;
@@ -156,9 +157,12 @@ namespace Dev2.Core.Tests.Settings
             
             var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
             
-            viewModel.TestKeyCommand.Execute(null);
+            Assert.IsFalse(viewModel.IsValidKey);
+            
+            viewModel.TestKeyCommand.Execute(viewModel.ClusterSettings.LeaderServerKey);
             mockPopupController.Verify(model => model.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
+            Assert.IsTrue(viewModel.IsValidKey);
         }
 
         [TestMethod]
@@ -187,7 +191,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(viewModel.IsDirty);
 
             viewModel.LeaderServerOptions.Leader = leaderServerResource2;
-            
+            Assert.IsFalse(viewModel.IsValidKey);
             Assert.IsTrue(viewModel.IsDirty);
             
             viewModel.LeaderServerOptions.Leader = leaderServerResource;

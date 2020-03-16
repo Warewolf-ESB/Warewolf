@@ -112,7 +112,7 @@ namespace Dev2.Settings.Clusters
                     {
                         return;
                     }
-
+                    IsValidKey = false;
                     UpdateIsDirty();
                     IsTestKeyEnabled = CanTestKey();
                 };
@@ -137,6 +137,7 @@ namespace Dev2.Settings.Clusters
                     }
 
                     ClusterSettings.LeaderServerResource = LeaderServerOptions?.Leader;
+                    IsValidKey = false;
                     UpdateIsDirty();
                     IsTestKeyEnabled = CanTestKey();
                 };
@@ -153,6 +154,8 @@ namespace Dev2.Settings.Clusters
             isDirty |= !LeaderServerOptions.Leader.Value.Equals(Item.LeaderServerOptions.Leader.Value);
             IsDirty = isDirty;
         }
+
+        public bool IsValidKey { get; set; }
 
         private bool CanTestKey() => LeaderServerOptions.Leader != null && !string.IsNullOrWhiteSpace(ClusterSettings.LeaderServerKey);
 
@@ -209,6 +212,7 @@ namespace Dev2.Settings.Clusters
         {
             try
             {
+                IsValidKey = false;
                 var result = _resourceRepository.TestClusterSettings(_server, ClusterSettings);
                 if (result.HasError)
                 {
@@ -216,6 +220,7 @@ namespace Dev2.Settings.Clusters
                 }
                 else
                 {
+                    IsValidKey = true;
                     _popupController.Show("Success!", "Test Cluster Settings", MessageBoxButton.OK, MessageBoxImage.Information,
                         string.Empty, false, false, true, false, false, false);
                 }
@@ -224,6 +229,8 @@ namespace Dev2.Settings.Clusters
             {
                 _popupController.ShowErrorMessage(ex.Message);
             }
+
+            UpdateIsDirty();
         }
 
         public Type ResourceType => typeof(IServerSource);

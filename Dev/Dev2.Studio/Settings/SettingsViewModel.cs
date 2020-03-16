@@ -461,7 +461,7 @@ namespace Dev2.Settings
             if (ClusterViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(ClusterViewModel, OnIsDirtyPropertyChanged);
-                PerfmonViewModel.PropertyChanged += (sender, args) =>
+                ClusterViewModel.PropertyChanged += (sender, args) =>
                 {
                     if (args.PropertyName == "IsDirty")
                     {
@@ -473,10 +473,9 @@ namespace Dev2.Settings
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            if (SecurityViewModel != null && LogSettingsViewModel != null)
-            {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty || ClusterViewModel.IsDirty;
-            }
+            IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty ||
+                      PerfmonViewModel.IsDirty || ClusterViewModel.IsDirty && ClusterViewModel.IsValidKey;
+            
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
             NotifyOfPropertyChange(() => PerfmonHeader);

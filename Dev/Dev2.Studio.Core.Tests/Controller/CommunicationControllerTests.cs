@@ -36,7 +36,7 @@ namespace Dev2.Core.Tests.Controller
                 HasError = true,
                 Message = ErrorResource.NotAuthorizedToCreateException.ToStringBuilder()
             };
-            connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
+            connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID, It.IsAny<int>()))
                 .Returns(serializer.SerializeToBuilder(message));
             var controller = new CommunicationController();
             //---------------Assert Precondition----------------
@@ -66,7 +66,7 @@ namespace Dev2.Core.Tests.Controller
             };
 
             var serializeToBuilder = serializer.SerializeToBuilder(message);
-            connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID))
+            connection.Setup(environmentConnection => environmentConnection.ExecuteCommand(It.IsAny<StringBuilder>(), GlobalConstants.ServerWorkspaceID, It.IsAny<int>()))
                 .Returns(serializeToBuilder);
             var controller = new CommunicationController();
             //---------------Assert Precondition----------------
