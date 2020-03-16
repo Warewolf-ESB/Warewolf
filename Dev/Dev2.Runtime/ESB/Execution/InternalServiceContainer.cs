@@ -169,7 +169,8 @@ namespace Dev2.Runtime.ESB.Execution
             var resourceId = eme.GetResourceID(Request.Args);
             var authorizationContext = eme.GetAuthorizationContextForService();
             var isFollower = !string.IsNullOrWhiteSpace(Config.Cluster.LeaderServerKey);
-            if (isFollower && eme.CanExecute(new CanExecuteArg{ IsFollower = isFollower }))
+            var serviceAllowsWhenFollowing = eme.CanExecute(new CanExecuteArg{ IsFollower = isFollower });
+            if (isFollower && !serviceAllowsWhenFollowing)
             {
                 return false;
             }
