@@ -27,14 +27,11 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Web;
+using Warewolf.Auditing;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
-
-
 namespace Dev2.DynamicServices
-
 {
     /// <summary>
     ///     The core TO used in the execution engine ;)
@@ -327,7 +324,6 @@ namespace Dev2.DynamicServices
         public IDev2WorkflowSettings Settings { get; set; }
         public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
         public Exception ExecutionException { get; set; }
-        //public IList<IDev2Activity> Gates { get; } = new List<IDev2Activity>();
         public IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; } = new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>();
 
 

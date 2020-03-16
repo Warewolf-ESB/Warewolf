@@ -79,7 +79,7 @@ namespace Dev2.Activities.Specs.Sources
             if (address == "http://tst-ci-remote.premier.local:3142")
             {
                 declaredDependency = new Depends(Depends.ContainerType.CIRemote);
-                address = "http://" + declaredDependency.Container.IP;
+                address = "http://" + declaredDependency.Container.IP + ":" + declaredDependency.Container.Port;
             }
             else if (address == "http://wolfs-den.premier.local:3142")
             {

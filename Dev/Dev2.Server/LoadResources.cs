@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -123,12 +123,13 @@ namespace Dev2
 
         public void MigrateOldResources()
         {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, _resourceDirectory);
-            if (!_directory.Exists(EnvironmentVariables.ResourcePath) && !_directory.Exists(serverBinResources))
-            {
-                _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
-                _directory.CleanUp(serverBinResources);
-            }
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (_directory.Exists(EnvironmentVariables.ResourcePath) || !_directory.Exists(serverBinResources)) return;
+            _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+            var dockerfile = Path.Combine(EnvironmentVariables.ApplicationPath, "Dockerfile");
+            if (!File.Exists(dockerfile)) return;
+            File.Copy(dockerfile, Path.Combine(EnvironmentVariables.AppDataPath, "Dockerfile"), true);
+            _directory.CleanUp(serverBinResources);
         }
         
         public void LoadServerWorkspace()

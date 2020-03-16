@@ -1,5 +1,15 @@
 #pragma warning disable
-﻿using System;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -116,11 +126,35 @@ namespace Dev2.Runtime.WebServer
                 dataObject.ReturnType = EmitionTypes.XML;
             }
         }
+        public static void SetHeaders(this IDSFDataObject dataObject, NameValueCollection headers)
+        {
+            if (headers != null)
+            {
+                var customTransactionId = headers.Get("Warewolf-Custom-Transaction-Id");
+                if (!string.IsNullOrEmpty(customTransactionId))
+                {
+                    dataObject.CustomTransactionID = customTransactionId;
+                }
+                var executionID = headers.Get("Warewolf-Execution-Id");
+                if (!string.IsNullOrEmpty(executionID))
+                {
+                    dataObject.ExecutionID = Guid.Parse(executionID);
+                }
+                else
+                {
+                    dataObject.ExecutionID = Guid.NewGuid();
+                }
+            }
+        }
         public static void SetCustomTransactionID(this IDSFDataObject dataObject, NameValueCollection headers)
         {
             if (headers != null)
             {
                 var customTransactionId = headers.Get("CustomTransactionID");
+                if (string.IsNullOrEmpty(customTransactionId))
+                {
+                    customTransactionId = headers.Get("CustomTransactionID");
+                }
                 if (!string.IsNullOrEmpty(customTransactionId))
                 {
                     dataObject.CustomTransactionID = customTransactionId;

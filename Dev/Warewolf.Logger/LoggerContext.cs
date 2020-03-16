@@ -10,10 +10,10 @@
 
 using CommandLine;
 using Dev2.Common;
-using System;
 using System.Collections.Generic;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
+using Warewolf.Streams;
 
 namespace Warewolf.Logger
 {
@@ -31,6 +31,11 @@ namespace Warewolf.Logger
             }
         }
         public ILoggerConfig LoggerConfig { get; set; }
+
+        public ISourceConnectionFactory LeaderSource { get; set; }
+
+        public IStreamConfig LeaderConfig { get; set; }
+
 
         public LoggerContext(IArgs args)
         {

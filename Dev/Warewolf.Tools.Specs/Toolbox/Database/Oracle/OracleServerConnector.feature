@@ -1,10 +1,9 @@
-﻿@Database
-Feature: OracleServerConnector
+﻿Feature: OracleServerConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
 
-@CreatingOracleToolInstance
+@Database
 Scenario: Running Oracle Tool Test
 	Given I open New Workflow containing an Oracle Connector
 	And I drag a Oracle Server database connector
@@ -31,6 +30,7 @@ Scenario: Running Oracle Tool Test
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
 	Then Oracle Recordset Name equals "HR_TESTPROC9"
 
+@Database
 Scenario: Opening Saved workflow with Oracle tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
@@ -47,6 +47,7 @@ Scenario: Opening Saved workflow with Oracle tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
+@Database
 Scenario: Change Source on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
@@ -67,7 +68,7 @@ Scenario: Change Source on Oracle Tool
 	And Inputs is Enable
 	And Validate is Enable
 
-@ChangingOracleActions
+@Database
 Scenario: Changing Actions on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
@@ -90,6 +91,7 @@ Scenario: Changing Actions on Oracle Tool
 	| ProductId | [[ProductId]] | false         |
 	And Validate is Enable
 
+@Database
 Scenario: Change Recordset Name on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
@@ -111,7 +113,7 @@ Scenario: Change Recordset Name on Oracle Tool
 	| CountryID   | [[Pr_Cities().CountryID]]   |
 	| Description | [[Pr_Cities().Description]] |	
 		
-@ExecuteOracleServerWithTimeout
+@DatabaseTimeout
 Scenario: Execute Oracle Server With Timeout
     Given I have workflow "OracleWorkflowForTimeout" with "OracleActivity" Oracle database connector
     And Oracle Server Source is Enabled

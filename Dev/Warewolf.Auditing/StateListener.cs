@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2;
 using Dev2.Common.Interfaces.Logging;
 using Dev2.Common.Serializers;
-using Dev2.Interfaces;
 using Newtonsoft.Json;
 using System;
 
@@ -19,9 +17,9 @@ namespace Warewolf.Auditing
 {
     class StateListener : IStateListener
     {
-        readonly IDSFDataObject _dsfDataObject;
+        readonly IExecutionContext _dsfDataObject;
         readonly IWarewolfLogWriter _logWriter;
-        public StateListener(IWarewolfLogWriter logWriter, IDSFDataObject dsfDataObject)
+        public StateListener(IWarewolfLogWriter logWriter, IExecutionContext dsfDataObject)
         {
             _dsfDataObject = dsfDataObject;
             _logWriter = logWriter;
@@ -34,33 +32,27 @@ namespace Warewolf.Auditing
             LogAuditState(auditLog);
         }
 
-        public void LogExecuteCompleteState(IDev2Activity activity)
+        public void LogExecuteCompleteState(object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogExecuteCompleteState", null, activity, null);
             LogAuditState(auditLog);
         }
 
-        public void LogExecuteException(Exception exception, IDev2Activity activity)
+        public void LogExecuteException(Exception exception, object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogExecuteException", exception.Message, activity, null, exception);
             LogAuditState(auditLog);
         }
 
-        public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
-        {
-            var auditLog = new Audit(_dsfDataObject, "LogPostExecuteState", null, previousActivity, nextActivity);
-            LogAuditState(auditLog);
-        }
-
-        public void LogPreExecuteState(IDev2Activity nextActivity)
-        {
-            var auditLog = new Audit(_dsfDataObject, "LogPreExecuteState", null, null, nextActivity);
-            LogAuditState(auditLog);
-        }
-
-        public void LogStopExecutionState(IDev2Activity activity)
+        public void LogStopExecutionState(object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogStopExecutionState", null, activity, null);
+            LogAuditState(auditLog);
+        }
+
+        public void LogActivityExecuteState(object nextActivityObject)
+        {
+            var auditLog = new Audit(_dsfDataObject, "LogActivityExecuteState", null, null, nextActivityObject);
             LogAuditState(auditLog);
         }
 

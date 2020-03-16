@@ -8,13 +8,28 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2;
-using Dev2.Interfaces;
 using System;
 using System.Collections.Generic;
+using Dev2.Common;
 
 namespace Warewolf.Auditing
 {
+    public class StateNotifierFactory : IStateNotifierFactory
+    {
+        public IStateNotifier New(IExecutionContext dataObject)
+        {
+            if (Config.Server.EnableDetailedLogging)
+            {
+                var stateNotifier = new StateNotifier();
+                var listener = new StateAuditLogger(new WebSocketPool());
+                
+                stateNotifier.Subscribe(listener.NewStateListener(dataObject));
+                return stateNotifier;
+            }
+
+            return null;
+        }
+    }
     public class StateNotifier : IStateNotifier
     {
         public void Dispose()
@@ -36,7 +51,7 @@ namespace Warewolf.Auditing
             }
         }
 
-        public void LogExecuteCompleteState(IDev2Activity activity)
+        public void LogExecuteCompleteState(object activity)
         {
             foreach (var stateListener in _stateListeners)
             {
@@ -44,7 +59,7 @@ namespace Warewolf.Auditing
             }
         }
 
-        public void LogExecuteException(Exception e, IDev2Activity activity)
+        public void LogExecuteException(Exception e, object activity)
         {
             foreach (var stateListener in _stateListeners)
             {
@@ -52,27 +67,19 @@ namespace Warewolf.Auditing
             }
         }
 
-        public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
-        {
-            foreach (var stateListener in _stateListeners)
-            {
-                stateListener.LogPostExecuteState(previousActivity, nextActivity);
-            }
-        }
-
-        public void LogPreExecuteState(IDev2Activity nextActivity)
-        {
-            foreach (var stateListener in _stateListeners)
-            {
-                stateListener.LogPreExecuteState(nextActivity);
-            }
-        }
-
-        public void LogStopExecutionState(IDev2Activity activity)
+        public void LogStopExecutionState(object activity)
         {
             foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogStopExecutionState(activity);
+            }
+        }
+
+        public void LogActivityExecuteState(object nextActivityObject)
+        {
+            foreach (var stateListener in _stateListeners)
+            {
+                stateListener.LogActivityExecuteState(nextActivityObject);
             }
         }
 
