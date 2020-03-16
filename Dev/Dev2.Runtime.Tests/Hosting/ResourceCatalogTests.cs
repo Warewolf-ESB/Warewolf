@@ -1003,7 +1003,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var targetFile = new FileInfo(targetResource.FilePath);
 
 
-            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
+            var resourceCatalog = new ResourceCatalog();
+            resourceCatalog.Initialize(new List<DynamicService>());
+            resourceCatalog.SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
             targetFile.Refresh();
             Assert.IsTrue(targetFile.Exists);
         }
@@ -1029,7 +1031,9 @@ namespace Dev2.Tests.Runtime.Hosting
             }, 0, 0);
             fs.Close();
 
-            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
+            var resourceCatalog = new ResourceCatalog();
+            resourceCatalog.Initialize(new List<DynamicService>());
+            resourceCatalog.SyncTo(sourceWorkspacePath, targetWorkspacePath, true, false);
 
             sourceFile.Refresh();
             targetFile.Refresh();
@@ -1064,7 +1068,9 @@ namespace Dev2.Tests.Runtime.Hosting
             targetFile.Refresh();
             var expected = targetFile.Length;
 
-            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
+            var resourceCatalog = new ResourceCatalog();
+            resourceCatalog.Initialize(new List<DynamicService>());
+            resourceCatalog.SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
 
             targetFile.Refresh();
 
@@ -1087,7 +1093,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var targetFile = new FileInfo(targetResource.FilePath);
 
             targetFile.Delete();
-            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
+            var resourceCatalog = new ResourceCatalog();
+            resourceCatalog.Initialize(new List<DynamicService>());
+            resourceCatalog.SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
             targetFile.Refresh();
             Assert.IsFalse(targetFile.Exists);
         }
@@ -1107,7 +1115,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var targetFile = new FileInfo(targetResource.FilePath);
 
 
-            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
+            var resourceCatalog = new ResourceCatalog();
+            resourceCatalog.Initialize(new List<DynamicService>());
+            resourceCatalog.SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false, new List<string> { targetFile.Name });
             targetFile.Refresh();
             Assert.IsTrue(targetFile.Exists);
         }
@@ -1123,7 +1133,9 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var targetDir = new DirectoryInfo(targetWorkspacePath);
 
-            new ResourceCatalog().SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
+            var resourceCatalog = new ResourceCatalog();
+            resourceCatalog.Initialize(new List<DynamicService>());
+            resourceCatalog.SyncTo(sourceWorkspacePath, targetWorkspacePath, false, false);
             targetDir.Refresh();
             Assert.IsTrue(targetDir.Exists);
 
@@ -2986,6 +2998,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourcePath1 = path + "\\MyTest\\Folder2";
             //------------Setup for test--------------------------         
             var catalog = new ResourceCatalog();
+            catalog.Initialize(new List<DynamicService>());
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(resourcePath, null, false, false, new[]
