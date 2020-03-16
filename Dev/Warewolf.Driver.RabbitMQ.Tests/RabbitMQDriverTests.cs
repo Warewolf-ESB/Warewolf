@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -40,7 +40,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst();
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(new Depends(Depends.ContainerType.RabbitMQ));
             var queueName = TestQueueNameGenerator.GetName;
 
             var testConsumer = new TestConsumer();
@@ -76,11 +76,11 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [Depends(Depends.ContainerType.RabbitMQ)]
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
-            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst();
+            var dependency = new Depends(Depends.ContainerType.RabbitMQ);
+            var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(dependency);
             var queueName = TestQueueNameGenerator.GetName;
 
             var config = new RabbitConfig
@@ -99,7 +99,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
                 var publisher = connection.NewPublisher(config);
                 publisher.Publish(data);
             
-                using (var testPublishSuccess = new TestPublishSuccess())
+                using (var testPublishSuccess = new TestPublishSuccess(dependency))
                 {
                     var sentData = testPublishSuccess.GetSentMessage(config.QueueName);
                     //------------------------Assert----------------------
@@ -121,9 +121,15 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             private IConnection _connection;
             private IModel _channel;
 
-            public TestPublishSuccess()
+            public TestPublishSuccess(Depends dependency)
             {
-                _factory = new ConnectionFactory() { HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ), UserName = "test", Password = "test" };
+                _factory = new ConnectionFactory()
+                {
+                    HostName = dependency.Container.IP,
+                    Port = int.Parse(dependency.Container.Port),
+                    UserName = "test",
+                    Password = "test"
+                };
             }
 
             private IConnection NewConnection()
@@ -168,7 +174,7 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
             public bool IsDataReceived { get; internal set; }
 
-            public Task<ConsumerResult> Consume(byte[] body,string customTransactionID)
+            public Task<ConsumerResult> Consume(byte[] body, object parameters)
             {
                 if (body != null)
                 {

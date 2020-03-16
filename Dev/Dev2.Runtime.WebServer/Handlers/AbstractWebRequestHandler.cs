@@ -24,7 +24,9 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -40,6 +42,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Warewolf.Auditing;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -146,6 +149,20 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
                 _dataObject.WebUrl = webRequest.WebServerUrl;
                 _dataObject.EsbChannel = new EsbServicesEndpoint();
+
+                if (_dataObject.Settings is null)
+                {
+                    _dataObject.Settings = new Dev2WorkflowSettingsTO
+                    {
+                        EnableDetailedLogging = Config.Server.EnableDetailedLogging,
+                        LoggerType = LoggerType.JSON,
+                        KeepLogsForDays = 2,
+                        CompressOldLogFiles = true
+                    };
+                }
+
+                var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(_dataObject);
+                _dataObject.StateNotifier = stateNotifier;
             }
 
             internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
@@ -224,7 +241,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (webRequest.ServiceName.EndsWith(".xml") || _dataObject.ReturnType == EmitionTypes.XML)
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                } else
+                }
+                else
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
@@ -293,7 +311,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 var esbExecuteRequest = new EsbExecuteRequest
                 {
-                    
+
                     ServiceName = serviceName,
                 };
                 foreach (string key in webRequest.Variables)

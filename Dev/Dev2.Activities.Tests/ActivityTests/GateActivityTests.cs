@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Auditing;
 using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
@@ -507,7 +508,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             
             var mockStateNotifier = new Mock<IStateNotifier>();
-            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogPreExecuteState(It.IsAny<IDev2Activity>()));
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
             
             firstGate.SetStateNotifier(mockStateNotifier.Object);
 
@@ -535,7 +536,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(thirdNode, result);
             
-            mockStateNotifier.Verify(o => o.LogPreExecuteState(It.IsAny<IDev2Activity>()), Times.Exactly(2));
+            mockStateNotifier.Verify(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>()), Times.Exactly(2));
         }
     }
 }

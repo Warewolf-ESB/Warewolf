@@ -19,12 +19,12 @@ namespace Warewolf.Driver.RabbitMQ.Tests
     {
         private readonly ConnectionFactory _factory;
 
-        public ValidRealRabbitMQSourceForTestingAgainst()
+        public ValidRealRabbitMQSourceForTestingAgainst(Depends dependency)
         {
             _factory = new ConnectionFactory()
             {
-                HostName = Depends.GetAddress(Depends.ContainerType.RabbitMQ),
-                Port = int.Parse(Depends.GetPort(Depends.ContainerType.RabbitMQ)),
+                HostName = dependency.Container.IP,
+                Port = int.Parse(dependency.Container.Port),
                 UserName = "test",
                 Password = "test"
             };

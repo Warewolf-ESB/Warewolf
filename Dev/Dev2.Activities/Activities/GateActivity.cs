@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Data.TO;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Data.Options.Enums;
@@ -102,36 +103,36 @@ namespace Dev2.Activities
             var allErrors = new ErrorResultTO();
             try
             {
-                _stateNotifier?.LogPreExecuteState(this);
+                _stateNotifier?.LogActivityExecuteState(this);
 
                 bool firstExecution = true;
-                if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) _retryState))
+                if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) retryState))
                 {
                     firstExecution = false;
                 } else
                 {
-                    _retryState = (new RetryState(), null);
+                    retryState = (new RetryState(), null);
                 }
-                var isRetry = _retryState.Item1.NumberOfRetries > 0;
+                var isRetry = retryState.Item1.NumberOfRetries > 0;
 
                 if (firstExecution)
                 {
                     if (GateOptions.GateOpts is Continue onResume)
                     {
-                        _retryState.Item2 = onResume.Strategy.Create().GetEnumerator();
+                        retryState.Item2 = onResume.Strategy.Create().GetEnumerator();
                     }
-                    _dataObject.Gates.Add(this, _retryState);
+                    _dataObject.Gates.Add(this, retryState);
                     _originalExecutionEnvironment = data.Environment.Snapshot();
                 }
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + _retryState.Item1.NumberOfRetries.ToString(), "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries.ToString(), "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
                 if (firstExecution || !isRetry)
                 {
-                    if (_retryState.Item1.NumberOfRetries > 0)
+                    if (retryState.Item1.NumberOfRetries > 0)
                     {
                         throw new GateException("gate execution corrupt: first execution with invalid number of retries");
                     }
@@ -149,7 +150,7 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update, allErrors);
                 }
 
-                return ExecuteRetry(data, update, allErrors, _retryState.Item2);
+                return ExecuteRetry(data, update, allErrors, retryState.Item2);
             }
             catch (Exception e)
             {

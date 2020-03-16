@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,8 +23,25 @@ using Warewolf.Streams;
 
 namespace Warewolf.Logger
 {
+    public interface IAuditCommandConsumerFactory
+    {
+        IAuditCommandConsumer New(SeriLogConsumer innerConsumer, IWebSocketConnection socket, IWriter writer);
+    }
 
-    public class AuditCommandConsumer : IConsumer<AuditCommand>
+    public class AuditCommandConsumerFactory : IAuditCommandConsumerFactory
+    {
+        public IAuditCommandConsumer New(SeriLogConsumer innerConsumer, IWebSocketConnection socket, IWriter writer)
+        {
+            return new AuditCommandConsumer(innerConsumer, socket, writer);
+        }
+    }
+
+    public interface IAuditCommandConsumer : IConsumer<AuditCommand>
+    {
+        new Task<ConsumerResult> Consume(AuditCommand item, object parameters);
+    }
+
+    public class AuditCommandConsumer : IAuditCommandConsumer, IConsumer<AuditCommand>
     {
         private readonly IWebSocketConnection _socket;
         private readonly IWriter _writer;
@@ -37,7 +54,7 @@ namespace Warewolf.Logger
             _logger = loggerConsumer;
         }
 
-        public Task<ConsumerResult> Consume(AuditCommand item)
+        public Task<ConsumerResult> Consume(AuditCommand item, object parameters)
         {
 
             _writer.WriteLine("Logging Server OnMessage: Type:" + item.Type);
@@ -46,7 +63,7 @@ namespace Warewolf.Logger
             switch (item.Type)
             {
                 case "LogEntry":
-                    _logger.Consume(msg.Audit);
+                    _logger.Consume(msg.Audit, parameters);
                     break;
                 case "LogQuery":
                     _writer.WriteLine("Executing query: " + msg.Query);
@@ -58,11 +75,11 @@ namespace Warewolf.Logger
                     break;
                 case "LogEntryCommand":
                     _writer.WriteLine(msg.LogEntry.OutputTemplate);
-                    _logger.Consume(msg.LogEntry);
+                    _logger.Consume(msg.LogEntry, parameters);
                     break;
                 case "ExecutionAuditCommand":
                     _writer.WriteLine(msg.ExecutionHistory.ResourceId.ToString());
-                    _logger.Consume(msg.ExecutionHistory);
+                    _logger.Consume(msg.ExecutionHistory, parameters);
                     break;
                 default:
                     _writer.WriteLine("Logging Server Invalid Message Type");

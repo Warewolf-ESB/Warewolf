@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -15,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -34,12 +34,90 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Execution
 {
+    public interface IWebRequest
+    {
+        string Method { get; set; }
+        string ContentType { get; set; }
+        long ContentLength { get; set; }
+        bool UseDefaultCredentials { get; set; }
+        WebHeaderCollection Headers { get; set; }
+        ICredentials Credentials { get; set; }
+        Uri RequestUri { get; }
+        Stream GetRequestStream();
+        WebResponse GetResponse();
+        Task<WebResponse> GetResponseAsync();
+    }
+    public interface IWebRequestFactory
+    {
+        IWebRequest New(string escapeUriString);
+    }
+
+    public class WebRequestWrapper : IWebRequest
+    {
+        private WebRequest _request;
+        public WebRequestWrapper(string escapeUriString)
+        {
+            _request = WebRequest.Create(escapeUriString);
+        }
+        public string Method {
+            get => _request.Method;
+            set => _request.Method = value;
+        }
+        public string ContentType {
+            get => _request.ContentType;
+            set => _request.ContentType = value;
+        }
+        public long ContentLength {
+            get => _request.ContentLength;
+            set => _request.ContentLength = value;
+        }
+        public bool UseDefaultCredentials {
+            get => _request.UseDefaultCredentials;
+            set => _request.UseDefaultCredentials = value;
+        }
+        public WebHeaderCollection Headers {
+            get => _request.Headers;
+            set => _request.Headers = value;
+        }
+
+        public ICredentials Credentials
+        {
+            get => _request.Credentials;
+            set => _request.Credentials = value;
+        }
+
+        public Uri RequestUri => _request.RequestUri;
+
+        public Stream GetRequestStream()
+        {
+            return _request.GetRequestStream();
+        }
+
+        public WebResponse GetResponse()
+        {
+            return _request.GetResponse();
+        }
+
+        public Task<WebResponse> GetResponseAsync()
+        {
+            return _request.GetResponseAsync();
+        }
+    }
+    public class WebRequestFactory : IWebRequestFactory
+    {
+        public IWebRequest New(string escapeUriString)
+        {
+            return new WebRequestWrapper(escapeUriString);
+        }
+    }
+
     /// <summary>
     /// Execute a remote workflow ;)
     /// </summary>
     public class RemoteWorkflowExecutionContainer : EsbExecutionContainer
     {
         readonly IResourceCatalog _resourceCatalog;
+        private IWebRequestFactory _webRequestFactory;
 
         /// <summary>
         /// Need to add loc property to AbstractActivity ;)
@@ -49,18 +127,15 @@ namespace Dev2.Runtime.ESB.Execution
         /// <param name="workspace"></param>
         /// <param name="esbChannel"></param>
         public RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, workspace, esbChannel, ResourceCatalog.Instance)
+            : this(sa, dataObj, workspace, esbChannel, ResourceCatalog.Instance, new WebRequestFactory())
         {
         }
 
-        protected RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
+        protected RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog, IWebRequestFactory webRequestFactory)
             : base(sa, dataObj, workspace, esbChannel)
         {
-            if (resourceCatalog == null)
-            {
-                throw new ArgumentNullException(nameof(resourceCatalog));
-            }
-            _resourceCatalog = resourceCatalog;
+            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
+            _webRequestFactory = webRequestFactory;
         }
 
         public void PerformLogExecution(string logUri, int update)
@@ -83,14 +158,16 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
+        protected virtual void ExecuteWebRequestAsync(IWebRequest buildGetWebRequest)
         {
-            buildGetWebRequest?.GetResponseAsync();
+            _ = buildGetWebRequest?.GetResponseAsync();
         }
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
+#pragma warning disable CC0021
             Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
+#pragma warning restore CC0021
 
             var serviceName = DataObject.ServiceName;
 
@@ -123,8 +200,9 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString());
+#pragma warning disable CC0021
             Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
-
+#pragma warning restore CC0021
             return Guid.Empty;
         }
 
@@ -135,6 +213,7 @@ namespace Dev2.Runtime.ESB.Execution
             var result = string.Empty;
 
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
+
             var req = BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
             Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
@@ -203,7 +282,9 @@ namespace Dev2.Runtime.ESB.Execution
 
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var requestUri = serviceToExecute + "?" + payload;
-            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
+            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode)
+                      ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
+
             Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
@@ -226,10 +307,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         static string GetServiceToExecute(Connection connection, string serviceName) => connection.WebAddress + "Secure/" + serviceName + ".json";
 
-        WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
+        IWebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
         {
             var escapeUriString = Uri.EscapeUriString(serviceToExecute);
-            var req = WebRequest.Create(escapeUriString);
+            var req = _webRequestFactory.New(escapeUriString);
             req.Method = "POST";
             UpdateRequest(authenticationType, userName, password, isDebug, req);
 
@@ -237,6 +318,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             req.ContentType = "application/x-www-form-urlencoded";
             req.ContentLength = data.Length;
+            req.Headers.Add("Warewolf-Execution-Id", DataObject.ExecutionID.ToString());
 
             using (Stream requestStream = req.GetRequestStream())
             {
@@ -246,7 +328,7 @@ namespace Dev2.Runtime.ESB.Execution
             return req;
         }
 
-        void UpdateRequest(AuthenticationType authenticationType, string userName, string password, bool isDebug, WebRequest req)
+        void UpdateRequest(AuthenticationType authenticationType, string userName, string password, bool isDebug, IWebRequest req)
         {
             if (authenticationType == AuthenticationType.Windows)
             {
@@ -275,7 +357,7 @@ namespace Dev2.Runtime.ESB.Execution
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
         }
 
-        WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password, bool isdebug)
+        IWebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password, bool isdebug)
         {
             try
             {
@@ -289,12 +371,12 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        WebRequest BuildSimpleGetWebRequest(string requestUri)
+        IWebRequest BuildSimpleGetWebRequest(string requestUri)
         {
             try
             {
                 var escapeUriString = Uri.EscapeUriString(requestUri);
-                var req = WebRequest.Create(escapeUriString);
+                var req = _webRequestFactory.New(escapeUriString);
                 req.Method = "GET";
                 return req;
             }
