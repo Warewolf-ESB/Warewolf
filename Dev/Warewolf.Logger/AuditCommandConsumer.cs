@@ -38,7 +38,7 @@ namespace Warewolf.Logger
 
     public interface IAuditCommandConsumer : IConsumer<AuditCommand>
     {
-        new Task<ConsumerResult> Consume(AuditCommand item, object parameters);
+        new Task<ConsumerResult> Consume(AuditCommand item);
     }
 
     public class AuditCommandConsumer : IAuditCommandConsumer, IConsumer<AuditCommand>
