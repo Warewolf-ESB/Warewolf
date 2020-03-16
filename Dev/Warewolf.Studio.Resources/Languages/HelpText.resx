@@ -457,6 +457,9 @@
   <data name="DatabaseSourceTestConnectionHelp" xml:space="preserve">
     <value>Test the connection to the Database. </value>
   </data>
+  <data name="ElasticsearchSourceTestConnectionHelp" xml:space="preserve">
+     <value>Test the elasticsearch source connection</value>
+  </data>
   <data name="DecisionHelpDisplayText" xml:space="preserve">
     <value>On the small view on the design surface, this text will show to help identify what decision is being made and will not affect execution.</value>
   </data>
@@ -1796,6 +1799,9 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="UserAuthenticationHelp" xml:space="preserve">
     <value>Connect with a specific user account.</value>
   </data>
+  <data name="AnonymousAuthenticationHelp" xml:space="preserve">
+    <value>Connect using anonymous security credentials</value>
+  </data>
   <data name="UserNameAuthenticationHelp" xml:space="preserve">
     <value>The full username of the account you want to use to connect to this resource.</value>
   </data>
@@ -1894,6 +1900,21 @@ A test must be ignored/disabled before it can be deleted.</value>
   </data>
   <data name="RedisTTLHelp" xml:space="preserve">
     <value>Time To Live is set on the given Key to dispose of data cached until the Time To Live has elapsed.&lt;br/&gt;The default is 5 Seconds. &lt;br/&gt;&lt;br/&gt;If the Time To Live is set to 0, the data will remain cached until this key is removed using the Redis Remove Tool.</value>
+  </data>
+  <data name="ElasticsearchSourceHostNameHelp" xml:space="preserve">
+    <value>The Elasticsearch server name to connect to.</value>
+  </data>
+  <data name="ElasticsearchSourcePortHelp" xml:space="preserve">
+    <value>The default port on which elasticsearch listens is 9200.</value>
+  </data>
+  <data name="ElasticsearchSourceHelp" xml:space="preserve">
+    <value>Select a preconfigured elasticsearch source.</value>
+  </data>
+  <data name="ElasticsearchNewSourceHelp" xml:space="preserve">
+    <value>Create a new elasticsearch connection</value>
+  </data>
+  <data name="ElasticsearchEditSourceHelp" xml:space="preserve">
+    <value>Edit the selected elasticsearch connection properties</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>

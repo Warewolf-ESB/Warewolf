@@ -68,6 +68,7 @@
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="DLLChooserTests.cs" />
     <Compile Include="DummyServiceTestTests.cs" />
+    <Compile Include="ElasticsearchSourceModelTests.cs" />    
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ExplorerTooltipsTests.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="FileChooserTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
+    <Compile Include="ElasticsearchSourceViewModelTests.cs" />
     <Compile Include="Help\HelpModelTests.cs" />
     <Compile Include="Help\HelpWindowViewModelTests.cs" />
     <Compile Include="ManageComPluginServiceModelTests.cs" />

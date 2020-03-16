@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -47,6 +47,8 @@ namespace Dev2.Studio.Interfaces
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key);
         void EditResource(IExchangeSource selectedSource);
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IElasticsearchSourceDefinition selectedSource);
+        void EditResource(IElasticsearchSourceDefinition selectedSource, IWorkSurfaceKey key);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key);
         void EditResource(IWcfServerSource selectedSource);
@@ -67,6 +69,7 @@ namespace Dev2.Studio.Interfaces
         void NewPluginSource(string resourcePath);
         void NewWebSource(string resourcePath);
         void NewRedisSource(string resourcePath);
+        void NewElasticsearchSource(string resourcePath);
         void NewEmailSource(string resourcePath);
         void NewExchangeSource(string resourcePath);
         void NewRabbitMQSource(string resourcePath);

@@ -31,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         string _newRabbitMqSourceTooltip;
         string _newDropboxSourceTooltip;
         string _newSharepointSourceTooltip;
+        string _newElasticsearchSourceTooltip;
         string _debugInputsTooltip;
         string _debugStudioTooltip;
         string _debugBrowserTooltip;
@@ -245,6 +246,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => NewSharepointSourceTooltip);
             }
         }
+
+        public string NewElasticsearchSourceTooltip
+        {
+            get => _newElasticsearchSourceTooltip;
+            set
+            {
+                _newElasticsearchSourceTooltip = value;
+                OnPropertyChanged(() => NewElasticsearchSourceTooltip);
+            }
+        }
+
         public string DebugInputsTooltip
         {
             get => _debugInputsTooltip;
