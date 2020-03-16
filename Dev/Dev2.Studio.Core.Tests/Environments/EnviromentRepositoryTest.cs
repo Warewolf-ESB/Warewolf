@@ -1240,7 +1240,7 @@ namespace Dev2.Core.Tests.Environments
                 con.Setup(c => c.IsConnected).Returns(true);
                 if (overrideExecuteCommand)
                 {
-                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>()))
                        .Returns(new StringBuilder(sources[0]));
                 }
 
@@ -1384,12 +1384,12 @@ namespace Dev2.Core.Tests.Environments
             connection.SetupProperty(c => c.DisplayName);
             if (sources != null && sources.Length > 0)
             {
-                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>()))
                           .Returns(new StringBuilder(sources[0]));
             }
             else
             {
-                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>()))
                           .Returns(new StringBuilder());
             }
 
