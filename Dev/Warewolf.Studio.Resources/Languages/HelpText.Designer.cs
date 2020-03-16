@@ -108,6 +108,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect using anonymous security credentials.
+        /// </summary>
+        public static string AnonymousAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("AnonymousAuthenticationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To assign a value to a variable, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;	= fx.
         /// </summary>
         public static string AssignHelpNewValue {
@@ -1170,6 +1179,60 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string EditRabbitMQSourceHelp {
             get {
                 return ResourceManager.GetString("EditRabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit the selected elasticsearch connection properties.
+        /// </summary>
+        public static string ElasticsearchEditSourceHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchEditSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new elasticsearch connection.
+        /// </summary>
+        public static string ElasticsearchNewSourceHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchNewSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured elasticsearch source..
+        /// </summary>
+        public static string ElasticsearchSourceHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Elasticsearch server name to connect to..
+        /// </summary>
+        public static string ElasticsearchSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourceHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which elasticsearch listens is 9200..
+        /// </summary>
+        public static string ElasticsearchSourcePortHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the elasticsearch source connection.
+        /// </summary>
+        public static string ElasticsearchSourceTestConnectionHelp {
+            get {
+                return ResourceManager.GetString("ElasticsearchSourceTestConnectionHelp", resourceCulture);
             }
         }
         

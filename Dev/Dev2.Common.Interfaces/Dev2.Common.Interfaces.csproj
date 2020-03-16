@@ -102,6 +102,7 @@
     <Compile Include="Core\Database\DbSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
+    <Compile Include="Core\ElasticsearchSourceDefinition.cs" />
     <Compile Include="Core\RabbitMQServiceSourceDefinition.cs" />
     <Compile Include="Core\EmailServiceSourceDefinition.cs" />
     <Compile Include="Core\ExchangeSourceDefinition.cs" />
@@ -188,6 +189,8 @@
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
     <Compile Include="IDropboxResult.cs" />
+    <Compile Include="IElasticsearchSourceDefinition.cs" />
+    <Compile Include="IElasticsearchSourceViewModel.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEmailSource.cs" />
     <Compile Include="IEnhancedPlugin.cs" />
@@ -338,6 +341,7 @@
     <Compile Include="Search\ISearch.cs" />
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
+    <Compile Include="ServerProxyLayer\IElasticsearchSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Resources\IQueueSource.cs" />
     <Compile Include="ServerProxyLayer\IRedisSource.cs" />
