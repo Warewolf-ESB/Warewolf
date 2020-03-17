@@ -335,7 +335,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewWcfSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewWcfSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewWcfSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Wcf Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewComPluginSourceTooltip}">
@@ -948,6 +949,17 @@
 									                      Header="New COM Plugin Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewComPluginSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewWcfSourceItem"
+                                                          Style="{StaticResource MenuItemStyle}"
+                                                          Command="{Binding ShellViewModel.NewWcfSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
+                                                          Header="New Wcf Source"
+                                                          IsEnabled="{Binding CanCreateSource}"
+                                                          ToolTip="{Binding ExplorerTooltips.NewComPluginSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                     </MenuItem.Icon>

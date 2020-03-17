@@ -468,7 +468,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewWcfSourceCommand
         {
-            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
+            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(param), param => IsActiveServerConnected()));
         }
         public ICommand ExitCommand
         {

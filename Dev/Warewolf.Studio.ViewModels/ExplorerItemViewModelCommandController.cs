@@ -134,11 +134,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewExchangeSource(resourcePath);
         }
-        public void NewWcfSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewWcfSource(resourcePath);
-        }
 
         static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {

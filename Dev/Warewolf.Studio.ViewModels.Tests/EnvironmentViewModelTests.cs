@@ -103,7 +103,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canCreateFolderCommand = _target.CreateFolderCommand.CanExecute(null);
             var canDeployCommand = _target.DeployCommand.CanExecute(null);
-            var canCreateNewWcfSourceCommand = _target.NewWcfSourceCommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
             //act
@@ -115,7 +114,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
             Assert.IsTrue(canCreateFolderCommand);
             Assert.IsTrue(canDeployCommand);
-            Assert.IsTrue(canCreateNewWcfSourceCommand);
             Assert.IsTrue(canViewApisJsonCommand);
         }
 
