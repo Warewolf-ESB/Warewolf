@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -42,8 +42,9 @@ namespace Warewolf.Driver.RabbitMQ
             eventConsumer.Received += (model, eventArgs) =>
             {
                 var body = eventArgs.Body;
-                var customTransactionID = eventArgs.BasicProperties.CorrelationId;
-                var resultTask = consumer.Consume(body,customTransactionID);
+                var headers = new Warewolf.Data.Headers();
+                headers["Warewolf-Custom-Transaction-Id"] = new[] { eventArgs.BasicProperties.CorrelationId };
+                var resultTask = consumer.Consume(body, headers);
                 resultTask.Wait();
                 if (resultTask.Result == Data.ConsumerResult.Success)
                 {

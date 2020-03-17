@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Threading;
 using System.Text;
+using Warewolf.Data;
 
 namespace Warewolf.Streams
 {
@@ -55,14 +55,14 @@ namespace Warewolf.Streams
             t.Join();
 
             mockDeserializer.Verify(o => o.Deserialize<SBase>(It.IsAny<byte[]>()), Times.Once);
-            mockConsumer.Verify(o => o.Consume(expectedDeserializedValue), Times.Once);
+            mockConsumer.Verify(o => o.Consume(expectedDeserializedValue, null), Times.Once);
         }
 
         class ConnectionForTesting : IConnection
         {
             readonly IPublisher _publisher;
             byte[] _publishedBytes = null;
-            string _customTransactionID = "";
+            Headers _headers = new Headers();
             readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
             public ConnectionForTesting()
             {
@@ -70,7 +70,6 @@ namespace Warewolf.Streams
                 publisher.Setup(o => o.Publish(It.IsAny<byte[]>())).Callback<byte[]>(bytes
                     => {
                         _publishedBytes = bytes;
-                        _customTransactionID = "";
                         _waitHandle.Set();
                     });
 
@@ -81,7 +80,7 @@ namespace Warewolf.Streams
             public void StartConsuming(IStreamConfig config, IConsumer consumer)
             {
                 _waitHandle.WaitOne();
-                consumer.Consume(_publishedBytes, _customTransactionID);
+                consumer.Consume(_publishedBytes, null);
             }
         }
     }

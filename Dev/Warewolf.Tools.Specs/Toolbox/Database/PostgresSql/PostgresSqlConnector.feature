@@ -72,7 +72,7 @@ Scenario: Change the recordset on existing PostgresSql tool
 	| fname | [[fname]] | false         |
 	And Validate PostgresSql Is Enabled
 
-@SqlDatabaseBroker
+@DatabaseTimeout
 Scenario: Execute Postgres Server With Timeout
 	Given this test depends on a remote Postgres database container
     And I have workflow "PostgreWorkflowForTimeout" with "PostgresActivity" Postgres database connector
