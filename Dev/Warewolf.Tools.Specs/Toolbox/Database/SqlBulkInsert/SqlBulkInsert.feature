@@ -342,7 +342,7 @@ Scenario: Import data into Table timeout after 3 second
 	|                      |
 	| [[result]] = Success |
 
-@SqlBulkInsert
+@DatabaseTimeout
 Scenario: Import data into Table timeout after 1 second
 	#Note there is a trigger to wait for 2 seconds to simulate inserting large data
 	Given I have this data
