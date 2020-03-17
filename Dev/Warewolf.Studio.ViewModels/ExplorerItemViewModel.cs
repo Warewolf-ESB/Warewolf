@@ -249,11 +249,6 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, Server.Connection.WebServerUri);
             });
 
-            NewOdbcSourceCommand = new DelegateCommand(o =>
-            {
-                _explorerItemViewModelCommandController.NewOdbcSourceCommand(ResourcePath, Server);
-            });
-
             NewPluginSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewPluginSourceCommand(ResourcePath, Server);
@@ -953,7 +948,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanderVisible);
             }
         }
-        public ICommand NewOdbcSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
         public ICommand NewComPluginSourceCommand { get; set; }
         public ICommand NewWcfSourceCommand { get; set; }

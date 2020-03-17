@@ -164,11 +164,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewWcfSource(resourcePath);
         }
-        public void NewOdbcSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewOdbcSource(resourcePath);
-        }
 
         static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {

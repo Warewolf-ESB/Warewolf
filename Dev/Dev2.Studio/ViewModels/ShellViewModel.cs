@@ -427,7 +427,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewOdbcSourceCommand
         {
-            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
+            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewWebSourceCommand
         {

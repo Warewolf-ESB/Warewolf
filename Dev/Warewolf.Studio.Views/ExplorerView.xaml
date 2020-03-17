@@ -280,7 +280,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewOdbcSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewOdbcSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewOdbcSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New ODBC Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewOdbcSourceTooltip}">
@@ -895,7 +896,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewOdbcSourceItem"
                                                           Style="{StaticResource MenuItemStyle}"
-                                                          Command="{Binding NewOdbcSourceCommand}"
+                                                          Command="{Binding ShellViewModel.NewOdbcSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
                                                           Header="New ODBC Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewOdbcSourceTooltip}">
