@@ -291,8 +291,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewWebSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewWebSourceSourceCommand}"
-                                                  CommandParameter="WebSource"
+                                                  Command="{Binding ShellViewModel.NewWebSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Web Service Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewWebSourceTooltip}">
@@ -909,8 +909,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewWebSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewWebSourceSourceCommand}"
-									                      CommandParameter="WebSource"
+									                      Command="{Binding ShellViewModel.NewWebSourceCommand}"
+									                      CommandParameter="{Binding ResourcePath}"
 									                      Header="New Web Service Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewWebSourceTooltip}">

@@ -436,7 +436,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewWebSourceCommand
         {
-            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
+            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewRedisSourceCommand
         {
