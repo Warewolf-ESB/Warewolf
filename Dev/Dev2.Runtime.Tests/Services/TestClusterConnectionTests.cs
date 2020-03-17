@@ -55,6 +55,8 @@ namespace Dev2.Tests.Runtime.Services
             mockHubProxy.Setup(o => o.Invoke<TestClusterResult>("ExecuteCommand", It.IsAny<Envelope>(),
                     It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(Task.FromResult(testClusterResult));
+            mockHubProxy.Setup(o => o.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>()))
+                .Returns(Task.FromResult("").ContinueWith(task => task.Result));
             
             mockConnections.Setup(o => o.CreateHubProxy(It.IsAny<Connection>())).Returns(mockHubProxy.Object);
             
@@ -69,6 +71,11 @@ namespace Dev2.Tests.Runtime.Services
             var values = new Dictionary<string, StringBuilder> {{ "ClusterSettingsData", new StringBuilder(serializeObject) }};
             var result = testClusterConnection.Execute(values, mockWorkspace.Object);
             Assert.IsInstanceOfType(result, typeof(StringBuilder));
+            
+            mockHubProxy.Verify(o => o.Invoke<TestClusterResult>("ExecuteCommand", It.IsAny<Envelope>(),
+                    It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+            mockHubProxy.Verify(o => o.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>()), Times.Once);
+
             var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Communication.ExecuteMessage, Dev2.Infrastructure\",\"HasError\":false,\"Message\":{\"$id\":\"2\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"\",\"m_currentThread\":0}}";
             Assert.AreEqual(expected, result.ToString());
         }
