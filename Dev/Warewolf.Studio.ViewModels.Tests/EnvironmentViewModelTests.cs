@@ -103,7 +103,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
-            var canCreateNewComPluginSourceCommand = _target.NewComPluginSourceCommand.CanExecute(null);
             var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canCreateFolderCommand = _target.CreateFolderCommand.CanExecute(null);
             var canDeployCommand = _target.DeployCommand.CanExecute(null);
@@ -119,7 +118,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
             Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
             Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
-            Assert.IsTrue(canCreateNewComPluginSourceCommand);
             Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
             Assert.IsTrue(canCreateFolderCommand);
             Assert.IsTrue(canDeployCommand);

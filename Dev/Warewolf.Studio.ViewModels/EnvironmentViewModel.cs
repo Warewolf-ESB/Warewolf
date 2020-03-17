@@ -97,11 +97,6 @@ namespace Warewolf.Studio.ViewModels
             _children = new ObservableCollection<IExplorerItemViewModel>();
             ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
 
-            NewComPluginSourceCommand = new DelegateCommand(() =>
-            {
-                UpdateActiveEnvironment(shellViewModel);
-                shellViewModel.NewComPluginSource(ResourcePath);
-            });
             NewWcfSourceCommand = new DelegateCommand(() =>
             {
                 UpdateActiveEnvironment(shellViewModel);
@@ -741,7 +736,6 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        public ICommand NewComPluginSourceCommand { get; set; }
         public ICommand NewWcfSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewRedisSourceCommand { get; set; }

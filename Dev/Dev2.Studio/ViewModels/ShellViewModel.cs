@@ -93,6 +93,7 @@ namespace Dev2.Studio.ViewModels
         bool _disposed;
         private AuthorizeCommand<string> _newServiceCommand;
         private AuthorizeCommand<string> _newPluginSourceCommand;
+        private AuthorizeCommand<string> _newComPluginSourceCommand;
         private AuthorizeCommand<string> _newSqlServerSourceCommand;
         private AuthorizeCommand<string> _newMySqlSourceCommand;
         private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
@@ -408,6 +409,10 @@ namespace Dev2.Studio.ViewModels
         public IAuthorizeCommand<string> NewPluginSourceCommand
         {
             get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(param), param => IsActiveServerConnected()));
+        }
+        public IAuthorizeCommand<string> NewComPluginSourceCommand
+        {
+            get => _newComPluginSourceCommand ?? (_newComPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewComPluginSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {

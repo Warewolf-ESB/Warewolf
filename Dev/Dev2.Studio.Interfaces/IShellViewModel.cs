@@ -137,6 +137,7 @@ namespace Dev2.Studio.Interfaces
         ICommand ShowStartPageCommand { get; }
         IAuthorizeCommand<string> NewServiceCommand { get; }
         IAuthorizeCommand<string> NewPluginSourceCommand { get; }
+        IAuthorizeCommand<string> NewComPluginSourceCommand { get; }
         IAuthorizeCommand<string> NewSqlServerSourceCommand { get; }
         IAuthorizeCommand<string> NewMySqlSourceCommand { get; }
         IAuthorizeCommand<string> NewPostgreSqlSourceCommand { get; }
