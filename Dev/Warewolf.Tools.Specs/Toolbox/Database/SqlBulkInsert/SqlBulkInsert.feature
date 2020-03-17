@@ -1,10 +1,10 @@
-﻿@SqlBulkInsert
-@MSTest:DeploymentItem:EnableDocker.txt
+﻿@MSTest:DeploymentItem:EnableDocker.txt
 Feature: SqlBulkInsert
 	In order to quickly insert large amounts of data in a sql server database
 	As a Warewolf user
 	I want a tool that performs this action
 
+@SqlBulkInsert
 Scenario: Import data into table with check contraint disabled
 	Given I have this data
 		| Col1 | Col2     | Col3                                 |
@@ -28,8 +28,9 @@ Scenario: Import data into table with check contraint disabled
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
-	| [[result]] = Success |    
+	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table with check constraint enabled
 	#Col3 is a foreign key that does not exist in the primary key table.
 	Given I have this data
@@ -49,6 +50,7 @@ Scenario: Import data into Table with check constraint enabled
 	|                       |
 	| [[result]] = Failure |
 
+@SqlBulkInsert
 Scenario: Import data into Table with keep identity disabled
 	#Given that the table is truncated i.e. seed is 1 and increment is 1
 	Given I have this data
@@ -78,8 +80,9 @@ Scenario: Import data into Table with keep identity disabled
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
-	| [[result]] = Success |	
+	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table with keep identity enabled
 	Given I have this data
 		| Col1 | Col2     | Col3                                 |
@@ -108,8 +111,9 @@ Scenario: Import data into Table with keep identity enabled
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | YES           | NO                       | NO              |
 	And the debug output as 
 	|                       |
-	| [[result]] = Success |	
+	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table with skip blank rows disabled
 	#Note the second row is blank from the source data
 	Given I have this data
@@ -140,6 +144,7 @@ Scenario: Import data into Table with skip blank rows disabled
 	|                       |
 	| [[result]] = Failure |
 
+@SqlBulkInsert
 Scenario: Import data into Table with skip blank rows enabled
 	#Note the second row is blank from the source data
 	Given I have this data
@@ -171,6 +176,7 @@ Scenario: Import data into Table with skip blank rows enabled
 	|                       |
 	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table with fire triggers disabled
 #A trigger exists in the table [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled] against the column [Col2] to add a default value of XXXXXXXX.
 	Given I have this data
@@ -200,8 +206,9 @@ Scenario: Import data into Table with fire triggers disabled
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
-	| [[result]] = Success |	
+	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table with fire triggers enabled
 #A trigger exists in the table [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled] against the column [Col2] to add a default value of XXXXXXXX.
 	Given I have this data
@@ -233,6 +240,7 @@ Scenario: Import data into Table with fire triggers enabled
 	|                       |
 	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table Batch size is 0
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -259,6 +267,7 @@ Scenario: Import data into Table Batch size is 0
 	|                      |
 	| [[result]] = Success |
 
+@SqlBulkInsert
 Scenario: Import data into Table Batch size is 1
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -282,6 +291,7 @@ Scenario: Import data into Table Batch size is 1
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        | 1          |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 
+@SqlBulkInsert
 Scenario: Import data into Table Batch size is 2
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -305,6 +315,7 @@ Scenario: Import data into Table Batch size is 2
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        | 2          |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 
+@DatabaseTimeout
 Scenario: Import data into Table timeout after 3 second
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -331,6 +342,7 @@ Scenario: Import data into Table timeout after 3 second
 	|                      |
 	| [[result]] = Success |
 
+@DatabaseTimeout
 Scenario: Import data into Table timeout after 1 second
 	#Note there is a trigger to wait for 2 seconds to simulate inserting large data
 	Given I have this data
@@ -357,7 +369,8 @@ Scenario: Import data into Table timeout after 1 second
 	And the debug output as 
 	|                      |
 	| [[result]] = Failure |
-	
+
+@SqlBulkInsert
 Scenario: Import data into table with blank data
 	Given I have this data
 		| Col1 | Col2     | Col3                           |
