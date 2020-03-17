@@ -407,7 +407,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewPluginSourceCommand
         {
-            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
+            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {

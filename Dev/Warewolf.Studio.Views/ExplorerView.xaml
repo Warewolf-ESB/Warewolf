@@ -313,7 +313,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewPluginSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewPluginSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewPluginSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New DotNet Plugin Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewPluginSourceTooltip}">
@@ -929,7 +930,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewPluginSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewPluginSourceCommand}"
+									                      Command="{Binding ShellViewModel.NewPluginSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New DotNet Plugin Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewPluginSourceTooltip}">

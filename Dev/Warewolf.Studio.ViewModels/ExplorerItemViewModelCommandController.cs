@@ -149,11 +149,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewRedisSource(resourcePath);
         }
-        public void NewPluginSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewPluginSource(resourcePath);
-        }
         public void NewComPluginSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
