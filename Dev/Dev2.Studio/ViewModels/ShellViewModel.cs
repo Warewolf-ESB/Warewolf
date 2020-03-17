@@ -423,7 +423,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewOracleSourceCommand
         {
-            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
+            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewOdbcSourceCommand
         {

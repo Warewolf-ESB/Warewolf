@@ -269,7 +269,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewOracleSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewOracleSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewOracleSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Oracle Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewOracleSourceTooltip}">
@@ -883,7 +884,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewOracleSourceItem"
                                                           Style="{StaticResource MenuItemStyle}"
-                                                          Command="{Binding NewOracleSourceCommand}"
+                                                          Command="{Binding ShellViewModel.NewOracleSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
                                                           Header="New Oracle Source"
                                                           IsEnabled="{Binding CanCreateSource}"
                                                           ToolTip="{Binding ExplorerTooltips.NewOracleSourceTooltip}">
