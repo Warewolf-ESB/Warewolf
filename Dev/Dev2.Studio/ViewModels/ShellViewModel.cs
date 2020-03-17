@@ -448,7 +448,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewEmailSourceCommand
         {
-            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
+            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewExchangeSourceCommand
         {

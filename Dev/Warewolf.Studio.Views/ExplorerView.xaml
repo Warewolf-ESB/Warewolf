@@ -345,7 +345,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewEmailSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewEmailSourceSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewEmailSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Email Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewEmailSourceTooltip}">
@@ -953,7 +954,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewEmailSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewEmailSourceSourceCommand}"
+									                      Command="{Binding ShellViewModel.NewEmailSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New Email Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewEmailSourceTooltip}">

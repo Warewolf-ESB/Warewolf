@@ -254,11 +254,6 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.NewWcfSourceCommand(ResourcePath, Server);
             });
 
-            NewEmailSourceSourceCommand = new DelegateCommand(o =>
-            {
-                _explorerItemViewModelCommandController.NewEmailSourceCommand(ResourcePath, Server);
-            });
-
             NewExchangeSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewExchangeSourceCommand(ResourcePath, Server);
@@ -929,7 +924,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand NewWcfSourceCommand { get; set; }
-        public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
         public ICommand NewSharepointSourceSourceCommand { get; set; }
