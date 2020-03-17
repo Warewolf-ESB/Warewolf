@@ -16,6 +16,7 @@ using Dev2.Services.Security;
 using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Web;
 using Dev2.Common.Interfaces.Enums;
 
@@ -64,36 +65,51 @@ namespace Dev2.Runtime.Security
 
         public sealed override bool IsAuthorized(AuthorizationContext context, string resource)
         {
-            bool authorized;
-
-            VerifyArgument.IsNotNull("resource", resource);
-
-            var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
-
-            var requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
-            authorized = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorized(user, context, resource);
-
-            if (!authorized)
-            {
-                if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
-                {
-                    authorized = true;
-                }
-            }
-            else
-            {
-                if (resource != Guid.Empty.ToString())
-                {
-                    authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
-                    _cachedRequests.AddOrUpdate(requestKey, authorizedRequest, (tuple, tuple1) => authorizedRequest);
-                }
-            }
-
+            var authorized = InnerIsAuthorized(context, resource);
             if (!authorized)
             {
                 _perfCounter?.Increment();
             }
             return authorized;
+        }
+        private bool InnerIsAuthorized(AuthorizationContext context, string resource)
+        {
+            VerifyArgument.IsNotNull("resource", resource);
+
+            var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
+
+            var requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
+
+            if (IsAuthorizedCheck(context, resource, requestKey, user))
+            {
+                var cacheForResourceRequests = resource != Guid.Empty.ToString();
+                if (cacheForResourceRequests)
+                {
+                    var authorizedRequest = new Tuple<bool, DateTime>(true, DateTime.Now);
+                    _cachedRequests.AddOrUpdate(requestKey, authorizedRequest, (tuple, tuple1) => authorizedRequest);
+                }
+
+                return true;
+            }
+            // TODO: is this necessary? surely a request that was able to be executed means the user has access
+            if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsAuthorizedCheck(AuthorizationContext context, string resource, Tuple<string, string, AuthorizationContext> requestKey, IPrincipal user)
+        {
+            var haveCachedAuthorizedResult = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest);
+            var cachedAuthorizedValueStillValid = DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod;
+            if (haveCachedAuthorizedResult && cachedAuthorizedValueStillValid)
+            {
+                return authorizedRequest.Item1;
+            }
+
+            return IsAuthorized(user, context, resource);
         }
 
         public sealed override bool IsAuthorized(IAuthorizationRequest request)
