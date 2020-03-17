@@ -103,12 +103,6 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.NewWcfSource(ResourcePath);
             });
 
-            NewRedisSourceCommand = new DelegateCommand(() =>
-            {
-                UpdateActiveEnvironment(shellViewModel);
-                shellViewModel.NewRedisSource(ResourcePath);
-            });
-
             NewEmailSourceSourceCommand = new DelegateCommand(() =>
             {
                 UpdateActiveEnvironment(shellViewModel);
@@ -731,7 +725,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand NewWcfSourceCommand { get; set; }
-        public ICommand NewRedisSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }

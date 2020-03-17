@@ -139,11 +139,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewEmailSource(resourcePath);
         }
-        public void NewRedisSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewRedisSource(resourcePath);
-        }
         public void NewWcfSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);

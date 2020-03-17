@@ -440,7 +440,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewRedisSourceCommand
         {
-            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(@""), param => IsActiveServerConnected()));
+            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewServerSourceCommand
         {

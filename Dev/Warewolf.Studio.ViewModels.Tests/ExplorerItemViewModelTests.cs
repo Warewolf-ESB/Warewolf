@@ -159,23 +159,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsMergeVisible);
         }
 
-        [TestMethod, Timeout(60000)]
-        public void TestNewRedisSourceCommand()
-        {
-            //arrange
-            _target.ResourceType = "RedisSource";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewRedisSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewRedisSourceCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.NewRedisSource(_target.ResourcePath));
-        }
-
         [TestMethod,Timeout(60000)]
         public void TestNewEmailSourceCommand()
         {
@@ -1006,7 +989,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewRedisSourceCommand = _target.NewRedisSourceCommand.CanExecute(null);
             var canCreateNewEmailSourceSourceCommand = _target.NewEmailSourceSourceCommand.CanExecute(null);
             var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
@@ -1018,7 +1000,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewRedisSourceCommand);
             Assert.IsTrue(canCreateNewEmailSourceSourceCommand);
             Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
             Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);

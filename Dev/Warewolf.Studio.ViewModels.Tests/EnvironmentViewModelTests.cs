@@ -97,7 +97,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewRedisSourceCommand = _target.NewRedisSourceCommand.CanExecute(null);
             var canCreateNewEmailSourceSourceCommand = _target.NewEmailSourceSourceCommand.CanExecute(null);
             var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
@@ -111,7 +110,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewRedisSourceCommand);
             Assert.IsTrue(canCreateNewEmailSourceSourceCommand);
             Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
             Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);

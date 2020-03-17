@@ -254,11 +254,6 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.NewWcfSourceCommand(ResourcePath, Server);
             });
 
-            NewRedisSourceCommand = new DelegateCommand(o =>
-            {
-                _explorerItemViewModelCommandController.NewRedisSourceCommand(ResourcePath, Server);
-            });
-
             NewEmailSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewEmailSourceCommand(ResourcePath, Server);
@@ -934,7 +929,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand NewWcfSourceCommand { get; set; }
-        public ICommand NewRedisSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
