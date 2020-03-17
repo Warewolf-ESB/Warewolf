@@ -1,8 +1,8 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -2107,7 +2107,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_SetCustomTransactionID_ShouldSetDataObjectCustomTransactionID()
+        public void AbstractWebRequestHandler_SetHeaders_ShouldSetDataObject_CustomTransactionID_ExecutionID()
         {
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
@@ -2128,22 +2128,25 @@ namespace Dev2.Tests.Runtime.WebServer
             var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var testingCustomTransactionID = "testingCustomTransactionID";
+            var executionId = Guid.NewGuid();
             var headers = new Mock<NameValueCollection>();
-            headers.Setup(collection => collection.Get("CustomTransactionID")).Returns(testingCustomTransactionID);
+            headers.Setup(collection => collection.Get("Warewolf-Custom-Transaction-Id")).Returns(testingCustomTransactionID);
+            headers.Setup(collection => collection.Get("Warewolf-Execution-Id")).Returns(executionId.ToString());
             var webRequestTO = new WebRequestTO()
             {
                 ServiceName = ""
             };
             handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
             //---------------Execute Test ----------------------            
-            dataObject.Object.SetCustomTransactionID(headers.Object);
+            dataObject.Object.SetHeaders(headers.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(testingCustomTransactionID, dataObject.Object.CustomTransactionID);
+            Assert.AreEqual(executionId.ToString(), dataObject.Object.ExecutionID.ToString());
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_SetCustomTransactionID_CustomTransactionID_DoesNotExistOnHeader()
+        public void AbstractWebRequestHandler_SetHeaders_CustomTransactionID_ExecutionID_DoesNotExistOnHeader()
         {
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
@@ -2154,7 +2157,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var env = new Mock<IExecutionEnvironment>();
             env.SetupAllProperties();
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
-            //dataObject.SetupGet(o => o.CustomTransactionID).Returns("");
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -2171,9 +2173,10 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             handlerMock.CreateFromMock(webRequestTO, "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
             //---------------Execute Test ----------------------            
-            dataObject.Object.SetCustomTransactionID(headers.Object);
+            dataObject.Object.SetHeaders(headers.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(null, dataObject.Object.CustomTransactionID);
+            Assert.IsNotNull(dataObject.Object.ExecutionID); //New guid is created is nothing is set in the header
         }
     }
 
