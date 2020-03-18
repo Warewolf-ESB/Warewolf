@@ -97,12 +97,6 @@ namespace Warewolf.Studio.ViewModels
             _children = new ObservableCollection<IExplorerItemViewModel>();
             ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
 
-            NewRabbitMqSourceSourceCommand = new DelegateCommand(() =>
-            {
-                UpdateActiveEnvironment(shellViewModel);
-                shellViewModel.NewRabbitMQSource(ResourcePath);
-            });
-
             ViewApisJsonCommand = new DelegateCommand(() =>
             {
                 var environmentModel = ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
@@ -694,7 +688,6 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        public ICommand NewRabbitMqSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         [ExcludeFromCodeCoverage]
         public ICommand RenameCommand { get; set; }

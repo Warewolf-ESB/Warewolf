@@ -456,7 +456,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewRabbitMQSourceCommand
         {
-            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
+            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewSharepointSourceCommand
         {

@@ -160,23 +160,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestNewRabbitMqSourceCommand()
-        {
-            //arrange
-            _target.ResourceType = "RabbitMqSource";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewRabbitMqSourceSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewRabbitMqSourceSourceCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.NewRabbitMQSource(_target.ResourcePath));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestCreateNewTestCommand()
         {
             //arrange
@@ -921,14 +904,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewRabbitMqSourceSourceCommand);
             Assert.IsTrue(canViewSwaggerCommand);
             Assert.IsTrue(canViewApisJsonCommand);
         }

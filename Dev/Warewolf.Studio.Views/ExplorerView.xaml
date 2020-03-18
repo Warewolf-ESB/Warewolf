@@ -368,7 +368,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewRabbitMqSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewRabbitMqSourceSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewRabbitMQSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New RabbitMQ Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewRabbitMqSourceTooltip}">
@@ -991,7 +992,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewRabbitMqSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewRabbitMqSourceSourceCommand}"
+									                      Command="{Binding ShellViewModel.NewRabbitMQSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New RabbitMQ Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewRabbitMqSourceTooltip}">

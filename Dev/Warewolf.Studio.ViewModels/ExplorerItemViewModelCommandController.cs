@@ -114,12 +114,6 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.CopyUrlLink(resourceId, server);
         }
 
-        public void NewRabbitMQSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewRabbitMQSource(resourcePath);
-        }
-
         static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
             shellViewModel.SetActiveServer(server.EnvironmentID);
