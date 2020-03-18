@@ -153,6 +153,7 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
+    <Compile Include="Services\SaveAuditingSettingsTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Services\FetchTestsForDeployTest.cs" />
     <Compile Include="Services\FetchTestsTest.cs" />
     <Compile Include="Services\FindDependenciesTests.cs" />
+    <Compile Include="Services\GetAuditingSettingsTests.cs" />
     <Compile Include="Services\GetExecutionHistoryTests.cs" />
     <Compile Include="Services\GetServerInformationTest.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />

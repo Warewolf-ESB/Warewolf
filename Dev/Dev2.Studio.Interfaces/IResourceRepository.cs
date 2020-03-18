@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,6 +28,7 @@ using Dev2.Common.Interfaces.Data;
 using Warewolf.Options;
 using Warewolf.Triggers;
 using Warewolf.Configuration;
+using Warewolf.Data;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -55,7 +56,9 @@ namespace Dev2.Studio.Interfaces
         Settings ReadSettings(IServer currentEnv);
         ExecuteMessage WriteSettings(IServer currentEnv, Settings settings);
         ExecuteMessage SaveServerSettings(IServer currentEnv, ServerSettingsData serverSettingsData);
+        ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase serverSettingsData);
         ServerSettingsData GetServerSettings(IServer currentEnv);
+        T GetAuditingSettings<T>(IServer currentEnv) where T : AuditSettingsDataBase, new();
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);
