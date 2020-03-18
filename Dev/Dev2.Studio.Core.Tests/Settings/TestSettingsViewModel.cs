@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -96,8 +96,8 @@ namespace Dev2.Core.Tests.Settings
 
             var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
-            var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
-            _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(serverSettingsData);
+            var auditingSettingsData = new LegacySettingsData() { AuditFilePath = "somePath" };
+            _resourceRepo.Setup(res => res.GetAuditingSettings<LegacySettingsData>(env.Object)).Returns(auditingSettingsData);
             env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
 
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, env.Object);
