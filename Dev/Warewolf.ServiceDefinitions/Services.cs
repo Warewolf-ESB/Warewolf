@@ -38,4 +38,14 @@ namespace Warewolf.Service
     {
         public const string ElasticsearchSource = nameof(ElasticsearchSource);
     }
+
+    public static class SaveAuditingSettings
+    {
+        public const string AuditingSettings = nameof(AuditingSettings);
+        public const string SinkType = nameof(SinkType);
+    }
+    public static class GetAuditingSettings
+    {
+       
+    }
 }
