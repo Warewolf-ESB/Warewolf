@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -9,18 +9,20 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Enums;
+using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Data;
 
 namespace Warewolf.Configuration
 {
-    public class AuditingSettingsData : AuditSettingsDataBase, IEquatable<AuditingSettingsData>
+    public class LegacySettingsData : AuditSettingsDataBase, IEquatable<LegacySettingsData>
     {
-        public NamedGuid LoggingDataSource { get; set; }
+        public string AuditFilePath { get; set; }
 
-        public bool Equals(AuditingSettingsData other)
+        public bool Equals(LegacySettingsData other)
         {
             var equals = base.Equals(other);
-            equals &= string.Equals(LoggingDataSource, other.LoggingDataSource);
+            equals &= string.Equals(AuditFilePath, other.AuditFilePath, StringComparison.InvariantCultureIgnoreCase);
             return equals;
         }
     }

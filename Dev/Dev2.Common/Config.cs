@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,10 +15,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
+using Warewolf.Data;
 using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common
@@ -32,25 +34,30 @@ namespace Dev2.Common
         public static ServerSettings Server = new ServerSettings();
         public static StudioSettings Studio = new StudioSettings();
         public static AuditingSettings Auditing = new AuditingSettings();
+        public static LegacySettings  Legacy = new LegacySettings(); 
     }
 
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
     {
-        const int DELETE_TRIES_SLEEP = 5000;
-        const int DELETE_TRIES_MAX = 30;
-
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
-        public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
-        public string AuditFilePath
+        public static string DefaultSink => nameof(LegacySettingsData);
+
+        public bool EnableDetailedLogging
         {
-            get => _settings.AuditFilePath ?? DefaultAuditPath;
+            get => _settings.EnableDetailedLogging ?? false;
+            set => _settings.EnableDetailedLogging = value;
+        }
+
+        public string Sink
+        {
+            get => _settings.Sink ?? DefaultSink;
             set
             {
-                _settings.AuditFilePath = value;
+                _settings.Sink = value;
                 Save();
             }
         }
-        public bool EnableDetailedLogging { get => _settings.EnableDetailedLogging ?? false; set => _settings.EnableDetailedLogging = value; }
+
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
         public string SslCertificateName => _settings.SslCertificateName;
@@ -75,7 +82,86 @@ namespace Dev2.Common
                 var value = thisProp.GetValue(this);
                 prop.SetValue(result, value);
             }
+
             return result;
+        }
+    }
+
+    public class StudioSettings : ConfigSettingsBase<StudioSettingsData>
+    {
+        public StudioSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public static string SettingsPath => Path.Combine(Config.UserDataPath, "Studio", "studio_settings.json");
+
+        public int ConnectTimeout => _settings.ConnectTimeout ?? 10000;
+
+        public StudioSettingsData Get()
+        {
+            var result = new StudioSettingsData();
+            foreach (var prop in typeof(StudioSettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+
+            return result;
+        }
+    }
+
+    public class LegacySettings : ConfigSettingsBase<LegacySettingsData>
+    {
+        const int DELETE_TRIES_SLEEP = 5000;
+        const int DELETE_TRIES_MAX = 30;
+
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "legacySettings.json");
+        public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
+        public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
+
+        public LegacySettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        public LegacySettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public LegacySettingsData Get()
+        {
+            var result = new LegacySettingsData();
+            foreach (var prop in typeof(LegacySettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+
+            return result;
+        }
+
+        public string AuditFilePath
+        {
+            get => _settings.AuditFilePath ?? DefaultAuditPath;
+            set
+            {
+                _settings.AuditFilePath = value;
+                Save();
+            }
+        }
+
+        public string Endpoint
+        {
+            get => _settings.Endpoint ?? DefaultEndpoint;
         }
 
         public bool SaveLoggingPath(string auditsFilePath)
@@ -134,6 +220,7 @@ namespace Dev2.Common
                         {
                             throw;
                         }
+
                         // try until we delete the file at least once
                         Thread.Sleep(DELETE_TRIES_SLEEP);
                     }
@@ -141,30 +228,32 @@ namespace Dev2.Common
             }).Start();
         }
 
-        public delegate void VoidEventHandler();
         public event VoidEventHandler OnLogFlushPauseRequested;
         public event VoidEventHandler OnLogFlushResumeRequested;
+
+        public delegate void VoidEventHandler();
     }
 
-    public class StudioSettings : ConfigSettingsBase<StudioSettingsData>
+    public class AuditingSettings : ConfigSettingsBase<AuditingSettingsData>
     {
-        public StudioSettings()
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "auditingSettings.json");
+
+        public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
+
+        public AuditingSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
         {
         }
-        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+
+        public AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
             : base(settingsPath, file, directoryWrapper)
         {
         }
 
-        public static string SettingsPath => Path.Combine(Config.UserDataPath, "Studio", "studio_settings.json");
-
-        public int ConnectTimeout => _settings.ConnectTimeout ?? 10000;
-
-        public StudioSettingsData Get()
+        public AuditingSettingsData Get()
         {
-            var result = new StudioSettingsData();
-            foreach (var prop in typeof(StudioSettingsData).GetProperties())
+            var result = new AuditingSettingsData();
+            foreach (var prop in typeof(AuditingSettingsData).GetProperties())
             {
                 var thisProp = this.GetType().GetProperty(prop.Name);
                 var value = thisProp.GetValue(this);
@@ -172,23 +261,20 @@ namespace Dev2.Common
             }
             return result;
         }
-    }
 
-
-    public class AuditingSettings : ConfigSettingsBase<AuditingSettingsData>
-    {
-        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "auditingSettings.json");
-
-        public AuditingSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        public NamedGuid LoggingDataSource
         {
+            get => _settings.LoggingDataSource ?? new NamedGuid();
+            set
+            {
+                _settings.LoggingDataSource = value;
+                Save();
+            }
         }
 
-        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        public string Endpoint
         {
+            get => _settings.Endpoint ?? DefaultEndpoint;
         }
-
-        public string Endpoint => _settings.Endpoint;
     }
 }
