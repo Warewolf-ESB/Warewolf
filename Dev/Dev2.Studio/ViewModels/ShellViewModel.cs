@@ -460,7 +460,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewSharepointSourceCommand
         {
-            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
+            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewDropboxSourceCommand
         {

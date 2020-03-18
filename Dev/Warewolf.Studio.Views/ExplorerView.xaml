@@ -388,7 +388,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewSharepointSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewSharepointSourceSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewSharepointSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Sharepoint Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewSharepointSourceTooltip}">
@@ -1009,7 +1010,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewSharepointSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewSharepointSourceSourceCommand}"
+									                      Command="{Binding ShellViewModel.NewSharepointSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New Sharepoint Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewSharepointSourceTooltip}">

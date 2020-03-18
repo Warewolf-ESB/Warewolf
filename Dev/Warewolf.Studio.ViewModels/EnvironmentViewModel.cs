@@ -103,12 +103,6 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.NewRabbitMQSource(ResourcePath);
             });
 
-            NewSharepointSourceSourceCommand = new DelegateCommand(() =>
-            {
-                UpdateActiveEnvironment(shellViewModel);
-                shellViewModel.NewSharepointSource(ResourcePath);
-            });
-
             NewDropboxSourceSourceCommand = new DelegateCommand(() =>
             {
                 UpdateActiveEnvironment(shellViewModel);
@@ -707,7 +701,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
-        public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         [ExcludeFromCodeCoverage]

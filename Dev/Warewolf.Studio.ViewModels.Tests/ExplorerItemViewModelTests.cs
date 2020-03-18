@@ -195,23 +195,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestNewSharepointSourceCommand()
-        {
-            //arrange
-            _target.ResourceType = "SharepointSource";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewSharepointSourceSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewSharepointSourceSourceCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.NewSharepointSource(_target.ResourcePath));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestNewDropboxSourceCommand()
         {
             //arrange
@@ -955,7 +938,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
             var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
@@ -964,7 +946,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
             Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
             Assert.IsTrue(canCreateNewRabbitMqSourceSourceCommand);
             Assert.IsTrue(canViewSwaggerCommand);

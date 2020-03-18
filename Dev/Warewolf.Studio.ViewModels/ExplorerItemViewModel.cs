@@ -254,11 +254,6 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.NewRabbitMQSourceCommand(ResourcePath, Server);
             });
 
-            NewSharepointSourceSourceCommand = new DelegateCommand(o =>
-            {
-                _explorerItemViewModelCommandController.NewSharepointSourceCommand(ResourcePath, Server);
-            });
-
             NewDropboxSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewDropboxSourceCommand(ResourcePath, Server);
@@ -914,7 +909,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
-        public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
 

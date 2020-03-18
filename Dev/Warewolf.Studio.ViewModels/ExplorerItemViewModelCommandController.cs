@@ -119,11 +119,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewDropboxSource(resourcePath);
         }
-        public void NewSharepointSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewSharepointSource(resourcePath);
-        }
         public void NewRabbitMQSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
