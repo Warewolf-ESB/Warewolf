@@ -37,7 +37,7 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                Sink = LoggerConfigType.SQLite.ToString()
+                Sink = nameof(LegacySettingsData)
             };
 
             var serverSettingsData = new ServerSettingsData
@@ -47,7 +47,7 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                Sink = LoggerConfigType.SQLite.ToString()
+                Sink = nameof(LegacySettingsData)
             };
 
             Assert.IsTrue(serverSettingsData.Equals(expectedServerSettingsData));
