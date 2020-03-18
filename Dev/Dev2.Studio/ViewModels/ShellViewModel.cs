@@ -390,94 +390,29 @@ namespace Dev2.Studio.ViewModels
             return null;
         }
 
-        public IAuthorizeCommand SchedulerCommand
-        {
-            get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand QueueEventsCommand
-        {
-            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddQueuesWorkSurface(), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand TasksCommand
-        {
-            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTriggersWorkSurface(), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewServiceCommand
-        {
-            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewPluginSourceCommand
-        {
-            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewComPluginSourceCommand
-        {
-            get => _newComPluginSourceCommand ?? (_newComPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewComPluginSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewSqlServerSourceCommand
-        {
-            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewMySqlSourceCommand
-        {
-            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
-        {
-            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewOracleSourceCommand
-        {
-            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewOdbcSourceCommand
-        {
-            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewWebSourceCommand
-        {
-            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewRedisSourceCommand
-        {
-            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewServerSourceCommand
-        {
-            get => _newServerSourceCommand ?? (_newServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewEmailSourceCommand
-        {
-            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewExchangeSourceCommand
-        {
-            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewRabbitMQSourceCommand
-        {
-            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewSharepointSourceCommand
-        {
-            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewDropboxSourceCommand
-        {
-            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(param), param => IsActiveServerConnected()));
-        }
-        public IAuthorizeCommand<string> NewWcfSourceCommand
-        {
-            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(param), param => IsActiveServerConnected()));
-        }
-        public ICommand ExitCommand
-        {
-            get => _exitCommand ?? (_exitCommand = new RelayCommand(param => Application.Current.Shutdown(), param => true));
-        }
-        public ICommand DeployCommand
-        {
-            get => _deployCommand ?? (_deployCommand = new RelayCommand(param => AddDeploySurface(new List<IExplorerTreeItem>())));
-        }
+        public IAuthorizeCommand SchedulerCommand => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
+        public IAuthorizeCommand QueueEventsCommand => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddQueuesWorkSurface(), param => IsActiveServerConnected()));
+        public IAuthorizeCommand TasksCommand => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTriggersWorkSurface(), param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewServiceCommand => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewService, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewPluginSourceCommand => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewPluginSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewComPluginSourceCommand => _newComPluginSourceCommand ?? (_newComPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewComPluginSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewSqlServerSourceCommand => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewSqlServerSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewMySqlSourceCommand => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewMySqlSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewPostgreSqlSourceCommand => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewPostgreSqlSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewOracleSourceCommand => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewOracleSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewOdbcSourceCommand => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewOdbcSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewWebSourceCommand => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewWebSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewRedisSourceCommand => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewRedisSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewServerSourceCommand => _newServerSourceCommand ?? (_newServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewServerSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewEmailSourceCommand => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewEmailSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewExchangeSourceCommand => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewExchangeSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewRabbitMQSourceCommand => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewRabbitMQSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewSharepointSourceCommand => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewSharepointSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewDropboxSourceCommand => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewDropboxSource, param => IsActiveServerConnected()));
+        public IAuthorizeCommand<string> NewWcfSourceCommand => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, NewWcfSource, param => IsActiveServerConnected()));
+        public ICommand ExitCommand => _exitCommand ?? (_exitCommand = new RelayCommand(param => Application.Current.Shutdown(), param => true));
+        public ICommand DeployCommand => _deployCommand ?? (_deployCommand = new RelayCommand(param => AddDeploySurface(new List<IExplorerTreeItem>())));
+
         public ICommand MergeCommand
         {
             get => _mergeCommand ?? (_mergeCommand = new RelayCommand(param =>
