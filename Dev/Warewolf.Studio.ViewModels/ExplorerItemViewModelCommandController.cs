@@ -129,11 +129,6 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewRabbitMQSource(resourcePath);
         }
-        public void NewExchangeSourceCommand(string resourcePath, IServer server)
-        {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewExchangeSource(resourcePath);
-        }
 
         static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {

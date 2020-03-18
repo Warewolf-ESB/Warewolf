@@ -97,7 +97,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
             var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
@@ -108,7 +107,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
             Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
             Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
             Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);

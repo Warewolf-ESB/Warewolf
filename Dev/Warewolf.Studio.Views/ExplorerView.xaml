@@ -357,7 +357,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewExchangeSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewExchangeSourceSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewExchangeSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Exchange Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewExchangeSourceTooltip}">
@@ -977,7 +978,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewExchangeSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewExchangeSourceSourceCommand}"
+									                      Command="{Binding ShellViewModel.NewExchangeSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New Exchange Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewExchangeSourceTooltip}">

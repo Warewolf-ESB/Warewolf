@@ -249,11 +249,6 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, Server.Connection.WebServerUri);
             });
 
-            NewExchangeSourceSourceCommand = new DelegateCommand(o =>
-            {
-                _explorerItemViewModelCommandController.NewExchangeSourceCommand(ResourcePath, Server);
-            });
-
             NewRabbitMqSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewRabbitMQSourceCommand(ResourcePath, Server);
@@ -918,7 +913,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanderVisible);
             }
         }
-        public ICommand NewExchangeSourceSourceCommand { get; set; }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }

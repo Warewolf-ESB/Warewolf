@@ -452,7 +452,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewExchangeSourceCommand
         {
-            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
+            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewRabbitMQSourceCommand
         {
