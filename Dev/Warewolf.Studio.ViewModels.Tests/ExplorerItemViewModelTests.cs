@@ -195,23 +195,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestNewDropboxSourceCommand()
-        {
-            //arrange
-            _target.ResourceType = "DropboxSource";
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewDropboxSourceSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewDropboxSourceSourceCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.NewDropboxSource(_target.ResourcePath));
-        }
-
-        [TestMethod,Timeout(60000)]
         public void TestContextMenuDebugCommand()
         {
             //arrange
@@ -938,7 +921,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommands()
         {
             //arrange
-            var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
             var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
@@ -946,7 +928,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
-            Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
             Assert.IsTrue(canCreateNewRabbitMqSourceSourceCommand);
             Assert.IsTrue(canViewSwaggerCommand);
             Assert.IsTrue(canViewApisJsonCommand);

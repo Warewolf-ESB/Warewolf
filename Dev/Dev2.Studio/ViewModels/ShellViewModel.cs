@@ -464,7 +464,7 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand<string> NewDropboxSourceCommand
         {
-            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
+            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(param), param => IsActiveServerConnected()));
         }
         public IAuthorizeCommand<string> NewWcfSourceCommand
         {

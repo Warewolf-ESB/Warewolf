@@ -378,7 +378,8 @@
                                         </MenuItem>
                                         <MenuItem Name="NewDropboxSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewDropboxSourceSourceCommand}"
+                                                  Command="{Binding ShellViewModel.NewDropboxSourceCommand}"
+                                                  CommandParameter="{Binding ResourcePath}"
                                                   Header="New Dropbox Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding ExplorerTooltips.NewDropboxSourceTooltip}">
@@ -1000,7 +1001,8 @@
                                                 </MenuItem>
                                                 <MenuItem Name="NewDropboxSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewDropboxSourceSourceCommand}"
+									                      Command="{Binding ShellViewModel.NewDropboxSourceCommand}"
+                                                          CommandParameter="{Binding ResourcePath}"
 									                      Header="New Dropbox Source"
 									                      IsEnabled="{Binding CanCreateSource}"
 									                      ToolTip="{Binding ExplorerTooltips.NewDropboxSourceTooltip}">

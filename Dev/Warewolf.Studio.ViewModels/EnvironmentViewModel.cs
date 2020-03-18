@@ -103,12 +103,6 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.NewRabbitMQSource(ResourcePath);
             });
 
-            NewDropboxSourceSourceCommand = new DelegateCommand(() =>
-            {
-                UpdateActiveEnvironment(shellViewModel);
-                shellViewModel.NewDropboxSource(ResourcePath);
-            });
-
             ViewApisJsonCommand = new DelegateCommand(() =>
             {
                 var environmentModel = ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
@@ -701,7 +695,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }
-        public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         [ExcludeFromCodeCoverage]
         public ICommand RenameCommand { get; set; }
