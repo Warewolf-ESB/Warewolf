@@ -604,12 +604,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Sql Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlDatabaseBroker")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         public virtual void ExecuteSqlServerWithTimeout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Sql Server With Timeout", new string[] {
-                        "SqlDatabaseBroker"});
+                        "DatabaseTimeout"});
 #line 190
  this.ScenarioSetup(scenarioInfo);
 #line 191

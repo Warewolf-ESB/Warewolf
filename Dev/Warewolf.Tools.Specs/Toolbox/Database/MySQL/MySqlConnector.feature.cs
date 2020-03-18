@@ -244,12 +244,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute MySql Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MySqlConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlDatabaseBroker")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         public virtual void ExecuteMySqlServerWithTimeout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute MySql Server With Timeout", new string[] {
-                        "SqlDatabaseBroker"});
+                        "DatabaseTimeout"});
 #line 64
 this.ScenarioSetup(scenarioInfo);
 #line 65
