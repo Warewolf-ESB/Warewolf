@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime
 
             var names = services.Select(o => o.Name).ToDictionary((s) => s);
 
-            Assert.AreEqual(130, names.Count);
+            Assert.AreEqual(132, names.Count);
             Assert.IsTrue(names.ContainsKey("SavePerformanceCounters"));
             Assert.IsTrue(names.ContainsKey("DeleteAllTestsService"));
             Assert.IsTrue(names.ContainsKey("ReloadResourceService"));

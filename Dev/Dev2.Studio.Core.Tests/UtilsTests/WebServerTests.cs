@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.UtilsTests
             var mockEnvironment = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>())).Verifiable();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockEnvironment.Setup(model => model.Connection).Returns(mockConnection.Object);
             mockEnvironment.Setup(model => model.IsConnected).Returns(true);
@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.UtilsTests
             //------------Execute Test---------------------------
             WebServer.Send(mockResourceModel.Object, "DataPayLoad", new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());
         }
 
         [TestMethod]

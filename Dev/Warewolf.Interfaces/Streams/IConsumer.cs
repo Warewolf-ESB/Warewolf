@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,10 +15,10 @@ namespace Warewolf.Streams
 {
     public interface IConsumer
     {
-        Task<ConsumerResult> Consume(byte[] body,string customTransactionID);
+        Task<ConsumerResult> Consume(byte[] body, object parameters);
     }
     public interface IConsumer<in T>
     {
-        Task<ConsumerResult> Consume(T item);
+        Task<ConsumerResult> Consume(T item, object parameters);
     }
 }

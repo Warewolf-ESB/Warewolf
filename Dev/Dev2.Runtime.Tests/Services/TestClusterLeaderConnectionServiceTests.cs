@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.Services
             var values = new Dictionary<string, StringBuilder> {{ "LeaderServerKey", clusterSettingsData.LeaderServerKey.ToStringBuilder() }};
             var result = leaderConnectionService.Execute(values, mockWorkspace.Object);
             Assert.IsInstanceOfType(result, typeof(StringBuilder));
-            var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Communication.ExecuteMessage, Dev2.Infrastructure\",\"HasError\":false,\"Message\":{\"$id\":\"2\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"\",\"m_currentThread\":0}}";
+            var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Runtime.ESB.Management.Services.TestClusterResult, Dev2.Runtime.Services\",\"Success\":true,\"HasError\":false,\"Message\":{\"$id\":\"2\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"\",\"m_currentThread\":0}}";
             Assert.AreEqual(expected, result.ToString());
         }
         
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Services
             var values = new Dictionary<string, StringBuilder> {{ "LeaderServerKey", clusterSettingsData.LeaderServerKey.ToStringBuilder() }};
             var result = leaderConnectionService.Execute(values, mockWorkspace.Object);
             Assert.IsInstanceOfType(result, typeof(StringBuilder));
-            var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Communication.ExecuteMessage, Dev2.Infrastructure\",\"HasError\":true,\"Message\":{\"$id\":\"2\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":39,\"m_StringValue\":\"the cluster key provided does not match\",\"m_currentThread\":0}}";
+            var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Runtime.ESB.Management.Services.TestClusterResult, Dev2.Runtime.Services\",\"Success\":false,\"HasError\":true,\"Message\":{\"$id\":\"2\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":39,\"m_StringValue\":\"the cluster key provided does not match\",\"m_currentThread\":0}}";
             Assert.AreEqual(expected, result.ToString());
         }
 
