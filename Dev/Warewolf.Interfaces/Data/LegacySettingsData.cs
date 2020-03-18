@@ -9,8 +9,6 @@
 */
 
 using System;
-using Dev2.Common.Interfaces.Enums;
-using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Data;
 
 namespace Warewolf.Configuration
