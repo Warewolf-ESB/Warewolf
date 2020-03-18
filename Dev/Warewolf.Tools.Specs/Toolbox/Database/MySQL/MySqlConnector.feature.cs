@@ -45,7 +45,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.MySQL
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MySqlConnector", "\tIn order to manage my database services\r\n\tAs a Warewolf User\r\n\tI want to be show" +
-                    "n the database service setup", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "n the database service setup", ProgrammingLanguage.CSharp, new string[] {
+                        "Database"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -89,8 +90,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.MySQL
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void CreatingMysqlServerConnector()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating mysql server connector", new string[] {
-                        "Database"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating mysql server connector", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -133,23 +133,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void OpeningExisitngMysqlServerConnectorTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening exisitng mysql server connector tool", new string[] {
-                        "Database"});
-#line 25
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening exisitng mysql server connector tool", ((string[])(null)));
+#line 24
 this.ScenarioSetup(scenarioInfo);
-#line 26
+#line 25
  testRunner.Given("I open an existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
+#line 26
  testRunner.And("Source is enabled and set to \"DemoSqlsource\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 27
  testRunner.And("Action is Enabled and set to \"someAction\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 28
  testRunner.And("Input is enabled for existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 29
  testRunner.And("Inputs are \"SomeInput\" for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 30
  testRunner.Then("I click validate on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 32
+#line 31
  testRunner.And("The outputs appear as \"DemoSqlsource\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,27 +160,26 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangeTheSourceOnExistingMysqlServerConnectorTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the source on existing mysql server connector tool", new string[] {
-                        "Database"});
-#line 35
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the source on existing mysql server connector tool", ((string[])(null)));
+#line 33
 this.ScenarioSetup(scenarioInfo);
-#line 36
+#line 34
  testRunner.Given("I open an existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 37
+#line 35
  testRunner.And("Source is enabled and set to \"DemoSqlsource\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 36
  testRunner.And("Action is Enabled and set to \"someAction\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 37
  testRunner.And("Input is enabled for existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 38
  testRunner.And("Inputs are \"SomeInput\" for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 39
  testRunner.Then("I select \"AnotherSqlSource\" Source on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 42
+#line 40
  testRunner.And("Action on mysql connector tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 41
  testRunner.And("Inputs on mysql connector tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 42
  testRunner.Then("I click validate on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -193,25 +191,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangeTheActionOnExistingMysqlServerConnectorTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the action on existing mysql server connector tool", new string[] {
-                        "Database"});
-#line 47
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the action on existing mysql server connector tool", ((string[])(null)));
+#line 44
 this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 45
  testRunner.Given("I open an existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
+#line 46
  testRunner.And("Source is enabled and set to \"DemoSqlsource\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 47
  testRunner.And("Action is Enabled and set to \"someAction\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 48
  testRunner.And("Input is enabled for existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 49
  testRunner.And("Inputs are \"SomeInput\" for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 50
  testRunner.Then("I select \"AnotherAction\" Action for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 54
+#line 51
  testRunner.And("Inputs on mysql connector tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 52
  testRunner.Then("I click validate on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -223,23 +220,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangeTheRecordsetOnExistingMysqlServerConnectorTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the recordset on existing mysql server connector tool", new string[] {
-                        "Database"});
-#line 58
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the recordset on existing mysql server connector tool", ((string[])(null)));
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 55
  testRunner.Given("I open an existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 56
  testRunner.And("Source is enabled and set to \"DemoSqlsource\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 57
  testRunner.And("Action is Enabled and set to \"someAction\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 58
  testRunner.And("Input is enabled for existing mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 59
  testRunner.And("Inputs are \"SomeInput\" for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 60
  testRunner.When("I select \"AnotherAction\" Action for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 61
  testRunner.Then("The recordset name changes to \"SomeRecordSet\" for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -253,36 +249,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute MySql Server With Timeout", new string[] {
                         "DatabaseTimeout"});
-#line 68
+#line 64
 this.ScenarioSetup(scenarioInfo);
-#line 69
+#line 65
     testRunner.Given("I have workflow \"MySqlWorkflowForTimeout\" with \"MySqlActivity\" MySql database con" +
                     "nector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 70
+#line 66
     testRunner.And("Mysql server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 67
     testRunner.And("I Select \"NewMySqlSource\" as MySql Server Source for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 68
     testRunner.And("I Select \"Pr_CitiesGetCountries_Delayed\" as MySql Server Action for \"MySqlActivit" +
                     "y\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 69
  testRunner.And("MySql Command Timeout is \"30\" millisenconds for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 70
  testRunner.And("Validate MySql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 71
     testRunner.And("I click MySql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 72
     testRunner.And("I click Test on Mysql", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 73
  testRunner.And("Mysql Server Recordset Name equals \"Pr_CitiesGetCountries_Delayed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 74
  testRunner.And("MySql Command Timeout is \"5\" millisenconds for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 75
  testRunner.When("MySql Workflow \"MySqlWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 80
+#line 76
     testRunner.And("the workflow \"MySqlWorkflowForTimeout\" execution has \"AN\" error \"Timeout expired." +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 77
  testRunner.And("the workflow \"MySqlWorkflowForTimeout\" error does not contain \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
