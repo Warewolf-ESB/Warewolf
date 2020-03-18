@@ -57,6 +57,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="AuditingSettingsTests.cs" />
     <Compile Include="CommonComparerTests.cs" />
     <Compile Include="Common\GetComputerNamesImplTests.cs" />
     <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Common\GetComputerNamesTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
+    <Compile Include="LegacySettingsTests.cs" />
     <Compile Include="ServerSettingsTests.cs" />
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
