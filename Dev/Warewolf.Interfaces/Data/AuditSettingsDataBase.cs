@@ -7,20 +7,17 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+using Microsoft.Practices.Prism.Mvvm;
 
-using System;
-using Warewolf.Data;
-
-namespace Warewolf.Configuration
+namespace Warewolf.Data
 {
-    public class AuditingSettingsData : AuditSettingsDataBase, IEquatable<AuditingSettingsData>
+    public class AuditSettingsDataBase: BindableBase
     {
-        public NamedGuid LoggingDataSource { get; set; }
+        public string Endpoint { get; internal set; }
 
-        public bool Equals(AuditingSettingsData other)
+        public bool Equals(AuditSettingsDataBase other)
         {
-            var equals = base.Equals(other);
-            equals &= string.Equals(LoggingDataSource, other.LoggingDataSource);
+            var equals = Endpoint == other.Endpoint;
             return equals;
         }
     }
