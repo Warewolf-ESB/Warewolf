@@ -19,7 +19,7 @@ namespace Warewolf.Resource.Errors {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ErrorResource {
@@ -2365,6 +2365,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not allowed to perfom this action on a follower..
+        /// </summary>
+        public static string NotAuthorizedToExecuteOnFollower {
+            get {
+                return ResourceManager.GetString("NotAuthorizedToExecuteOnFollower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View rights required to perfom this action..
         /// </summary>
         public static string NotAuthorizedToViewException {
@@ -2786,16 +2795,7 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("RabbitSourceHasBeenDeleted", resourceCulture);
             }
         }
-        /// <summary>
-        ///   Looks up a localized string similar to Failure: Source has been deleted..
-        /// </summary>
-        public static string RedisSourceHasBeenRemoved
-        {
-            get
-            {
-                return ResourceManager.GetString("RedisSourceHasBeenRemoved", resourceCulture);
-            }
-        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for End from {0} to {1}..
         /// </summary>
@@ -2892,6 +2892,15 @@ namespace Warewolf.Resource.Errors {
         public static string RecursiveDirectoryCreateFailed {
             get {
                 return ResourceManager.GetString("RecursiveDirectoryCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis Source Has Been Removed.
+        /// </summary>
+        public static string RedisSourceHasBeenRemoved {
+            get {
+                return ResourceManager.GetString("RedisSourceHasBeenRemoved", resourceCulture);
             }
         }
         

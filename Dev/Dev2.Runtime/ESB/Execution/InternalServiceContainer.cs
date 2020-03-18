@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ESB.Execution
                         errors.MergeErrors(invokeErrors);
                     }
 
-                    if (CanExecute(eme))
+                    if (CanExecute(eme, DataObject, out var errorMessage))
                     {
                         Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
                         {
@@ -96,7 +96,11 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        SetMessage(errors, eme);
+                        var serializer = new Dev2JsonSerializer();
+                        var msg = new ExecuteMessage {HasError = true};
+                        errors.AddError(errorMessage);
+                        msg.SetMessage(errorMessage);
+                        Request.ExecuteResult = serializer.SerializeToBuilder(msg);
                     }
 
                     Request.WasInternalService = true;
@@ -125,38 +129,28 @@ namespace Dev2.Runtime.ESB.Execution
             Request.ExecuteResult = res;
         }
 
-        private void SetMessage(ErrorResultTO errors, IEsbManagementEndpoint eme)
+        private string GetAuthorizationErrorMessage(IEsbManagementEndpoint eme)
         {
-            var serializer = new Dev2JsonSerializer();
-            var msg = new ExecuteMessage {HasError = true};
             switch (eme.GetAuthorizationContextForService())
             {
                 case AuthorizationContext.View:
-                    msg.SetMessage(ErrorResource.NotAuthorizedToViewException);
-                    break;
+                    return ErrorResource.NotAuthorizedToViewException;
                 case AuthorizationContext.Execute:
-                    msg.SetMessage(ErrorResource.NotAuthorizedToExecuteException);
-                    break;
+                    return ErrorResource.NotAuthorizedToExecuteException;
                 case AuthorizationContext.Contribute:
-                    msg.SetMessage(ErrorResource.NotAuthorizedToContributeException);
-                    break;
+                    return ErrorResource.NotAuthorizedToContributeException;
                 case AuthorizationContext.DeployTo:
-                    msg.SetMessage(ErrorResource.NotAuthorizedToDeployToException);
-                    break;
+                    return ErrorResource.NotAuthorizedToDeployToException;
                 case AuthorizationContext.DeployFrom:
-                    msg.SetMessage(ErrorResource.NotAuthorizedToDeployFromException);
-                    break;
+                    return ErrorResource.NotAuthorizedToDeployFromException;
                 case AuthorizationContext.Administrator:
-                    msg.SetMessage(ErrorResource.NotAuthorizedToAdministratorException);
-                    break;
+                    return ErrorResource.NotAuthorizedToAdministratorException;
+                case AuthorizationContext.None:
+                case AuthorizationContext.Any:
                 default:
-                    Request.ExecuteResult = serializer.SerializeToBuilder(msg);
-                    errors.AddError(ErrorResource.NotAuthorizedToExecuteException);
-                    break;
+                    return ErrorResource.NotAuthorizedToExecuteException;
             }
         }
-
-        bool CanExecute(IEsbManagementEndpoint eme) => CanExecute(eme, DataObject);
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
@@ -164,7 +158,7 @@ namespace Dev2.Runtime.ESB.Execution
             return isAuthorized;
         }
 
-        bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject)
+        private bool CanExecute(IEsbManagementEndpoint eme, IDSFDataObject dataObject, out string errorMessage)
         {
             var resourceId = eme.GetResourceID(Request.Args);
             var authorizationContext = eme.GetAuthorizationContextForService();
@@ -172,9 +166,13 @@ namespace Dev2.Runtime.ESB.Execution
             var serviceAllowsWhenFollowing = eme.CanExecute(new CanExecuteArg{ IsFollower = isFollower });
             if (isFollower && !serviceAllowsWhenFollowing)
             {
+                errorMessage = ErrorResource.NotAuthorizedToExecuteOnFollower;
                 return false;
             }
-            return CanExecute(resourceId, dataObject, authorizationContext);
+
+            var result = CanExecute(resourceId, dataObject, authorizationContext);
+            errorMessage = !result ? GetAuthorizationErrorMessage(eme) : string.Empty;
+            return result;
         }
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;

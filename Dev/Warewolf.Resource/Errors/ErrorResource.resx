@@ -1304,6 +1304,9 @@ Please contact your Windows System Administrator.</value>
   <data name="NotAuthorizedToExecuteException" xml:space="preserve">
     <value>Execute rights required to perfom this action.</value>
   </data>
+  <data name="NotAuthorizedToExecuteOnFollower" xml:space="preserve">
+    <value>Not allowed to perfom this action on a follower.</value>
+  </data>
   <data name="NotAuthorizedToViewException" xml:space="preserve">
     <value>View rights required to perfom this action.</value>
   </data>
@@ -1342,5 +1345,8 @@ Please contact your Windows System Administrator.</value>
   </data>
   <data name="ErrorCreatingDirectory" xml:space="preserve">
     <value>failed creating directory '{0}' : {1}</value>
+  </data>
+  <data name="RedisSourceHasBeenRemoved" xml:space="preserve">
+    <value>Redis Source Has Been Removed</value>
   </data>
 </root>

@@ -141,10 +141,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockEsbManagementEndpoint.Setup(o => o.GetAuthorizationContextForService())
                 .Returns(endpointAuthorizationLevel);
 
-            InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object);
+            var esbExecuteRequest = new EsbExecuteRequest();
+            var errorResultTO = InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object, esbExecuteRequest);
 
             mockEsbManagementEndpoint.Verify(o => o.CanExecute(It.IsAny<CanExecuteArg>()), Times.Once);
             mockEsbManagementEndpoint.Verify(o => o.Execute(It.IsAny<Dictionary<string,StringBuilder>>(), It.IsAny<IWorkspace>()), Times.Once);
+
+            Assert.AreEqual(0, errorResultTO.FetchErrors().Count);
+
+            Assert.IsNull(esbExecuteRequest.ExecuteResult);
         }
 
         [TestMethod]
@@ -163,13 +168,57 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockEsbManagementEndpoint.Setup(o => o.GetAuthorizationContextForService())
                 .Returns(endpointAuthorizationLevel);
 
-            InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object);
+            var esbExecuteRequest = new EsbExecuteRequest();
+            var errorResultTO = InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object, esbExecuteRequest);
 
             mockEsbManagementEndpoint.Verify(o => o.CanExecute(It.IsAny<CanExecuteArg>()), Times.Once);
             mockEsbManagementEndpoint.Verify(o => o.Execute(It.IsAny<Dictionary<string,StringBuilder>>(), It.IsAny<IWorkspace>()), Times.Never);
+
+            var errors = errorResultTO.FetchErrors();
+            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(errors[0], ErrorResource.NotAuthorizedToExecuteOnFollower);
+
+            var result = esbExecuteRequest.ExecuteResult.ToString();
+            var serializer = new Dev2JsonSerializer();
+            var r = serializer.Deserialize<ExecuteMessage>(result);
+            Assert.IsTrue(r.HasError);
+            Assert.AreEqual(ErrorResource.NotAuthorizedToExecuteOnFollower, r.Message.ToString());
         }
 
-        private void InternalServiceContainer_CanExecute_GivenAllowedService(IEsbManagementEndpoint esbManagementEndpoint)
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void InternalServiceContainer_CanExecute_GivenDeployOnFollowerService_ShouldNotAllowExecute()
+        {
+            var directDeployEndpoint = new DirectDeploy();
+            var mockEsbManagementEndpoint = new Mock<IEsbManagementEndpoint>();
+            mockEsbManagementEndpoint
+                .Setup(o => o.CanExecute(It.IsAny<CanExecuteArg>()))
+                .Returns<CanExecuteArg>((arg) => directDeployEndpoint.CanExecute(arg));
+            var resourceID = Guid.NewGuid();
+            var requestArgs = new Dictionary<string, StringBuilder>();
+            requestArgs.Add("ResourceID", new StringBuilder(resourceID.ToString()));
+            mockEsbManagementEndpoint.Setup(o => o.GetResourceID(requestArgs)).Returns(resourceID);
+            mockEsbManagementEndpoint.Setup(o => o.GetAuthorizationContextForService())
+                .Returns(directDeployEndpoint.GetAuthorizationContextForService());
+
+            var esbExecuteRequest = new EsbExecuteRequest();
+            var errorResultTO = InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object, esbExecuteRequest);
+
+            mockEsbManagementEndpoint.Verify(o => o.CanExecute(It.IsAny<CanExecuteArg>()), Times.Once);
+            mockEsbManagementEndpoint.Verify(o => o.Execute(It.IsAny<Dictionary<string,StringBuilder>>(), It.IsAny<IWorkspace>()), Times.Never);
+
+            var errors = errorResultTO.FetchErrors();
+            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(errors[0], ErrorResource.NotAuthorizedToExecuteOnFollower);
+
+            var result = esbExecuteRequest.ExecuteResult.ToString();
+            var serializer = new Dev2JsonSerializer();
+            var r = serializer.Deserialize<ExecuteMessage>(result);
+            Assert.IsTrue(r.HasError);
+            Assert.AreEqual(ErrorResource.NotAuthorizedToExecuteOnFollower, r.Message.ToString());
+        }
+
+        private ErrorResultTO InternalServiceContainer_CanExecute_GivenAllowedService(IEsbManagementEndpoint esbManagementEndpoint, EsbExecuteRequest esbExecuteRequest)
         {
             var p = new Mock<IPrincipal>();
             var i = new Mock<IIdentity>();
@@ -185,7 +234,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
             var mockWorkSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
-            var esbExecuteRequest = new EsbExecuteRequest();
             var locater = new Mock<IEsbManagementServiceLocator>();
 
             locater.Setup(loc => loc.LocateManagementService("Name")).Returns(esbManagementEndpoint);
@@ -197,6 +245,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var execute = internalServiceContainer.Execute(out ErrorResultTO errorResultTO, 1);
             //---------------Test Result -----------------------
             locater.VerifyAll();
+
+            return errorResultTO;
         }
     }
 }

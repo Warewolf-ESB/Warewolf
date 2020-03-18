@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ESB.Management
         public abstract DynamicService CreateServiceEntry();
         public abstract Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs);
         public abstract AuthorizationContext GetAuthorizationContextForService();
-        public bool CanExecute(CanExecuteArg arg) => true;
+        public virtual bool CanExecute(CanExecuteArg arg) => true;
         public abstract string HandlesType();
     }
 }

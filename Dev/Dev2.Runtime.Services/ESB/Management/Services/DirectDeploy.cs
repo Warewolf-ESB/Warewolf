@@ -25,6 +25,7 @@ using Microsoft.AspNet.SignalR.Client;
 using Dev2.Runtime.Interfaces;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
+using Warewolf.Execution;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -61,6 +62,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return AuthorizationContext.Contribute;
             }
             return AuthorizationContext.DeployTo;
+        }
+
+        public override bool CanExecute(CanExecuteArg arg)
+        {
+            var notAllowedIfFollowing = !arg.IsFollower;
+            return notAllowedIfFollowing;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

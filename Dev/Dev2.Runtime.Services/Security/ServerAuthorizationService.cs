@@ -103,10 +103,13 @@ namespace Dev2.Runtime.Security
         private bool IsAuthorizedCheck(AuthorizationContext context, string resource, Tuple<string, string, AuthorizationContext> requestKey, IPrincipal user)
         {
             var haveCachedAuthorizedResult = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest);
-            var cachedAuthorizedValueStillValid = DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod;
-            if (haveCachedAuthorizedResult && cachedAuthorizedValueStillValid)
+            if (haveCachedAuthorizedResult)
             {
-                return authorizedRequest.Item1;
+                var cachedAuthorizedValueStillValid = DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod;
+                if (cachedAuthorizedValueStillValid)
+                {
+                    return authorizedRequest.Item1;
+                }
             }
 
             return IsAuthorized(user, context, resource);
