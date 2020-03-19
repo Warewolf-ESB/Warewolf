@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -146,7 +146,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 _dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
-                _dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
+                _dataObject.SetTestResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, workspaceGuid), webRequest, serviceName, resource);
                 _dataObject.WebUrl = webRequest.WebServerUrl;
                 _dataObject.EsbChannel = new EsbServicesEndpoint();
 
@@ -165,13 +165,22 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObject.StateNotifier = stateNotifier;
             }
 
-            internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
+            internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId,
+                NameValueCollection headers, IPrincipal user)
             {
                 _executePayload = "";
                 _workspaceGuid = EnsureWorkspaceIdValid(workspaceId);
                 _serializer = new Dev2JsonSerializer();
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
+                var isTestRun = (_dataObject.ReturnType == EmitionTypes.TEST ||
+                                 _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*";
+
+                if (isTestRun)
+                {
+                    return ExecuteAsTest(serviceName, _executePayload, _workspaceGuid, _dataObject, _serializer, user);
+                }
+
                 if (_resource is null)
                 {
                     var msg = string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, serviceName);
@@ -180,10 +189,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                     _executionDlid = GlobalConstants.NullDataListID;
                     return null;
                 }
+
                 _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
                 if (!_canExecute)
                 {
-                    var errorMessage = string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
+                    var errorMessage =
+                        string.Format(
+                            Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException,
+                            _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
                     _dataObject.Environment.AddError(errorMessage);
                     _dataObject.ExecutionException = new Exception(errorMessage);
                 }
@@ -193,14 +206,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (_canExecute && _dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     Thread.CurrentPrincipal = user;
-                    var userPrinciple = user;
-                    if ((_dataObject.ReturnType == EmitionTypes.TEST || _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*")
-                    {
-                        return ExecuteAsTest(serviceName, _executePayload, _workspaceGuid, _dataObject, _serializer, userPrinciple);
-                    }
 
-                    _executionDlid = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, userPrinciple);
+                    _executionDlid = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
                 }
+
                 return null;
             }
 

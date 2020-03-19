@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,6 +27,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
+using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
 
@@ -34,7 +35,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public abstract class ResourceBase : IResource
+    public abstract class ResourceBase : IResource, IFilePathResource
     {
         IVersionInfo _versionInfo;
 
@@ -135,6 +136,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>   
         [JsonIgnore]
         public string FilePath { get; set; }
+        [JsonIgnore]
+        public string Path => GetResourcePath(GlobalConstants.ServerWorkspaceID);
         /// <summary>
         /// Gets or sets the author roles.
         /// </summary>

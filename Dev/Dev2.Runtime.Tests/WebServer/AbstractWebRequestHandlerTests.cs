@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -40,7 +41,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Warewolf.Data;
+using Warewolf.Services;
 using Warewolf.Storage.Interfaces;
+using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -632,7 +636,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var r1 = Guid.NewGuid();
             var r2 = Guid.NewGuid();
             var r3 = Guid.NewGuid();
-            dataObject.SetupGet(o => o.TestsResourceIds).Returns(new List<Guid>()
+            dataObject.SetupGet(o => o.TestsResourceIds).Returns(new []
             {
                 r1,r2,r3
             });
@@ -1124,7 +1128,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = postDataMock.IsXml();
+            var isXml = StringExtension.IsXml(postDataMock);
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -1198,7 +1202,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = postDataMock.IsXml();
+            var isXml = StringExtension.IsXml(postDataMock);
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -1232,7 +1236,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            var isXml = postDataMock.IsXml();
+            var isXml = StringExtension.IsXml(postDataMock);
             Assert.IsTrue(isXml);
             Assert.AreEqual(xmlData, postDataMock);
         }
@@ -2053,13 +2057,13 @@ namespace Dev2.Tests.Runtime.WebServer
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
                 WebServerUrl = "http://rsaklfnkosinath:3142/public/Home/HelloWorld/.tests"
             };
-            var resource = new Mock<IResource>();
+            var resource = new Mock<IWarewolfResource>();
             var resourceId = Guid.NewGuid();
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
-            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
-                .Returns(new List<IResource>()
+            //resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            var resourceCatalog = new Mock<IContextualResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetExecutableResources(It.IsAny<string>()))
+                .Returns(new List<IWarewolfResource>()
                 {
                    resource.Object
                 });
@@ -2069,12 +2073,13 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.TestsResourceIds);
             dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
+
             //---------------Execute Test ----------------------
-            dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
+            dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*", resource.Object);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ResourceID = Guid.Empty, Times.Exactly(1));
-            dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<List<Guid>>(), Times.Exactly(1));
-            var contains = dataObject.Object.TestsResourceIds.Contains(resourceId);
+            dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<Guid[]>(), Times.Exactly(1));
+            var contains = dataObject.Object.TestsResourceIds.ToList().Contains(resourceId);
             Assert.IsTrue(contains);
         }
 
@@ -2089,9 +2094,9 @@ namespace Dev2.Tests.Runtime.WebServer
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
                 WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"
             };
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
-                .Returns(new List<IResource>());
+            var resourceCatalog = new Mock<IContextualResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetExecutableResources(It.IsAny<string>()))
+                .Returns(new List<IWarewolfResource>());
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.Setup(o => o.TestName).Returns("*");
@@ -2099,10 +2104,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
+            dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*", null);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ResourceID = Guid.Empty, Times.Exactly(1));
-            dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<List<Guid>>(), Times.Exactly(1));
+            dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<Guid[]>(), Times.Exactly(1));
         }
         [TestMethod]
         [Owner("Candice Daniel")]

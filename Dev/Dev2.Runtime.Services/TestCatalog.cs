@@ -20,6 +20,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -430,11 +431,13 @@ namespace Dev2.Runtime
 
         public List<IServiceTestModelTO> Fetch(Guid resourceId)
         {
-            return Tests.GetOrAdd(resourceId, guid =>
-             {
-                 var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
-                 return GetTestList(dir);
-             });
+            var result = Tests.GetOrAdd(resourceId, guid =>
+            {
+                var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                return GetTestList(dir);
+            });
+            // note: list is duplicated in order to avoid concurrent modifications of the list during test runs
+            return result.ToList();
         }
 
         public void DeleteTest(Guid resourceID, string testName)
@@ -494,10 +497,10 @@ namespace Dev2.Runtime
         {
             if (Tests.TryGetValue(resourceID, out List<IServiceTestModelTO> testList))
             {
-                var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
-                if (foundTestToDelete != null)
+                var result = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
+                if (result != null)
                 {
-                    return foundTestToDelete;
+                    return result;
                 }
             }
             return null;

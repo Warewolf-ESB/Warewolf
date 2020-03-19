@@ -33,6 +33,8 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Services.Security;
+using Warewolf.Services;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -66,6 +68,12 @@ namespace Dev2.Runtime.Hosting
             _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
+        }
+
+        public IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId)
+        {
+            var catalog = new ContextualResourceCatalog(this, authService, workspaceId);
+            return catalog;
         }
 
         readonly IServerVersionRepository _serverVersionRepository;
