@@ -20,6 +20,7 @@ using TestStack.White;
 using TestStack.White.Factory;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WindowItems;
+using TestStack.White.WindowsAPI;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
@@ -84,7 +85,10 @@ namespace Warewolf.UI.Tests
             }
 
             Assert.IsNotNull(_window, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
-            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            _window.Keyboard.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
+            _window.Keyboard.HoldKey(KeyboardInput.SpecialKeys.ALT);
+            _window.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F4);
+            _window.Keyboard.LeaveAllKeys();
             Playback.Wait(1000);
             return _window;
         }
