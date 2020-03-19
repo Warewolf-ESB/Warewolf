@@ -15,6 +15,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
 
         [TestMethod]
         [TestCategory("Database Tools")]
+        [Ignore]//TODO: Re-introduce this when https://warewolf.atlassian.net/browse/WOLF-6350 is done.
         public void ODBCDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             using (var PowerShellInstance = PowerShell.Create())
