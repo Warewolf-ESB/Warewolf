@@ -6,7 +6,9 @@ using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Security;
 using Warewolf.ResourceManagement;
+using Warewolf.Services;
 
 namespace Dev2.Runtime.Interfaces
 {
@@ -37,6 +39,7 @@ namespace Dev2.Runtime.Interfaces
         void Reload();
         DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName);
         int GetLatestVersionNumberForResource(Guid resourceId);
+        IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId);
     }
 
     public interface IResourceCatalogFactory

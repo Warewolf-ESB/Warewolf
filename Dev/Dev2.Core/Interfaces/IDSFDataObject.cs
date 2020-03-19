@@ -119,7 +119,7 @@ namespace Dev2.Interfaces
         bool RemoteNonDebugInvoke { get; set; }
         bool StopExecution { get; set; }
         IServiceTestModelTO ServiceTest { get; set; }
-        List<Guid> TestsResourceIds { get; set; }
+        Guid[] TestsResourceIds { get; set; }
         Guid? ExecutionID { get; set; }
         string CustomTransactionID { get; set; }
         string WebUrl { get; set; }

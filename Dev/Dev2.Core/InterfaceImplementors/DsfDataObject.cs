@@ -198,7 +198,7 @@ namespace Dev2.DynamicServices
         public int VersionNumber { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
-        public List<Guid> TestsResourceIds { get; set; }
+        public Guid[] TestsResourceIds { get; set; }
         public bool IsSubExecution { get; set; }
         public string QueryString { get; set; }
         public bool IsRemoteInvoke => EnvironmentID != Guid.Empty;

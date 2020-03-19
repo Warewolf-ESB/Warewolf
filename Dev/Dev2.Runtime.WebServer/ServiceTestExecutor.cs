@@ -1,6 +1,15 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -14,17 +23,14 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Interfaces;
 using Newtonsoft.Json.Linq;
-using Warewolf.Storage;
-using Dev2.Web;
-using Dev2.Common;
 
 namespace Dev2.Runtime.WebServer
 {
     static class ServiceTestExecutor
     {
-        public static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ICollection<IServiceTestModelTO> testResults, IDSFDataObject dataObjectClone)
+        public static async Task<IServiceTestModelTO> ExecuteTestAsync(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
         {
-            var lastTask = Task.Run(() =>
+            var lastTask = Task<IServiceTestModelTO>.Factory.StartNew(() =>
             {
                 var interTestRequest = new EsbExecuteRequest { ServiceName = serviceName };
                 var dataObjectToUse = dataObjectClone;
@@ -42,9 +48,10 @@ namespace Dev2.Runtime.WebServer
 
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
                 dataObjectToUse.Environment = null;
-                testResults.Add(result);
+                return result;
             });
-            await lastTask.ConfigureAwait(true);
+            lastTask.ConfigureAwait(true);
+            return lastTask.Result;
         }
 
         public static string SetupForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)
@@ -72,29 +79,17 @@ namespace Dev2.Runtime.WebServer
             {
                 if (dataObject.ReturnType == Web.EmitionTypes.TEST)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
-                    resourceCatalog, testCatalog, ref executePayload);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter, resourceCatalog, testCatalog, ref executePayload);
                 }
                 if (dataObject.ReturnType == Web.EmitionTypes.TRX)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
-                    resourceCatalog, testCatalog, ref executePayload);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter, resourceCatalog, testCatalog, ref executePayload);
                 }
                 dataObject.ResourceID = Guid.Empty;
             }
             else
             {
-                if (dataObject.ReturnType == EmitionTypes.TEST)
-                {
-                    formatter = dataObject.RunSingleTestBatchAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
-                        serviceName, testCatalog, ref executePayload);
-                }
-                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
-                {
-                    formatter = dataObject.RunSingleTestBatchAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
-                        serviceName, testCatalog, ref executePayload);
-                }
-
+                throw new Exception("do not expect this to be executed any longer");
             }
 
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);

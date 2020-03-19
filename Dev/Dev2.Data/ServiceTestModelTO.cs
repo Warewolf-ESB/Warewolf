@@ -1,7 +1,18 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using Warewolf.Data;
 
 namespace Dev2.Data
 {
@@ -38,6 +49,7 @@ namespace Dev2.Data
         public bool IsDirty { get; set; }
         public AuthenticationType AuthenticationType { get; set; }
         public Guid ResourceId { get; set; }
+        public IWarewolfResource Resource { get; set; }
         public List<IServiceTestStep> TestSteps { get; set; }
         public string FailureMessage { get; set; }
     }

@@ -17,10 +17,11 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Newtonsoft.Json;
+using Warewolf.Data;
 
 namespace Dev2.Common.Interfaces.Data
 {
-    public interface IResource : IEquatable<IResource>
+    public interface IResource : IWarewolfResource, IEquatable<IResource>
     {
         Guid ResourceID { get; set; }
         
