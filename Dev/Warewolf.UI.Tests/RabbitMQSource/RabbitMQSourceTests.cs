@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.RabbitMQSource
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PasswordTextBoxEdit.Enabled, "Password Textbox is not enabled");
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.VirtualHostTextBoxEdit.Enabled, "Virtual Host Textbox is not enabled");
                 Assert.IsFalse(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton.Enabled, "Test Connection button is enabled");
-                RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab(RabbitMQContainer.Container.IP, RabbitMQContainer.Container.Port);
+                RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab();
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton.Enabled, "Test Connection button is not enabled");
                 RabbitMQSourceUIMap.Click_RabbitMQSource_TestConnectionButton();
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.ItemImage.Exists, "Test Connection successful image does not appear.");
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.RabbitMQSource
         {
             //Create Source
             ExplorerUIMap.Select_NewRabbitMQSource_From_ExplorerContextMenu();
-            RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab("dummy text", "321");
+            RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab();
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists);

@@ -3,7 +3,6 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using TechTalk.SpecFlow;
-using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
@@ -41,10 +40,10 @@ namespace Warewolf.UI.Tests.RabbitMQSource.RabbitMQSourceUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton);
         }
 
-        public void Enter_Text_On_RabbitMQSourceTab(string IP, string Port)
+        public void Enter_Text_On_RabbitMQSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.HostTextBoxEdit.Text = IP;
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PortTextBoxEdit.Text = Port;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.HostTextBoxEdit.Text = "rsaklfSVRDEV.premier.local";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PortTextBoxEdit.Text = "5672";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.UserNameTextBoxEdit.Text = "test";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PasswordTextBoxEdit.Text = "test";
         }

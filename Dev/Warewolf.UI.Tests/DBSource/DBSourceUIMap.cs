@@ -70,12 +70,11 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRDEV and waiting for the spinner.");
         }
 
-        [When(@"I Can Select Hostname From Server Source Wizard Dropdownlist")]
-        public void WhenICanSelectHostnameFromServerSourceWizardDropdownlist()
+        [When(@"I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist")]
+        public void Select_RSAKLFSVRDEV_From_Server_Source_Wizard_Dropdownlist()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = Environment.MachineName;
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.FirstItem, new Point(97, 17));
-            Assert.AreEqual(Environment.MachineName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "Hostname is not selected as the server in the DB source wizard.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRDEV, new Point(97, 17));
+            Assert.AreEqual("RSAKLFSVRDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRDEV is not selected as the server in the DB source wizard.");
         }
 
         [Then(@"I Enter Text Into Database Server Tab")]
@@ -197,56 +196,25 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             Assert.AreEqual("Dev2TestingDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIDev2TestingDBText.DisplayText);
         }
 
-        [Given(@"SVRDEV appears as an option in the DB source wizard server combobox")]
-        [Then(@"SVRDEV appears as an option in the DB source wizard server combobox")]
-        public void Assert_SVRDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
+        [Given(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
+        [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
+        [Then(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
+        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.SVRDEV.Exists, "SVRDEV does not exist as an option in DB source wizard server combobox.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRDEV";
         }
 
-        public static Depends _dependency;
-
-        [Given(@"I depend on ""(.*)""")]
-        public void Given_I_Have_This_Dependency(string dependencyName)
+        [Given(@"RSAKLFSVRDEV appears as an option in the DB source wizard server combobox")]
+        [Then(@"RSAKLFSVRDEV appears as an option in the DB source wizard server combobox")]
+        public void Assert_RSAKLFSVRDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
         {
-            switch (dependencyName)
-            {
-                case "MySQL":
-                    _dependency = new Depends(Depends.ContainerType.MySQL);
-                    break;
-                case "MSSQL":
-                    _dependency = new Depends(Depends.ContainerType.MSSQL);
-                    break;
-                case "PostGreSQL":
-                    _dependency = new Depends(Depends.ContainerType.PostGreSQL);
-                    break;
-                case "Warewolf":
-                    _dependency = new Depends(Depends.ContainerType.Warewolf);
-                    break;
-                case "RabbitMQ":
-                    _dependency = new Depends(Depends.ContainerType.RabbitMQ);
-                    break;
-                case "CIRemote":
-                    _dependency = new Depends(Depends.ContainerType.CIRemote);
-                    break;
-                case "Redis":
-                    _dependency = new Depends(Depends.ContainerType.Redis);
-                    break;
-                case "AnonymousRedis":
-                    _dependency = new Depends(Depends.ContainerType.AnonymousRedis);
-                    break;
-                case "AnonymousWarewolf":
-                    _dependency = new Depends(Depends.ContainerType.AnonymousWarewolf);
-                    break;
-            }
-
-            throw new ArgumentOutOfRangeException();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRDEV.Exists, "RSAKLFSVRDEV does not exist as an option in DB source wizard server combobox.");
         }
 
-        [When(@"I Type SVRDEV into DB Source Wizard Server Textbox")]
-        public void Type_SVRDEV_into_DB_Source_Wizard_Server_Textbox()
+        [When(@"I Type RSAKLFSVRDEV into DB Source Wizard Server Textbox")]
+        public void Type_RSAKLFSVRDEV_into_DB_Source_Wizard_Server_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = _dependency.Container.IP+","+_dependency.Container.Port;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRDEV";
         }
 
         public UIMap UIMap
