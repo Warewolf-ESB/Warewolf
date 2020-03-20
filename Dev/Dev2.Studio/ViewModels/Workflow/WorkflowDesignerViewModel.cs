@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -70,12 +70,10 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -87,15 +85,14 @@ using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels.Merge;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
 using Dev2.Common.Interfaces;
-using System.Xml;
-using Dev2.Common.ExtMethods;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities;
+using Warewolf.Data;
 using Warewolf.Data.Options;
+using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -2120,7 +2117,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (ResourceModel.DataList != null)
             {
                 var currentDataList = ResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "");
-                return currentDataList.SpaceCaseInsenstiveComparision(_originalDataList);
+                return StringExtension.SpaceCaseInsenstiveComparision(currentDataList, _originalDataList);
             }
             return true;
         }

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Text;
 
 namespace Warewolf.Data
 {
@@ -17,6 +18,9 @@ namespace Warewolf.Data
         Guid ResourceID { get; set; }
         String ResourceName { get; set; }
         string ResourceType { get; set; }
+        IVersionInfo VersionInfo { get; set; }
+        StringBuilder DataList { get; set; }
+        
     }
 
     public interface IFilePathResource

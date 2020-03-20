@@ -28,6 +28,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
@@ -137,7 +138,12 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
+            
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -188,6 +194,11 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -229,9 +240,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(resource.Object);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -275,9 +287,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(resource.Object);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -320,9 +333,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(resource.Object);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -365,10 +379,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var resource = new Mock<IResource>();
-
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(resource.Object);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -411,9 +425,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(resource.Object);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -749,35 +764,45 @@ namespace Dev2.Tests.Runtime.WebServer
         public void AbstractWebRequestHandler_CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests()
         {
             //---------------Set up test pack-------------------
+            var resourceId = Guid.NewGuid();
+            var resourceId1 = Guid.NewGuid();
+            var resourceId2 = Guid.NewGuid();
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
             authorizationService.Setup(service => service.IsAuthorized(principal.Object,It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
-            var dataObject = new Mock<IDSFDataObject>();
-            dataObject.SetupAllProperties();
+            var dataObject = new DsfDataObject(string.Empty, Guid.Empty);
             var env = new Mock<IExecutionEnvironment>();
             env.SetupAllProperties();
-            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
-            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
-            dataObject.SetupGet(o => o.ReturnType).Returns(EmitionTypes.TEST);
-            dataObject.SetupGet(o => o.TestName).Returns("*");
-            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
-            dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
-            var resource = new Mock<IResource>();
-            var resourceId = Guid.NewGuid();
-            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
-            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            dataObject.Environment = env.Object;
+            dataObject.RawPayload = new StringBuilder("<raw>SomeData</raw>");
+            dataObject.ReturnType = EmitionTypes.TEST;
+            dataObject.TestName = "*";
+            dataObject.ExecutingUser = principal.Object;
+
+            var resourceIds = new[] {resourceId};
+            dataObject.TestsResourceIds = resourceIds;
+            
+            var resource = new Mock<IWarewolfResource>();
+            resource.Setup(o => o.ResourceID).Returns(resourceId);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID).Returns(resourceId1);
             mockResource.Setup(o => o.DataList).Returns(new StringBuilder("<DataList></DataList>"));
             var resource2 = mockResource.Object;
             resourceCatalog.Setup(o => o.GetResource(Guid.Empty, "Hello World")).Returns(resource2);
 
-            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+            resourceCatalog.Setup(o => o.GetResources(It.IsAny<Guid>()))
                 .Returns(new List<IResource>()
                 {
-                   resource.Object
+                   resource.Object as IResource
                 });
+
+            var mockContextualResourceCatalog = new Mock<IContextualResourceCatalog>();
+
+            resourceCatalog.Setup(o => o.NewContextualResourceCatalog(authorizationService.Object, Guid.Empty))
+                .Returns(mockContextualResourceCatalog.Object);
+            
             var testCatalog = new Mock<ITestCatalog>();
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
             serviceTestModelTO.Setup(to => to.Enabled).Returns(true);
@@ -789,7 +814,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Setup(catalog => catalog.Fetch(Guid.Empty)).Returns(tests);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -836,6 +861,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 {
                    resource.Object
                 });
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
             serviceTestModelTO.Setup(to => to.Enabled).Returns(true);
@@ -1798,6 +1824,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -1833,6 +1863,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -2127,6 +2161,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -2165,6 +2203,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));

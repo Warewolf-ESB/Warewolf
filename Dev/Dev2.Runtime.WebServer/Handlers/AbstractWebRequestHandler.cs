@@ -43,6 +43,7 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf.Auditing;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -96,7 +97,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             Guid _workspaceGuid;
             Guid _executionDlid;
             IDSFDataObject _dataObject;
-            IResource _resource;
+            IWarewolfResource _resource;
             Dev2JsonSerializer _serializer;
             bool _canExecute;
             private EsbExecuteRequest _esbExecuteRequest;
@@ -131,7 +132,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
 
-            internal void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IResource resource)
+            internal void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IWarewolfResource resource)
             {
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
                 _dataObject.SetupForWebDebug(webRequest);
@@ -278,8 +279,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     return new StringResponseWriter(dataObject.Environment.FetchErrors(), formatter.ContentType);
                 }
-
-                //var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
 
                 executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, _esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
