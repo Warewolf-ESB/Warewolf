@@ -12,14 +12,14 @@ namespace Warewolf.Interfaces.Auditing
 {
     public interface IWebSocketServerFactory
     {
-        IWebSocketServerWrapper New(string serverLoggingAddress);
+        IWebSocketServerWrapper New(string endPoint);
     }
 
     public class WebSocketServerFactory : IWebSocketServerFactory
     {
-        public IWebSocketServerWrapper New(string serverLoggingAddress)
+        public IWebSocketServerWrapper New(string endPoint)
         {
-            return new WebSocketServerWrapper(serverLoggingAddress);
+            return new WebSocketServerWrapper(endPoint);
         }
     }
 }

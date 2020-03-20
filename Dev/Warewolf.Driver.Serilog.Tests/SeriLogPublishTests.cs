@@ -129,10 +129,11 @@ namespace Warewolf.Driver.Serilog.Tests
             var logger = new LoggerConfiguration().WriteTo.SQLite(testDBPath, testTableName).CreateLogger();
 
             var mockSeriLogConfig = new Mock<ISeriLogConfig>();
-            mockSeriLogConfig.SetupGet(o => o.ConnectionString).Returns(testDBPath);
+            //TODO: this is now on the data source
+            //mockSeriLogConfig.SetupGet(o => o.ConnectionString).Returns(testDBPath);
             mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
 
-            var loggerSource = new SeriLoggerSource
+            var loggerSource = new SeriLogSQLiteSource
             {
                 ConnectionString = testDBPath,
                 TableName = testTableName
@@ -189,9 +190,6 @@ namespace Warewolf.Driver.Serilog.Tests
             readonly ILogEventSink _logEventSink;
 
             public ILogger Logger { get => CreateLogger(); }
-            public string ServerLoggingAddress { get; set; }
-
-            public string ConnectionString => throw new NotImplementedException();
 
             public TestSeriLogSinkConfig(ILogEventSink logEventSink)
             {
@@ -202,6 +200,8 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 return new LoggerConfiguration().WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
             }
+
+            public string Endpoint { get; set; }
         }
 
 
@@ -261,8 +261,6 @@ namespace Warewolf.Driver.Serilog.Tests
         }
 
         public ILogger Logger { get => CreateLogger(); }
-        public string ServerLoggingAddress { get; set; }
-        public string ConnectionString { get; }
 
         private ILogger CreateLogger()
         {
@@ -271,6 +269,7 @@ namespace Warewolf.Driver.Serilog.Tests
                 .SQLite(sqliteDbPath: _config.Path, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
                 .CreateLogger();
         }
+        public string Endpoint { get; set; }
     }
 
 }

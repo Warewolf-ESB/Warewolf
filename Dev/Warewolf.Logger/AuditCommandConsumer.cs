@@ -75,7 +75,7 @@ namespace Warewolf.Logger
         private static void QueryTriggerLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
             var serializer = new Dev2JsonSerializer();
-            var seriLoggerSource = new SeriLoggerSource();
+            var seriLoggerSource = new SeriLoggerSource() as ISeriLogSQLiteSource;
             var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryTriggerData(query);
 
@@ -85,7 +85,7 @@ namespace Warewolf.Logger
         private static void ExecuteLogQuery(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
             var serializer = new Dev2JsonSerializer();
-            var seriLoggerSource = new SeriLoggerSource();
+            var seriLoggerSource = new SeriLoggerSource()as ISeriLogSQLiteSource;
             var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
             var results = auditQueryable.QueryLogData(query);
 

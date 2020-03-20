@@ -11,15 +11,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Driver.Serilog;
 
-namespace Warewolf.Tests.Sinks
+namespace Warewolf.Driver.Serilog.Tests
 {
     [TestClass]
-    public class SQLiteConfigTests
+    public class SeriLogSQLiteTests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogSQLiteConfig))]
-        public void SeriLogSQLiteConfig_NoParamConstructor_Returns_Default()
+        public void SeriLogSQLite_NoParamConstructor_Returns_Default()
         {
             //---------------------------------Arrange-----------------------------
             var sqliteConfig = new SeriLogSQLiteConfig();
@@ -27,13 +27,13 @@ namespace Warewolf.Tests.Sinks
             //---------------------------------Assert------------------------------
             Assert.AreEqual(expected: @"C:\ProgramData\Warewolf\Audits\AuditDB.db", actual: sqliteConfig.ConnectionString);
             Assert.IsNotNull(sqliteConfig.Logger);
-            Assert.IsNull(sqliteConfig.ServerLoggingAddress);
+            Assert.IsNotNull(sqliteConfig.Endpoint);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SeriLogSQLiteConfig))]
-        public void SeriLogSQLiteConfig_WithParamConstructor_Returns_Correct_Settings()
+        public void SeriLogSQLite_WithParamConstructor_Returns_Correct_Settings()
         {
             //---------------------------------Arrange-----------------------------
             var settings = new SeriLogSQLiteConfig.Settings
@@ -47,7 +47,26 @@ namespace Warewolf.Tests.Sinks
             //---------------------------------Assert------------------------------
             Assert.AreEqual(expected: @"C:\ProgramData\Warewolf\Tests\testDB.db", actual: sqliteConfig.ConnectionString);
             Assert.IsNotNull(sqliteConfig.Logger);
-            Assert.IsNull(sqliteConfig.ServerLoggingAddress);
+            Assert.IsNotNull(sqliteConfig.Endpoint);
+        }
+        
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SeriLogSQLiteConfig))]
+        public void SeriLogSQLite_DataSource_Constructor_Success()
+        {
+            //---------------------------------Arrange-----------------------------
+            var testDBPath = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
+            var testTableName = "Logs";
+            
+            var loggerSource = new SeriLogSQLiteSource
+            {
+                ConnectionString = testDBPath,
+                TableName = testTableName
+            };
+            //---------------------------------Assert------------------------------
+            Assert.AreEqual(testTableName,loggerSource.TableName);
+            Assert.AreEqual(testDBPath,loggerSource.ConnectionString);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace Warewolf.Interfaces.Auditing
     {
         private readonly IWebSocketServer _webSocketServer;
 
-        public WebSocketServerWrapper(string serverLoggingAddress)
+        public WebSocketServerWrapper(string endPoint)
         {
-            _webSocketServer = new WebSocketServer(serverLoggingAddress)
+            _webSocketServer = new WebSocketServer(endPoint)
             {
                 RestartAfterListenError = true
             };
