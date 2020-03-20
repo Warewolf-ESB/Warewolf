@@ -58,9 +58,9 @@ namespace Warewolf.Logger
 
         public void Start(IList<IWebSocketConnection> clients)
         {
-            var loggerConfig = _loggerContext.LoggerConfig as ILoggerConfig;
+            var loggerConfig = _loggerContext.LoggerConfig;
 
-            _server = _webSocketServerFactory.New(loggerConfig.ServerLoggingAddress);
+            _server = _webSocketServerFactory.New(loggerConfig.Endpoint);
             _server.Start(socket =>
             {
                 socket.OnOpen = () =>

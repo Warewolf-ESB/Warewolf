@@ -12,6 +12,7 @@ using CommandLine;
 using Dev2.Common;
 using System;
 using System.Collections.Generic;
+using Warewolf.Configuration;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
 
@@ -24,21 +25,22 @@ namespace Warewolf.Logger
         private IArgs _options;
 
         public bool Verbose { get => _options.Verbose; }
-        public ILoggerSource Source {
-            get
-            {
-                return new SeriLoggerSource();
-            }
-        }
+        public ILoggerSource Source => new SeriLoggerSource();
+
         public ILoggerConfig LoggerConfig { get; set; }
 
         public LoggerContext(IArgs args)
         {
             _options = args;
-            LoggerConfig = new SeriLogSQLiteConfig
+            if (Config.Server.Sink == nameof(AuditingSettingsData))
             {
-                ServerLoggingAddress = Config.Auditing.Endpoint
-            };
+                //TODO: we will LoggingDataSource depending on that open the correct sink for now we only have elastic so we will default
+                LoggerConfig =  new SeriLogElasticsearchConfig();
+            }
+            else
+            {
+                LoggerConfig =  new SeriLogSQLiteConfig();
+            }
         }
     }
 }
