@@ -17,7 +17,7 @@ using System;
 using Warewolf.Driver.Serilog;
 using Warewolf.Streams;
 
-namespace Warewolf.Tests
+namespace Warewolf.Driver.Serilog.Tests
 {
     [TestClass]
     public class SeriLogConnectionTests
