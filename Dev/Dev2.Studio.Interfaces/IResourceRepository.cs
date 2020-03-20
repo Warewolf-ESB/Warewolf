@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Options;
 using Warewolf.Triggers;
