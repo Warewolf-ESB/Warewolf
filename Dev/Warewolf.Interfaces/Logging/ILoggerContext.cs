@@ -8,12 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Streams;
+
 namespace Warewolf.Logging
 {
     public interface ILoggerContext
     {
          ILoggerSource Source { get; }
          ILoggerConfig LoggerConfig { get; set; }
+         ISourceConnectionFactory LeaderSource { get; }
+         IStreamConfig LeaderConfig { get; set; }
          bool Verbose { get; }
     }
 }

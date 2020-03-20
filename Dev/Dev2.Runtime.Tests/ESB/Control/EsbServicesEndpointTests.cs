@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.IO;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
@@ -22,6 +21,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -54,6 +54,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory(nameof(EsbServicesEndpoint))]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing()
         {
             var esbServicesEndpoint = new EsbServicesEndpoint();
@@ -79,7 +80,41 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(EsbServicesEndpoint))]
+        public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing_And_DataObject_StateNotifier_IsSet()
+        {
+            var mockLogManager = new Mock<IStateNotifierFactory>();
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            var esbServicesEndpoint = new EsbServicesEndpoint();
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
+            var dataObject = new DsfDataObject("", Guid.NewGuid())
+            {
+                ResourceID = Guid.Parse("2311e5fb-3eaa-4986-b946-5a687f33fd51"),
+                ExecutingUser = mockPrincipal.Object,
+                IsDebug = true,
+                RunWorkflowAsync = true,
+            };
+            dataObject.Environment.Assign("[[Name]]", "somename", 0);
+
+            mockLogManager.Setup(o => o.New(dataObject)).Returns(mockStateNotifier.Object);
+            CustomContainer.Register<IStateNotifierFactory>(mockLogManager.Object);
+
+            var request = new EsbExecuteRequest();
+            var workspaceId = Guid.NewGuid();
+
+            var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+
+            Assert.AreEqual(Guid.Empty, resultId);
+            Assert.AreEqual(mockStateNotifier.Object, dataObject.StateNotifier);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(EsbServicesEndpoint))]
         public void EsbServicesEndpoint_CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
         {
             //---------------Set up test pack-------------------
@@ -99,6 +134,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(EsbServicesEndpoint))]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
         {
             //---------------Set up test pack-------------------
@@ -125,6 +161,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(EsbServicesEndpoint))]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow()
         {
             //---------------Set up test pack-------------------
@@ -157,6 +194,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(EsbServicesEndpoint))]
         public void EsbServicesEndpoint_ExecuteLogErrorRequest_GivenCorrectUri_ShouldNoThrowException()
         {
             //---------------Set up test pack-------------------

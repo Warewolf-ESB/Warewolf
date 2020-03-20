@@ -215,7 +215,6 @@ namespace Dev2
                     OpenCOMStream(null);
                     _loadResources.LoadResourceCatalog();
                     _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                    //new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
                     _loadResources.LoadServerWorkspace();
                     _loadResources.LoadActivityCache(_assemblyLoader);
                     LoadTestCatalog();

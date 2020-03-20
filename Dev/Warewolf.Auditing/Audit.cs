@@ -182,14 +182,15 @@ namespace Warewolf.Auditing
             return p => (dateValue == null || p.AuditDate <= dateValue);
         }
         public Audit() { }
-        public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity)
+        public Audit(IExecutionContext dsfDataObject, string auditType, string detail, object previousActivity, object nextActivity)
             : this(dsfDataObject, auditType, detail, previousActivity, nextActivity, null)
         {
 
         }
 
-        public Audit(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity, Exception exception)
+        public Audit(IExecutionContext dataObject, string auditType, string detail, object previousActivity, object nextActivity, Exception exception)
         {
+            var dsfDataObject = dataObject as IDSFDataObject;
             var dev2Serializer = new Dev2JsonSerializer();
             WorkflowID = dsfDataObject.ResourceID.ToString();
             ExecutionID = dsfDataObject.ExecutionID.ToString();
@@ -214,17 +215,17 @@ namespace Warewolf.Auditing
             AdditionalDetail = detail;
             Exception = exception;
 
-            if (previousActivity != null)
+            if (previousActivity is IDev2Activity act1)
             {
-                PreviousActivity = previousActivity.GetDisplayName();
-                PreviousActivityType = previousActivity.GetType().ToString();
-                PreviousActivityId = previousActivity.UniqueID;
+                PreviousActivity = act1.GetDisplayName();
+                PreviousActivityType = act1.GetType().ToString();
+                PreviousActivityId = act1.UniqueID;
             }
-            if (nextActivity != null)
+            if (nextActivity is IDev2Activity act2)
             {
-                NextActivity = nextActivity.GetDisplayName();
-                NextActivityType = nextActivity.GetType().ToString();
-                NextActivityId = nextActivity.UniqueID;
+                NextActivity = act2.GetDisplayName();
+                NextActivityType = act2.GetType().ToString();
+                NextActivityId = act2.UniqueID;
             }
         }
     }
