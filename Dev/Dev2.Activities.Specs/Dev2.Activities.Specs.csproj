@@ -77,12 +77,19 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Composition\WorkflowExecutionLogging.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowExecutionLogging.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Composition\WorkflowExecutionLoggingSteps.cs" />
     <Compile Include="Composition\WorkflowResume.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowResume.feature</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Hooks\ConnectAndLoadServerResourcesHooks.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>
@@ -114,6 +121,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Search.feature</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Cluster\WarewolfLoggingFollower.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WarewolfLoggingFollower.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Cluster\WarewolfLoggingFollowerSteps.cs" />
     <Compile Include="Sources\ServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -313,6 +326,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CompositionLoadTests.feature.cs</LastGenOutput>
     </None>
+    <None Include="Composition\WorkflowExecutionLogging.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowExecutionLogging.feature.cs</LastGenOutput>
+    </None>
     <None Include="Composition\WorkflowResume.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowResume.feature.cs</LastGenOutput>
@@ -340,6 +357,10 @@
     <None Include="Search\Search.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Search.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Settings\Cluster\WarewolfLoggingFollower.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WarewolfLoggingFollower.feature.cs</LastGenOutput>
     </None>
     <None Include="Sources\ServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -454,6 +475,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj">
+      <Project>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</Project>
+      <Name>Dev2.Runtime.WebServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>

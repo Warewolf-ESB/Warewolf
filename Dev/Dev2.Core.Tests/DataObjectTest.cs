@@ -24,7 +24,7 @@ using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Security.Principal;
-using Dev2.Runtime.ESB.Execution;
+using Warewolf.Auditing;
 
 namespace Dev2.Tests
 {
