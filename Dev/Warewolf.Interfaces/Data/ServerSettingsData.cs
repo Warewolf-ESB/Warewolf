@@ -22,7 +22,9 @@ namespace Warewolf.Configuration
         public bool? EnableDetailedLogging { get; set; }
         public string Sink { get; set; } 
         public int? LogFlushInterval { get; set; }
-
+        
+        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
+        public string AuditFilePath { get; set; }
         public bool Equals(ServerSettingsData other)
         {
             var equals = WebServerPort == other.WebServerPort;
@@ -32,6 +34,7 @@ namespace Warewolf.Configuration
             equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
             equals &= LogFlushInterval == other.LogFlushInterval;
+            equals &= AuditFilePath == other.AuditFilePath;
             equals &= Sink == other.Sink;
             return equals;
         }

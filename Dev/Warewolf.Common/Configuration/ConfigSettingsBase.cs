@@ -9,10 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading;
 using Newtonsoft.Json;
 using Warewolf.VirtualFileSystem;
 
@@ -32,6 +28,11 @@ namespace Warewolf.Configuration
             _fileWrapper = file;
 
             Load();
+        }
+
+        protected ConfigSettingsBase(string settingsFile)
+        {
+            _settings = JsonConvert.DeserializeObject<T>(settingsFile);
         }
 
         protected void Load()
