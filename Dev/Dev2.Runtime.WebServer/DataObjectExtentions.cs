@@ -352,37 +352,6 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private class WorkflowTestResults
-        {
-            public WorkflowTestResults(IWarewolfResource res)
-            {
-                Resource = res;
-            }
-
-            public IWarewolfResource Resource { get; }
-            public List<IServiceTestModelTO> Results { get; } = new List<IServiceTestModelTO>();
-            public bool HasTestResults => Results.Count > 0;
-
-            public void Add(IServiceTestModelTO result)
-            {
-                Results.Add(result);
-            }
-        }
-        private class TestResults
-        {
-            public TestResults()
-            {
-                StartTime = DateTime.Now;
-            }
-            public DateTime StartTime { get; }
-            public DateTime EndTime { get; set; }
-            public List<WorkflowTestResults> Results { get; } = new List<WorkflowTestResults>();
-
-            public void Add(WorkflowTestResults taskResult)
-            {
-                Results.Add(taskResult);
-            }
-        }
         static TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog)
         {
             var result = new TestResults();
@@ -397,7 +366,7 @@ namespace Dev2.Runtime.WebServer
                 {
                     var workflowTestTaskList = new List<Task<IServiceTestModelTO>>();
                     var res = selectedResources.FirstOrDefault(o => o.ResourceID == testsResourceId);
-                    var resourcePath = res?.GetResourcePath(workspaceGuid).Replace("\\", "/");
+                    var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
                     var workflowTestResults = new WorkflowTestResults(res);
 
                     var allTests = testCatalog.Fetch(testsResourceId);
@@ -433,6 +402,39 @@ namespace Dev2.Runtime.WebServer
             result.EndTime = DateTime.Now;
 
             return result;
+        }
+    }
+
+    public class TestResults
+    {
+        public TestResults()
+        {
+            StartTime = DateTime.Now;
+        }
+        public DateTime StartTime { get; }
+        public DateTime EndTime { get; set; }
+        public List<WorkflowTestResults> Results { get; } = new List<WorkflowTestResults>();
+
+        public void Add(WorkflowTestResults taskResult)
+        {
+            Results.Add(taskResult);
+        }
+    }
+
+    public class WorkflowTestResults
+    {
+        public WorkflowTestResults(IWarewolfResource res)
+        {
+            Resource = res;
+        }
+
+        public IWarewolfResource Resource { get; }
+        public List<IServiceTestModelTO> Results { get; } = new List<IServiceTestModelTO>();
+        public bool HasTestResults => Results.Count > 0;
+
+        public void Add(IServiceTestModelTO result)
+        {
+            Results.Add(result);
         }
     }
 }
