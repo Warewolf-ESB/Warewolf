@@ -49,7 +49,6 @@ namespace Dev2.Data
         public bool IsDirty { get; set; }
         public AuthenticationType AuthenticationType { get; set; }
         public Guid ResourceId { get; set; }
-        public IWarewolfResource Resource { get; set; }
         public List<IServiceTestStep> TestSteps { get; set; }
         public string FailureMessage { get; set; }
     }
