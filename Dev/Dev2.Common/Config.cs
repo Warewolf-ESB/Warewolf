@@ -34,7 +34,7 @@ namespace Dev2.Common
         public static ServerSettings Server = new ServerSettings();
         public static StudioSettings Studio = new StudioSettings();
         public static AuditingSettings Auditing = new AuditingSettings();
-        public static LegacySettings  Legacy = new LegacySettings(); 
+        public static LegacySettings Legacy = new LegacySettings();
     }
 
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
@@ -50,13 +50,32 @@ namespace Dev2.Common
 
         public string Sink
         {
-            get => _settings.Sink ?? DefaultSink;
+            get => GetSink();
             set
             {
                 _settings.Sink = value;
                 Save();
             }
         }
+
+        private string GetSink()
+        {
+            if (_settings.Sink == null && _settings.AuditFilePath != null)
+            {
+                return nameof(LegacySettingsData);
+            }
+
+            if (_settings.Sink != null )
+            {
+                {
+                    return _settings.Sink;
+                }
+            }
+            return DefaultSink;
+        }
+
+        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
+        public string AuditFilePath => _settings.AuditFilePath;
 
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
@@ -73,6 +92,11 @@ namespace Dev2.Common
         {
         }
 
+        public ServerSettings(string settingsFile)
+            : base(settingsFile)
+        {
+        }
+        
         public ServerSettingsData Get()
         {
             var result = new ServerSettingsData();
@@ -151,7 +175,7 @@ namespace Dev2.Common
 
         public string AuditFilePath
         {
-            get => _settings.AuditFilePath ?? DefaultAuditPath;
+            get => GetAuditFilePath();
             set
             {
                 _settings.AuditFilePath = value;
@@ -159,6 +183,21 @@ namespace Dev2.Common
             }
         }
 
+        private string GetAuditFilePath()
+        {
+            if (_settings.AuditFilePath == null && Config.Server.AuditFilePath != null)
+            {
+                return Config.Server.AuditFilePath;
+            }
+
+            if (_settings.AuditFilePath != null )
+            {
+                {
+                    return _settings.AuditFilePath;
+                }
+            }
+            return DefaultAuditPath;
+        }
         public string Endpoint
         {
             get => _settings.Endpoint ?? DefaultEndpoint;
