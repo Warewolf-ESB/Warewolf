@@ -24,6 +24,7 @@ using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
 using Newtonsoft.Json;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -35,7 +36,7 @@ namespace Dev2.Runtime.WebServer
         ErrorResultTO ErrorResultTO { get; set; }
         string PayLoad { get; set; }
         EsbExecuteRequest Request { get; set; }
-        IResource Resource { get; set; }
+        IWarewolfResource Resource { get; set; }
         Dev2JsonSerializer Serializer { get; set; }
         string ServiceName { get; set; }
         WebRequestTO WebRequestTO { get; set; }
@@ -51,7 +52,7 @@ namespace Dev2.Runtime.WebServer
         public EsbExecuteRequest Request { get; set; }
         public Guid DataListIdGuid { get; set; }
         public Guid WorkspaceID { get; set; }
-        public IResource Resource { get; set; }
+        public IWarewolfResource Resource { get; set; }
         public DataListFormat DataListFormat { get; set; }
         public Dev2JsonSerializer Serializer { get; set; }
         public ErrorResultTO ErrorResultTO { get; set; }
@@ -91,7 +92,7 @@ namespace Dev2.Runtime.WebServer
                     _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
                 } else
                 {
-                    var content = GetExecuteExceptionPayload(dataObject, resource, webRequest, ref formatter);
+                    var content = GetExecuteExceptionPayload(dataObject);
                     return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, content);
                 }
             }
@@ -146,7 +147,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        string GetExecutePayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug && resource?.DataList != null)
@@ -172,7 +173,7 @@ namespace Dev2.Runtime.WebServer
             return string.Empty;
         }
 
-        string GetExecuteExceptionPayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        string GetExecuteExceptionPayload(IDSFDataObject dataObject)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug)

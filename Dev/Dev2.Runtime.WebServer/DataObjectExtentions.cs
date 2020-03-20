@@ -237,9 +237,9 @@ namespace Dev2.Runtime.WebServer
 
         static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName) => !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
 
-        public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
+        public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IWarewolfResource resource)
         {
-            IResource localResource = null;
+            IWarewolfResource localResource = null;
 
             if (Guid.TryParse(serviceName, out Guid resourceID))
             {
@@ -281,14 +281,14 @@ namespace Dev2.Runtime.WebServer
             resource = localResource;
         }
 
-        static void MapServiceToDataObjects(IDSFDataObject dataObject, IResource localResource)
+        static void MapServiceToDataObjects(IDSFDataObject dataObject, IWarewolfResource localResource)
         {
             dataObject.ServiceName = localResource.ResourceName;
             dataObject.ResourceID = localResource.ResourceID;
             dataObject.SourceResourceID = localResource.ResourceID;
         }
 
-        public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IResource resource, IAuthorizationService service)
+        public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IWarewolfResource resource, IAuthorizationService service)
         {
             if (resource is null)
             {
@@ -397,7 +397,7 @@ namespace Dev2.Runtime.WebServer
                 {
                     var workflowTestTaskList = new List<Task<IServiceTestModelTO>>();
                     var res = selectedResources.FirstOrDefault(o => o.ResourceID == testsResourceId);
-                    var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
+                    var resourcePath = res?.GetResourcePath(workspaceGuid).Replace("\\", "/");
                     var workflowTestResults = new WorkflowTestResults(res);
 
                     var allTests = testCatalog.Fetch(testsResourceId);
