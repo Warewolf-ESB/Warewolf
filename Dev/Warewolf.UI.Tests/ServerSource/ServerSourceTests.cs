@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
+using System.Net.Mime;
 using System.Windows.Input;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
@@ -83,12 +84,13 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
-            UIMap._window.Get(SearchCriteria.ByAutomationId("Text")).Enter(_containerOps.Container.IP.Replace(".premier.local", ""));
+            UIMap._window.Get(SearchCriteria.ByAutomationId("Text")).Enter("localhost");
+            UIMap._window.Get<RadioButton>(SearchCriteria.ByAutomationId("WindowsRadioButton")).Click();
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
-            Assert.AreEqual("WarewolfAdmin", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
+            Assert.AreEqual("localhost", UIMap._window.Get<TextBox>(SearchCriteria.ByAutomationId("Text")).Text, "The server name Texbox value is not set to localhost.");
         }
 
         [TestMethod]
