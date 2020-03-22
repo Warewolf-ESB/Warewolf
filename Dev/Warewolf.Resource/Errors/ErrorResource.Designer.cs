@@ -2311,7 +2311,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrator rights required to perfom this action..
+        ///   Looks up a localized string similar to Administrator rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToAdministratorException {
             get {
@@ -2320,7 +2320,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contribute rights required to perfom this action..
+        ///   Looks up a localized string similar to Contribute rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToContributeException {
             get {
@@ -2329,7 +2329,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create rights required to perfom this action..
+        ///   Looks up a localized string similar to Create rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToCreateException {
             get {
@@ -2338,7 +2338,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DeployFrom  rights required to perfom this action..
+        ///   Looks up a localized string similar to DeployFrom  rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToDeployFromException {
             get {
@@ -2347,7 +2347,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DeployTo rights required to perfom this action..
+        ///   Looks up a localized string similar to DeployTo rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToDeployToException {
             get {
@@ -2356,7 +2356,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute rights required to perfom this action..
+        ///   Looks up a localized string similar to Execute rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToExecuteException {
             get {
@@ -2365,7 +2365,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not allowed to perfom this action on a follower..
+        ///   Looks up a localized string similar to Not allowed to perform this action on a follower..
         /// </summary>
         public static string NotAuthorizedToExecuteOnFollower {
             get {
@@ -2374,7 +2374,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View rights required to perfom this action..
+        ///   Looks up a localized string similar to View rights required to perform this action..
         /// </summary>
         public static string NotAuthorizedToViewException {
             get {

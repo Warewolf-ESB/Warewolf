@@ -1287,28 +1287,28 @@ Please contact your Windows System Administrator.</value>
     <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
   </data>
   <data name="NotAuthorizedToAdministratorException" xml:space="preserve">
-    <value>Administrator rights required to perfom this action.</value>
+    <value>Administrator rights required to perform this action.</value>
   </data>
   <data name="NotAuthorizedToContributeException" xml:space="preserve">
-    <value>Contribute rights required to perfom this action.</value>
+    <value>Contribute rights required to perform this action.</value>
   </data>
   <data name="NotAuthorizedToCreateException" xml:space="preserve">
-    <value>Create rights required to perfom this action.</value>
+    <value>Create rights required to perform this action.</value>
   </data>
   <data name="NotAuthorizedToDeployFromException" xml:space="preserve">
-    <value>DeployFrom  rights required to perfom this action.</value>
+    <value>DeployFrom  rights required to perform this action.</value>
   </data>
   <data name="NotAuthorizedToDeployToException" xml:space="preserve">
-    <value>DeployTo rights required to perfom this action.</value>
+    <value>DeployTo rights required to perform this action.</value>
   </data>
   <data name="NotAuthorizedToExecuteException" xml:space="preserve">
-    <value>Execute rights required to perfom this action.</value>
+    <value>Execute rights required to perform this action.</value>
   </data>
   <data name="NotAuthorizedToExecuteOnFollower" xml:space="preserve">
-    <value>Not allowed to perfom this action on a follower.</value>
+    <value>Not allowed to perform this action on a follower.</value>
   </data>
   <data name="NotAuthorizedToViewException" xml:space="preserve">
-    <value>View rights required to perfom this action.</value>
+    <value>View rights required to perform this action.</value>
   </data>
   <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
     <value>Not Authorized</value>
