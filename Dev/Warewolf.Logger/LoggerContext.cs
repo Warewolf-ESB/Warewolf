@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Warewolf.Logger
         
         private IArgs _options;
 
-        public bool Verbose { get => _options.Verbose; }
+        public bool Verbose => _options.Verbose;
         public ILoggerSource Source => new SeriLoggerSource();
 
         public ILoggerConfig LoggerConfig { get; set; }
