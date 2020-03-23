@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -15,8 +15,18 @@ namespace Warewolf.Configuration
 {
     public class AuditingSettingsData : AuditSettingsDataBase, IEquatable<AuditingSettingsData>
     {
-        public NamedGuid LoggingDataSource { get; set; }
-
+        private NamedGuid _loggingDataSource = new NamedGuid();
+        public NamedGuid LoggingDataSource
+        {
+            get => _loggingDataSource;
+            set => SetProperty(ref _loggingDataSource, value);
+        }
+        public AuditingSettingsData Clone()
+        {
+            var result = (AuditingSettingsData)MemberwiseClone();
+            result.LoggingDataSource = LoggingDataSource.Clone();
+            return result;
+        }
         public bool Equals(AuditingSettingsData other)
         {
             var equals = base.Equals(other);
