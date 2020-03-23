@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace Warewolf.Data
 {
-    public class NamedGuid : INamedGuid, IEquatable<NamedGuid>, INotifyPropertyChanged
+     public class NamedGuid : INamedGuid, IEquatable<NamedGuid>, INotifyPropertyChanged
     {
         protected string _name;
         protected Guid _value;
@@ -103,7 +103,11 @@ namespace Warewolf.Data
 
         public NamedGuid Clone()
         {
-            throw new NotImplementedException();
+            return new NamedGuid
+            {
+                _name = _name,
+                _value = _value,
+            };
         }
     }
 }
