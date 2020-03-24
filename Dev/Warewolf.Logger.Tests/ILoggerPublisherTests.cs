@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Logging;
 
-namespace Warewolf.Common.Framework48.Tests
+namespace Warewolf.Logger.Tests
 {
     [TestClass]
     public class ILoggerPublisherTests

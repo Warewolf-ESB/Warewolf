@@ -8,12 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf.Configuration;
+using Warewolf.Data;
 
 namespace Dev2.Common.Tests
 {
@@ -84,6 +86,20 @@ namespace Dev2.Common.Tests
 
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEndpoint, result.Endpoint);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Set_Get_LoggingDataSource()
+        {
+            var expectedAuditingSettingsData = new AuditingSettingsData
+            {
+                Endpoint = "ws://127.0.0.1:5000/ws",
+                LoggingDataSource = new NamedGuid {Name = "Data Source", Value = Guid.Empty,},
+            };
+            Assert.AreEqual(expectedAuditingSettingsData.LoggingDataSource.Value, Guid.Empty);
+            Assert.AreEqual(expectedAuditingSettingsData.LoggingDataSource.Name, "Data Source");
         }
     }
 }
