@@ -286,9 +286,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Core.3">
-      <Version>0.0.2</Version>
-    </PackageReference>
     <PackageReference Include="Moq">
       <Version>4.13.1</Version>
     </PackageReference>
