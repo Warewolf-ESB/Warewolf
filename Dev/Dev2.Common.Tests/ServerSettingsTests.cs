@@ -37,7 +37,7 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                AuditFilePath = null,
+                AuditFilePath = "some path",
                 Sink = nameof(LegacySettingsData)
             };
 
@@ -48,7 +48,7 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                AuditFilePath = null,
+                AuditFilePath = "some path",
                 Sink = nameof(LegacySettingsData)
             };
 
@@ -72,7 +72,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
             Assert.AreEqual(false, settings.EnableDetailedLogging);
             Assert.AreEqual(200, settings.LogFlushInterval);
-            Assert.AreEqual(null, settings.AuditFilePath);
+            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -101,10 +101,9 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(ServerSettings))]
         public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
         {
-            var serverSettingsFile = "{\"AuditFilePath\": \"test\", \"EnableDetailedLogging\":false,\"WebServerPort\":0,\"WebServerSslPort\":0,\"SslCertificateName\":null,\"CollectUsageStats\":false,\"DaysToKeepTempFiles\":0,\"LogFlushInterval\":200}";
-            var serverSettings = new ServerSettings(serverSettingsFile);
+            var serverSettings = Config.Server.Get();
             Assert.AreEqual(nameof(LegacySettingsData), serverSettings.Sink);
-            Assert.AreEqual("test", serverSettings.AuditFilePath);
+            Assert.AreEqual(LegacySettings.DefaultAuditPath, serverSettings.AuditFilePath);
         }
     }
 }

@@ -30,11 +30,6 @@ namespace Warewolf.Configuration
             Load();
         }
 
-        protected ConfigSettingsBase(string settingsFile)
-        {
-            _settings = JsonConvert.DeserializeObject<T>(settingsFile);
-        }
-
         protected void Load()
         {
             if (_fileWrapper.Exists(_settingsPath))

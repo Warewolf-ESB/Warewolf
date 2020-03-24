@@ -75,7 +75,7 @@ namespace Dev2.Common
         }
 
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
-        public string AuditFilePath => _settings.AuditFilePath;
+        public string AuditFilePath => _settings.AuditFilePath ?? LegacySettings.DefaultAuditPath;
 
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
@@ -92,11 +92,6 @@ namespace Dev2.Common
         {
         }
 
-        public ServerSettings(string settingsFile)
-            : base(settingsFile)
-        {
-        }
-        
         public ServerSettingsData Get()
         {
             var result = new ServerSettingsData();
