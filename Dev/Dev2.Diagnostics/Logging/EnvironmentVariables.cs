@@ -61,6 +61,15 @@ namespace Dev2.Common
             }
         }
 
+        public static string TestCoveragePath
+        {
+            get
+            {
+                var resourcePath = Path.Combine(AppDataPath, "CoverageReports");
+                return resourcePath;
+            }
+        }
+
         public static string TriggersPath
         {
             get
