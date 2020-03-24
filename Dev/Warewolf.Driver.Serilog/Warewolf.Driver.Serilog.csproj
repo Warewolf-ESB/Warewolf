@@ -21,7 +21,9 @@
     <PackageReference Include="Fleck" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
 </Project>

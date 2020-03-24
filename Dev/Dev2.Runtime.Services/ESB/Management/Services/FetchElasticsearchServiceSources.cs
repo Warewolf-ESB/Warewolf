@@ -57,6 +57,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType() => "FetchRabbitMQServiceSources";
+        public override string HandlesType() => "FetchElasticsearchServiceSources";
     }
 }
