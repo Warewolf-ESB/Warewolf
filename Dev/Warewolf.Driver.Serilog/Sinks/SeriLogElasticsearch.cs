@@ -10,6 +10,7 @@
 
 using System;
 using Dev2.Common;
+using Dev2.Data.ServiceModel;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Elasticsearch;
@@ -35,13 +36,17 @@ namespace Warewolf.Driver.Serilog
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
             })
             .CreateLogger());
-        
-        public SeriLogElasticsearchConfig()
+
+        public SeriLogElasticsearchConfig(ElasticsearchSource source)
         {
-            _config = new Settings();
+             _config = new Settings(source);
         }
 
-        public ILogger Logger { get => _logger.Value; }
+
+        public ILogger Logger
+        {
+            get => _logger.Value;
+        }
 
         private ILogger CreateLogger()
         {
@@ -62,15 +67,28 @@ namespace Warewolf.Driver.Serilog
         
         private class Settings
         {
+            public Settings(ElasticsearchSource source)
+            {
+                Url = source.HostName + ":" + source.Port;
+            }
+
+            public Settings()
+            {
+               
+            }
             public string Url { get; set; }
         }
     }
-    
-    public class SeriLogELasticsearchSource: ILoggerSource
+
+    public class SeriLogElasticsearchSource : ILoggerSource
     {
         private ILoggerSource _loggerSourceImplementation;
-        public NamedGuid Url { get; set; } = Config.Auditing.LoggingDataSource;
-       
+        public NamedGuid LoggingDataSource { get; set; }
+
+        public SeriLogElasticsearchSource()
+        {
+            LoggingDataSource = Config.Auditing.LoggingDataSource;
+        }
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
         {
             return new SeriLogConnection(loggerConfig);
