@@ -8,10 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using CommandLine;
 using Fleck;
 using System.Collections.Generic;
 using System.Threading;
+using Dev2.Network;
+using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
@@ -37,7 +40,14 @@ namespace Warewolf.Logger
             }
             public int Run()
             {
-                var context = new LoggerContext(_options);
+                var serverEndpoint = _options.ServerEndpoint;
+                var environmentConnection = new ServerProxy(serverEndpoint);
+                Console.Write("connecting to server: " + serverEndpoint + "...");
+                environmentConnection.Connect(Guid.Empty);
+                Console.WriteLine("done.");
+                var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
+                
+                var context = new LoggerContext(_options,resourceCatalogProxy);
 
                 var implementation = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
                 implementation.Run();
