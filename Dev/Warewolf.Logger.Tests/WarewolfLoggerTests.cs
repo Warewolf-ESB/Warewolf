@@ -51,7 +51,7 @@ namespace Warewolf.Logger.Tests
             {
                 Verbose = false
             };
-            var loggerContext = new LoggerContext(args);
+            var loggerContext = new LoggerContext(args,null);
             Assert.IsNotNull(loggerContext.Source);
             Assert.IsNotNull(loggerContext.LoggerConfig);
         }
