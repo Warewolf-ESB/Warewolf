@@ -222,10 +222,6 @@
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj">
-      <Project>{A44298CD-2E74-4B81-A115-CF9497C982F2}</Project>
-      <Name>Warewolf.Logger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Name>Warewolf.Parser.Interop</Name>
