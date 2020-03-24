@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -44,15 +44,9 @@ namespace Warewolf.Driver.Serilog
             _config = sqlConfig;
         }
 
-        public ILogger Logger
-        {
-            get => _logger.Value;
-        }
+        public ILogger Logger => _logger.Value;
 
-        public string ConnectionString
-        {
-            get => _config.ConnectionString;
-        }
+        public string ConnectionString => _config.ConnectionString;
 
         public string Endpoint { get; set; } = Config.Legacy.Endpoint;
 
@@ -76,10 +70,7 @@ namespace Warewolf.Driver.Serilog
                 FormatProvider = null;
                 StoreTimestampInUtc = false; // TODO: this should default to true...
             }
-            public string ConnectionString
-            {
-                get { return System.IO.Path.Combine(Path, Database); }
-            }
+            public string ConnectionString => System.IO.Path.Combine(Path, Database);
             public string Database { get; set; }
             public string Path { get; set; }
             public string TableName { get; set; }

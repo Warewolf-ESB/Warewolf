@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace Warewolf.Logger.Tests
 {
@@ -41,6 +40,20 @@ namespace Warewolf.Logger.Tests
             var loggerContext = new LoggerContext(args);
             Assert.IsNotNull(loggerContext);
             Assert.IsFalse(loggerContext.Verbose);
+        }
+        
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LoggerContext))]
+        public void LoggerContext_DataSource_LoggerConfig_IsNotNull()
+        {
+            var args = new Args
+            {
+                Verbose = false
+            };
+            var loggerContext = new LoggerContext(args);
+            Assert.IsNotNull(loggerContext.Source);
+            Assert.IsNotNull(loggerContext.LoggerConfig);
         }
     }
 }
