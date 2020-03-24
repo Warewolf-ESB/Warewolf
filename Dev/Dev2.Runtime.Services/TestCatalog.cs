@@ -35,6 +35,7 @@ namespace Dev2.Runtime
     {
         readonly IDirectory _directoryWrapper;
         readonly ISerializer _serializer;
+        private readonly ITestCoverageCatalog _testCoverageCatalog;
         readonly IFile _fileWrapper;
 
         static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
@@ -44,7 +45,7 @@ namespace Dev2.Runtime
         }, LazyThreadSafetyMode.PublicationOnly);
 
         public static ITestCatalog Instance => LazyCat.Value;
-       
+
         public TestCatalog()
         {
             _directoryWrapper = new DirectoryWrapper();
@@ -52,6 +53,7 @@ namespace Dev2.Runtime
             _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestPath);
             Tests = new ConcurrentDictionary<Guid, List<IServiceTestModelTO>>();
             _serializer = new Dev2JsonSerializer();
+            _testCoverageCatalog = CustomContainer.Get<ITestCoverageCatalog>() ?? TestCoverageCatalog.Instance;
 
         }
 
@@ -67,12 +69,16 @@ namespace Dev2.Runtime
                 }
                 var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
                 Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
+                _testCoverageCatalog.GenerateAllTestsCoverage(resourceID, serviceTestModelTos);
             }
         }
 
         public void SaveTest(Guid resourceID, IServiceTestModelTO test)
         {
             SaveTestToDisk(resourceID, test);
+
+            _testCoverageCatalog.GenerateSingleTestCoverage(resourceID, test);
+
             var existingTests = Tests.GetOrAdd(resourceID, new List<IServiceTestModelTO>());
             var found = existingTests.FirstOrDefault(to => to.TestName.Equals(test.TestName, StringComparison.CurrentCultureIgnoreCase));
             if (found == null)
@@ -396,7 +402,7 @@ namespace Dev2.Runtime
             }
         }
 
-        List<IServiceTestModelTO> GetTestList(string resourceTestDirectory)
+        List<IServiceTestModelTO> GetTestList(string resourceTestDirectory) 
         {
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
