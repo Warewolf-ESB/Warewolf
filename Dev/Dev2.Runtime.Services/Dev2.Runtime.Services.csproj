@@ -481,10 +481,6 @@
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj">
-      <Project>{a44298cd-2e74-4b81-a115-cf9497c982f2}</Project>
-      <Name>Warewolf.Logger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
