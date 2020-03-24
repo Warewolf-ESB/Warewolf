@@ -30,7 +30,9 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj" />
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
