@@ -23,7 +23,7 @@ namespace Warewolf.Logger.Tests
             {
                 Verbose = true
             };
-            var loggerContext = new LoggerContext(args);
+            var loggerContext = new LoggerContext(args,null);
             Assert.IsNotNull(loggerContext);
             Assert.IsTrue(loggerContext.Verbose);
         }
@@ -37,7 +37,7 @@ namespace Warewolf.Logger.Tests
             {
                 Verbose = false
             };
-            var loggerContext = new LoggerContext(args);
+            var loggerContext = new LoggerContext(args,null);
             Assert.IsNotNull(loggerContext);
             Assert.IsFalse(loggerContext.Verbose);
         }
