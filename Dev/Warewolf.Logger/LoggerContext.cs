@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 using CommandLine;
 using Dev2.Common;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Warewolf.Common;
 using Warewolf.Configuration;
 using Warewolf.Driver.Serilog;
@@ -53,10 +54,13 @@ namespace Warewolf.Logger
 
             if (Config.Server.Sink == nameof(AuditingSettingsData))
             {
-                _source = new SeriLogElasticsearchSource();
                 var id = Config.Auditing.LoggingDataSource.Value;
-                var source = _resourceCatalogProxy.GetResourceById<ElasticsearchSource>(GlobalConstants.ServerWorkspaceID, id);
-                _loggerConfig = new SeriLogElasticsearchConfig(source);
+                _source = _resourceCatalogProxy.GetResourceById<SerilogElasticsearchSource>(GlobalConstants.ServerWorkspaceID, id);
+                if (_source == null)
+                {
+                    _source = new SerilogElasticsearchSource();
+                }
+                _loggerConfig = new SeriLogElasticsearchConfig(_source);
             }
             else
             {

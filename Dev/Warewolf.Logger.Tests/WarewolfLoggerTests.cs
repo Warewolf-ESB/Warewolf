@@ -7,26 +7,41 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
+using System;
+using System.Text;
+using Dev2.Common;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Data.ServiceModel;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Warewolf.Common;
+using Warewolf.Driver.Serilog;
+using Warewolf.Logging;
 
 namespace Warewolf.Logger.Tests
 {
     [TestClass]
     public class WarewolfLoggerTests
     {
+        private static readonly Guid _sourceId = Guid.Parse("24e12ae4-58b6-4fec-b521-48493230fef7");
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LoggerContext))]
-        public void LoggerContext_Contructor_Verbose_IsTrue()
+        [TestCategory(nameof(WarewolfLogger))]
+        public void WorkerContext_GivenValidConstruct_ExpectValidSource()
         {
             var args = new Args
             {
-                Verbose = true
+                Verbose = true,
+                ServerEndpoint = new Uri("http://somehost:1234")
             };
-            var loggerContext = new LoggerContext(args,null);
-            Assert.IsNotNull(loggerContext);
-            Assert.IsTrue(loggerContext.Verbose);
+            var context = ConstructLoggerContext(args, out var source);
+            Assert.AreEqual(source, context.Source);
+            Assert.IsTrue(context.Verbose);
         }
+
 
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -35,25 +50,30 @@ namespace Warewolf.Logger.Tests
         {
             var args = new Args
             {
-                Verbose = false
+                Verbose = false,
+                ServerEndpoint = new Uri("http://somehost:1234")
             };
-            var loggerContext = new LoggerContext(args,null);
-            Assert.IsNotNull(loggerContext);
-            Assert.IsFalse(loggerContext.Verbose);
+            var context = ConstructLoggerContext(args, out var source);
+            Assert.AreEqual(source, context.Source);
+            Assert.IsFalse(context.Verbose);
         }
-        
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(LoggerContext))]
-        public void LoggerContext_DataSource_LoggerConfig_IsNotNull()
+
+        private static ILoggerContext ConstructLoggerContext(IArgs args, out SerilogElasticsearchSource elasticsearchSource)
         {
-            var args = new Args
+            var mockArgs = new Mock<IArgs>();
+            mockArgs.Setup(o => o.ServerEndpoint).Returns(args.ServerEndpoint);
+            mockArgs.Setup(o => o.Verbose).Returns(args.Verbose);
+
+            elasticsearchSource = new SerilogElasticsearchSource
             {
-                Verbose = false
+                ResourceID = _sourceId,
+                HostName = "localhost",
+                Port = "9200",
+                ResourceName = "TestSource"
             };
-            var loggerContext = new LoggerContext(args,null);
-            Assert.IsNotNull(loggerContext.Source);
-            Assert.IsNotNull(loggerContext.LoggerConfig);
+            var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
+            mockResourceCatalogProxy.Setup(o => o.GetResourceById<SerilogElasticsearchSource>(GlobalConstants.ServerWorkspaceID, _sourceId)).Returns(elasticsearchSource);
+            return new LoggerContext(mockArgs.Object, mockResourceCatalogProxy.Object);
         }
     }
 }

@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.ServiceModel.Data;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Elasticsearch;
@@ -22,7 +23,7 @@ namespace Warewolf.Driver.Serilog
 {
     public class SeriLogElasticsearchConfig : ISeriLogConfig
     {
-        static readonly Settings _staticSettings = new Settings();
+        static readonly Settings _staticSettings = new Settings(new SerilogElasticsearchSource());
         readonly Settings _config;
 
         static readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() => new LoggerConfiguration()
@@ -31,17 +32,17 @@ namespace Warewolf.Driver.Serilog
             .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_staticSettings.Url))
             {
                 MinimumLogEventLevel = LogEventLevel.Verbose,
+                IndexDecider = (e, o) => "warewolfaudits",
                 AutoRegisterTemplate = true,
                 CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
             })
             .CreateLogger());
 
-        public SeriLogElasticsearchConfig(ElasticsearchSource source)
+        public SeriLogElasticsearchConfig(ILoggerSource source)
         {
-             _config = new Settings(source);
+            _config = source == null ? new Settings(new SerilogElasticsearchSource()) : new Settings(source as SerilogElasticsearchSource);
         }
-
 
         public ILogger Logger
         {
@@ -57,6 +58,7 @@ namespace Warewolf.Driver.Serilog
                 {
                     MinimumLogEventLevel = LogEventLevel.Verbose,
                     AutoRegisterTemplate = true,
+                    IndexDecider = (e, o) => "warewolfaudits",
                     CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
                     AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                 })
@@ -64,31 +66,88 @@ namespace Warewolf.Driver.Serilog
         }
 
         public string Endpoint { get; set; } = Config.Auditing.Endpoint;
-        
+
         private class Settings
         {
-            public Settings(ElasticsearchSource source)
+            public Settings(SerilogElasticsearchSource source)
             {
                 Url = source.HostName + ":" + source.Port;
+                Password = source.Password;
+                Username = source.Username;
+                AuthenticationType = source.AuthenticationType;
             }
 
-            public Settings()
-            {
-               
-            }
-            public string Url { get; set; }
+            public string Password { get; }
+            public string Username { get; }
+            public AuthenticationType AuthenticationType { get; }
+            public string Url { get; }
         }
     }
 
-    public class SeriLogElasticsearchSource : ILoggerSource
+    public class SerilogElasticsearchSource : ILoggerSource
     {
-        private ILoggerSource _loggerSourceImplementation;
-        public NamedGuid LoggingDataSource { get; set; }
+        private Guid _resourceId;
+        private string _resourceName;
+        private string _hostName;
+        private string _port;
+        private string _password;
+        private string _username;
+        private AuthenticationType _authenticationType;
 
-        public SeriLogElasticsearchSource()
+        public SerilogElasticsearchSource()
         {
-            LoggingDataSource = Config.Auditing.LoggingDataSource;
+            var src = new ElasticsearchSource();
+            _resourceId = src.ResourceID;
+            _resourceName = src.ResourceName;
+            _hostName = src.HostName;
+            _port = src.Port;
+            _password = src.Password;
+            _username = src.Username;
+            _authenticationType = src.AuthenticationType;
         }
+
+        public Guid ResourceID
+        {
+            get => _resourceId;
+            set => _resourceId = value;
+        }
+
+        public string ResourceName
+        {
+            get => _resourceName;
+            set => _resourceName = value;
+        }
+
+        public string HostName
+        {
+            get => _hostName;
+            set => _hostName = value;
+        }
+
+        public string Port
+        {
+            get => _port;
+            set => _port = value;
+        }
+
+        public AuthenticationType AuthenticationType
+        {
+            get => _authenticationType;
+            set => _authenticationType = value;
+        }
+
+        public string Password
+        {
+            get => _password;
+            set => _password = value;
+        }
+
+        public string Username
+        {
+            get => _username;
+            set => _username = value;
+        }
+
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
         {
             return new SeriLogConnection(loggerConfig);

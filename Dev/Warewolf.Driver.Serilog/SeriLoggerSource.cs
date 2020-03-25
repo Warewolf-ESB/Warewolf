@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Configuration;
 using Warewolf.Logging;
 
@@ -16,6 +17,12 @@ namespace Warewolf.Driver.Serilog
 {
     public class SeriLoggerSource : ILoggerSource
     {
+        public string HostName { get; set; }
+        public string Password { get; set; }
+        public string Username { get; set; }
+        public string Port { get; set; }
+        public AuthenticationType AuthenticationType { get; set; }
+
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
         {
             return new SeriLogConnection(loggerConfig);
