@@ -16,7 +16,6 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -30,16 +29,16 @@ namespace Dev2.Tests.Runtime.WebServer
         public void SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()
         {
             //---------------Set up test pack-------------------
-            var resource = new Mock<IResource>();
-            var resourceId = Guid.NewGuid();
-            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
-            resource.SetupGet(resource1 => resource1.ResourceName).Returns("Hello World");
-            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            var mockResource = new Mock<IResource>();
+            var expectedResourceId = Guid.NewGuid();
+            mockResource.SetupGet(o => o.ResourceID).Returns(expectedResourceId);
+            mockResource.SetupGet(o => o.ResourceName).Returns("Hello World");
+            mockResource.Setup(o => o.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
             var resourceCatalog = new Mock<IResourceCatalog>();
-            const string ResouId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
-            var objSourceResourceID = ResouId.ToGuid();
-            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), objSourceResourceID))
-                .Returns(resource.Object);
+            const string ResourceId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
+            var objSourceResourceID = ResourceId.ToGuid();
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), objSourceResourceID)).Returns(mockResource.Object);
+            
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.SetupProperty(o => o.TestsResourceIds);
@@ -47,12 +46,12 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            dataObject.Object.SetResourceNameAndId(resourceCatalog.Object, ResourceName, out IWarewolfResource outResource);
+            dataObject.Object.SetResourceNameAndId(resourceCatalog.Object, ResourceName, out var outResource);
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), objSourceResourceID));
-            dataObject.VerifySet(o => o.ResourceID = resourceId, Times.Exactly(1));
-            dataObject.VerifySet(o => o.ServiceName = "Hello World", Times.Exactly(1));
-            dataObject.VerifySet(o => o.SourceResourceID = resourceId, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ResourceID = It.IsAny<Guid>(), Times.Exactly(1));
+            dataObject.VerifySet(o => o.ServiceName = It.IsAny<string>(), Times.Exactly(1));
+            dataObject.VerifySet(o => o.SourceResourceID = It.IsAny<Guid>(), Times.Exactly(1));
         }
     }
 }

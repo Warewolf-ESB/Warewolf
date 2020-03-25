@@ -17,7 +17,6 @@ using System.Net;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
@@ -37,66 +36,73 @@ namespace Dev2.Runtime.WebServer
 {
     static class DataObjectExtentions
     {
+        private static string _originalServiceName;
+
         public static string SetEmitionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
         {
-            int extensionStartLocation;
-            var originalServiceName = serviceName;
-            if (!string.IsNullOrEmpty(serviceName) && (extensionStartLocation = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+            _originalServiceName = serviceName;
+            var startLocation = serviceName.LastIndexOf(".", StringComparison.Ordinal);
+            if (!string.IsNullOrEmpty(serviceName) && startLocation > 0)
             {
                 dataObject.ReturnType = EmitionTypes.XML;
 
-                if (extensionStartLocation > 0)
-                {
-                    var extension = serviceName.Substring(extensionStartLocation + 1);
-                    serviceName = SetReturnTypeForExtension(dataObject, extensionStartLocation, originalServiceName, extension);
-                }
+                var extension = serviceName.Substring(startLocation + 1);
+                return SetReturnTypeForExtension(dataObject, startLocation, extension);
             }
-            else
+
+            if (serviceName == "*")
             {
-                if (serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
+                if (webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.TEST;
                 }
-                if (serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+
+                if (webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.TRX;
                 }
-                dataObject.SetContentType(headers);
             }
+
+            dataObject.SetContentType(headers);
             return serviceName;
         }
 
-        private static string SetReturnTypeForExtension(IDSFDataObject dataObject, int loc, string originalServiceName, string typeOf)
+        private static string SetReturnTypeForExtension(IDSFDataObject dataObject, int loc, string typeOf)
         {
             if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
             {
                 dataObject.ReturnType = myType;
             }
 
-            var serviceName = !typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase) ? originalServiceName.Substring(0, loc) : originalServiceName.Substring(0, originalServiceName.Substring(0, loc).LastIndexOf(".", StringComparison.Ordinal));
-            if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+            var serviceName = _originalServiceName.Substring(0, loc);
+            
+            var isApi = typeOf.Equals("api", StringComparison.OrdinalIgnoreCase);
+            var isTests = typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase);
+            var isTrx = typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase);
+            if (isTests || isTrx)
             {
                 dataObject.IsServiceTestExecution = true;
-                var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+                dataObject.TestName = "*";
+                var idx = _originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
                 if (idx > loc)
                 {
-                    var testName = originalServiceName.Substring(idx + 1).ToUpper();
-                    dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
+                    var testName = _originalServiceName.Substring(idx + 1).ToUpper();
+                    if (!string.IsNullOrEmpty(testName))
+                    {
+                        dataObject.TestName = testName;
+                    }
                 }
-                else
-                {
-                    dataObject.TestName = "*";
-                }
-                if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
+                if (isTests)
                 {
                     dataObject.ReturnType = EmitionTypes.TEST;
                 }
-                if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+                if (isTrx)
                 {
                     dataObject.ReturnType = EmitionTypes.TRX;
+                    serviceName = _originalServiceName.Substring(0, _originalServiceName.LastIndexOf(".", StringComparison.Ordinal));
                 }
             }
-            if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+            if (isApi)
             {
                 dataObject.ReturnType = EmitionTypes.SWAGGER;
             }
@@ -132,38 +138,18 @@ namespace Dev2.Runtime.WebServer
         }
         public static void SetHeaders(this IDSFDataObject dataObject, NameValueCollection headers)
         {
-            if (headers != null)
+            var customTransactionId = headers?.Get("Warewolf-Custom-Transaction-Id");
+            if (!string.IsNullOrEmpty(customTransactionId))
             {
-                var customTransactionId = headers.Get("Warewolf-Custom-Transaction-Id");
-                if (!string.IsNullOrEmpty(customTransactionId))
-                {
-                    dataObject.CustomTransactionID = customTransactionId;
-                }
-                var executionID = headers.Get("Warewolf-Execution-Id");
-                if (!string.IsNullOrEmpty(executionID))
-                {
-                    dataObject.ExecutionID = Guid.Parse(executionID);
-                }
-                else
-                {
-                    dataObject.ExecutionID = Guid.NewGuid();
-                }
+                dataObject.CustomTransactionID = customTransactionId;
             }
-        }
-        public static void SetCustomTransactionID(this IDSFDataObject dataObject, NameValueCollection headers)
-        {
-            if (headers != null)
+            var executionId = headers?.Get("Warewolf-Execution-Id");
+            if (!string.IsNullOrEmpty(executionId))
             {
-                var customTransactionId = headers.Get("CustomTransactionID");
-                if (string.IsNullOrEmpty(customTransactionId))
-                {
-                    customTransactionId = headers.Get("CustomTransactionID");
-                }
-                if (!string.IsNullOrEmpty(customTransactionId))
-                {
-                    dataObject.CustomTransactionID = customTransactionId;
-                }
+                dataObject.ExecutionID = Guid.Parse(executionId);
+                return;
             }
+            dataObject.ExecutionID = Guid.NewGuid();
         }
         public static void SetupForWebDebug(this IDSFDataObject dataObject, WebRequestTO webRequest)
         {
@@ -179,27 +165,26 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetupForRemoteInvoke(this IDSFDataObject dataObject, NameValueCollection headers)
         {
-            if (headers != null)
+            var isRemote = headers?.Get(HttpRequestHeader.Cookie.ToString());
+            var remoteId = headers?.Get(HttpRequestHeader.From.ToString());
+
+            if (isRemote == null || remoteId == null)
             {
-                var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
-                var remoteId = headers.Get(HttpRequestHeader.From.ToString());
-
-                if (isRemote != null && remoteId != null)
-                {
-                    if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
-                    {
-                        // we have a remote invoke ;)
-                        dataObject.RemoteInvoke = true;
-                    }
-                    if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
-                    {
-                        // we have a remote invoke ;)
-                        dataObject.RemoteNonDebugInvoke = true;
-                    }
-
-                    dataObject.RemoteInvokerID = remoteId;
-                }
+                return;
             }
+
+            if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+            {
+                // we have a remote invoke ;)
+                dataObject.RemoteInvoke = true;
+            }
+            if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
+            {
+                // we have a remote invoke ;)
+                dataObject.RemoteNonDebugInvoke = true;
+            }
+
+            dataObject.RemoteInvokerID = remoteId;
         }
 
         public static void SetTestResourceIds(this IDSFDataObject dataObject, IContextualResourceCatalog catalog, WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
@@ -235,7 +220,13 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName) => !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
+        private static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName)
+        {
+            var isRunAllTests = !string.IsNullOrEmpty(serviceName);
+            isRunAllTests &= serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx";
+            isRunAllTests &= returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX;
+            return isRunAllTests;
+        }
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IWarewolfResource resource)
         {
