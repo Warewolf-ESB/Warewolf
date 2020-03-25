@@ -102,6 +102,11 @@ namespace Dev2.Runtime.WebServer
                     serviceName = _originalServiceName.Substring(0, _originalServiceName.LastIndexOf(".", StringComparison.Ordinal));
                 }
             }
+            var isCover = typeOf.StartsWith("coverage", StringComparison.InvariantCultureIgnoreCase);
+            if (isCover)
+            {
+                dataObject.ReturnType = EmitionTypes.Cover;
+            }
             if (isApi)
             {
                 dataObject.ReturnType = EmitionTypes.SWAGGER;
@@ -393,6 +398,26 @@ namespace Dev2.Runtime.WebServer
             result.EndTime = DateTime.Now;
 
             return result;
+        }
+        
+        public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, DataListFormat formatter, ITestCoverageCatalog testCoverageCatalog, ref string executePayload)
+        {
+            var coverageResults = RunListOfCoverage(dataObject, testCoverageCatalog);
+            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+
+            return formatter;
+        }
+
+        private static object RunListOfCoverage(IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog)
+        {
+            foreach (var testsResourceId in dataObject.TestsResourceIds)
+            {
+                //testCoverageCatalog.GetTestCoverage(testsResourceId);
+                var serviceTestModelTos = testCoverageCatalog.TestCoverageReports[testsResourceId];    
+                
+            }
+
+            return null;
         }
     }
 

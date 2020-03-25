@@ -72,11 +72,15 @@ namespace Dev2.Runtime.WebServer
             return executePayload;
         }
 
-        public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
-            IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
+        public static DataListFormat ExecuteTests(IDSFDataObject dataObject, DataListFormat formatter,
+            IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
         {
             if (dataObject.TestsResourceIds?.Any() ?? false)
             {
+                if (dataObject.ReturnType == Web.EmitionTypes.Cover)
+                {
+                    formatter = dataObject.RunCoverageAndReturnJSON(formatter, testCoverageCatalog, ref executePayload);
+                }
                 if (dataObject.ReturnType == Web.EmitionTypes.TEST)
                 {
                     formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter, resourceCatalog, testCatalog, ref executePayload);

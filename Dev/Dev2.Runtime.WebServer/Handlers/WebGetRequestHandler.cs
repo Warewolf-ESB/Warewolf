@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -18,13 +18,15 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebGetRequestHandler : AbstractWebRequestHandler
     {
-        IResourceCatalog _catalog;
-        ITestCatalog _testCatalog;
+        private IResourceCatalog _catalog;
+        private ITestCatalog _testCatalog;
+        private ITestCoverageCatalog _testCoverageCatalog;
 
-        public WebGetRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
+        public WebGetRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
         {
             _catalog = catalog;
             _testCatalog = testCatalog;
+            _testCoverageCatalog = testCoverageCatalog;
         }
 
         public WebGetRequestHandler()
@@ -34,37 +36,38 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var postDataListID = ctx.GetDataListID();
-            if (postDataListID != null)
+            var postDataListId = ctx.GetDataListID();
+            if (postDataListId != null)
             {
                 _catalog = _catalog ?? ResourceCatalog.Instance;
                 _testCatalog = _testCatalog ?? TestCatalog.Instance;
-                new WebPostRequestHandler(_catalog, _testCatalog).ProcessRequest(ctx);
+                _testCoverageCatalog = _testCoverageCatalog ?? TestCoverageCatalog.Instance;
+                new WebPostRequestHandler(_catalog, _testCatalog, _testCoverageCatalog).ProcessRequest(ctx);
                 return;
             }
 
             var serviceName = ctx.GetServiceName();
-            var workspaceID = ctx.GetWorkspaceID();
+            var workspaceId = ctx.GetWorkspaceID();
 
-            var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
+            var requestTo = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
             var data = SubmittedData.GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(data))
             {
-                requestTO.RawRequestPayload = data;
+                requestTo.RawRequestPayload = data;
             }
             var variables = ctx.Request.BoundVariables;
             if (variables != null)
             {
                 foreach (string key in variables)
                 {
-                    requestTO.Variables.Add(key, variables[key]);
+                    requestTo.Variables.Add(key, variables[key]);
                 }
             }
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
 
-            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
+            var responseWriter = CreateForm(requestTo, serviceName, workspaceId, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(responseWriter);
         }
     }
