@@ -31,6 +31,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
+using Dev2.Runtime;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
@@ -92,10 +93,11 @@ namespace Dev2.Tests.Runtime.WebServer
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -147,9 +149,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -192,9 +195,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -239,9 +243,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTo = new WebRequestTO()
@@ -285,9 +290,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -331,9 +337,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -377,9 +384,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -446,10 +454,11 @@ namespace Dev2.Tests.Runtime.WebServer
             
             var tests = new List<IServiceTestModelTO> {serviceTestModelTO.Object};
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(tests);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO
@@ -519,6 +528,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 });
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
             serviceTestModelTO.Setup(to => to.Enabled).Returns(true);
             serviceTestModelTO.Setup(to => to.TestName).Returns("Test1");
@@ -529,7 +539,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Setup(catalog => catalog.Fetch(Guid.Empty)).Returns(tests);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var webRequestTO = new WebRequestTO()
@@ -562,9 +572,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var dsfDataObject = dataObject.Object;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var instanceID = Guid.NewGuid();
@@ -612,9 +623,10 @@ namespace Dev2.Tests.Runtime.WebServer
                    resource.Object
                 });
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -645,9 +657,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -675,9 +688,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -706,9 +720,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -737,9 +752,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -770,9 +786,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -802,9 +819,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -843,9 +861,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -876,9 +895,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -910,9 +930,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -938,9 +959,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(handlerMock);
             //---------------Execute Test ----------------------
@@ -967,10 +989,11 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             //------------Setup for test-------------------------
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //------------Execute Test---------------------------
             var mock = new Mock<NameValueCollection>();
             mock.Setup(collection => collection.Get(HttpRequestHeader.Cookie.ToString())).Returns(GlobalConstants.RemoteServerInvoke);
@@ -997,10 +1020,11 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             //------------Setup for test-------------------------
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //------------Execute Test---------------------------
             var mock = new Mock<NameValueCollection>();
             mock.Setup(collection => collection.Get(HttpRequestHeader.Cookie.ToString())).Returns(GlobalConstants.RemoteDebugServerInvoke);
@@ -1485,9 +1509,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/json");
@@ -1524,9 +1549,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/xml");
@@ -1822,9 +1848,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var testingCustomTransactionID = "testingCustomTransactionID";
             var executionId = Guid.NewGuid();
@@ -1864,9 +1891,10 @@ namespace Dev2.Tests.Runtime.WebServer
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(resource.Object);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
-            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
             //---------------Assert Precondition----------------
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/json");
@@ -1895,8 +1923,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
     class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
-        public AbstractWebRequestHandlerMock(AbstractWebRequestHandler.IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, IWorkspaceRepository repository)
-            : base(catalog, testCatalog, repository, service, dataObjectFactory)
+        public AbstractWebRequestHandlerMock(AbstractWebRequestHandler.IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository repository)
+            : base(catalog, testCatalog, testCoverageCatalog, repository, service, dataObjectFactory)
         {
         }
 

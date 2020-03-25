@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,7 +22,6 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -51,6 +50,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         readonly IResourceCatalog _resourceCatalog;
         readonly ITestCatalog _testCatalog;
+        readonly ITestCoverageCatalog _testCoverageCatalog;
         readonly IDataObjectFactory _dataObjectFactory;
         readonly IAuthorizationService _authorizationService;
         readonly IWorkspaceRepository _workspaceRepository;
@@ -60,19 +60,20 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
         protected AbstractWebRequestHandler()
-            : this(ResourceCatalog.Instance, TestCatalog.Instance)
+            : this(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance)
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
-            : this(resourceCatalog, testCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory())
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
+            : this(resourceCatalog, testCatalog, testCoverageCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory())
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
         {
             _resourceCatalog = resourceCatalog;
             _testCatalog = testCatalog;
+            _testCoverageCatalog = testCoverageCatalog;
             _workspaceRepository = workspaceRepository;
             _authorizationService = authorizationService;
             _dataObjectFactory = dataObjectFactory;
@@ -82,7 +83,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _authorizationService, _dataObjectFactory);
+            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _authorizationService, _dataObjectFactory);
             var response = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             if (response is null)
             {
@@ -106,12 +107,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             readonly IResourceCatalog _resourceCatalog;
             readonly IWorkspaceRepository _repository;
             readonly ITestCatalog _testCatalog;
+            readonly ITestCoverageCatalog _testCoverageCatalog;
 
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
+            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
             {
                 _repository = workspaceRepository;
                 _resourceCatalog = resourceCatalog;
                 _testCatalog = testCatalog;
+                _testCoverageCatalog = testCoverageCatalog;
                 _authorizationService = authorizationService;
                 _dataObjectFactory = dataObjectFactory;
             }
@@ -174,12 +177,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _serializer = new Dev2JsonSerializer();
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
+                var isTestCoverage = _dataObject.ReturnType == EmitionTypes.Cover;
                 var isTestRun = (_dataObject.ReturnType == EmitionTypes.TEST ||
                                  _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*";
 
-                if (isTestRun)
+                if (isTestRun || isTestCoverage)
                 {
-                    return ExecuteAsTest(serviceName, _executePayload, _workspaceGuid, _dataObject, _serializer, user);
+                    return ExecuteAsTest(user);
                 }
 
                 if (_resource is null)
@@ -228,11 +232,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return executionDlid;
             }
 
-            internal IResponseWriter ExecuteAsTest(string serviceName, string executePayload, Guid workspaceGuid, IDSFDataObject dataObject, Dev2JsonSerializer serializer, IPrincipal userPrinciple)
+            internal IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
             {
                 var xmlFormatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                var formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, xmlFormatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
-                return new StringResponseWriter(executePayload, formatter.ContentType);
+                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, xmlFormatter, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _testCoverageCatalog, _resourceCatalog, ref _executePayload);
+                return new StringResponseWriter(_executePayload, formatter.ContentType);
             }
 
             internal IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName)
