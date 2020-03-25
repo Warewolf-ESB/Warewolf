@@ -17,6 +17,7 @@ namespace Dev2.Web
         JSON,
         SWAGGER,
         TEST,
-        TRX
+        TRX,
+        Cover,
     }
 }
