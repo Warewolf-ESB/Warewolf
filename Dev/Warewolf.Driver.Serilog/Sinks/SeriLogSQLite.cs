@@ -89,7 +89,6 @@ namespace Warewolf.Driver.Serilog
 
     public class SeriLogSQLiteSource: ILoggerSource
     {
-        private ILoggerSource _loggerSourceImplementation;
         public string ConnectionString { get; set; } = Config.Legacy.AuditFilePath;
         public string TableName { get; set; } = "Logs";
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
