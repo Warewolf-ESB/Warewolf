@@ -1,8 +1,8 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -20,62 +20,50 @@ namespace Dev2.Runtime.WebServer
     {
         public static void BindRequestVariablesToDataObject( this WebRequestTO request, ref IDSFDataObject dataObject)
         {
-            if (dataObject != null && request != null)
+            if (dataObject == null || request == null)
             {
-                if (!string.IsNullOrEmpty(request.Bookmark))
-                {
-                    dataObject.CurrentBookmarkName = request.Bookmark;
-                }
+                return;
+            }
 
-                if (!string.IsNullOrEmpty(request.InstanceID) && Guid.TryParse(request.InstanceID, out Guid tmpId))
-                {
-                    dataObject.WorkflowInstanceId = tmpId;
-                }
+            if (!string.IsNullOrEmpty(request.Bookmark))
+            {
+                dataObject.CurrentBookmarkName = request.Bookmark;
+            }
 
+            if (!string.IsNullOrEmpty(request.InstanceID) && Guid.TryParse(request.InstanceID, out Guid tmpId))
+            {
+                dataObject.WorkflowInstanceId = tmpId;
+            }
 
-                if (!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
-                {
-                    dataObject.ServiceName = request.ServiceName;
-                }
-                foreach (string key in request.Variables)
-                {
-                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key), request.Variables[key], 0);
-                }
-
+            if (!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
+            {
+                dataObject.ServiceName = request.ServiceName;
+            }
+            foreach (string key in request.Variables)
+            {
+                dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key), request.Variables[key], 0);
             }
         }
 
         public static string GetPathForAllResources(this WebRequestTO webRequest)
         {
-            var publicvalue = webRequest.Variables["isPublic"];
-            var isPublic = bool.Parse(publicvalue ?? "False");
-            var path = "";
+            var publicValue = webRequest.Variables["isPublic"];
+            var isPublic = bool.Parse(publicValue ?? "False");
             var webServerUrl = webRequest.WebServerUrl;
-            if (isPublic)
-            {
-                var pathStartIndex = webServerUrl.IndexOf("public/", StringComparison.InvariantCultureIgnoreCase);
-                path = webServerUrl.Substring(pathStartIndex)
-                                   .Replace("/.tests.trx", "")
-                                   .Replace("/.tests", "")
-                                   .Replace("/.tests.trx", "")
-                                   .Replace("public", "")
-                                   .Replace("Public", "")
-                                   .TrimStart('/')
-                                   .TrimEnd('/');
-            }
-            if (!isPublic)
-            {
-                var pathStartIndex = webServerUrl.IndexOf("secure/", StringComparison.InvariantCultureIgnoreCase);
-                path = webServerUrl.Substring(pathStartIndex)
-                                    .Replace("/.tests.trx", "")
-                                    .Replace("/.tests", "")
-                                    .Replace("/.tests.trx", "")
-                                    .Replace("secure", "")
-                                    .Replace("Secure", "")
-                                    .TrimStart('/')
-                                    .TrimEnd('/');
-            }
+            var path = isPublic ? RemoveAccessType(webServerUrl, "public", "Public") : RemoveAccessType(webServerUrl, "secure", "Secure");
+            path = path.TrimStart('/').TrimEnd('/');
             return path.Replace("/", "\\");
+        }
+
+        private static string RemoveAccessType(string webServerUrl, string lower, string firstCap)
+        {
+            var startIndex = webServerUrl.IndexOf(lower + "/", StringComparison.InvariantCultureIgnoreCase);
+            var removeEmitionType = webServerUrl.Substring(startIndex)
+                .Replace("/.tests.trx", "")
+                .Replace("/.tests", "")
+                .Replace("/.coverage", "");
+            var removeAccessType = removeEmitionType.Replace(lower, "").Replace(firstCap, "");
+            return removeAccessType;
         }
     }
 }

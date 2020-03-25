@@ -56,7 +56,10 @@ namespace Dev2.Runtime.WebServer
                 {
                     dataObject.ReturnType = EmitionTypes.TEST;
                 }
-
+                if (webRequest.WebServerUrl.EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.Cover;
+                }
                 if (webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.TRX;
@@ -194,7 +197,7 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetTestResourceIds(this IDSFDataObject dataObject, IContextualResourceCatalog catalog, WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
         {
-            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName))
+            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName) || IsRunAllCoverageRequest(dataObject.ReturnType, serviceName))
             {
                 var pathOfAllResources = webRequest.GetPathForAllResources();
                 dataObject.ResourceID = Guid.Empty;
@@ -214,7 +217,7 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetupForTestExecution(this IDSFDataObject dataObject, string serviceName, NameValueCollection headers)
         {
-            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName))
+            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName) || IsRunAllCoverageRequest(dataObject.ReturnType, serviceName))
             {
                 dataObject.IsServiceTestExecution = true;
                 dataObject.TestName = "*";
@@ -231,6 +234,14 @@ namespace Dev2.Runtime.WebServer
             isRunAllTests &= serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx";
             isRunAllTests &= returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX;
             return isRunAllTests;
+        }
+        
+        private static bool IsRunAllCoverageRequest(EmitionTypes returnType, string serviceName)
+        {
+            var isRunAllCoverage = !string.IsNullOrEmpty(serviceName);
+            isRunAllCoverage &= serviceName == "*" || serviceName == ".coverage";
+            isRunAllCoverage &= returnType == EmitionTypes.Cover;
+            return isRunAllCoverage;
         }
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IWarewolfResource resource)
