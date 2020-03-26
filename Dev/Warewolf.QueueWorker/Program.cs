@@ -39,12 +39,14 @@ namespace QueueWorker
             {
                 this._options = options;
             }
+
             public int Run()
             {
                 if (_options.ShowConsole)
                 {
                     _ = new ConsoleWindow();
                 }
+
                 var serverEndpoint = _options.ServerEndpoint;
                 var environmentConnection = new ServerProxy(serverEndpoint);
 
@@ -82,10 +84,8 @@ namespace QueueWorker
             public void Run()
             {
                 var logger = new ExecutionLogger(new JsonSerializer(), new WebSocketPool());
-                logger.Info("Starting queue worker", _config.QueueName);
                 try
-                {                  
-
+                {
                     if (_config.Source != null)
                     {
                         var deadletterPublisher = CreateDeadLetterPublisher();
@@ -112,7 +112,6 @@ namespace QueueWorker
                     Console.WriteLine(ex.Message);
                     logger.Error(ex.Message, _config.QueueName);
                 }
-               
             }
 
             private IPublisher CreateDeadLetterPublisher()
