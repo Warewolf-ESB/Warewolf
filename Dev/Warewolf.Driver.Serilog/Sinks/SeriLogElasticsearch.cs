@@ -13,10 +13,7 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Elasticsearch;
 using Serilog.Sinks.Elasticsearch;
-using Warewolf.Data;
 using Warewolf.Logging;
 
 namespace Warewolf.Driver.Serilog
@@ -25,43 +22,36 @@ namespace Warewolf.Driver.Serilog
     {
         static readonly Settings _staticSettings = new Settings(new SerilogElasticsearchSource());
         readonly Settings _config;
-
-        static readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() => new LoggerConfiguration()
-            .MinimumLevel.Verbose()
-            .Enrich.FromLogContext()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_staticSettings.Url))
-            {
-                MinimumLogEventLevel = LogEventLevel.Verbose,
-                IndexDecider = (e, o) => "warewolfaudits",
-                AutoRegisterTemplate = true,
-                CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-            })
-            .CreateLogger());
+        private readonly string _indexDecider = "warewolflogs";
+        static ILogger _logger;
 
         public SeriLogElasticsearchConfig(ILoggerSource source)
         {
             _config = source == null ? new Settings(new SerilogElasticsearchSource()) : new Settings(source as SerilogElasticsearchSource);
+            _logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_staticSettings.Url))
+                {
+                    AutoRegisterTemplate = true,
+                    IndexDecider = (e, o) => _indexDecider,
+                }))
+                .CreateLogger();
         }
 
         public ILogger Logger
         {
-            get => _logger.Value;
+            get => _logger;
         }
 
         private ILogger CreateLogger()
         {
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .Enrich.FromLogContext()
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_config.Url))
+                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
                 {
-                    MinimumLogEventLevel = LogEventLevel.Verbose,
                     AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => "warewolfaudits",
-                    CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
-                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                })
+                    IndexDecider = (e, o) => _indexDecider,
+                }))
                 .CreateLogger();
         }
 
