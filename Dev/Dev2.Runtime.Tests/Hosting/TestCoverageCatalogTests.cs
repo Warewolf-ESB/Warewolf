@@ -27,15 +27,17 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             var workflowNodes = GetWorkflowNodes();
 
-            var mockWorkflowBuilder = new Mock<IWorkflowBuilder>();
-            mockWorkflowBuilder.Setup(o => o.WorkflowId).Returns(_wfId);
-            mockWorkflowBuilder.Setup(o => o.Name).Returns("wf-send-cached-client-an-email");
+            var mockWorkflowBuilder = new Mock<IWorkflowWrapper>();
+            mockWorkflowBuilder.Setup(o => o.WorkflowId).Returns(_workflowId);
+            mockWorkflowBuilder.Setup(o => o.Name).Returns(_workflowName);
             mockWorkflowBuilder.Setup(o => o.GetAllWorkflowNodes()).Returns(workflowNodes);
 
-            CustomContainer.Register<IWorkflowBuilder>(mockWorkflowBuilder.Object);
+            CustomContainer.Register<IWorkflowWrapper>(mockWorkflowBuilder.Object);
         }
 
-        private static Guid _wfId = Guid.Parse("99c23a82-aaf8-46a5-8746-4ff2d251daf2");
+        private readonly static Guid _workflowId = Guid.Parse("99c23a82-aaf8-46a5-8746-4ff2d251daf2");
+        private readonly static string _workflowName = "wf-send-cached-client-an-email";
+        private readonly static ITestCoverageCatalog _testCoverageCatalog = TestCoverageCatalog.Instance;
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -46,7 +48,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var sut = new TestCoverageCatalog();
 
-            var coverage = sut.GenerateAllTestsCoverage(_wfId, tests);
+            var coverage = sut.GenerateAllTestsCoverage(_workflowId, tests);
 
             Assert.AreEqual(100, coverage.CoveragePercentage);
         }
@@ -54,15 +56,81 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("TestCoverageCatalog_Intergration")]
-        public void TestCoverageCatalog_GenerateAllTestsCoverage_ExpectPartialCoverage()
+        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_ExpectPartialCoverageReport()
         {
             var test = GetFalseBranchTest();
 
             var sut = new TestCoverageCatalog();
 
-            var coverage = sut.GenerateSingleTestCoverage(_wfId, test);
+            var coverage = sut.GenerateSingleTestCoverage(_workflowId, test);
+
+            var report = sut.FetchReport(_workflowId, _false_branchTest.TestName);
 
             Assert.AreEqual(50, coverage.CoveragePercentage);
+
+            Assert.AreEqual(_false_branchTest.TestName, report.ReportName);
+            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("TestCoverageCatalog_Intergration")]
+        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_FetchReport_ExpectFullCoverageReport()
+        {
+            var tests = GetTests();
+
+            var sut = new TestCoverageCatalog();
+            var coverage = sut.GenerateAllTestsCoverage(_workflowId, tests);
+
+            var report = sut.FetchReport(_workflowId, _workflowName);
+
+            Assert.AreEqual(100, coverage.CoveragePercentage);
+
+            Assert.AreEqual(_workflowName, report.ReportName);
+            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("TestCoverageCatalog_Intergration")]
+        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_DeleteCoverageReport_ExpectFullCoverageRemoved()
+        {
+            //Arrange
+            var tests = GetTests();
+
+            var sut = new TestCoverageCatalog();
+            var coverage = sut.GenerateAllTestsCoverage(_workflowId, tests);
+
+            var report = sut.FetchReport(_workflowId, _workflowName);
+
+            Assert.AreEqual(100, coverage.CoveragePercentage);
+
+            Assert.AreEqual(_workflowName, report.ReportName);
+            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+
+            //Act
+            sut.DeleteCoverageReport(_workflowId, _false_branchTest.TestName);
+
+            //Assert
+            var afterDeleteReport = sut.FetchReport(_workflowId, _false_branchTest.TestName);
+            Assert.IsNull(afterDeleteReport);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("TestCoverageCatalog_Intergration")]
+        public void TestCoverageCatalog_GivenTestCoverage_When_ReloadAllReports_ExpectFullCoverageRemoved()
+        {
+            //Arrange
+            var sut = new TestCoverageCatalog();
+            Assert.AreEqual(0, sut.TestCoverageReports.Count);
+
+            _ = sut.GenerateSingleTestCoverage(_workflowId, _false_branchTest);
+            //Act
+            sut.ReloadAllReports();
+
+            //Assert
+            Assert.IsTrue(sut.TestCoverageReports.Count > 0);
         }
 
         private IServiceTestModelTO GetFalseBranchTest()
@@ -121,7 +189,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         private IServiceTestModelTO _false_branchTest = new ServiceTestModelTO
         {
-            ResourceId = _wfId,
+            ResourceId = _workflowId,
             TestName = "False branch test",
             Password = "p@ssw0rd",
 
@@ -152,7 +220,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         private IServiceTestModelTO _true_branchtest = new ServiceTestModelTO
         {
-            ResourceId = _wfId,
+            ResourceId = _workflowId,
             TestName = "True branch test",
             Password = "p@ssw0rd",
             TestSteps = new List<IServiceTestStep>
@@ -203,6 +271,12 @@ namespace Dev2.Tests.Runtime.Hosting
             };
 
             return tests;
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _testCoverageCatalog.DeleteAllCoverageReports(_workflowId);
         }
     }
 }
