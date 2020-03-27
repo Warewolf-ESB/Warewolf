@@ -97,6 +97,7 @@
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
+    <Compile Include="Hubs\ClusterHub.cs" />
     <Compile Include="Responses\ContentTypes.cs" />
     <Compile Include="Responses\ExceptionResponseWriter.cs" />
     <Compile Include="Responses\FileResponseWriter.cs" />
