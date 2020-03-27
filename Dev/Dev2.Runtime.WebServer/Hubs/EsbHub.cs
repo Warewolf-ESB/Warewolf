@@ -95,7 +95,8 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var resourceItem = ServerExplorerRepository.Instance.UpdateItem(resource);
                 AddItemMessage(resourceItem);
             }
-            
+
+            Clients.All.LeaderConfigChange();
         }
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
